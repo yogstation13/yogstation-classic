@@ -32,11 +32,12 @@ FLOOR SAFES
 
 /obj/structure/safe/initialize()
 	for(var/obj/item/I in loc)
-		if(space >= maxspace)
-			return
-		if(I.w_class + space <= maxspace)
-			space += I.w_class
-			I.loc = src
+		if(!I.anchored)
+			if(space >= maxspace)
+				return
+			if(I.w_class + space <= maxspace)
+				space += I.w_class
+				I.loc = src
 
 
 /obj/structure/safe/proc/check_unlocked(mob/user as mob, canhear)

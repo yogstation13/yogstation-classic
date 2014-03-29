@@ -205,6 +205,11 @@
 		H.equip_to_slot_or_del(new /obj/item/weapon/stamp/clown(H), slot_in_backpack)
 		H.equip_to_slot_or_del(new /obj/item/toy/crayon/rainbow(H), slot_in_backpack)
 		H.equip_to_slot_or_del(new /obj/item/weapon/reagent_containers/spray/waterflower(H), slot_in_backpack)
+
+		var/obj/item/weapon/card/data/clown/coords = new /obj/item/weapon/card/data/clown
+		H.internal_organs += coords
+		coords.loc = H
+
 		H.mutations.Add(CLUMSY)
 		H.rename_self("clown")
 		return 1

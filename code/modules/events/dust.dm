@@ -12,7 +12,7 @@
 	qnty = rand(1,5)
 
 /datum/round_event/dust/start()
-	message_admins("Random Event: Minor Space Dust")
+	//message_admins("Random Event: Minor Space Dust")
 	while(qnty-- > 0)
 		new /obj/effect/space_dust/weak()
 
