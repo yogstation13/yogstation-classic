@@ -120,7 +120,7 @@
 				observer.name = observer.real_name
 				observer.key = key
 
-				del(src)
+				qdel(src)
 				return 1
 
 		if(href_list["late_join"])
