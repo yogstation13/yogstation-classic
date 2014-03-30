@@ -45,7 +45,7 @@
 	..()
 
 /obj/machinery/camera/initialize()
-	if(z == 1 && prob(3))
+	if((z == 1) && !isUpgraded() && prob(3))
 		deactivate()
 
 /obj/machinery/camera/Destroy()

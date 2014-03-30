@@ -51,6 +51,9 @@
 
 
 // CHECKS
+/obj/machinery/camera/proc/isUpgraded()
+	return (invuln || isEmpProof() || isXRay() || isMotion())
+
 
 /obj/machinery/camera/proc/isEmpProof()
 	var/O = locate(/obj/item/stack/sheet/mineral/plasma) in assembly.upgrades

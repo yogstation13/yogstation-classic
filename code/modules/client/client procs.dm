@@ -128,6 +128,9 @@ var/next_external_rsc = 0
 		world.update_status()
 
 	if(holder)
+		message_admins("Admin login: [key_name(src)]")
+		if (ticker && ticker.current_state == GAME_STATE_PLAYING)
+			config.allow_vote_restart = 0
 		add_admin_verbs()
 		admin_memo_show()
 

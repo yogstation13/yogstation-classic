@@ -138,7 +138,8 @@ var/global/datum/controller/gameticker/ticker
 			world << "<h4>Happy [events.holiday] Everybody!</h4>"
 
 	if(!admins.len)
-		send2irc("Server", "Round just started with no admins online!")
+		//send2irc("Server", "Round just started with no admins online!")
+		config.allow_vote_restart = 1
 
 	if(config.sql_enabled)
 		spawn(3000)
