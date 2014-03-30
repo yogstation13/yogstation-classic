@@ -549,6 +549,15 @@ var/list/admin_verbs_hideable = list(
 			message_admins("[src] deadmined themself.", 1)
 			deadmin()
 			src << "<span class='interface'>You are now a normal player.</span>"
+			if(!config.allow_vote_restart)
+				var/admins_number = 0
+				for(var/client/admin in admins)
+					if(check_rights_for(admin, R_SERVER))
+						admins_number++
+				if(admins_number == 0)
+					log_admin("No admins left with +SERVER. Restart vote allowed.")
+					message_admins("No admins left with +SERVER. Restart vote allowed.")
+					config.allow_vote_restart = 1
 	feedback_add_details("admin_verb","DAS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/toggle_log_hrefs()

@@ -481,7 +481,6 @@
 	melee_damage_upper = 15
 	environment_smash = 0
 	var/emagged = 0 //Allow drones to be emagged.
-	var/mob/living/emag_user = null
 	attacktext = "drills"
 	attack_sound = 'sound/weapons/circsawhit.ogg'
 	ranged = 1
@@ -493,16 +492,18 @@
 						  /obj/item/weapon/ore/plasma,  /obj/item/weapon/ore/uranium,    /obj/item/weapon/ore/iron,
 						  /obj/item/weapon/ore/clown)
 
-/mob/living/simple_animal/hostile/mining_drone/ListTargets() //Don't attack the person who emagged us.
-	var/list/L = ..()
-	if(emag_user in L)
-		L -= emag_user
-	return L
+
+/mob/living/simple_animal/hostile/mining_drone/CanAttack(var/atom/the_target)
+	if(!..())
+		return 0
+	if(!emagged && !(istype(the_target, /mob/living/simple_animal/hostile) || istype(the_target, /mob/living/carbon/alien)))
+		return 0
+	return 1
 
 /mob/living/simple_animal/hostile/mining_drone/proc/Emag(mob/user as mob)
 	if(user) user << "<span class='notice'>The [src] buzzes and beeps.</span>"
 	emagged = 2
-	emag_user = user
+	friends += user
 	SetEmagBehavior()
 	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 	s.set_up(5, 1, src)

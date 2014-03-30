@@ -4,9 +4,14 @@
 	log_access("Logout: [key_name(src)]")
 	if(admin_datums[src.ckey])
 		message_admins("Admin logout: [key_name(src)]")
-		if (ticker && ticker.current_state == GAME_STATE_PLAYING) //Only report this stuff if we are currently playing.
-			var/admins_number = admins.len
-			if(admins_number == 0) //Apparently the admin logging out is no longer an admin at this point, so we have to check this towards 0 and not towards 1. Awell.
+		if(!config.allow_vote_restart)
+			var/admins_number = 0
+			for(var/client/admin in admins)
+				if(check_rights_for(admin, R_SERVER))
+					admins_number++
+			if(admins_number == 0)
+				log_admin("No admins left with +SERVER. Restart vote allowed.")
+				message_admins("No admins left with +SERVER. Restart vote allowed.")
 				config.allow_vote_restart = 1
 				/*var/cheesy_message = pick( list(  \
 					"I have no admins online!",\
