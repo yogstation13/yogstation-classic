@@ -90,6 +90,7 @@
 //		new /obj/item/weapon/cartridge/medical(src)
 		new /obj/item/device/radio/headset/headset_med(src)
 		new /obj/item/weapon/storage/belt/medical(src)
+		new /obj/item/weapon/gun/syringe(src)
 		return
 
 
