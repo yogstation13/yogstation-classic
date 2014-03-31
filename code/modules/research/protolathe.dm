@@ -151,12 +151,12 @@ Note: Must be placed west/left of and R&D console to function.
 		return
 	if(amount < 0)//No negative numbers
 		amount = 0
-	if(amount == 0)
-		return
 	if(amount > stack.amount)
 		amount = stack.amount
 	if(max_material_storage - TotalMaterials() < (amount*stack.perunit))//Can't overfill
 		amount = min(stack.amount, round((max_material_storage-TotalMaterials())/stack.perunit))
+	if(amount == 0)
+		return
 
 	src.overlays += "protolathe_[stack.name]"
 	sleep(10)
@@ -164,29 +164,32 @@ Note: Must be placed west/left of and R&D console to function.
 
 	icon_state = "protolathe"
 	busy = 1
-	use_power(max(1000, (3750*amount/10)))
+	use_power(1000)
 	spawn(16)
-		user << "\blue You add [amount] sheets to the [src.name]."
-		icon_state = "protolathe"
-		if(istype(stack, /obj/item/stack/sheet/metal))
-			m_amount += amount * 3750
-		else if(istype(stack, /obj/item/stack/sheet/glass))
-			g_amount += amount * 3750
-		else if(istype(stack, /obj/item/stack/sheet/mineral/gold))
-			gold_amount += amount * 2000
-		else if(istype(stack, /obj/item/stack/sheet/mineral/silver))
-			silver_amount += amount * 2000
-		else if(istype(stack, /obj/item/stack/sheet/mineral/plasma))
-			plasma_amount += amount * 2000
-		else if(istype(stack, /obj/item/stack/sheet/mineral/uranium))
-			uranium_amount += amount * 2000
-		else if(istype(stack, /obj/item/stack/sheet/mineral/diamond))
-			diamond_amount += amount * 2000
-		else if(istype(stack, /obj/item/stack/sheet/mineral/clown))
-			clown_amount += amount * 2000
-		else if(istype(stack, /obj/item/stack/sheet/mineral/adamantine))
-			adamantine_amount += amount * 2000
-		stack.use(amount)
-		busy = 0
-		src.updateUsrDialog()
+		if(amount > stack.amount)
+			amount = min(stack.amount, round((max_material_storage-TotalMaterials())/stack.perunit))
+		if(amount > 0)
+			user << "\blue You add [amount] sheets to the [src.name]."
+			icon_state = "protolathe"
+			if(istype(stack, /obj/item/stack/sheet/metal))
+				m_amount += amount * 3750
+			else if(istype(stack, /obj/item/stack/sheet/glass))
+				g_amount += amount * 3750
+			else if(istype(stack, /obj/item/stack/sheet/mineral/gold))
+				gold_amount += amount * 2000
+			else if(istype(stack, /obj/item/stack/sheet/mineral/silver))
+				silver_amount += amount * 2000
+			else if(istype(stack, /obj/item/stack/sheet/mineral/plasma))
+				plasma_amount += amount * 2000
+			else if(istype(stack, /obj/item/stack/sheet/mineral/uranium))
+				uranium_amount += amount * 2000
+			else if(istype(stack, /obj/item/stack/sheet/mineral/diamond))
+				diamond_amount += amount * 2000
+			else if(istype(stack, /obj/item/stack/sheet/mineral/clown))
+				clown_amount += amount * 2000
+			else if(istype(stack, /obj/item/stack/sheet/mineral/adamantine))
+				adamantine_amount += amount * 2000
+			stack.use(amount)
+			busy = 0
+			src.updateUsrDialog()
 	return
