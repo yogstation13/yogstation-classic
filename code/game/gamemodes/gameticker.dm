@@ -137,9 +137,16 @@ var/global/datum/controller/gameticker/ticker
 			world << "<font color='blue'>and...</font>"
 			world << "<h4>Happy [events.holiday] Everybody!</h4>"
 
-	if(!admins.len)
+	if(!config.allow_vote_restart)
+		var/admins_number = 0
+		for(var/client/admin in admins)
+			if(check_rights_for(admin, R_SERVER))
+				admins_number++
+		if(admins_number == 0)
+			log_admin("No admins left with +SERVER. Restart vote allowed.")
+			message_admins("No admins left with +SERVER. Restart vote allowed.")
+			config.allow_vote_restart = 1
 		//send2irc("Server", "Round just started with no admins online!")
-		config.allow_vote_restart = 1
 
 	if(config.sql_enabled)
 		spawn(3000)
