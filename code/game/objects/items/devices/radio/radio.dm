@@ -12,6 +12,7 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 	var/on = 1 // 0 for off
 	var/last_transmission
 	var/frequency = 1459 //common chat
+	var/frequencylock = 0
 	var/traitor_frequency = 0 //tune to frequency to unlock traitor supplies
 	var/canhear_range = 3 // the range which mobs can hear this radio from
 	var/obj/item/device/radio/patch_link = null
@@ -101,7 +102,8 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 				"}
 	else	//Headsets dont get a mic button, speaker controls both
 		dat += "<b>Power:</b> [listening ? "<A href='byond://?src=\ref[src];listen=0'>Engaged</A>" : "<A href='byond://?src=\ref[src];listen=1'>Disengaged</A>"]<BR>"
-	dat += {"
+	if (!frequencylock)
+		dat += {"
 				<b>Frequency:</b>
 				<A href='byond://?src=\ref[src];freq=-10'>-</A>
 				<A href='byond://?src=\ref[src];freq=-2'>-</A>
@@ -167,6 +169,8 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 		return
 
 	else if (href_list["freq"])
+		if(frequencylock)
+			return
 		var/new_frequency = (frequency + text2num(href_list["freq"]))
 		if (!freerange || (frequency < 1200 || frequency > 1600))
 			new_frequency = sanitize_frequency(new_frequency, maxf)
@@ -821,7 +825,14 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 	onclose(user, "radio")
 	return
 
-
+/obj/item/device/radio/security
+	name = "security transceiver"
+	desc = "A tactical communications device for those times when you need it."
+	icon_state = "walkietalkiesec"
+	item_state = "walkietalkiesec"
+	freerange = 1
+	frequency = 1359
+	frequencylock = 1
 
 /obj/item/device/radio/off	// Station bounced radios, their only difference is spawning with the speakers off, this was made to help the lag.
 	listening = 0			// And it's nice to have a subtype too for future features.

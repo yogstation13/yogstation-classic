@@ -55,6 +55,7 @@ var/global/list/autolathe_recipes_hidden = list( \
 		new /obj/item/weapon/flamethrower/full(), \
 		new /obj/item/weapon/rcd(), \
 		new /obj/item/device/radio/electropack(), \
+		new /obj/item/device/radio/security(), \
 		new /obj/item/weapon/weldingtool/largetank(), \
 		new /obj/item/weapon/handcuffs(), \
 		new /obj/item/ammo_box/a357(), \
