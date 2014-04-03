@@ -496,7 +496,7 @@
 /mob/living/simple_animal/hostile/mining_drone/CanAttack(var/atom/the_target)
 	if(!..())
 		return 0
-	if(!emagged && !(istype(the_target, /mob/living/simple_animal/hostile) || istype(the_target, /mob/living/carbon/alien)))
+	if(!emagged && ismob(the_target) && !(istype(the_target, /mob/living/simple_animal/hostile) || istype(the_target, /mob/living/carbon/alien)))
 		return 0
 	return 1
 

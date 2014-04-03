@@ -105,7 +105,7 @@
 	can_hold = list(
 		/obj/item/weapon/melee/baton,
 		/obj/item/weapon/melee/classic_baton,
-		/obj/item/weapon/grenade/flashbang,
+		/obj/item/weapon/grenade,
 		/obj/item/weapon/reagent_containers/spray/pepper,
 		/obj/item/weapon/handcuffs,
 		/obj/item/device/flash,

@@ -433,7 +433,8 @@
 	throw_impact(atom/hit_atom)
 		..()
 		new/obj/effect/decal/cleanable/egg_smudge(src.loc)
-		reagents.reaction(hit_atom, TOUCH)
+		if(reagents)
+			reagents.reaction(hit_atom, TOUCH)
 		qdel(src)
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)

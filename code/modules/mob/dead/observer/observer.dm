@@ -17,6 +17,7 @@
 							//If you died in the game and are a ghsot - this will remain as null.
 							//Note that this is not a reliable way to determine if admins started as observers, since they change mobs a lot.
 	var/atom/movable/following = null
+	var/ninjahud = 0
 
 /mob/dead/observer/New(mob/body)
 	sight |= SEE_TURFS | SEE_MOBS | SEE_OBJS | SEE_SELF
@@ -150,6 +151,19 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	mind.current.key = key
 	return 1
 
+/mob/dead/observer/proc/toggleninjahud()
+	set category = "Ghost"
+	set name = "Toggle Antag Icons"
+	if(client && client.holder)
+		if(ninjahud)
+			ninjahud = 0
+			for(var/image/hud in client.images)
+				if(copytext(hud.icon_state,1,4) == "hud")
+					client.images -= hud
+		else
+			ninjahud = 1
+		src << "\blue Antag icons toggled [ninjahud ? "on" : "off"]."
+
 /mob/dead/observer/proc/dead_tele()
 	set category = "Ghost"
 	set name = "Teleport"
@@ -204,6 +218,49 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 				sleep(15)
 			if (target == following) following = null
 
+
+/mob/dead/observer/Life()
+	if(client && ninjahud)
+		var/icon/tempHud = 'icons/mob/hud.dmi'
+		for(var/image/hud in client.images)
+			if(copytext(hud.icon_state,1,4) == "hud")
+				client.images -= hud
+		for(var/mob/living/target in oview(src))
+			if(target.mind)//They need to have a mind.
+				if(iscarbon(target))
+					switch(target.mind.special_role)
+						if("traitor")
+							client.images += image(tempHud,target,"hudtraitor")
+						if("Revolutionary")
+							client.images += image(tempHud,target,"hudrevolutionary")
+						if("Head Revolutionary")
+							client.images += image(tempHud,target,"hudheadrevolutionary")
+						if("Cultist")
+							client.images += image(tempHud,target,"hudcultist")
+						if("Changeling")
+							client.images += image(tempHud,target,"hudchangeling")
+						if("Wizard","Fake Wizard")
+							client.images += image(tempHud,target,"hudwizard")
+						if("Hunter","Sentinel","Drone","Queen")
+							client.images += image(tempHud,target,"hudalien")
+						if("Syndicate")
+							client.images += image(tempHud,target,"hudoperative")
+						if("Death Commando")
+							client.images += image(tempHud,target,"huddeathsquad")
+						if("Space Ninja")
+							client.images += image(tempHud,target,"hudninja")
+						if(null)
+							//Nothing
+						else//If we don't know what role they have but they have one.
+							client.images += image(tempHud,target,"hudunknown1")
+				else if(issilicon(target))//If the silicon mob has no law datum, no inherent laws, or a law zero, add them to the hud.
+					var/mob/living/silicon/silicon_target = target
+					if(!silicon_target.laws || (silicon_target.laws && (silicon_target.laws.zeroth || !silicon_target.laws.inherent.len)))
+						if(isrobot(silicon_target))//Different icons for robutts and AI.
+							client.images += image(tempHud,silicon_target,"hudmalborg")
+						else
+							client.images += image(tempHud,silicon_target,"hudmalai")
+	return
 
 /mob/dead/observer/verb/jumptomob() //Moves the ghost instead of just changing the ghosts's eye -Nodrak
 	set category = "Ghost"

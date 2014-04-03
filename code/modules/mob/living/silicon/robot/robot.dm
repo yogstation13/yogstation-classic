@@ -385,7 +385,7 @@
 	var/list/L = alarms[class]
 	var/cleared = 0
 	for (var/I in L)
-		if (I == A.name)
+		if (I == A ? A.name : "nowhere")
 			var/list/alarm = L[I]
 			var/list/srcs  = alarm[3]
 			if (origin in srcs)
@@ -394,7 +394,7 @@
 				cleared = 1
 				L -= I
 	if (cleared)
-		queueAlarm(text("--- [class] alarm in [A.name] has been cleared."), class, 0)
+		queueAlarm(text("--- [class] alarm in [A ? A.name : "nowhere"] has been cleared."), class, 0)
 //		if (viewalerts) robot_alerts()
 	return !cleared
 

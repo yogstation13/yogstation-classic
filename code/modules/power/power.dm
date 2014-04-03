@@ -248,14 +248,15 @@
 			for(var/obj/newP in C.get_marked_connections())
 				worklist+=newP
 			//world.log << "found [P.len] children"
-		else if(P.anchored && istype(P,/obj/machinery/power))
+		else if(istype(P,/obj/machinery/power) && P.anchored)
 			//world.log << "is machine"
 			var/obj/machinery/power/M = P
 			if(M.powernet==PN)
 				//world.log << "already has correct network"
 				continue
 			//world.log << "removing from old powernet[M.powernet]"
-			M.powernet.nodes-=M
+			if(M.powernet)
+				M.powernet.nodes-=M
 			M.powernet = PN
 			PN.nodes+=M
 			for(var/obj/newP in M.get_marked_connections())

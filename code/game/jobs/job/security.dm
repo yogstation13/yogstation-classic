@@ -165,15 +165,15 @@
 	H.equip_to_slot_or_del(new /obj/item/device/pda/security(H), slot_belt)
 	H.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/vest(H), slot_wear_suit)
 	H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet(H), slot_head)
-	H.equip_to_slot_or_del(new /obj/item/weapon/handcuffs(H), slot_s_store)
+	H.equip_to_slot_or_del(new /obj/item/weapon/handcuffs(H), slot_r_store)
 	H.equip_to_slot_or_del(new /obj/item/device/flash(H), slot_l_store)
+	H.equip_to_slot_or_del(new /obj/item/weapon/melee/baton/loaded(H), slot_s_store)
 	if(H.backbag == 1)
 		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H), slot_r_hand)
 		H.equip_to_slot_or_del(new /obj/item/weapon/handcuffs(H), slot_l_hand)
 	else
 		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H.back), slot_in_backpack)
 		H.equip_to_slot_or_del(new /obj/item/weapon/handcuffs(H), slot_in_backpack)
-		H.equip_to_slot_or_del(new /obj/item/weapon/melee/baton/loaded(H), slot_in_backpack)
 	var/obj/item/weapon/implant/loyalty/L = new/obj/item/weapon/implant/loyalty(H)
 	L.imp_in = H
 	L.implanted = 1
@@ -186,7 +186,7 @@
 	L |= ..() | check_config_for_sec_maint()
 	dep_access = null;
 	return L
-	
+
 var/list/sec_departments = list("engineering", "supply", "medical", "science")
 
 /datum/job/officer/proc/assign_sec_to_department(var/mob/living/carbon/human/H)
@@ -236,7 +236,7 @@ var/list/sec_departments = list("engineering", "supply", "medical", "science")
 					break
 		H << "<b>You have been assigned to [department]!</b>"
 		return
-	
+
 /obj/item/device/radio/headset/headset_sec/department/New()
 	wires = new(src)
 	secure_radio_connections = new

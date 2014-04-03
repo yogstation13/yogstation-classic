@@ -242,7 +242,8 @@ var/list/admin_verbs_hideable = list(
 		/client/proc/ticklag,
 		/client/proc/cmd_admin_grantfullaccess,
 		/client/proc/kaboom,
-		/client/proc/cmd_admin_areatest
+		/client/proc/cmd_admin_areatest,
+		/mob/dead/observer/proc/toggleninjahud
 		)
 	if(holder)
 		verbs.Remove(holder.rank.adds)

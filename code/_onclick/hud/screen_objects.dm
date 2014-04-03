@@ -69,8 +69,9 @@
 	name = "grab"
 
 /obj/screen/grab/Click()
-	var/obj/item/weapon/grab/G = master
-	G.s_click(src)
+	if(master)
+		var/obj/item/weapon/grab/G = master
+		G.s_click(src)
 	return 1
 
 /obj/screen/grab/attack_hand()

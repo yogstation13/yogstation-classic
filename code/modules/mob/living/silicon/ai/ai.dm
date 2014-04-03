@@ -508,7 +508,7 @@ var/list/ai_list = list()
 	var/list/L = alarms[class]
 	var/cleared = 0
 	for (var/I in L)
-		if (I == A.name)
+		if (I == A ? A.name : "nowhere")
 			var/list/alarm = L[I]
 			var/list/srcs  = alarm[3]
 			if (origin in srcs)
@@ -517,7 +517,7 @@ var/list/ai_list = list()
 				cleared = 1
 				L -= I
 	if (cleared)
-		queueAlarm(text("--- [] alarm in [] has been cleared.", class, A.name), class, 0)
+		queueAlarm(text("--- [] alarm in [] has been cleared.", class, A ? A.name : "nowhere"), class, 0)
 		if (viewalerts) ai_alerts()
 	return !cleared
 
