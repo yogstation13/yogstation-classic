@@ -10,7 +10,8 @@
 
 /obj/structure/mirror/magic
 	name = "magic mirror"
-	icon_state = "magicmirror"
+	icon = 'icons/obj/wizardmirror.dmi'
+	icon_state = "mirror"
 	desc = "The Polyjuice 3000 Magic Mirror is the best choice for any wizard who wants a long, white beard."
 
 /obj/structure/mirror/attack_hand(mob/user as mob)
@@ -77,7 +78,6 @@
 	icon_state = "mirror_broke"
 	playsound(src, "shatter", 70, 1)
 	desc = "Oh no, seven years of bad luck!"
-
 
 /obj/structure/mirror/bullet_act(var/obj/item/projectile/Proj)
 	if(prob(Proj.damage * 2))
