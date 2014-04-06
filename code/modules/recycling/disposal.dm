@@ -496,7 +496,12 @@
 	var/tomail = 0 //changes if contains wrapped package
 	var/hasmob = 0 //If it contains a mob
 
+/obj/structure/disposalholder/Destroy()
+	qdel(gas)
+	active = 0
+	..()
 
+/obj/structure/disposalholder
 	// initialize a holder from the contents of a disposal unit
 	proc/init(var/obj/machinery/disposal/D)
 		gas = D.air_contents// transfer gas resv. into holder object
@@ -550,22 +555,13 @@
 	proc/move()
 		var/obj/structure/disposalpipe/last
 		while(active)
-			if(has_fat_guy && prob(2)) // chance of becoming stuck per segment if contains a fat guy
-				active = 0
-				// find the fat guys
-				for(var/mob/living/carbon/human/H in src)
-
-				break
-			sleep(1)		// was 1
 			var/obj/structure/disposalpipe/curr = loc
-			if(!curr)
-				return
 			last = curr
 			curr = curr.transfer(src)
-			if(!curr)
+			if(!curr && active)
 				last.expel(src, loc, dir)
 
-			//
+			sleep(1)
 			if(!(count--))
 				active = 0
 		return
@@ -616,8 +612,8 @@
 
 	// called to vent all gas in holder to a location
 	proc/vent_gas(var/atom/location)
-		if(location)
-			location.assume_air(gas)  // vent all gas to turf
+		location.assume_air(gas)  // vent all gas to turf
+		air_update_turf()
 		return
 
 // Disposal pipes
