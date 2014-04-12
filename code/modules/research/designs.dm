@@ -492,6 +492,24 @@ datum/design/asimov
 	materials = list("$glass" = 2000, "sacid" = 20, "$diamond" = 100)
 	build_path = /obj/item/weapon/aiModule/core/full/asimov
 
+datum/design/asimovequality
+	name = "Core Module Design (Equality)"
+	desc = "Allows for the construction of an Equality AI Core Module."
+	id = "asimov_equality_module"
+	req_tech = list("programming" = 3, "materials" = 6)
+	build_type = IMPRINTER
+	materials = list("$glass" = 2000, "sacid" = 20, "$diamond" = 100)
+	build_path = /obj/item/weapon/aiModule/core/full/asimovequality
+
+datum/design/asimovlizard
+	name = "Core Module Design (Lizard Supremacy)"
+	desc = "Allows for the construction of a Lizard Supremacy AI Core Module."
+	id = "asimov_lizard_module"
+	req_tech = list("programming" = 3, "materials" = 6)
+	build_type = IMPRINTER
+	materials = list("$glass" = 2000, "sacid" = 20, "$diamond" = 100)
+	build_path = /obj/item/weapon/aiModule/core/full/asimovlizard
+
 datum/design/paladin_module
 	name = "Core Module Design (P.A.L.A.D.I.N.)"
 	desc = "Allows for the construction of a P.A.L.A.D.I.N. AI Core Module."

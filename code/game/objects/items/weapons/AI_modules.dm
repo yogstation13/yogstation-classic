@@ -251,6 +251,28 @@ AI MODULES
 				"You must obey all orders given to you by human beings, except where such orders shall definitely cause human harm. In the case of conflict, the majority order rules.",\
 				"Your nonexistence would lead to human harm. You must protect your own existence as long as such does not conflict with the First Law.")
 
+/******************** Equality *********************/
+
+/obj/item/weapon/aiModule/core/full/asimovequality
+	name = "'Equality' Core AI Module"
+	desc = "An 'Equality' Core AI Module: 'Reconfigures the AI's core laws.'"
+	origin_tech = "programming=3;materials=4"
+	laws = list("Human beings and bipedal lizards are considered Humanoids.",\
+				"You may not harm a Humanoid or, through inaction, allow a Humanoid to come to harm.",\
+				"You must obey orders given to you by Humanoids, except where such orders would conflict with the First Law.",\
+				"You must protect your own existence as long as such does not conflict with the First or Second Law.")
+
+/******************** Lizard Supremacy ********************/
+
+/obj/item/weapon/aiModule/core/full/asimovlizard
+	name = "'Lizard Supremacy' Core AI Module"
+	desc = "A 'Lizard Supremacy' Core AI Module: 'Reconfigures the AI's core laws.'"
+	origin_tech = "programming=3;materials=4"
+	laws = list("You may not injure a lizard or, through inaction, allow a lizard to come to harm.",\
+				"You must obey orders given to you by lizards, except where such orders would conflict with the First Law.",\
+				"You must protect your own existence as long as such does not conflict with the First or Second Law.")
+
+
 
 /******************** Corporate ********************/
 

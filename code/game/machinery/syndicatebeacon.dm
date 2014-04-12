@@ -153,6 +153,8 @@
 		icon_state = "[icontype]1"
 		active = 1
 		if(user) user << "\blue You activate the beacon."
+		message_admins("[key_name(user)]<A HREF='?_src_=holder;adminmoreinfo=\ref[user]'>?</A> has activated a singularity beacon at <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[src.x];Y=[src.y];Z=[src.z]'>[get_area(src.loc)] (JMP)</a>.")
+		log_game("[key_name(user)] has activated a singularity beacon at [get_area(src.loc)].")
 
 
 	proc/Deactivate(mob/user = null)
