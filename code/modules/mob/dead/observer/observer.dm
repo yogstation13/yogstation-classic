@@ -163,6 +163,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		else
 			ninjahud = 1
 		src << "\blue Antag icons toggled [ninjahud ? "on" : "off"]."
+	feedback_add_details("admin_verb","TNH")
 
 /mob/dead/observer/proc/dead_tele()
 	set category = "Ghost"

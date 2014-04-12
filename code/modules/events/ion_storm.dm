@@ -8,12 +8,14 @@
 
 /datum/round_event/ion_storm
 	var/botEmagChance = 10
+	var/APCEmagChance = 5 //Double randomness, only 1 in 3 will actually blow after being selected
 	var/announceEvent = ION_RANDOM // -1 means don't announce, 0 means have it randomly announce, 1 means
 	var/ionMessage = null
 	var/ionAnnounceChance = 33
 
-/datum/round_event/ion_storm/New(var/bogEmagChance = 10, var/announceEvent = ION_RANDOM, var/ionMessage = null, var/ionAnnounceChance = 33)
+/datum/round_event/ion_storm/New(var/botEmagChance = 10, var/APCEmagChance = 5, var/announceEvent = ION_RANDOM, var/ionMessage = null, var/ionAnnounceChance = 33)
 	src.botEmagChance = botEmagChance
+	src.APCEmagChance = APCEmagChance
 	src.announceEvent = announceEvent
 	src.ionMessage = ionMessage
 	src.ionAnnounceChance = ionAnnounceChance
@@ -41,6 +43,11 @@
 		for(var/obj/machinery/bot/bot in machines)
 			if(prob(botEmagChance))
 				bot.Emag()
+
+	if(APCEmagChance)
+		for(var/obj/machinery/power/apc/apc in machines)
+			if(prob(APCEmagChance))
+				apc.ion_act()
 
 /proc/generate_ion_law(ionMessage)
 	//Threats are generally bad things, silly or otherwise. Plural.

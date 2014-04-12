@@ -7,6 +7,10 @@
 	origin_tech = "materials=3;magnets=4;syndicate=4"
 
 /obj/item/weapon/grenade/syndieminibomb/prime()
+	if(iscarbon(loc))
+		var/mob/living/carbon/meatbag = loc
+		if(src in meatbag.internal_organs)
+			meatbag.ex_act(1)
 	update_mob()
 	explosion(src.loc,1,2,4,flame_range = 2)
 	qdel(src)

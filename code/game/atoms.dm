@@ -68,6 +68,28 @@
 /atom/proc/on_reagent_change()
 	return
 
+/atom/proc/report_reaction(var/type = "unknown", var/list_reagents = 0)
+	var/turf/location = get_turf(src)
+	var/area/A = get_area(location)
+	var/contained = ""
+	if(list_reagents)
+		for(var/reagent in src.reagents.reagent_list)
+			contained += " [reagent] "
+		if(contained)
+			contained = "\[[contained]\]"
+	var/where = "[A.name] | [location.x], [location.y]"
+	var/whereLink = "<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[location.x];Y=[location.y];Z=[location.z]'>[where]</a>"
+	if(src.fingerprintslast)
+		var/mob/M = get_mob_by_key(src.fingerprintslast)
+		var/more = ""
+		if(M)
+			more = "(<A HREF='?_src_=holder;adminmoreinfo=\ref[M]'>?</a>)"
+		message_admins("A chemical [type] reaction has taken place in ([whereLink])[contained]. Last associated key is [src.fingerprintslast][more].", 0, 1)
+		log_game("A chemical [type] reaction has taken place in ([where])[contained]. Last associated key is [src.fingerprintslast].")
+	else
+		message_admins("A chemical [type] reaction has taken place in ([whereLink])[contained]. No associated key.", 0, 1)
+		log_game("A chemical [type] reaction has taken place in ([where])[contained]. No associated key.")
+
 /atom/proc/Bumped(AM as mob|obj)
 	return
 

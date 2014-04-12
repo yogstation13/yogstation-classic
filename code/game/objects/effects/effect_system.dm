@@ -491,7 +491,7 @@ steam.start() -- spawns the effect
 		if(direct)
 			direction = direct
 
-		if(!silent)
+		/*if(!silent)
 			var/contained = ""
 			for(var/reagent in carry.reagent_list)
 				contained += " [reagent] "
@@ -512,6 +512,7 @@ steam.start() -- spawns the effect
 			else
 				message_admins("A chemical smoke reaction has taken place in ([whereLink]). No associated key.", 0, 1)
 				log_game("A chemical smoke reaction has taken place in ([where])[contained]. No associated key.")
+			*/
 
 	start()
 		var/i = 0

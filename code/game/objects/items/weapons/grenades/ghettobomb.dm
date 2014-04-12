@@ -83,6 +83,10 @@
 
 /obj/item/weapon/grenade/iedcasing/prime() //Blowing that can up
 	update_mob()
+	if(iscarbon(loc))
+		var/mob/living/carbon/meatbag = loc
+		if(src in meatbag.internal_organs)
+			meatbag.ex_act(2)
 	explosion(src.loc,-1,0,2)
 	qdel(src)
 

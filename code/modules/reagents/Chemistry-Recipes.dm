@@ -25,7 +25,14 @@
 	required_reagents = list("water" = 1, "potassium" = 1)
 	result_amount = 2
 /datum/chemical_reaction/explosion_potassium/on_reaction(var/datum/reagents/holder, var/created_volume)
-	var/location = get_turf(holder.my_atom)
+	var/turf/location = get_turf(holder.my_atom)
+
+	holder.my_atom.report_reaction("potassium+water explosive")
+
+	if(iscarbon(holder.my_atom.loc))
+		var/mob/living/carbon/meatbag = holder.my_atom.loc
+		if(holder.my_atom in meatbag.internal_organs)
+			meatbag.ex_act(1)
 	var/datum/effect/effect/system/reagents_explosion/e = new()
 	e.set_up(round (created_volume/10, 1), location, 0, 0)
 	e.start()
@@ -40,7 +47,10 @@
 	result_amount = 2
 
 /datum/chemical_reaction/emp_pulse/on_reaction(var/datum/reagents/holder, var/created_volume)
-	var/location = get_turf(holder.my_atom)
+	var/turf/location = get_turf(holder.my_atom)
+
+	holder.my_atom.report_reaction("EMP")
+
 	// 100 created volume = 4 heavy range & 7 light range. A few tiles smaller than traitor EMP grandes.
 	// 200 created volume = 8 heavy range & 14 light range. 4 tiles larger than traitor EMP grenades.
 	empulse(location, round(created_volume / 24), round(created_volume / 14), 1)
@@ -295,7 +305,10 @@ silicate
 	required_reagents = list("glycerol" = 1, "pacid" = 1, "sacid" = 1)
 	result_amount = 2
 /datum/chemical_reaction/nitroglycerin/on_reaction(var/datum/reagents/holder, var/created_volume)
-	var/location = get_turf(holder.my_atom)
+	var/turf/location = get_turf(holder.my_atom)
+
+	holder.my_atom.report_reaction("nitroglycerin explosive")
+
 	var/datum/effect/effect/system/reagents_explosion/e = new()
 	e.set_up(round (created_volume/2, 1), location, 0, 0)
 	e.start()
@@ -346,9 +359,12 @@ silicate
 	required_reagents = list("aluminium" = 1, "plasma" = 1, "sacid" = 1 )
 	result_amount = 1
 /datum/chemical_reaction/napalm/on_reaction(var/datum/reagents/holder, var/created_volume)
-	var/turf/simulated/T = get_turf(holder.my_atom)
-	if(istype(T))
-		T.atmos_spawn_air(SPAWN_HEAT | SPAWN_TOXINS, created_volume)
+	var/turf/simulated/location = get_turf(holder.my_atom)
+
+	holder.my_atom.report_reaction("napalm")
+
+	if(istype(location))
+		location.atmos_spawn_air(SPAWN_HEAT | SPAWN_TOXINS, created_volume)
 	holder.del_reagent(id)
 	return
 
@@ -387,7 +403,10 @@ silicate
 	result_amount = null
 	secondary = 1
 /datum/chemical_reaction/chemsmoke/on_reaction(var/datum/reagents/holder, var/created_volume)
-	var/location = get_turf(holder.my_atom)
+	var/turf/location = get_turf(holder.my_atom)
+
+	holder.my_atom.report_reaction("smoke", 1)
+
 	var/datum/effect/effect/system/chem_smoke_spread/S = new /datum/effect/effect/system/chem_smoke_spread
 	S.attach(location)
 	playsound(location, 'sound/effects/smoke.ogg', 50, 1, -3)

@@ -205,7 +205,14 @@
 		air_contents.react()
 		pressure = air_contents.return_pressure()
 		var/range = (pressure-TANK_FRAGMENT_PRESSURE)/TANK_FRAGMENT_SCALE
-		range = min(range, MAX_EX_LIGHT_RANGE)
+		if(iscarbon(loc))
+			var/mob/living/carbon/meatbag = loc
+			if(src in meatbag.internal_organs)
+				meatbag.ex_act(1)
+		if(istype(src.loc,/obj/item/device/transfer_valve) && iscarbon(loc.loc))
+			var/mob/living/carbon/meatbag = loc.loc
+			if(src.loc in meatbag.internal_organs)
+				meatbag.ex_act(1)
 		var/turf/epicenter = get_turf(loc)
 
 		//world << "\blue Exploding Pressure: [pressure] kPa, intensity: [range]"

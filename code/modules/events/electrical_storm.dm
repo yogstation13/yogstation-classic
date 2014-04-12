@@ -33,3 +33,4 @@
 	for(var/obj/effect/landmark/epicentre in epicentreList)
 		for(var/obj/machinery/power/apc/apc in range(epicentre,lightsoutRange))
 			apc.overload_lighting()
+			apc.ion_act()

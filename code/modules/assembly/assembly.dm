@@ -68,6 +68,7 @@
 
 
 	pulse(var/radio = 0)
+
 		if(holder && (wires & WIRE_PULSE))
 			holder.process_activation(src, 1, 0)
 		if(holder && (wires & WIRE_PULSE_SPECIAL))
@@ -75,6 +76,10 @@
 
 		if(istype(loc,/obj/item/weapon/grenade)) // This is a hack.  Todo: Manage this better -Sayu
 			var/obj/item/weapon/grenade/G = loc
+			var/turf/bombturf = get_turf(G)
+			var/area/A = get_area(bombturf)
+			message_admins("[key_name(usr)]<A HREF='?_src_=holder;adminmoreinfo=\ref[usr]'>?</A> has primed a [name] for detonation at <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[bombturf.x];Y=[bombturf.y];Z=[bombturf.z]'>[A.name] (JMP)</a>.")
+			log_game("[key_name(usr)] has primed a [name] for detonation at [A.name] ([bombturf.x],[bombturf.y],[bombturf.z]).")
 			G.prime() 							 // Adios, muchachos
 //		if(radio && (wires & WIRE_RADIO_PULSE))
 			//Not sure what goes here quite yet send signal?

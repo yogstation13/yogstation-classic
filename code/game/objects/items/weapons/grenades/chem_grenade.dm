@@ -30,11 +30,11 @@
 	if(stage == READY &&  !active)
 		var/turf/bombturf = get_turf(src)
 		var/area/A = get_area(bombturf)
-		message_admins("[key_name(usr)]<A HREF='?_src_=holder;adminmoreinfo=\ref[usr]'>?</A> has primed a [name] for detonation at <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[bombturf.x];Y=[bombturf.y];Z=[bombturf.z]'>[A.name] (JMP)</a>.")
-		log_game("[key_name(usr)] has primed a [name] for detonation at [A.name] ([bombturf.x],[bombturf.y],[bombturf.z]).")
 		if(nadeassembly)
 			nadeassembly.attack_self(user)
 		else if(clown_check(user))
+			message_admins("[key_name(usr)]<A HREF='?_src_=holder;adminmoreinfo=\ref[usr]'>?</A> has primed a [name] for detonation at <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[bombturf.x];Y=[bombturf.y];Z=[bombturf.z]'>[A.name] (JMP)</a>.")
+			log_game("[key_name(usr)] has primed a [name] for detonation at [A.name] ([bombturf.x],[bombturf.y],[bombturf.z]).")
 			user << "<span class='warning'>You prime the [name]! [det_time / 10] second\s!</span>"
 			active = 1
 			icon_state = initial(icon_state) + "_active"
@@ -54,6 +54,10 @@
 				playsound(loc, 'sound/items/Screwdriver.ogg', 25, -3)
 				icon_state = initial(icon_state) +"_locked"
 				stage = READY
+
+				bombers += "[key_name(user)] secured a grenade assembly with [nadeassembly ? nadeassembly : "a basic cable"] trigger."
+				message_admins("[key_name(user)] secured a grenade assembly with [nadeassembly ? nadeassembly : "a basic cable"] trigger.")
+				log_game("[key_name(user)] secured a grenade assembly with [nadeassembly ? nadeassembly : "a basic cable"] trigger.")
 			else
 				user << "<span class='notice'>You need to add at least one beaker before locking the assembly.</span>"
 		else if(stage == READY && !nadeassembly)
@@ -166,6 +170,15 @@
 		steam.set_up(10, 0, get_turf(src))
 		steam.attach(src)
 		steam.start()
+
+		if(src.reagents.has_reagent("plasma"))
+			src.report_reaction("plasma")
+
+		if(src.reagents.has_reagent("lube"))
+			src.report_reaction("lube")
+
+		if(src.reagents.has_reagent("pacid"))
+			src.report_reaction("pacid")
 
 		for(var/atom/A in view(affected_area, loc))
 			if(A == src)
