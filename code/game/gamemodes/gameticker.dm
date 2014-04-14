@@ -90,6 +90,7 @@ var/global/datum/controller/gameticker/ticker
 
 	//Configure mode and assign player to special mode stuff
 	var/can_continue = 0
+
 	if (src.mode.pre_setup_before_jobs)	can_continue = src.mode.pre_setup()
 	job_master.DivideOccupations() 				//Distribute jobs
 	if (!src.mode.pre_setup_before_jobs)	can_continue = src.mode.pre_setup()
@@ -113,6 +114,9 @@ var/global/datum/controller/gameticker/ticker
 		world << "<B>Possibilities:</B> [english_list(modes)]"
 	else
 		src.mode.announce()
+
+	if(!syndicate_code_phrase)		syndicate_code_phrase	= generate_code_phrase()
+	if(!syndicate_code_response)	syndicate_code_response	= generate_code_phrase()
 
 	supply_shuttle.process() 		//Start the supply shuttle regenerating points
 	master_controller.process()		//Start master_controller.process()
@@ -344,7 +348,8 @@ var/global/datum/controller/gameticker/ticker
 				if (is_special_character(robo) && robo.mind)
 					vsrobolist += "[robo.name][robo.stat?" (Deactivated) (Played by: [robo.mind.key]), ":" (Played by: [robo.mind.key]), "]"
 					continue
-				robolist += "[robo.name][robo.stat?" (Deactivated) (Played by: [robo.mind.key]), ":" (Played by: [robo.mind.key]), "]"
+				if (robo.mind)
+					robolist += "[robo.name][robo.stat?" (Deactivated) (Played by: [robo.mind.key]), ":" (Played by: [robo.mind.key]), "]"
 			world << "[robolist]"
 			world << "[vsrobolist]"
 	for (var/mob/living/silicon/robot/robo in mob_list)

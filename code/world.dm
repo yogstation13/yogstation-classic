@@ -48,6 +48,7 @@
 	appearance_loadbanfile()
 	jobban_updatelegacybans()
 	LoadBans()
+	load_donators()
 	investigate_reset()
 
 	if(config && config.server_name != null && config.server_suffix && world.port > 0)
@@ -224,6 +225,22 @@
 	// apply some settings from config..
 	abandon_allowed = config.respawn
 
+var/list/donators = list()
+
+/world/proc/load_donators()
+	var/ckey
+	var/datum/preferences/P
+	for(var/key in donators)
+		ckey = ckey(key)
+		P = preferences_datums[ckey]
+		if(P)
+			P.unlock_content &= 1
+	donators = file2list("config/donators.txt")
+	for(var/key in donators)
+		ckey = ckey(key)
+		P = preferences_datums[ckey]
+		if(P)
+			P.unlock_content |= 2
 
 /world/proc/update_status()
 	var/s = ""

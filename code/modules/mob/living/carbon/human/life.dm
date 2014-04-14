@@ -1048,6 +1048,12 @@
 				damageoverlay.overlays += I
 				damageoverlay.overlays += black
 
+		if(mind && mind.changeling)
+			hud_used.lingchemdisplay.invisibility = 0
+			hud_used.lingchemdisplay.maptext = "<div align='center' valign='middle' style='position:relative; top:0px; left:6px'> <font color='#dd66dd'>[src.mind.changeling.chem_charges]</font></div>"
+		else
+			hud_used.lingchemdisplay.invisibility = 101
+
 		if( stat == DEAD )
 			sight |= (SEE_TURFS|SEE_MOBS|SEE_OBJS)
 			see_in_dark = 8
@@ -1074,12 +1080,6 @@
 
 			if(seer)
 				see_invisible = SEE_INVISIBLE_OBSERVER
-
-			if(mind && mind.changeling)
-				hud_used.lingchemdisplay.invisibility = 0
-				hud_used.lingchemdisplay.maptext = "<div align='center' valign='middle' style='position:relative; top:0px; left:6px'> <font color='#dd66dd'>[src.mind.changeling.chem_charges]</font></div>"
-			else
-				hud_used.lingchemdisplay.invisibility = 101
 
 			if(istype(wear_mask, /obj/item/clothing/mask/gas/voice/space_ninja))
 				var/obj/item/clothing/mask/gas/voice/space_ninja/O = wear_mask

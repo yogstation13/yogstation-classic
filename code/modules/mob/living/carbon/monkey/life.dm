@@ -507,6 +507,11 @@
 			else
 				healths.icon_state = "health7"
 
+		if(mind && mind.changeling)
+			hud_used.lingchemdisplay.invisibility = 0
+			hud_used.lingchemdisplay.maptext = "<div align='center' valign='middle' style='position:relative; top:0px; left:6px'> <font color='#dd66dd'>[src.mind.changeling.chem_charges]</font></div>"
+		else
+			hud_used.lingchemdisplay.invisibility = 101
 
 		if(pressure)
 			pressure.icon_state = "pressure[pressure_alert]"
