@@ -10,7 +10,7 @@ Put (mob/proc)s here that are in dire need of a code cleanup.
 			return 1
 	return 0
 
-/mob/proc/contract_disease(var/datum/disease/virus, var/skip_this = 0, var/force_species_check=1, var/spread_type = -5)
+/mob/proc/contract_disease(var/datum/disease/virus, var/skip_this = 0, var/force_species_check=1, var/spread_type = -5, var/source = null)
 	//world << "Contract_disease called by [src] with virus [virus]"
 	if(stat >=2)
 		//world << "He's dead jim."
@@ -52,8 +52,19 @@ Put (mob/proc)s here that are in dire need of a code cleanup.
 		v.affected_mob = src
 		v.strain_data = virus.strain_data.Copy()
 		v.holder = src
+		var/log = " has contracted [v.name] ([v.GetDiseaseID()])"
+		if(istype(v, /datum/disease/advance))
+			var/datum/disease/advance/vv = v
+			log += " \[ symptoms: "
+			for(var/datum/symptom/S in vv.symptoms)
+				log += "[S.name] "
+			log += "\]"
+		log += " using blood transmission"
 		if(v.can_carry && prob(5))
 			v.carrier = 1
+			log += " as a carrier"
+		log += " [source ? "from "+source : ""]."
+		investigate_log(log, "viro")
 		return
 	//world << "Not skipping."
 	//if(src.virus) //
@@ -170,7 +181,18 @@ Put (mob/proc)s here that are in dire need of a code cleanup.
 		v.affected_mob = src
 		v.strain_data = virus.strain_data.Copy()
 		v.holder = src
+		var/log = " has contracted [v.name] ([v.GetDiseaseID()])"
+		if(istype(v, /datum/disease/advance))
+			var/datum/disease/advance/vv = v
+			log += " \[ symptoms: "
+			for(var/datum/symptom/S in vv.symptoms)
+				log += "[S.name] "
+			log += "\]"
+		log += " using [spread_type == AIRBORNE ? "airborne" : "touch"] transmission"
 		if(v.can_carry && prob(5))
 			v.carrier = 1
+			log += " as a carrier"
+		log += " [source ? "from "+source : ""]."
+		investigate_log(log, "viro")
 		return
 	return

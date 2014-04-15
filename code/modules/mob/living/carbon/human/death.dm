@@ -61,5 +61,5 @@
 
 /mob/living/carbon/proc/Drain()
 	ChangeToHusk()
-	mutations |= NOCLONE
+	mutations.Add(NOCLONE)
 	return 1

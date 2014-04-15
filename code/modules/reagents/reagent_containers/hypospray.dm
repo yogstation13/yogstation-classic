@@ -34,7 +34,18 @@
 		reagents.reaction(M, INGEST)
 		if(M.reagents)
 			var/list/injected = list()
+			var/viruslist = ""
 			for(var/datum/reagent/R in reagents.reagent_list)
+				if(istype(R, /datum/reagent/blood))
+					var/datum/reagent/blood/RR = R
+					for(var/datum/disease/D in RR.data["viruses"])
+						viruslist += " [D.name]"
+						if(istype(D, /datum/disease/advance))
+							var/datum/disease/advance/DD = D
+							viruslist += " \[ symptoms: "
+							for(var/datum/symptom/S in DD.symptoms)
+								viruslist += "[S.name] "
+							viruslist += "\]"
 				injected += R.name
 
 			var/trans = reagents.trans_to(M, amount_per_transfer_from_this)
@@ -42,6 +53,8 @@
 
 			var/contained = english_list(injected)
 
+			if(viruslist)
+				investigate_log("[user.name] ([user.ckey]) injected [M.name] ([M.ckey]) with [viruslist]", "viro")
 			add_logs(user, M, "injected", object="[src.name]", addition="([contained])")
 
 /obj/item/weapon/reagent_containers/hypospray/combat

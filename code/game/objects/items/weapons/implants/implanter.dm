@@ -72,3 +72,11 @@
 	imp = new /obj/item/weapon/implant/emp(src)
 	..()
 	update_icon()
+
+/obj/item/weapon/implanter/chemminer
+	name = "implanter-Stimulant"
+
+/obj/item/weapon/implanter/chemminer/New()
+	imp = new /obj/item/weapon/implant/chemminer(src)
+	..()
+	update_icon()

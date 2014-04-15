@@ -14,7 +14,9 @@
 	internal_damage_threshold = 25
 	max_equip = 2
 	step_energy_drain = 3
-	color = "#87878715"
+	color = "#878787"
+	var/invis = 0
+	var/cloaking = 0
 	stepsound = null
 
 /obj/mecha/combat/reticence/loaded/New()
@@ -24,3 +26,54 @@
 	ME = new /obj/item/mecha_parts/mecha_equipment/tool/rcd //HAHA IT MAKES WALLS GET IT
 	ME.attach(src)
 	return
+
+/obj/mecha/combat/reticence/get_commands()
+	var/output = {"<div class='wr'>
+						<div class='header'>Special</div>
+						<div class='links'>
+						<a href='?src=\ref[src];invis=1'><span id="invis_command">[invis?"Dis":"En"]able cloak</span></a><br>
+						</div>
+						</div>
+						"}
+	output += ..()
+	return output
+
+/obj/mecha/combat/reticence/Topic(href, href_list)
+	..()
+	if (href_list["invis"])
+		if(cloaking)
+			return
+		cloak(!invis)
+
+/obj/mecha/combat/reticence/proc/cloak(var/on = 0)
+	if(on != invis)
+		cloaking = 1
+		send_byjax(src.occupant,"exosuit.browser","invis_command","Please wait...")
+		invis = on
+		alpha = invis ? 21 : 255
+		sleep(2)
+		if(!src)
+			return
+		alpha = invis ? 255 : 21
+		sleep(2)
+		if(!src)
+			return
+		alpha = invis ? 21 : 255
+		sleep(2)
+		if(!src)
+			return
+		alpha = invis ? 255 : 21
+		sleep(2)
+		if(!src)
+			return
+		alpha = invis ? 21 : 255
+		opacity = invis ? 0 : 1
+		send_byjax(src.occupant,"exosuit.browser","invis_command","[invis?"Dis":"En"]able cloak")
+		src.occupant_message("<font color=\"[invis?"#00f\">En":"#f00\">Dis"]abled cloak.</font>")
+		cloaking = 0
+	return
+
+/obj/mecha/combat/reticence/eject()
+	if(usr != src.occupant)	return
+	cloak(0)
+	..()

@@ -211,3 +211,47 @@
 		source.mind.store_memory("EMP implant can be activated [uses] time\s by using the [src.activation_emote] emote, <B>say *[src.activation_emote]</B> to attempt to activate.", 0, 0)
 		source << "The implanted EMP implant can be activated [uses] time\s by using the [src.activation_emote] emote, <B>say *[src.activation_emote]</B> to attempt to activate."
 		return 1
+
+
+/obj/item/weapon/implant/chemminer
+	name = "miner chemical implant"
+	desc = "Use this to keep your medicine regular. Scream to trigger."
+	var/activation_emote = "scream"
+	allow_reagents = 1
+	var/trans_amt = 50
+	var/charges = 5
+
+/obj/item/weapon/implant/chemminer/get_data()
+	var/dat = {"<b>Implant Specifications:</b><BR>
+				<b>Name:</b> Nanotrasen Mining Stimulant Implant<BR>
+				<b>Life:</b> Five days.<BR>
+				<b>Important Notes:</b> <font color='green'>CLASS-2 SAFE. TRAINED PERSONNEL ONLY.</font><BR>
+				<HR>
+				<b>Implant Details:</b> Subjects injected with implant can activate an injection of mild stimulants. No known side-effects.<BR>
+				<b>Function:</b> Increases speed and awareness. Somewhat helpful in cold conditions.<BR>
+				<b>Integrity:</b> Implant can only be used five times before reserves are depleted."}
+	return dat
+
+/obj/item/weapon/implant/chemminer/New()
+	src.activation_emote = "scream"
+	create_reagents(trans_amt*charges)
+	reagents.add_reagent_list(list("hyperzine"=10*charges, "ethylredoxrazine"=10*charges, "coffee"=30*charges))
+	..()
+
+/obj/item/weapon/implant/chemminer/trigger(emote, mob/living/carbon/source as mob)
+	if( emote == src.activation_emote )
+		if( reagents.total_volume )
+			reagents.reaction( source, INGEST )
+			reagents.trans_to( source, trans_amt )
+
+/obj/item/weapon/implant/chemminer/implanted(mob/living/carbon/source)
+	source << "The implanted stimulant implant can be activated [charges] time\s by using the [src.activation_emote] emote, <B>say *[src.activation_emote]</B> to attempt to activate."
+	return 1
+
+/obj/item/weapon/implantcase/chemminer
+	name = "glass case- 'Miner Stim'"
+	desc = "A case containing a chemical implant."
+
+/obj/item/weapon/implantcase/chemminer/New()
+	imp = new /obj/item/weapon/implant/chem(src)
+	..()

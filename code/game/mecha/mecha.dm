@@ -1102,7 +1102,10 @@
 	return
 
 /obj/mecha/container_resist()
-	go_out()
+	if(usr == src.occupant)
+		eject()
+	else
+		go_out()
 
 
 /obj/mecha/proc/go_out()
