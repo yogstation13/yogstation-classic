@@ -39,12 +39,14 @@
 	var/message_a = say_quote(message)
 	var/rendered = "<i><span class='game say'>Hivemind, <span class='name'>[name]</span> <span class='message'>[message_a]</span></span></i>"
 	for (var/mob/living/S in player_list)
-		if(!S.stat)
-			if(S.alien_talk_understand)
-				if(S.alien_talk_understand == alien_talk_understand)
+		//FIX for silicons hearing hivemind
+		if(!istype(S, /mob/living/silicon))
+			if(!S.stat)
+				if(S.alien_talk_understand)
+					if(S.alien_talk_understand == alien_talk_understand)
+						S.show_message(rendered, 2)
+				else if (S.hivecheck())
 					S.show_message(rendered, 2)
-			else if (S.hivecheck())
-				S.show_message(rendered, 2)
 
 	var/list/listening = hearers(1, src)
 	listening -= src
