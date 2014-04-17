@@ -102,6 +102,17 @@
 	armor = list(melee = 40, bullet = 5, laser = 10,energy = 5, bomb = 50, bio = 100, rad = 50)
 	allowed = list(/obj/item/device/flashlight,/obj/item/weapon/tank,/obj/item/weapon/storage/bag/ore,/obj/item/weapon/pickaxe)
 
+/obj/item/clothing/suit/space/rig/mining/mmedic
+	icon_state = "rig-mmedic"
+	name = "mining medic hardsuit"
+	item_state = "rig-mmining"
+
+/obj/item/clothing/head/helmet/space/rig/mining/mmedic
+	name = "mining medic hardsuit helmet"
+	icon_state = "rig0-mmedic"
+	item_state = "miningmedic_helm"
+	item_color = "mmedic"
+
 
 
 //Syndicate rig

@@ -23,6 +23,14 @@ var/const/CMO				=(1<<3)
 var/const/DOCTOR			=(1<<4)
 var/const/GENETICIST		=(1<<5)
 var/const/VIROLOGIST		=(1<<6)
+var/const/MMEDIC			=(1<<7)
+var/const/TOUR				=(1<<8)
+var/const/WAITER			=(1<<9)
+var/const/RA				=(1<<10) // I know these are not medsci job, but only place I am able to stick to get gui to work proper.
+
+
+
+
 
 
 var/const/CIVILIAN			=(1<<2)
@@ -49,6 +57,7 @@ var/list/assistant_occupations = list(
 	"Cargo Technician",
 	"Chaplain",
 	"Lawyer",
+	"Tourist",
 	"Librarian"
 )
 
@@ -75,7 +84,8 @@ var/list/medical_positions = list(
 	"Medical Doctor",
 	"Geneticist",	//Part of both medical and science
 	"Virologist",
-	"Chemist"
+	"Chemist",
+	"Mining Medic"
 )
 
 
@@ -101,7 +111,8 @@ var/list/civilian_positions = list(
 	"Chaplain",
 	"Clown",
 	"Mime",
-	"Assistant"
+	"Assistant",
+	"Tourist"
 )
 
 
@@ -119,6 +130,12 @@ var/list/nonhuman_positions = list(
 	"pAI"
 )
 
+var/list/yog_positions = list(
+	/*"Recovery Agent"*/,
+	"Assistant",
+	"Tourist",
+	"Mining Medic"
+)
 
 /proc/guest_jobbans(var/job)
 	return ((job in command_positions) || (job in nonhuman_positions) || (job in security_positions))

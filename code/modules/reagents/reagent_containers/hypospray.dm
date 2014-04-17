@@ -68,3 +68,20 @@
 /obj/item/weapon/reagent_containers/hypospray/combat/New()
 	..()
 	reagents.add_reagent("synaptizine", 30)
+
+/obj/item/weapon/reagent_containers/hypospray/mini
+	name = "minihypospray"
+	desc = "The DeForest Medical Corporation hypospray is a sterile, air-needle autoinjector for rapid administration of drugs to patients."
+	icon = 'icons/obj/syringe.dmi'
+	item_state = "minihypo"
+	icon_state = "minihypo"
+	amount_per_transfer_from_this = 5
+	volume = 20
+	possible_transfer_amounts = null
+	flags = OPENCONTAINER
+	slot_flags = SLOT_BELT
+	ignore_flags = 0
+
+/obj/item/weapon/reagent_containers/minihypospray/New()
+	..()
+	reagents.add_reagent("doctorsdelight", 20)

@@ -86,6 +86,16 @@
 	permeability_coefficient = 0.50
 	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 10, rad = 0)
 
+/obj/item/clothing/under/rank/mmedical
+	desc = "It's a work uniform, designed for medics."
+	name = "mining medic's jumpsuit"
+	icon_state = "mmedical"
+	item_state = "w_suit"
+	item_color = "mmedical"
+	permeability_coefficient = 0.50
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 10, rad = 0)
+
+
 /obj/item/clothing/under/rank/medical/blue
 	name = "medical scrubs"
 	desc = "It's made of a special fiber that provides minor protection against biohazards. This one is in baby blue."

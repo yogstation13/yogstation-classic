@@ -175,6 +175,21 @@
 	density = 0
 	wall_mounted = 1
 	req_access = list(access_medical)
+	New()
+		..()
+		sleep(2)
+		if(prob(50))
+			new /obj/item/weapon/storage/backpack/medic(src)
+		else
+			new /obj/item/weapon/storage/backpack/satchel_med(src)
+		new /obj/item/weapon/reagent_containers/hypospray/mini(src)
+		new /obj/item/weapon/storage/firstaid/o2(src)
+		new /obj/item/clothing/shoes/white(src)
+		new /obj/item/clothing/under/rank/mmedical(src)
+		new /obj/item/weapon/storage/firstaid/regular(src)
+		new /obj/item/device/radio/headset/headset_cargo(src)
+		return
+
 
 /obj/structure/closet/secure_closet/medical_wall/update_icon()
 	if(broken)
