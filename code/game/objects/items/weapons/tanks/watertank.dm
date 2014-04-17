@@ -123,7 +123,7 @@
 
 /obj/item/weapon/watertank/janitor/New()
 	..()
-	reagents.add_reagent("cleaner", 250)
+	reagents.add_reagent("cleaner", 500)
 
 
 /obj/item/weapon/reagent_containers/spray/mister/janitor

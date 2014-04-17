@@ -326,3 +326,10 @@
 	item_state = "wcoat"
 	item_color = "black_tango"
 	fitted = 0
+
+/obj/item/clothing/under/tourist
+	name = "Hawaiian shirt"
+	desc = "I explored the galaxy and all I got was this lousy T-shirt!"
+	icon_state = "tourist"
+	item_state = "gy_suit"
+	item_color = "tourist"

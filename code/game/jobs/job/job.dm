@@ -78,20 +78,22 @@
 	C.access = get_access()
 	C.registered_name = H.real_name
 	C.assignment = H.job
+	C.update_label()
 	H.equip_to_slot_or_del(C, slot_wear_id)
 
 	//Equip PDA
 	var/obj/item/device/pda/PDA = new default_pda(H)
 	PDA.owner = H.real_name
 	PDA.ownjob = H.job
+	PDA.update_label()
 	H.equip_to_slot_or_del(PDA, default_pda_slot)
 
 	//Equip headset
 	H.equip_to_slot_or_del(new src.default_headset(H), slot_ears)
 
-	return 1
-
 /datum/job/proc/apply_fingerprints(var/mob/living/carbon/human/H)
+	if(!istype(H))
+		return
 	if(H.back)
 		H.back.add_fingerprint(H,1)	//The 1 sets a flag to ignore gloves
 		for(var/obj/item/I in H.back.contents)
