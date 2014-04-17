@@ -18,6 +18,7 @@ client/proc/one_click_antag()
 		<a href='?src=\ref[src];makeAntag=5'>Make Malf AI</a><br>
 		<a href='?src=\ref[src];makeAntag=6'>Make Wizard (Requires Ghosts)</a><br>
 		<a href='?src=\ref[src];makeAntag=7'>Make Nuke Team (Requires Ghosts)</a><br>
+		<a href='?src=\ref[src];makeAntag=10'>Make Deathsquad (Requires Ghosts)</a><br>
 		"}
 /* These dont work just yet
 	Ninja, aliens and deathsquad I have not looked into yet
@@ -401,3 +402,154 @@ client/proc/one_click_antag()
 	new_character.key = G_found.key
 
 	return new_character
+
+/datum/admins/proc/makeDeathsquad()
+
+	var/list/mob/dead/observer/candidates = list()
+	var/list/mob/dead/observer/chosen = list()
+	var/mob/dead/observer/theghost = null
+	var/time_passed = world.time
+	var/addAdmin = 0
+
+	for(var/mob/dead/observer/G in player_list)
+		if(!jobban_isbanned(G, "operative") && !jobban_isbanned(G, "Syndicate")) // !! are these the right bans to check for deathsquad?
+			spawn(0)
+				switch(alert(G,"Do you wish to be considered for a death squad being sent in?","Please answer in 30 seconds!","Yes","No"))
+					if("Yes")
+						if((world.time-time_passed)>300)//If more than 30 game seconds passed.
+							return
+						candidates += G
+					if("No")
+						return
+					else
+						return
+
+	// ask the admin if they want to spawn with the team, but only if they don't already have a body
+	// !! is usr the client or the mob?  if it's the client, we'll need to get the mob.  this goes for line 79 as well.
+	if( istype(usr,/mob/dead/observer) )
+		spawn(0)
+			switch( alert("Do you want to add yourself as the death squad's commander?","Please answer in 30 seconds!","Yes","No"))
+				if("Yes")
+					if((world.time-time_passed)<=300)
+						addAdmin = 1
+					else
+						addAdmin = 0
+				else
+					addAdmin = 0
+
+	sleep(300)
+
+	if(candidates.len)
+		var/numagents = 5
+		var/agentcount = 0
+
+		for(var/i = 0, i<numagents,i++)
+			shuffle(candidates) //More shuffles means more randoms
+			if( candidates.len )
+				for(var/mob/j in candidates)
+					if(!j || !j.client)
+						candidates.Remove(j)
+						i-- // we definitely have elements left, so keep trying until you someone that's still logged in
+						continue
+
+					theghost = j
+					candidates.Remove(theghost)
+					chosen += theghost
+					agentcount++
+					break
+			else
+				i = numagents
+		//Making sure we have atleast 3 Deathsquad agents, because less than that is kinda bad
+		if(agentcount < 3)
+			return 0
+		else
+			//!! This will need to be added to the map.  Possibly changed to "landmark*Marauder Entry" or "landmark*JoinLate"
+			var/obj/effect/landmark/ds_spawn = locate("landmark*Deathsquad-Spawn")
+			for(var/mob/c in chosen)
+				var/mob/living/carbon/human/new_character=makeBody(c)
+				new_character.mind = new(src)
+				new_character.mind.special_role = "Death Commando" //meshes this with the commented section of respawn_character in randomverbs.dm
+				new_character.equip_death_commando()
+				new_character.internal = new_character.s_store
+				new_character.internals.icon_state = "internal1"
+				// !! is there a random name proc?
+				new_character.loc = ds_spawn.loc
+			if( addAdmin )
+				var/mob/living/carbon/human/new_character=makeBody(usr)
+				new_character.mind = new(src)
+				new_character.mind.special_role = "Death Commando"
+				new_character.equip_death_officer()
+				new_character.internal = new_character.s_store
+				new_character.internals.icon_state = "internal1"
+				// !! is there a random name proc?
+				new_character.loc = ds_spawn.loc
+
+	return 1
+
+//modified from equip_space_ninja
+// !! these can probably go somewhere other than one_click_antag
+/mob/living/carbon/human/proc/equip_death_commando(safety=0)//Safety in case you need to unequip stuff for existing characters.
+	if(safety)
+		qdel(w_uniform)
+		qdel(wear_suit)
+		qdel(wear_mask)
+		qdel(head)
+		qdel(shoes)
+		qdel(gloves)
+
+	var/obj/item/device/radio/R = new /obj/item/device/radio/headset/headset_cent(src)
+	equip_to_slot_or_del(R, slot_ears)
+	if(gender==FEMALE)
+		equip_to_slot_or_del(new /obj/item/clothing/under/color/blackf(src), slot_w_uniform)
+	else
+		equip_to_slot_or_del(new /obj/item/clothing/under/color/black(src), slot_w_uniform)
+	equip_to_slot_or_del(new /obj/item/clothing/shoes/swat/combat(src), slot_shoes)
+	equip_to_slot_or_del(new /obj/item/clothing/suit/armor/swat(src), slot_wear_suit) // changed to swat/officer for the admin
+	equip_to_slot_or_del(new /obj/item/clothing/gloves/combat(src), slot_gloves)
+	equip_to_slot_or_del(new /obj/item/clothing/head/helmet/space/deathsquad(src), slot_head) // changed to deathsquad/beret for the admin
+	equip_to_slot_or_del(new /obj/item/clothing/mask/gas/swat(src), slot_wear_mask)
+	equip_to_slot_or_del(new /obj/item/clothing/glasses/thermal(src), slot_glasses)
+	equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/revolver/mateba(src), slot_belt)
+	equip_to_slot_or_del(new /obj/item/weapon/grenade/chem_grenade/incendiary(src), slot_r_store)
+	equip_to_slot_or_del(new /obj/item/weapon/grenade/chem_grenade/incendiary(src), slot_l_store)
+	equip_to_slot_or_del(new /obj/item/weapon/tank/emergency_oxygen(src), slot_s_store)
+	equip_to_slot_or_del(new /obj/item/weapon/tank/jetpack/carbondioxide(src), slot_back)
+	equip_to_slot_or_del(new /obj/item/weapon/gun/energy/pulse_rifle(src), slot_r_hand )
+
+	var/obj/item/weapon/implant/explosive/E = new/obj/item/weapon/implant/explosive(src)
+	E.imp_in = src
+	E.implanted = 1
+	return 1
+
+/mob/living/carbon/human/proc/equip_death_officer(safety=0)//Safety in case you need to unequip stuff for existing characters.
+	if(safety)
+		qdel(w_uniform)
+		qdel(wear_suit)
+		qdel(wear_mask)
+		qdel(head)
+		qdel(shoes)
+		qdel(gloves)
+
+	var/obj/item/device/radio/R = new /obj/item/device/radio/headset/headset_cent(src)
+	equip_to_slot_or_del(R, slot_ears)
+	if(gender==FEMALE)
+		equip_to_slot_or_del(new /obj/item/clothing/under/color/blackf(src), slot_w_uniform)
+	else
+		equip_to_slot_or_del(new /obj/item/clothing/under/color/black(src), slot_w_uniform)
+	equip_to_slot_or_del(new /obj/item/clothing/shoes/swat/combat(src), slot_shoes)
+	equip_to_slot_or_del(new /obj/item/clothing/suit/armor/swat/officer(src), slot_wear_suit)
+	equip_to_slot_or_del(new /obj/item/clothing/gloves/combat(src), slot_gloves)
+	equip_to_slot_or_del(new /obj/item/clothing/head/helmet/space/deathsquad/beret(src), slot_head)
+	equip_to_slot_or_del(new /obj/item/clothing/mask/gas/swat(src), slot_wear_mask)
+	equip_to_slot_or_del(new /obj/item/clothing/glasses/thermal(src), slot_glasses)
+	equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/revolver/mateba(src), slot_belt)
+	equip_to_slot_or_del(new /obj/item/weapon/grenade/chem_grenade/incendiary(src), slot_r_store)
+	equip_to_slot_or_del(new /obj/item/weapon/grenade/chem_grenade/incendiary(src), slot_l_store)
+	equip_to_slot_or_del(new /obj/item/weapon/tank/emergency_oxygen(src), slot_s_store)
+	equip_to_slot_or_del(new /obj/item/weapon/tank/jetpack/carbondioxide(src), slot_back)
+	equip_to_slot_or_del(new /obj/item/weapon/gun/energy/pulse_rifle(src), slot_r_hand )
+
+	var/obj/item/weapon/implant/explosive/E = new/obj/item/weapon/implant/explosive(src)
+	E.imp_in = src
+	E.implanted = 1
+	return 1

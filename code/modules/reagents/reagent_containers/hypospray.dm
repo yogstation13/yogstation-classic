@@ -71,7 +71,7 @@
 
 /obj/item/weapon/reagent_containers/hypospray/mini
 	name = "minihypospray"
-	desc = "The DeForest Medical Corporation hypospray is a sterile, air-needle autoinjector for rapid administration of drugs to patients."
+	desc = "A modified, more portable air-needle autoinjector, used by mining personnel and space explorers to quickly heal injuries in hostile environments."
 	icon = 'icons/obj/syringe.dmi'
 	item_state = "minihypo"
 	icon_state = "minihypo"
@@ -80,7 +80,7 @@
 	possible_transfer_amounts = null
 	flags = OPENCONTAINER
 	slot_flags = SLOT_BELT
-	ignore_flags = 0
+	ignore_flags = 1
 
 /obj/item/weapon/reagent_containers/minihypospray/New()
 	..()
