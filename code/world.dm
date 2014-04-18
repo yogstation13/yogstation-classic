@@ -235,9 +235,10 @@ var/list/donators = list()
 		P = preferences_datums[ckey]
 		if(P)
 			P.unlock_content &= 1
-	donators = file2list("config/donators.txt")
-	for(var/key in donators)
+	var/list/donatorskeys = file2list("config/donators.txt")
+	for(var/key in donatorskeys)
 		ckey = ckey(key)
+		donators += ckey
 		P = preferences_datums[ckey]
 		if(P)
 			P.unlock_content |= 2

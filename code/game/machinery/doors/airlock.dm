@@ -46,7 +46,10 @@
 	var/obj/item/weapon/airlock_electronics/electronics = null
 	var/hasShocked = 0 //Prevents multiple shocks from happening
 	var/autoclose = 1
-
+	//inorix: temp_access and access_set added for silicon door permission setting. see below comment for details
+	var/list/temp_access = null
+	var/access_set = 1 //this defaults to 1. only newly RCD'd doors should have it at 0
+	
 /obj/machinery/door/airlock/command
 	icon = 'icons/obj/doors/Doorcom.dmi'
 	doortype = 1
@@ -532,7 +535,7 @@ About the new airlock wires panel:
 	else if(src.secondsElectrified>0)
 		t1 += text("Door is electrified temporarily ([] seconds). <A href='?src=\ref[];aiDisable=5'>Un-electrify it?</a><br>\n", src.secondsElectrified, src)
 	else
-		t1 += text("Door is not electrified. <A href='?src=\ref[];aiEnable=5'>Electrify it for 30 seconds?</a> Or, <A href='?src=\ref[];aiEnable=6'>Electrify it indefinitely until someone cancels the electrification?</a><br>\n", src, src)
+		t1 += text("Door is not electrified. <A href='?src=\ref[];aiEnable=5'>Electrify it for 30 seconds?</a><br>\nOr, <A href='?src=\ref[];aiEnable=6'>Electrify it indefinitely until someone cancels the electrification?</a><br>\n", src, src)
 
 	if(src.isWireCut(AIRLOCK_WIRE_SAFETY))
 		t1 += text("Door force sensors not responding.</a><br>\n")
@@ -559,9 +562,57 @@ About the new airlock wires panel:
 		else
 			t1 += text("<A href='?src=\ref[];aiDisable=7'>Close door</a><br>\n", src)
 
+			t1 += "<a href='?src=\ref[src];access=all'>Remove All</a><br>"
+ 
+	//inorix: code to allow silicons to set airlock permissions for newly placed airlocks
+	//        mostly copy-paste job from airlock_electronics.dm
+	//        since we are only allowed to set permissions once, temp_access will hold the new permissions
+	//        until the user decides to click "Set"
+	if(!access_set)
+		if(req_access==null) //inorix: it seems things spawn with req_access set to null before they are first used
+		 if(req_access_txt!="0")
+				temp_access=list()
+				req_access=list()
+				var/list/req_access_str = text2list(req_access_txt,";")
+				for(var/x in req_access_str)
+					var/n = text2num(x)
+					if(n)
+						req_access += n
+						temp_access += n
+		else if(!req_access.len && req_access_txt!="0")
+		 temp_access=list()
+		var/accesses = ""
+		accesses += "<div align='center'><b>Access</b></div>"
+		accesses += "<table style='width:100%'>"
+		accesses += "<tr>"
+		for(var/i = 1; i <= 7; i++)
+			accesses += "<td style='width:14%'><b>[get_region_accesses_name(i)]:</b></td>"
+		accesses += "</tr><tr>"
+		for(var/i = 1; i <= 7; i++)
+			accesses += "<td style='width:14%' valign='top'>"
+			for(var/A in get_region_accesses(i))
+				if(A in temp_access)
+					accesses += "<a href='?src=\ref[src];access=[A]'><font color=\"red\">[replacetext(get_access_desc(A), " ", "&nbsp")]</font></a> "
+				else
+					accesses += "<a href='?src=\ref[src];access=[A]'>[replacetext(get_access_desc(A), " ", "&nbsp")]</a> "
+				accesses += "<br>"
+			accesses += "</td>"
+		accesses += "</tr></table>"
+		t1 += "<tt>[accesses]</tt>"
+		t1 += text("<p><a href='?src=\ref[];set=1'>Set</a></p>\n", src)
+ //inorix: end new code
+	
 	t1 += text("<p><a href='?src=\ref[];close=1'>Close</a></p>\n", src)
-	user << browse(t1, "window=airlock")
+	//inorix: switched to prettier GUI
+	var/width=900
+	if(access_set) width=540
+	var/datum/browser/popup = new(user, "airlock", "Airlock", width, 500)
+	popup.set_content(t1)
+	popup.set_title_image(user.browse_rsc_icon(src.icon, src.icon_state))
+	popup.open()
 	onclose(user, "airlock")
+//	user << browse(t1, "window=airlock")
+//	onclose(user, "airlock")
 
 //aiDisable - 1 idscan, 2 disrupt main power, 3 disrupt backup power, 4 drop door bolts, 5 un-electrify door, 7 close door, 11 lift access override
 //aiEnable - 1 idscan, 4 raise door bolts, 5 electrify door for 30 seconds, 6 electrify door indefinitely, 7 open door, 11 enable access override
@@ -670,7 +721,33 @@ About the new airlock wires panel:
 		//AI
 		//aiDisable - 1 idscan, 2 disrupt main power, 3 disrupt backup power, 4 drop door bolts, 5 un-electrify door, 7 close door, 8 door safties, 9 door speed, 11 emergency access
 		//aiEnable - 1 idscan, 4 raise door bolts, 5 electrify door for 30 seconds, 6 electrify door indefinitely, 7 open door,  8 door safties, 9 door speed, 11 emergency access
-		if(href_list["aiDisable"])
+	 //inorix: code to allow silicons to set airlock permissions for newly placed airlocks
+		//        see my comment up above for details
+ 	if (href_list["access"])
+		 var/acc=href_list["access"]
+			if (acc == "all")
+				temp_access = null
+			else
+				var/req = text2num(acc)
+
+				if (temp_access == null)
+					temp_access = list()
+
+				if (!(req in temp_access))
+					temp_access += req
+				else
+					temp_access -= req
+					if (!temp_access.len)
+						temp_access = null
+			
+		else if(href_list["set"])
+			req_access=temp_access
+			req_access_txt=list2text(req_access,";")
+			access_set=1
+			
+		//inorix: end new code
+			
+		else if(href_list["aiDisable"])
 			var/code = text2num(href_list["aiDisable"])
 			switch (code)
 				if(1)
@@ -860,7 +937,7 @@ About the new airlock wires panel:
 						emergency = 1
 					else
 						usr << text("Emergency access is already enabled!")
-
+	attack_ai(usr) //inorix: makes window refresh
 	add_fingerprint(usr)
 	update_icon()
 	if(!nowindow)
@@ -959,9 +1036,9 @@ About the new airlock wires panel:
 					ae = new/obj/item/weapon/airlock_electronics( src.loc )
 					if(req_one_access)
 						ae.use_one_access = 1
-						ae.conf_access = src.req_one_access
+						ae.req_access = src.req_one_access
 					else
-						ae.conf_access = src.req_access
+						ae.req_access = src.req_access
 				else
 					ae = electronics
 					electronics = null

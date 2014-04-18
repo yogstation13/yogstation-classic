@@ -181,6 +181,7 @@ RCD
 							activate()
 							var/obj/machinery/door/airlock/T = new airlock_type( A )
 							T.autoclose = 1
+							T.access_set = 0 //inorix: allow silicons to set permissions for this door
 							return 1
 						return 0
 					return 0

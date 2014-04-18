@@ -120,6 +120,10 @@ var/next_external_rsc = 0
 		preferences_datums[ckey] = prefs
 	prefs.last_ip = address				//these are gonna be used for banning
 	prefs.last_id = computer_id			//these are gonna be used for banning
+	if(ckey in donators)
+		prefs.unlock_content |= 2
+	else
+		prefs.unlock_content &= 1
 
 	. = ..()	//calls mob.Login()
 
