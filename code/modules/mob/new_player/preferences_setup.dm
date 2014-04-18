@@ -23,7 +23,7 @@ datum/preferences
 		var/g = "m"
 		if(gender == FEMALE)	g = "f"
 
-		preview_icon = new /icon('icons/mob/human.dmi', "[skin_tone]_[g]_s")
+		preview_icon = new /icon('icons/mob/human.dmi', "[(mutant_race == "human") ? skin_tone : mutant_race]_[g]_s")
 
 		var/datum/sprite_accessory/S
 		if(underwear)

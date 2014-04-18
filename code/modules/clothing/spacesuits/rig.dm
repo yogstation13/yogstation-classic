@@ -105,12 +105,12 @@
 /obj/item/clothing/suit/space/rig/mining/mmedic
 	icon_state = "rig-mmedic"
 	name = "mining medic hardsuit"
-	item_state = "rig-mmining"
+	item_state = "mmedic_suit"
 
 /obj/item/clothing/head/helmet/space/rig/mining/mmedic
 	name = "mining medic hardsuit helmet"
 	icon_state = "rig0-mmedic"
-	item_state = "miningmedic_helm"
+	item_state = "mmedic_helm"
 	item_color = "mmedic"
 
 
@@ -132,7 +132,7 @@
 	slowdown = 1
 	w_class = 3
 	armor = list(melee = 60, bullet = 50, laser = 30, energy = 15, bomb = 35, bio = 100, rad = 50)
-	allowed = list(/obj/item/weapon/gun,/obj/item/ammo_box,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/melee/energy/sword,/obj/item/weapon/handcuffs,/obj/item/weapon/tank/emergency_oxygen)
+	allowed = list(/obj/item/weapon/gun,/obj/item/ammo_box,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/melee/energy/sword,/obj/item/weapon/handcuffs,/obj/item/weapon/tank)
 
 //Wizard Rig
 /obj/item/clothing/head/helmet/space/rig/wizard

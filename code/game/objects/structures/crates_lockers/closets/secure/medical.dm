@@ -182,7 +182,6 @@
 			new /obj/item/weapon/storage/backpack/medic(src)
 		else
 			new /obj/item/weapon/storage/backpack/satchel_med(src)
-		new /obj/item/weapon/reagent_containers/hypospray/mini(src)
 		new /obj/item/weapon/storage/firstaid/o2(src)
 		new /obj/item/clothing/shoes/white(src)
 		new /obj/item/clothing/under/rank/mmedical(src)

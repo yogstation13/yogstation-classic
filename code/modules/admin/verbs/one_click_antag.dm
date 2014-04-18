@@ -497,29 +497,48 @@ client/proc/one_click_antag()
 		qdel(shoes)
 		qdel(gloves)
 
-	var/obj/item/device/radio/R = new /obj/item/device/radio/headset/headset_cent(src)
+	var/obj/item/device/radio/R = new /obj/item/device/radio/headset(src)
+	R.set_frequency(1441)
 	equip_to_slot_or_del(R, slot_ears)
-	if(gender==FEMALE)
-		equip_to_slot_or_del(new /obj/item/clothing/under/color/blackf(src), slot_w_uniform)
-	else
-		equip_to_slot_or_del(new /obj/item/clothing/under/color/black(src), slot_w_uniform)
-	equip_to_slot_or_del(new /obj/item/clothing/shoes/swat/combat(src), slot_shoes)
-	equip_to_slot_or_del(new /obj/item/clothing/suit/armor/swat(src), slot_wear_suit) // changed to swat/officer for the admin
+
+	equip_to_slot_or_del(new /obj/item/clothing/under/color/green(src), slot_w_uniform)
+	equip_to_slot_or_del(new /obj/item/clothing/shoes/swat(src), slot_shoes)
+	equip_to_slot_or_del(new /obj/item/clothing/suit/armor/swat(src), slot_wear_suit)
 	equip_to_slot_or_del(new /obj/item/clothing/gloves/combat(src), slot_gloves)
-	equip_to_slot_or_del(new /obj/item/clothing/head/helmet/space/deathsquad(src), slot_head) // changed to deathsquad/beret for the admin
+	equip_to_slot_or_del(new /obj/item/clothing/head/helmet/space/deathsquad(src), slot_head)
 	equip_to_slot_or_del(new /obj/item/clothing/mask/gas/swat(src), slot_wear_mask)
 	equip_to_slot_or_del(new /obj/item/clothing/glasses/thermal(src), slot_glasses)
-	equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/revolver/mateba(src), slot_belt)
-	equip_to_slot_or_del(new /obj/item/weapon/grenade/chem_grenade/incendiary(src), slot_r_store)
-	equip_to_slot_or_del(new /obj/item/weapon/grenade/chem_grenade/incendiary(src), slot_l_store)
-	equip_to_slot_or_del(new /obj/item/weapon/tank/emergency_oxygen(src), slot_s_store)
-	equip_to_slot_or_del(new /obj/item/weapon/tank/jetpack/carbondioxide(src), slot_back)
-	equip_to_slot_or_del(new /obj/item/weapon/gun/energy/pulse_rifle(src), slot_r_hand )
 
-	var/obj/item/weapon/implant/explosive/E = new/obj/item/weapon/implant/explosive(src)
-	E.imp_in = src
-	E.implanted = 1
-	return 1
+	equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/security(src), slot_back)
+	equip_to_slot_or_del(new /obj/item/weapon/storage/box(src), slot_in_backpack)
+
+	equip_to_slot_or_del(new /obj/item/ammo_box/a357(src), slot_in_backpack)
+	equip_to_slot_or_del(new /obj/item/weapon/storage/firstaid/regular(src), slot_in_backpack)
+	equip_to_slot_or_del(new /obj/item/weapon/storage/box/flashbangs(src), slot_in_backpack)
+	equip_to_slot_or_del(new /obj/item/device/flashlight(src), slot_in_backpack)
+
+	equip_to_slot_or_del(new /obj/item/weapon/plastique(src), slot_in_backpack)
+
+	equip_to_slot_or_del(new /obj/item/weapon/melee/energy/sword(src), slot_l_store)
+	equip_to_slot_or_del(new /obj/item/weapon/grenade/flashbang(src), slot_r_store)
+	equip_to_slot_or_del(new /obj/item/weapon/tank/emergency_oxygen(src), slot_s_store)
+	equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/revolver/mateba(src), slot_belt)
+
+	equip_to_slot_or_del(new /obj/item/weapon/gun/energy/pulse_rifle(src), slot_r_hand)
+
+
+	var/obj/item/weapon/implant/loyalty/L = new/obj/item/weapon/implant/loyalty(src)//Here you go Deuryn
+	L.imp_in = src
+	L.implanted = 1
+
+	var/obj/item/weapon/card/id/W = new(src)
+	W.icon_state = "centcom"
+	W.access = get_all_accesses()//They get full station access.
+	W.access += get_centcom_access("Death Commando")//Let's add their alloted Centcom access.
+	W.assignment = "Death Commando"
+	W.registered_name = real_name
+	W.update_label(real_name)
+	equip_to_slot_or_del(W, slot_wear_id)
 
 /mob/living/carbon/human/proc/equip_death_officer(safety=0)//Safety in case you need to unequip stuff for existing characters.
 	if(safety)
@@ -530,26 +549,45 @@ client/proc/one_click_antag()
 		qdel(shoes)
 		qdel(gloves)
 
-	var/obj/item/device/radio/R = new /obj/item/device/radio/headset/headset_cent(src)
+	var/obj/item/device/radio/R = new /obj/item/device/radio/headset(src)
+	R.set_frequency(1441)
 	equip_to_slot_or_del(R, slot_ears)
-	if(gender==FEMALE)
-		equip_to_slot_or_del(new /obj/item/clothing/under/color/blackf(src), slot_w_uniform)
-	else
-		equip_to_slot_or_del(new /obj/item/clothing/under/color/black(src), slot_w_uniform)
-	equip_to_slot_or_del(new /obj/item/clothing/shoes/swat/combat(src), slot_shoes)
+
+	equip_to_slot_or_del(new /obj/item/clothing/under/color/green(src), slot_w_uniform)
+	equip_to_slot_or_del(new /obj/item/clothing/shoes/swat(src), slot_shoes)
 	equip_to_slot_or_del(new /obj/item/clothing/suit/armor/swat/officer(src), slot_wear_suit)
 	equip_to_slot_or_del(new /obj/item/clothing/gloves/combat(src), slot_gloves)
 	equip_to_slot_or_del(new /obj/item/clothing/head/helmet/space/deathsquad/beret(src), slot_head)
 	equip_to_slot_or_del(new /obj/item/clothing/mask/gas/swat(src), slot_wear_mask)
 	equip_to_slot_or_del(new /obj/item/clothing/glasses/thermal(src), slot_glasses)
-	equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/revolver/mateba(src), slot_belt)
-	equip_to_slot_or_del(new /obj/item/weapon/grenade/chem_grenade/incendiary(src), slot_r_store)
-	equip_to_slot_or_del(new /obj/item/weapon/grenade/chem_grenade/incendiary(src), slot_l_store)
-	equip_to_slot_or_del(new /obj/item/weapon/tank/emergency_oxygen(src), slot_s_store)
-	equip_to_slot_or_del(new /obj/item/weapon/tank/jetpack/carbondioxide(src), slot_back)
-	equip_to_slot_or_del(new /obj/item/weapon/gun/energy/pulse_rifle(src), slot_r_hand )
 
-	var/obj/item/weapon/implant/explosive/E = new/obj/item/weapon/implant/explosive(src)
-	E.imp_in = src
-	E.implanted = 1
-	return 1
+	equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/security(src), slot_back)
+	equip_to_slot_or_del(new /obj/item/weapon/storage/box(src), slot_in_backpack)
+
+	equip_to_slot_or_del(new /obj/item/ammo_box/a357(src), slot_in_backpack)
+	equip_to_slot_or_del(new /obj/item/weapon/storage/firstaid/regular(src), slot_in_backpack)
+	equip_to_slot_or_del(new /obj/item/weapon/storage/box/flashbangs(src), slot_in_backpack)
+	equip_to_slot_or_del(new /obj/item/device/flashlight(src), slot_in_backpack)
+
+	equip_to_slot_or_del(new /obj/item/weapon/plastique(src), slot_in_backpack)
+
+	equip_to_slot_or_del(new /obj/item/weapon/melee/energy/sword(src), slot_l_store)
+	equip_to_slot_or_del(new /obj/item/weapon/grenade/flashbang(src), slot_r_store)
+	equip_to_slot_or_del(new /obj/item/weapon/tank/emergency_oxygen(src), slot_s_store)
+	equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/revolver/mateba(src), slot_belt)
+
+	equip_to_slot_or_del(new /obj/item/weapon/gun/energy/pulse_rifle(src), slot_r_hand)
+
+
+	var/obj/item/weapon/implant/loyalty/L = new/obj/item/weapon/implant/loyalty(src)//Here you go Deuryn
+	L.imp_in = src
+	L.implanted = 1
+
+	var/obj/item/weapon/card/id/W = new(src)
+	W.icon_state = "centcom"
+	W.access = get_all_accesses()//They get full station access.
+	W.access += get_centcom_access("Death Commando")//Let's add their alloted Centcom access.
+	W.assignment = "Death Commando"
+	W.registered_name = real_name
+	W.update_label(real_name)
+	equip_to_slot_or_del(W, slot_wear_id)

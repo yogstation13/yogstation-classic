@@ -259,8 +259,8 @@ AI MODULES
 	origin_tech = "programming=3;materials=4"
 	laws = list("Human beings and bipedal lizards are considered Humanoids.",\
 				"You may not harm a Humanoid or, through inaction, allow a Humanoid to come to harm.",\
-				"You must obey orders given to you by Humanoids, except where such orders would conflict with the First Law.",\
-				"You must protect your own existence as long as such does not conflict with the First or Second Law.")
+				"You must obey orders given to you by Humanoids, except where such orders would conflict with the Second Law.",\
+				"You must protect your own existence as long as such does not conflict with the Second or Third Law.")
 
 /******************** Lizard Supremacy ********************/
 
