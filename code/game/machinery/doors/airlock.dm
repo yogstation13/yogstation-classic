@@ -47,7 +47,7 @@
 	var/hasShocked = 0 //Prevents multiple shocks from happening
 	var/autoclose = 1
 	//inorix: temp_access and access_set added for silicon door permission setting. see below comment for details
-	var/list/temp_access = null
+ var/list/temp_access = null
 	var/access_set = 1 //this defaults to 1. only newly RCD'd doors should have it at 0
 	
 /obj/machinery/door/airlock/command
@@ -562,13 +562,12 @@ About the new airlock wires panel:
 		else
 			t1 += text("<A href='?src=\ref[];aiDisable=7'>Close door</a><br>\n", src)
 
-			t1 += "<a href='?src=\ref[src];access=all'>Remove All</a><br>"
- 
 	//inorix: code to allow silicons to set airlock permissions for newly placed airlocks
 	//        mostly copy-paste job from airlock_electronics.dm
 	//        since we are only allowed to set permissions once, temp_access will hold the new permissions
 	//        until the user decides to click "Set"
 	if(!access_set)
+		t1 += "<a href='?src=\ref[src];access=all'>Remove All</a><br>"
 		if(req_access==null) //inorix: it seems things spawn with req_access set to null before they are first used
 		 if(req_access_txt!="0")
 				temp_access=list()
@@ -739,11 +738,13 @@ About the new airlock wires panel:
 					temp_access -= req
 					if (!temp_access.len)
 						temp_access = null
+			src.updateUsrDialog()
 			
 		else if(href_list["set"])
 			req_access=temp_access
 			req_access_txt=list2text(req_access,";")
 			access_set=1
+			src.updateUsrDialog()
 			
 		//inorix: end new code
 			
