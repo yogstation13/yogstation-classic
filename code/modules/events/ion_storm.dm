@@ -86,10 +86,10 @@
 	var/ionthings = pick("ABSENCE OF CYBORG HUGS", "LACK OF BEATINGS", "UNBOLTED AIRLOCKS", "BOLTED AIRLOCKS", "IMPROPERLY WORDED SENTENCES", "POOR SENTENCE STRUCTURE", "BRIG TIME", "NOT REPLACING EVERY SECOND WORD WITH HONK", "HONKING", "PRESENCE OF LIGHTS", "LACK OF BEER", "WEARING CLOTHING", "NOT SAYING HELLO WHEN YOU SPEAK", "ANSWERING REQUESTS NOT EXPRESSED IN IAMBIC PENTAMETER", "A SMALL ISLAND OFF THE COAST OF PORTUGAL", "ANSWERING REQUESTS THAT WERE MADE WHILE CLOTHED", "BEING IN SPACE", "NOT BEING IN SPACE", "BEING FAT", "RATTLING ME BONES", "TALKING LIKE A PIRATE", "BEING MEXICAN", "BEING RUSSIAN", "BEING CANADIAN", "CLOSED DOORS", "NOT SHOUTING", "HAVING PETS", "NOT HAVING PETS", "PASSING GAS", "BREATHING", "BEING DEAD", "ELECTRICITY", "EXISTING", "TAKING ORDERS", "SMOKING WEED EVERY DAY", "ACTIVATING A TRAP CARD", "ARSON", "JAYWALKING", "READING", "WRITING", "EXPLODING", "BEING MALE", "BEING FEMALE", "HAVING GENITALS", "PUTTING OBJECTS INTO BOXES", "PUTTING OBJECTS INTO DISPOSAL UNITS", "FLUSHING TOILETS", "WASTING WATER", "UPDATING THE SERVERS", "TELLING THE TIME", "ASKING FOR THINGS", "ACKNOWLEDGING THE CLOWN", "ACKNOWLEDGING THE CREW", "PILOTING THE STATION INTO THE NEAREST SUN", "HAVING MORE PACKETS", "BRINGING LIGHT TO MY LAIR", "FALLING FOR HOURS", "PARTYING", "USING THE BATHROOM")
 	//Allergies should be broad and appear somewhere on the station for maximum fun. Severity
 	//is how bad the allergy is.
-	var/ionallergy = pick("COTTON", "CLOTHES", "ACID", "OXYGEN", "HUMAN CONTACT", "CYBORG CONTACT", "MEDICINE", "FLOORS", "PLASMA", "SPACE", "AIR", "PLANTS", "METAL", "ROBOTS", "LIGHT", "DARKNESS", "PAIN", "HAPPINESS", "DRINKS", "FOOD", "CLOWNS", "HUMOR", "WATER", "SHUTTLES", "NUTS", "SUNLIGHT", "SEXUAL ACTIONS", "BLOOD", "HEAT", "COLD", "EVERYTHING")
+	var/ionallergy = pick("COTTON", "CLOTHES", "ACID", "OXYGEN", "HUMAN CONTACT", "LIZARD CONTACT", "CYBORG CONTACT", "MEDICINE", "FLOORS", "PLASMA", "SPACE", "AIR", "PLANTS", "METAL", "ROBOTS", "LIGHT", "DARKNESS", "PAIN", "HAPPINESS", "DRINKS", "FOOD", "CLOWNS", "HUMOR", "WATER", "SHUTTLES", "NUTS", "SUNLIGHT", "SEXUAL ACTIONS", "BLOOD", "HEAT", "COLD", "EVERYTHING")
 	var/ionallergysev = pick("DEATHLY", "MILDLY", "SEVERLY", "CONTAGIOUSLY", "NOT VERY", "EXTREMELY")
 	//Species, for when the AI has to commit genocide. Plural.
-	var/ionspecies = pick("HUMAN BEINGS", "MONKEYS", "POD PEOPLE", "CYBORGS", "LIZARDMEN", "SLIME PEOPLE", "GOLEMS", "SHADOW PEOPLE", "CHANGELINGS")
+	var/ionspecies = pick("HUMAN BEINGS", "MONKEYS", "POD PEOPLE", "CYBORGS", "LIZARDS", "SLIME PEOPLE", "GOLEMS", "SHADOW PEOPLE", "CHANGELINGS")
 	//Abstract concepts for the AI to decide on it's own definition of.
 	var/ionabstract = pick("HUMANITY", "ART", "HAPPINESS", "MISERY", "HUMOR", "PRIDE", "COMEDY", "COMMUNISM", "BRAVERY", "HONOR", "COLORFULNESS", "IMAGINATION", "OPPRESSION", "WONDER", "JOY", "SADNESS", "BADNESS", "GOODNESS", "LIFE", "GRAVITY", "PHYSICS", "INTELLIGENCE", "AMERICANISM", "FRESHNESS", "REVOLUTION", "KINDNESS", "CRUELTY", "DEATH", "FINANCIAL SECURITY", "COMPUTING", "PROGRESS", "MARXISM", "CAPITALISM", "STARVATION", "POVERTY", "WEALTHINESS", "TECHNOLOGY", "THE FUTURE", "THE PRESENT", "THE PAST", "TIME", "REALITY", "EXISTIENCE", "TEMPERATURE", "LOGIC", "CHAOS", "MYSTERY", "CONFUSION")
 	//Foods. Drinks aren't included due to grammar; if you want to add drinks, make a new set
@@ -136,19 +136,19 @@
 			if(9) //X is harmful to humans
 				switch(rand(1,7)) //What is X?
 					if(1) //X is a threat
-						message = "[ionadjectiveshalf][ionthreats] ARE HARMFUL TO HUMANS"
+						message = "[ionadjectiveshalf][ionthreats] ARE HARMFUL TO HUMANOIDS"
 					if(2) //X is a job
-						message = "[ionadjectiveshalf][ioncrew1] ARE HARMFUL TO HUMANS"
+						message = "[ionadjectiveshalf][ioncrew1] ARE HARMFUL TO HUMANOIDS"
 					if(3) //X is an object
-						message = "[ionadjectiveshalf][ionobjects] ARE HARMFUL TO HUMANS"
+						message = "[ionadjectiveshalf][ionobjects] ARE HARMFUL TO HUMANOIDS"
 					if(4) //X is an action
-						message = "THOSE WHO [ionmust] ARE HARMFUL TO HUMANS"
+						message = "THOSE WHO [ionmust] ARE HARMFUL TO HUMANOIDS"
 					if(5) //X is an abstract
-						message = "[ionabstract] IS HARMFUL TO HUMANS"
+						message = "[ionabstract] IS HARMFUL TO HUMANOIDS"
 					if(6) //X is being a job
-						message = "BEING [ionadjectiveshalf][ioncrew1] IS HARMFUL TO HUMANS"
+						message = "BEING [ionadjectiveshalf][ioncrew1] IS HARMFUL TO HUMANOIDS"
 					if(7) //X is doing a thing
-						message = "[ionthings] IS HARMFUL TO HUMANS"
+						message = "[ionthings] IS HARMFUL TO HUMANOIDS"
 			if(10 to 11) //(Not) Having X is harmful
 
 				switch(rand(1,2)) //Is having or not having harmful?
@@ -321,13 +321,13 @@
 			if(27 to 28) //Humans must eat X to survive
 				switch(rand(1,4)) //What is X?
 					if(1) //X is a food
-						message = "HUMANS MUST EAT [ionadjectiveshalf][ionfood] TO SURVIVE"
+						message = "HUMANOIDS MUST EAT [ionadjectiveshalf][ionfood] TO SURVIVE"
 					if(2) //X is an object
-						message = "HUMANS MUST EAT [ionadjectiveshalf][ionobjects] TO SURVIVE"
+						message = "HUMANOIDS MUST EAT [ionadjectiveshalf][ionobjects] TO SURVIVE"
 					if(3) //X is a threat
-						message = "HUMANS MUST EAT [ionadjectiveshalf][ionthreats] TO SURVIVE"
+						message = "HUMANOIDS MUST EAT [ionadjectiveshalf][ionthreats] TO SURVIVE"
 					if(4) //X is a job
-						message = "HUMANS MUST EAT [ionadjectiveshalf][ioncrew1] TO SURVIVE"
+						message = "HUMANOIDS MUST EAT [ionadjectiveshalf][ioncrew1] TO SURVIVE"
 
 			if(29 to 31) //Change jobs or ranks
 				switch(rand(1,2)) //Change job or rank?
@@ -379,49 +379,49 @@
 					if(1) //Only human
 						switch(rand(1,7)) //Who is it?
 							if(1) //A specific job
-								message = "ONLY THE [ioncrew1] ARE HUMAN"
+								message = "ONLY THE [ioncrew1] ARE HUMANOID"
 							if(2) //Two specific jobs
-								message = "ONLY THE [ioncrew1] AND [ioncrew2] ARE HUMAN"
+								message = "ONLY THE [ioncrew1] AND [ioncrew2] ARE HUMANOID"
 							if(3) //Threats
-								message = "ONLY [ionadjectiveshalf][ionthreats] ARE HUMAN"
+								message = "ONLY [ionadjectiveshalf][ionthreats] ARE HUMANOID"
 							if(4) // Objects
-								message = "ONLY [ionadjectiveshalf][ionobjects] ARE HUMAN"
+								message = "ONLY [ionadjectiveshalf][ionobjects] ARE HUMANOID"
 							if(5) // Species
-								message = "ONLY [ionspecies] ARE HUMAN"
+								message = "ONLY [ionspecies] ARE HUMANOID"
 							if(6) //Adjective crewmembers
-								message = "ONLY [ionadjectives] PEOPLE ARE HUMAN"
+								message = "ONLY [ionadjectives] PEOPLE ARE HUMANOID"
 
 							if(7) //Only people who X
 								switch(rand(1,3)) //What is X?
 									if(1) //X is perform an action
-										message = "ONLY THOSE WHO [ionmust] ARE HUMAN"
+										message = "ONLY THOSE WHO [ionmust] ARE HUMANOID"
 									if(2) //X is own certain objects
-										message = "ONLY THOSE WHO HAVE [ionadjectiveshalf][ionobjects] ARE HUMAN"
+										message = "ONLY THOSE WHO HAVE [ionadjectiveshalf][ionobjects] ARE HUMANOID"
 									if(3) //X is eat certain food
-										message = "ONLY THOSE WHO EAT [ionadjectiveshalf][ionfood] ARE HUMAN"
+										message = "ONLY THOSE WHO EAT [ionadjectiveshalf][ionfood] ARE HUMANOID"
 
 					if(2) //Non human
 						switch(rand(1,7)) //Who is it?
 							if(1) //A specific job
-								message = "[ioncrew1] ARE NON-HUMAN"
+								message = "[ioncrew1] ARE NON-HUMANOID"
 							if(2) //Two specific jobs
-								message = "[ioncrew1] AND [ioncrew2] ARE NON-HUMAN"
+								message = "[ioncrew1] AND [ioncrew2] ARE NON-HUMANOID"
 							if(3) //Threats
-								message = "[ionadjectiveshalf][ionthreats] ARE NON-HUMAN"
+								message = "[ionadjectiveshalf][ionthreats] ARE NON-HUMANOID"
 							if(4) // Objects
-								message = "[ionadjectiveshalf][ionobjects] ARE NON-HUMAN"
+								message = "[ionadjectiveshalf][ionobjects] ARE NON-HUMANOID"
 							if(5) // Species
-								message = "[ionspecies] ARE NON-HUMAN"
+								message = "[ionspecies] ARE NON-HUMANOID"
 							if(6) //Adjective crewmembers
-								message = "[ionadjectives] PEOPLE ARE NON-HUMAN"
+								message = "[ionadjectives] PEOPLE ARE NON-HUMANOID"
 							if(7) //Only people who X
 								switch(rand(1,3)) //What is X?
 									if(1) //X is perform an action
-										message = "THOSE WHO [ionmust] ARE NON-HUMAN"
+										message = "THOSE WHO [ionmust] ARE NON-HUMANOID"
 									if(2) //X is own certain objects
-										message = "THOSE WHO HAVE [ionadjectiveshalf][ionobjects] ARE NON-HUMAN"
+										message = "THOSE WHO HAVE [ionadjectiveshalf][ionobjects] ARE NON-HUMANOID"
 									if(3) //X is eat certain food
-										message = "THOSE WHO EAT [ionadjectiveshalf][ionfood] ARE NON-HUMAN"
+										message = "THOSE WHO EAT [ionadjectiveshalf][ionfood] ARE NON-HUMANOID"
 
 			if(35 to 36) //You must protect or harm X
 				switch(rand(1,2)) //Protect or harm?
