@@ -61,7 +61,7 @@
 	qdel(src)
 
 /obj/item/weapon/melee/arm_blade/preattack(atom/target, mob/user, proximity_flag, click_parameters)
- if(user.status_flags & FAKEDEATH) return 1
+	if(user.status_flags & FAKEDEATH) return 1
 
 /obj/item/weapon/melee/arm_blade/afterattack(atom/target, mob/user, proximity)
 	if(!proximity)
