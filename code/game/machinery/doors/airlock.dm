@@ -562,15 +562,14 @@ About the new airlock wires panel:
 		else
 			t1 += text("<A href='?src=\ref[];aiDisable=7'>Close door</a><br>\n", src)
 
-			t1 += "<a href='?src=\ref[src];access=all'>Remove All</a><br>"
- 
 	//inorix: code to allow silicons to set airlock permissions for newly placed airlocks
 	//        mostly copy-paste job from airlock_electronics.dm
 	//        since we are only allowed to set permissions once, temp_access will hold the new permissions
 	//        until the user decides to click "Set"
 	if(!access_set)
+		t1 += "<a href='?src=\ref[src];access=all'>Remove All</a><br>"
 		if(req_access==null) //inorix: it seems things spawn with req_access set to null before they are first used
-		 if(req_access_txt!="0")
+			if(req_access_txt!="0")
 				temp_access=list()
 				req_access=list()
 				var/list/req_access_str = text2list(req_access_txt,";")
@@ -729,21 +728,21 @@ About the new airlock wires panel:
 				temp_access = null
 			else
 				var/req = text2num(acc)
-
 				if (temp_access == null)
 					temp_access = list()
-
 				if (!(req in temp_access))
 					temp_access += req
 				else
 					temp_access -= req
 					if (!temp_access.len)
 						temp_access = null
+			src.updateUsrDialog()
 			
 		else if(href_list["set"])
 			req_access=temp_access
 			req_access_txt=list2text(req_access,";")
 			access_set=1
+			src.updateUsrDialog()
 			
 		//inorix: end new code
 			
