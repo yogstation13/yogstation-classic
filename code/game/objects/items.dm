@@ -32,6 +32,8 @@
 	var/obj/item/device/uplink/hidden/hidden_uplink = null // All items can have an uplink hidden inside, just remember to add the triggers.
 	var/reflect_chance = 0 //This var dictates what % of a time an object will reflect an energy based weapon's shot
 
+	var/supply_value = 0 // Using this for "valuables" sent away from station in crates, e.g. Spacebux.  This translates directly into supply points.
+
 /obj/item/device
 	icon = 'icons/obj/device.dmi'
 
