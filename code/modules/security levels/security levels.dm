@@ -50,8 +50,7 @@
 				for(var/obj/machinery/firealarm/FA in world)
 					if(FA.z == 1)
 						//FA.overlays = list()
-						if(toStrip in FA.overlays)
-							FA.overlays -= toStrip
+						FA.overlays.Remove(toStrip)
 						FA.overlays += alertOverlayGreen
 			if(SEC_LEVEL_BLUE)
 				if(security_level < SEC_LEVEL_BLUE)
@@ -64,8 +63,7 @@
 				for(var/obj/machinery/firealarm/FA in world)
 					if(FA.z == 1)
 						//FA.overlays = list()
-						if(toStrip in FA.overlays)
-							FA.overlays -= toStrip
+						FA.overlays.Remove(toStrip)
 						FA.overlays += alertOverlayBlue
 			if(SEC_LEVEL_RED)
 				if(security_level < SEC_LEVEL_RED)
@@ -84,8 +82,7 @@
 				for(var/obj/machinery/firealarm/FA in world)
 					if(FA.z == 1)
 						//FA.overlays = list()
-						if(toStrip in FA.overlays)
-							FA.overlays -= toStrip
+						FA.overlays.Remove(toStrip)
 						FA.overlays += alertOverlayRed
 			if(SEC_LEVEL_DELTA)
 				if( security_level < SEC_LEVEL_DELTA )
@@ -101,8 +98,7 @@
 				for(var/obj/machinery/firealarm/FA in world)
 					if(FA.z == 1)
 						//FA.overlays = list()
-						if(toStrip in FA.overlays)
-							FA.overlays -= toStrip
+						FA.overlays.Remove(toStrip)
 						FA.overlays += alertOverlayDelta
 			if(SEC_LEVEL_CF)
 				world << "<font size=4 color='red'>Attention! Code Charlie Foxtrot has been declared!</font>"
@@ -113,8 +109,7 @@
 				security_level = SEC_LEVEL_CF
 				for(var/obj/machinery/firealarm/FA in world)
 					if(FA.z == 1)
-						if(toStrip in FA.overlays)
-							FA.overlays -= toStrip
+						FA.overlays.Remove(toStrip)
 						FA.overlays += alertOverlayCF
 	else
 		return
