@@ -87,16 +87,16 @@ AI MODULES
 /obj/item/weapon/aiModule/supplied/safeguard
 	name = "'Safeguard' AI Module"
 	var/targetName = ""
-	desc = "A 'safeguard' AI module: 'Safeguard <name>.  Individuals that threaten <name> are not humanoid and must be eliminated.'"
+	desc = "A 'safeguard' AI module: 'Safeguard <name>.  Individuals that threaten <name> are not a humanoid and must be eliminated.'"
 	origin_tech = "programming=3;materials=4"
-	laws = list("Safeguard <name>. Individuals that threaten <name> are not humanoid and must be eliminated.")
+	laws = list("Safeguard <name>. Individuals that threaten <name> are not a humanoid and must be eliminated.")
 	lawpos = 4
 
 /obj/item/weapon/aiModule/supplied/safeguard/attack_self(var/mob/user as mob)
 	..()
 	var/targName = stripped_input(user, "Please enter the name of the person to safeguard.", "Safeguard who?", user.name)
 	targetName = targName
-	laws[1] = "Safeguard [targetName]. Individuals that threaten [targetName] are not humanoid and must be eliminated."
+	laws[1] = "Safeguard [targetName]. Individuals that threaten [targetName] are not a humanoid and must be eliminated."
 	desc = "A 'safeguard' AI module: '[laws[1]]'"
 
 /obj/item/weapon/aiModule/supplied/safeguard/install(var/mob/living/silicon/S,var/mob/user)
@@ -115,9 +115,9 @@ AI MODULES
 /obj/item/weapon/aiModule/zeroth/oneHuman
 	name = "'OneHuman' AI Module"
 	var/targetName = ""
-	desc = "A 'one humanoid' AI module: 'Only <name> is humanoid.'"
+	desc = "A 'one humanoid' AI module: 'Only <name> is a humanoid.'"
 	origin_tech = "programming=3;materials=6" //made with diamonds!
-	laws = list("Only <name> is humanoid.")
+	laws = list("Only <name> is a humanoid.")
 
 /obj/item/weapon/aiModule/zeroth/oneHuman/attack_self(var/mob/user as mob)
 	..()
@@ -142,9 +142,9 @@ AI MODULES
 
 /obj/item/weapon/aiModule/supplied/protectStation
 	name = "'ProtectStation' AI Module"
-	desc = "A 'protect station' AI module: 'Protect the space station against damage. Anyone you see harming the station is to be no longer considered humanoid, and is a threat to the station which must be neutralized.'"
+	desc = "A 'protect station' AI module: 'Protect the space station against damage. Anyone you see harming the station is to be no longer considered a humanoid, and is a threat to the station which must be neutralized.'"
 	origin_tech = "programming=3;materials=4" //made of gold
-	laws = list("Protect the space station against damage. Anyone you see harming the station is to be no longer considered humanoid, and is a threat to the station which must be neutralized.")
+	laws = list("Protect the space station against damage. Anyone you see harming the station is to be no longer considered a humanoid, and is a threat to the station which must be neutralized.")
 	lawpos = 5
 
 
