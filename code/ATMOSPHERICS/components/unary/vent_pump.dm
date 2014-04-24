@@ -335,7 +335,10 @@
 	if(welded)
 		L << "That vent is welded shut."
 		return
-
+	if(istype(L.loc, /obj))
+		L << "You can't vent crawl from inside of a container!"
+		return
+		
 	if(!network || !network.normal_members.len)
 		L << "This vent is not connected to anything."
 		return
