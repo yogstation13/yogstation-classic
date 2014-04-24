@@ -410,6 +410,9 @@ client/proc/one_click_antag()
 	var/mob/dead/observer/theghost = null
 	var/time_passed = world.time
 	var/addAdmin = 0
+	var/alertNotice = 0
+	var/timeTick = 1800
+	var/timeWord = "three minutes"
 
 	for(var/mob/dead/observer/G in player_list)
 		if(!jobban_isbanned(G, "operative") && !jobban_isbanned(G, "Syndicate")) // !! are these the right bans to check for deathsquad?
@@ -463,6 +466,13 @@ client/proc/one_click_antag()
 		if(agentcount < 3)
 			return 0
 		else
+			spawn(0)
+				//thread (question) for alertnotice
+				alertNotice = "Yes" == alert("Send a code elevation message to the station?","You have [timeWord] to decide.","Yes","No")
+			spawn(timeTick)
+				//thread (execution) for alertnotice
+				if( alertNotice )
+					set_security_level("charlie foxtrot")
 			//!! This will need to be added to the map.  Possibly changed to "landmark*Marauder Entry" or "landmark*JoinLate"
 			var/obj/effect/landmark/ds_spawn = locate("landmark*Deathsquad-Spawn")
 			for(var/mob/c in chosen)
