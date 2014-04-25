@@ -114,7 +114,8 @@ var/list/admin_verbs_debug = list(
 	/client/proc/cmd_debug_del_all,
 	/client/proc/restart_controller,
 	/client/proc/enable_debug_verbs,
-	/client/proc/callproc
+	/client/proc/callproc,
+	/client/proc/fix_air
 	)
 var/list/admin_verbs_possess = list(
 	/proc/possess,
