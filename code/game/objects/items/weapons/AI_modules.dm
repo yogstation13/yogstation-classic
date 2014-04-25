@@ -87,16 +87,16 @@ AI MODULES
 /obj/item/weapon/aiModule/supplied/safeguard
 	name = "'Safeguard' AI Module"
 	var/targetName = ""
-	desc = "A 'safeguard' AI module: 'Safeguard <name>.  Individuals that threaten <name> are not a humanoid and must be eliminated.'"
+	desc = "A 'safeguard' AI module: 'Safeguard <name>.  Individuals that threaten <name> are not humanoids and must be eliminated.'"
 	origin_tech = "programming=3;materials=4"
-	laws = list("Safeguard <name>. Individuals that threaten <name> are not a humanoid and must be eliminated.")
+	laws = list("Safeguard <name>. Individuals that threaten <name> are not humanoids and must be eliminated.")
 	lawpos = 4
 
 /obj/item/weapon/aiModule/supplied/safeguard/attack_self(var/mob/user as mob)
 	..()
 	var/targName = stripped_input(user, "Please enter the name of the person to safeguard.", "Safeguard who?", user.name)
 	targetName = targName
-	laws[1] = "Safeguard [targetName]. Individuals that threaten [targetName] are not a humanoid and must be eliminated."
+	laws[1] = "Safeguard [targetName]. Individuals that threaten [targetName] are not humanoids and must be eliminated."
 	desc = "A 'safeguard' AI module: '[laws[1]]'"
 
 /obj/item/weapon/aiModule/supplied/safeguard/install(var/mob/living/silicon/S,var/mob/user)
