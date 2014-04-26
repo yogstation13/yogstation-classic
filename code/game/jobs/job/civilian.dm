@@ -35,6 +35,7 @@ Bartender
 /datum/job/bartender
 	title = "Bartender"
 	flag = BARTENDER
+	department_head = list("Head of Personnel")
 	department_flag = CIVILIAN
 	faction = "Station"
 	total_positions = 1
@@ -85,6 +86,7 @@ Chef
 /datum/job/chef
 	title = "Chef"
 	flag = CHEF
+	department_head = list("Head of Personnel")
 	department_flag = CIVILIAN
 	faction = "Station"
 	total_positions = 1
@@ -136,6 +138,7 @@ Botanist
 /datum/job/hydro
 	title = "Botanist"
 	flag = BOTANIST
+	department_head = list("Head of Personnel")
 	department_flag = CIVILIAN
 	faction = "Station"
 	total_positions = 3
@@ -162,6 +165,7 @@ Quartermaster
 /datum/job/qm
 	title = "Quartermaster"
 	flag = QUARTERMASTER
+	department_head = list("Head of Personnel")
 	department_flag = CIVILIAN
 	faction = "Station"
 	total_positions = 1
@@ -187,6 +191,7 @@ Cargo Technician
 /datum/job/cargo_tech
 	title = "Cargo Technician"
 	flag = CARGOTECH
+	department_head = list("Head of Personnel")
 	department_flag = CIVILIAN
 	faction = "Station"
 	total_positions = 2
@@ -210,6 +215,7 @@ Shaft Miner
 /datum/job/mining
 	title = "Shaft Miner"
 	flag = MINER
+	department_head = list("Head of Personnel")
 	department_flag = CIVILIAN
 	faction = "Station"
 	total_positions = 5
@@ -245,6 +251,7 @@ Clown
 /datum/job/clown
 	title = "Clown"
 	flag = CLOWN
+	department_head = list("Head of Personnel")
 	department_flag = CIVILIAN
 	faction = "Station"
 	total_positions = 1
@@ -286,6 +293,7 @@ Mime
 /datum/job/mime
 	title = "Mime"
 	flag = MIME
+	department_head = list("Head of Personnel")
 	department_flag = CIVILIAN
 	faction = "Station"
 	total_positions = 1
@@ -294,6 +302,7 @@ Mime
 	selection_color = "#dddddd"
 
 	default_pda = /obj/item/device/pda/mime
+	default_backpack = /obj/item/weapon/storage/backpack/mime
 
 	access = list(access_theatre, access_maint_tunnels)
 	minimal_access = list(access_theatre)
@@ -327,6 +336,7 @@ Janitor
 /datum/job/janitor
 	title = "Janitor"
 	flag = JANITOR
+	department_head = list("Head of Personnel")
 	department_flag = CIVILIAN
 	faction = "Station"
 	total_positions = 1
@@ -350,6 +360,7 @@ Librarian
 /datum/job/librarian
 	title = "Librarian"
 	flag = LIBRARIAN
+	department_head = list("Head of Personnel")
 	department_flag = CIVILIAN
 	faction = "Station"
 	total_positions = 1
@@ -375,6 +386,7 @@ Lawyer
 /datum/job/lawyer
 	title = "Lawyer"
 	flag = LAWYER
+	department_head = list("Head of Personnel")
 	department_flag = CIVILIAN
 	faction = "Station"
 	total_positions = 2
