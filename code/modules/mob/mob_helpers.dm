@@ -177,6 +177,7 @@ proc/isorgan(A)
 		return 0
 
 /proc/stars(n, pr)
+	n = html_decode(n)
 	if (pr == null)
 		pr = 25
 	if (pr <= 0)
@@ -195,7 +196,7 @@ proc/isorgan(A)
 		else
 			t = text("[]*", t)
 		p++
-	return t
+	return sanitize(t)
 
 
 /proc/stutter(n)

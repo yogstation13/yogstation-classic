@@ -132,7 +132,7 @@ var/list/ai_list = list()
 		return
 
 		//if(icon_state == initial(icon_state))
-	var/icontype = input("Please, select a display!", "AI", null/*, null*/) in list("Clown", "Monochrome", "Blue", "Inverted", "Firewall", "Green", "Red", "Static", "Red October")
+	var/icontype = input("Please, select a display!", "AI", null/*, null*/) in list("Clown", "Monochrome", "Blue", "Inverted", "Firewall", "Green", "Red", "Static", "Red October", "House", "Heartline")
 	if(icontype == "Clown")
 		icon_state = "ai-clown2"
 	else if(icontype == "Monochrome")
@@ -151,6 +151,10 @@ var/list/ai_list = list()
 		icon_state = "ai-static"
 	else if(icontype == "Red October")
 		icon_state = "ai-redoctober"
+	else if(icontype == "House")
+		icon_state = "ai-house"
+	else if(icontype == "Heartline")
+		icon_state = "ai-heartline"
 	//else
 			//usr <<"You can only change your display once!"
 			//return
@@ -159,7 +163,7 @@ var/list/ai_list = list()
 	..()
 	statpanel("Status")
 	if (client.statpanel == "Status")
- 		stat("[worldtime2text()] [time2text(world.realtime, "MMM DD")] [year_integer+540]")
+		stat("[worldtime2text()] [time2text(world.realtime, "MMM DD")] [year_integer+540]")
 		if(emergency_shuttle.online && emergency_shuttle.location < 2)
 			var/timeleft = emergency_shuttle.timeleft()
 			if (timeleft)
