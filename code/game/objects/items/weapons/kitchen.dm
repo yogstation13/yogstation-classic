@@ -316,7 +316,7 @@
 =																			=
 ===============~~~~~================================~~~~~====================
 */
-/obj/item/weapon/tray/proc/calc_carry()
+/obj/item/weapon/tray/proc/calc_carry(obj/item/T)
 	// calculate the weight of the items on the tray and item being added
 	var/add = 0
 	if(T.w_class == 1.0)
@@ -404,7 +404,7 @@
 
 /obj/item/weapon/tray/Del()
 	for(var/obj/item/I in carrying)
-		I.loc=T.loc
+		I.loc=pick(locs)
 	..()
 
 
