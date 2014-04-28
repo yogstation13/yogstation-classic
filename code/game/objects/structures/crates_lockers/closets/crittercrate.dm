@@ -10,6 +10,9 @@
 /obj/structure/closet/critter/can_open()
 	if(locked || welded)
 		return 0
+	if(usr.loc == src)
+		usr << "<span class='notice'>You can't open it from the inside!</span>"
+		return 0
 	return 1
 
 /obj/structure/closet/critter/open()
