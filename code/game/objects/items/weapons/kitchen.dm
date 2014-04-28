@@ -402,8 +402,10 @@
 						step(I, pick(NORTH,SOUTH,EAST,WEST))
 						sleep(rand(2,4))
 
-
-
+/obj/item/weapon/tray/Del()
+	for(var/obj/item/I in carrying)
+		I.loc=T.loc
+	..()
 
 
 /////////////////////////////////////////////////////////////////////////////////////////
