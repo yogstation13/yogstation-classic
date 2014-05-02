@@ -1,3 +1,5 @@
+var/global/jammers = 0
+
 var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 	// 0 = old radios
 	// 1 = new radios (subspace technology)
@@ -14,6 +16,7 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 	var/frequency = 1459 //common chat
 	var/frequencylock = 0
 	var/traitor_frequency = 0 //tune to frequency to unlock traitor supplies
+	var/jamming = 0 //is this radio jamming?
 	var/canhear_range = 3 // the range which mobs can hear this radio from
 	var/obj/item/device/radio/patch_link = null
 	var/datum/wires/radio/wires = null
@@ -179,6 +182,17 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 			if(hidden_uplink.check_trigger(usr, frequency, traitor_frequency))
 				usr << browse(null, "window=radio")
 				return
+		if(istype(src,/obj/item/device/radio/syndicate))
+			if(new_frequency==1489)
+				jamming=1
+				jammers++
+			else
+				if(jamming)
+					jamming=0
+					jammers--
+					//this shouldn't happen but make sure they don't become useless
+					if(jammers<0)
+						jammers=0
 
 	else if (href_list["talk"])
 		broadcasting = text2num(href_list["talk"])
@@ -219,6 +233,11 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 
 	if(!M.IsVocal())
 		return
+	if(jammers)
+		for(var/obj/item/device/radio/syndicate/R in world)
+			if(R.jamming)
+				if(get_dist(R,src)<7)
+					return
 
 	if(GLOBAL_RADIO_TYPE == 1) // NEW RADIO SYSTEMS: By Doohl
 
@@ -640,6 +659,11 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 			return -1
 	if (!on)
 		return -1
+	if(jammers)
+		for(var/obj/item/device/radio/syndicate/R in world)
+			if(R.jamming)
+				if(get_dist(R,src)<7)
+				return -1
 	if (!freq) //recieved on main frequency
 		if (!listening)
 			return -1
@@ -836,3 +860,7 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 
 /obj/item/device/radio/off	// Station bounced radios, their only difference is spawning with the speakers off, this was made to help the lag.
 	listening = 0			// And it's nice to have a subtype too for future features.
+
+/obj/item/device/radio/syndicate
+	New()
+		freerange=1
