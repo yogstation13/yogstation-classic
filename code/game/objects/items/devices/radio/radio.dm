@@ -864,3 +864,4 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 /obj/item/device/radio/syndicate
 	New()
 		freerange=1
+		..()
