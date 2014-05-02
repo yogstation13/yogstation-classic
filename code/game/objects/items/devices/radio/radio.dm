@@ -663,7 +663,7 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 		for(var/obj/item/device/radio/syndicate/R in world)
 			if(R.jamming)
 				if(get_dist(R,src)<7)
-				return -1
+					return -1
 	if (!freq) //recieved on main frequency
 		if (!listening)
 			return -1
