@@ -936,7 +936,6 @@ About the new airlock wires panel:
 						emergency = 1
 					else
 						usr << text("Emergency access is already enabled!")
-	attack_ai(usr) //inorix: makes window refresh
 	add_fingerprint(usr)
 	update_icon()
 	if(!nowindow)
