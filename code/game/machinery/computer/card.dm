@@ -472,4 +472,3 @@ var/time_last_changed_position = 0
 	name = "\improper Centcom identification console"
 	circuit = /obj/item/weapon/circuitboard/card/centcom
 	req_access = list(access_cent_captain)
-

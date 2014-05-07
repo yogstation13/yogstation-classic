@@ -316,10 +316,17 @@
 =																			=
 ===============~~~~~================================~~~~~====================
 */
-/obj/item/weapon/tray/proc/calc_carry()
-	// calculate the weight of the items on the tray
+/obj/item/weapon/tray/proc/calc_carry(obj/item/T)
+	// calculate the weight of the items on the tray and item being added
+	var/add = 0
+	if(T.w_class == 1.0)
+		add = 1
+	else if(T.w_class == 2.0)
+		add = 3
+	else
+		add = 5
+		
 	var/val = 0 // value to return
-
 	for(var/obj/item/I in carrying)
 		if(I.w_class == 1.0)
 			val ++
@@ -328,40 +335,60 @@
 		else
 			val += 5
 
-	return val
+	if(val+add>=max_carry)
+		return 0
+	else
+		return 1
 
-/obj/item/weapon/tray/pickup(mob/user)
-
-	if(!isturf(loc))
-		return
-
-	for(var/obj/item/I in loc)
-		if( I != src && !I.anchored && !istype(I, /obj/item/clothing/under) && !istype(I, /obj/item/clothing/suit) && !istype(I, /obj/item/projectile) )
-			var/add = 0
-			if(I.w_class == 1.0)
-				add = 1
-			else if(I.w_class == 2.0)
-				add = 3
-			else
-				add = 5
-			if(calc_carry() + add >= max_carry)
-				break
-
+/obj/item/weapon/tray/proc/get_item(obj/item/I,mob/user=null)
+	if(I != src && !I.anchored && !istype(I, /obj/item/weapon/tray) && !istype(I, /obj/item/projectile))
+		if(calc_carry(I))
+			if(user)
+				user.drop_item()
 			I.loc = src
 			carrying.Add(I)
 			overlays += image("icon" = I.icon, "icon_state" = I.icon_state, "layer" = 30 + I.layer)
+			return 1
+	return 0
+		
+
+/obj/item/weapon/tray/pickup(mob/user)
+	if(!isturf(loc))
+		return
+	for(var/obj/item/I in loc)
+		get_item(I)
+		
+/obj/item/weapon/tray/preattack(atom/T, mob/user, proximity_flag, click_parameters)
+	//inorix: if atom is a table: if not empty, put contents on table, otherwise return and let the tray itself get on the table
+	//        if not a table: try to pick it up
+	if(istype(T, /obj/structure/table))
+		if(carrying.len<1)
+			return
+		for(var/obj/item/I in carrying)
+			I.loc=T.loc
+			carrying.Remove(I)
+		overlays.Cut()
+		user << "You empty your tray on the table"
+		return 1
+	else if(istype(T, /obj/item))
+		get_item(T)
+
+/obj/item/weapon/tray/attackby(obj/I, mob/user)
+	if(istype(I, /obj/item))
+		get_item(I,user)
 
 /obj/item/weapon/tray/dropped(mob/user)
-
-	var/mob/living/M
-	for(M in src.loc) //to handle hand switching
-		return
-
+	//inorix: fixed this to actually work on a table while i was here
 	var/foundtable = 0
 	for(var/obj/structure/table/T in loc)
 		foundtable = 1
 		break
 
+	var/mob/living/M
+	if(!foundtable)
+		for(M in src.loc) //to handle hand switching
+			return
+		
 	overlays.Cut()
 
 	for(var/obj/item/I in carrying)
@@ -375,8 +402,10 @@
 						step(I, pick(NORTH,SOUTH,EAST,WEST))
 						sleep(rand(2,4))
 
-
-
+/obj/item/weapon/tray/Destroy()
+	for(var/obj/item/I in carrying)
+		I.loc=pick(locs)
+	..()
 
 
 /////////////////////////////////////////////////////////////////////////////////////////
