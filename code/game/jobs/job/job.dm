@@ -39,6 +39,8 @@
 	//If you have the use_age_restriction_for_jobs config option enabled and the database set up, this option will add a requirement for players to be at least minimal_player_age days old. (meaning they first signed in at least that many days before.)
 	var/minimal_player_age = 0
 
+	var/whitelisted = 0
+
 	//Job specific items
 	var/default_id				= /obj/item/weapon/card/id //this is just the looks of it
 	var/default_pda				= /obj/item/device/pda
