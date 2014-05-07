@@ -42,8 +42,7 @@
 	load_motd()
 	load_admins()
 	LoadBansjob()
-	if(config.usewhitelist)
-		load_whitelist()
+	load_whitelist()
 	jobban_loadbanfile()
 	appearance_loadbanfile()
 	jobban_updatelegacybans()
@@ -245,6 +244,7 @@ var/list/donators = list()
 		P = preferences_datums[ckey]
 		if(P)
 			P.unlock_content &= 1
+	donators = list()
 	var/list/donatorskeys = file2list("config/donators.txt")
 	for(var/key in donatorskeys)
 		ckey = ckey(key)

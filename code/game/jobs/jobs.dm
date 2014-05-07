@@ -68,7 +68,8 @@ var/list/command_positions = list(
 	"Head of Security",
 	"Chief Engineer",
 	"Research Director",
-	"Chief Medical Officer"
+	"Chief Medical Officer",
+	"Recovery Agent"
 )
 
 
@@ -99,14 +100,17 @@ var/list/science_positions = list(
 
 var/list/civilian_positions = list(
 	"Head of Personnel",
+	"Recovery Agent",
 	"Bartender",
 	"Botanist",
 	"Chef",
+	"Waiter",
 	"Janitor",
 	"Librarian",
 	"Quartermaster",
 	"Cargo Technician",
 	"Shaft Miner",
+	"Mining Medic",
 	"Lawyer",
 	"Chaplain",
 	"Clown",
@@ -131,8 +135,8 @@ var/list/nonhuman_positions = list(
 )
 
 var/list/yog_positions = list(
-	/*"Recovery Agent"*/,
-	"Assistant",
+	"Recovery Agent",
+	"Waiter",
 	"Tourist",
 	"Mining Medic"
 )

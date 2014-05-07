@@ -27,6 +27,7 @@ var/time_last_changed_position = 0
 	var/list/blacklisted = list(
 		"AI",
 		"Assistant",
+		"Tourist",
 		"Cyborg",
 		"Captain",
 		"Head of Personnel",
@@ -120,7 +121,7 @@ var/time_last_changed_position = 0
 				if(!(job.title in blacklisted))
 					dat += "<a href='?src=\ref[src];choice=edit_job;job=[job.title]'><b>[job.title]</b></a> ([job.current_positions]/[job.total_positions])<br>"
 		else
-			if(access_change_ids in scan.access)
+			if(scan && (access_change_ids in scan.access))
 			// EDIT SPECIFIC JOB
 				dat = "<a href='?src=\ref[src];choice=return'><i>Return</i></a><hr>"
 				dat += "<h1>[j.title]: [j.current_positions]/[j.total_positions]</h1><hr>"
