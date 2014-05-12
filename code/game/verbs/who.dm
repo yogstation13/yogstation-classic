@@ -73,7 +73,7 @@
 			msg += "\n"
 	else
 		for(var/client/C in admins)
-			if(!C.holder.fakekey)
+			if(!C.holder.fakekey && !C.is_afk())
 				msg += "\t[C] is a [C.holder.rank]\n"
 
 	src << msg

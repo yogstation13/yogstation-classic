@@ -86,7 +86,7 @@
 	..()
 	statpanel("Status")
 	if (src.client.statpanel == "Status")
- 		stat("[worldtime2text()] [time2text(world.realtime, "MMM DD")] [year_integer+540]")
+		stat("[worldtime2text()] [time2text(world.realtime, "MMM DD")] [year_integer+540]")
 		if(emergency_shuttle.online && emergency_shuttle.location < 2)
 			var/timeleft = emergency_shuttle.timeleft()
 			if (timeleft)

@@ -53,7 +53,7 @@
 
 	var/server
 	var/banappeals
-	var/wikiurl = "http://www.ss13.eu/wiki" // Default wiki link.
+	var/wikiurl = "http://www.tgstation13.org/wiki" // Default wiki link.
 	var/forumurl
 
 	var/forbid_singulo_possession = 0
@@ -266,6 +266,10 @@
 					Tickcomp = 1
 				if("automute_on")
 					automute_on = 1
+				if("comms_key")
+					global.comms_key = value
+					if(value != "default_pwd" && length(value) > 6) //It's the default value or less than 6 characters long, warn badmins
+						global.comms_allowed = 1
 				else
 					diary << "Unknown setting in configuration: '[name]'"
 

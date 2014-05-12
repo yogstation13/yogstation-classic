@@ -4,6 +4,7 @@ Captain
 /datum/job/captain
 	title = "Captain"
 	flag = CAPTAIN
+	department_head = list("Centcom")
 	department_flag = ENGSEC
 	faction = "Station"
 	total_positions = 1
@@ -12,6 +13,7 @@ Captain
 	selection_color = "#ccccff"
 	req_admin_notify = 1
 	minimal_player_age = 14
+	whitelisted = 1
 
 	default_id = /obj/item/weapon/card/id/gold
 	default_pda = /obj/item/device/pda/captain
@@ -54,6 +56,7 @@ Head of Personnel
 /datum/job/hop
 	title = "Head of Personnel"
 	flag = HOP
+	department_head = list("Captain")
 	department_flag = CIVILIAN
 	faction = "Station"
 	total_positions = 1
