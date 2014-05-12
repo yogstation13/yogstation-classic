@@ -784,7 +784,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 
 /client/proc/fix_air(var/turf/simulated/T in world)
 	set name = "Fix Air"
-	set category = "Debug"
+	set category = "Admin"
 	
 	if(!holder)
 		src << "Only administrators may use this command."
