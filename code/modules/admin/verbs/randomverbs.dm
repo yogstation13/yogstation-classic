@@ -789,7 +789,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	if(!holder)
 		src << "Only administrators may use this command."
 		return
-	if(check_rights_for(admin, R_SERVER))
+	if(check_rights(R_SERVER,1))
 		var/range=input("Enter range:","Num",2) as num
 		message_admins("[key_name_admin(usr)] fixed air with range [range] in area [T.loc.name]")
 		log_game("[key_name_admin(usr)] fixed air with range [range] in area [T.loc.name]")
