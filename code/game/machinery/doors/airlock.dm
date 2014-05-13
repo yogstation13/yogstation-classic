@@ -506,10 +506,6 @@ About the new airlock wires panel:
 		popup.set_title_image(user.browse_rsc_icon(src.icon, src.icon_state))
 		popup.open()
 		onclose(user, "airlock")
- //inorix: end new code	
-
-//aiDisable - 1 idscan, 2 disrupt main power, 3 disrupt backup power, 4 drop door bolts, 5 un-electrify door, 7 close door, 11 lift access override
-//aiEnable - 1 idscan, 4 raise door bolts, 5 electrify door for 30 seconds, 6 electrify door indefinitely, 7 open door, 11 enable access override
 
 /obj/machinery/door/airlock/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null)
 	if(!user)
@@ -657,8 +653,11 @@ About the new airlock wires panel:
 		//inorix: code to allow silicons to set airlock permissions for newly placed airlocks
 		//        see my comment up above for details
 		if(href_list["set_access"])
+			//pop the permissions dialog
 			set_perms(usr)
+			
 		else if(href_list["access"])
+			//add or remove the clicked access level
 			var/acc=href_list["access"]
 			if(acc=="all")
 				temp_access=null
@@ -672,15 +671,14 @@ About the new airlock wires panel:
 					temp_access-=req
 					if (!temp_access.len)
 						temp_access=null
-			src.updateUsrDialog()
+			src.attack_ai(usr)
 			
 		else if(href_list["set"])
+			//finalize access settings
 			req_access=temp_access
 			req_access_txt=list2text(req_access,";")
 			access_set=1
-			src.updateUsrDialog()
-			
-		//inorix: end new code
+			src.attack_ai(usr)
 			
 		else if(href_list["aiDisable"])
 			var/code = text2num(href_list["aiDisable"])
