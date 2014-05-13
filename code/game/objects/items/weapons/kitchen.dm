@@ -238,13 +238,13 @@
 			return //it always returns, but I feel like adding an extra return just for safety's sakes. EDIT; Oh well I won't :3
 
 	add_logs(user, M, "attacked", object="[src.name]")
-	
+
 	if(istype(M, /mob/living/carbon/human))
-	
+
 		var/mob/living/carbon/human/H = M ///////////////////////////////////// /Let's have this ready for later.
 
 		if(prob(50))
-			playsound(M, 'sound/items/trayhit1.ogg', 50, 1)	
+			playsound(M, 'sound/items/trayhit1.ogg', 50, 1)
 		else
 			playsound(M, 'sound/items/trayhit2.ogg', 50, 1)
 
@@ -277,8 +277,8 @@
 					H.head.add_blood(H)
 				if (H.glasses && prob(33))
 					H.glasses.add_blood(H)
-		
-		
+
+
 			M.visible_message("<span class='danger'>[user] slams [M] in the face with the tray!</span>", \
 				"<span class='userdanger'>[user] slams [M] in the face with the tray, against your mask!</span>")
 
@@ -304,7 +304,7 @@
 					M.Weaken(2)
 					return
 		return
-		
+
 	else
 		..()
 
@@ -325,7 +325,7 @@
 		add = 3
 	else
 		add = 5
-		
+
 	var/val = 0 // value to return
 	for(var/obj/item/I in carrying)
 		if(I.w_class == 1.0)
@@ -350,15 +350,15 @@
 			overlays += image("icon" = I.icon, "icon_state" = I.icon_state, "layer" = 30 + I.layer)
 			return 1
 	return 0
-		
+
 
 /obj/item/weapon/tray/pickup(mob/user)
 	if(!isturf(loc))
 		return
 	for(var/obj/item/I in loc)
 		get_item(I)
-		
-/obj/item/weapon/tray/preattack(atom/T, mob/user, proximity_flag, click_parameters)
+
+/obj/item/weapon/tray/afterattack(atom/T, mob/user, proximity_flag)
 	//inorix: if atom is a table: if not empty, put contents on table, otherwise return and let the tray itself get on the table
 	//        if not a table: try to pick it up
 	if(istype(T, /obj/structure/table))
@@ -388,7 +388,7 @@
 	if(!foundtable)
 		for(M in src.loc) //to handle hand switching
 			return
-		
+
 	overlays.Cut()
 
 	for(var/obj/item/I in carrying)
