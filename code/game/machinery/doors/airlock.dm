@@ -459,12 +459,6 @@ About the new airlock wires panel:
 	if(!src.canAIControl())
 		if(src.canAIHack())
 			src.hack(user)
-			return
-		else
-			user << "<span class='warning'>Airlock AI control has been blocked with a firewall. Unable to hack.</span>"
-	if(emagged)
-		user << "<span class='warning'>Unable to interface: Airlock is unresponsive.</span>"
-		return
 
 	ui_interact(user)
 	
