@@ -1,9 +1,13 @@
-{{if emagged}}
+{{if !interface}}
+	<span class='bad'>
+		Lost connection to door interface.
+	</span>
+{{else emagged}}
 	<span class='bad'>
 		Unable to interface: Airlock is unresponsive.
 	</span>
 {{else}}
-	{{if aicontrol}}
+	{{if aicontrol && !(powerlost && powerlost_b)}}
 		<div class='item'>
 			<div class='itemLabel'>
 			Main power
@@ -172,11 +176,13 @@
 				{{/if}}
 				<span class='bad'>
 					{{if !(powerlost && powerlost_b)}}
-						{{if electrified==-1 || electrifywire}}
+						{{if electrifywire}}
 							Wire cut
 						{{else electrified>0}}
 							{{:electrified}} seconds left
 						{{/if}}
+					{{else}}
+						No power
 					{{/if}}
 				</span>
 			</div>

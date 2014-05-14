@@ -459,6 +459,12 @@ About the new airlock wires panel:
 	if(!src.canAIControl())
 		if(src.canAIHack())
 			src.hack(user)
+			return
+		else
+			user << "<span class='warning'>Airlock AI control has been blocked with a firewall. Unable to hack.</span>"
+	if(emagged)
+		user << "<span class='warning'>Unable to interface: Airlock is unresponsive.</span>"
+		return
 
 	ui_interact(user)
 	
@@ -510,7 +516,7 @@ About the new airlock wires panel:
 /obj/machinery/door/airlock/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null)
 	if(!user)
 		return
-	
+		
 	var/list/data = list(
 		"power" = arePowerSystemsOn(),
 		"aicontrol" = canAIControl(),
@@ -538,12 +544,13 @@ About the new airlock wires panel:
 		"electrifywire" = isWireCut(AIRLOCK_WIRE_ELECTRIFY),
 		"welded" = welded,
 		"density" = density,
+		"interface" = 1,
 		"access_set" = access_set
 	)
 
 	ui = nanomanager.try_update_ui(user, src, ui_key, ui, data)
 	if (!ui)
-		ui = new(user, src, ui_key, "airlock.tmpl", "Airlock", 450, 400)
+		ui = new(user, src, ui_key, "airlock.tmpl", name, 450, 400)
 		ui.set_initial_data(data)
 		ui.open()
 		ui.set_auto_update(1)
@@ -636,6 +643,8 @@ About the new airlock wires panel:
 		..()
 	if(usr.stat || usr.restrained())
 		return
+	if(secondsMainPowerLost && secondsBackupPowerLost)
+		return
 	add_fingerprint(usr)
 	if(href_list["close"])
 		usr << browse(null, "window=airlock")
@@ -653,11 +662,8 @@ About the new airlock wires panel:
 		//inorix: code to allow silicons to set airlock permissions for newly placed airlocks
 		//        see my comment up above for details
 		if(href_list["set_access"])
-			//pop the permissions dialog
 			set_perms(usr)
-			
 		else if(href_list["access"])
-			//add or remove the clicked access level
 			var/acc=href_list["access"]
 			if(acc=="all")
 				temp_access=null
@@ -671,14 +677,13 @@ About the new airlock wires panel:
 					temp_access-=req
 					if (!temp_access.len)
 						temp_access=null
-			src.attack_ai(usr)
+			src.set_perms(usr)
 			
 		else if(href_list["set"])
-			//finalize access settings
 			req_access=temp_access
 			req_access_txt=list2text(req_access,";")
 			access_set=1
-			src.attack_ai(usr)
+			src.set_perms(usr)
 			
 		else if(href_list["aiDisable"])
 			var/code = text2num(href_list["aiDisable"])
@@ -795,10 +800,6 @@ About the new airlock wires panel:
 					//electrify door for 30 seconds
 					if(src.isWireCut(AIRLOCK_WIRE_ELECTRIFY))
 						usr << text("The electrification wire has been cut.<br>\n")
-					else if(src.secondsElectrified==-1)
-						usr << text("The door is already indefinitely electrified. You'd have to un-electrify it before you can re-electrify it with a non-forever duration.<br>\n")
-					else if(src.secondsElectrified!=0)
-						usr << text("The door is already electrified. You can't re-electrify it while it's already electrified.<br>\n")
 					else
 						shockedby += text("\[[time_stamp()]\][usr](ckey:[usr.ckey])")
 						add_logs(usr, src, "electrified", admin=0, addition="at [x],[y],[z]")
@@ -808,16 +809,11 @@ About the new airlock wires panel:
 								src.secondsElectrified-=1
 								if(src.secondsElectrified<0)
 									src.secondsElectrified = 0
-								src.updateUsrDialog()
 								sleep(10)
 				if(6)
 					//electrify door indefinitely
 					if(src.isWireCut(AIRLOCK_WIRE_ELECTRIFY))
 						usr << text("The electrification wire has been cut.<br>\n")
-					else if(src.secondsElectrified==-1)
-						usr << text("The door is already indefinitely electrified.<br>\n")
-					else if(src.secondsElectrified!=0)
-						usr << text("The door is already electrified. You can't re-electrify it while it's already electrified.<br>\n")
 					else
 						shockedby += text("\[[time_stamp()]\][usr](ckey:[usr.ckey])")
 						add_logs(usr, src, "electrified", admin=0, addition="at [x],[y],[z]")
@@ -829,7 +825,6 @@ About the new airlock wires panel:
 						usr << text("Control to door sensors is disabled.")
 					else if (!src.safe)
 						safe = 1
-						src.updateUsrDialog()
 					else
 						usr << text("Firmware reports safeties already in place.")
 
@@ -839,7 +834,6 @@ About the new airlock wires panel:
 						usr << text("Control to door timing circuitry has been severed.")
 					else if (!src.normalspeed)
 						normalspeed = 1
-						src.updateUsrDialog()
 					else
 						usr << text("Door timing circurity currently operating normally.")
 
@@ -860,7 +854,6 @@ About the new airlock wires panel:
 						usr << text("Control to door bolt lights has been severed.</a>")
 					else if (!src.lights)
 						lights = 1
-						src.updateUsrDialog()
 					else
 						usr << text("Door bolt lights are already enabled!")
 
@@ -872,8 +865,6 @@ About the new airlock wires panel:
 						usr << text("Emergency access is already enabled!")
 	add_fingerprint(usr)
 	update_icon()
-//	if(!nowindow)
-//		updateUsrDialog()
 	return
 
 /obj/machinery/door/airlock/attackby(C as obj, mob/user as mob)
