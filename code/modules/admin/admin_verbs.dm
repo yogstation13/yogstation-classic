@@ -100,7 +100,8 @@ var/list/admin_verbs_server = list(
 	/datum/admins/proc/toggleAI,
 	/client/proc/cmd_admin_delete,		/*delete an instance/object/mob/etc*/
 	/client/proc/cmd_debug_del_all,
-	/client/proc/toggle_random_events
+	/client/proc/toggle_random_events,
+	/client/proc/fix_air
 	)
 var/list/admin_verbs_debug = list(
 	/client/proc/restart_controller,
