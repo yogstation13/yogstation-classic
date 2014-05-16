@@ -1,0 +1,260 @@
+{{if !interface}}
+	<span class='bad'>
+		Lost connection to door interface.
+	</span>
+{{else emagged}}
+	<span class='bad'>
+		Unable to interface: Airlock is unresponsive.
+	</span>
+{{else}}
+	{{if aicontrol && !(powerlost && powerlost_b)}}
+		<div class='item'>
+			<div class='itemLabel'>
+			Main power
+			</div>
+			<div class='itemContentFull'>
+				{{:~link('Disrupt','alert',{'aiDisable':2},powerlost?'disabled':null)}}
+				{{if powerlost}}
+					<span class='bad'>
+						Offline: 
+						{{if power1}}
+							Wire cut
+						{{else}}
+							{{:powerlost}} seconds
+						{{/if}}		
+					</span>
+				{{else}}
+				<span class='good'>
+					Online
+				</span>
+				{{/if}}
+			</div>
+		</div>
+
+		<div class='item'>
+			<div class='itemLabel'>
+				Backup power
+			</div>
+			<div class='itemContentFull'>
+				{{:~link('Disrupt','alert',{'aiDisable':3},powerlost_b?'disabled':null)}}
+				{{if powerlost_b}}
+					<div class='itemContent'>
+						<span class='bad'>
+							Offline: 
+							{{if power1_b}}
+								Wire cut
+							{{else}}
+								{{:powerlost_b}} seconds
+							{{/if}}
+						</span>
+					</div>
+				{{else powerlost}}
+					<div class='itemContent'>
+						<span class='good'>
+							Online
+						</span>
+					</div>
+				{{else}}
+					<div class='itemContent' style='width:100px'>
+						<span class='good'>
+							On standby
+						</span>
+					</div>
+				{{/if}}
+			</div>
+		</div>
+
+		<div class='item'>
+			<div class='itemLabel'>
+				IdScan
+			</div>
+			<div class='itemContent'>
+				{{if idwire}}
+					{{:~link('On','power',{'aiEnable':1},'disabled')}}
+					{{:~link('Off','close',{'aiDisable':1},'selected')}}
+					<span class='bad'>
+						Wire cut
+					</span>
+				{{else}}
+					{{:~link('On','power',{'aiEnable':1},idoverride?null:'selected')}}
+					{{:~link('Off','close',{'aiDisable':1},idoverride?'selected':null)}}
+				{{/if}}
+			</div>
+		</div>
+
+		<div class='item'>
+			<div class='itemLabel'>
+				Emergency access
+			</div>
+			<div class='itemContent'>
+				{{:~link('Off','close',{'aiDisable':11},emergency?null:'selected')}}
+				{{:~link('On','power',{'aiEnable':11},emergency?'selected':null)}}
+			</div>
+		</div>
+
+		<div class='item'>
+			<div class='itemLabel'>
+				Door lights
+			</div>
+			<div class='itemContent'>
+				{{if lightwire}}
+					{{:~link('On','power',{'aiEnable':10},'disabled')}}
+					{{:~link('Off','close',{'aiDisable':10},'selected')}}
+					<span class='bad'>
+						Wire cut
+					</span>
+				{{else}}
+					{{:~link('On','power',{'aiEnable':10},light?'selected':null)}}
+					{{:~link('Off','close',{'aiDisable':10},light?null:'selected')}}
+				{{/if}}
+			</div>
+		</div>
+
+		<div class='item'>
+			<div class='itemLabel'>
+				Door safety override
+			</div>
+			<div class='itemContent'>
+				{{if safetywire}}
+					{{:~link('Off','close',{'aiEnable':8},'disabled')}}
+					{{:~link('On','power',{'aiDisable':8},'selected')}}
+					<span class='bad'>
+						Wire cut
+					</span>
+				{{else}}
+					{{:~link('Off','close',{'aiEnable':8},safety?'selected':null)}}
+					{{:~link('On','power',{'aiDisable':8},safety?null:'selected')}}
+				{{/if}}
+			</div>
+		</div>
+
+		<div class='item'>
+			<div class='itemLabel'>
+				Door speed override
+			</div>
+			<div class='itemContent'>
+				{{if speedwire}}
+					{{:~link('Off','close',{'aiEnable':9},'disabled')}}
+					{{:~link('On','power',{'aiDisable':9},'selected')}}
+					<span class='bad'>
+						Wire cut
+					</span>
+				{{else}}
+					{{:~link('Off','close',{'aiEnable':9},speed?'selected':null)}}
+					{{:~link('On','power',{'aiDisable':9},speed?null:'selected')}}
+				{{/if}}
+			</div>
+		</div>
+
+		<div class='item'>
+			<div class='itemLabel'>
+				Electrification
+			</div>
+			<div class='itemContent'>
+				{{if !electrifywire}}
+					{{:~link('Off','power',{'aiDisable':5},electrified?null:'selected')}}
+				{{else}}
+					{{:~link('Off','power',{'aiDisable':5},'disabled')}}
+				{{/if}}
+				{{if electrified==-1 || electrifywire}}
+					{{:~link('On','power',{'aiEnable':6},'selected')}}
+				{{else}}
+					{{if !(powerlost && powerlost_b)}}
+						{{:~link('On','power',{'aiEnable':6})}}
+					{{else}}
+						{{:~link('On','power',{'aiEnable':6},'disabled')}}
+					{{/if}}
+				{{/if}}
+				{{if electrified>0}}
+					{{:~link(electrified+'s','power',{'aiEnable':5},'selected')}}
+				{{else}}
+					{{if !(powerlost && powerlost_b) && !electrifywire}}
+						{{:~link('30s','power',{'aiEnable':5})}}
+					{{else}}
+						{{:~link('30s','power',{'aiEnable':5},'disabled')}}
+					{{/if}}
+				{{/if}}
+				<span class='bad'>
+					{{if !(powerlost && powerlost_b)}}
+						{{if electrifywire}}
+							Wire cut
+						{{else electrified>0}}
+							{{:electrified}} seconds left
+						{{/if}}
+					{{else}}
+						No power
+					{{/if}}
+				</span>
+			</div>
+		</div>
+		
+		<div class='item'>
+			<div class='itemLabel'>
+				Door bolts
+			</div>
+			<div class='itemContent'>
+				{{if (power && !boltwire) || !bolt}}
+					{{:~link('Up','arrowthick-1-n',{'aiEnable':4},bolt?null:'selected')}}
+				{{else}}
+					{{:~link('Up','arrowthick-1-n',{'aiEnable':4},'disabled')}}
+				{{/if}}
+				{{:~link('Down','arrowthick-1-s',{'aiDisable':4},bolt?'selected':null)}}
+				{{if boltwire}}
+					<span class='bad'>
+						Wire cut
+					</span>
+				{{/if}}
+			</div>
+		</div>
+
+		
+		<div class='item'>&nbsp;</div>
+		<div class='item'>
+			<div class='itemLabel'>
+				Door control
+			</div>
+			<div class='itemContent'>
+				{{if !(powerlost && powerlost_b) && !bolt && !welded}}
+					{{:~link('Open','power',{'aiEnable':7},density?null:'selected')}}
+					{{:~link('Close','close',{'aiDisable':7},density?'selected':null)}}
+				{{else}}
+					{{:~link('Open','power',{'aiEnable':7},density?'disabled':'selected')}}
+					{{:~link('Close','close',{'aiDisable':7},density?'selected':'disabled')}}
+				{{/if}}
+				<span class='bad'>
+				{{if welded}}
+					Door welded
+				{{else bolt}}
+					Door bolted
+				{{else powerlost && powerlost_b}}
+					No power
+				{{/if}}
+				</span>
+			</div>
+		</div>
+		{{if !access_set}}
+			<div class="item">&nbsp;</div>
+			<div class="item">
+				<div class="itemLabel">
+					Door access not set
+				</div>
+				<div class='itemContent'>
+					{{:~link('Set','wrench',{'set_access':1})}}
+				</div>
+			</div>
+		{{/if}}
+	{{else}}
+		<span class='bad'>
+		{{if powerlost && powerlost_b}}
+			Door unpowered, unable to control
+		{{else}}
+			Airlock AI control has been blocked with a firewall. 
+			{{if aihacking}}
+				Hacking in progress.
+			{{else aiHack}}
+				Unable to hack.
+			{{/if}}
+		{{/if}}
+		</span>
+	{{/if}}
+{{/if}}

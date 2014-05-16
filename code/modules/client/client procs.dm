@@ -250,6 +250,7 @@ var/next_external_rsc = 0
 		'nano/templates/smes.tmpl',
 		'nano/templates/apc.tmpl',
 		'nano/templates/cryo.tmpl',
+		'nano/templates/airlock.tmpl',
 		'nano/images/uiBackground.png',
 		'nano/images/uiIcons16.png',
 		'nano/images/uiIcons24.png',
