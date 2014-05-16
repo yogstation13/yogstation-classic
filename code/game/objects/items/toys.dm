@@ -95,6 +95,31 @@
 	item_state = "syndballoon"
 	w_class = 4.0
 
+/obj/item/toy/heartballoon
+	name = "heart balloon"
+	desc = "A balloon for that special someone in your life."
+	throwforce = 0
+	throw_speed = 3
+	throw_range = 7
+	force = 0
+	icon = 'icons/obj/toy.dmi'
+	icon_state = "heartballoon"
+	item_state = "heartballoon"
+	w_class = 4.0
+
+
+/obj/item/toy/toyballoon
+	name = "toy balloon"
+	desc = "A very coloful balloon, fun for all ages."
+	throwforce = 0
+	throw_speed = 3
+	throw_range = 7
+	force = 0
+	icon = 'icons/obj/toy.dmi'
+	icon_state = "toyballoon"
+	item_state = "toyballoon"
+	w_class = 4.0
+
 /*
  * Fake singularity
  */
@@ -156,6 +181,56 @@
 			usr << "\red You don't have the dexterity to do this!"
 			return
 		src.add_fingerprint(user)
+		if (src.bullets < 1)
+			user.show_message("\red *click* *click*", 2)
+			return
+		playsound(user, 'sound/weapons/Gunshot.ogg', 100, 1)
+		src.bullets--
+		for(var/mob/O in viewers(user, null))
+			O.show_message(text("\red <B>[] fires the [src] at []!</B>", user, target), 1, "\red You hear a gunshot", 2)
+
+/obj/item/toy/toyglock
+	name = "toyglock"
+	desc = "Oh, looks just like the real thing, but its only a toy."
+	icon = 'icons/obj/toy.dmi'
+	icon_state = "toyglock"
+	item_state = "toyglock"
+	flags =  CONDUCT
+	slot_flags = SLOT_BELT
+	w_class = 3.0
+	g_amt = 10
+	m_amt = 10
+	attack_verb = list("struck", "pistol whipped", "hit", "bashed")
+	var/bullets = 0.0
+
+
+
+	afterattack(atom/target as mob|obj|turf|area, mob/user as mob, flag)
+		if (src.bullets < 1)
+			user.show_message("\red *click* *click*", 2)
+			return
+		playsound(user, 'sound/weapons/Gunshot.ogg', 100, 1)
+		src.bullets--
+		for(var/mob/O in viewers(user, null))
+			O.show_message(text("\red <B>[] fires the [src] at []!</B>", user, target), 1, "\red You hear a gunshot", 2)
+
+/obj/item/toy/toyflaregun
+	name = "toyflaregun"
+	desc = "For use in make believe emergencies."
+	icon = 'icons/obj/toy.dmi'
+	icon_state = "toyflare"
+	item_state = "toyflare"
+	flags =  CONDUCT
+	slot_flags = SLOT_BELT
+	w_class = 3.0
+	g_amt = 10
+	m_amt = 10
+	attack_verb = list("struck", "pistol whipped", "hit", "bashed")
+	var/bullets = 0.0
+
+
+
+	afterattack(atom/target as mob|obj|turf|area, mob/user as mob, flag)
 		if (src.bullets < 1)
 			user.show_message("\red *click* *click*", 2)
 			return
@@ -457,6 +532,51 @@
 			src.visible_message("\red The [src.name] explodes!","\red You hear a snap!")
 			playsound(src, 'sound/effects/snap.ogg', 50, 1)
 			qdel(src)
+
+
+/obj/item/toy/toygrenade
+	name = "toygrenade"
+	desc = "Booooom!"
+	icon = 'icons/obj/toy.dmi'
+	icon_state = "toygrenade"
+	w_class = 1
+
+	throw_impact(atom/hit_atom)
+		..()
+		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
+		s.set_up(3, 1, src)
+		s.start()
+		new /obj/effect/decal/cleanable/ash(src.loc)
+		src.visible_message("\red The [src.name] explodes!","\red You hear a snap!")
+		playsound(src, 'sound/effects/snap.ogg', 50, 1)
+		qdel(src)
+
+/* other toys */
+
+/obj/item/toy/teddybear
+	name = "teddybear"
+	desc = "A soft brown bear you can cuddle with anywhere."
+	icon = 'icons/obj/toy.dmi'
+	icon_state = "teddybear"
+
+/obj/item/toy/stuffedmonkey
+	name = "stuffedmonkey"
+	desc = "Looks just like the live ones on station.Except this one is made from plush"
+	icon = 'icons/obj/toy.dmi'
+	icon_state = "stuffedmonkey"
+
+
+/obj/item/toy/flowerbunch
+	name = "flowerbunch"
+	desc = "Oh, a bunch of flowers to show you care!"
+	icon = 'icons/obj/toy.dmi'
+	icon_state = "flowerbunch"
+
+
+/*/obj/item/toy/snowglobe
+	name = "snowglobe"
+	desc = "Shake it up to watch it snow" // have not figured out how to animate shaking.
+	icon_state = "snowglobe"*/
 
 /*
  * Mech prizes

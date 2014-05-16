@@ -74,6 +74,22 @@
 	max_w_class = 3
 	can_hold = list(/obj/item/weapon/ore)
 
+// -----------------------------
+//       Photo Satchel
+// -----------------------------
+
+/obj/item/weapon/storage/bag/photo
+	name = "Photo Bag"
+	desc = "This Satchel can be used to store all your photo related items."
+	icon = 'icons/obj/toy.dmi'
+	icon_state = "photobag"
+	slot_flags = SLOT_BELT | SLOT_POCKET
+	w_class = 4
+	storage_slots = 50
+	max_combined_w_class = 200 //Doesn't matter what this is, so long as it's more or equal to storage_slots *
+	max_w_class = 3
+	can_hold = list(/obj/item/device/camera_film,/obj/item/weapon/photo,/obj/item/weapon/storage/photo_album,/obj/item/device/camera,/obj/item/weapon/storage/photobook)
+
 
 // -----------------------------
 //          Plant bag
