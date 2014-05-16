@@ -24,7 +24,7 @@
 	name = "cult"
 	config_tag = "cult"
 	antag_flag = BE_CULTIST
-	restricted_jobs = list("Chaplain","AI", "Cyborg", "Security Officer", "Warden", "Detective", "Head of Security", "Captain", "Head of Personnel")
+	restricted_jobs = list("Chaplain","AI", "Cyborg", "Security Officer", "Warden", "Detective", "Head of Security", "Captain", "Head of Personnel", "Recovery Agent")
 	protected_jobs = list()
 	required_players = 20
 	required_enemies = 6
