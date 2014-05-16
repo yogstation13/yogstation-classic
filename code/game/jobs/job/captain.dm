@@ -12,8 +12,7 @@ Captain
 	supervisors = "Nanotrasen officials and Space law"
 	selection_color = "#ccccff"
 	req_admin_notify = 1
-	minimal_player_age = 14
-	whitelisted = 1
+	minimal_player_age = 20
 
 	default_id = /obj/item/weapon/card/id/gold
 	default_pda = /obj/item/device/pda/captain
@@ -64,7 +63,7 @@ Head of Personnel
 	supervisors = "the captain"
 	selection_color = "#ddddff"
 	req_admin_notify = 1
-	minimal_player_age = 10
+	minimal_player_age = 17
 
 	default_id = /obj/item/weapon/card/id/silver
 	default_pda = /obj/item/device/pda/heads/hop

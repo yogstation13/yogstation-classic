@@ -13,7 +13,7 @@ Yog Custom
 	supervisors = "the captain and Space Law. Failure to comply with the Law will result in immediate contract termination"
 	selection_color = "#FF0000"
 	req_admin_notify = 1
-	minimal_player_age = 14
+	minimal_player_age = 20
 	whitelisted = 1
 
 	access = list() 			//See get_access()

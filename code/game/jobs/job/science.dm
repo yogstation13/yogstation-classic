@@ -12,7 +12,7 @@ Research Director
 	supervisors = "the captain"
 	selection_color = "#ffddff"
 	req_admin_notify = 1
-	minimal_player_age = 7
+	minimal_player_age = 15
 
 	default_id = /obj/item/weapon/card/id/silver
 	default_pda = /obj/item/device/pda/heads/rd

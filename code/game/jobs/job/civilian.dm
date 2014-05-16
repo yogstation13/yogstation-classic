@@ -172,6 +172,7 @@ Quartermaster
 	spawn_positions = 1
 	supervisors = "the head of personnel"
 	selection_color = "#dddddd"
+	minimal_player_age = 10
 
 	default_pda = /obj/item/device/pda/quartermaster
 	default_headset = /obj/item/device/radio/headset/headset_cargo
@@ -367,6 +368,7 @@ Librarian
 	spawn_positions = 1
 	supervisors = "the head of personnel"
 	selection_color = "#dddddd"
+	minimal_player_age = 5
 
 	default_pda = /obj/item/device/pda/librarian
 
