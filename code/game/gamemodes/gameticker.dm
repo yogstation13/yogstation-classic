@@ -1,4 +1,5 @@
 var/global/datum/controller/gameticker/ticker
+var/round_start_time = 0
 
 #define GAME_STATE_PREGAME		1
 #define GAME_STATE_SETTING_UP	2
@@ -115,6 +116,7 @@ var/global/datum/controller/gameticker/ticker
 	else
 		src.mode.announce()
 
+	round_start_time = world.time
 	if(!syndicate_code_phrase)		syndicate_code_phrase	= generate_code_phrase()
 	if(!syndicate_code_response)	syndicate_code_response	= generate_code_phrase()
 

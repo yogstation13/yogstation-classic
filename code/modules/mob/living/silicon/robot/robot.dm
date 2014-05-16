@@ -84,7 +84,7 @@
 		make_laws()
 		connect_ai(select_active_ai_with_fewest_borgs())
 		if(connected_ai)
-			connected_ai.connected_robots += src
+//			connected_ai.connected_robots += src --- connect_ai above should add the borg, perhaps don't add it again
 			lawsync()
 			lawupdate = 1
 		else
@@ -299,6 +299,7 @@
 	..()
 	statpanel("Status")
 	if (client.statpanel == "Status")
+		stat("[worldtime2text()] [time2text(world.realtime, "MMM DD")] [year_integer+540]")
 		if(emergency_shuttle.online && emergency_shuttle.location < 2)
 			var/timeleft = emergency_shuttle.timeleft()
 			if (timeleft)

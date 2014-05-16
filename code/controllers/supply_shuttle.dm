@@ -229,6 +229,7 @@ var/global/datum/controller/supply_shuttle/supply_shuttle
 
 		var/plasma_count = 0
 		var/crate_count = 0
+		var/valuable_points = 0
 
 		centcom_message = ""
 
@@ -283,11 +284,11 @@ var/global/datum/controller/supply_shuttle/supply_shuttle
 						continue
 
 					// Sell plasma
-					if(istype(A, /obj/item/stack/sheet/mineral/plasma))
+					else if(istype(A, /obj/item/stack/sheet/mineral/plasma))
 						var/obj/item/stack/sheet/mineral/plasma/P = A
 						plasma_count += P.amount
 
-					if(istype(A, /obj/item/seeds))
+					else if(istype(A, /obj/item/seeds))
 						var/obj/item/seeds/S = A
 						if(S.rarity == 0) // Mundane species
 							centcom_message += "<font color=red>+0</font>: We don't need samples of mundane species \"[capitalize(S.species)]\".<BR>"
@@ -303,6 +304,12 @@ var/global/datum/controller/supply_shuttle/supply_shuttle
 							discoveredPlants[S.type] = S.potency
 							centcom_message += "<font color=green>+[S.rarity]</font>: New species discovered: \"[capitalize(S.species)]\".  Excellent work.<BR>"
 							points += S.rarity // That's right, no bonus for potency.  Send a crappy sample first to "show improvement" later
+
+					else if( istype(A, /obj/item) )
+						var/obj/item/valuable = A
+						if( valuable.supply_value > 0 )
+							valuable_points += valuable.supply_value
+
 			qdel(MA)
 
 		if(plasma_count)
@@ -312,6 +319,10 @@ var/global/datum/controller/supply_shuttle/supply_shuttle
 		if(crate_count)
 			centcom_message += "<font color=green>+[round(crate_count*points_per_crate)]</font>: Received [crate_count] crates.<BR>"
 			points += crate_count * points_per_crate
+
+		if(valuable_points)
+			centcom_message += "<font color=gree>+[round(valuable_points)]</font>: Received valuables.<BR>"
+			points += valuable_points
 
 	//Buyin
 	proc/buy()

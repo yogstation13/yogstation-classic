@@ -90,7 +90,7 @@
 
 /obj/item/weapon/kitchen/utensil/knife/attack(target as mob, mob/living/user as mob)
 	if ((CLUMSY in user.mutations) && prob(50))
-		user << "\red You accidentally cut yourself with the [src]."
+		user << "<span class='danger'> You accidentally cut yourself with the [src].</span>"
 		user.take_organ_damage(20)
 		return
 	playsound(loc, 'sound/weapons/bladeslice.ogg', 50, 1, -1)
@@ -162,7 +162,7 @@
 
 /obj/item/weapon/kitchen/rollingpin/attack(mob/living/M as mob, mob/living/user as mob)
 	if ((CLUMSY in user.mutations) && prob(50))
-		user << "\red The [src] slips out of your hand and hits your head."
+		user << "<span class='danger'>The [src] slips out of your hand and hits your head.</span>"
 		user.take_organ_damage(10)
 		user.Paralyse(2)
 		return
@@ -176,7 +176,7 @@
 			if (H.stat < 2 && H.health < 50 && prob(90))
 				// ******* Check
 				if (istype(H, /obj/item/clothing/head) && H.flags & 8 && prob(80))
-					H << "\red The helmet protects you from being hit hard in the head!"
+					H << "<span class='danger'> The helmet protects you from being hit hard in the head!</span>"
 					return
 				var/time = rand(2, 6)
 				if (prob(75))
@@ -184,13 +184,13 @@
 				else
 					H.Stun(time)
 				if(H.stat != 2)	H.stat = 1
-				for(var/mob/O in viewers(H, null))
-					O.show_message(text("\red <B>[] has been knocked unconscious!</B>", H), 1, "\red You hear someone fall.", 2)
+				user.visible_message("<span class='danger'>[H] has been knocked unconscious!</span>", "<span class='userdanger'>You knock [H] unconscious!</span>")
+				return
 			else
-				H << text("\red [] tried to knock you unconscious!",user)
+				H.visible_message("<span class='danger'> [user] tried to knock [H] unconscious!</span>", "<span class='danger'> [user] tried to knock you unconscious!</span>")
 				H.eye_blurry += 3
 
-	return
+	return ..()
 
 /*
  * Trays - Agouri
@@ -227,8 +227,8 @@
 
 
 	if((CLUMSY in user.mutations) && prob(50))              //What if he's a clown?
-		M << "\red You accidentally slam yourself with the [src]!"
-		M.Weaken(1)
+		user << "<span class='danger'> You accidentally slam yourself with the [src]!</span>"
+		user.Weaken(1)
 		user.take_organ_damage(2)
 		if(prob(50))
 			playsound(M, 'sound/items/trayhit1.ogg', 50, 1)
@@ -237,93 +237,76 @@
 			playsound(M, 'sound/items/trayhit2.ogg', 50, 1) //sound playin'
 			return //it always returns, but I feel like adding an extra return just for safety's sakes. EDIT; Oh well I won't :3
 
-	var/mob/living/carbon/human/H = M      ///////////////////////////////////// /Let's have this ready for later.
+	add_logs(user, M, "attacked", object="[src.name]")
+
+	if(istype(M, /mob/living/carbon/human))
+
+		var/mob/living/carbon/human/H = M ///////////////////////////////////// /Let's have this ready for later.
+
+		if(prob(50))
+			playsound(M, 'sound/items/trayhit1.ogg', 50, 1)
+		else
+			playsound(M, 'sound/items/trayhit2.ogg', 50, 1)
 
 
-	if(!(user.zone_sel.selecting == ("eyes" || "head"))) //////////////hitting anything else other than the eyes
 		if(prob(33))
 			src.add_blood(H)
 			var/turf/location = H.loc
-			if (istype(location, /turf/simulated))
-				location.add_blood(H)     ///Plik plik, the sound of blood
-
-		add_logs(user, M, "attacked", object="[src.name]")
-
-		if(prob(15))
-			M.Weaken(3)
-			M.take_organ_damage(3)
-		else
-			M.take_organ_damage(5)
-		if(prob(50))
-			playsound(M, 'sound/items/trayhit1.ogg', 50, 1)
-			for(var/mob/O in viewers(M, null))
-				O.show_message(text("\red <B>[] slams [] with the tray!</B>", user, M), 1)
-			return
-		else
-			playsound(M, 'sound/items/trayhit2.ogg', 50, 1)  //we applied the damage, we played the sound, we showed the appropriate messages. Time to return and stop the proc
-			for(var/mob/O in viewers(M, null))
-				O.show_message(text("\red <B>[] slams [] with the tray!</B>", user, M), 1)
-			return
-
-
-
-
-	if(istype(M, /mob/living/carbon/human) && ((H.head && H.head.flags & HEADCOVERSEYES) || (H.wear_mask && H.wear_mask.flags & MASKCOVERSEYES) || (H.glasses && H.glasses.flags & GLASSESCOVERSEYES)))
-		M << "\red You get slammed in the face with the tray, against your mask!"
-		if(prob(33))
-			src.add_blood(H)
-			if (H.wear_mask)
-				H.wear_mask.add_blood(H)
-			if (H.head)
-				H.head.add_blood(H)
-			if (H.glasses && prob(33))
-				H.glasses.add_blood(H)
-			var/turf/location = H.loc
-			if (istype(location, /turf/simulated))     //Addin' blood! At least on the floor and item :v
+			if (istype(location, /turf/simulated)) //Addin' blood! At least on the floor.
 				location.add_blood(H)
 
-		if(prob(50))
-			playsound(M, 'sound/items/trayhit1.ogg', 50, 1)
-			for(var/mob/O in viewers(M, null))
-				O.show_message(text("\red <B>[] slams [] with the tray!</B>", user, M), 1)
-		else
-			playsound(M, 'sound/items/trayhit2.ogg', 50, 1)  //sound playin'
-			for(var/mob/O in viewers(M, null))
-				O.show_message(text("\red <B>[] slams [] with the tray!</B>", user, M), 1)
-		if(prob(10))
-			M.Stun(rand(1,3))
-			M.take_organ_damage(3)
-			return
-		else
-			M.take_organ_damage(5)
-			return
+		if(!(user.zone_sel.selecting == ("eyes" || "head"))) //////////////hitting anything else other than the eyes
 
-	else //No eye or head protection, tough luck!
-		M << "\red You get slammed in the face with the tray!"
-		if(prob(33))
-			src.add_blood(M)
-			var/turf/location = H.loc
-			if (istype(location, /turf/simulated))
-				location.add_blood(H)
+			H.visible_message("<span class='danger'>[user] slams [H] with the tray!</span>", \
+					"<span class='userdanger'>[user] slams [H] with the tray!</span>")
 
-		if(prob(50))
-			playsound(M, 'sound/items/trayhit1.ogg', 50, 1)
-			for(var/mob/O in viewers(M, null))
-				O.show_message(text("\red <B>[] slams [] in the face with the tray!</B>", user, M), 1)
-		else
-			playsound(M, 'sound/items/trayhit2.ogg', 50, 1)  //sound playin' again
-			for(var/mob/O in viewers(M, null))
-				O.show_message(text("\red <B>[] slams [] in the face with the tray!</B>", user, M), 1)
-		if(prob(30))
-			M.Stun(rand(2,4))
-			M.take_organ_damage(4)
-			return
-		else
-			M.take_organ_damage(8)
-			if(prob(30))
-				M.Weaken(2)
+			if(prob(15))
+				M.Weaken(3)
+				M.take_organ_damage(3)
 				return
-			return
+			else
+				M.take_organ_damage(5)
+				return
+
+
+		if((H.head && H.head.flags & HEADCOVERSEYES) || (H.wear_mask && H.wear_mask.flags & MASKCOVERSEYES) || (H.glasses && H.glasses.flags & GLASSESCOVERSEYES))
+			if(prob(33))
+				if (H.wear_mask)
+					H.wear_mask.add_blood(H) //adding blood on the items.
+				if (H.head)
+					H.head.add_blood(H)
+				if (H.glasses && prob(33))
+					H.glasses.add_blood(H)
+
+
+			M.visible_message("<span class='danger'>[user] slams [M] in the face with the tray!</span>", \
+				"<span class='userdanger'>[user] slams [M] in the face with the tray, against your mask!</span>")
+
+			if(prob(10))
+				M.Stun(rand(1,3))
+				M.take_organ_damage(3)
+				return
+			else
+				M.take_organ_damage(5)
+				return
+
+		else //No eye or head protection, tough luck!
+
+			M.visible_message("<span class='danger'>[user] slams [M] in the face with the tray!</span>", \
+					"<span class='userdanger'>[user] slams [M] in the face with the tray!</span>")
+			if(prob(30))
+				M.Stun(rand(2,4))
+				M.take_organ_damage(4)
+				return
+			else
+				M.take_organ_damage(8)
+				if(prob(30))
+					M.Weaken(2)
+					return
+		return
+
+	else
+		..()
 
 
 /*
@@ -333,10 +316,17 @@
 =																			=
 ===============~~~~~================================~~~~~====================
 */
-/obj/item/weapon/tray/proc/calc_carry()
-	// calculate the weight of the items on the tray
-	var/val = 0 // value to return
+/obj/item/weapon/tray/proc/calc_carry(obj/item/T)
+	// calculate the weight of the items on the tray and item being added
+	var/add = 0
+	if(T.w_class == 1.0)
+		add = 1
+	else if(T.w_class == 2.0)
+		add = 3
+	else
+		add = 5
 
+	var/val = 0 // value to return
 	for(var/obj/item/I in carrying)
 		if(I.w_class == 1.0)
 			val ++
@@ -345,39 +335,59 @@
 		else
 			val += 5
 
-	return val
+	if(val+add>=max_carry)
+		return 0
+	else
+		return 1
 
-/obj/item/weapon/tray/pickup(mob/user)
-
-	if(!isturf(loc))
-		return
-
-	for(var/obj/item/I in loc)
-		if( I != src && !I.anchored && !istype(I, /obj/item/clothing/under) && !istype(I, /obj/item/clothing/suit) && !istype(I, /obj/item/projectile) )
-			var/add = 0
-			if(I.w_class == 1.0)
-				add = 1
-			else if(I.w_class == 2.0)
-				add = 3
-			else
-				add = 5
-			if(calc_carry() + add >= max_carry)
-				break
-
+/obj/item/weapon/tray/proc/get_item(obj/item/I,mob/user=null)
+	if(I != src && !I.anchored && !istype(I, /obj/item/weapon/tray) && !istype(I, /obj/item/projectile))
+		if(calc_carry(I))
+			if(user)
+				user.drop_item()
 			I.loc = src
 			carrying.Add(I)
 			overlays += image("icon" = I.icon, "icon_state" = I.icon_state, "layer" = 30 + I.layer)
+			return 1
+	return 0
+
+
+/obj/item/weapon/tray/pickup(mob/user)
+	if(!isturf(loc))
+		return
+	for(var/obj/item/I in loc)
+		get_item(I)
+
+/obj/item/weapon/tray/afterattack(atom/T, mob/user, proximity_flag)
+	//inorix: if atom is a table: if not empty, put contents on table, otherwise return and let the tray itself get on the table
+	//        if not a table: try to pick it up
+	if(istype(T, /obj/structure/table))
+		if(carrying.len<1)
+			return
+		for(var/obj/item/I in carrying)
+			I.loc=T.loc
+			carrying.Remove(I)
+		overlays.Cut()
+		user << "You empty your tray on the table"
+		return 1
+	else if(istype(T, /obj/item))
+		get_item(T)
+
+/obj/item/weapon/tray/attackby(obj/I, mob/user)
+	if(istype(I, /obj/item))
+		get_item(I,user)
 
 /obj/item/weapon/tray/dropped(mob/user)
-
-	var/mob/living/M
-	for(M in src.loc) //to handle hand switching
-		return
-
+	//inorix: fixed this to actually work on a table while i was here
 	var/foundtable = 0
 	for(var/obj/structure/table/T in loc)
 		foundtable = 1
 		break
+
+	var/mob/living/M
+	if(!foundtable)
+		for(M in src.loc) //to handle hand switching
+			return
 
 	overlays.Cut()
 
@@ -392,8 +402,10 @@
 						step(I, pick(NORTH,SOUTH,EAST,WEST))
 						sleep(rand(2,4))
 
-
-
+/obj/item/weapon/tray/Destroy()
+	for(var/obj/item/I in carrying)
+		I.loc=pick(locs)
+	..()
 
 
 /////////////////////////////////////////////////////////////////////////////////////////

@@ -444,10 +444,10 @@ var/global/list/uneatable = list(
 				if(istype(H.glasses,/obj/item/clothing/glasses/meson))
 					H << "\blue You look directly into The [src.name], good thing you had your protective eyewear on!"
 					return
-		M << "\red You look directly into The [src.name] and feel weak."
-		M.apply_effect(3, STUN)
-		for(var/mob/O in viewers(M, null))
-			O.show_message(text("\red <B>[] stares blankly at The []!</B>", M, src), 1)
+			M << "\red You look directly into The [src.name] and feel weak."
+			M.apply_effect(3, STUN)
+			for(var/mob/O in viewers(M, null))
+				O.show_message(text("\red <B>[] stares blankly at []!</B>", M, src), 1)
 	return
 
 
@@ -537,7 +537,8 @@ var/global/list/uneatable = list(
 
 	if(istype(A,/mob/living/))
 		var/mob/living/C = A
-		C.dust()
+		C.spawn_dust()
+		C.gib()
 
 	if(isturf(A))
 		var/turf/T = A

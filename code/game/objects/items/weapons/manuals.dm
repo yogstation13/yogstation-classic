@@ -95,6 +95,46 @@
 				</html>
 				"}
 
+/obj/item/weapon/book/manual/ragent
+	name = "How to be a Recovery Agent"
+	icon_state ="bookNuclear"
+	author = "NanoTransen"		 // Who wrote the thing, can be changed by pen or PC. It is not automatically assigned
+	title = "How to be a Recovery Agent"
+//big pile of shit below.
+
+	dat = {"<html>
+				<head>
+				<style>
+				h1 {font-size: 18px; margin: 15px 0px 5px;}
+				h2 {font-size: 15px; margin: 15px 0px 5px;}
+				li {margin: 2px 0px 2px 15px;}
+				ul {list-style: none; margin: 5px; padding: 0px;}
+				ol {margin: 5px; padding: 0px 15px;}
+				</style>
+				</head>
+				<body>
+				<h3>Recovery Agent manual</h3>
+
+				<h4>The shit!</h4>
+
+				<b><font color='red'>Here is how you be a decent-ish recovery agent. Follow this step by step, breaking any of these will result in your immediate termination and un-whitelisting of the job:</font></b>
+				<p>
+				<b>Step one:</b> <br>Sit in your office. Keep spamming the suit sensors PC to check for deceased personnel<br>
+				<b>Step two:</b> <br>Occasionally use the "bridge console" on the wall to remind users to turn their suit sensors up, or your job is rendered useless<br>
+				<b>Step three:</b> <br>When a body is found on the monitor, leave your humble, small dank abode and hunt the body down.<b><font color='red'>NOTE: Do not, ever, engage anyone in combat. More on this below</font></b> <br>
+				<b>Step four:</b> <br>Use a body-bag to bring the body to the morgue, and alert medbay that there is a body there. Do NOT clone it. Do NOT apprehend the ones responsible, that is NOT your job<br>
+				<b>Step five:</b> <br>Once the body is safely in the morgue (and only the morgue, unless genetics takes it), sit back in your office and wait for the next "outbreak"<br>
+				</p>
+
+				<h4>Some important facts about your job. </h4>
+
+				<b>You are NOT security. You are NOT a head of department. You will NOT challenge a head of department and nor will you meddle in securities affairs. You have a gun ONLY to defend your valuable all-access ID.
+				<br>If you see criminals, you MAY stun them, and take the body they are holding. Nothing more. You MAY report their location, Nothing more.
+				<br>You are NOT security. Your job is to recover bodies to the morgue to ensure more players get to play a fair game. </b><br>
+				</body>
+				</html>
+				"}
+
 /obj/item/weapon/book/manual/hydroponics_pod_people
 	name = "The Human Harvest - From seed to market"
 	icon_state ="bookHydroponicsPodPeople"
@@ -713,7 +753,7 @@
 // A book that links to the wiki
 /obj/item/weapon/book/manual/wiki
 	var/page_link = ""
-	window_size = "800x600"
+	window_size = "970x710"
 
 /obj/item/weapon/book/manual/wiki/attack_self()
 	if(!dat)
@@ -728,7 +768,7 @@
 			</head>
 
 			<body>
-			<iframe width='100%' height='97%' src="[config.wikiurl]/index.php?title=[page_link]&printable=yes&remove_links=1&cc=1" frameborder="0" id="main_frame"></iframe>
+			<iframe width='100%' height='97%' src="[config.wikiurl]/[page_link]?printable=yes&remove_links=1" frameborder="0" id="main_frame"></iframe>
 			</body>
 
 			</html>
@@ -769,7 +809,7 @@
 	icon_state = "book7"
 	author = "University of Bluespace"
 	title = "Teleportation Science - Bluespace for dummies!"
-	page_link = "Telescience"
+	page_link = "Guide_to_telescience"
 
 /obj/item/weapon/book/manual/wiki/engineering_hacking
 	name = "Hacking"

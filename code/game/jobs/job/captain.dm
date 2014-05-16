@@ -4,6 +4,7 @@ Captain
 /datum/job/captain
 	title = "Captain"
 	flag = CAPTAIN
+	department_head = list("Centcom")
 	department_flag = ENGSEC
 	faction = "Station"
 	total_positions = 1
@@ -11,7 +12,7 @@ Captain
 	supervisors = "Nanotrasen officials and Space law"
 	selection_color = "#ccccff"
 	req_admin_notify = 1
-	minimal_player_age = 14
+	minimal_player_age = 20
 
 	default_id = /obj/item/weapon/card/id/gold
 	default_pda = /obj/item/device/pda/captain
@@ -54,6 +55,7 @@ Head of Personnel
 /datum/job/hop
 	title = "Head of Personnel"
 	flag = HOP
+	department_head = list("Captain")
 	department_flag = CIVILIAN
 	faction = "Station"
 	total_positions = 1
@@ -61,7 +63,7 @@ Head of Personnel
 	supervisors = "the captain"
 	selection_color = "#ddddff"
 	req_admin_notify = 1
-	minimal_player_age = 10
+	minimal_player_age = 17
 
 	default_id = /obj/item/weapon/card/id/silver
 	default_pda = /obj/item/device/pda/heads/hop

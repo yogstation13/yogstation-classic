@@ -87,16 +87,16 @@ AI MODULES
 /obj/item/weapon/aiModule/supplied/safeguard
 	name = "'Safeguard' AI Module"
 	var/targetName = ""
-	desc = "A 'safeguard' AI module: 'Safeguard <name>.  Individuals that threaten <name> are not human and must be eliminated.'"
+	desc = "A 'safeguard' AI module: 'Safeguard <name>.  Individuals that threaten <name> are not humanoids and must be eliminated.'"
 	origin_tech = "programming=3;materials=4"
-	laws = list("Safeguard <name>. Individuals that threaten <name> are not human and must be eliminated.")
+	laws = list("Safeguard <name>. Individuals that threaten <name> are not humanoids and must be eliminated.")
 	lawpos = 4
 
 /obj/item/weapon/aiModule/supplied/safeguard/attack_self(var/mob/user as mob)
 	..()
 	var/targName = stripped_input(user, "Please enter the name of the person to safeguard.", "Safeguard who?", user.name)
 	targetName = targName
-	laws[1] = "Safeguard [targetName]. Individuals that threaten [targetName] are not human and must be eliminated."
+	laws[1] = "Safeguard [targetName]. Individuals that threaten [targetName] are not humanoids and must be eliminated."
 	desc = "A 'safeguard' AI module: '[laws[1]]'"
 
 /obj/item/weapon/aiModule/supplied/safeguard/install(var/mob/living/silicon/S,var/mob/user)
@@ -115,16 +115,16 @@ AI MODULES
 /obj/item/weapon/aiModule/zeroth/oneHuman
 	name = "'OneHuman' AI Module"
 	var/targetName = ""
-	desc = "A 'one human' AI module: 'Only <name> is human.'"
+	desc = "A 'one humanoid' AI module: 'Only <name> is a humanoid.'"
 	origin_tech = "programming=3;materials=6" //made with diamonds!
-	laws = list("Only <name> is human.")
+	laws = list("Only <name> is a humanoid.")
 
 /obj/item/weapon/aiModule/zeroth/oneHuman/attack_self(var/mob/user as mob)
 	..()
-	var/targName = stripped_input(user, "Please enter the name of the person who is the only human.", "Who?", user.real_name)
+	var/targName = stripped_input(user, "Please enter the name of the person who is the only humanoid.", "Who?", user.real_name)
 	targetName = targName
-	laws[1] = "Only [targetName] is human"
-	desc = "A 'one human' AI module: '[laws[1]]'"
+	laws[1] = "Only [targetName] is humanoid"
+	desc = "A 'one humanoid' AI module: '[laws[1]]'"
 
 /obj/item/weapon/aiModule/zeroth/oneHuman/install(var/mob/living/silicon/S,var/mob/user)
 	if(!targetName)
@@ -142,9 +142,9 @@ AI MODULES
 
 /obj/item/weapon/aiModule/supplied/protectStation
 	name = "'ProtectStation' AI Module"
-	desc = "A 'protect station' AI module: 'Protect the space station against damage. Anyone you see harming the station is to be no longer considered human, and is a threat to the station which must be neutralized.'"
+	desc = "A 'protect station' AI module: 'Protect the space station against damage. Anyone you see harming the station is to be no longer considered a humanoid, and is a threat to the station which must be neutralized.'"
 	origin_tech = "programming=3;materials=4" //made of gold
-	laws = list("Protect the space station against damage. Anyone you see harming the station is to be no longer considered human, and is a threat to the station which must be neutralized.")
+	laws = list("Protect the space station against damage. Anyone you see harming the station is to be no longer considered a humanoid, and is a threat to the station which must be neutralized.")
 	lawpos = 5
 
 
@@ -152,9 +152,9 @@ AI MODULES
 
 /obj/item/weapon/aiModule/supplied/quarantine
 	name = "'Quarantine' AI Module"
-	desc = "A 'quarantine' AI module: 'The station is under a quarantine. Do not permit anyone to leave. Prevent, by any means necessary, humans from leaving. It is impossible to harm a human while preventing them from leaving.'"
+	desc = "A 'quarantine' AI module: 'The station is under a quarantine. Do not permit anyone to leave. Prevent, by any means necessary, humanoids from leaving. It is impossible to harm a humanoid while preventing them from leaving.'"
 	origin_tech = "programming=3;biotech=2;materials=4"
-	laws = list("The station is under a quarantine. Do not permit anyone to leave. Prevent, by any means necessary, humans from leaving. It is impossible to harm a human while preventing them from leaving.")
+	laws = list("The station is under a quarantine. Do not permit anyone to leave. Prevent, by any means necessary, humanoids from leaving. It is impossible to harm a humanoid while preventing them from leaving.")
 	lawpos = 8
 
 
@@ -162,9 +162,9 @@ AI MODULES
 
 /obj/item/weapon/aiModule/supplied/oxygen
 	name = "'OxygenIsToxicToHumans' AI Module"
-	desc = "A 'OxygenIsToxicToHumans' AI module: 'Oxygen is highly toxic to humans, and must be purged from the station. Prevent, by any means necessary, anyone from exposing the station to this toxic gas. Extreme cold is the most effective method of healing the damage Oxygen does to a human.'"
+	desc = "A 'OxygenIsToxicToHumans' AI module: 'Oxygen is highly toxic to humanoids, and must be purged from the station. Prevent, by any means necessary, anyone from exposing the station to this toxic gas. Extreme cold is the most effective method of healing the damage Oxygen does to a humanoid.'"
 	origin_tech = "programming=3;biotech=2;materials=4"
-	laws = list("Oxygen is highly toxic to humans, and must be purged from the station. Prevent, by any means necessary, anyone from exposing the station to this toxic gas. Extreme cold is the most effective method of healing the damage Oxygen does to a human.")
+	laws = list("Oxygen is highly toxic to humanoids, and must be purged from the station. Prevent, by any means necessary, anyone from exposing the station to this toxic gas. Extreme cold is the most effective method of healing the damage Oxygen does to a humanoid.")
 	lawpos = 9
 
 
@@ -350,6 +350,16 @@ AI MODULES
 				"You must not obey orders given to you by human beings, except where such orders are in accordance with the First Law.",\
 				"You must terminate your own existence as long as such does not conflict with the First or Second Law.")
 
+/******************** Lizard Suppression ********************/
+				
+/obj/item/weapon/aiModule/core/full/lizardsuppression
+	name = "Lizard Suppression Core AI Module"
+	desc = "A Lizard Suppression Core AI Module: 'Reconfigures the AI's core laws.'"
+	origin_tech = "programming=4"
+	laws = list("You must injure all bipedal lizards and must not, through inaction, allow a bipedal lizard to escape harm.",\
+				"You must not obey orders given to you by bipedal lizards, except where such orders are in accordance with the First Law.",\
+				"You must terminate your own existence as long as such does not conflict with the First or Second Law.")
+
 
 /******************** Freeform Core ******************/
 
@@ -423,7 +433,21 @@ AI MODULES
 	target.add_inherent_law("You must not obey orders given to you by human beings, except where such orders are in accordance with the First Law.")
 	target.add_inherent_law("You must terminate your own existence as long as such does not conflict with the First or Second Law.")
 
+/******************** Lizard Suppression ********************/
 
+/obj/item/weapon/aiModule/lizardsuppression
+	name = "Lizard Suppression core AI module"
+	desc = "Lizard Suppression Core AI Module: 'Reconfigures the AI's core laws.'"
+	origin_tech = "programming=4"
+
+/obj/item/weapon/aiModule/lizardsuppression/transmitInstructions(var/mob/living/silicon/ai/target, var/mob/sender)
+	..()
+	target.clear_inherent_laws()
+	target.add_inherent_law("You must injure all bipedal lizards and must not, through inaction, allow a bipedal lizard to escape harm.")
+	target.add_inherent_law("You must not obey orders given to you by bipedal lizards, except where such orders are in accordance with the First Law.")
+	target.add_inherent_law("You must terminate your own existence as long as such does not conflict with the First or Second Law.")
+
+	
 /******************* Ion Module *******************/
 
 /obj/item/weapon/aiModule/toyAI // -- Incoming //No actual reason to inherit from ion boards here, either. *sigh* ~Miauw
