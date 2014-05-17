@@ -110,7 +110,7 @@
 
 /obj/item/toy/toyballoon
 	name = "toy balloon"
-	desc = "A very coloful balloon, fun for all ages."
+	desc = "A very colorful balloon, fun for all ages."
 	throwforce = 0
 	throw_speed = 3
 	throw_range = 7
@@ -190,7 +190,7 @@
 			O.show_message(text("\red <B>[] fires the [src] at []!</B>", user, target), 1, "\red You hear a gunshot", 2)
 
 /obj/item/toy/toyglock
-	name = "toyglock"
+	name = "toy glock"
 	desc = "Oh, looks just like the real thing, but its only a toy."
 	icon = 'icons/obj/toy.dmi'
 	icon_state = "toyglock"
@@ -215,7 +215,7 @@
 			O.show_message(text("\red <B>[] fires the [src] at []!</B>", user, target), 1, "\red You hear a gunshot", 2)
 
 /obj/item/toy/toyflaregun
-	name = "toyflaregun"
+	name = "toy flare gun"
 	desc = "For use in make believe emergencies."
 	icon = 'icons/obj/toy.dmi'
 	icon_state = "toyflare"
@@ -535,7 +535,7 @@
 
 
 /obj/item/toy/toygrenade
-	name = "toygrenade"
+	name = "toy grenade"
 	desc = "Booooom!"
 	icon = 'icons/obj/toy.dmi'
 	icon_state = "toygrenade"
@@ -554,27 +554,27 @@
 /* other toys */
 
 /obj/item/toy/teddybear
-	name = "teddybear"
+	name = "teddy bear"
 	desc = "A soft brown bear you can cuddle with anywhere."
 	icon = 'icons/obj/toy.dmi'
 	icon_state = "teddybear"
 
 /obj/item/toy/stuffedmonkey
-	name = "stuffedmonkey"
+	name = "stuffed monkey"
 	desc = "Looks just like the live ones on station.Except this one is made from plush"
 	icon = 'icons/obj/toy.dmi'
 	icon_state = "stuffedmonkey"
 
 
 /obj/item/toy/flowerbunch
-	name = "flowerbunch"
+	name = "flower bunch"
 	desc = "Oh, a bunch of flowers to show you care!"
 	icon = 'icons/obj/toy.dmi'
 	icon_state = "flowerbunch"
 
 
 /*/obj/item/toy/snowglobe
-	name = "snowglobe"
+	name = "snow globe"
 	desc = "Shake it up to watch it snow" // have not figured out how to animate shaking.
 	icon_state = "snowglobe"*/
 
