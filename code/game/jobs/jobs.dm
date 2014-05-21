@@ -27,9 +27,7 @@ var/const/MMEDIC			=(1<<7)
 var/const/TOUR				=(1<<8)
 var/const/WAITER			=(1<<9)
 var/const/RA				=(1<<10) // I know these are not medsci job, but only place I am able to stick to get gui to work proper.
-
-
-
+var/const/CLERK				=(1<<11)
 
 
 
@@ -116,6 +114,7 @@ var/list/civilian_positions = list(
 	"Clown",
 	"Mime",
 	"Assistant",
+	"Clerk",
 	"Tourist"
 )
 
@@ -138,7 +137,8 @@ var/list/yog_positions = list(
 	"Recovery Agent",
 	"Waiter",
 	"Tourist",
-	"Mining Medic"
+	"Mining Medic",
+	"Clerk"
 )
 
 /proc/guest_jobbans(var/job)

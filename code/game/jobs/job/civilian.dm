@@ -30,6 +30,32 @@ Tourist
 		H.equip_to_slot_or_del(new /obj/item/device/camera_film(H.back), slot_r_store)
 
 /*
+Clerk
+*/
+
+
+
+/datum/job/clerk
+	title = "Clerk"
+	flag = CLERK
+	department_head = list("Head of Personnel")
+	department_flag = MEDSCI
+	faction = "Station"
+	total_positions = 1
+	spawn_positions = 1
+	supervisors = "the head of personnel"
+	selection_color = "#dddddd"
+	access = list()			//See /datum/job/assistant/get_access()
+	minimal_access = list()	//See /datum/job/assistant/get_access()
+
+	default_headset = /obj/item/device/radio/headset/headset_srv
+
+/datum/job/clerk/equip_items(var/mob/living/carbon/human/H)
+	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/clerk(H), slot_w_uniform)
+	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(H), slot_shoes)
+	H.equip_to_slot_or_del(new /obj/item/clothing/head/clerkcap(H), slot_head)
+
+/*
 Bartender
 */
 /datum/job/bartender

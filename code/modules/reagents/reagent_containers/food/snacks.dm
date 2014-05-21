@@ -609,10 +609,10 @@
 		reagents.add_reagent("nutriment", 6)
 		bitesize = 3
 
-/obj/item/weapon/reagent_containers/food/snacks/faggot
+/obj/item/weapon/reagent_containers/food/snacks/meatball
 	name = "meatball"
 	desc = "A great meal all round. Not a cord of wood."
-	icon_state = "faggot"
+	icon_state = "meatball"
 	New()
 		..()
 		reagents.add_reagent("nutriment", 3)
