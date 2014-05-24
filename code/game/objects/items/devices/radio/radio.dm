@@ -236,10 +236,10 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 	if(jammers)
 		for(var/obj/item/device/radio/syndicate/R in world)
 			if(R.jamming)
-				var/range=2
+				var/range=1
 				if(R.anchored)
-					range=7
-				if(get_dist(R,src)<range)
+					range=6
+				if(get_dist(R,src)<=range)
 					return
 
 	if(GLOBAL_RADIO_TYPE == 1) // NEW RADIO SYSTEMS: By Doohl
@@ -665,10 +665,10 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 	if(jammers)
 		for(var/obj/item/device/radio/syndicate/R in world)
 			if(R.jamming)
-				var/range=2
+				var/range=1
 				if(R.anchored)
-					range=7
-				if(get_dist(R,src)<range)
+					range=6
+				if(get_dist(R,src)<=range)
 					return -1
 	if (!freq) //recieved on main frequency
 		if (!listening)
