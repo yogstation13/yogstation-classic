@@ -860,3 +860,18 @@
 					/obj/item/weapon/stock_parts/cell/high = 12, /obj/item/device/assembly/prox_sensor = 3,/obj/item/device/assembly/signaler = 3,/obj/item/device/healthanalyzer = 3,
 					/obj/item/weapon/scalpel = 2,/obj/item/weapon/circular_saw = 2,/obj/item/weapon/tank/anesthetic = 2,/obj/item/clothing/mask/breath/medical = 5,
 					/obj/item/weapon/screwdriver = 5,/obj/item/weapon/crowbar = 5)
+
+//Clerk//
+
+/obj/machinery/vending/gifts
+	name = "gift vendor"
+	desc = "A vending machine for the gift shop."
+	icon_state = "gifts"
+	icon_deny = "gifts-deny"
+	product_slogans = "Toys For All!;Oh its a Gift!;A Gift for Your Loved ones!;Purchase more Gifts, Now!"
+	vend_delay = 15
+	vend_reply = "Thank you for using Gift Vendor!"
+	products = list(/obj/item/toy/heartballoon = 3,/obj/item/toy/toyballoon = 3,/obj/item/toy/toyglock = 3,/obj/item/toy/toyflaregun = 3,/obj/item/toy/toygrenade = 15,/obj/item/toy/teddybear = 5,
+	/obj/item/toy/stuffedmonkey = 5, /obj/item/toy/flowerbunch = 5, /obj/item/device/camera_film = 30, /obj/item/weapon/storage/photo_album = 5, /obj/item/weapon/storage/photobook = 5 , /obj/item/weapon/storage/bag/photo = 5) //Pretty much everything that had a chance to spawn.
+
+

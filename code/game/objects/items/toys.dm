@@ -218,8 +218,8 @@
 	name = "toy flare gun"
 	desc = "For use in make believe emergencies."
 	icon = 'icons/obj/toy.dmi'
-	icon_state = "toyflare"
-	item_state = "toyflare"
+	icon_state = "toyflaregun"
+	item_state = "toyflaregun"
 	flags =  CONDUCT
 	slot_flags = SLOT_BELT
 	w_class = 3.0
