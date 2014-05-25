@@ -309,13 +309,18 @@ Release Pressure: <A href='?src=\ref[src];pressure_adj=-1000'>-</A> <A href='?sr
 					release_log += "Valve was <b>opened</b> by [usr] ([usr.ckey]), starting the transfer into the [holding]<br>"
 				else
 					release_log += "Valve was <b>opened</b> by [usr] ([usr.ckey]), starting the transfer into the <font color='red'><b>air</b></font><br>"
+					var/area/A = get_area(get_turf(src))
+					message_admins("Canister opened by [usr]/[usr.ckey](<A HREF='?_src_=holder;adminmoreinfo=\ref[usr]'>?</A>) at <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[src.x];Y=[src.y];Z=[src.z]'>[A.name]</a>", 0, 1)
 			valve_open = !valve_open
 
 		if (href_list["remove_tank"])
 			if(holding)
 				holding.loc = loc
 				holding = null
-
+				if(valve_open)
+					var/area/A = get_area(get_turf(src))
+					message_admins("Tank removed from canister with open valve by [usr]/[usr.ckey](<A HREF='?_src_=holder;adminmoreinfo=\ref[usr]'>?</A>) at <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[src.x];Y=[src.y];Z=[src.z]'>[A.name]</a>", 0, 1)
+				
 		if (href_list["pressure_adj"])
 			var/diff = text2num(href_list["pressure_adj"])
 			if(diff > 0)
