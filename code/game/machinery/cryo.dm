@@ -100,7 +100,13 @@
 		usr << "<span class='notice'>Too far away to view contents.</span>"
 
 /obj/machinery/atmospherics/unary/cryo_cell/attack_hand(mob/user)
-	ui_interact(user)
+	if(stat)
+		if(!state_open)
+			open_machine()
+		else
+			close_machine()
+	else
+		ui_interact(user)
 
 
  /**
@@ -186,6 +192,8 @@
 
 	if(href_list["switchOn"])
 		if(!state_open)
+			if(occupant)
+				occupant.ExtinguishMob()
 			on = 1
 
 	if(href_list["open"])
@@ -196,6 +204,8 @@
 		if(close_machine() == usr)
 			var/datum/nanoui/ui = nanomanager.get_open_ui(usr, src, "main")
 			ui.close()
+			if(occupant)
+				occupant.ExtinguishMob()
 			on = 1
 	if(href_list["switchOff"])
 		on = 0
