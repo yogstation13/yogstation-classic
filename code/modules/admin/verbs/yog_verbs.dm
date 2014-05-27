@@ -16,4 +16,5 @@
 		GM.volume=2500
 		for(var/turf/simulated/floor/F in range(range,T))
 			F.copy_air(GM)
-
+			F.overlays -= plmaster
+			F.overlays -= slmaster
