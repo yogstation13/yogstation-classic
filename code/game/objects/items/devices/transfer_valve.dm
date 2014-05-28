@@ -121,7 +121,7 @@
 /obj/item/device/transfer_valve/process_activation(var/obj/item/device/D)
 	if(toggle)
 		toggle = 0
-		toggle_valve()
+		toggle_valve(D)
 		spawn(50) // To stop a signal being spammed from a proxy sensor constantly going off or whatever
 			toggle = 1
 
@@ -163,7 +163,7 @@
 	it explodes properly when it gets a signal (and it does).
 	*/
 
-/obj/item/device/transfer_valve/proc/toggle_valve()
+/obj/item/device/transfer_valve/proc/toggle_valve(var/obj/item/device/D)
 	if(valve_open==0 && (tank_one && tank_two))
 		valve_open = 1
 		var/turf/bombturf = get_turf(src)
@@ -174,8 +174,13 @@
 			attacher_name = "Unknown"
 		else
 			attacher_name = "[attacher.name]([attacher.ckey])"
-
-		var/log_str1 = "Bomb valve opened in "
+			
+		var/signaler_info = ""
+		if(istype(D,/obj/item/device/assembly/signaler))
+			var/obj/item/device/assembly/signaler/S = D
+			signaler_info = "by remote signal [S.code]/[format_frequency(S.frequency)] "
+			
+		var/log_str1 = "Bomb valve opened [signaler_info]in "
 		var/log_str2 = "with [attached_device ? attached_device : "no device"] attacher: [attacher_name]"
 
 		var/log_attacher = ""
