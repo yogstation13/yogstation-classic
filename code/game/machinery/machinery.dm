@@ -236,6 +236,11 @@ Class Procs:
 		return
 	return 1
 
+/mob/living/silicon/pai/canUseTopic()
+	if(stat)
+		return
+	return 1
+
 /mob/living/silicon/robot/canUseTopic()
 	if(stat || lockcharge || stunned || weakened)
 		return
