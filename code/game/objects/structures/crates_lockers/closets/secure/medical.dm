@@ -183,7 +183,7 @@
 		else
 			new /obj/item/weapon/storage/backpack/satchel_med(src)
 		new /obj/item/weapon/storage/firstaid/o2(src)
-		new /obj/item/clothing/shoes/white(src)
+		new /obj/item/clothing/shoes/sneakers/white(src)
 		new /obj/item/clothing/under/rank/mmedical(src)
 		new /obj/item/weapon/storage/firstaid/regular(src)
 		new /obj/item/device/radio/headset/headset_cargo(src)

@@ -19,7 +19,7 @@ Tourist
 
 /datum/job/tourist/equip_items(var/mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/tourist(H), slot_w_uniform)
-	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(H), slot_shoes)
+	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/black(H), slot_shoes)
 	var/obj/item/device/camera/U = new(H)
 	U.name = "expensive camera"
 	H.equip_to_slot_or_del(U, slot_r_hand)
@@ -47,14 +47,14 @@ Clerk
 	spawn_positions = 1
 	supervisors = "the head of personnel"
 	selection_color = "#dddddd"
-	access = list()			//See /datum/job/assistant/get_access()
-	minimal_access = list()	//See /datum/job/assistant/get_access()
+	access = list(access_manufacturing)			//See /datum/job/assistant/get_access()
+	minimal_access = list(access_manufacturing)	//See /datum/job/assistant/get_access()
 
 	default_headset = /obj/item/device/radio/headset/headset_srv
 
 /datum/job/clerk/equip_items(var/mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/clerk(H), slot_w_uniform)
-	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(H), slot_shoes)
+	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/black(H), slot_shoes)
 	H.equip_to_slot_or_del(new /obj/item/clothing/head/clerkcap(H), slot_head)
 
 /*
@@ -154,7 +154,7 @@ Waiter
 
 /datum/job/waiter/equip_items(var/mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/white(H), slot_gloves)
-	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(H), slot_shoes)
+	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/black(H), slot_shoes)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/waiter(H), slot_w_uniform)
 	var/obj/item/clothing/under/U = new /obj/item/clothing/under/waiter(H)
 	U.hastie = new /obj/item/clothing/tie/waistcoat(U)

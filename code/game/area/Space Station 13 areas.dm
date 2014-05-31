@@ -927,7 +927,7 @@ proc/process_ghost_teleport_locs()
 	music = "signal"
 
 /area/gateway
-	name = "\improper Gateway"
+	name = "\improper Gift Shop"
 	icon_state = "teleporter"
 	music = "signal"
 
@@ -1220,7 +1220,7 @@ proc/process_ghost_teleport_locs()
 	icon_state = "storage"
 
 /area/storage/emergency
-	name = "Starboard Emergency Storage"
+	name = "Recovery Agent's office"
 	icon_state = "emergencystorage"
 
 /area/storage/emergency2

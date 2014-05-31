@@ -227,3 +227,9 @@
 	new /obj/item/clothing/mask/gas/sexymime(src.loc)
 	new /obj/item/clothing/under/sexymime(src.loc)
 	qdel(src)
+
+/obj/effect/landmark/collectible/New()
+	var/list/options = typesof(/obj/item/toy/prize) - /obj/item/toy/prize
+	var/PICK = options[rand(1,options.len)]
+	new PICK(src.loc)
+	qdel(src)

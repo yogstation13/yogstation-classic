@@ -321,17 +321,3 @@
 		visible_message("<span class='danger'>[user] successfully broke out of [src]!</span>")
 		user << "<span class='notice'>You successfully break out of [src]!</span>"
 		open()
-
-/*Clerk Locker*/
-
-/obj/structure/closet/secure_closet/clerk
-	name = "clerk's locker"
-	anchored = 1
-	var/id = null
-
-	New()
-		new /obj/item/device/radio/headset/headset_srv ( src )
-		new /obj/item/clothing/under/rank/clerk ( src )
-		new /obj/item/clothing/shoes/black ( src )
-		new /obj/item/clothing/head/clerkcap ( src )
-		return

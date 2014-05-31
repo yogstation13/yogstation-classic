@@ -89,7 +89,7 @@ Mining Medic
 
 	H.equip_to_slot_or_del(new /obj/item/weapon/reagent_containers/hypospray/mini(H.back), slot_in_backpack)
 	H.equip_to_slot_or_del(new /obj/item/weapon/storage/firstaid/o2(H.back), slot_in_backpack)
-	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/white(H), slot_shoes)
+	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/white(H), slot_shoes)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/mmedical(H), slot_w_uniform)
 	H.equip_to_slot_or_del(new /obj/item/weapon/storage/firstaid/regular(H), slot_l_hand)
 	H.equip_to_slot_or_del(new /obj/item/device/flashlight/pen(H), slot_s_store)

@@ -338,3 +338,17 @@
 	new /obj/item/clothing/shoes/sneakers/brown(src)
 	new /obj/item/clothing/shoes/sneakers/white(src)
 	return
+
+/*Clerk Locker*/
+
+/obj/structure/closet/wardrobe/clerk
+	name = "clerk's locker"
+	anchored = 1
+	icon_state = "mixed"
+
+	New()
+		new /obj/item/device/radio/headset/headset_srv ( src )
+		new /obj/item/clothing/under/rank/clerk ( src )
+		new /obj/item/clothing/shoes/sneakers/black ( src )
+		new /obj/item/clothing/head/clerkcap ( src )
+		return
