@@ -18,6 +18,7 @@
 	var/invis = 0
 	var/cloaking = 0
 	stepsound = null
+	turnsound = null
 
 /obj/mecha/combat/reticence/loaded/New()
 	..()

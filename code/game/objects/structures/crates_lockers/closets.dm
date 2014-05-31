@@ -163,12 +163,6 @@
 			A.loc = src.loc
 		qdel(src)
 
-/obj/structure/closet/meteorhit(obj/O as obj)
-	if(O.icon_state == "flaming")
-		for(var/mob/M in src)
-			M.meteorhit(O)
-		src.dump_contents()
-		qdel(src)
 
 /obj/structure/closet/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(src.opened)
@@ -327,17 +321,3 @@
 		visible_message("<span class='danger'>[user] successfully broke out of [src]!</span>")
 		user << "<span class='notice'>You successfully break out of [src]!</span>"
 		open()
-
-/*Clerk Locker*/
-
-/obj/structure/closet/secure_closet/clerk
-	name = "clerk's locker"
-	anchored = 1
-	var/id = null
-
-	New()
-		new /obj/item/device/radio/headset/headset_srv ( src )
-		new /obj/item/clothing/under/rank/clerk ( src )
-		new /obj/item/clothing/shoes/black ( src )
-		new /obj/item/clothing/head/clerkcap ( src )
-		return

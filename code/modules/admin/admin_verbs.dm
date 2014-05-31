@@ -14,6 +14,8 @@ var/list/admin_verbs_default = list(
 	/client/proc/investigate_show,		/*various admintools for investigation. Such as a singulo grief-log*/
 	/client/proc/secrets,
 	/client/proc/reload_admins,
+	/client/proc/cmd_admin_pm_context,	/*right-click adminPM interface*/
+	/client/proc/cmd_admin_pm_panel,		/*admin-pm list*/
 	/client/proc/reload_donators
 	)
 var/list/admin_verbs_admin = list(
@@ -35,8 +37,6 @@ var/list/admin_verbs_admin = list(
 	/datum/admins/proc/view_txt_log,	/*shows the server log (diary) for today*/
 	/datum/admins/proc/view_atk_log,
 	/datum/admins/proc/view_admin_log,	/*shows the server combat-log, doesn't do anything presently*/
-	/client/proc/cmd_admin_pm_context,	/*right-click adminPM interface*/
-	/client/proc/cmd_admin_pm_panel,	/*admin-pm list*/
 	/client/proc/cmd_admin_subtle_message,	/*send an message to somebody as a 'voice in their head'*/
 	/client/proc/cmd_admin_delete,		/*delete an instance/object/mob/etc*/
 	/client/proc/cmd_admin_check_contents,	/*displays the contents of an instance*/
