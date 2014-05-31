@@ -58,6 +58,13 @@ var/list/adminhelp_ignored_words = list("unknown","the","a","an","of","monkey","
 			//ckeys
 			ckeys[M.ckey] = M
 
+	var/list/jobs = list()
+	var/list/job_count = list()
+	for(var/datum/mind/M in ticker.minds)
+		var/T = lowertext(M.assigned_role)
+		jobs[T] = M.current
+		job_count[T]++ //count how many of this job was found so we only show link for singular jobs
+	
 	var/ai_found = 0
 	msg = ""
 	var/list/mobs_found = list()
@@ -73,6 +80,17 @@ var/list/adminhelp_ignored_words = list("unknown","the","a","an","of","monkey","
 						found = surnames[word]
 						if(!found)
 							found = forenames[word]
+					if(!found)
+						var/T = lowertext(original_word)
+						if(T == "cap") T = "captain"
+						if(T == "hop") T = "head of personnel"
+						if(T == "cmo") T = "chief medical officer"
+						if(T == "ce")  T = "chief engineer"
+						if(T == "hos") T = "head of security"
+						if(T == "rd")  T = "research director"
+						if(T == "qm")  T = "quartermaster"
+						if(job_count[T] == 1) //skip jobs with multiple results
+							found = jobs[T]
 					if(found)
 						if(!(found in mobs_found))
 							mobs_found += found
