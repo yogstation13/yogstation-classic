@@ -14,7 +14,7 @@
 		GM.nitrogen=82
 		GM.temperature=293
 		GM.volume=2500
-		for(var/turf/simulated/floor/F in range(range,T))
+		for(var/turf/simulated/F in range(range,T))
 			F.copy_air(GM)
 			F.overlays -= plmaster
 			F.overlays -= slmaster
