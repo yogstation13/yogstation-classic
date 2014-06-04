@@ -266,7 +266,7 @@ var/list/department_radio_keys = list(
 			continue //skip monkeys and leavers
 		if (istype(M, /mob/new_player))
 			continue
-		if(M.stat == DEAD && M.client && (M.client.prefs.toggles & CHAT_GHOSTEARS) && src.client) // src.client is so that ghosts don't have to listen to mice
+		if(M.stat == DEAD && M.client && M.client.prefs && (M.client.prefs.toggles & CHAT_GHOSTEARS) && src.client) // src.client is so that ghosts don't have to listen to mice
 			listening|=M
 
 	var/turf/T = get_turf(src)

@@ -86,9 +86,10 @@
 						user << "<span class='notice'>Now adding plating...</span>"
 						if (do_after(user,40))
 							if(!src || !S || S.amount < 2) return
+							var/turf/Tsrc = get_turf(src)
+							if(!Tsrc) return
 							S.use(2)
 							user << "<span class='notice'>You added the plating!</span>"
-							var/turf/Tsrc = get_turf(src)
 							Tsrc.ChangeTurf(/turf/simulated/wall)
 							for(var/turf/simulated/wall/X in Tsrc.loc)
 								if(X)	transfer_fingerprints_to(X)

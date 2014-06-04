@@ -22,7 +22,7 @@
 		var/datum/reagents/R = src.reagents
 		var/fillevel = gulp_size
 
-		if(!R.total_volume || !R)
+		if(!R || !R.total_volume)
 			user << "<span class='alert'> None of [src] left, oh no!</span>"
 			return 0
 
