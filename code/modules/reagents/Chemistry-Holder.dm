@@ -319,7 +319,7 @@ datum
 				return 1
 
 			check_gofast(var/mob/M)
-				if(istype(M, /mob))
+				if(istype(M, /mob) && M.reagents)
 					if(M.reagents.has_reagent("hyperzine")||M.reagents.has_reagent("unholywater")||M.reagents.has_reagent("nuka_cola"))
 						return 1
 					else
