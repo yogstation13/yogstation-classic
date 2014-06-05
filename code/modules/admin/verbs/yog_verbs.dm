@@ -14,7 +14,19 @@
 		GM.nitrogen=82
 		GM.temperature=293
 		GM.volume=2500
-		for(var/turf/simulated/floor/F in range(range,T))
+		for(var/turf/simulated/F in range(range,T))
+			if(F.blocks_air)
+			//skip walls
+				continue
+			if(istype(F, /turf/simulated/floor/airless) || istype(F, /turf/simulated/floor/engine/vacuum) || istype(F, /turf/simulated/floor/plating/airless) || istype(F, /turf/simulated/floor/engine/n2o))
+			//skip some special turf types
+				continue
+			if(istype(F.loc, /area/toxins/server) || istype(F.loc, /area/tcommsat/server))
+			//skip superchilled rooms
+				continue
+			if(istype(F, /turf/simulated/floor/engine) && istype(F.loc, /area/atmos))
+			//skip atmos tanks
+				continue
 			F.copy_air(GM)
 			F.overlays -= plmaster
 			F.overlays -= slmaster
