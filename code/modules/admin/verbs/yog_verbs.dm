@@ -18,7 +18,7 @@
 			if(F.blocks_air)
 			//skip walls
 				continue
-			if(istype(F, /turf/simulated/floor/airless) || istype(F, /turf/simulated/floor/engine/vacuum) || istype(F, /turf/simulated/floor/plating/airless) || istype(F, /turf/simulated/floor/engine/n2o))
+			if(istype(F, /turf/simulated/floor/airless) || istype(F, /turf/simulated/floor/engine/vacuum) || istype(F, /turf/simulated/floor/plating/airless) || istype(F, /turf/simulated/floor/engine/n20))
 			//skip some special turf types
 				continue
 			if(istype(F.loc, /area/toxins/server) || istype(F.loc, /area/tcommsat/server))
