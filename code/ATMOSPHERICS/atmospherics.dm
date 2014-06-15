@@ -95,5 +95,6 @@ obj/machinery/atmospherics/attackby(var/obj/item/weapon/W as obj, var/mob/user a
 		if(!t) return
 		if(!in_range(src, usr) && src.loc != usr)	return
 		name = t
+		add_fingerprint(usr)
 	else
 		return ..()
