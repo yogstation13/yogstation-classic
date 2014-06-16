@@ -87,5 +87,14 @@ obj/machinery/atmospherics/attackby(var/obj/item/weapon/W as obj, var/mob/user a
 						new /obj/item/pipe_meter(T)
 						qdel(meter)
 			qdel(src)
+	else if(istype(W, /obj/item/weapon/pen))
+		if(istype(src, /obj/machinery/atmospherics/unary/vent_pump) || istype(src, /obj/machinery/atmospherics/unary/vent_scrubber))
+			//these are being named elsewhere automatically
+			return
+		var/t = copytext(stripped_input(user, "Enter name for \the [src]","Enter name"),1,32)
+		if(!t) return
+		if(!in_range(src, usr) && src.loc != usr)	return
+		name = t
+		add_fingerprint(usr)
 	else
 		return ..()
