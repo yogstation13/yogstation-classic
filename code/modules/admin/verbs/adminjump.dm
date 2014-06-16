@@ -118,13 +118,17 @@
 		M.loc = get_turf(usr)
 		feedback_add_details("admin_verb","GK") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
-/client/proc/sendmob(var/mob/M in sortmobs())
+/client/proc/sendmob(var/mob/M in sortmobs(),var/N=null)
 	set category = "Admin"
 	set name = "Send Mob"
 	if(!src.holder)
 		src << "Only administrators may use this command."
 		return
-	var/area/A = input(usr, "Pick an area.", "Pick an area") in return_sorted_areas()
+	var/area/A = null
+	if(N)
+		A = locate(N)
+	else
+		A = input(usr, "Pick an area.", "Pick an area") in return_sorted_areas()
 	if(A)
 		M.loc = pick(get_area_turfs(A))
 		feedback_add_details("admin_verb","SMOB") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
