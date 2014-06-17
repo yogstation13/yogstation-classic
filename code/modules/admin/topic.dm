@@ -2250,3 +2250,6 @@
 	else if(href_list["ac_set_signature"])
 		src.admincaster_signature = adminscrub(input(usr, "Provide your desired signature", "Network Identity Handler", ""))
 		src.access_news_network()
+		
+	else if(href_list["sendtoprison"])
+		usr.client.sendmob(locate(href_list["sendtoprison"]),/area/centcom/prison)
