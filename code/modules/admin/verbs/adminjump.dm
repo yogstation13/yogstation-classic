@@ -6,7 +6,11 @@
 		src << "Only administrators may use this command."
 		return
 
-	usr.loc = pick(get_area_turfs(A))
+	var/list/L = list()
+	for(var/turf/T in get_area_turfs(A))
+		if(!T.density)
+			L += T
+	usr.loc = pick(L)
 	log_admin("[key_name(usr)] jumped to [A]")
 	message_admins("[key_name_admin(usr)] jumped to [A]", 1)
 	feedback_add_details("admin_verb","JA") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
@@ -130,7 +134,11 @@
 	else
 		A = input(usr, "Pick an area.", "Pick an area") in return_sorted_areas()
 	if(A)
-		M.loc = pick(get_area_turfs(A))
+		var/list/L = list()
+		for(var/turf/T in get_area_turfs(A))
+			if(!T.density)
+				L += T
+		M.loc = pick(L)
 		feedback_add_details("admin_verb","SMOB") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 		log_admin("[key_name(usr)] teleported [key_name(M)] to [A]")
