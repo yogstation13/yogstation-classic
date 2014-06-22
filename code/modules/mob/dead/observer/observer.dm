@@ -63,7 +63,7 @@ Works together with spawning an observer, noted above.
 			var/mob/dead/observer/ghost = new(src)	//Transfer safety to observer spawning proc.
 			ghost.can_reenter_corpse = can_reenter_corpse
 			if(!can_reenter_corpse)
-			 add_logs(src, src, "ghosted permanently")
+				add_logs(src, src, "ghosted permanently")
 			ghost.key = key
 			return ghost
 
