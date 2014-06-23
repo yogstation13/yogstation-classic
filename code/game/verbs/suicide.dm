@@ -70,6 +70,7 @@
 							"\red <b>[src] is twisting \his own neck! It looks like \he's trying to commit suicide.</b>", \
 							"\red <b>[src] is holding \his breath! It looks like \he's trying to commit suicide.</b>"))
 		adjustOxyLoss(max(175 - getToxLoss() - getFireLoss() - getBruteLoss() - getOxyLoss(), 0))
+		add_logs(src, src, "committed suicide")
 		updatehealth()
 
 /mob/living/carbon/brain/verb/suicide()
