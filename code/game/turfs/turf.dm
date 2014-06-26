@@ -48,7 +48,7 @@
 	return 0
 
 /turf/Enter(atom/movable/mover as mob|obj, atom/forget as mob|obj|turf|area)
-	if(movement_disabled && usr.ckey != movement_disabled_exception)
+	if(movement_disabled && (usr.ckey != movement_disabled_exception))
 		usr << "\red Movement is admin-disabled." //This is to identify lag problems
 		return
 	if (!mover)

@@ -282,7 +282,7 @@ What a mess.*/
 			if ("Browse Record")
 				var/datum/data/record/R = locate(href_list["d_rec"])
 				var/S = locate(href_list["d_rec"])
-				if (!( data_core.general.Find(R) ))
+				if (!( data_core.general.Find(R) ) || !R)
 					temp = "Record Not Found!"
 				else
 					for(var/datum/data/record/E in data_core.security)

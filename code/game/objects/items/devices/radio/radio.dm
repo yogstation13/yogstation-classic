@@ -281,6 +281,8 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 		var/real_name = M.real_name // mob's real name
 		var/mobkey = "none" // player key associated with mob
 		var/voicemask = 0 // the speaker is wearing a voice mask
+		var/voicename = M.voice_name
+		var/voicemessage = M.voice_message
 		if(M.client)
 			mobkey = M.key // assign the mob's key
 
@@ -418,7 +420,6 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 		for(var/obj/machinery/telecomms/receiver/R in telecomms_list)
 			R.receive_signal(signal)
 
-
 		sleep(rand(10,25)) // wait a little...
 
 		if(signal.data["done"] && position.z in signal.data["level"])
@@ -431,8 +432,8 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 		//THIS IS TEMPORARY.
 		if(!connection)	return	//~Carn
 
-		Broadcast_Message(connection, M, voicemask, M.voice_message,
-						  src, message, displayname, jobname, real_name, M.voice_name,
+		Broadcast_Message(connection, M, voicemask, voicemessage,
+						  src, message, displayname, jobname, real_name, voicename,
 		                  filter_type, signal.data["compression"], list(position.z), connection.frequency)
 
 
@@ -895,7 +896,7 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 			else
 				anchored=1
 				icon_state="syn_jammer"
-				
+
 /obj/item/device/radio/syndicate/attack_hand(var/mob/user)
 	if(anchored)
 		return
