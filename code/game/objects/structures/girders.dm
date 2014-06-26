@@ -115,6 +115,7 @@
 								S.use(1)
 								user << "<span class='notice'>Wall fully reinforced!</span>"
 								var/turf/Tsrc = get_turf(src)
+								if(!Tsrc) return
 								Tsrc.ChangeTurf(/turf/simulated/wall/r_wall)
 								for(var/turf/simulated/wall/r_wall/X in Tsrc.loc)
 									if(X)	transfer_fingerprints_to(X)

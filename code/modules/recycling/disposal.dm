@@ -694,6 +694,8 @@
 	// update the icon_state to reflect hidden status
 	proc/update()
 		var/turf/T = src.loc
+		if(!T)
+			return
 		hide(T.intact && !istype(T,/turf/space))	// space never hides pipes
 
 	// hide called by levelupdate if turf intact status changes

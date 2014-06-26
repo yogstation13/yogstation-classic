@@ -37,7 +37,6 @@
 
 		//stage = 1
 		//if (istype(src, /mob/living/silicon/ai)) // Are we not sure what we are?
-		var/blind = 0
 		//stage = 2
 		var/area/loc = null
 		if (istype(T, /turf))
@@ -47,9 +46,9 @@
 				//stage = 4
 				if (!loc.master.power_equip && !istype(src.loc,/obj/item))
 					//stage = 5
-					blind = 1
+					blinded = 1
 
-		if (!blind)
+		if (!blinded)
 			//stage = 4.5
 			if (src.blind.layer != 0)
 				src.blind.layer = 0
@@ -79,7 +78,6 @@
 		else
 
 			//stage = 6
-			src.blind.screen_loc = "1,1 to 15,15"
 			if (src.blind.layer!=18)
 				src.blind.layer = 18
 			src.sight = src.sight&~SEE_TURFS

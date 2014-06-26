@@ -10,7 +10,9 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 /datum/round_event_control/immovable_rod
 	name = "Immovable Rod"
 	typepath = /datum/round_event/immovable_rod
-	max_occurrences = 5
+	max_occurrences = 0
+	weight = -1
+
 
 /datum/round_event/immovable_rod
 	announceWhen = 5
@@ -19,8 +21,8 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 	priority_announce("What the fuck was that?!", "General Alert")
 
 /datum/round_event/immovable_rod/start()
-	message_admins("Random Event: Immovable Rod")
-	var/startx = 0
+	message_admins("Random Event: Immovable Rod - \red DENIED")
+	/*var/startx = 0
 	var/starty = 0
 	var/endy = 0
 	var/endx = 0
@@ -49,7 +51,7 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 			endx = 199
 
 	//rod time!
-	new /obj/effect/immovablerod(locate(startx, starty, 1), locate(endx, endy, 1))
+	new /obj/effect/immovablerod(locate(startx, starty, 1), locate(endx, endy, 1))*/
 
 
 /obj/effect/immovablerod

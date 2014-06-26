@@ -39,7 +39,7 @@
 	if(affecting)
 		affecting.grabbed_by -= src
 		affecting = null
-	if(assailant)
+	if(assailant && assailant.client)
 		assailant.client.screen -= hud
 		assailant = null
 	qdel(hud)
@@ -116,7 +116,8 @@
 
 
 /obj/item/weapon/grab/proc/s_click(obj/screen/S)
-	if(!affecting)
+
+	if(!confirm())
 		return
 	if(state == GRAB_UPGRADING)
 		return
@@ -124,9 +125,7 @@
 		return
 	if(world.time < (last_upgrade + UPGRADE_COOLDOWN))
 		return
-	if(!assailant.canmove || assailant.lying)
-		qdel(src)
-		return
+
 
 	last_upgrade = world.time
 
@@ -156,13 +155,7 @@
 				hud.icon_state = "disarm/kill1"
 				state = GRAB_UPGRADING
 				if(do_after(assailant, UPGRADE_KILL_TIMER))
-					if(state == GRAB_KILL)
-						return
-					if(!affecting)
-						qdel(src)
-						return
-					if(!assailant.canmove || assailant.lying)
-						qdel(src)
+					if(!confirm())
 						return
 					state = GRAB_KILL
 					assailant.visible_message("<span class='danger'>[assailant] has tightened \his grip on [affecting]'s neck!</span>")
@@ -171,6 +164,8 @@
 					assailant.changeNext_move(10)
 					affecting.losebreath += 1
 				else
+					if(!confirm())
+						return
 					assailant.visible_message("<span class='warning'>[assailant] was unable to tighten \his grip on [affecting]'s neck!</span>")
 					hud.icon_state = "disarm/kill"
 					state = GRAB_NECK
@@ -181,7 +176,9 @@
 	if(!assailant || !affecting)
 		qdel(src)
 		return 0
-
+	if(!assailant.canmove || assailant.lying)
+		qdel(src)
+		return 0
 	if(affecting)
 		if(!isturf(assailant.loc) || ( !isturf(affecting.loc) || assailant.loc != affecting.loc && get_dist(assailant, affecting) > 1) )
 			qdel(src)

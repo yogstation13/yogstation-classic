@@ -295,7 +295,8 @@
 	STORAGE = null
 
 /obj/machinery/suit_storage_unit/proc/eject(atom/movable/ITEM)
-	ITEM.loc = src.loc
+	if(ITEM)
+		ITEM.loc = src.loc
 
 /obj/machinery/suit_storage_unit/proc/dump_everything()
 	for(var/obj/item/ITEM in src)
@@ -469,6 +470,8 @@
 		src.isopen = 0 //Close the thing after the guy gets inside
 		src.update_icon()
 
+		if(user != M)
+			add_logs(user, M, "stuffed", 1, null, "into a suit storage unit")
 		src.add_fingerprint(user)
 		src.updateUsrDialog()
 		return

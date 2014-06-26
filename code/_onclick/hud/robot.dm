@@ -143,7 +143,7 @@
 	update_robot_modules_display()
 
 /datum/hud/proc/update_robot_modules_display()
-	if(!isrobot(mymob)) return
+	if(!mymob || !isrobot(mymob)) return
 
 	var/mob/living/silicon/robot/r = mymob
 
@@ -187,9 +187,9 @@
 		else
 			//Modules display is hidden
 			r.client.screen -= r.throw_icon	//"store" icon
-
-			for(var/atom/A in r.module.get_inactive_modules())
+			if(r.module)
+				for(var/atom/A in r.module.get_inactive_modules())
 				//Module is not currently active
-				r.client.screen -= A
+					r.client.screen -= A
 			r.shown_robot_modules = 0
 			r.client.screen -= r.robot_modules_background

@@ -257,7 +257,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 				G_found.mind.transfer_to(new_monkey)	//be careful when doing stuff like this! I've already checked the mind isn't in use
 				new_monkey.key = G_found.key
 				new_monkey << "You have been fully respawned. Enjoy the game."
-				message_admins("\blue [key_name_admin(usr)] has respawned [new_monkey.key] as a filthy xeno.", 1)
+				message_admins("\blue [key_name_admin(usr)] has respawned [new_monkey.key] as a filthy monkey.", 1)
 				return	//all done. The ghost is auto-deleted
 
 
@@ -310,7 +310,6 @@ Traitors and the like can also be revived with the previous role mostly intact.
 
 	//Two variables to properly announce later on.
 	var/admin = key_name_admin(src)
-	var/player_key = G_found.key
 
 	//Now for special roles and equipment.
 	switch(new_character.mind.special_role)

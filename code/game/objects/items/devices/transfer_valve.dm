@@ -150,7 +150,7 @@
 	tank_two.air_contents.merge(temp)
 
 /obj/item/device/transfer_valve/proc/split_gases()
-	if (!valve_open || !tank_one || !tank_two)
+	if (!valve_open || !tank_one || !tank_two || !tank_one.air_contents || !tank_two.air_contents)
 		return
 	var/ratio1 = tank_one.air_contents.volume/tank_two.air_contents.volume
 	var/datum/gas_mixture/temp
@@ -174,12 +174,12 @@
 			attacher_name = "Unknown"
 		else
 			attacher_name = "[attacher.name]([attacher.ckey])"
-			
+
 		var/signaler_info = ""
 		if(istype(D,/obj/item/device/assembly/signaler))
 			var/obj/item/device/assembly/signaler/S = D
 			signaler_info = "by remote signal [S.code]/[format_frequency(S.frequency)] "
-			
+
 		var/log_str1 = "Bomb valve opened [signaler_info]in "
 		var/log_str2 = "with [attached_device ? attached_device : "no device"] attacher: [attacher_name]"
 

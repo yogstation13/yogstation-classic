@@ -40,7 +40,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/attack(mob/M, mob/user, def_zone)
 	if(!eatverb)
 		eatverb = pick("bite","chew","nibble","gnaw","gobble","chomp")
-	if(!reagents.total_volume)						//Shouldn't be needed but it checks to see if it has anything left in it.
+	if(!reagents || !reagents.total_volume)						//Shouldn't be needed but it checks to see if it has anything left in it.
 		user << "<span class='notice'>None of [src] left, oh no!</span>"
 		M.unEquip(src)	//so icons update :[
 		qdel(src)
