@@ -92,6 +92,15 @@
 		..()
 		new /obj/item/weapon/grenade/flashbang/clusterbang(src)
 
+/obj/item/weapon/storage/lockbox/pinpointer
+	name = "pinpointer lockbox"
+	desc = "GET THE FUKKEN DISK"
+	req_access = list(access_captain)
+
+	New()
+		..()
+		new /obj/item/weapon/pinpointer
+
 /obj/item/weapon/storage/lockbox/medal
 	name = "medal box"
 	desc = "A locked box used to store medals of honor."

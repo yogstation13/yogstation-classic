@@ -418,7 +418,7 @@
 
 /obj/mecha/attack_hand(mob/user as mob)
 	src.log_message("Attack by hand/paw. Attacker - [user].",1)
-
+	user.changeNext_move(8)
 	if ((HULK in user.mutations) && !prob(src.deflect_chance))
 		src.take_damage(15)
 		src.check_for_internal_damage(list(MECHA_INT_TEMP_CONTROL,MECHA_INT_TANK_BREACH,MECHA_INT_CONTROL_LOST))
@@ -434,6 +434,7 @@
 
 /obj/mecha/attack_alien(mob/user as mob)
 	src.log_message("Attack by alien. Attacker - [user].",1)
+	user.changeNext_move(8)
 	if(!prob(src.deflect_chance))
 		src.take_damage(15)
 		src.check_for_internal_damage(list(MECHA_INT_TEMP_CONTROL,MECHA_INT_TANK_BREACH,MECHA_INT_CONTROL_LOST))
@@ -451,6 +452,7 @@
 
 /obj/mecha/attack_animal(mob/living/simple_animal/user as mob)
 	src.log_message("Attack by simple animal. Attacker - [user].",1)
+	user.changeNext_move(8)
 	if(user.melee_damage_upper == 0)
 		user.emote("[user.friendly] [src]")
 	else
@@ -631,6 +633,7 @@
 
 /obj/mecha/proc/dynattackby(obj/item/weapon/W as obj, mob/user as mob)
 	src.log_message("Attacked by [W]. Attacker - [user]")
+	user.changeNext_move(8)
 	if(prob(src.deflect_chance))
 		user << "\red The [W] bounces off [src.name] armor."
 		src.log_append_to_last("Armor saved.")

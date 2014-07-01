@@ -247,7 +247,11 @@ datum/objective/survive/check_completion()
 datum/objective/nuclear
 	explanation_text = "Destroy the station with a nuclear device."
 
-
+datum/objective/nuclear/check_completion()
+	if(ticker && ticker.mode && ticker.mode.station_was_nuked)
+		return 1
+	else
+		return 0
 
 var/global/list/possible_items = list()
 datum/objective/steal

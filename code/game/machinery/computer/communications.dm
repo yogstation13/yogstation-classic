@@ -593,7 +593,7 @@ var/const/CALL_SHUTTLE_REASON_LENGTH = 12
 
 	var/area/signal_origin = get_area(user)
 	var/emergency_reason = "\nNature of emergency:\n\n[call_reason]"
-	if (seclevel2num(get_security_level()) == SEC_LEVEL_RED) // There is a serious threat we gotta move no time to give them five minutes.
+	if (seclevel2num(get_security_level()) >= SEC_LEVEL_RED) // There is a serious threat we gotta move no time to give them five minutes.
 		emergency_shuttle.incall(0.6, signal_origin)
 		priority_announce("The emergency shuttle has been called. Red Alert state confirmed: Dispatching priority shuttle. It will arrive in [round(emergency_shuttle.timeleft()/60)] minutes.[emergency_reason]", null, 'sound/AI/shuttlecalled.ogg', "Priority")
 	else
@@ -610,6 +610,9 @@ var/const/CALL_SHUTTLE_REASON_LENGTH = 12
 	if ((!( ticker ) || emergency_shuttle.location || emergency_shuttle.direction == 0))
 		return
 	if(ticker.mode.name == "meteor")
+		return
+	if(seclevel2num(get_security_level()) == SEC_LEVEL_DELTA)
+		user << "The emergency shuttle cannot be recalled when Delta Alert is active."
 		return
 
 	if ((seclevel2num(get_security_level()) == SEC_LEVEL_RED))
