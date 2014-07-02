@@ -49,7 +49,8 @@
 	//inorix: temp_access and access_set added for silicon door permission setting. see below comment for details
 	var/list/temp_access = null
 	var/access_set = 1 //this defaults to 1. only newly RCD'd doors should have it at 0
-	
+	var/securewires = 0
+
 /obj/machinery/door/airlock/command
 	icon = 'icons/obj/doors/Doorcom.dmi'
 	doortype = 1
@@ -360,12 +361,12 @@ About the new airlock wires panel:
 		if(src.secondsBackupPowerLost < 10)
 			src.secondsBackupPowerLost = 10
 	processPowerLoss()
-	
+
 /obj/machinery/door/airlock/proc/loseBackupPower()
 	if(src.secondsBackupPowerLost < 60)
 		src.secondsBackupPowerLost = 60
 	processPowerLoss()
-	
+
 /obj/machinery/door/airlock/proc/processPowerLoss()
 	if(!src.spawnPowerRestoreRunning)
 		src.spawnPowerRestoreRunning = 1
@@ -387,7 +388,7 @@ About the new airlock wires panel:
 					cont = 1
 			src.spawnPowerRestoreRunning = 0
 			src.updateDialog()
-			
+
 /obj/machinery/door/airlock/proc/regainBackupPower()
 	if(src.secondsBackupPowerLost > 0)
 		src.secondsBackupPowerLost = 0
@@ -467,8 +468,8 @@ About the new airlock wires panel:
 		return
 
 	ui_interact(user)
-	
-/obj/machinery/door/airlock/proc/set_perms(mob/user as mob)	
+
+/obj/machinery/door/airlock/proc/set_perms(mob/user as mob)
 	//inorix: code to allow silicons to set airlock permissions for newly placed airlocks
 	//        mostly copy-paste job from airlock_electronics.dm
 	//        since we are only allowed to set permissions once, temp_access will hold the new permissions
@@ -516,7 +517,7 @@ About the new airlock wires panel:
 /obj/machinery/door/airlock/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null)
 	if(!user)
 		return
-		
+
 	var/list/data = list(
 		"power" = arePowerSystemsOn(),
 		"aicontrol" = canAIControl(),
@@ -678,13 +679,13 @@ About the new airlock wires panel:
 					if (!temp_access.len)
 						temp_access=null
 			src.set_perms(usr)
-			
+
 		else if(href_list["set"])
 			req_access=temp_access
 			req_access_txt=list2text(req_access,";")
 			access_set=1
 			src.set_perms(usr)
-			
+
 		else if(href_list["aiDisable"])
 			var/code = text2num(href_list["aiDisable"])
 			switch (code)
@@ -1069,14 +1070,16 @@ About the new airlock wires panel:
 
 /obj/machinery/door/airlock/New()
 	..()
-	wires = new(src)
+	if(securewires)
+		wires = new /datum/wires/airlock/secure(src)
+	else
+		wires = new(src)
 	if(src.closeOtherId != null)
 		spawn (5)
 			for (var/obj/machinery/door/airlock/A in world)
 				if(A.closeOtherId == src.closeOtherId && A != src)
 					src.closeOther = A
 					break
-
 
 /obj/machinery/door/airlock/proc/prison_open()
 	if(emagged)	return
