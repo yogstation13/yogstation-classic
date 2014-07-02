@@ -129,7 +129,7 @@ var/const/AIRLOCK_WIRE_LIGHT = 2048
 				if(A.emergency)
 					A.emergency = 0
 					A.update_icon()
-		if(AIRLOCK_WIRE_MAIN_POWER1 || AIRLOCK_WIRE_MAIN_POWER2)
+		if(AIRLOCK_WIRE_MAIN_POWER1, AIRLOCK_WIRE_MAIN_POWER2)
 			//Sending a pulse through either one causes a breaker to trip, disabling the door for 10 seconds if backup power is connected, or 1 minute if not (or until backup power comes back on, whichever is shorter).
 			A.loseMainPower()
 		if(AIRLOCK_WIRE_DOOR_BOLTS)
@@ -146,7 +146,7 @@ var/const/AIRLOCK_WIRE_LIGHT = 2048
 						M << "You hear a click from the bottom of the door."
 			A.update_icon()
 
-		if(AIRLOCK_WIRE_BACKUP_POWER1 || AIRLOCK_WIRE_BACKUP_POWER2)
+		if(AIRLOCK_WIRE_BACKUP_POWER1, AIRLOCK_WIRE_BACKUP_POWER2)
 			//two wires for backup power. Sending a pulse through either one causes a breaker to trip, but this does not disable it unless main power is down too (in which case it is disabled for 1 minute or however long it takes main power to come back, whichever is shorter).
 			A.loseBackupPower()
 		if(AIRLOCK_WIRE_AI_CONTROL)
@@ -195,3 +195,22 @@ var/const/AIRLOCK_WIRE_LIGHT = 2048
 		if(AIRLOCK_WIRE_LIGHT)
 			A.lights = !A.lights
 			A.update_icon()
+
+/datum/wires/airlock/secure/UpdatePulsed(var/index)
+	..()
+	var/obj/machinery/door/airlock/A = holder
+	switch(index)
+		if(AIRLOCK_WIRE_AI_CONTROL)
+			for(var/mob/living/silicon/ai/AI in player_list)
+				AI << "<font color = red><b>Network Alert: High security airlock alarm tripped in [get_area(A)].</b></font>"
+		if(AIRLOCK_WIRE_MAIN_POWER2, AIRLOCK_WIRE_BACKUP_POWER2)
+			A.visible_message("\icon[A] *beep*", "\icon[A] *beep*")
+			if(!(A.locked))
+				A.locked = 1
+				for(var/mob/M in range(1, A))
+					M << "You hear a click from the bottom of the door."
+			A.loseMainPower()
+			A.loseBackupPower()
+			A.update_icon()
+
+

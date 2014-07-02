@@ -95,6 +95,7 @@
 /obj/item/weapon/storage/lockbox/pinpointer
 	name = "pinpointer lockbox"
 	desc = "GET THE FUKKEN DISK"
+	icon_state = "ntlockbox+l"
 	req_access = list(access_captain)
 
 	New()
