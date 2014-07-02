@@ -269,7 +269,8 @@ var/bomb_set
 				if (src.timing)
 					if(!src.safety)
 						bomb_set = 1//There can still be issues with this reseting when there are multiple bombs. Not a big deal tho for Nuke/N
-						src.previous_level = "[get_security_level()]"
+						if(!(get_security_level() == "delta"))
+							src.previous_level = "[get_security_level()]"
 						if(get_security_level() != "delta")
 							world << sound('sound/misc/bloblarm.ogg')
 						set_security_level("delta")
