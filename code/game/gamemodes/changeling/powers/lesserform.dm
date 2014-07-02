@@ -8,11 +8,11 @@
 
 //Transform into a monkey.
 /obj/effect/proc_holder/changeling/lesserform/sting_action(var/mob/living/carbon/human/user)
-	var/mob/living/carbon/monkey/O = user.monkeyize(TR_KEEPITEMS | TR_KEEPIMPLANTS | TR_KEEPDAMAGE | TR_KEEPSE | TR_KEEPSRC)
-	if(!O)
-		return
-	O << "<span class='warning'>Our genes cry out!</span>"
-	O.mind.changeling.purchasedpowers += new /obj/effect/proc_holder/changeling/humanform(null)
+	user << "<span class='warning'>Our genes cry out!</span>"
+
+	user.monkeyize(TR_KEEPITEMS | TR_KEEPIMPLANTS | TR_KEEPDAMAGE | TR_KEEPSE | TR_KEEPSRC)
+
+	// Human-form power now handled in monkeyize()
 	feedback_add_details("changeling_powers","LF")
 	.=1
 	qdel(user)

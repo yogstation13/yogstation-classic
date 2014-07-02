@@ -355,9 +355,9 @@ var/const/CALL_SHUTTLE_REASON_LENGTH = 12
 			if (src.authenticated)
 				if(emergency_shuttle.recall_count > 1)
 					if(emergency_shuttle.last_call_loc)
-						dat += "<BR>Latest emergency signal trace attempt successful.<BR>Last signal origin: <b>[format_text(emergency_shuttle.last_call_loc.name)]</b>.<BR>"
+						dat += "<BR>Last emergency shuttle call/recall traced to: <b>[format_text(emergency_shuttle.last_call_loc.name)]</b>.<BR>"
 					else
-						dat += "<BR>Latest emergency signal trace attempt failed.<BR>"
+						dat += "<BR>Last emergency shuttle call/recall trace failed.<BR>"
 				dat += "Logged in as: [auth_id]"
 				dat += "<BR>\[ <A HREF='?src=\ref[src];operation=logout'>Log Out</A> \]<BR>"
 				dat += "<BR><B>General Functions</B>"
@@ -573,8 +573,8 @@ var/const/CALL_SHUTTLE_REASON_LENGTH = 12
 /proc/call_shuttle_proc(var/mob/user, var/call_reason)
 	if ((!( ticker ) || emergency_shuttle.location))
 		return
-	if(world.time - round_start_time < config.shuttle_refuel_delay)
-		user << "The emergency shuttle is refueling. Please wait another [round((config.shuttle_refuel_delay - round_start_time)/600)] minutes before trying again."
+	if((world.time - round_start_time < config.shuttle_refuel_delay) && !(seclevel2num(get_security_level()) == SEC_LEVEL_DELTA))
+		user << "The emergency shuttle is refueling. Please wait another [abs(round(((world.time - round_start_time) - config.shuttle_refuel_delay)/600))] minutes before trying again."
 		return
 
 	if(emergency_shuttle.direction == -1)

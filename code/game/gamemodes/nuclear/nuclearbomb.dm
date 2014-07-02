@@ -22,7 +22,7 @@ var/bomb_set
 	var/alarmcooldown = 0
 	var/datum/wires/nuke/wires = null
 	var/obj/item/device/pda/hacker = null
-	var/hacktime = 480
+	var/hacktime = 180
 
 /obj/machinery/nuclearbomb/New()
 	..()
@@ -44,17 +44,17 @@ var/bomb_set
 	if (hacker)
 		if (auth)
 			hacktime--
-			if ((hacktime % 10) == 0)
+			if ((hacktime % 5) == 0)
 				playsound(loc, 'sound/items/timer.ogg', 5, 0)
-			if ((hacktime % 60) == 0)
-				hackerinform(hacktime/60)
+			if ((hacktime % 30) == 0)
+				hackerinform(hacktime/30)
 			if (hacktime <= 0)
 				hacktime = 0
 				hacker = null
 				updatelights()
 
 		else
-			hacktime = 480
+			hacktime = 180
 			hackerinform(-1)
 			hacker = null
 			updatelights()
@@ -167,6 +167,10 @@ var/bomb_set
 				if(hacker)
 					user << "<span class='notice'>Someone is already using [src] to decrypt the nuclear code.</span>"
 					return
+				if(hacktime == 0)
+					hacker = I
+					hackerinform(0)
+					hacker = null
 				if(auth)
 					user.visible_message("<span class='userdanger'>[user] scans the [src] with [I] and the device starts beeping erratically!</span>", "<span class='notice'>You download the encrypted codes to [I] and begin a brute-force hack. Make sure the disk stays in [src] or the hack will be interrupted!</span>")
 					hacker = I
@@ -265,7 +269,8 @@ var/bomb_set
 				if (src.timing)
 					if(!src.safety)
 						bomb_set = 1//There can still be issues with this reseting when there are multiple bombs. Not a big deal tho for Nuke/N
-						src.previous_level = "[get_security_level()]"
+						if(!(get_security_level() == "delta"))
+							src.previous_level = "[get_security_level()]"
 						if(get_security_level() != "delta")
 							world << sound('sound/misc/bloblarm.ogg')
 						set_security_level("delta")
@@ -327,7 +332,7 @@ var/bomb_set
 	else if (minutes == 0)
 		message = "Decryption complete! The nuclear code is [r_code]."
 	else
-		message = "Decryption in progress... [minutes] minutes remaining."
+		message = "Decryption in progress... [minutes] minute[(minutes == 1) ? "" : "s"] remaining."
 	if (!hacker.silent)
 		playsound(hacker.loc, 'sound/machines/twobeep.ogg', 50, 1)
 	for (var/mob/O in hearers(3, hacker.loc))
@@ -350,8 +355,20 @@ var/bomb_set
 	else
 		icon_state = "nuclearbomb0"
 
-
 #define NUKERANGE 80
+/obj/machinery/nuclearbomb/proc/is_off_station()
+	var/turf/bomb_location = get_turf(src)
+	if( bomb_location && (bomb_location.z == 1) )
+		if( (bomb_location.x < (128-NUKERANGE)) || (bomb_location.x > (128+NUKERANGE)) || (bomb_location.y < (128-NUKERANGE)) || (bomb_location.y > (128+NUKERANGE)) )
+			return 1
+		else
+			return 0
+	else if (bomb_location && (bomb_location.z > 1))
+		return bomb_location.z
+	else
+		return 1
+
+
 /obj/machinery/nuclearbomb/proc/explode()
 	if (src.safety)
 		src.timing = 0
@@ -369,13 +386,7 @@ var/bomb_set
 
 	enter_allowed = 0
 
-	var/off_station = 0
-	var/turf/bomb_location = get_turf(src)
-	if( bomb_location && (bomb_location.z == 1) )
-		if( (bomb_location.x < (128-NUKERANGE)) || (bomb_location.x > (128+NUKERANGE)) || (bomb_location.y < (128-NUKERANGE)) || (bomb_location.y > (128+NUKERANGE)) )
-			off_station = 1
-	else if (bomb_location && (bomb_location.z > 1))
-		off_station = bomb_location.z
+	var/off_station = is_off_station()
 
 	if(ticker)
 		if(ticker.mode && ticker.mode.name == "nuclear emergency")
@@ -389,12 +400,12 @@ var/bomb_set
 			if(ticker.mode.name == "nuclear emergency")
 				ticker.mode:nukes_left --
 			else
-				world << "<B>The station was destoyed by the nuclear blast!</B>"
+				world << "<B>The station was destroyed by the nuclear blast!</B>"
 
 			ticker.mode.station_was_nuked = (off_station<1)	//offstation==1 is a draw. the station becomes irradiated and needs to be evacuated.
 															//kinda shit but I couldn't  get permission to do what I wanted to do.
 
-			if(!ticker.mode.check_finished())//If the mode does not deal with the nuke going off so just reboot because everyone is stuck as is
+			if(!(ticker.mode.check_finished()) && !(emergency_shuttle.location == 1))//If the mode does not deal with the nuke going off so just reboot because everyone is stuck as is
 				world << "<B>Resetting in 30 seconds!</B>"
 
 				feedback_set_details("end_error","nuke - unhandled ending")
@@ -408,9 +419,32 @@ var/bomb_set
 				return
 	return
 
+
+//==========DAT FUKKEN DISK===============
+/obj/item/weapon/disk/nuclear
+	name = "nuclear authentication disk"
+	desc = "Better keep this safe."
+	icon_state = "nucleardisk"
+	item_state = "card-id"
+	w_class = 1.0
+
+/obj/item/weapon/disk/nuclear/New()
+	..()
+	processing_objects.Add(src)
+
+/obj/item/weapon/disk/nuclear/process()
+	var/turf/disk_loc = get_turf(src)
+	if(disk_loc.z > 2)
+		get(src, /mob) << "<span class='danger'>You can't help but feel that you just lost something back there...</span>"
+		Destroy()
+
 /obj/item/weapon/disk/nuclear/Destroy()
 	if(blobstart.len > 0)
-		loc = pick(blobstart)
-		message_admins("[src] has been destroyed.  Moving it to ([x], [y], [z]).")
-		log_game("[src] has been destroyed.  Moving it to ([x], [y], [z]).")
+		var/obj/item/weapon/disk/nuclear/NEWDISK = new(pick(blobstart))
+		transfer_fingerprints_to(NEWDISK)
+		message_admins("[src] has been destroyed.  Moving it to ([NEWDISK.x], [NEWDISK.y], [NEWDISK.z]).")
+		log_game("[src] has been destroyed.  Moving it to ([NEWDISK.x], [NEWDISK.y], [NEWDISK.z]).")
+		del(src) //Needed to clear all references to it
+	else
+		ERROR("[src] was supposed to be destroyed, but we were unable to locate a blobstart landmark to spawn a new one.")
 	return 1 // Cancel destruction.

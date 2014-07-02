@@ -21,6 +21,7 @@
 	var/station_captured = 0
 	var/to_nuke_or_not_to_nuke = 0
 	var/apcs = 0 //Adding dis to track how many APCs the AI hacks. --NeoFite
+	var/intercept_hacked = 0
 
 
 /datum/game_mode/malfunction/announce()
@@ -103,11 +104,6 @@
 	malf.current << "Remember that only APCs that are on the station can help you take over the station."
 	malf.current << "When you feel you have enough APCs under your control, you may begin the takeover attempt."
 	return
-
-
-/datum/game_mode/malfunction/proc/hack_intercept()
-	intercept_hacked = 1
-
 
 /datum/game_mode/malfunction/process()
 	if (apcs >= 3 && malf_mode_declared)
@@ -290,3 +286,7 @@
 
 		world << text
 	return 1
+
+/datum/game_mode/malfunction/proc/hack_intercept()
+	intercept_hacked = 1
+	return
