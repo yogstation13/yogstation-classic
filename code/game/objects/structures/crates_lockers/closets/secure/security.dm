@@ -114,6 +114,7 @@
 		new /obj/item/clothing/glasses/hud/security/sunglasses(src)
 		new /obj/item/clothing/mask/gas/sechailer/warden(src)
 		new /obj/item/weapon/storage/box/flashbangs(src)
+		new /obj/item/weapon/storage/box/flashes(src)
 		new /obj/item/weapon/reagent_containers/spray/pepper(src)
 		new /obj/item/weapon/melee/baton/loaded(src)
 		new /obj/item/weapon/gun/energy/taser(src)
