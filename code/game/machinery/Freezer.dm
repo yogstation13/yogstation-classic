@@ -64,10 +64,11 @@
 	else
 		icon_state = "freezer"
 
+	overlays = list()
+
 	if(holding)
 		overlays += "hatch_open"
-	else
-		overlays -= "hatch_open"
+
 	return
 
 /obj/machinery/atmospherics/unary/cold_sink/freezer/attack_ai(mob/user as mob)
@@ -95,11 +96,11 @@
 	if(holding)
 		var/temp_text2 = ""
 		if(holding.air_contents.temperature > (T0C - 20))
-			temp_text = "<span class='bad'>[holding.air_contents.temperature]</span>"
+			temp_text2 = "<span class='bad'>[holding.air_contents.temperature]</span>"
 		else if(air_contents.temperature < (T0C - 20) && air_contents.temperature > (T0C - 100))
-			temp_text = "<span class='average'>[holding.air_contents.temperature]</span>"
+			temp_text2 = "<span class='average'>[holding.air_contents.temperature]</span>"
 		else
-			temp_text = "<span class='good'>[holding.air_contents.temperature]</span>"
+			temp_text2 = "<span class='good'>[holding.air_contents.temperature]</span>"
 		holding_text = {"<BR>Current Tank Temperature: [temp_text2]<BR>
 		Current Tank Pressure: [holding.air_contents.return_pressure()]<BR>
 		<A href='?src=\ref[src];remove_tank=1'>Remove Tank</A><BR>
@@ -111,13 +112,13 @@
 	Current Gas Temperature: [temp_text]<BR>
 	Current Gas Pressure: [air_contents.return_pressure()]<BR><BR>
 	Operating Mode: [ coolsholding ? "<A href='?src=\ref[src];mode=1'>Cool Pipe</A>" : "<span class='linkOn'>Cool Pipe</span>" ]
-	[ holding ? ( coolsholding ? "<span class='linkOn'>Cool Tank</span>" : "<A href='?src=\ref[src];mode=1'>Cool Tank</A>") : "<span class='linkDisabled'>Cool Tank</span>"]<BR>
+	[ holding ? ( coolsholding ? "<span class='linkOn'>Cool Tank</span>" : "<A href='?src=\ref[src];mode=1'>Cool Tank</A>") : "<span class='linkOff'>Cool Tank</span>"]<BR>
 	Target Gas Temperature: <A href='?src=\ref[src];temp=-100'>-</A> <A href='?src=\ref[src];temp=-10'>-</A> <A href='?src=\ref[src];temp=-1'>-</A> [current_temperature] <A href='?src=\ref[src];temp=1'>+</A> <A href='?src=\ref[src];temp=10'>+</A> <A href='?src=\ref[src];temp=100'>+</A><BR>
 	"}
 
 	//user << browse(dat, "window=freezer;size=400x500")
 	//onclose(user, "freezer")
-	var/datum/browser/popup = new(user, "freezer", "Cryo Gas Cooling System", 400, 240) // Set up the popup browser window
+	var/datum/browser/popup = new(user, "freezer", "Cryo Gas Cooling System", 400, 300) // Set up the popup browser window
 	popup.set_title_image(user.browse_rsc_icon(src.icon, src.icon_state))
 	popup.set_content(dat)
 	popup.open()
@@ -242,10 +243,10 @@
 	else
 		icon_state = "heater"
 
+	overlays = list()
+
 	if(holding)
 		overlays += "hatch_open"
-	else
-		overlays -= "hatch_open"
 	return
 
 /obj/machinery/atmospherics/unary/heat_reservoir/heater/attack_ai(mob/user as mob)
@@ -273,11 +274,11 @@
 	if(holding)
 		var/temp_text2 = ""
 		if(holding.air_contents.temperature > (T0C - 20))
-			temp_text = "<span class='bad'>[holding.air_contents.temperature]</span>"
+			temp_text2 = "<span class='bad'>[holding.air_contents.temperature]</span>"
 		else if(air_contents.temperature < (T0C - 20) && air_contents.temperature > (T0C - 100))
-			temp_text = "<span class='average'>[holding.air_contents.temperature]</span>"
+			temp_text2 = "<span class='average'>[holding.air_contents.temperature]</span>"
 		else
-			temp_text = "<span class='good'>[holding.air_contents.temperature]</span>"
+			temp_text2 = "<span class='good'>[holding.air_contents.temperature]</span>"
 		holding_text = {"<BR>Current Tank Temperature: [temp_text2]<BR>
 		Current Tank Pressure: [holding.air_contents.return_pressure()]<BR>
 		<A href='?src=\ref[src];remove_tank=1'>Remove Tank</A><BR>
@@ -289,13 +290,13 @@
 	Current Gas Temperature: [temp_text]<BR>
 	Current Air Pressure: [air_contents.return_pressure()]<BR><BR>
 	Operating Mode: [ heatsholding ? "<A href='?src=\ref[src];mode=1'>Heat Pipe</A>" : "<span class='linkOn'>Heat Pipe</span>" ]
-	[ holding ? ( heatsholding ? "<span class='linkOn'>Heat Tank</span>" : "<A href='?src=\ref[src];mode=1'>Heat Tank</A>") : "<span class='linkDisabled'>Heat Tank</span>"]<BR>
+	[ holding ? ( heatsholding ? "<span class='linkOn'>Heat Tank</span>" : "<A href='?src=\ref[src];mode=1'>Heat Tank</A>") : "<span class='linkOff'>Heat Tank</span>"]<BR>
 	Target Gas Temperature: <A href='?src=\ref[src];temp=-100'>-</A> <A href='?src=\ref[src];temp=-10'>-</A> <A href='?src=\ref[src];temp=-1'>-</A> [current_temperature] <A href='?src=\ref[src];temp=1'>+</A> <A href='?src=\ref[src];temp=10'>+</A> <A href='?src=\ref[src];temp=100'>+</A><BR>
 	"}
 
 	//user << browse(dat, "window=freezer;size=400x500")
 	//onclose(user, "freezer")
-	var/datum/browser/popup = new(user, "freezer", "Inferno Gas Heating System", 400, 240) // Set up the popup browser window
+	var/datum/browser/popup = new(user, "freezer", "Inferno Gas Heating System", 400, 300) // Set up the popup browser window
 	popup.set_title_image(user.browse_rsc_icon(src.icon, src.icon_state))
 	popup.set_content(dat)
 	popup.open()

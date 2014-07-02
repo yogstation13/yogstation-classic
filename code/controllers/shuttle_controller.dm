@@ -73,7 +73,7 @@ datum/shuttle_controller
 				last_call_loc = null
 
 			if(recall_count == 2)
-				priority_announce("The emergency shuttle has been recalled.\n\nExcessive number of emergency shuttle calls detected. We will attempt to trace any further signals to their source. Results may be viewed on any communications console.", null, 'sound/AI/shuttlerecalled.ogg')
+				priority_announce("The emergency shuttle has been recalled.\n\nExcessive number of emergency shuttle calls detected. We will attempt to trace all future calls and recalls to their source. Tracing results can be viewed on any communications console.", null, 'sound/AI/shuttlerecalled.ogg')
 			else
 				priority_announce("The emergency shuttle has been recalled.", null, 'sound/AI/shuttlerecalled.ogg', "Priority")
 			setdirection(-1)
@@ -111,21 +111,23 @@ datum/shuttle_controller
 		endtime = world.timeofday + (SHUTTLEARRIVETIME*10 - ticksleft)
 		return
 
-	//calls the shuttle if there's no AI or comms console,
+	//calls the shuttle if there's no live active AI or powered non broken comms console,
 	proc/autoshuttlecall()
 		var/callshuttle = 1
+
 		for(var/SC in shuttle_caller_list)
 			if(istype(SC,/mob/living/silicon/ai))
 				var/mob/living/silicon/ai/AI = SC
 				if(AI.stat || !AI.client)
 					continue
+			if(istype(SC,/obj/machinery/computer/communications))
+				var/obj/machinery/computer/communications/C = SC
+				if(C.stat & BROKEN)
+					continue
 			var/turf/T = get_turf(SC)
 			if(T && T.z == 1)
-				callshuttle = 0 //if there's an alive AI or a communication console on the station z level, we don't call the shuttle
+				callshuttle = 0 //if there's an alive AI or a powered non broken communication console on the station z level, we don't call the shuttle
 				break
-
-			if(ticker && ticker.mode && (ticker.mode.name == "revolution" || ticker.mode.name == "AI malfunction"))
-				callshuttle = 0
 
 		if(callshuttle)
 			if(!online && direction == 1) //we don't call the shuttle if it's already coming
