@@ -90,8 +90,13 @@
 
 
 /datum/game_mode/proc/check_finished() //to be called by ticker
-	if(emergency_shuttle.location==2 || station_was_nuked)
+	if(emergency_shuttle.location==2)
 		return 1
+	if(station_was_nuked)
+		if(emergency_shuttle.location == 1)
+			return 0
+		else
+			return 1
 	return 0
 
 

@@ -362,6 +362,12 @@ var/list/all_supply_groups = list(supply_emergency,supply_security,supply_engine
 	cost = 30
 	containername = "security clothing crate"
 
+/datum/supply_packs/security/armory/pinpointer
+	name = "Pinpointer crate"
+	contains = list (/obj/item/weapon/storage/lockbox/pinpointer)
+	cost = 40
+	containername = "pinpointer crate"
+
 
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////// Engineering /////////////////////////////////////

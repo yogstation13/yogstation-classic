@@ -213,7 +213,7 @@ var/list/sec_departments = list("engineering", "supply", "medical", "science")
 			if("engineering")
 				H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/security/engine(H), slot_w_uniform)
 				default_headset = /obj/item/device/radio/headset/headset_sec/department/engi
-				dep_access = list(access_construction, access_engine)
+				dep_access = list(access_construction, access_engine, access_atmospherics)
 				destination = /area/security/checkpoint/engineering
 			if("medical")
 				H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/security/med(H), slot_w_uniform)
