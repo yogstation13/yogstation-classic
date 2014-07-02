@@ -63,6 +63,8 @@
 
 // Concatenates a list of strings into a single string.  A seperator may optionally be provided.
 /proc/list2text(list/ls, sep)
+	if(!ls)
+		return ""
 	if(ls.len <= 1) // Early-out code for empty or singleton lists.
 		return ls.len ? ls[1] : ""
 

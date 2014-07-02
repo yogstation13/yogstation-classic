@@ -78,8 +78,10 @@ Buildable meters
 		else if(istype(make_from, /obj/machinery/atmospherics/unary/heat_exchanger))
 			src.pipe_type = PIPE_HEAT_EXCHANGE
 	else
-		src.pipe_type = pipe_type
-		src.dir = dir
+		if(pipe_type)
+			src.pipe_type = pipe_type
+		if(dir)
+			src.dir = dir
 	//src.pipe_dir = get_pipe_dir()
 	update()
 	src.pixel_x = rand(-5, 5)

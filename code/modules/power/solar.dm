@@ -33,10 +33,10 @@ var/list/solars_list = list()
 	solars_list.Remove(src)
 
 /obj/machinery/power/solar/connect_to_network()
-	..()
+	var/to_return = ..()
 	if(powernet) //if connected and not already in solar_list...
 		solars_list |= src			   //... add it
-
+	return to_return
 
 /obj/machinery/power/solar/proc/Make(var/obj/item/solar_assembly/S)
 	if(!S)
@@ -138,13 +138,6 @@ var/list/solars_list = list()
 	return
 
 
-/obj/machinery/power/solar/meteorhit()
-	if(stat & !BROKEN)
-		broken()
-	else
-		qdel(src)
-
-
 /obj/machinery/power/solar/ex_act(severity)
 	switch(severity)
 		if(1.0)
@@ -226,15 +219,17 @@ var/list/solars_list = list()
 
 		if(istype(W, /obj/item/stack/sheet/glass) || istype(W, /obj/item/stack/sheet/rglass))
 			var/obj/item/stack/sheet/S = W
-			if(S.amount >= 2)
+			if(S.use(2))
 				glass_type = W.type
-				S.use(2)
 				playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
 				user.visible_message("<span class='notice'>[user] places the glass on the solar assembly.</span>")
 				if(tracker)
 					new /obj/machinery/power/tracker(get_turf(src), src)
 				else
 					new /obj/machinery/power/solar(get_turf(src), src)
+			else
+				user << "<span class='warning'>You need two sheets of glass to put them into a solar panel.</span>"
+				return
 			return 1
 
 	if(!tracker)
@@ -289,9 +284,10 @@ var/list/solars_list = list()
 	solars_list.Remove(src)
 
 /obj/machinery/power/solar_control/connect_to_network()
-	..()
+	var/to_return = ..()
 	if(powernet) //if connected and not already in solar_list...
 		solars_list |= src //... add it
+	return to_return
 
 /obj/machinery/power/solar_control/initialize()
 	..()
@@ -464,11 +460,6 @@ var/list/solars_list = list()
 		paired.unpair()
 	stat |= BROKEN
 	update_icon()
-
-
-/obj/machinery/power/solar_control/meteorhit()
-	broken()
-	return
 
 
 /obj/machinery/power/solar_control/ex_act(severity)

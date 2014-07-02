@@ -200,7 +200,9 @@ datum
 				for(var/A in reagent_list)
 					var/datum/reagent/R = A
 					if(M && R)
-						R.on_mob_life(M)
+						if(M.reagent_check(R) != 1)
+							R.on_mob_life(M)
+
 				update_total()
 
 			conditional_update_move(var/atom/A, var/Running = 0)
@@ -319,7 +321,7 @@ datum
 				return 1
 
 			check_gofast(var/mob/M)
-				if(istype(M, /mob))
+				if(istype(M, /mob) && M.reagents)
 					if(M.reagents.has_reagent("hyperzine")||M.reagents.has_reagent("unholywater")||M.reagents.has_reagent("nuka_cola"))
 						return 1
 					else

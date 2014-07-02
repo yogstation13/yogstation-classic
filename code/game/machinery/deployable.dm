@@ -106,14 +106,6 @@ for reference:
 					qdel(src)
 				return
 
-	meteorhit()
-		visible_message("\red <B>The barricade is smashed apart!</B>")
-		new /obj/item/stack/sheet/mineral/wood(get_turf(src))
-		new /obj/item/stack/sheet/mineral/wood(get_turf(src))
-		new /obj/item/stack/sheet/mineral/wood(get_turf(src))
-		qdel(src)
-		return
-
 	blob_act()
 		src.health -= 25
 		if (src.health <= 0)
@@ -156,7 +148,7 @@ for reference:
 		src.icon_state = "barrier[src.locked]"
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if (istype(W, /obj/item/weapon/card/id/))
+		if (W.GetID())
 			if (src.allowed(user))
 				if	(src.emagged < 2.0)
 					src.locked = !src.locked
@@ -234,10 +226,6 @@ for reference:
 			locked = !locked
 			anchored = !anchored
 			icon_state = "barrier[src.locked]"
-
-	meteorhit()
-		src.explode()
-		return
 
 	blob_act()
 		src.health -= 25

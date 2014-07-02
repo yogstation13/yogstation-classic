@@ -58,12 +58,12 @@ Put (mob/proc)s here that are in dire need of a code cleanup.
 			log += " \[ symptoms: "
 			for(var/datum/symptom/S in vv.symptoms)
 				log += "[S.name] "
-			log += "\]"
+			log += " \]"
 		log += " using blood transmission"
 		if(v.can_carry && prob(5))
 			v.carrier = 1
 			log += " as a carrier"
-		log += " [source ? "from "+source : ""]."
+		log += " [source ? " from "+source : ""]."
 		investigate_log(log, "viro")
 		return
 	//world << "Not skipping."
@@ -187,12 +187,20 @@ Put (mob/proc)s here that are in dire need of a code cleanup.
 			log += " \[ symptoms: "
 			for(var/datum/symptom/S in vv.symptoms)
 				log += "[S.name] "
-			log += "\]"
+			log += " \]"
 		log += " using [spread_type == AIRBORNE ? "airborne" : "touch"] transmission"
 		if(v.can_carry && prob(5))
 			v.carrier = 1
 			log += " as a carrier"
-		log += " [source ? "from "+source : ""]."
+		if(istype(source, /atom/))
+			var/atom/source_obj = source
+			if(ismob(source_obj))
+				var/mob/source_mob = source_obj
+				log += " from [key_name(source_mob)]."
+			else
+				log += " from [source_obj.name]."
+		else
+			log += "[source ? " from " + source : ""]"
 		investigate_log(log, "viro")
 		return
 	return

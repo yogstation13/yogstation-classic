@@ -218,7 +218,7 @@ datum
 					T.MakeSlippery()
 
 				for(var/mob/living/carbon/slime/M in T)
-					M.adjustToxLoss(rand(15,20))
+					M.apply_water()
 
 				var/hotspot = (locate(/obj/effect/hotspot) in T)
 				if(hotspot && !istype(T, /turf/space))
@@ -341,18 +341,6 @@ datum
 			description = "A corruptive toxin produced by slimes."
 			reagent_state = LIQUID
 			color = "#13BC5E" // rgb: 19, 188, 94
-
-			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
-				if(ishuman(M))
-					var/mob/living/carbon/human/human = M
-					if(human.dna && !human.dna.mutantrace)
-						M << "<span class='danger'>Your flesh rapidly mutates!</span>"
-						human.dna.mutantrace = "slime"
-						human.update_body()
-						human.update_hair()
-				..()
-				return
 
 		aslimetoxin
 			name = "Advanced Mutation Toxin"
@@ -649,11 +637,14 @@ datum
 
 			reaction_turf(var/turf/T, var/volume)
 				src = null
-				if(volume >= 5)
-					if(istype(T, /turf/simulated/wall))
-						T:thermite = 1
-						T.overlays.Cut()
-						T.overlays = image('icons/effects/effects.dmi',icon_state = "thermite")
+				if(volume >= 1 && istype(T, /turf/simulated/wall))
+					var/turf/simulated/wall/Wall = T
+					if(istype(Wall, /turf/simulated/wall/r_wall))
+						Wall.thermite = Wall.thermite+(volume*2.5)
+					else
+						Wall.thermite = Wall.thermite+(volume*10)
+					Wall.overlays = list()
+					Wall.overlays += image('icons/effects/effects.dmi',"thermite")
 				return
 
 			on_mob_life(var/mob/living/M as mob)
@@ -1504,11 +1495,6 @@ datum
 					var/mob/living/carbon/C = M
 					if(!C.wear_mask) // If not wearing a mask
 						C.adjustToxLoss(2) // 4 toxic damage per application, doubled for some reason
-					if(ishuman(M))
-						var/mob/living/carbon/human/H = M
-						if(H.dna)
-							if(H.dna.mutantrace == "plant") //plantmen take a LOT of damage
-								H.adjustToxLoss(10)
 
 		toxin/plantbgone/weedkiller
 			name = "Weed Killer"
@@ -1531,11 +1517,6 @@ datum
 					var/mob/living/carbon/C = M
 					if(!C.wear_mask) // If not wearing a mask
 						C.adjustToxLoss(2) // 4 toxic damage per application, doubled for some reason
-					if(ishuman(M))
-						var/mob/living/carbon/human/H = M
-						if(H.dna)
-							if(H.dna.mutantrace == "fly") //Botanists can now genocide plant and fly people alike.
-								H.adjustToxLoss(10)
 
 		toxin/stoxin
 			name = "Sleep Toxin"

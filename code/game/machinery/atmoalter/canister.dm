@@ -204,11 +204,6 @@ update_flag
 			healthcheck()
 	..()
 
-/obj/machinery/portable_atmospherics/canister/meteorhit(var/obj/O as obj)
-	src.health = 0
-	healthcheck()
-	return
-
 /obj/machinery/portable_atmospherics/canister/ex_act(severity)
 	switch(severity)
 		if(1.0)
@@ -297,7 +292,30 @@ Release Pressure: <A href='?src=\ref[src];pressure_adj=-1000'>-</A> <A href='?sr
 
 	if (((get_dist(src, usr) <= 1) && istype(src.loc, /turf)))
 		usr.set_machine(src)
-
+		
+		var/area/A = get_area(get_turf(src))
+		var/contents = "[usr]/[usr.ckey](<A HREF='?_src_=holder;adminmoreinfo=\ref[usr]'>?</A>) at <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[src.x];Y=[src.y];Z=[src.z]'>[A.name]</a><br>"
+		contents += "Release pressure: [src.release_pressure] "
+		if(src.air_contents.temperature < 273 || src.air_contents.temperature > 373)
+			contents += "<span class=\"danger\">"
+		contents += "Temperature [src.air_contents.temperature] "
+		if(src.air_contents.temperature < 273 || src.air_contents.temperature > 373)
+			contents += "</span>"
+		contents += "Contents: "
+		if(src.air_contents.oxygen >= 1)
+			contents += "Oxygen ([src.air_contents.oxygen]) "
+		if(src.air_contents.nitrogen >= 1)
+			contents += "Nitrogen ([src.air_contents.nitrogen]) "
+		if(src.air_contents.toxins >= 1)
+			contents += "<span class=\"danger\">Toxins ([src.air_contents.toxins])</span> "
+		if(src.air_contents.carbon_dioxide >= 1)
+			contents += "<span class=\"danger\">CO2 ([src.air_contents.carbon_dioxide])</span> "
+		for(var/datum/gas/G in src.air_contents.trace_gases)
+			if(istype(G, /datum/gas/sleeping_agent))
+				if(G.moles > 1)
+					contents += "<span class=\"danger\">NO2 ([G.moles])</span> "
+			else if(G.moles > 1)
+				contents += "<span class=\"danger\">[G.type] ([G.moles])</span> "
 		if(href_list["toggle"])
 			if (valve_open)
 				if (holding)
@@ -309,13 +327,16 @@ Release Pressure: <A href='?src=\ref[src];pressure_adj=-1000'>-</A> <A href='?sr
 					release_log += "Valve was <b>opened</b> by [usr] ([usr.ckey]), starting the transfer into the [holding]<br>"
 				else
 					release_log += "Valve was <b>opened</b> by [usr] ([usr.ckey]), starting the transfer into the <font color='red'><b>air</b></font><br>"
+					message_admins("Canister opened by [contents]", 0, 1)
 			valve_open = !valve_open
 
 		if (href_list["remove_tank"])
 			if(holding)
 				holding.loc = loc
 				holding = null
-
+				if(valve_open)
+					message_admins("Tank removed from canister with open valve by [contents]", 0, 1)
+				
 		if (href_list["pressure_adj"])
 			var/diff = text2num(href_list["pressure_adj"])
 			if(diff > 0)

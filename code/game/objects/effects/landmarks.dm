@@ -136,7 +136,7 @@
 
 /obj/effect/landmark/costume/scratch/New()
 	new /obj/item/clothing/gloves/white(src.loc)
-	new /obj/item/clothing/shoes/white(src.loc)
+	new /obj/item/clothing/shoes/sneakers/white(src.loc)
 	new /obj/item/clothing/under/scratch(src.loc)
 	if (prob(30))
 		new /obj/item/clothing/head/cueball(src.loc)
@@ -152,7 +152,7 @@
 	new /obj/item/clothing/glasses/monocle(src.loc)
 	var/CHOICE= pick( /obj/item/clothing/head/bowler, /obj/item/clothing/head/that)
 	new CHOICE(src.loc)
-	new /obj/item/clothing/shoes/black(src.loc)
+	new /obj/item/clothing/shoes/sneakers/black(src.loc)
 	new /obj/item/weapon/cane(src.loc)
 	new /obj/item/clothing/under/sl_suit(src.loc)
 	new /obj/item/clothing/mask/fakemoustache(src.loc)
@@ -226,4 +226,10 @@
 /obj/effect/landmark/costume/sexymime/New()
 	new /obj/item/clothing/mask/gas/sexymime(src.loc)
 	new /obj/item/clothing/under/sexymime(src.loc)
+	qdel(src)
+
+/obj/effect/landmark/collectible/New()
+	var/list/options = typesof(/obj/item/toy/prize) - /obj/item/toy/prize
+	var/PICK = options[rand(1,options.len)]
+	new PICK(src.loc)
 	qdel(src)

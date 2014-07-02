@@ -4,6 +4,8 @@
 	icon_state = "freezer"
 	density = 1
 	var/min_temperature = 0
+	var/obj/item/weapon/tank/holding = null
+	var/coolsholding = 0
 	anchored = 1.0
 	use_power = 1
 	current_heat_capacity = 1000
@@ -45,6 +47,15 @@
 	if(default_change_direction_wrench(user, I))
 		return
 
+	if (istype(I, /obj/item/weapon/tank))
+		if (src.holding)
+			return
+		user.drop_item()
+		I.loc = src
+		src.holding = I
+		update_icon()
+		return
+
 /obj/machinery/atmospherics/unary/cold_sink/freezer/update_icon()
 	if(panel_open)
 		icon_state = "freezer-o"
@@ -52,6 +63,12 @@
 		icon_state = "freezer_1"
 	else
 		icon_state = "freezer"
+
+	overlays = list()
+
+	if(holding)
+		overlays += "hatch_open"
+
 	return
 
 /obj/machinery/atmospherics/unary/cold_sink/freezer/attack_ai(mob/user as mob)
@@ -75,16 +92,33 @@
 	else
 		temp_text = "<span class='good'>[air_contents.temperature]</span>"
 
+	var/holding_text = ""
+	if(holding)
+		var/temp_text2 = ""
+		if(holding.air_contents.temperature > (T0C - 20))
+			temp_text2 = "<span class='bad'>[holding.air_contents.temperature]</span>"
+		else if(air_contents.temperature < (T0C - 20) && air_contents.temperature > (T0C - 100))
+			temp_text2 = "<span class='average'>[holding.air_contents.temperature]</span>"
+		else
+			temp_text2 = "<span class='good'>[holding.air_contents.temperature]</span>"
+		holding_text = {"<BR>Current Tank Temperature: [temp_text2]<BR>
+		Current Tank Pressure: [holding.air_contents.return_pressure()]<BR>
+		<A href='?src=\ref[src];remove_tank=1'>Remove Tank</A><BR>
+		"}
+
 	var/dat = {"
 	Current Status: [ on ? "<A href='?src=\ref[src];start=1'>Off</A> <span class='linkOn'>On</span>" : "<span class='linkOn'>Off</span> <A href='?src=\ref[src];start=1'>On</A>"]<BR>
+	[holding_text]<BR>
 	Current Gas Temperature: [temp_text]<BR>
-	Current Air Pressure: [air_contents.return_pressure()]<BR>
+	Current Gas Pressure: [air_contents.return_pressure()]<BR><BR>
+	Operating Mode: [ coolsholding ? "<A href='?src=\ref[src];mode=1'>Cool Pipe</A>" : "<span class='linkOn'>Cool Pipe</span>" ]
+	[ holding ? ( coolsholding ? "<span class='linkOn'>Cool Tank</span>" : "<A href='?src=\ref[src];mode=1'>Cool Tank</A>") : "<span class='linkOff'>Cool Tank</span>"]<BR>
 	Target Gas Temperature: <A href='?src=\ref[src];temp=-100'>-</A> <A href='?src=\ref[src];temp=-10'>-</A> <A href='?src=\ref[src];temp=-1'>-</A> [current_temperature] <A href='?src=\ref[src];temp=1'>+</A> <A href='?src=\ref[src];temp=10'>+</A> <A href='?src=\ref[src];temp=100'>+</A><BR>
 	"}
 
 	//user << browse(dat, "window=freezer;size=400x500")
 	//onclose(user, "freezer")
-	var/datum/browser/popup = new(user, "freezer", "Cryo Gas Cooling System", 400, 240) // Set up the popup browser window
+	var/datum/browser/popup = new(user, "freezer", "Cryo Gas Cooling System", 400, 300) // Set up the popup browser window
 	popup.set_title_image(user.browse_rsc_icon(src.icon, src.icon_state))
 	popup.set_content(dat)
 	popup.open()
@@ -102,10 +136,35 @@
 			src.current_temperature = min(T20C, src.current_temperature+amount)
 		else
 			src.current_temperature = max(min_temperature, src.current_temperature+amount)
+	if(href_list["remove_tank"])
+		if(!holding)
+			return
+		coolsholding = 0
+		holding.loc = src.loc
+		holding = null
+		update_icon()
+	if(href_list["mode"])
+		if(!holding)
+			coolsholding = 0
+		else
+			coolsholding = !(coolsholding)
 	src.updateUsrDialog()
+	src.add_fingerprint(usr)
+	return
 
 /obj/machinery/atmospherics/unary/cold_sink/freezer/process()
-	..()
+	if(!coolsholding)
+		..()
+	else
+		if(!on || !holding)
+			return 0
+		var/air_heat_capacity = holding.air_contents.heat_capacity()
+		var/combined_heat_capacity = current_heat_capacity + air_heat_capacity
+
+		if(combined_heat_capacity > 0)
+			var/combined_energy = current_temperature*current_heat_capacity + air_heat_capacity*holding.air_contents.temperature
+			holding.air_contents.temperature = combined_energy/combined_heat_capacity
+
 	src.updateUsrDialog()
 
 /obj/machinery/atmospherics/unary/cold_sink/freezer/power_change()
@@ -121,6 +180,8 @@
 	icon_state = "heater"
 	density = 1
 	var/max_temperature = 0
+	var/obj/item/weapon/tank/holding = null
+	var/heatsholding = 0
 	anchored = 1.0
 
 	current_heat_capacity = 1000
@@ -160,6 +221,15 @@
 	if(exchange_parts(user, I))
 		return
 
+	if (istype(I, /obj/item/weapon/tank))
+		if (src.holding)
+			return
+		user.drop_item()
+		I.loc = src
+		src.holding = I
+		update_icon()
+		return
+
 	default_deconstruction_crowbar(I)
 
 	if(default_change_direction_wrench(user, I))
@@ -172,6 +242,11 @@
 		icon_state = "heater_1"
 	else
 		icon_state = "heater"
+
+	overlays = list()
+
+	if(holding)
+		overlays += "hatch_open"
 	return
 
 /obj/machinery/atmospherics/unary/heat_reservoir/heater/attack_ai(mob/user as mob)
@@ -195,16 +270,33 @@
 	else
 		temp_text = "<span class='bad'>[air_contents.temperature]</span>"
 
+	var/holding_text = ""
+	if(holding)
+		var/temp_text2 = ""
+		if(holding.air_contents.temperature > (T0C - 20))
+			temp_text2 = "<span class='bad'>[holding.air_contents.temperature]</span>"
+		else if(air_contents.temperature < (T0C - 20) && air_contents.temperature > (T0C - 100))
+			temp_text2 = "<span class='average'>[holding.air_contents.temperature]</span>"
+		else
+			temp_text2 = "<span class='good'>[holding.air_contents.temperature]</span>"
+		holding_text = {"<BR>Current Tank Temperature: [temp_text2]<BR>
+		Current Tank Pressure: [holding.air_contents.return_pressure()]<BR>
+		<A href='?src=\ref[src];remove_tank=1'>Remove Tank</A><BR>
+		"}
+
 	var/dat = {"
 	Current Status: [ on ? "<A href='?src=\ref[src];start=1'>Off</A> <span class='linkOn'>On</span>" : "<span class='linkOn'>Off</span> <A href='?src=\ref[src];start=1'>On</A>"]<BR>
+	[holding_text]<BR>
 	Current Gas Temperature: [temp_text]<BR>
-	Current Air Pressure: [air_contents.return_pressure()]<BR>
+	Current Air Pressure: [air_contents.return_pressure()]<BR><BR>
+	Operating Mode: [ heatsholding ? "<A href='?src=\ref[src];mode=1'>Heat Pipe</A>" : "<span class='linkOn'>Heat Pipe</span>" ]
+	[ holding ? ( heatsholding ? "<span class='linkOn'>Heat Tank</span>" : "<A href='?src=\ref[src];mode=1'>Heat Tank</A>") : "<span class='linkOff'>Heat Tank</span>"]<BR>
 	Target Gas Temperature: <A href='?src=\ref[src];temp=-100'>-</A> <A href='?src=\ref[src];temp=-10'>-</A> <A href='?src=\ref[src];temp=-1'>-</A> [current_temperature] <A href='?src=\ref[src];temp=1'>+</A> <A href='?src=\ref[src];temp=10'>+</A> <A href='?src=\ref[src];temp=100'>+</A><BR>
 	"}
 
 	//user << browse(dat, "window=freezer;size=400x500")
 	//onclose(user, "freezer")
-	var/datum/browser/popup = new(user, "freezer", "Cryo Gas Cooling System", 400, 240) // Set up the popup browser window
+	var/datum/browser/popup = new(user, "freezer", "Inferno Gas Heating System", 400, 300) // Set up the popup browser window
 	popup.set_title_image(user.browse_rsc_icon(src.icon, src.icon_state))
 	popup.set_content(dat)
 	popup.open()
@@ -222,12 +314,34 @@
 			src.current_temperature = min((T20C+max_temperature), src.current_temperature+amount)
 		else
 			src.current_temperature = max(T20C, src.current_temperature+amount)
+	if(href_list["remove_tank"])
+		if(!holding)
+			return
+		heatsholding = 0
+		holding.loc = src.loc
+		holding = null
+		update_icon()
+	if(href_list["mode"])
+		if(!holding)
+			heatsholding = 0
+		else
+			heatsholding = !(heatsholding)
 	src.updateUsrDialog()
 	src.add_fingerprint(usr)
 	return
 
 /obj/machinery/atmospherics/unary/heat_reservoir/heater/process()
-	..()
+	if(!heatsholding)
+		..()
+	else
+		if(!on || !holding)
+			return 0
+		var/air_heat_capacity = holding.air_contents.heat_capacity()
+		var/combined_heat_capacity = current_heat_capacity + air_heat_capacity
+
+		if(combined_heat_capacity > 0)
+			var/combined_energy = current_temperature*current_heat_capacity + air_heat_capacity*holding.air_contents.temperature
+			holding.air_contents.temperature = combined_energy/combined_heat_capacity
 	src.updateUsrDialog()
 
 /obj/machinery/atmospherics/unary/heat_reservoir/heater/power_change()

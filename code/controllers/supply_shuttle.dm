@@ -121,6 +121,7 @@ var/global/datum/controller/supply_shuttle/supply_shuttle
 	var/points_per_process = 1
 	var/points_per_slip = 2
 	var/points_per_crate = 5
+	var/points_per_intel = 100
 	var/plasma_per_point = 0.2 //5 points per plasma sheet due to increased rarity
 	var/centcom_message = "" // Remarks from Centcom on how well you checked the last order.
 	// Unique typepaths for unusual things we've already sent CentComm, associated with their potencies
@@ -170,23 +171,17 @@ var/global/datum/controller/supply_shuttle/supply_shuttle
 	proc/send()
 		var/area/from
 		var/area/dest
-		var/area/the_shuttles_way
 		switch(at_station)
 			if(1)
 				from = locate(SUPPLY_STATION_AREATYPE)
 				dest = locate(SUPPLY_DOCK_AREATYPE)
-				the_shuttles_way = from
 				at_station = 0
 			if(0)
 				from = locate(SUPPLY_DOCK_AREATYPE)
 				dest = locate(SUPPLY_STATION_AREATYPE)
-				the_shuttles_way = dest
 				at_station = 1
+		dest.clear_docking_area()
 		moving = 0
-
-		//Do I really need to explain this loop?
-		for(var/mob/living/unlucky_person in the_shuttles_way)
-			unlucky_person.gib()
 
 		from.move_contents_to(dest)
 
@@ -228,6 +223,7 @@ var/global/datum/controller/supply_shuttle/supply_shuttle
 		if(!shuttle)	return
 
 		var/plasma_count = 0
+		var/intel_count = 0
 		var/crate_count = 0
 		var/valuable_points = 0
 
@@ -288,7 +284,11 @@ var/global/datum/controller/supply_shuttle/supply_shuttle
 						var/obj/item/stack/sheet/mineral/plasma/P = A
 						plasma_count += P.amount
 
-					else if(istype(A, /obj/item/seeds))
+					// Sell syndicate intel
+					if(istype(A, /obj/item/documents/syndicate))
+						intel_count += 1
+
+					if(istype(A, /obj/item/seeds))
 						var/obj/item/seeds/S = A
 						if(S.rarity == 0) // Mundane species
 							centcom_message += "<font color=red>+0</font>: We don't need samples of mundane species \"[capitalize(S.species)]\".<BR>"
@@ -313,11 +313,15 @@ var/global/datum/controller/supply_shuttle/supply_shuttle
 			qdel(MA)
 
 		if(plasma_count)
-			centcom_message += "<font color=green>+[round(plasma_count/plasma_per_point)]</font>: Received [plasma_count] units of exotic material.<BR>"
+			centcom_message += "<font color=green>+[round(plasma_count/plasma_per_point)]</font>: Received [plasma_count] unit(s) of exotic material.<BR>"
 			points += round(plasma_count / plasma_per_point)
 
+		if(intel_count)
+			centcom_message += "<font color=green>+[round(intel_count*points_per_intel)]</font>: Received [intel_count] article(s) of enemy intelligence.<BR>"
+			points += round(intel_count*points_per_intel)
+
 		if(crate_count)
-			centcom_message += "<font color=green>+[round(crate_count*points_per_crate)]</font>: Received [crate_count] crates.<BR>"
+			centcom_message += "<font color=green>+[round(crate_count*points_per_crate)]</font>: Received [crate_count] crate(s).<BR>"
 			points += crate_count * points_per_crate
 
 		if(valuable_points)
@@ -726,11 +730,10 @@ var/global/datum/controller/supply_shuttle/supply_shuttle
 					supply_shuttle.points -= P.cost
 					supply_shuttle.shoppinglist += O
 					temp = "Thanks for your order.<BR>"
-					temp += "<BR><A href='?src=\ref[src];viewrequests=1'>Back</A> <A href='?src=\ref[src];mainmenu=1'>Main Menu</A>"
 				else
 					temp = "Not enough supply points.<BR>"
-					temp += "<BR><A href='?src=\ref[src];viewrequests=1'>Back</A> <A href='?src=\ref[src];mainmenu=1'>Main Menu</A>"
 				break
+		temp += "<BR><A href='?src=\ref[src];viewrequests=1'>Back</A> <A href='?src=\ref[src];mainmenu=1'>Main Menu</A>"
 
 	else if (href_list["vieworders"])
 		temp = "<A href='?src=\ref[src];mainmenu=1'>Main Menu</A><BR><BR>Current approved orders: <BR><BR>"

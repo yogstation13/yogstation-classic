@@ -6,7 +6,11 @@
 		src << "Only administrators may use this command."
 		return
 
-	usr.loc = pick(get_area_turfs(A))
+	var/list/L = list()
+	for(var/turf/T in get_area_turfs(A))
+		if(!T.density)
+			L += T
+	usr.loc = pick(L)
 	log_admin("[key_name(usr)] jumped to [A]")
 	message_admins("[key_name_admin(usr)] jumped to [A]", 1)
 	feedback_add_details("admin_verb","JA") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
@@ -118,15 +122,23 @@
 		M.loc = get_turf(usr)
 		feedback_add_details("admin_verb","GK") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
-/client/proc/sendmob(var/mob/M in sortmobs())
+/client/proc/sendmob(var/mob/M in sortmobs(),var/N=null)
 	set category = "Admin"
 	set name = "Send Mob"
 	if(!src.holder)
 		src << "Only administrators may use this command."
 		return
-	var/area/A = input(usr, "Pick an area.", "Pick an area") in return_sorted_areas()
+	var/area/A = null
+	if(N)
+		A = locate(N)
+	else
+		A = input(usr, "Pick an area.", "Pick an area") in return_sorted_areas()
 	if(A)
-		M.loc = pick(get_area_turfs(A))
+		var/list/L = list()
+		for(var/turf/T in get_area_turfs(A))
+			if(!T.density)
+				L += T
+		M.loc = pick(L)
 		feedback_add_details("admin_verb","SMOB") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 		log_admin("[key_name(usr)] teleported [key_name(M)] to [A]")

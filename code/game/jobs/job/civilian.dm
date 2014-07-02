@@ -19,15 +19,43 @@ Tourist
 
 /datum/job/tourist/equip_items(var/mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/tourist(H), slot_w_uniform)
-	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(H), slot_shoes)
+	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/black(H), slot_shoes)
 	var/obj/item/device/camera/U = new(H)
 	U.name = "expensive camera"
 	H.equip_to_slot_or_del(U, slot_r_hand)
 	H.equip_to_slot_or_del(new /obj/item/device/camera_film(H), slot_l_store)
 	if(H.backbag != 1)
 		H.equip_to_slot_or_del(new /obj/item/device/camera_film(H.back), slot_in_backpack)
+		H.equip_to_slot_or_del(new /obj/item/weapon/spacecash/c20(H.back), slot_in_backpack)
+		H.equip_to_slot_or_del(new /obj/item/weapon/spacecash/c20(H.back), slot_in_backpack)
+		H.equip_to_slot_or_del(new /obj/item/weapon/spacecash/c20(H.back), slot_in_backpack)
 	else
 		H.equip_to_slot_or_del(new /obj/item/device/camera_film(H.back), slot_r_store)
+/*
+Clerk
+*/
+
+
+
+/datum/job/clerk
+	title = "Clerk"
+	flag = CLERK
+	department_head = list("Head of Personnel")
+	department_flag = MEDSCI
+	faction = "Station"
+	total_positions = 1
+	spawn_positions = 1
+	supervisors = "the head of personnel"
+	selection_color = "#dddddd"
+	access = list(access_manufacturing)			//See /datum/job/assistant/get_access()
+	minimal_access = list(access_manufacturing)	//See /datum/job/assistant/get_access()
+
+	default_headset = /obj/item/device/radio/headset/headset_srv
+
+/datum/job/clerk/equip_items(var/mob/living/carbon/human/H)
+	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/clerk(H), slot_w_uniform)
+	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/black(H), slot_shoes)
+	H.equip_to_slot_or_del(new /obj/item/clothing/head/clerkcap(H), slot_head)
 
 /*
 Bartender
@@ -46,7 +74,7 @@ Bartender
 	default_pda = /obj/item/device/pda/bar
 	default_headset = /obj/item/device/radio/headset/headset_srv
 
-	access = list(access_hydroponics, access_bar, access_kitchen, access_morgue, access_mineral_storeroom)
+	access = list(access_hydroponics, access_bar, access_kitchen, access_morgue, access_mineral_storeroom, access_weapons)
 	minimal_access = list(access_bar, access_mineral_storeroom)
 
 /datum/job/bartender/equip_backpack(var/mob/living/carbon/human/H)
@@ -70,7 +98,7 @@ Bartender
 			H.equip_to_slot_or_del(BPK, slot_back,1)
 
 /datum/job/bartender/equip_items(var/mob/living/carbon/human/H)
-	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(H), slot_shoes)
+	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/black(H), slot_shoes)
 	H.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/vest(H), slot_wear_suit)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/bartender(H), slot_w_uniform)
 
@@ -103,7 +131,7 @@ Chef
 /datum/job/chef/equip_items(var/mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/chef(H), slot_w_uniform)
 	H.equip_to_slot_or_del(new /obj/item/clothing/suit/chef(H), slot_wear_suit)
-	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(H), slot_shoes)
+	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/black(H), slot_shoes)
 	H.equip_to_slot_or_del(new /obj/item/clothing/head/chefhat(H), slot_head)
 
 /*
@@ -126,7 +154,7 @@ Waiter
 
 /datum/job/waiter/equip_items(var/mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/white(H), slot_gloves)
-	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(H), slot_shoes)
+	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/black(H), slot_shoes)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/waiter(H), slot_w_uniform)
 	var/obj/item/clothing/under/U = new /obj/item/clothing/under/waiter(H)
 	U.hastie = new /obj/item/clothing/tie/waistcoat(U)
@@ -154,7 +182,7 @@ Botanist
 
 /datum/job/hydro/equip_items(var/mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/hydroponics(H), slot_w_uniform)
-	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(H), slot_shoes)
+	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/black(H), slot_shoes)
 	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/botanic_leather(H), slot_gloves)
 	H.equip_to_slot_or_del(new /obj/item/clothing/suit/apron(H), slot_wear_suit)
 	H.equip_to_slot_or_del(new /obj/item/device/analyzer/plant_analyzer(H), slot_s_store)
@@ -182,7 +210,7 @@ Quartermaster
 
 /datum/job/qm/equip_items(var/mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/cargo(H), slot_w_uniform)
-	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/brown(H), slot_shoes)
+	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/brown(H), slot_shoes)
 	H.equip_to_slot_or_del(new /obj/item/clothing/glasses/sunglasses(H), slot_glasses)
 	H.equip_to_slot_or_del(new /obj/item/weapon/clipboard(H), slot_l_hand)
 
@@ -208,7 +236,7 @@ Cargo Technician
 
 /datum/job/cargo_tech/equip_items(var/mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/cargotech(H), slot_w_uniform)
-	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(H), slot_shoes)
+	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/black(H), slot_shoes)
 
 /*
 Shaft Miner
@@ -235,7 +263,7 @@ Shaft Miner
 
 /datum/job/mining/equip_items(var/mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/miner(H), slot_w_uniform)
-	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(H), slot_shoes)
+	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/black(H), slot_shoes)
 
 	if(H.backbag == 1)
 		H.equip_to_slot_or_del(new /obj/item/weapon/crowbar(H), slot_l_hand)
@@ -310,8 +338,8 @@ Mime
 
 
 /datum/job/mime/equip_items(var/mob/living/carbon/human/H)
-	H.equip_to_slot_or_del(new /obj/item/clothing/under/mime(H), slot_w_uniform)
-	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(H), slot_shoes)
+	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/mime(H), slot_w_uniform)
+	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/black(H), slot_shoes)
 	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/white(H), slot_gloves)
 	H.equip_to_slot_or_del(new /obj/item/clothing/mask/gas/mime(H), slot_wear_mask)
 	H.equip_to_slot_or_del(new /obj/item/clothing/head/beret(H), slot_head)
@@ -353,7 +381,7 @@ Janitor
 
 /datum/job/janitor/equip_items(var/mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/janitor(H), slot_w_uniform)
-	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(H), slot_shoes)
+	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/black(H), slot_shoes)
 
 /*
 Librarian
@@ -376,8 +404,8 @@ Librarian
 	minimal_access = list(access_library)
 
 /datum/job/librarian/equip_items(var/mob/living/carbon/human/H)
-	H.equip_to_slot_or_del(new /obj/item/clothing/under/suit_jacket/red(H), slot_w_uniform)
-	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(H), slot_shoes)
+	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/librarian(H), slot_w_uniform)
+	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/black(H), slot_shoes)
 	H.equip_to_slot_or_del(new /obj/item/weapon/storage/bag/books(H), slot_l_hand)
 	H.equip_to_slot_or_del(new /obj/item/weapon/barcodescanner(H), slot_r_store)
 	H.equip_to_slot_or_del(new /obj/item/device/laser_pointer(H), slot_l_store)
@@ -416,4 +444,3 @@ Lawyer
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/laceup(H), slot_shoes)
 	H.equip_to_slot_or_del(new /obj/item/weapon/storage/briefcase(H), slot_l_hand)
 	H.equip_to_slot_or_del(new /obj/item/device/laser_pointer(H), slot_l_store)
-

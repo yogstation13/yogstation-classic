@@ -507,7 +507,7 @@
 			else
 				healths.icon_state = "health7"
 
-		if(mind && mind.changeling)
+		if(mind && mind.changeling && hud_used)
 			hud_used.lingchemdisplay.invisibility = 0
 			hud_used.lingchemdisplay.maptext = "<div align='center' valign='middle' style='position:relative; top:0px; left:6px'> <font color='#dd66dd'>[src.mind.changeling.chem_charges]</font></div>"
 		else
@@ -516,8 +516,11 @@
 		if(pressure)
 			pressure.icon_state = "pressure[pressure_alert]"
 
-		if(pullin)	pullin.icon_state = "pull[pulling ? 1 : 0]"
-
+		if(pullin)
+			if(pulling)
+				pullin.icon_state = "pull"
+			else
+				pullin.icon_state = "pull0"
 
 		if (toxin)	toxin.icon_state = "tox[toxins_alert ? 1 : 0]"
 		if (oxygen) oxygen.icon_state = "oxy[oxygen_alert ? 1 : 0]"
@@ -581,7 +584,7 @@
 
 
 	proc/handle_changeling()
-		if(mind && mind.changeling)
+		if(mind && mind.changeling && hud_used)
 			mind.changeling.regenerate()
 			hud_used.lingchemdisplay.invisibility = 0
 			hud_used.lingchemdisplay.maptext = "<div align='center' valign='middle' style='position:relative; top:0px; left:6px'> <font color='#dd66dd'>[src.mind.changeling.chem_charges]</font></div>"

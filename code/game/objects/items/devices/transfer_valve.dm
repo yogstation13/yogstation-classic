@@ -77,8 +77,9 @@
 	<BR> <B> Valve attachment:</B> [attached_device ? "<A href='?src=\ref[src];device=1'>[attached_device]</A>" : "None"] [attached_device ? "<A href='?src=\ref[src];rem_device=1'>Remove</A>" : ""]
 	<BR> <B> Valve status: </B> [ valve_open ? "<A href='?src=\ref[src];open=1'>Closed</A> <B>Open</B>" : "<B>Closed</B> <A href='?src=\ref[src];open=1'>Open</A>"]"}
 
-	user << browse(dat, "window=trans_valve;size=600x300")
-	onclose(user, "trans_valve")
+	var/datum/browser/popup = new(user, "trans_valve", name)
+	popup.set_content(dat)
+	popup.open()
 	return
 
 /obj/item/device/transfer_valve/Topic(href, href_list)
@@ -121,7 +122,7 @@
 /obj/item/device/transfer_valve/process_activation(var/obj/item/device/D)
 	if(toggle)
 		toggle = 0
-		toggle_valve()
+		toggle_valve(D)
 		spawn(50) // To stop a signal being spammed from a proxy sensor constantly going off or whatever
 			toggle = 1
 
@@ -150,7 +151,7 @@
 	tank_two.air_contents.merge(temp)
 
 /obj/item/device/transfer_valve/proc/split_gases()
-	if (!valve_open || !tank_one || !tank_two)
+	if (!valve_open || !tank_one || !tank_two || !tank_one.air_contents || !tank_two.air_contents)
 		return
 	var/ratio1 = tank_one.air_contents.volume/tank_two.air_contents.volume
 	var/datum/gas_mixture/temp
@@ -163,11 +164,18 @@
 	it explodes properly when it gets a signal (and it does).
 	*/
 
-/obj/item/device/transfer_valve/proc/toggle_valve()
+/obj/item/device/transfer_valve/proc/toggle_valve(var/obj/item/device/D)
 	if(valve_open==0 && (tank_one && tank_two))
 		valve_open = 1
 		var/turf/bombturf = get_turf(src)
 		var/area/A = get_area(bombturf)
+
+		var/attachment = "no device"
+		if(attached_device)
+			if(istype(attached_device, /obj/item/device/assembly/signaler))
+				attachment = "<A HREF='?_src_=holder;secretsadmin=list_signalers'>[attached_device]</A>"
+			else
+				attachment = attached_device
 
 		var/attacher_name = ""
 		if(!attacher)
@@ -176,7 +184,7 @@
 			attacher_name = "[attacher.name]([attacher.ckey])"
 
 		var/log_str1 = "Bomb valve opened in "
-		var/log_str2 = "with [attached_device ? attached_device : "no device"] attacher: [attacher_name]"
+		var/log_str2 = "with [attachment] attacher: [attacher_name]"
 
 		var/log_attacher = ""
 		if(attacher)
@@ -184,14 +192,16 @@
 
 		var/mob/mob = get_mob_by_key(src.fingerprintslast)
 		var/last_touch_info = ""
-
 		if(mob)
 			last_touch_info = "(<A HREF='?_src_=holder;adminmoreinfo=\ref[mob]'>?</A>)"
 
 		var/log_str3 = " Last touched by: [src.fingerprintslast]"
-		bombers += "[log_str1] <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[bombturf.x];Y=[bombturf.y];Z=[bombturf.z]'>[A.name]</a>  [log_str2][log_attacher] [log_str3][last_touch_info]"
 
-		message_admins("[log_str1] <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[bombturf.x];Y=[bombturf.y];Z=[bombturf.z]'>[A.name]</a>  [log_str2][log_attacher] [log_str3][last_touch_info]", 0, 1)
+		var/bomb_message = "[log_str1] <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[bombturf.x];Y=[bombturf.y];Z=[bombturf.z]'>[A.name]</a>  [log_str2][log_attacher] [log_str3][last_touch_info]"
+
+		bombers += bomb_message
+
+		message_admins(bomb_message, 0, 1)
 		log_game("[log_str1] [A.name]([A.x],[A.y],[A.z]) [log_str2] [log_str3]")
 		merge_gases()
 		spawn(20) // In case one tank bursts

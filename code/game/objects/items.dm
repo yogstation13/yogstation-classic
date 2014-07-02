@@ -33,6 +33,7 @@
 	var/reflect_chance = 0 //This var dictates what % of a time an object will reflect an energy based weapon's shot
 
 	var/supply_value = 0 // Using this for "valuables" sent away from station in crates, e.g. Spacebux.  This translates directly into supply points.
+	var/list/species_exception = list()	// even if a species cannot put items in a certain slot, if the species id is in the item's exception list, it will be able to wear that item
 
 /obj/item/device
 	icon = 'icons/obj/device.dmi'
@@ -210,9 +211,9 @@
 						success = 1
 						S.handle_item_insertion(I, 1)	//The 1 stops the "You put the [src] into [S]" insertion message from being displayed.
 					if(success && !failure)
-						user << "<span class='notice'>You put everything in [S].</span>"
+						user << "<span class='notice'>You put everything [S.preposition] [S].</span>"
 					else if(success)
-						user << "<span class='notice'>You put some things in [S].</span>"
+						user << "<span class='notice'>You put some things [S.preposition] [S].</span>"
 					else
 						user << "<span class='notice'>You fail to pick anything up with [S].</span>"
 

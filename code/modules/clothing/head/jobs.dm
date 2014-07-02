@@ -7,6 +7,14 @@
 	item_state = "chef"
 	desc = "The commander in chef's head wear."
 
+//Clerk
+/obj/item/clothing/head/clerkcap
+	name = "clerk's hat"
+	desc = "It's a hat used by clerk's to help keep dust out of thier eyes."
+	icon_state = "clerkcap"
+	item_state = "clerkcap"
+
+
 //Captain
 /obj/item/clothing/head/caphat
 	name = "captain's hat"

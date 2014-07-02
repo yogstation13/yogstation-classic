@@ -10,17 +10,19 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 /datum/round_event_control/immovable_rod
 	name = "Immovable Rod"
 	typepath = /datum/round_event/immovable_rod
-	max_occurrences = 5
+	max_occurrences = 0
+	weight = -1
+
 
 /datum/round_event/immovable_rod
 	announceWhen = 5
 
 /datum/round_event/immovable_rod/announce()
-	command_alert("What the fuck was that?!", "General Alert")
+	priority_announce("What the fuck was that?!", "General Alert")
 
 /datum/round_event/immovable_rod/start()
-	message_admins("Random Event: Immovable Rod")
-	var/startx = 0
+	message_admins("Random Event: Immovable Rod - \red DENIED")
+	/*var/startx = 0
 	var/starty = 0
 	var/endy = 0
 	var/endx = 0
@@ -49,7 +51,7 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 			endx = 199
 
 	//rod time!
-	new /obj/effect/immovablerod(locate(startx, starty, 1), locate(endx, endy, 1))
+	new /obj/effect/immovablerod(locate(startx, starty, 1), locate(endx, endy, 1))*/
 
 
 /obj/effect/immovablerod
@@ -63,36 +65,38 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 	var/z_original = 0
 	var/destination
 
-	New(atom/start, atom/end)
-		loc = start
-		z_original = z
-		destination = end
-		if(end && end.z==z_original)
-			walk_towards(src, destination, 1)
+/obj/effect/immovablerod/New(atom/start, atom/end)
+	loc = start
+	z_original = z
+	destination = end
+	if(end && end.z==z_original)
+		walk_towards(src, destination, 1)
 
-	Move()
-		if(z != z_original || loc == destination)
+/obj/effect/immovablerod/Move()
+	if(z != z_original || loc == destination)
+		qdel(src)
+	return ..()
+
+/obj/effect/immovablerod/Bump(atom/clong)
+	playsound(src, 'sound/effects/bang.ogg', 50, 1)
+	for (var/mob/O in hearers(src, null))
+		O.show_message("CLANG", 2)
+
+	if(istype(clong, /turf/unsimulated) || istype(clong, /turf/simulated/shuttle)) //Unstoppable force meets immovable object
+		explosion(src.loc, 4, 5, 6, 7, 0)
+		if(src)
 			qdel(src)
-		return ..()
+		return
 
-	Bump(atom/clong)
-		if (istype(clong, /turf) && !istype(clong, /turf/unsimulated))
-			if(clong.density)
-				clong.ex_act(2)
-				for (var/mob/O in hearers(src, null))
-					O.show_message("CLANG", 2)
+	if(clong && prob(25))
+		src.loc = clong.loc
 
-		else if (istype(clong, /obj))
-			if(clong.density)
-				clong.ex_act(2)
-				for (var/mob/O in hearers(src, null))
-					O.show_message("CLANG", 2)
+	if (istype(clong, /turf) || istype(clong, /obj))
+		if(clong.density)
+			clong.ex_act(2)
 
-		else if (istype(clong, /mob))
-			if(clong.density || prob(10))
-				clong.meteorhit(src)
-		else
-			qdel(src)
-
-		if(clong && prob(25))
-			src.loc = clong.loc
+	else if (istype(clong, /mob))
+		if(clong.density || prob(10))
+			clong.ex_act(2)
+	else
+		qdel(src)

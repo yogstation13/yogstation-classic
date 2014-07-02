@@ -112,10 +112,10 @@
 									ore.Move(ore_box)
 				else if(target.loc == C)
 					log_message("Drilled through [target]")
-					if(ismob(target))
-						var/mob/M = target
-						add_logs(chassis.occupant, M, "attacked", object="[name]", addition="(INTENT: [uppertext(chassis.occupant.a_intent)]) (DAMTYE: [uppertext(damtype)])")
-					target.ex_act(2)
+					if(isliving(target))
+						drill_mob(target, chassis.occupant)
+					else
+						target.ex_act(2)
 		return 1
 
 	can_attach(obj/mecha/M as obj)
@@ -123,6 +123,20 @@
 			if(istype(M, /obj/mecha/working) || istype(M, /obj/mecha/combat))
 				return 1
 		return 0
+
+/obj/item/mecha_parts/mecha_equipment/tool/drill/proc/drill_mob(mob/living/target, mob/user, var/drill_damage=80)
+	target.visible_message("<span class='danger'>[chassis] drills [target] with the [src].</span>\
+						<span class='userdanger'>[chassis] drills [target] with the [src].</span>")
+	add_logs(user, target, "attacked", object="[name]", addition="(INTENT: [uppertext(user.a_intent)]) (DAMTYPE: [uppertext(damtype)])")
+	if(ishuman(target))
+		var/mob/living/carbon/human/H = target
+		var/obj/item/organ/limb/affecting = H.get_organ("chest")
+		affecting.take_damage(drill_damage)
+		H.update_damage_overlays(0)
+	else
+		target.take_organ_damage(drill_damage)
+	target.Paralyse(10)
+	target.updatehealth()
 
 /obj/item/mecha_parts/mecha_equipment/tool/drill/diamonddrill
 	name = "diamond-tipped exosuit drill"
@@ -172,10 +186,10 @@
 								ore.Move(ore_box)
 				else if(target.loc == C)
 					log_message("Drilled through [target]")
-					if(ismob(target))
-						var/mob/M = target
-						add_logs(chassis.occupant, M, "attacked", object="[name]", addition="(INTENT: [uppertext(chassis.occupant.a_intent)]) (DAMTYE: [uppertext(damtype)])")
-					target.ex_act(2)
+					if(isliving(target))
+						drill_mob(target, chassis.occupant, 120)
+					else
+						target.ex_act(2)
 		return 1
 
 	can_attach(obj/mecha/M as obj)
@@ -264,7 +278,7 @@
 	energy_drain = 250
 	range = MELEE|RANGED
 	construction_time = 1200
-	construction_cost = list("metal"=30000,"plasma"=25000,"silver"=20000,"gold"=20000)
+	construction_cost = list("metal"=30000,"gold"=20000,"plasma"=25000,"silver"=20000)
 	var/mode = 0 //0 - deconstruct, 1 - wall or floor, 2 - airlock.
 	var/disabled = 0 //malf
 
@@ -485,7 +499,6 @@
 				set_ready_state(0)
 				chassis.use_power(energy_drain)
 				var/turf/T = get_turf(target)
-				message_admins("[key_name(chassis.occupant, chassis.occupant.client)](<A HREF='?_src_=holder;adminmoreinfo=\ref[chassis.occupant]'>?</A>) used a Gravitational Catapult in ([T.x],[T.y],[T.z] - <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP</a>)",0,1)
 				log_game("[chassis.occupant.ckey]([chassis.occupant]) used a Gravitational Catapult in ([T.x],[T.y],[T.z])")
 				do_after_cooldown()
 		return
@@ -632,7 +645,7 @@
 	equip_cooldown = 20
 	energy_drain = 100
 	range = 0
-	construction_cost = list("metal"=10000,"gold"=1000,"silver"=2000,"glass"=5000)
+	construction_cost = list("metal"=10000,"glass"=5000,"gold"=1000,"silver"=2000)
 	var/health_boost = 2
 	var/datum/global_iterator/pr_repair_droid
 	var/icon/droid_overlay
@@ -722,7 +735,7 @@
 	equip_cooldown = 10
 	energy_drain = 0
 	range = 0
-	construction_cost = list("metal"=10000,"gold"=2000,"silver"=3000,"glass"=2000)
+	construction_cost = list("metal"=10000,"glass"=2000,"gold"=2000,"silver"=3000)
 	var/datum/global_iterator/pr_energy_relay
 	var/coeff = 100
 	var/list/use_channels = list(EQUIP,ENVIRON,LIGHT)
@@ -834,7 +847,7 @@
 	equip_cooldown = 10
 	energy_drain = 0
 	range = MELEE
-	construction_cost = list("metal"=10000,"silver"=500,"glass"=1000)
+	construction_cost = list("metal"=10000,"glass"=1000,"silver"=500)
 	var/datum/global_iterator/pr_mech_generator
 	var/coeff = 100
 	var/obj/item/stack/sheet/fuel
@@ -971,7 +984,7 @@
 	desc = "An exosuit module that generates power using uranium as fuel. Pollutes the environment."
 	icon_state = "tesla"
 	origin_tech = "powerstorage=3;engineering=3"
-	construction_cost = list("metal"=10000,"silver"=500,"glass"=1000)
+	construction_cost = list("metal"=10000,"glass"=1000,"silver"=500)
 	max_fuel = 50000
 	fuel_per_cycle_idle = 10
 	fuel_per_cycle_active = 30

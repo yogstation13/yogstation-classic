@@ -1,8 +1,8 @@
 /datum/round_event_control/alien_infestation
 	name = "Alien Infestation"
 	typepath = /datum/round_event/alien_infestation
-	weight = 5
-	max_occurrences = 1
+	weight = -1
+	max_occurrences = 0
 
 /datum/round_event/alien_infestation
 	announceWhen	= 400
@@ -22,13 +22,12 @@
 
 /datum/round_event/alien_infestation/announce()
 	if(successSpawn)
-		command_alert("Unidentified lifesigns detected coming aboard [station_name()]. Secure any exterior access, including ducting and ventilation.", "Lifesign Alert")
-		world << sound('sound/AI/aliens.ogg')
+		priority_announce("Unidentified lifesigns detected coming aboard [station_name()]. Secure any exterior access, including ducting and ventilation.", "Lifesign Alert", 'sound/AI/aliens.ogg')
 
 
 /datum/round_event/alien_infestation/start()
-	message_admins("Random Event: Alien Infestation")
-	var/list/vents = list()
+	message_admins("Random Event: Alien Infestation - \red DENIED")
+	/*var/list/vents = list()
 	for(var/obj/machinery/atmospherics/unary/vent_pump/temp_vent in world)
 		if(temp_vent.loc.z == 1 && !temp_vent.welded && temp_vent.network)
 			if(temp_vent.network.normal_members.len > 20)	//Stops Aliens getting stuck in small networks. See: Security, Virology
@@ -44,4 +43,4 @@
 		new_xeno.key = C.key
 
 		spawncount--
-		successSpawn = 1
+		successSpawn = 1*/

@@ -7,6 +7,13 @@
 	item_state = "ba_suit"
 	item_color = "ba_suit"
 
+/obj/item/clothing/under/rank/clerk
+	desc = "Oh, look it comes with its own vest."
+	name = "clerk's uniform"
+	icon_state = "clerk"
+	item_state = "clerk"
+	item_color = "clerk"
+
 
 /obj/item/clothing/under/rank/captain //Alright, technically not a 'civilian' but its better then giving a .dm file for a single define.
 	desc = "It's a blue jumpsuit with some gold markings denoting the rank of \"Captain\"."
@@ -132,14 +139,14 @@
 	item_state = "ba_suit"
 	item_color = "blacksuit"
 
-/obj/item/clothing/under/librarian
+/obj/item/clothing/under/rank/librarian
 	name = "sensible suit"
 	desc = "It's very... sensible."
 	icon_state = "red_suit"
 	item_state = "red_suit"
 	item_color = "red_suit"
 
-/obj/item/clothing/under/mime
+/obj/item/clothing/under/rank/mime
 	name = "mime's outfit"
 	desc = "It's not very colourful."
 	icon_state = "mime"

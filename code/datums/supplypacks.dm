@@ -362,6 +362,12 @@ var/list/all_supply_groups = list(supply_emergency,supply_security,supply_engine
 	cost = 30
 	containername = "security clothing crate"
 
+/datum/supply_packs/security/armory/pinpointer
+	name = "Pinpointer crate"
+	contains = list (/obj/item/weapon/storage/lockbox/pinpointer)
+	cost = 40
+	containername = "pinpointer crate"
+
 
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////// Engineering /////////////////////////////////////
@@ -921,8 +927,8 @@ var/list/all_supply_groups = list(supply_emergency,supply_security,supply_engine
 	name = "Religious Supplies Crate"
 	contains = list(/obj/item/weapon/reagent_containers/food/drinks/bottle/holywater,
 					/obj/item/weapon/reagent_containers/food/drinks/bottle/holywater,
-					/obj/item/weapon/storage/bible/booze,
-					/obj/item/weapon/storage/bible/booze,
+					/obj/item/weapon/storage/book/bible/booze,
+					/obj/item/weapon/storage/book/bible/booze,
 					/obj/item/clothing/suit/chaplain_hoodie,
 					/obj/item/clothing/head/chaplain_hood,
 					/obj/item/clothing/suit/chaplain_hoodie,
@@ -1018,8 +1024,8 @@ var/list/all_supply_groups = list(supply_emergency,supply_security,supply_engine
 					/obj/item/clothing/mask/gas/clown_hat,
 					/obj/item/clothing/under/rank/clown,
 					/obj/item/weapon/bikehorn,
-					/obj/item/clothing/under/mime,
-					/obj/item/clothing/shoes/black,
+					/obj/item/clothing/under/rank/mime,
+					/obj/item/clothing/shoes/sneakers/black,
 					/obj/item/clothing/gloves/white,
 					/obj/item/clothing/mask/gas/mime,
 					/obj/item/clothing/head/beret,

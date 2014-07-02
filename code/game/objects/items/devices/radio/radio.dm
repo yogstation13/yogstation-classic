@@ -236,7 +236,10 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 	if(jammers)
 		for(var/obj/item/device/radio/syndicate/R in world)
 			if(R.jamming)
-				if(get_dist(R,src)<7)
+				var/range=1
+				if(R.anchored)
+					range=6
+				if(get_dist(R,src)<=range)
 					return
 
 	if(GLOBAL_RADIO_TYPE == 1) // NEW RADIO SYSTEMS: By Doohl
@@ -278,6 +281,8 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 		var/real_name = M.real_name // mob's real name
 		var/mobkey = "none" // player key associated with mob
 		var/voicemask = 0 // the speaker is wearing a voice mask
+		var/voicename = M.voice_name
+		var/voicemessage = M.voice_message
 		if(M.client)
 			mobkey = M.key // assign the mob's key
 
@@ -415,7 +420,6 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 		for(var/obj/machinery/telecomms/receiver/R in telecomms_list)
 			R.receive_signal(signal)
 
-
 		sleep(rand(10,25)) // wait a little...
 
 		if(signal.data["done"] && position.z in signal.data["level"])
@@ -428,8 +432,8 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 		//THIS IS TEMPORARY.
 		if(!connection)	return	//~Carn
 
-		Broadcast_Message(connection, M, voicemask, M.voice_message,
-						  src, message, displayname, jobname, real_name, M.voice_name,
+		Broadcast_Message(connection, M, voicemask, voicemessage,
+						  src, message, displayname, jobname, real_name, voicename,
 		                  filter_type, signal.data["compression"], list(position.z), connection.frequency)
 
 
@@ -662,7 +666,10 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 	if(jammers)
 		for(var/obj/item/device/radio/syndicate/R in world)
 			if(R.jamming)
-				if(get_dist(R,src)<7)
+				var/range=1
+				if(R.anchored)
+					range=6
+				if(get_dist(R,src)<=range)
 					return -1
 	if (!freq) //recieved on main frequency
 		if (!listening)
@@ -862,6 +869,35 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 	listening = 0			// And it's nice to have a subtype too for future features.
 
 /obj/item/device/radio/syndicate
-	New()
-		freerange=1
-		..()
+	anchored = 0
+	jamming = 0
+
+/obj/item/device/radio/syndicate/attackby(obj/item/I as obj, mob/user as mob)
+	if(!isturf(src.loc))
+		return
+	if(istype(I, /obj/item/weapon/wrench))
+		for(var/mob/M in viewers(user, null))
+			if(M == user)
+				user << "<span class='notice'>You start wrenching [src].</span>"
+			else if(in_range(M, user))
+				M.show_message("<span class='notice'>[usr] starts wrenching [src].</span>")
+		playsound(src.loc, 'sound/items/Ratchet.ogg', 100, 1)
+		if(do_after(user, 40))
+			if(!src)
+				return
+			for(var/mob/M in viewers(user, null))
+				if(M == user)
+					user << "<span class='notice'>You [anchored?"un":""]deploy [src].</span>"
+				else if(in_range(M, user))
+					M.show_message("<span class='notice'>[usr] [anchored?"un":""]deploys [src].</span>")
+			if(anchored)
+				anchored=0
+				icon_state="walkietalkie"
+			else
+				anchored=1
+				icon_state="syn_jammer"
+
+/obj/item/device/radio/syndicate/attack_hand(var/mob/user)
+	if(anchored)
+		return
+	..()

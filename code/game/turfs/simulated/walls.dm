@@ -14,10 +14,11 @@
 	var/hardness = 40 //lower numbers are harder. Used to determine the probability of a hulk smashing through.
 
 /turf/simulated/wall/proc/dismantle_wall(devastated=0, explode=0)
+	var/newgirder = null
 	if(istype(src,/turf/simulated/wall/r_wall))
 		if(!devastated)
 			playsound(src, 'sound/items/Welder.ogg', 100, 1)
-			new /obj/structure/girder/reinforced(src)
+			newgirder = new /obj/structure/girder/reinforced(src)
 			new /obj/item/stack/sheet/plasteel( src )
 		else
 			new /obj/item/stack/sheet/metal( src )
@@ -35,7 +36,7 @@
 	else
 		if(!devastated)
 			playsound(src, 'sound/items/Welder.ogg', 100, 1)
-			new /obj/structure/girder(src)
+			newgirder = new /obj/structure/girder(src)
 			if (mineral == "metal")
 				new /obj/item/stack/sheet/metal( src )
 				new /obj/item/stack/sheet/metal( src )
@@ -53,6 +54,9 @@
 				new M( src )
 				new M( src )
 				new /obj/item/stack/sheet/metal( src )
+
+	if(newgirder)
+		transfer_fingerprints_to(newgirder)
 
 	for(var/obj/O in src.contents) //Eject contents!
 		if(istype(O,/obj/structure/sign/poster))
@@ -175,6 +179,8 @@
 	var/turf/T = user.loc	//get user's location for delay checks
 
 	//DECONSTRUCTION
+	add_fingerprint(user)
+
 	if( istype(W, /obj/item/weapon/weldingtool) )
 		var/obj/item/weapon/weldingtool/WT = W
 		if( WT.remove_fuel(0,user) )
@@ -288,30 +294,29 @@
 /turf/simulated/wall/proc/thermitemelt(mob/user as mob)
 	if(mineral == "diamond")
 		return
+
+	overlays = list()
 	var/obj/effect/overlay/O = new/obj/effect/overlay( src )
-	O.name = "Thermite"
+	O.name = "thermite"
 	O.desc = "Looks hot."
 	O.icon = 'icons/effects/fire.dmi'
 	O.icon_state = "2"
 	O.anchored = 1
+	O.opacity = 1
 	O.density = 1
 	O.layer = 5
 
-	var/turf/simulated/floor/F = ChangeTurf(/turf/simulated/floor/plating)
-	F.burn_tile()
-	F.icon_state = "wall_thermite"
-	user << "<span class='warning'>The thermite melts through the wall.</span>"
+	playsound(src, 'sound/items/Welder.ogg', 100, 1)
 
-	spawn(100)
-		if(O)	qdel(O)
-//	F.sd_LumReset()		//TODO: ~Carn
-	return
-
-/turf/simulated/wall/meteorhit(obj/M as obj)
-	if (prob(15))
-		dismantle_wall()
-	else if(prob(70))
-		ChangeTurf(/turf/simulated/floor/plating)
+	if(thermite >= 50)
+		var/turf/simulated/floor/F = ChangeTurf(/turf/simulated/floor/plating)
+		F.burn_tile()
+		F.icon_state = "wall_thermite"
+		F.add_hiddenprint(user)
+		spawn(max(100,300-thermite))
+			if(O)	qdel(O)
 	else
-		ReplaceWithLattice()
-	return 0
+		thermite = 0
+		spawn(50)
+			if(O)	qdel(O)
+	return

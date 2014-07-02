@@ -257,7 +257,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 				G_found.mind.transfer_to(new_monkey)	//be careful when doing stuff like this! I've already checked the mind isn't in use
 				new_monkey.key = G_found.key
 				new_monkey << "You have been fully respawned. Enjoy the game."
-				message_admins("\blue [key_name_admin(usr)] has respawned [new_monkey.key] as a filthy xeno.", 1)
+				message_admins("\blue [key_name_admin(usr)] has respawned [new_monkey.key] as a filthy monkey.", 1)
 				return	//all done. The ghost is auto-deleted
 
 
@@ -310,13 +310,20 @@ Traitors and the like can also be revived with the previous role mostly intact.
 
 	//Two variables to properly announce later on.
 	var/admin = key_name_admin(src)
-	var/player_key = G_found.key
 
 	//Now for special roles and equipment.
 	switch(new_character.mind.special_role)
 		if("traitor")
-			job_master.EquipRank(new_character, new_character.mind.assigned_role, 1)
-			ticker.mode.equip_traitor(new_character)
+			switch(new_character.mind.assigned_role)
+				if("Cyborg")
+					new_character = new_character.Robotize()
+					call(/datum/game_mode/proc/add_law_zero)(new_character)
+				if("AI")
+					new_character = new_character.AIize()
+					call(/datum/game_mode/proc/add_law_zero)(new_character)
+				else
+					job_master.EquipRank(new_character, new_character.mind.assigned_role, 1)
+					ticker.mode.equip_traitor(new_character)
 		if("Wizard")
 			new_character.loc = pick(wizardstart)
 			//ticker.mode.learn_basic_spells(new_character)
@@ -342,17 +349,17 @@ Traitors and the like can also be revived with the previous role mostly intact.
 			new_character.equip_death_commando()
 			new_character.internal = new_character.s_store
 			new_character.internals.icon_state = "internal1"
+*/
 		else//They may also be a cyborg or AI.
 			switch(new_character.mind.assigned_role)
 				if("Cyborg")//More rigging to make em' work and check if they're traitor.
 					new_character = new_character.Robotize()
-					if(new_character.mind.special_role=="traitor")
-						call(/datum/game_mode/proc/add_law_zero)(new_character)
-*/
+					//if(new_character.mind.special_role=="traitor")
+					//	call(/datum/game_mode/proc/add_law_zero)(new_character)
 				if("AI")
 					new_character = new_character.AIize()
-					if(new_character.mind.special_role=="traitor")
-						call(/datum/game_mode/proc/add_law_zero)(new_character)
+					//if(new_character.mind.special_role=="traitor")
+					//	call(/datum/game_mode/proc/add_law_zero)(new_character)
 				//Add aliens.
 				else
 					job_master.EquipRank(new_character, new_character.mind.assigned_role, 1)//Or we simply equip them.
@@ -367,7 +374,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 			if(alert(new_character,"Would you like an active AI to announce this character?",,"No","Yes")=="Yes")
 				call(/mob/new_player/proc/AnnounceArrival)(new_character, new_character.mind.assigned_role)
 
-	message_admins("\blue [admin] has respawned [player_key] as [new_character.real_name].", 1)
+	message_admins("\blue [admin] has respawned [new_character.key] as [new_character.real_name].", 1)
 
 	new_character << "You have been fully respawned. Enjoy the game."
 
@@ -423,7 +430,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 
 	var/confirm = alert(src, "Do you want to announce the contents of the report to the crew?", "Announce", "Yes", "No")
 	if(confirm == "Yes")
-		command_alert(input);
+		priority_announce(input, null, 'sound/AI/commandreport.ogg');
 		for (var/obj/machinery/computer/communications/C in machines)
 			if(! (C.stat & (BROKEN|NOPOWER) ) )
 				var/obj/item/weapon/paper/P = new /obj/item/weapon/paper( C.loc )
@@ -432,7 +439,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 				C.messagetitle.Add("[command_name()] Update")
 				C.messagetext.Add(P.info)
 	else
-		command_alert("A report has been downloaded and printed out at all communications consoles.", "Incoming Classified Message");
+		priority_announce("A report has been downloaded and printed out at all communications consoles.", "Incoming Classified Message", 'sound/AI/commandreport.ogg');
 		for (var/obj/machinery/computer/communications/C in machines)
 			if(! (C.stat & (BROKEN|NOPOWER) ) )
 				var/obj/item/weapon/paper/P = new /obj/item/weapon/paper( C.loc )
@@ -441,7 +448,6 @@ Traitors and the like can also be revived with the previous role mostly intact.
 				C.messagetitle.Add("Classified [command_name()] Update")
 				C.messagetext.Add(P.info)
 
-	world << sound('sound/AI/commandreport.ogg')
 	log_admin("[key_name(src)] has created a command report: [input]")
 	message_admins("[key_name_admin(src)] has created a command report", 1)
 	feedback_add_details("admin_verb","CCR") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
@@ -703,8 +709,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 			return
 
 	emergency_shuttle.incall()
-	captain_announce("The emergency shuttle has been called. It will arrive in [round(emergency_shuttle.timeleft()/60)] minutes.")
-	world << sound('sound/AI/shuttlecalled.ogg')
+	priority_announce("The emergency shuttle has been called. It will arrive in [round(emergency_shuttle.timeleft()/60)] minutes.", null, 'sound/AI/shuttlecalled.ogg', "Priority")
 	feedback_add_details("admin_verb","CSHUT") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 	log_admin("[key_name(usr)] admin-called the emergency shuttle.")
 	message_admins("\blue [key_name_admin(usr)] admin-called the emergency shuttle.", 1)
@@ -782,21 +787,3 @@ Traitors and the like can also be revived with the previous role mostly intact.
 		message_admins("Admin [key_name_admin(usr)] has disabled random events.", 1)
 	feedback_add_details("admin_verb","TRE") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
-/client/proc/fix_air(var/turf/simulated/T in world)
-	set name = "Fix Air"
-	set category = "Server"
-	
-	if(!holder)
-		src << "Only administrators may use this command."
-		return
-	if(check_rights(R_SERVER,1))
-		var/range=input("Enter range:","Num",2) as num
-		message_admins("[key_name_admin(usr)] fixed air with range [range] in area [T.loc.name]")
-		log_game("[key_name_admin(usr)] fixed air with range [range] in area [T.loc.name]")
-		var/datum/gas_mixture/GM = new
-		GM.oxygen=22
-		GM.nitrogen=82
-		GM.temperature=293
-		GM.volume=2500
-		for(var/turf/simulated/floor/F in range(range,T))
-			F.copy_air(GM)

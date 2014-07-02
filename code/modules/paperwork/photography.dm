@@ -88,6 +88,19 @@
 	item_state = "briefcase"
 	can_hold = list(/obj/item/weapon/photo)
 
+/*
+ * Photo book
+ */
+/obj/item/weapon/storage/photobook
+	w_class = 3.0
+	name = "photo book"
+	icon = 'icons/obj/toy.dmi'
+	icon_state = "photobook"
+	item_state = "photobook"
+	can_hold = list(/obj/item/weapon/photo)
+	storage_slots = 70
+
+
 
 /*
  * Camera
