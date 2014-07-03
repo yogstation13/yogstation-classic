@@ -22,7 +22,7 @@ var/bomb_set
 	var/alarmcooldown = 0
 	var/datum/wires/nuke/wires = null
 	var/obj/item/device/pda/hacker = null
-	var/hacktime = 180
+	var/hacktime = 330
 
 /obj/machinery/nuclearbomb/New()
 	..()
@@ -46,15 +46,15 @@ var/bomb_set
 			hacktime--
 			if ((hacktime % 5) == 0)
 				playsound(loc, 'sound/items/timer.ogg', 5, 0)
-			if ((hacktime % 30) == 0)
-				hackerinform(hacktime/30)
+			if ((hacktime % 60) == 0)
+				hackerinform(hacktime/60)
 			if (hacktime <= 0)
 				hacktime = 0
 				hacker = null
 				updatelights()
 
 		else
-			hacktime = 180
+			hacktime = 330
 			hackerinform(-1)
 			hacker = null
 			updatelights()
