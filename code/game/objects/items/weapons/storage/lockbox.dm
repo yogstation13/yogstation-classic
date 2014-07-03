@@ -97,9 +97,9 @@
 	desc = "GET THE FUKKEN DISK"
 	icon_state = "ntlockbox+l"
 	req_access = list(access_captain)
-	var/icon_locked = "ntlockbox+l"
-	var/icon_closed = "ntlockbox"
-	var/icon_broken = "ntlockbox+b"
+	icon_locked = "ntlockbox+l"
+	icon_closed = "ntlockbox"
+	icon_broken = "ntlockbox+b"
 
 	New()
 		..()
