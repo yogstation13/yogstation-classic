@@ -10,7 +10,7 @@
 /obj/machinery/computer/crew/attack_ai(mob/user)
 	if(stat & (BROKEN|NOPOWER))
 		return
-	crewmonitor(user)
+	crewmonitor(user,z)
 
 /obj/machinery/computer/crew/attack_hand(mob/user)
 	if(..())
@@ -33,7 +33,7 @@
 		return
 
 
-proc/crewmonitor(mob/user,var/z)
+proc/crewmonitor(mob/user,var/z = 1)
 	var/t = "<table width='100%'><tr><td width='40%'><h3>Name</h3></td><td width='30%'><h3>Vitals</h3></td><td width='30%'><h3>Position</h3></td></tr>"
 	var/list/logs = list()
 	var/list/tracked = crewscan()
