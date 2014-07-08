@@ -324,7 +324,7 @@
 	Alt-click to ventcrawl
 */
 /obj/machinery/atmospherics/unary/vent_pump/AltClick(var/mob/living/L)
-	if(!L.ventcrawler || !isliving(L) || !Adjacent(L))
+	if(!L || !istype(L) || !L.ventcrawler || !isliving(L) || !Adjacent(L))
 		return
 	if(L.stat)
 		L << "You must be conscious to do this!"
@@ -338,7 +338,7 @@
 	if(istype(L.loc, /obj))
 		L << "You can't vent crawl from inside of a container!"
 		return
-		
+
 	if(!network || !network.normal_members.len)
 		L << "This vent is not connected to anything."
 		return

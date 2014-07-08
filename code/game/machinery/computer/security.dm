@@ -396,7 +396,7 @@ What a mess.*/
 					else
 						P.info += "<B>Security Record Lost!</B><BR>"
 					P.info += "</TT>"
-					P.name = text("SR-[] '[]'", data_core.securityPrintCount, active1.fields["name"])
+					P.name = text("SR-[] '[]'", data_core.securityPrintCount, active1 ? active1.fields["name"] : "Not found!")
 					printing = null
 //RECORD DELETE
 			if ("Delete All Records")

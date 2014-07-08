@@ -38,6 +38,9 @@
 		//stage = 1
 		//if (istype(src, /mob/living/silicon/ai)) // Are we not sure what we are?
 		//stage = 2
+
+		blinded = 0
+
 		var/area/loc = null
 		if (istype(T, /turf))
 			//stage = 3
@@ -50,7 +53,7 @@
 
 		if (!blinded)
 			//stage = 4.5
-			if (src.blind.layer != 0)
+			if (src.blind && src.blind.layer != 0)
 				src.blind.layer = 0
 			src.sight |= SEE_TURFS
 			src.sight |= SEE_MOBS
@@ -78,7 +81,7 @@
 		else
 
 			//stage = 6
-			if (src.blind.layer!=18)
+			if (src.blind && src.blind.layer!=18)
 				src.blind.layer = 18
 			src.sight = src.sight&~SEE_TURFS
 			src.sight = src.sight&~SEE_MOBS

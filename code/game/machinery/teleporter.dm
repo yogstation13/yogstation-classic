@@ -75,6 +75,8 @@
 /obj/machinery/computer/teleporter/Topic(href, href_list)
 	if(..())
 		return
+	if(!power_station)
+		return
 	if(href_list["regimeset"])
 		power_station.engaged = 0
 		power_station.teleporter_hub.update_icon()

@@ -16,7 +16,7 @@
 	wavesecret = 1
 	for(var/i = 0 to number)
 		spawn(rand(10,100))
-			spawn_meteor()
+			spawn_meteor(meteorsA)
 	spawn(meteor_wave_delay)
 		wavesecret = 0
 
@@ -28,6 +28,8 @@
 
 /proc/spawn_meteor(var/list/meteortypes)
 
+	if(!meteortypes)
+		return
 	var/startx
 	var/starty
 	var/endx

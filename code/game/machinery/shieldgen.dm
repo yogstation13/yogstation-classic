@@ -321,7 +321,7 @@
 		use_power = 0
 
 /obj/machinery/shieldwallgen/proc/power()
-	if(!anchored)
+	if(!anchored || !isturf(loc))
 		power = 0
 		return 0
 	var/turf/T = src.loc
