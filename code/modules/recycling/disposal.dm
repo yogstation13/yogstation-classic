@@ -140,11 +140,14 @@
 
 // mouse drop another mob or self
 //
-/obj/machinery/disposal/MouseDrop_T(mob/target, mob/user)
-	stuff_mob_in(target, user)
+/obj/machinery/disposal/MouseDrop_T(target, mob/user)
+	if(ismob(target))
+		stuff_mob_in(target, user)
+	else
+		user << "<span class='warning'>You should just try to put it in.</span>"
 
 /obj/machinery/disposal/proc/stuff_mob_in(mob/target, mob/user)
-	if (!user.canUseTopic(target) || istype(user, /mob/living/silicon/ai))
+	if (!ismob(user) || !ismob(target) || !user.canUseTopic(target) || istype(user, /mob/living/silicon/ai))
 		return
 	src.add_fingerprint(user)
 	if(user == target)

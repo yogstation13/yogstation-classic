@@ -66,6 +66,8 @@
 
 	if(IsMultiple(activeFor, 4))
 		var/obj/machinery/vending/rebel = pick(vendingMachines)
+		if(!rebel)
+			return
 		vendingMachines.Remove(rebel)
 		infectedMachines.Add(rebel)
 		rebel.shut_up = 0

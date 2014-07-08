@@ -28,7 +28,7 @@ datum/preferences
 			preview_icon = new /icon('icons/mob/human.dmi', "[skin_tone]_[g]_s")
 		else
 			preview_icon = new /icon('icons/mob/human.dmi', "[pref_species.id]_[g]_s")
-			preview_icon.Blend("#[mutant_color]", ICON_MULTIPLY)
+			preview_icon.Blend("#[sanitize_hexcolor(mutant_color)]", ICON_MULTIPLY)
 
 		var/datum/sprite_accessory/S
 		if(underwear)

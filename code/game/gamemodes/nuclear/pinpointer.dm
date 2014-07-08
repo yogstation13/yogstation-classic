@@ -220,7 +220,7 @@
 		if(!home)
 			icon_state = "pinonnull"
 			return
-	if(loc.z != home.z)	//If you are on a different z-level from the shuttle
+	if(!loc || (loc.z != home.z))	//If you are on a different z-level from the shuttle
 		icon_state = "pinonnull"
 	else
 		dir = get_dir(src, home)

@@ -988,7 +988,9 @@
 		if(H.losebreath>0) //Suffocating so do not take a breath
 			H.losebreath--
 			if (prob(10)) //Gasp per 10 ticks? Sounds about right.
-				spawn H.emote("gasp")
+				spawn
+					if(H)
+						H.emote("gasp")
 			if(istype(H.loc, /obj/))
 				var/obj/location_as_object = H.loc
 				location_as_object.handle_internal_lifeform(H, 0)
@@ -1297,7 +1299,7 @@
 			H.update_fire()
 
 	proc/ExtinguishMob(var/mob/living/carbon/human/H)
-		if(H.on_fire)
+		if(H && H.on_fire)
 			H.on_fire = 0
 			H.fire_stacks = 0
 			H.AddLuminosity(-3)

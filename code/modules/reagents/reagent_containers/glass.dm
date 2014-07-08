@@ -91,7 +91,7 @@
 		else if(istype(target, /obj/item/clothing/suit/space/space_ninja))
 			return
 
-		else if(reagents.total_volume)
+		else if(reagents && reagents.total_volume)
 			user << "<span class='notice'>You splash the solution onto [target].</span>"
 			reagents.reaction(target, TOUCH)
 			spawn(5)

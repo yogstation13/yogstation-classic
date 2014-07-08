@@ -30,7 +30,7 @@
 
 //Nettle
 /obj/item/weapon/grown/nettle/pickup(mob/living/carbon/human/user as mob)
-	if(!user.gloves)
+	if(!user || !istype(user) || !user.gloves)
 		user << "\red The nettle burns your bare hand!"
 		if(istype(user, /mob/living/carbon/human))
 			var/organ = ((user.hand ? "l_":"r_") + "arm")

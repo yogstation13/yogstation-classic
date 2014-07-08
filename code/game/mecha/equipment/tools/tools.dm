@@ -48,7 +48,7 @@
 
 		else if(istype(target,/mob/living))
 			var/mob/living/M = target
-			if(M.stat>1) return
+			if(!M || !(istype(M)) || M.stat>1) return
 			if(chassis.occupant.a_intent == "harm")
 				M.take_overall_damage(dam_force)
 				M.adjustOxyLoss(round(dam_force/2))
