@@ -268,7 +268,8 @@ var/round_start_time = 0
 					player.create_character()
 					qdel(player)
 			else
-				player.new_player_panel()
+				if(player.client && player.client.prefs && player.client.prefs.agree)
+					player.new_player_panel()
 
 
 	proc/collect_minds()

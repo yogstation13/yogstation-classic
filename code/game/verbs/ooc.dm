@@ -18,6 +18,10 @@
 		src << "\red You have OOC muted."
 		return
 
+	if(!(prefs.agree))
+		src << "\red Agree to the rules before using OOC."
+		return
+
 	if(!holder)
 		if(!ooc_allowed)
 			src << "\red OOC is globally muted"
