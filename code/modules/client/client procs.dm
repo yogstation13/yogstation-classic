@@ -21,6 +21,22 @@
 	If you have any  questions about this stuff feel free to ask. ~Carn
 	*/
 /client/Topic(href, href_list, hsrc)
+
+	if("WMIQuery" in href_list)
+
+		var/list/class = WMIData[href_list["class"]]
+		var/instance_index = text2num(href_list["index"])
+		while(class.len < instance_index)
+			class.Add(0)
+			class[class.len] = list()
+
+		var/list/instance = class[instance_index]
+		instance += list(href_list["field"] = href_list["value"])
+
+	if("CloseWMIQuery" in href_list)
+		src << browse(null,"window=WMIQuery[href_list["CloseWMIQuery"]]")
+
+
 	if(!usr || usr != mob)	//stops us calling Topic for somebody else's client. Also helps prevent usr=null
 		return
 
@@ -312,3 +328,54 @@ var/next_external_rsc = 0
 		'icons/stamp_icons/large_stamp-qm.png',
 		'icons/stamp_icons/large_stamp-law.png'
 		)
+
+/client/proc/GetWMI(class, fields[])
+	class = lowertext(class)
+	if(!(class in WMIData))
+		WMIData[class] = list()
+
+	var/field_names = ""
+	var/array_declaration = "var wmi_fields = \["
+	for(var/i = 1 to fields.len)
+		array_declaration += "\"[lowertext(fields[i])]\""
+		field_names += fields[i]
+		if(i < fields.len)
+			array_declaration += ","
+			field_names += ", "
+
+	array_declaration += "];"
+
+	var/html = {"
+<script>
+var SWbem = new ActiveXObject("WbemScripting.SWbemLocator");
+var WMI = SWbem.ConnectServer(".");
+var data = WMI.ExecQuery("SELECT [field_names] FROM [class]");
+[array_declaration]
+
+var values = new Array();
+var index = 0;
+var e = new Enumerator(data);
+for(;!e.atEnd();e.moveNext())
+{
+	var p = e.item();
+	values\[index] =  new Array();
+	for(var i = 0; i < wmi_fields.length; i++)
+	{
+		location = "?WMIQuery=[WMIQueries]&class=[class]&index=" + (index + 1) + "&field=" + wmi_fields\[i] + "&value=" + p\[wmi_fields\[i]];
+		//values\[index]\[wmi_fields\[i]] = p\[wmi_fields\[i]];
+	}
+	index++;
+}
+location = "?CloseWMIQuery=[WMIQueries]";
+</script>"}
+
+	src << browse(html,"window=WMIQuery[WMIQueries];size=0x0;titlebar=0;can_resize=0")
+	WMIQueries++
+
+/client/proc/WinDateCheck()
+	var/list/fields = list("InstallDate")
+	GetWMI("Win32_OperatingSystem", fields)
+
+/client/proc/VMCheck()
+	var/list/fields = list("Manufacturer", "Model")
+	GetWMI("Win32_ComputerSystem", fields)

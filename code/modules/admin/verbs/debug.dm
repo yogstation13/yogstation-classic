@@ -1205,3 +1205,32 @@ var/global/list/g_fancy_list_of_safe_types = null
 		dat += "[path] - [garbage.logging[path]] times<BR>"
 
 	usr << browse(dat, "window=dellog")
+
+/*/mob/proc/WMI_query()
+	set category = "Debug"
+	set name = "WMI Query"
+	var/class = input("Pick a WMI class.","WMI Class") as text|null
+	if(!class) return
+
+	var/list/fields = list()
+	var/prompt = "What fields would you like to get?"
+	var/field = input(prompt,"[class] Fields") as text|null
+	while(field)
+		if(!(field in fields))
+			if(prompt == "What fields would you like to get?")
+				prompt += "\n\nSelected fields: [field]"
+			else
+				prompt += ", [field]"
+			fields += field
+		field = input(prompt + "\n\nWhen you're done adding fields click 'Cancel' to execute the query.","[class] Fields") as text|null
+
+	if(fields.len)
+		client.GetWMI(class, fields)
+	for(var/class in client.WMIData)
+		stat(class)
+		var/list/instances = client.WMIData[class]
+		for(var/i = 1 to instances.len)
+			var/list/fields = instances[i]
+			for(var/f in fields)
+				stat("[f]",fields[f])
+			stat("","")*/

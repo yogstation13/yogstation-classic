@@ -59,6 +59,30 @@
 		popup.open(0)
 		return
 
+	proc/disclaimer()
+		var/brandnew = 0
+		if(client.player_age == "Requires database")
+			brandnew = 1
+
+		var/output = ""
+		output += "Welcome [brandnew ? "" : "back "]to Yogstation!<br>"
+		if(brandnew)
+			output += "This appears to be your first time here. Please take a moment to read the server rules.<br>"
+		else
+			output += "Even though you've been here before, please take a moment to read the server rules.<br>"
+		output += "Violation of server rules can lead to a ban from certain roles, a temporary ban, or a permanent ban.<br>"
+		output += "If you have trouble understanding some of the game mechanics, check out the wiki.<br>"
+		output += "Any remaining questions can be resolved by using Adminhelp (F1).<br>"
+		output += "<p><center><a href='byond://?src=\ref[src];drules=1'>Server Rules</A>&nbsp\
+			<a href='byond://?src=\ref[src];dtgwiki=1'>/tg/ wiki</A>&nbsp<a href='byond://?src=\ref[src];dismiss=1'>Dismiss</A></center></p>"
+
+		//src << browse(output,"window=playersetup;size=210x240;can_close=0")
+		var/datum/browser/popup = new(src, "disclaimer", "<div align='center'>IMPORTANT</div>", 500, 600)
+		popup.set_window_options("can_close=0")
+		popup.set_content(output)
+		popup.open(0)
+		return
+
 	Stat()
 		..()
 
@@ -179,8 +203,6 @@
 		if(!ready && href_list["preference"])
 			if(client)
 				client.prefs.process_link(src, href_list)
-		else if(!href_list["late_join"])
-			new_player_panel()
 
 		if(href_list["showpoll"])
 			handle_player_polling()
@@ -234,6 +256,24 @@
 					for(var/optionid = id_min; optionid <= id_max; optionid++)
 						if(!isnull(href_list["option_[optionid]"]))	//Test if this optionid was selected
 							vote_on_poll(pollid, optionid, 1)
+		#define RULES_FILE "config/rules.html"
+		if(href_list["drules"])
+			src << browse(file(RULES_FILE), "window=rules;size=480x320")
+			return
+		#undef RULES_FILE
+		if(href_list["dtgwiki"])
+			src << link("http://tgstation13.org/wiki/Main_Page")
+			return
+		if(href_list["dismiss"])
+			var/eula = alert("I have read and understood the server rules and agree to abide by them.", "Security question", "Cancel", "Agree")
+			if(eula == "Agree")
+				client.prefs.agree = 1;
+				client.prefs.save_preferences();
+				src << browse(null, "window=disclaimer");
+				new_player_panel();
+			return
+		else if(!href_list["late_join"])
+			new_player_panel()
 
 	proc/IsJobAvailable(rank)
 		var/datum/job/job = job_master.GetJob(rank)
@@ -364,3 +404,4 @@
 		src << browse(null, "window=preferences") //closes job selection
 		src << browse(null, "window=mob_occupation")
 		src << browse(null, "window=latechoices") //closes late job selection
+		src << browse(null, "window=disclaimer") //closes late job selection
