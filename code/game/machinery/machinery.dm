@@ -120,6 +120,8 @@ Class Procs:
 	if(paired)
 		paired.unpair(0)
 	machines.Remove(src)
+	if(occupant)
+		open_machine()
 	..()
 
 /obj/machinery/process()//If you dont use process or power why are you here
@@ -218,8 +220,12 @@ Class Procs:
 	if(check_rights(R_ADMIN))
 		return
 
-/mob/living/canUseTopic()
-	src << "<span class='notice'>You don't have the dexterity to do this!</span>"
+/mob/living/canUseTopic(atom/movable/M, be_close = 0, no_dextery = 0)
+	if(no_dextery)
+		if(be_close && in_range(M, src))
+			return 1
+	else
+		src << "<span class='notice'>You don't have the dexterity to do this!</span>"
 	return
 
 /mob/living/carbon/human/canUseTopic(atom/movable/M)
@@ -231,18 +237,24 @@ Class Procs:
 		return
 	return 1
 
-/mob/living/silicon/ai/canUseTopic()
+/mob/living/silicon/ai/canUseTopic(atom/movable/M, be_close = 0)
 	if(stat)
+		return
+	if(be_close && !in_range(M, src))
 		return
 	return 1
 
-/mob/living/silicon/pai/canUseTopic()
+/mob/living/silicon/pai/canUseTopic(atom/movable/M, be_close = 0)
 	if(stat)
+		return
+	if(be_close && !in_range(M, src) && !(paired == M))
 		return
 	return 1
 
-/mob/living/silicon/robot/canUseTopic()
+/mob/living/silicon/robot/canUseTopic(atom/movable/M, be_close = 0)
 	if(stat || lockcharge || stunned || weakened)
+		return
+	if(be_close && !in_range(M, src))
 		return
 	return 1
 

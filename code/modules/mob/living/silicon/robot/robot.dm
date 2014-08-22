@@ -57,7 +57,9 @@
 
 	var/obj/item/weapon/tank/internal = null	//Hatred. Used if a borg has a jetpack.
 	var/obj/item/robot_parts/robot_suit/robot_suit = null //Used for deconstruction to remember what the borg was constructed out of..
-
+	var/obj/item/device/camera/siliconcam/aicamera = null //photography
+	var/toner = 0
+	var/tonermax = 40
 
 
 /mob/living/silicon/robot/New(loc)
@@ -113,7 +115,8 @@
 	mmi.contents += mmi.brainmob
 
 	playsound(loc, 'sound/voice/liveagain.ogg', 75, 1)
-
+	aicamera = new/obj/item/device/camera/siliconcam/robot_camera(src)
+	toner = 40
 
 //If there's an MMI in the robot, have it ejected when the mob goes away. --NEO
 //Improved /N
@@ -409,7 +412,7 @@
 	if (istype(W, /obj/item/weapon/handcuffs)) // fuck i don't even know why isrobot() in handcuff code isn't working so this will have to do
 		return
 
-	if (istype(W, /obj/item/weapon/weldingtool))
+	if (istype(W, /obj/item/weapon/weldingtool) && user.a_intent != "harm")
 		var/obj/item/weapon/weldingtool/WT = W
 		if (src == user)
 			user << "<span class='warning'>You lack the reach to be able to repair yourself.</span>"
@@ -585,6 +588,14 @@
 			else
 				usr << "Upgrade error!"
 
+	else if(istype(W, /obj/item/device/toner))
+		if(toner >= tonermax)
+			usr << "The toner level of [src] is at it's highest level possible"
+		else
+			toner = 40
+			usr.drop_item()
+			qdel(W)
+			usr << "You fill the toner level of [src] to it's max capacity"
 
 	else
 		if(W.force)
@@ -1088,7 +1099,7 @@
 	lawupdate = 0
 	scrambledcodes = 1
 	modtype = "Synd"
-	faction = "syndicate"
+	faction = list("syndicate")
 	designation = "Syndicate"
 
 /mob/living/silicon/robot/syndicate/New(loc)

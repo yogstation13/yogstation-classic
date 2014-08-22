@@ -234,8 +234,22 @@
 			used += master.used_environ
 		if(TOTAL)
 			used += master.used_light + master.used_equip + master.used_environ
-
+		if(STATIC_EQUIP)
+			used += master.static_equip
+		if(STATIC_LIGHT)
+			used += master.static_light
+		if(STATIC_ENVIRON)
+			used += master.static_environ
 	return used
+
+/area/proc/addStaticPower(value, powerchannel)
+	switch(powerchannel)
+		if(STATIC_EQUIP)
+			static_equip += value
+		if(STATIC_LIGHT)
+			static_light += value
+		if(STATIC_ENVIRON)
+			static_environ += value
 
 /area/proc/clear_usage()
 
@@ -319,9 +333,12 @@
 				var/mob/living/living_mob = AM
 				living_mob.Paralyse(10)
 				living_mob.take_organ_damage(80)
+				living_mob.anchored = 0 //Unbuckle them so they can be moved
 			//Anything not bolted down is moved, everything else is destroyed
-			AM.anchored = 0
-			AM.Move(D)
+			if(!AM.anchored)
+				AM.Move(D)
+			else
+				qdel(AM)
 		if(istype(T, /turf/simulated))
 			del(T)
 

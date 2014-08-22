@@ -9,7 +9,7 @@
 	min_n2 = 0
 	max_n2 = 0
 	unsuitable_atoms_damage = 15
-	faction = "mining"
+	faction = list("mining")
 	environment_smash = 2
 	minbodytemp = 0
 	heat_damage_per_tick = 20
@@ -261,8 +261,8 @@
 /obj/item/asteroid/hivelord_core
 	name = "hivelord remains"
 	desc = "All that remains of a hivelord, it seems to be what allows it to break pieces of itself off without being hurt... its healing properties will soon become inert if not used quickly. Try not to think about what you're eating."
-	icon = 'icons/obj/surgery.dmi'
-	icon_state = "roro core"
+	icon = 'icons/obj/food.dmi'
+	icon_state = "boiledrorocore"
 	var/inert = 0
 
 /obj/item/asteroid/hivelord_core/New()
@@ -421,7 +421,7 @@
 
 /obj/item/asteroid/goliath_hide/afterattack(atom/target, mob/user, proximity_flag)
 	if(proximity_flag)
-		if(istype(target, /obj/item/clothing/suit/space/rig/mining) || istype(target, /obj/item/clothing/head/helmet/space/rig/mining))
+		if(istype(target, /obj/item/clothing/suit/space/hardsuit/mining) || istype(target, /obj/item/clothing/head/helmet/space/hardsuit/mining))
 			var/obj/item/clothing/C = target
 			var/current_armor = C.armor
 			if(current_armor.["melee"] < 80)

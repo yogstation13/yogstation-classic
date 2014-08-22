@@ -74,8 +74,8 @@ Bartender
 	default_pda = /obj/item/device/pda/bar
 	default_headset = /obj/item/device/radio/headset/headset_srv
 
-	access = list(access_hydroponics, access_bar, access_kitchen, access_morgue, access_mineral_storeroom, access_weapons)
-	minimal_access = list(access_bar, access_mineral_storeroom)
+	access = list(access_hydroponics, access_bar, access_kitchen, access_counter, access_morgue, access_mineral_storeroom, access_weapons)
+	minimal_access = list(access_bar, access_counter, access_mineral_storeroom, access_weapons)
 
 /datum/job/bartender/equip_backpack(var/mob/living/carbon/human/H)
 	switch(H.backbag)
@@ -125,8 +125,8 @@ Chef
 	default_pda = /obj/item/device/pda/chef
 	default_headset = /obj/item/device/radio/headset/headset_srv
 
-	access = list(access_hydroponics, access_bar, access_kitchen, access_morgue)
-	minimal_access = list(access_kitchen, access_morgue)
+	access = list(access_hydroponics, access_bar, access_kitchen, access_counter, access_morgue)
+	minimal_access = list(access_kitchen, access_counter, access_morgue)
 
 /datum/job/chef/equip_items(var/mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/chef(H), slot_w_uniform)
@@ -146,8 +146,8 @@ Waiter
 	spawn_positions = 1
 	supervisors = "the head of personnel"
 	selection_color = "#dddddd"
-	access = list(access_hydroponics, access_bar, access_kitchen, access_morgue)
-	minimal_access = list (access_bar, access_kitchen)
+	access = list(access_counter, access_hydroponics, access_bar, access_kitchen, access_morgue)
+	minimal_access = list (access_counter, access_mailsorting)
 
 	default_pda = /obj/item/device/pda/bar
 	default_headset = /obj/item/device/radio/headset/headset_srv
