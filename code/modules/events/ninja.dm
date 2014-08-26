@@ -5,6 +5,7 @@
 	name = "Space Ninja"
 	typepath = /datum/round_event/ninja
 	max_occurrences = 1
+	earliest_start = 30000 // 1 hour
 
 /datum/round_event/ninja
 	var/success_spawn = 0
@@ -1003,7 +1004,7 @@ Not sure why this would be useful (it's not) but whatever. Ninjas need their smo
 				anim(U.loc,U,'icons/mob/mob.dmi',,"phasein",,U.dir)
 
 			spawn(0)
-				destination.kill_creatures(U)//Any living mobs in teleport area are gibbed. Check turf procs for how it does it.
+				destination.phase_damage_creatures(20,U)//Paralyse and damage mobs and mechas on the turf
 			s_coold = 1
 			cell.charge-=(C*10)
 		else
@@ -1037,7 +1038,7 @@ Not sure why this would be useful (it's not) but whatever. Ninjas need their smo
 				anim(U.loc,U,'icons/mob/mob.dmi',,"phasein",,U.dir)
 
 			spawn(0)//Any living mobs in teleport area are gibbed.
-				T.kill_creatures(U)
+				T.phase_damage_creatures(20,U)//Paralyse and damage mobs and mechas on the turf
 			s_coold = 1
 			cell.charge-=(C*10)
 		else
@@ -1224,10 +1225,10 @@ Or otherwise known as anime mode. Which also happens to be ridiculously powerful
 	return
 
 //=======//5 TILE TELEPORT/GIB//=======//
-//Allows to gib up to five squares in a straight line. Seriously.
+//Allows to kill up to five squares in a straight line. Seriously.
 /obj/item/clothing/suit/space/space_ninja/proc/ninjaslayer()
 	set name = "Phase Slayer"
-	set desc = "Utilizes the internal VOID-shift device to mutilate creatures in a straight line."
+	set desc = "Utilizes the internal VOID-shift device to kill all creatures in a straight line."
 	set category = "Ninja Ability"
 	set popup_menu = 0
 
@@ -1244,7 +1245,7 @@ Or otherwise known as anime mode. Which also happens to be ridiculously powerful
 			spawn(0)
 				for(var/turf/T in getline(mobloc, destination))
 					spawn(0)
-						T.kill_creatures(U)
+						T.phase_damage_creatures(190,U)
 					if(T==mobloc||T==destination)	continue
 					spawn(0)
 						anim(T,U,'icons/mob/mob.dmi',,"phasein",,U.dir)
