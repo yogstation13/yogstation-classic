@@ -61,6 +61,7 @@
 
 
 /mob/new_player/proc/disclaimer()
+	client.getFiles('html/rules.html')
 	var/brandnew = 0
 	if(client.player_age == "Requires database")
 		brandnew = 1
@@ -138,7 +139,7 @@
 			observer.started_as_observer = 1
 			close_spawn_windows()
 			var/obj/O = locate("landmark*Observer-Start")
-			src << "\blue Now teleporting."
+			src << "<span class='notice'>Now teleporting.</span>"
 			observer.loc = O.loc
 			if(client.prefs.be_random_name)
 				client.prefs.real_name = random_name(gender)
@@ -152,14 +153,14 @@
 
 	if(href_list["late_join"])
 		if(!ticker || ticker.current_state != GAME_STATE_PLAYING)
-			usr << "\red The round is either not ready, or has already finished..."
+			usr << "<span class='danger'>The round is either not ready, or has already finished...</span>"
 			return
 		LateChoices()
 
 	if(href_list["SelectedJob"])
 
 		if(!enter_allowed)
-			usr << "\blue There is an administrative lock on entering the game!"
+			usr << "<span class='notice'>There is an administrative lock on entering the game!</span>"
 			return
 
 		AttemptLateSpawn(href_list["SelectedJob"])
@@ -256,11 +257,11 @@
 					usr << "The option ID difference is too big. Please contact administration or the database admin."
 					return
 
-	#define RULES_FILE "config/rules.html"
+
 	if(href_list["drules"])
-		src << browse(file(RULES_FILE), "window=rules;size=480x320")
+		src << browse(file('html/rules.html'), "window=rules;size=480x320")
 		return
-	#undef RULES_FILE
+
 	if(href_list["dtgwiki"])
 		src << link("http://tgstation13.org/wiki/Main_Page")
 		return
