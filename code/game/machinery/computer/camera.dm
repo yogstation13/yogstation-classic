@@ -93,7 +93,7 @@
 				src.current = null
 				return 0
 			else
-				src.current = t
+				src.current = C
 				use_power(50)
 			spawn(5)
 				attack_hand(user)

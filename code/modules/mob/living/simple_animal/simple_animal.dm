@@ -67,6 +67,7 @@
 
 /mob/living/simple_animal/New()
 	..()
+	reagents = new()
 	verbs -= /mob/verb/observe
 	if(!real_name)
 		real_name = name
