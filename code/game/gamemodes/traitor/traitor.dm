@@ -20,9 +20,6 @@
 	uplink_welcome = "Syndicate Uplink Console:"
 	uplink_uses = 10
 
-	var/const/waittime_l = 600 //lower bound on time before intercept arrives (in tenths of seconds)
-	var/const/waittime_h = 1800 //upper bound on time before intercept arrives (in tenths of seconds)
-
 	var/traitors_possible = 4 //hard limit on traitors if scaling is turned off
 	var/scale_modifier = 1 // Used for gamemodes, that are a child of traitor, that need more than the usual.
 
@@ -66,28 +63,21 @@
 
 /datum/game_mode/traitor/post_setup()
 	for(var/datum/mind/traitor in traitors)
-		if(!exchange_blue && traitors.len >= 5) //Set up an exchange if there are enough traitors
-			if(!exchange_red)
-				exchange_red = traitor
-			else
-				exchange_blue = traitor
-				assign_exchange_role(exchange_red)
-				assign_exchange_role(exchange_blue)
-		else
-			forge_traitor_objectives(traitor)
+		forge_traitor_objectives(traitor)
 		spawn(rand(10,100))
 			finalize_traitor(traitor)
 			greet_traitor(traitor)
+	if(!exchange_blue)
+		exchange_blue = -1 //Block latejoiners from getting exchange objectives
 	modePlayer += traitors
-	spawn (rand(waittime_l, waittime_h))
-		send_intercept()
 	..()
 	return 1
 
 /datum/game_mode/traitor/make_antag_chance(var/mob/living/carbon/human/character) //Assigns traitor to latejoiners
-	if(traitors.len >= round(joined_player_list.len / (config.traitor_scaling_coeff * scale_modifier)) + 1) //Caps number of latejoin antagonists
+	var/traitorcap = round(joined_player_list.len / (config.traitor_scaling_coeff * scale_modifier))
+	if(traitors.len >= traitorcap) //Upper cap for number of latejoin antagonists
 		return
-	if (prob(100/(config.traitor_scaling_coeff * scale_modifier)))
+	if(traitors.len <= (traitorcap - 2) || prob(100 / (config.traitor_scaling_coeff * scale_modifier)))
 		if(character.client.prefs.be_special & BE_TRAITOR)
 			if(!jobban_isbanned(character.client, "traitor") && !jobban_isbanned(character.client, "Syndicate"))
 				if(!(character.job in ticker.mode.restricted_jobs))
@@ -100,49 +90,71 @@
 
 /datum/game_mode/proc/forge_traitor_objectives(var/datum/mind/traitor)
 	if(istype(traitor.current, /mob/living/silicon))
-		var/datum/objective/assassinate/kill_objective = new
-		kill_objective.owner = traitor
-		kill_objective.find_target()
-		traitor.objectives += kill_objective
-
-		var/datum/objective/survive/survive_objective = new
-		survive_objective.owner = traitor
-		traitor.objectives += survive_objective
+		var/objective_count = 0
 
 		if(prob(10))
 			var/datum/objective/block/block_objective = new
 			block_objective.owner = traitor
 			traitor.objectives += block_objective
+			objective_count++
+
+		for(var/i = objective_count, i < config.traitor_objectives_amount, i++)
+			var/datum/objective/assassinate/kill_objective = new
+			kill_objective.owner = traitor
+			kill_objective.find_target()
+			traitor.objectives += kill_objective
+
+		var/datum/objective/survive/survive_objective = new
+		survive_objective.owner = traitor
+		traitor.objectives += survive_objective
 
 	else
-		for(var/i = 0, i < config.traitor_objectives_amount, i++)
-			if(prob(50))
-				var/datum/objective/assassinate/kill_objective = new
-				kill_objective.owner = traitor
-				kill_objective.find_target()
-				traitor.objectives += kill_objective
+		var/is_hijacker = prob(10)
+		var/objective_count = is_hijacker 			//Hijacking counts towards number of objectives
+		if(!exchange_blue && traitors.len >= 5) 	//Set up an exchange if there are enough traitors
+			if(!exchange_red)
+				exchange_red = traitor
 			else
-				var/datum/objective/steal/steal_objective = new
-				steal_objective.owner = traitor
-				steal_objective.find_target()
-				traitor.objectives += steal_objective
+				exchange_blue = traitor
+				assign_exchange_role(exchange_red)
+				assign_exchange_role(exchange_blue)
+			objective_count += 1					//Exchange counts towards number of objectives
+		var/list/active_ais = active_ais()
+		for(var/i = objective_count, i < config.traitor_objectives_amount, i++)
+			if(active_ais.len && prob(1))
+				var/datum/objective/destroy/destroy_objective = new
+				destroy_objective.owner = traitor
+				destroy_objective.find_target()
+				traitor.objectives += destroy_objective
+			else switch(rand(1,100))
+				if(1 to 15)
+					var/datum/objective/maroon/maroon_objective = new
+					maroon_objective.owner = traitor
+					maroon_objective.find_target()
+					traitor.objectives += maroon_objective
+				if(16 to 50)
+					var/datum/objective/assassinate/kill_objective = new
+					kill_objective.owner = traitor
+					kill_objective.find_target()
+					traitor.objectives += kill_objective
+				else
+					var/datum/objective/steal/steal_objective = new
+					steal_objective.owner = traitor
+					steal_objective.find_target()
+					traitor.objectives += steal_objective
 
-		forge_escape_objective(traitor)
+		if(is_hijacker && objective_count <= config.traitor_objectives_amount) //Don't assign hijack if it would exceed the number of objectives set in config.traitor_objectives_amount
+			if (!(locate(/datum/objective/hijack) in traitor.objectives))
+				var/datum/objective/hijack/hijack_objective = new
+				hijack_objective.owner = traitor
+				traitor.objectives += hijack_objective
+		else
+			if (!(locate(/datum/objective/escape) in traitor.objectives))
+				var/datum/objective/escape/escape_objective = new
+				escape_objective.owner = traitor
+				traitor.objectives += escape_objective
 
 	return
-
-
-/datum/game_mode/proc/forge_escape_objective(var/datum/mind/traitor)
-	if(prob(90))
-		if (!(locate(/datum/objective/escape) in traitor.objectives))
-			var/datum/objective/escape/escape_objective = new
-			escape_objective.owner = traitor
-			traitor.objectives += escape_objective
-	else
-		if (!(locate(/datum/objective/hijack) in traitor.objectives))
-			var/datum/objective/hijack/hijack_objective = new
-			hijack_objective.owner = traitor
-			traitor.objectives += hijack_objective
 
 
 /datum/game_mode/proc/greet_traitor(var/datum/mind/traitor)
@@ -250,7 +262,10 @@
 
 			text += "<br>"
 
+		text += "<br><b>The code phrases were:</b> <font color='red'>[syndicate_code_phrase]</font><br>\
+		<b>The code responses were:</b> <font color='red'>[syndicate_code_response]</font><br>"
 		world << text
+
 	return 1
 
 
@@ -324,8 +339,6 @@
 		backstab_objective.set_faction(faction)
 		backstab_objective.owner = owner
 		owner.objectives += backstab_objective
-
-	forge_escape_objective(owner)
 
 	//Spawn and equip documents
 	var/mob/living/carbon/human/mob = owner.current

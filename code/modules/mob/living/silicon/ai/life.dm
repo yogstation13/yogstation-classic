@@ -14,7 +14,7 @@
 
 		if (src.malfhack)
 			if (src.malfhack.aidisabled)
-				src << "\red ERROR: APC access disabled, hack attempt canceled."
+				src << "<span class='danger'>ERROR: APC access disabled, hack attempt canceled.</span>"
 				src.malfhacking = 0
 				src.malfhack = null
 
@@ -47,7 +47,7 @@
 			loc = T.loc
 			if (istype(loc, /area))
 				//stage = 4
-				if (!loc.master.power_equip && !istype(src.loc,/obj/item))
+				if (!loc.master.power_equip && loc.requires_power && !istype(src.loc,/obj/item))
 					//stage = 5
 					blinded = 1
 
@@ -89,7 +89,7 @@
 			src.see_in_dark = 0
 			src.see_invisible = SEE_INVISIBLE_LIVING
 
-			if (((!loc.master.power_equip) || istype(T, /turf/space)) && !istype(src.loc,/obj/item))
+			if ((((!loc.master.power_equip) && (loc.requires_power)) || istype(T, /turf/space)) && !istype(src.loc,/obj/item))
 				if (src:aiRestorePowerRoutine==0)
 					src:aiRestorePowerRoutine = 1
 
