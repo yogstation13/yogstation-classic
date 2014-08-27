@@ -76,7 +76,7 @@ datum/objective_item/steal/reactive
 	excludefromjob = list("Research Director")
 
 datum/objective_item/steal/documents
-	name = "a set of secret documents"
+	name = "any set of secret documents of any organization"
 	targetitem = /obj/item/documents //Any set of secret documents. Doesn't have to be NT's
 	difficulty = 5
 
@@ -87,7 +87,7 @@ datum/objective_item/steal/plasma
 	difficulty = 3
 	excludefromjob = list("Chief Engineer","Research Director","Station Engineer","Scientist","Atmospheric Technician")
 
-datum/objective_item/plasma/check_special_completion(var/obj/item/weapon/tank/T)
+datum/objective_item/steal/plasma/check_special_completion(var/obj/item/weapon/tank/T)
 	var/target_amount = text2num(name)
 	var/found_amount = 0
 	found_amount += T.air_contents.toxins
@@ -99,7 +99,7 @@ datum/objective_item/steal/functionalai
 	targetitem = /obj/item/device/aicard
 	difficulty = 20 //beyond the impossible
 
-datum/objective_item/functionalai/check_special_completion(var/obj/item/device/aicard/C)
+datum/objective_item/steal/functionalai/check_special_completion(var/obj/item/device/aicard/C)
 	for(var/mob/living/silicon/ai/A in C)
 		if(istype(A, /mob/living/silicon/ai) && A.stat != 2) //See if any AI's are alive inside that card.
 			return 1
@@ -112,7 +112,7 @@ datum/objective_item/steal/blueprints
 	excludefromjob = list("Chief Engineer")
 	altitems = list(/obj/item/weapon/photo)
 
-datum/objective_item/blueprints/check_special_completion(var/obj/item/I)
+datum/objective_item/steal/blueprints/check_special_completion(var/obj/item/I)
 	if(istype(I, /obj/item/blueprints))
 		return 1
 	if(istype(I, /obj/item/weapon/photo))
@@ -127,7 +127,7 @@ datum/objective_item/steal/slime
 	difficulty = 3
 	excludefromjob = list("Research Director","Scientist")
 
-datum/objective_item/slime/check_special_completion(var/obj/item/slime_extract/E)
+datum/objective_item/steal/slime/check_special_completion(var/obj/item/slime_extract/E)
 	if(E.Uses > 0)
 		return 1
 	return 0

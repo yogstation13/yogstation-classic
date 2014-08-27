@@ -71,7 +71,7 @@
 	name = "Jungle Fever"
 	cure = "Bananas"
 	cure_id = "banana"
-	spread = "Bites"
+	spread = "Monkey Bites"
 	spread_type = SPECIAL
 	affected_species = list("Monkey", "Human")
 	permeability_mod = 1
@@ -85,9 +85,9 @@
 	agent = "Kongey Vibrion M-909"
 	new_form = /mob/living/carbon/monkey
 
-	stage1	= list("")
-	stage2	= list("")
-	stage3	= list("")
+	stage1	= null
+	stage2	= null
+	stage3	= null
 	stage4	= list("<span class='warning'>Your back hurts.</span>", "<span class='warning'>You breathe through your mouth.</span>",
 					"<span class='warning'>You have a craving for bananas.</span>", "<span class='warning'>Your mind feels clouded.</span>")
 	stage5	= list("<span class='warning'>You feel like monkeying around.</span>")
@@ -95,21 +95,25 @@
 /datum/disease/transformation/jungle_fever/do_disease_transformation(var/mob/living/carbon/affected_mob)
 	if(!ismonkey(affected_mob))
 		affected_mob.monkeyize(TR_KEEPITEMS | TR_KEEPIMPLANTS | TR_KEEPDAMAGE | TR_KEEPVIRUS | TR_KEEPSE)
+		ticker.mode.add_monkey(affected_mob.mind)
 
 /datum/disease/transformation/jungle_fever/stage_act()
 	..()
 	switch(stage)
 		if(2)
-			affected_mob << "<span class='notice'>Your [pick("back", "arm", "leg", "elbow", "head")] itches.</span>"
+			if(prob(2))
+				affected_mob << "<span class='notice'>Your [pick("back", "arm", "leg", "elbow", "head")] itches.</span>"
 		if(3)
-			if (prob(8))
-				affected_mob.say(pick("Eek?", "Ook ook."))
-			if (prob(4))
+			if(prob(4))
 				affected_mob << "<span class='danger'>You feel a stabbing pain in your head.</span>"
-				affected_mob.Paralyse(2)
+				affected_mob.confused += 10
 		if(4)
-			if (prob(20))
+			if(prob(3))
 				affected_mob.say(pick("Eeek, ook ook!", "Eee-eeek!", "Eeee!", "Ungh, ungh."))
+
+/datum/disease/transformation/jungle_fever/cure()
+	ticker.mode.remove_monkey(affected_mob.mind)
+	..()
 
 
 /datum/disease/transformation/robot
@@ -121,11 +125,11 @@
 	agent = "R2D2 Nanomachines"
 	desc = "This disease, actually acute nanomachine infection, converts the victim into a cyborg."
 	hidden = list(0, 0)
-	stage1	= list("")
-	stage2	= list("Your joints feel stiff.", "\red Beep...boop..")
-	stage3	= list("\red Your joints feel very stiff.", "Your skin feels loose.", "\red You can feel something move...inside.")
-	stage4	= list("\red Your skin feels very loose.", "\red You can feel... something...inside you.")
-	stage5	= list("\red Your skin feels as if it's about to burst off!")
+	stage1	= null
+	stage2	= list("Your joints feel stiff.", "<span class='danger'>Beep...boop..</span>")
+	stage3	= list("<span class='danger'>Your joints feel very stiff.</span>", "Your skin feels loose.", "<span class='danger'>You can feel something move...inside.</span>")
+	stage4	= list("<span class='danger'>Your skin feels very loose.</span>", "<span class='danger'>You can feel... something...inside you.</span>")
+	stage5	= list("<span class='danger'>Your skin feels as if it's about to burst off!</span>")
 	new_form = /mob/living/silicon/robot
 
 /datum/disease/transformation/robot/stage_act()
@@ -150,11 +154,11 @@
 	cure_chance = 5
 	agent = "Rip-LEY Alien Microbes"
 	hidden = list(0, 0)
-	stage1	= list("")
-	stage2	= list("Your throat feels scratchy.", "\red Kill...")
-	stage3	= list("\red Your throat feels very scratchy.", "Your skin feels tight.", "\red You can feel something move...inside.")
-	stage4	= list("\red Your skin feels very tight.", "\red Your blood boils!", "\red You can feel... something...inside you.")
-	stage5	= list("\red Your skin feels as if it's about to burst off!")
+	stage1	= null
+	stage2	= list("Your throat feels scratchy.", "<span class='danger'>Kill...</span>")
+	stage3	= list("<span class='danger'>Your throat feels very scratchy.</span>", "Your skin feels tight.", "<span class='danger'>You can feel something move...inside.</span>")
+	stage4	= list("<span class='danger'>Your skin feels very tight.</span>", "<span class='danger'>Your blood boils!</span>", "<span class='danger'>You can feel... something...inside you.</span>")
+	stage5	= list("<span class='danger'>Your skin feels as if it's about to burst off!</span>")
 	new_form = /mob/living/carbon/alien/humanoid/hunter
 
 /datum/disease/transformation/xeno/stage_act()
@@ -179,9 +183,9 @@
 	hidden = list(0, 0)
 	stage1	= list("You don't feel very well.")
 	stage2	= list("You are turning a little green.")
-	stage3	= list("\red Your limbs are getting oozy.", "\red Your skin begins to peel away.")
-	stage4	= list("\red You are turning into a slime.")
-	stage5	= list("\red You have become a slime.")
+	stage3	= list("<span class='danger'>Your limbs are getting oozy.</span>", "<span class='danger'>Your skin begins to peel away.</span>")
+	stage4	= list("<span class='danger'>You are turning into a slime.</span>")
+	stage5	= list("<span class='danger'>You have become a slime.</span>")
 	new_form = /mob/living/carbon/slime
 
 /datum/disease/transformation/slime/stage_act()
@@ -204,9 +208,9 @@
 	hidden = list(0, 0)
 	stage1	= list("BARK.")
 	stage2	= list("You feel the need to wear silly hats.")
-	stage3	= list("\red Must... eat... chocolate....", "\red YAP")
-	stage4	= list("\red Visions of washing machines assail your mind!")
-	stage5	= list("\red AUUUUUU!!!")
+	stage3	= list("<span class='danger'>Must... eat... chocolate....</span>", "<span class='danger'>YAP</span>")
+	stage4	= list("<span class='danger'>Visions of washing machines assail your mind!</span>")
+	stage5	= list("<span class='danger'>AUUUUUU!!!</span>")
 	new_form = /mob/living/simple_animal/corgi
 
 /datum/disease/transformation/corgi/stage_act()

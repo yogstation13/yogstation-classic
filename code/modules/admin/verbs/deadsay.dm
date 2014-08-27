@@ -8,7 +8,7 @@
 	if(!src.mob)
 		return
 	if(prefs.muted & MUTE_DEADCHAT)
-		src << "\red You cannot send DSAY messages (muted)."
+		src << "<span class='danger'>You cannot send DSAY messages (muted).</span>"
 		return
 
 	if (src.handle_spam_prevention(msg,MUTE_DEADCHAT))
@@ -19,8 +19,9 @@
 
 	if (!msg)
 		return
+	var/nicknames = file2list("config/admin_nicknames.txt")
 
-	var/rendered = "<span class='game deadsay'><span class='prefix'>DEAD:</span> <span class='name'>ADMIN([src.holder.fakekey ? "Administrator" : src.key])</span> says, <span class='message'>\"[msg]\"</span></span>"
+	var/rendered = "<span class='game deadsay'><span class='prefix'>DEAD:</span> <span class='name'>ADMIN([src.holder.fakekey ? pick(nicknames) : src.key])</span> says, <span class='message'>\"[msg]\"</span></span>"
 
 	for (var/mob/M in player_list)
 		if (istype(M, /mob/new_player))

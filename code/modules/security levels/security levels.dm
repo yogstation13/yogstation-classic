@@ -44,8 +44,7 @@
 				toStrip = alertOverlayCF
 		switch(level)
 			if(SEC_LEVEL_GREEN)
-				world << "<font size=4 color='red'>Attention! Security level lowered to green</font>"
-				world << "<font color='red'>[config.alert_desc_green]</font>"
+				minor_announce(config.alert_desc_green, "Attention! Security level lowered to green:")
 				security_level = SEC_LEVEL_GREEN
 				for(var/obj/machinery/firealarm/FA in world)
 					if(FA.z == 1)
@@ -54,11 +53,9 @@
 						FA.overlays += alertOverlayGreen
 			if(SEC_LEVEL_BLUE)
 				if(security_level < SEC_LEVEL_BLUE)
-					world << "<font size=4 color='red'>Attention! Security level elevated to blue</font>"
-					world << "<font color='red'>[config.alert_desc_blue_upto]</font>"
+					minor_announce(config.alert_desc_blue_upto, "Attention! Security level elevated to blue:")
 				else
-					world << "<font size=4 color='red'>Attention! Security level lowered to blue</font>"
-					world << "<font color='red'>[config.alert_desc_blue_downto]</font>"
+					minor_announce(config.alert_desc_blue_downto, "Attention! Security level lowered to blue:")
 				security_level = SEC_LEVEL_BLUE
 				for(var/obj/machinery/firealarm/FA in world)
 					if(FA.z == 1)
@@ -67,11 +64,9 @@
 						FA.overlays += alertOverlayBlue
 			if(SEC_LEVEL_RED)
 				if(security_level < SEC_LEVEL_RED)
-					world << "<font size=4 color='red'>Attention! Code red!</font>"
-					world << "<font color='red'>[config.alert_desc_red_upto]</font>"
+					minor_announce(config.alert_desc_red_upto, "Attention! Code red!")
 				else
-					world << "<font size=4 color='red'>Attention! Code red!</font>"
-					world << "<font color='red'>[config.alert_desc_red_downto]</font>"
+					minor_announce(config.alert_desc_red_downto, "Attention! Code red!")
 				security_level = SEC_LEVEL_RED
 
 				/*	- At the time of commit, setting status displays didn't work properly
@@ -85,15 +80,7 @@
 						FA.overlays.Remove(toStrip)
 						FA.overlays += alertOverlayRed
 			if(SEC_LEVEL_DELTA)
-				if( security_level < SEC_LEVEL_DELTA )
-					world << "<font size=4 color='red'>Attention! Delta security level reached!</font>"
-					world << "<font color='red'>[config.alert_desc_delta]</font>"
-				else
-					world << "<font size=4 color='red'>Attention! Code Charlie Foxtrot has been cleared!</font>"
-					// !! comment out the following 1 line of code when [config.alert_desc_delta_downto] exists
-					world << "<font color='red'>A Nanotrasen official will be by to draft new contracts with the survivors.</font>"
-					// !! uncomment the following 1 line of code when [config.alert_desc_delta_downto] exists
-					// world << "<font color='red'>[config.alert_desc_delta_downto]</font>"
+				minor_announce(config.alert_desc_delta, "Attention! Delta security level reached!")
 				security_level = SEC_LEVEL_DELTA
 				for(var/obj/machinery/firealarm/FA in world)
 					if(FA.z == 1)
