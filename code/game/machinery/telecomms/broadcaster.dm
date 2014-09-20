@@ -176,7 +176,7 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 
 	@param vmessage:
 		If specified, will display this as the message; such as "chimpering"
-		for monkies if the mob is not understood. Stored in signal.data["vmessage"].
+		for monkeys if the mob is not understood. Stored in signal.data["vmessage"].
 
 	@param radio:
 		Reference to the radio broadcasting the message, stored in signal.data["radio"]
@@ -290,7 +290,7 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 
 	  /* --- Loop through the receivers and categorize them --- */
 
-		if (R.client && !(R.client.prefs.toggles & CHAT_RADIO)) //Adminning with 80 people on can be fun when you're trying to talk and all you can hear is radios.
+		if (R.client && R.client.prefs && !(R.client.prefs.toggles & CHAT_RADIO)) //Adminning with 80 people on can be fun when you're trying to talk and all you can hear is radios.
 			continue
 
 		if(istype(R, /mob/new_player)) // we don't want new players to hear messages. rare but generates runtimes.

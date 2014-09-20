@@ -40,13 +40,15 @@
 
 /obj/item/weapon/reagent_containers/proc/reagentlist(var/obj/item/weapon/reagent_containers/snack) //Attack logs for regents in pills
 	var/data
-	if(snack.reagents.reagent_list && snack.reagents.reagent_list.len) //find a reagent list if there is and check if it has entries
+	if(snack.reagents && snack.reagents.reagent_list && snack.reagents.reagent_list.len) //find a reagent list if there is and check if it has entries
 		for (var/datum/reagent/R in snack.reagents.reagent_list) //no reagents will be left behind
 			data += "[R.id]([R.volume] units); " //Using IDs because SOME chemicals(I'm looking at you, chlorhydrate-beer) have the same names as other chemicals.
 		return data
 	else return "No reagents"
 
 /obj/item/weapon/reagent_containers/proc/canconsume(mob/eater, mob/user)
+	if(!eater.SpeciesCanConsume())
+		return 0
 	//Check for covering mask
 	var/obj/item/clothing/cover = eater.get_item_by_slot(slot_wear_mask)
 

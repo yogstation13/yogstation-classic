@@ -4,7 +4,7 @@
 		src << "<div class=\"motd\">[join_motd]</div>"
 
 	if(admin_notice)
-		src << "\blue <b>Admin Notice:</b>\n \t [admin_notice]"
+		src << "<span class='notice'><b>Admin Notice:</b>\n \t [admin_notice]</span>"
 
 	if(!mind)
 		mind = new /datum/mind(key)
@@ -29,7 +29,11 @@
 	if(watch_locations.len>0)
 		loc = pick(watch_locations)
 */
-	new_player_panel()
+
+	if(!(client && client.prefs && client.prefs.agree))
+		disclaimer()
+	else
+		new_player_panel()
 	spawn(40)
 		if(client)
 			handle_privacy_poll()

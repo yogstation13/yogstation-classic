@@ -428,6 +428,13 @@ proc/is_special_character(mob/M) // returns 1 for special characters and 2 for h
 /mob/proc/reagent_check(var/datum/reagent/R) // utilized in the species code
 	return 1
 
+/proc/notify_ghosts(var/message, var/ghost_sound = null) //Easy notification of ghosts.
+	for(var/mob/dead/observer/O in player_list)
+		if(O.client)
+			O << "<span class='ghostalert'>[message]<span>"
+			if(ghost_sound)
+				O << sound(ghost_sound)
+
 /proc/item_heal_robotic(var/mob/living/carbon/human/H, var/mob/user, var/brute, var/burn)
 	var/obj/item/organ/limb/affecting = H.get_organ(check_zone(user.zone_sel.selecting))
 
@@ -451,3 +458,10 @@ proc/is_special_character(mob/M) // returns 1 for special characters and 2 for h
 			return
 	else
 		return
+
+/proc/broadcast_hud_message(var/message, var/broadcast_source)
+	var/turf/sourceturf = get_turf(broadcast_source)
+	for(var/mob/living/carbon/human/human in mob_list)
+		var/turf/humanturf = get_turf(human)
+		if((humanturf.z == sourceturf.z) && istype(human.glasses, /obj/item/clothing/glasses/hud/security))
+			human.show_message("<span class='info'>\icon[human.glasses] [message]</span>", 1)

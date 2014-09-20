@@ -11,10 +11,15 @@
 	update_canmove()
 	if(src.eyeobj)
 		src.eyeobj.setLoc(get_turf(src))
-	if(blind)	blind.layer = 0
-	sight |= SEE_TURFS|SEE_MOBS|SEE_OBJS
-	see_in_dark = 8
-	see_invisible = SEE_INVISIBLE_LEVEL_TWO
+	if (src.blind && src.blind.layer != 0)
+		src.blind.layer = 0
+	src.sight |= SEE_TURFS
+	src.sight |= SEE_MOBS
+	src.sight |= SEE_OBJS
+	src.see_in_dark = 8
+	src.see_invisible = SEE_INVISIBLE_LEVEL_TWO
+	if(see_override)
+		see_invisible = see_override
 
 	shuttle_caller_list -= src
 	emergency_shuttle.autoshuttlecall()

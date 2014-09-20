@@ -54,7 +54,7 @@
 		for(var/obj/machinery/vending/upriser in infectedMachines)
 			if(prob(70))
 				var/mob/living/simple_animal/hostile/mimic/copy/M = new(upriser.loc, upriser, null, 1) // it will delete upriser on creation and override any machine checks
-				M.faction = "profit"
+				M.faction = list("profit")
 				M.speak = rampant_speeches.Copy()
 				M.speak_chance = 15
 			else
@@ -66,6 +66,8 @@
 
 	if(IsMultiple(activeFor, 4))
 		var/obj/machinery/vending/rebel = pick(vendingMachines)
+		if(!rebel)
+			return
 		vendingMachines.Remove(rebel)
 		infectedMachines.Add(rebel)
 		rebel.shut_up = 0

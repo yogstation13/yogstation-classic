@@ -14,7 +14,7 @@
 
 		if (src.malfhack)
 			if (src.malfhack.aidisabled)
-				src << "\red ERROR: APC access disabled, hack attempt canceled."
+				src << "<span class='danger'>ERROR: APC access disabled, hack attempt canceled.</span>"
 				src.malfhacking = 0
 				src.malfhack = null
 
@@ -38,19 +38,22 @@
 		//stage = 1
 		//if (istype(src, /mob/living/silicon/ai)) // Are we not sure what we are?
 		//stage = 2
+
+		blinded = 0
+
 		var/area/loc = null
 		if (istype(T, /turf))
 			//stage = 3
 			loc = T.loc
 			if (istype(loc, /area))
 				//stage = 4
-				if (!loc.master.power_equip && !istype(src.loc,/obj/item))
+				if (!loc.master.power_equip && loc.requires_power && !istype(src.loc,/obj/item))
 					//stage = 5
 					blinded = 1
 
 		if (!blinded)
 			//stage = 4.5
-			if (src.blind.layer != 0)
+			if (src.blind && src.blind.layer != 0)
 				src.blind.layer = 0
 			src.sight |= SEE_TURFS
 			src.sight |= SEE_MOBS
@@ -78,7 +81,7 @@
 		else
 
 			//stage = 6
-			if (src.blind.layer!=18)
+			if (src.blind && src.blind.layer!=18)
 				src.blind.layer = 18
 			src.sight = src.sight&~SEE_TURFS
 			src.sight = src.sight&~SEE_MOBS
@@ -86,7 +89,7 @@
 			src.see_in_dark = 0
 			src.see_invisible = SEE_INVISIBLE_LIVING
 
-			if (((!loc.master.power_equip) || istype(T, /turf/space)) && !istype(src.loc,/obj/item))
+			if ((((!loc.master.power_equip) && (loc.requires_power)) || istype(T, /turf/space)) && !istype(src.loc,/obj/item))
 				if (src:aiRestorePowerRoutine==0)
 					src:aiRestorePowerRoutine = 1
 

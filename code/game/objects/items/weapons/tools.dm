@@ -171,7 +171,7 @@
 
 	var/obj/item/organ/limb/affecting = H.get_organ(check_zone(user.zone_sel.selecting))
 
-	if(affecting.status == ORGAN_ROBOTIC)
+	if(affecting.status == ORGAN_ROBOTIC && user.a_intent != "harm")
 		if(src.remove_fuel(0))
 			item_heal_robotic(H, user, 30, 0)
 			return
@@ -222,9 +222,7 @@
 			message_admins("[key_name_admin(user)] triggered a fueltank explosion.")
 			log_game("[key_name(user)] triggered a fueltank explosion.")
 			user << "<span class='warning'>That was stupid of you.</span>"
-			explosion(O.loc, -1, 0, 2, flame_range = 2)
-			if(O)
-				qdel(O)
+			O.ex_act()
 			return
 
 	if(welding)

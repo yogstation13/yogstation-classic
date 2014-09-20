@@ -67,6 +67,7 @@
 
 /mob/living/simple_animal/New()
 	..()
+	reagents = new()
 	verbs -= /mob/verb/observe
 	if(!real_name)
 		real_name = name
@@ -398,7 +399,7 @@
 		if(istype(O, /obj/item/weapon/kitchenknife) || istype(O, /obj/item/weapon/butch))
 			harvest()
 	else
-		user.changeNext_move(8)
+		user.changeNext_move(CLICK_CD_MELEE)
 		if(O.force)
 			if(O.force >= force_threshold)
 				var/damage = O.force
@@ -515,10 +516,6 @@
 
 // Harvest an animal's delicious byproducts
 /mob/living/simple_animal/proc/harvest()
-	new meat_type (get_turf(src))
-	if(prob(95))
-		qdel(src)
-		return
 	gib()
 	return
 

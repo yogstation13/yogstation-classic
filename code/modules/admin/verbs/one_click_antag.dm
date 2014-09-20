@@ -10,7 +10,7 @@ client/proc/one_click_antag()
 
 /datum/admins/proc/one_click_antag()
 
-	var/dat = {"<B>One-click Antagonist</B><br>
+	var/dat = {"<B>Quick-Create Antagonist</B><br>
 		<a href='?src=\ref[src];makeAntag=1'>Make Traitors</a><br>
 		<a href='?src=\ref[src];makeAntag=2'>Make Changelings</a><br>
 		<a href='?src=\ref[src];makeAntag=3'>Make Revs</a><br>
@@ -27,7 +27,6 @@ client/proc/one_click_antag()
 
 		<a href='?src=\ref[src];makeAntag=8'>Make Space Ninja (Requires Ghosts)</a><br>
 		<a href='?src=\ref[src];makeAntag=9'>Make Aliens (Requires Ghosts)</a><br>
-		<a href='?src=\ref[src];makeAntag=10'>Make Deathsquad (Syndicate) (Requires Ghosts)</a><br>
 		"}
 */
 	usr << browse(dat, "window=oneclickantag;size=400x400")
@@ -318,21 +317,18 @@ client/proc/one_click_antag()
 	new /datum/round_event/ninja()
 	return 1
 
-/* DEATH SQUADS
+// DEATH SQUADS
 /datum/admins/proc/makeDeathsquad()
 	var/list/mob/dead/observer/candidates = list()
-	var/mob/dead/observer/theghost = null
 	var/time_passed = world.time
-	var/input = "Purify the station."
-	if(prob(10))
-		input = "Save Runtime and any other cute things on the station."
-
-	var/syndicate_leader_selected = 0 //when the leader is chosen. The last person spawned.
+	var/mission = input("Assign a mission to the deathsquad", "Assign Mission", "Leave no witnesses.")
+	var/timeTick = 1800
+	var/timeWord = "three minutes"
 
 	//Generates a list of commandos from active ghosts. Then the user picks which characters to respawn as the commandos.
 	for(var/mob/dead/observer/G in player_list)
 		spawn(0)
-			switch(alert(G,"Do you wish to be considered for an elite syndicate strike team being sent in?","Please answer in 30 seconds!","Yes","No"))
+			switch(alert(G,"Do you wish to be considered for an elite Nanotrasen strike team being sent in?","Please answer in 30 seconds!","Yes","No"))
 				if("Yes")
 					if((world.time-time_passed)>300)//If more than 30 game seconds passed.
 						return
@@ -347,45 +343,67 @@ client/proc/one_click_antag()
 		if(!G.key)
 			candidates.Remove(G)
 
-	if(candidates.len)
-		var/numagents = 6
-		//Spawns commandos and equips them.
-		for (var/obj/effect/landmark/L in /area/syndicate_mothership/elite_squad)
-			if(numagents<=0)
-				break
-			if (L.name == "Syndicate-Commando")
-				syndicate_leader_selected = numagents == 1?1:0
+	if(candidates.len >= 3) //Minimum 3 to be considered a squad
+		//Pick the lucky players
+		var/alertNotice
+		spawn(0)
+				//thread (question) for alertnotice
+			alertNotice = "Yes" == alert("Send a code elevation message to the station?","You have [timeWord] to decide.","Yes","No")
+		spawn(timeTick)
+				//thread (execution) for alertnotice
+			if( alertNotice )
+				set_security_level("charlie foxtrot")
+		var/numagents = min(5,candidates.len) //How many commandos to spawn
+		while(numagents && deathsquadspawn.len && candidates.len)
+			var/spawnloc = deathsquadspawn[1]
+			var/mob/dead/observer/chosen_candidate = pick(candidates)
+			candidates -= chosen_candidate
+			if(!chosen_candidate.key)
+				continue
 
-				var/mob/living/carbon/human/new_syndicate_commando = create_syndicate_death_commando(L, syndicate_leader_selected)
+			//Spawn and equip the commando
+			var/mob/living/carbon/human/Commando = new(spawnloc)
+			chosen_candidate.client.prefs.copy_to(Commando)
+			ready_dna(Commando)
+			if(numagents == 1) //If Squad Leader
+				Commando.real_name = "Officer [pick(commando_names)]"
+				equip_deathsquad(Commando, 1)
+			else
+				Commando.real_name = "Trooper [pick(commando_names)]"
+				equip_deathsquad(Commando)
+			Commando.key = chosen_candidate.key
+			Commando.mind.assigned_role = "Death Commando"
 
+			//Assign antag status and the mission
+			ticker.mode.traitors += Commando.mind
+			Commando.mind.special_role = "deathsquad"
+			var/datum/objective/missionobj = new
+			missionobj.owner = Commando.mind
+			missionobj.explanation_text = mission
+			missionobj.completed = 1
+			Commando.mind.objectives += missionobj
 
-				while((!theghost || !theghost.client) && candidates.len)
-					theghost = pick(candidates)
-					candidates.Remove(theghost)
+			//Greet the commando
+			Commando << "<B><font size=3 color=red>You are the [numagents==1?"Deathsquad Officer":"Death Commando"].</font></B>"
+			var/missiondesc = "Your squad is being sent on a mission to [station_name()] by Nanotrasen's Security Division."
+			if(numagents == 1) //If Squad Leader
+				missiondesc += " Lead your squad to ensure the completion of the mission. Board the shuttle when your team is ready."
+			else
+				missiondesc += " Follow orders given to you by your squad leader."
+			missiondesc += "<BR><B>Your Mission</B>: [mission]"
+			Commando << missiondesc
 
-				if(!theghost)
-					qdel(new_syndicate_commando)
-					break
+			//Logging and cleanup
+			if(numagents == 1)
+				message_admins("The deathsquad has spawned with [key_name_admin(Commando)] as squad leader.")
+			log_game("[key_name(Commando)] has been selected as a Death Commando")
+			deathsquadspawn -= spawnloc
+			numagents--
 
-				new_syndicate_commando.key = theghost.key
-				new_syndicate_commando.internal = new_syndicate_commando.s_store
-				new_syndicate_commando.internals.icon_state = "internal1"
+		return 1
 
-				//So they don't forget their code or mission.
+	return
 
-
-				new_syndicate_commando << "\blue You are an Elite Syndicate. [!syndicate_leader_selected?"commando":"<B>LEADER</B>"] in the service of the Syndicate. \nYour current mission is: \red<B> [input]</B>"
-
-				numagents--
-		if(numagents >= 6)
-			return 0
-
-		for (var/obj/effect/landmark/L in /area/shuttle/syndicate_elite)
-			if (L.name == "Syndicate-Commando-Bomb")
-				new /obj/effect/spawner/newbomb/timer/syndicate(L.loc)
-
-	return 1
-*/
 
 /datum/admins/proc/makeBody(var/mob/dead/observer/G_found) // Uses stripped down and bastardized code from respawn character
 	if(!G_found || !G_found.key)	return
@@ -398,99 +416,6 @@ client/proc/one_click_antag()
 	new_character.key = G_found.key
 
 	return new_character
-
-/datum/admins/proc/makeDeathsquad()
-
-	var/list/mob/dead/observer/candidates = list()
-	var/list/mob/dead/observer/chosen = list()
-	var/mob/dead/observer/theghost = null
-	var/time_passed = world.time
-	var/addAdmin = 0
-	var/alertNotice = 0
-	var/timeTick = 1800
-	var/timeWord = "three minutes"
-
-	for(var/mob/dead/observer/G in player_list)
-		if(!jobban_isbanned(G, "operative") && !jobban_isbanned(G, "Syndicate")) // !! are these the right bans to check for deathsquad?
-			spawn(0)
-				switch(alert(G,"Do you wish to be considered for a death squad being sent in?","Please answer in 30 seconds!","Yes","No"))
-					if("Yes")
-						if((world.time-time_passed)>300)//If more than 30 game seconds passed.
-							return
-						candidates += G
-					if("No")
-						return
-					else
-						return
-
-	// ask the admin if they want to spawn with the team, but only if they don't already have a body
-	// !! is usr the client or the mob?  if it's the client, we'll need to get the mob.  this goes for line 79 as well.
-	if( istype(usr,/mob/dead/observer) )
-		spawn(0)
-			switch( alert("Do you want to add yourself as the death squad's commander?","Please answer in 30 seconds!","Yes","No"))
-				if("Yes")
-					if((world.time-time_passed)<=300)
-						addAdmin = 1
-					else
-						addAdmin = 0
-				else
-					addAdmin = 0
-
-	sleep(300)
-
-	if(candidates.len)
-		var/numagents = 5
-		var/agentcount = 0
-
-		for(var/i = 0, i<numagents,i++)
-			shuffle(candidates) //More shuffles means more randoms
-			if( candidates.len )
-				for(var/mob/j in candidates)
-					if(!j || !j.client)
-						candidates.Remove(j)
-						i-- // we definitely have elements left, so keep trying until you someone that's still logged in
-						continue
-
-					theghost = j
-					candidates.Remove(theghost)
-					chosen += theghost
-					agentcount++
-					break
-			else
-				i = numagents
-		//Making sure we have atleast 3 Deathsquad agents, because less than that is kinda bad
-		if(agentcount < 3)
-			return 0
-		else
-			spawn(0)
-				//thread (question) for alertnotice
-				alertNotice = "Yes" == alert("Send a code elevation message to the station?","You have [timeWord] to decide.","Yes","No")
-			spawn(timeTick)
-				//thread (execution) for alertnotice
-				if( alertNotice )
-					set_security_level("charlie foxtrot")
-			//!! This will need to be added to the map.  Possibly changed to "landmark*Marauder Entry" or "landmark*JoinLate"
-			var/obj/effect/landmark/ds_spawn = locate("landmark*Deathsquad-Spawn")
-			for(var/mob/c in chosen)
-				var/mob/living/carbon/human/new_character=makeBody(c)
-				new_character.mind = new(src)
-				new_character.mind.special_role = "Death Commando" //meshes this with the commented section of respawn_character in randomverbs.dm
-				new_character.equip_death_commando()
-				new_character.internal = new_character.s_store
-				new_character.internals.icon_state = "internal1"
-				// !! is there a random name proc?
-				new_character.loc = ds_spawn.loc
-			if( addAdmin )
-				var/mob/living/carbon/human/new_character=makeBody(usr)
-				new_character.mind = new(src)
-				new_character.mind.special_role = "Death Commando"
-				new_character.equip_death_officer()
-				new_character.internal = new_character.s_store
-				new_character.internals.icon_state = "internal1"
-				// !! is there a random name proc?
-				new_character.loc = ds_spawn.loc
-
-	return 1
 
 //modified from equip_space_ninja
 // !! these can probably go somewhere other than one_click_antag
@@ -509,7 +434,7 @@ client/proc/one_click_antag()
 
 	equip_to_slot_or_del(new /obj/item/clothing/under/color/green(src), slot_w_uniform)
 	equip_to_slot_or_del(new /obj/item/clothing/shoes/swat(src), slot_shoes)
-	equip_to_slot_or_del(new /obj/item/clothing/suit/armor/swat(src), slot_wear_suit)
+	equip_to_slot_or_del(new /obj/item/clothing/suit/armor/heavy(src), slot_wear_suit)
 	equip_to_slot_or_del(new /obj/item/clothing/gloves/combat(src), slot_gloves)
 	equip_to_slot_or_del(new /obj/item/clothing/head/helmet/space/deathsquad(src), slot_head)
 	equip_to_slot_or_del(new /obj/item/clothing/mask/gas/swat(src), slot_wear_mask)
@@ -561,7 +486,7 @@ client/proc/one_click_antag()
 
 	equip_to_slot_or_del(new /obj/item/clothing/under/color/green(src), slot_w_uniform)
 	equip_to_slot_or_del(new /obj/item/clothing/shoes/swat(src), slot_shoes)
-	equip_to_slot_or_del(new /obj/item/clothing/suit/armor/swat/officer(src), slot_wear_suit)
+	equip_to_slot_or_del(new /obj/item/clothing/suit/armor/heavy(src), slot_wear_suit)
 	equip_to_slot_or_del(new /obj/item/clothing/gloves/combat(src), slot_gloves)
 	equip_to_slot_or_del(new /obj/item/clothing/head/helmet/space/deathsquad/beret(src), slot_head)
 	equip_to_slot_or_del(new /obj/item/clothing/mask/gas/swat(src), slot_wear_mask)
