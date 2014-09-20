@@ -29,6 +29,7 @@
 	if(watch_locations.len>0)
 		loc = pick(watch_locations)
 */
+
 	if(!(client && client.prefs && client.prefs.agree))
 		disclaimer()
 	else
