@@ -35,6 +35,7 @@ var/list/admin_ranks = list()								//list of all admin_rank datums
 		if("everything","host","all")	flag = 65535
 		if("sound","sounds")			flag = R_SOUNDS
 		if("spawn","create")			flag = R_SPAWN
+		if("nojoin")					flag = R_NOJOIN
 		if("@","prev")					flag = previous_rights
 		else
 			//isn't a keyword so maybe it's a verbpath?
