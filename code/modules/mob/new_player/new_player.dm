@@ -72,10 +72,12 @@
 	output += "Welcome [brandnew ? "" : "back "]to Yogstation!<br>"
 	if(brandnew)
 		output += "This appears to be your first time here. Please take a moment to read the server rules.<br>"
-	else if (current_agree == 0)
+	else if(current_agree == 0)
 		output += "Even though you've been here before, please take a moment to read the server rules.<br>"
-	else
-		output += "There has been an update in server rules:<br>"
+
+
+	if(current_agree > 0)
+		output += "There has been an update in the server rules:<br>"
 		if(current_agree < 2)
 			output += "Wizard added to murderboning exception list.<br>Added rule 0.6 (Use proper IC language).<br>"
 
