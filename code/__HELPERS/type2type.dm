@@ -290,6 +290,7 @@ proc/tg_list2text(list/list, glue=",")
 	if(rights & R_VAREDIT)		. += "[seperator]+VAREDIT"
 	if(rights & R_SOUNDS)		. += "[seperator]+SOUND"
 	if(rights & R_SPAWN)		. += "[seperator]+SPAWN"
+	if(rights & R_NOJOIN)		. += "[seperator]+NOJOIN"
 
 	for(var/verbpath in adds)
 		. += "[seperator]+[verbpath]"
