@@ -33,8 +33,30 @@
 
 /datum/admin_ticket/proc/view_log(nsrc as mob)
 	var/reply_link = "<a href='?src=\ref[nsrc];action=reply_to_ticket;ticket=\ref[src]'>Reply</a>"
+	var/refresh_link = "<a href='?src=\ref[nsrc];action=refresh_admin_ticket;ticket=\ref[src]'>Refresh</a>"
 
-	nsrc << "----- TICKET ----- [title] ----- [reply_link] -----"
+	var/html = {"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">
+			<html>
+			<head>
+				<title>Ticket Log Viewer</title>
+				<style type=\"text/css\">
+				</style>
+				<script type='text/javascript'>
+					function refresh() {
+						window.location.href = '?src=\ref[nsrc];action=refresh_admin_ticket;ticket=\ref[src]'
+					}
+
+					/*setTimeout(function() { refresh(); }, 5000); */
+				</script>
+			</head>
+			<body scroll=yes><div id=\"content\">
+			<!-- <p style='margin: 8px;'>Refreshing automatically after 5 seconds</p> -->
+			<p style='margin: 8px;'>[reply_link] - [refresh_link]</p>
+			<p style='margin: 8px; color: [resolved ? "green" : "red"];'>[resolved ? "Is resolved" : "Is not resolved"]</p>"}
 	for(var/line in log)
-		nsrc << "   [line]"
-	nsrc << "---------------------------------[reply_link]-----"
+		html += "<p style='margin: 3px;'>[line]</p>"
+	html += "<p style='margin: 8px;'>[reply_link] - [refresh_link]</p>"
+	html += "</div></body></html>"
+
+	nsrc << browse(null, "window=ViewTicketLog;border=0;can_close=1;can_resize=1;can_minimize=1;titlebar=1")
+	nsrc << browse(html, "window=ViewTicketLog;border=0;can_close=1;can_resize=1;can_minimize=1;titlebar=1")
