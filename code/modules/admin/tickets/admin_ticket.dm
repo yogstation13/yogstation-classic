@@ -38,7 +38,8 @@
 
 	user << "<font color='blue'><b>Ticket</b> created for <b>Admins</b>: \"[title]\"</font>"
 
-	add_log(nuser, "Ticket created by <b>[user]</b>")
+	var/time = time2text(world.timeofday, "hh:mm")
+	log += "[time] - [key_name(user, 1)] - Ticket created by <b>[user]</b>"
 
 	var/admin_number_present = admin_number_total - admin_number_decrease	//Number of admins who are neither afk nor invalid
 	log_admin("TICKET: [key_name(src)]: [title] - heard by [admin_number_present] non-AFK admins who have +BAN.")
