@@ -3,6 +3,11 @@
 	set name = "Adminticket"
 	set category = "Admin"
 
+	// 2 minute cool-down for ticket creation
+	src.verbs -= /client/verb/admin_ticket
+	spawn(1200)
+		src.verbs += /client/verb/admin_ticket
+
 	var/datum/admin_ticket/T = new /datum/admin_ticket(src, mob, ntitle)
 
 	tickets_list.Add(T)
@@ -43,6 +48,7 @@
 		if(tickets_list.len == 0)
 			src << "There are no tickets in the system"
 		else
+			src << "Your tickets:"
 			for(var/datum/admin_ticket/T in tickets_list)
 				if(T.user == src)
-					src << "<font color='blue'>Ticket: <b>[key_name(T.user, 1)]</b> \"[T.title]\" <a href='?src=\ref[src];action=view_admin_ticket;ticket=\ref[T]'>View</a> [holder ? "<a href='?src=\ref[src];action=monitor_admin_ticket;ticket=\ref[T]'>(Un)Monitor</a> <a href='?src=\ref[src];action=resolve_admin_ticket;ticket=\ref[T]'>(Un)Resolve</a>" : ""]</font>"
+					src << "<font color='blue'>Ticket: \"[T.title]\" <a href='?src=\ref[src];action=view_admin_ticket;ticket=\ref[T]'>View</a></font>"
