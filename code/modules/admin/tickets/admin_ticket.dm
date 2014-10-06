@@ -54,6 +54,7 @@
 	var/list/log = list()
 	var/resolved = 0
 	var/list/monitors = list()
+	var/list/handling_admin = null
 	var/browser
 
 /datum/admin_ticket/New(nuser, nmob, ntitle)
@@ -61,9 +62,10 @@
 	if(ntitle)
 		title = format_text(ntitle)
 
-	var/ai_found = isAI(user.ckey)
+	// var/ai_found = isAI(user.ckey)
 	ref_mob = "\ref[nmob]"
-	var/msg = "<span class='boldnotice'><font color=red>New ticket created: </font>[key_name(user, 1)] (<a href='?_src_=holder;adminmoreinfo=[ref_mob]'>?</a>) (<a href='?_src_=holder;adminplayeropts=[ref_mob]'>PP</a>) (<a href='?_src_=vars;Vars=[ref_mob]'>VV</a>) (<a href='?_src_=holder;subtlemessage=[ref_mob]'>SM</a>) (<a href='?_src_=holder;adminplayerobservejump=[ref_mob]'>JMP</a>) (<a href='?_src_=holder;secretsadmin=check_antagonist'>CA</a>) [ai_found ? " (<a href='?_src_=holder;adminchecklaws=[ref_mob]'>CL</a>)" : ""]:</b> [title] <a href='?src=\ref[user];action=view_admin_ticket;ticket=\ref[src]'>View</a> <a href='?src=\ref[user];action=monitor_admin_ticket;ticket=\ref[src]'>(Un)Monitor</a> <a href='?src=\ref[user];action=resolve_admin_ticket;ticket=\ref[src]'>(Un)Resolve</a></span>"
+	// var/msg = "<span class='boldnotice'><font color=red>New ticket created: </font>[key_name(user, 1)] (<a href='?_src_=holder;adminmoreinfo=[ref_mob]'>?</a>) (<a href='?_src_=holder;adminplayeropts=[ref_mob]'>PP</a>) (<a href='?_src_=vars;Vars=[ref_mob]'>VV</a>) (<a href='?_src_=holder;subtlemessage=[ref_mob]'>SM</a>) (<a href='?_src_=holder;adminplayerobservejump=[ref_mob]'>JMP</a>) (<a href='?_src_=holder;secretsadmin=check_antagonist'>CA</a>) [ai_found ? " (<a href='?_src_=holder;adminchecklaws=[ref_mob]'>CL</a>)" : ""]:</b> [title] <a href='?src=\ref[user];action=view_admin_ticket;ticket=\ref[src]'>View</a> <a href='?src=\ref[user];action=monitor_admin_ticket;ticket=\ref[src]'>(Un)Monitor</a> <a href='?src=\ref[user];action=resolve_admin_ticket;ticket=\ref[src]'>(Un)Resolve</a></span>"
+	var/msg = "<span class='boldnotice'><font color=red>New ticket created: </font>[key_name(user, 1)]: [title] <b><a href='?src=\ref[user];action=view_admin_ticket;ticket=\ref[src]'>View</a></b></span>"
 
 	//send this msg to all admins
 	var/admin_number_total = 0		//Total number of admins
@@ -85,7 +87,7 @@
 			X << 'sound/effects/adminhelp.ogg'
 		X << msg
 
-	user << "<font color='blue'><b>Ticket</b> created for <b>Admins</b>: \"[title]\" <a href='?src=\ref[user];action=view_admin_ticket;ticket=\ref[src]'>View</a></font>"
+	user << "<font color='blue'><b>Ticket</b> created for <b>Admins</b>: \"[title]\" <b><a href='?src=\ref[user];action=view_admin_ticket;ticket=\ref[src]'>View</a></b></font>"
 
 	var/time = time2text(world.timeofday, "hh:mm")
 	log += "[time] - Ticket created by <b>[user]</b>"
@@ -97,3 +99,10 @@
 			send2irc(user.ckey, "Ticket - [title] - No admins online")
 		else
 			send2irc(user.ckey, "Ticket - [title] - All admins AFK ([admin_number_afk]/[admin_number_total]) or skipped ([admin_number_ignored]/[admin_number_total])")
+
+/datum/admin_ticket/Del()
+	var/path = "data/logs/tickets/[time2text(world.realtime,"YYYY/MM-Month/DD-Day-hh-mm")].html"
+	var/file = file(path)
+
+	for(var/line in log)
+		file <<  "<p>[line]</p>"
