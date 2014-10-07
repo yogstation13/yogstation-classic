@@ -48,10 +48,10 @@
 			src << "<p>There are no tickets in the system</p>"
 			return
 		else
-			content += "<p>Your tickets:</p>"
+			content += "<p class='info-bar emboldened'>Your tickets:</p>"
 			for(var/datum/admin_ticket/T in tickets_list)
 				if(T.user == src)
-					content += "<p class='info-bar [T.resolved ? "resolved" : "unresolved"]'>Ticket: \"[T.title]\" <a href='?src=\ref[src];action=view_admin_ticket;ticket=\ref[T]'>View</a></p>"
+					content += "<p class='ticket-bar [T.resolved ? "resolved" : "unresolved"]'>Ticket: \"[T.title]\" <a href='?src=\ref[src];action=view_admin_ticket;ticket=\ref[T]'>View</a></p>"
 
 	var/html = get_html("Admin Tickets", "", "", content)
 
