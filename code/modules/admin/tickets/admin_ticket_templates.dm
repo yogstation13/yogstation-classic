@@ -196,6 +196,7 @@
 						$('.control-bar').fadeTo(1, 0.8);
 						$('.resolved-bar').fadeTo(1, 0.8);
 						$('.user-bar').fadeTo(1, 0.8);
+						$('.ticket-bar').fadeTo(1, 0.8);
 					});
 
 					[js]
