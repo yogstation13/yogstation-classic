@@ -4,6 +4,8 @@
 			<html>
 			<head>
 				<title>Ticket Log Viewer</title>
+				<link rel='stylesheet' type='text/css' href='icons.css'>
+				<link rel='stylesheet' type='text/css' href='shared.css'>
 				<style type='text/css'>
 
 				body {
@@ -28,8 +30,9 @@
 					background: #40628a;
 					border: 1px solid #161616;
 					padding: 2px 2px 2px 2px;
-					margin: 0 2px 2px 0;
+					margin: 2px 2px 2px 2px;
 					cursor:default;
+					display: inline-block;
 				}
 
 				a:hover, .linkActive:hover {
@@ -125,6 +128,22 @@
 					border: solid 1px #404040;
 					margin: 4px;
 					padding: 4px
+				}
+
+				.large-font {
+					font-size: 18px;
+				}
+
+				.medium-font {
+					font-size: 15px;
+				}
+
+				.normal-font {
+					font-size: 12px;
+				}
+
+				.small-font {
+					font-size: 10px;
 				}
 
 				.message-bar {

@@ -3,6 +3,9 @@
 	owner << "Ticket title is \"[title]\" for user \"[owner]\""
 
 /datum/admin_ticket/proc/add_log(calling_user as mob, log_message as text)
+	if(!log_message)
+		return
+
 	var/time = time2text(world.timeofday, "hh:mm")
 	log += "[time] - <b>[calling_user]</b> - [log_message]"
 
@@ -39,8 +42,8 @@
 		return 0
 
 /datum/admin_ticket/proc/view_log(mob/calling_user as mob)
-	var/reply_link = "<a href='?src=\ref[calling_user];action=reply_to_ticket;ticket=\ref[src]'>Reply</a>"
-	var/refresh_link = "<a href='?src=\ref[calling_user];action=refresh_admin_ticket;ticket=\ref[src]'>Refresh</a>"
+	var/reply_link = "<a href='?src=\ref[calling_user];action=reply_to_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-comment' /> Reply</a>"
+	var/refresh_link = "<a href='?src=\ref[calling_user];action=refresh_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-refresh' /> Refresh</a>"
 
 	var/content = ""
 	content += "<p class='control-bar'>[reply_link] [refresh_link]</p>"
@@ -60,12 +63,14 @@
 			<p>[key_name(owner, 1)]</p>"}
 
 		content += {"<p style='margin-top: 5px;'>
-				<a href='?_src_=holder;adminmoreinfo=[ref_mob]'>?</a>
-				<a href='?pp=[ref_mob]'>PP</a> <a href='?vv=[ref_mob]'>VV</a>
-				<a href='?sm=[ref_mob]'>SM</a> <a href='?jmp=[ref_mob]'>JMP</a>
-				<a href='?src=\ref[calling_user];action=monitor_admin_ticket;ticket=\ref[src]'>(Un)Monitor</a>
-				<a href='?src=\ref[calling_user];action=resolve_admin_ticket;ticket=\ref[src]'>(Un)Resolve</a>
-				<a href='?src=\ref[calling_user];action=administer_admin_ticket;ticket=\ref[src]'>Administer</a>
+				<a href='?_src_=holder;adminmoreinfo=[ref_mob]'><img width='16' height='16' class='uiIcon16 icon-search' /> ?</a>
+				<a href='?pp=[ref_mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> PP</a>
+				<a href='?vv=[ref_mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> VV</a>
+				<a href='?sm=[ref_mob]'><img width='16' height='16' class='uiIcon16 icon-mail-closed' /> SM</a>
+				<a href='?jmp=[ref_mob]'><img width='16' height='16' class='uiIcon16 icon-arrowthick-1-e' /> JMP</a>
+				<a href='?src=\ref[calling_user];action=monitor_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
+				<a href='?src=\ref[calling_user];action=resolve_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
+				<a href='?src=\ref[calling_user];action=administer_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-flag' /> Administer</a>
 			</p>
 			</div>"}
 
