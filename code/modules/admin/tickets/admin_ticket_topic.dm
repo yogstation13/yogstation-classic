@@ -13,6 +13,10 @@
 		var/time = time2text(world.timeofday, "hh:mm")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 
+		if(T.resolved && !holder)
+			usr << "This ticket is marked as resolved. You may not add any more information to it."
+			return
+
 		if(T.handling_admin && src != T.handling_admin && src != T.owner)
 			usr << "You are not the owner or primary admin of this ticket. You may not reply to it."
 			return
@@ -48,6 +52,7 @@
 	else if(href_list["action"] == "administer_admin_ticket")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 		T.handling_admin = M
+		T.log_file << "<p>[T.handling_admin] has been assigned to this ticket as primary admin.</p>"
 		T.add_log("[T.handling_admin] has been assigned to this ticket as primary admin.");
 		usr << output("[key_name(src, 1)]", "ViewTicketLog[T.ticket_id].browser:handling_user")
 		if(src != T.owner)
@@ -56,10 +61,12 @@
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 		T.resolved = !T.resolved
 		if(T.resolved)
+			T.log_file << "<p>Ticket marked as resolved by [src].</p>"
 			T.owner << "Your ticket has been marked as resolved."
 			for(var/O in T.monitors)
 				O << "\"[T.title]\" was marked as resolved."
 		else
+			T.log_file << "<p>Ticket marked as unresolved by [src].</p>"
 			T.owner << "Your ticket has been marked as unresolved."
 			for(var/O in T.monitors)
 				O << "\"[T.title]\" was marked as unresolved."

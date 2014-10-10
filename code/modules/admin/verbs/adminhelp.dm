@@ -3,9 +3,11 @@
 //This is a list of words which are ignored by the parser when comparing message contents for names. MUST BE IN LOWER CASE!
 var/list/adminhelp_ignored_words = list("unknown","the","a","an","of","monkey","alien","as")
 
+// Adminhelp discontinued. Adminticket is now used, but it is now using the command "Adminhelp" for easy transitioning.
 /client/verb/adminhelp(msg as text)
 	set category = "Admin"
-	set name = "Adminhelp"
+	set name = "Adminhelpold"
+	set hidden = 1
 
 	if(say_disabled)	//This is here to try to identify lag problems
 		usr << "<span class='danger'>Speech is currently admin-disabled.</span>"
