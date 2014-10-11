@@ -26,7 +26,8 @@
 			found_ticket.owner << output("[time] - <b>[found_ticket.owner]</b> - [ticket_title]", "ViewTicketLog[found_ticket.ticket_id].browser:add_message")
 		found_ticket.add_log(src, ticket_title)
 
-/client/verb/view_tickets()
+// Admin proc-verb @see admin_verbs.dm
+/client/proc/view_tickets()
 	set name = "Adminlisttickets"
 	set category = "Admin"
 
