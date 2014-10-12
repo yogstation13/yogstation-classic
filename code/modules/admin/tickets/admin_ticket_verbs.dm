@@ -21,7 +21,7 @@
 		tickets_list.Add(T)
 	else
 		var/time = time2text(world.timeofday, "hh:mm")
-		usr << output("[time] - <b>[found_ticket.owner]</b> - [ticket_title]", "ViewTicketLog[found_ticket.ticket_id].browser:add_message")
+		//usr << output("[time] - <b>[found_ticket.owner]</b> - [ticket_title]", "ViewTicketLog[found_ticket.ticket_id].browser:add_message")
 		if(src != found_ticket.owner)
 			found_ticket.owner << output("[time] - <b>[found_ticket.owner]</b> - [ticket_title]", "ViewTicketLog[found_ticket.ticket_id].browser:add_message")
 		found_ticket.add_log(src, ticket_title)

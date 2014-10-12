@@ -11,3 +11,5 @@
 *.lk
 *.int
 /data/mode.txt
+/data/logs
+/data/investigate

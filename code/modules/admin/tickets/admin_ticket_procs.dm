@@ -10,22 +10,27 @@
 	var/message = "[time] - <b>[calling_user]</b> - [log_message]"
 	log += "[message]"
 
+	world << output(message, "ViewTicketLog[ticket_id].browser:add_message")
+
 	log_file << "<p>[message]</p>"
 
 	var/found = 0
 
 	for(var/M in monitors)
-		M << "\"[log_message]\" added to <a href='?src=\ref[calling_user];action=view_admin_ticket;ticket=\ref[src]'>ticket</a> by [calling_user]"
+		if(owner == M || calling_user == handling_admin)
+			break
+
+		M << "<span class='boldnotice'>\"[log_message]\" added to <a href='?src=\ref[calling_user];action=view_admin_ticket;ticket=\ref[src]'>ticket</a> by [calling_user]</span>"
 		if(M == calling_user)
 			found = 1
 
-	if(handling_admin)
-		handling_admin << "\"[log_message]\" added to <a href='?src=\ref[calling_user];action=view_admin_ticket;ticket=\ref[src]'>ticket</a> by [calling_user]"
+	if(handling_admin != calling_user)
+		handling_admin << "<span class='boldnotice'>\"[log_message]\" added to <a href='?src=\ref[calling_user];action=view_admin_ticket;ticket=\ref[src]'>ticket</a> by [calling_user]</span>"
 
-	if(owner && calling_user != owner)
-		calling_user << "\"[log_message]\" added to <a href='?src=\ref[calling_user];action=view_admin_ticket;ticket=\ref[src]'>your ticket</a> by [calling_user]"
-	else if(!found)
-		calling_user << "<a href='?src=\ref[calling_user];action=view_admin_ticket;ticket=\ref[src]'>Your reply</a> has been noted "
+	owner << "<span class='boldnotice'>\"[log_message]\" added to <a href='?src=\ref[calling_user];action=view_admin_ticket;ticket=\ref[src]'>your ticket</a> by [calling_user]</span>"
+
+	if(!found && calling_user != owner)
+		calling_user << "<span class='boldnotice'><a href='?src=\ref[calling_user];action=view_admin_ticket;ticket=\ref[src]'>Your reply</a> has been noted.</span>"
 
 /datum/admin_ticket/proc/toggle_monitor(calling_user as mob)
 	var/found = 0
@@ -36,16 +41,16 @@
 	if(!found)
 		log_file << "<p>[calling_user] is now monitoring this ticket.</p>"
 		monitors += calling_user
-		calling_user << "You are now monitoring this ticket"
+		calling_user << "<span class='boldnotice'>You are now monitoring this ticket</span>"
 		if(owner)
-			owner << "[calling_user] is now monitoring your ticket"
+			owner << "<span class='boldnotice'>[calling_user] is now monitoring your ticket</span>"
 		return 1
 	else
 		log_file << "<p>[calling_user] is no longer monitoring this ticket.</p>"
 		monitors -= calling_user
-		calling_user << "You are no longer monitoring this ticket"
+		calling_user << "<span class='boldnotice'>You are no longer monitoring this ticket</span>"
 		if(owner)
-			owner << "[calling_user] is no longer monitoring your ticket"
+			owner << "<span class='boldnotice'>[calling_user] is no longer monitoring your ticket</span>"
 		return 0
 
 /datum/admin_ticket/proc/view_log(mob/calling_user as mob)
@@ -54,11 +59,12 @@
 
 	var/content = ""
 	content += "<p class='control-bar'>[reply_link] [refresh_link]</p>"
-	content += "<p class='info-bar'>Primary Admin: <span id='primary-admin'>[handling_admin != null ? key_name(handling_admin, 1) : "Unassigned"]</span></p>"
+	content += "<p class='title-bar'>[title]</p>"
+	content += "<p class='info-bar'>Primary Admin: <span id='primary-admin'>[handling_admin != null ? (usr.client.holder ? key_name(handling_admin, 1) : "[handling_admin]") : "Unassigned"]</span></p>"
 
 	content += "<p id='monitors' class='[monitors.len > 0 ? "shown" : "hidden"]'>Monitors:"
 	for(var/M in monitors)
-		content += " [M]"
+		content += " <span class='monitor'>[M]</span>"
 	content += "</p>"
 
 	content += "<p class='resolved-bar [resolved ? "resolved" : "unresolved"]' id='resolved'>[resolved ? "Is resolved" : "Is not resolved"]</p>"
@@ -100,8 +106,15 @@
 				content += "<p class='user-info-bar'>Location: [location]</p>"
 
 	content += "<div id='messages'>"
-	for(var/line in log)
-		content += "<p class='message-bar'>[line]</p>"
+
+
+	var/i = 0
+	for(i = log.len; i > 0; i--)
+		content += "<p class='message-bar'>[log[i]]</p>"
+
+	/*for(var/line in log)
+		content += "<p class='message-bar'>[line]</p>"*/
+
 	content += "</div>"
 	content += "<p class='control-bar'>[reply_link] [refresh_link]</p>"
 	content += "<br /></div></body></html>"

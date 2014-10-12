@@ -1,81 +1,73 @@
 
 /client/Topic(href, href_list[])
 	..()
-	var/mob/M = locate(href_list["src"])
+	//var/mob/M = locate(href_list["src"])
 	var/client/C = usr.client
 
 	if(href_list["action"] == "view_admin_ticket")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 		// Close ticket list when opening ticket
 		//src << browse(null, "window=ViewTickets;size=700x500")
-		T.view_log(M)
+		T.view_log(C)
 	else if(href_list["action"] == "reply_to_ticket")
-		var/time = time2text(world.timeofday, "hh:mm")
+		//var/time = time2text(world.timeofday, "hh:mm")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 
 		if(T.resolved && !holder)
-			usr << "This ticket is marked as resolved. You may not add any more information to it."
+			usr << "<span class='boldnotice'>This ticket is marked as resolved. You may not add any more information to it.</span>"
 			return
 
 		if(T.handling_admin && src != T.handling_admin && src != T.owner)
-			usr << "You are not the owner or primary admin of this ticket. You may not reply to it."
+			usr << "<span class='boldnotice'>You are not the owner or primary admin of this ticket. You may not reply to it.</span>"
 			return
 
 		var/logtext = input("Please enter your reply:")
 
 		if(holder && !T.handling_admin)
-			if(src != T.owner)
+			if(usr != T.owner)
 				T.handling_admin = src
 				T.add_log("[T.handling_admin] has been assigned to this ticket as primary admin.");
-				usr << output("[key_name(T.handling_admin, 1)]", "ViewTicketLog[T.ticket_id].browser:handling_user")
-				T.owner << output("[key_name(T.handling_admin, 1)]", "ViewTicketLog[T.ticket_id].browser:handling_user")
-
-		usr << output("[time] - <b>[M]</b> - [logtext]", "ViewTicketLog[T.ticket_id].browser:add_message")
-		if(src != T.owner)
-			T.owner << output("[time] - <b>[M]</b> - [logtext]", "ViewTicketLog[T.ticket_id].browser:add_message")
+				world << output("[T.handling_admin]", "ViewTicketLog[T.ticket_id].browser:handling_user")
 
 		if(logtext)
-			T.add_log(M, logtext)
+			T.add_log(C, logtext)
 	else if(href_list["action"] == "monitor_admin_ticket")
+		if(!holder)
+			return
+
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
-		T.toggle_monitor(M)
+		T.toggle_monitor(C)
 
 		var/monitors_text = ""
 		if(T.monitors.len > 0)
 			monitors_text += "Monitors:"
 			for(var/MO in T.monitors)
-				monitors_text += " [MO]"
+				monitors_text += " <span class='monitor'>[MO]</span>"
 
-		usr << output("[monitors_text] ", "ViewTicketLog[T.ticket_id].browser:set_monitors")
-		if(src != T.owner)
-			T.owner << output("[monitors_text] ", "ViewTicketLog[T.ticket_id].browser:set_monitors")
+		world << output("[monitors_text] ", "ViewTicketLog[T.ticket_id].browser:set_monitors")
 	else if(href_list["action"] == "administer_admin_ticket")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
-		T.handling_admin = M
+		T.handling_admin = C
 		T.log_file << "<p>[T.handling_admin] has been assigned to this ticket as primary admin.</p>"
 		T.add_log("[T.handling_admin] has been assigned to this ticket as primary admin.");
-		usr << output("[key_name(src, 1)]", "ViewTicketLog[T.ticket_id].browser:handling_user")
-		if(src != T.owner)
-			T.owner << output("[key_name(src, 1)]", "ViewTicketLog[T.ticket_id].browser:handling_user")
+		world << output("[src != null ? "[src]" : "Unassigned"]", "ViewTicketLog[T.ticket_id].browser:handling_user")
 	else if(href_list["action"] == "resolve_admin_ticket")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 		T.resolved = !T.resolved
 		if(T.resolved)
 			T.log_file << "<p>Ticket marked as resolved by [src].</p>"
-			T.owner << "Your ticket has been marked as resolved."
+			T.owner << "<span class='boldnotice'>Your ticket has been marked as resolved.</span>"
 			for(var/O in T.monitors)
-				O << "\"[T.title]\" was marked as resolved."
+				O << "<span class='boldnotice'>\"[T.title]\" was marked as resolved.</span>"
 		else
 			T.log_file << "<p>Ticket marked as unresolved by [src].</p>"
-			T.owner << "Your ticket has been marked as unresolved."
+			T.owner << "<span class='boldnotice'>Your ticket has been marked as unresolved.</span>"
 			for(var/O in T.monitors)
-				O << "\"[T.title]\" was marked as unresolved."
-		usr << output("[T.resolved]", "ViewTicketLog[T.ticket_id].browser:set_resolved")
-		if(src != T.owner)
-			T.owner << output("[T.resolved]", "ViewTicketLog[T.ticket_id].browser:set_resolved")
+				O << "<span class='boldnotice'>\"[T.title]\" was marked as unresolved.</span>"
+		world << output("[T.resolved]", "ViewTicketLog[T.ticket_id].browser:set_resolved")
 	else if(href_list["action"] == "refresh_admin_ticket")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
-		T.view_log(M)
+		T.view_log(C)
 	else if(href_list["action"] == "get_admin_ticket_json")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 		world << "get_admin_ticket_json [T.title]"

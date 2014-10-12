@@ -67,6 +67,13 @@
 					font-size: 12px;
 				}
 
+				.monitor {
+					background-color: #202020;
+					border: solid 1px #404040;
+					margin: 2px;
+					padding: 2px
+				}
+
 				.notice {
 					background: url(uiNoticeBackground.jpg) 0 0 repeat;
 					color: #15345A;
@@ -88,7 +95,7 @@
 
 				.info-bar {
 					margin: 4px;
-					padding: 4px
+					padding: 4px;
 				}
 
 				.emboldened {
@@ -102,32 +109,42 @@
 					padding: 2px 2px 2px 4px;
 				}
 
+				.title-bar {
+					background-color: #202020;
+					border: solid 1px #404040;
+					margin: 4px;
+					padding: 4px;
+					text-align: center;
+					font-size: 15px;
+					font-weight: bold;
+				}
+
 				.control-bar {
 					background-color: #202020;
 					border: solid 1px #404040;
 					margin: 4px;
-					padding: 4px
+					padding: 4px;
 				}
 
 				.resolved-bar {
 					background-color: #202020;
 					border: solid 1px #404040;
 					margin: 4px;
-					padding: 4px
+					padding: 4px;
 				}
 
 				.user-bar {
 					background-color: #202020;
 					border: solid 1px #404040;
 					margin: 4px;
-					padding: 4px
+					padding: 4px;
 				}
 
 				.ticket-bar {
 					background-color: #202020;
 					border: solid 1px #404040;
 					margin: 4px;
-					padding: 4px
+					padding: 4px;
 				}
 
 				.large-font {
@@ -177,7 +194,7 @@
 				<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 				<script type='text/javascript'>
 					function add_message(message) {
-						$('#messages').append('<p class=\"message-bar\" style=\"display: none;\">'+message+'</p>');
+						$('#messages').prepend('<p class=\"message-bar\" style=\"display: none;\">'+message+'</p>');
 
 						$('.message-bar').fadeIn();
 					}
