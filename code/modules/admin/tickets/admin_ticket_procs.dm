@@ -6,6 +6,8 @@
 	if(!log_message)
 		return
 
+	log_message = sanitize(log_message)
+
 	var/time = time2text(world.timeofday, "hh:mm")
 	var/message = "[time] - <b>[calling_user]</b> - [log_message]"
 	log += "[message]"
@@ -20,17 +22,21 @@
 		if(owner == M || calling_user == handling_admin)
 			break
 
-		M << "<span class='boldnotice'>\"[log_message]\" added to <a href='?src=\ref[calling_user];action=view_admin_ticket;ticket=\ref[src]'>ticket</a> by [calling_user]</span>"
+		M << "<font color='red' size='3'><b>-- Ticket #[ticket_id] - New message <a href='?src=\ref[calling_user];action=view_admin_ticket;ticket=\ref[src]'>View</a> --</b></font>"
+		M << "<span>-- <b>[calling_user]</b>: [log_message]</span>"
 		if(M == calling_user)
 			found = 1
 
 	if(handling_admin != calling_user)
-		handling_admin << "<span class='boldnotice'>\"[log_message]\" added to <a href='?src=\ref[calling_user];action=view_admin_ticket;ticket=\ref[src]'>ticket</a> by [calling_user]</span>"
+		handling_admin << "<font color='red' size='3'><b>-- Ticket #[ticket_id] - New message <a href='?src=\ref[calling_user];action=view_admin_ticket;ticket=\ref[src]'>View</a> --</b></font>"
+		handling_admin << "<span>-- <b>[calling_user]</b>: [log_message]</span>"
 
-	owner << "<span class='boldnotice'>\"[log_message]\" added to <a href='?src=\ref[calling_user];action=view_admin_ticket;ticket=\ref[src]'>your ticket</a> by [calling_user]</span>"
+	owner << "<font color='red' size='4'><b>-- Ticket #[ticket_id] - New message <a href='?src=\ref[calling_user];action=view_admin_ticket;ticket=\ref[src]'>View</a> --</b></font>"
+	owner << "<span>-- <b>[calling_user]</b>: [log_message]</span>"
 
 	if(!found && calling_user != owner)
-		calling_user << "<span class='boldnotice'><a href='?src=\ref[calling_user];action=view_admin_ticket;ticket=\ref[src]'>Your reply</a> has been noted.</span>"
+		calling_user << "<font color='red' size='4'><b>-- Ticket #[ticket_id] - New message <a href='?src=\ref[calling_user];action=view_admin_ticket;ticket=\ref[src]'>View</a> --</b></font>"
+		calling_user << "<span>-- <b>[calling_user]</b>: [log_message]</span>"
 
 /datum/admin_ticket/proc/toggle_monitor(calling_user as mob)
 	var/found = 0
@@ -73,19 +79,19 @@
 		content += {"<div class='user-bar'>
 			<p>[key_name(owner, 1)]</p>"}
 
-		content += {"<p style='margin-top: 5px;'>
-				<a href='?_src_=holder;adminmoreinfo=\ref[owner.mob]'><img width='16' height='16' class='uiIcon16 icon-search' /> ?</a>
-				<a href='?pp=\ref[owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> PP</a>
-				<a href='?vv=\ref[owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> VV</a>
-				<a href='?sm=\ref[owner.mob]'><img width='16' height='16' class='uiIcon16 icon-mail-closed' /> SM</a>
-				<a href='?jmp=\ref[owner.mob]'><img width='16' height='16' class='uiIcon16 icon-arrowthick-1-e' /> JMP</a>
-				<a href='?src=\ref[calling_user];action=monitor_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
-				<a href='?src=\ref[calling_user];action=resolve_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
-				<a href='?src=\ref[calling_user];action=administer_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-flag' /> Administer</a>
-			</p>
-			</div>"}
+		if(owner && owner.mob)
+			content += {"<p style='margin-top: 5px;'>
+					<a href='?_src_=holder;adminmoreinfo=\ref[owner.mob]'><img width='16' height='16' class='uiIcon16 icon-search' /> ?</a>
+					<a href='?pp=\ref[owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> PP</a>
+					<a href='?vv=\ref[owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> VV</a>
+					<a href='?sm=\ref[owner.mob]'><img width='16' height='16' class='uiIcon16 icon-mail-closed' /> SM</a>
+					<a href='?jmp=\ref[owner.mob]'><img width='16' height='16' class='uiIcon16 icon-arrowthick-1-e' /> JMP</a>
+					<a href='?src=\ref[calling_user];action=monitor_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
+					<a href='?src=\ref[calling_user];action=resolve_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
+					<a href='?src=\ref[calling_user];action=administer_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-flag' /> Administer</a>
+				</p>
+				</div>"}
 
-		if(owner.mob)
 			if(owner.mob.mind && owner.mob.mind.assigned_role)
 				content += "<p class='user-info-bar'>Role: [owner.mob.mind.assigned_role]</p>"
 				if(owner.mob.mind.special_role)

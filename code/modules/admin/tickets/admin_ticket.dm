@@ -55,7 +55,7 @@
 	log += "[time] - Ticket created by <b>[owner]</b>"
 
 	var/admin_number_present = admin_number_total - admin_number_decrease	//Number of admins who are neither afk nor invalid
-	log_admin("TICKET: [key_name(src)]: [title] - heard by [admin_number_present] non-AFK admins who have +BAN.")
+	log_admin("TICKET: [key_name(owner)]: [title] - heard by [admin_number_present] non-AFK admins who have +BAN.")
 	if(admin_number_present <= 0)
 		if(!admin_number_afk && !admin_number_ignored)
 			send2irc(owner.ckey, "Ticket - [title] - No admins online")

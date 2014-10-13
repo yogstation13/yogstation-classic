@@ -68,6 +68,19 @@
 		msg = sanitize(copytext(msg,1,MAX_MESSAGE_LEN))
 		if(!msg)	return
 
+	// Search current tickets, is this user the owner or primary admin of a ticket
+	var/found_ticket = 0
+	for(var/datum/admin_ticket/T in tickets_list)
+		if(T.owner == src || T.handling_admin == src)
+			T.add_log(src, msg)
+			// Hijack this PM!
+			found_ticket = 1
+
+
+	if(found_ticket)
+		// The ticket system is taking control of this PM
+		return
+
 	if(C.holder)
 		if(holder)	//both are admins
 			C << "<font color='red'>Admin PM from-<b>[key_name(src, C, 1)]</b>: [msg]</font>"

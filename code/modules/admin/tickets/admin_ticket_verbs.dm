@@ -43,6 +43,9 @@
 		var/list/unresolved = new /list()
 
 		for(var/datum/admin_ticket/T in tickets_list)
+			if(!T.owner)
+				continue
+			
 			if(T.resolved)
 				resolved.Add(T)
 			else
@@ -55,6 +58,9 @@
 		if(unresolved.len > 0)
 			content += "<p class='info-bar unresolved emboldened large-font'>Unresolved Tickets ([unresolved.len]/[tickets_list.len]):</p>"
 			for(var/datum/admin_ticket/T in unresolved)
+				if(!T.owner)
+					continue
+
 				var/ai_found = (T.owner && isAI(T.owner.ckey))
 				content += {"<p class='ticket-bar'>
 					<b>[T.title]</b><br />
@@ -75,6 +81,9 @@
 		if(resolved.len > 0)
 			content += "<p class='info-bar resolved emboldened large-font'>Resolved Tickets ([resolved.len]/[tickets_list.len]):</p>"
 			for(var/datum/admin_ticket/T in resolved)
+				if(!T.owner)
+					continue
+
 				var/ai_found = (T.owner && isAI(T.owner.ckey))
 				content += {"<p class='ticket-bar'>
 					<b>[T.title]</b><br />
