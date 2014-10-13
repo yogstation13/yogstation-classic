@@ -4,12 +4,12 @@
 
 /datum/admin_ticket
 	var/ticket_id
-	var/client/owner
+	var/mob/owner
 	var/title
 	var/list/log = list()
 	var/resolved = 0
 	var/list/monitors = list()
-	var/list/handling_admin = null
+	var/mob/handling_admin = null
 	var/log_file
 
 /datum/admin_ticket/New(nowner, ntitle)
@@ -19,7 +19,7 @@
 	ticket_count++
 	ticket_id = ticket_count
 
-	var/path = "data/logs/tickets/[time2text(world.realtime,"YYYY/MM-Month/DD-Day/[owner ? owner.ckey : owner]-[ticket_id]")].html"
+	var/path = "data/logs/tickets/[time2text(world.realtime,"YYYY/MM-Month/DD-Day/[owner ? owner.client.ckey : owner]-[ticket_id]")].html"
 	log_file = file(path)
 
 	// var/ai_found = isAI(owner.ckey)
@@ -58,6 +58,6 @@
 	log_admin("TICKET: [key_name(owner)]: [title] - heard by [admin_number_present] non-AFK admins who have +BAN.")
 	if(admin_number_present <= 0)
 		if(!admin_number_afk && !admin_number_ignored)
-			send2irc(owner.ckey, "Ticket - [title] - No admins online")
+			send2irc(owner.client.ckey, "Ticket - [title] - No admins online")
 		else
-			send2irc(owner.ckey, "Ticket - [title] - All admins AFK ([admin_number_afk]/[admin_number_total]) or skipped ([admin_number_ignored]/[admin_number_total])")
+			send2irc(owner.client.ckey, "Ticket - [title] - All admins AFK ([admin_number_afk]/[admin_number_total]) or skipped ([admin_number_ignored]/[admin_number_total])")

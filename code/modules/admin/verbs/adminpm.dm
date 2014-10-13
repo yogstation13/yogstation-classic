@@ -69,17 +69,19 @@
 		if(!msg)	return
 
 	// Search current tickets, is this user the owner or primary admin of a ticket
-	var/found_ticket = 0
 	for(var/datum/admin_ticket/T in tickets_list)
-		if(T.owner == src || T.handling_admin == src)
-			T.add_log(src, msg)
+		if((T.owner == usr || (!T.handling_admin || T.handling_admin == usr)) && ((T.owner && T.owner.client == C) || (!T.handling_admin || (T.handling_admin && T.handling_admin.client == C))))
 			// Hijack this PM!
-			found_ticket = 1
+			if(T.resolved && !holder)
+				usr << "<span class='boldnotice'>This ticket is marked as resolved. You may not add any more information to it.</span>"
+				return
 
+			if(T.handling_admin && usr != T.handling_admin && usr != T.owner)
+				usr << "<span class='boldnotice'>You are not the owner or primary admin of this ticket. You may not reply to it.</span>"
+				return
 
-	if(found_ticket)
-		// The ticket system is taking control of this PM
-		return
+			T.add_log(msg)
+			return
 
 	if(C.holder)
 		if(holder)	//both are admins

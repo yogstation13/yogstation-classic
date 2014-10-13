@@ -17,26 +17,21 @@
 			usr << "<span class='boldnotice'>This ticket is marked as resolved. You may not add any more information to it.</span>"
 			return
 
-		if(T.handling_admin && src != T.handling_admin && src != T.owner)
+		if(T.handling_admin && usr != T.handling_admin && usr != T.owner)
 			usr << "<span class='boldnotice'>You are not the owner or primary admin of this ticket. You may not reply to it.</span>"
 			return
 
 		var/logtext = input("Please enter your reply:")
-
-		if(holder && !T.handling_admin)
-			if(usr != T.owner)
-				T.handling_admin = src
-				T.add_log("[T.handling_admin] has been assigned to this ticket as primary admin.");
-				world << output("[T.handling_admin]", "ViewTicketLog[T.ticket_id].browser:handling_user")
+		logtext = sanitize(logtext)
 
 		if(logtext)
-			T.add_log(C, logtext)
+			T.add_log(logtext)
 	else if(href_list["action"] == "monitor_admin_ticket")
 		if(!holder)
 			return
 
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
-		T.toggle_monitor(C)
+		T.toggle_monitor()
 
 		var/monitors_text = ""
 		if(T.monitors.len > 0)
@@ -50,17 +45,17 @@
 		T.handling_admin = C
 		T.log_file << "<p>[T.handling_admin] has been assigned to this ticket as primary admin.</p>"
 		T.add_log("[T.handling_admin] has been assigned to this ticket as primary admin.");
-		world << output("[src != null ? "[src]" : "Unassigned"]", "ViewTicketLog[T.ticket_id].browser:handling_user")
+		world << output("[usr != null ? "[key_name(usr, 1)]" : "Unassigned"]", "ViewTicketLog[T.ticket_id].browser:handling_user")
 	else if(href_list["action"] == "resolve_admin_ticket")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 		T.resolved = !T.resolved
 		if(T.resolved)
-			T.log_file << "<p>Ticket marked as resolved by [src].</p>"
+			T.log_file << "<p>Ticket marked as resolved by [usr].</p>"
 			T.owner << "<span class='boldnotice'>Your ticket has been marked as resolved.</span>"
 			for(var/O in T.monitors)
 				O << "<span class='boldnotice'>\"[T.title]\" was marked as resolved.</span>"
 		else
-			T.log_file << "<p>Ticket marked as unresolved by [src].</p>"
+			T.log_file << "<p>Ticket marked as unresolved by [usr].</p>"
 			T.owner << "<span class='boldnotice'>Your ticket has been marked as unresolved.</span>"
 			for(var/O in T.monitors)
 				O << "<span class='boldnotice'>\"[T.title]\" was marked as unresolved.</span>"
