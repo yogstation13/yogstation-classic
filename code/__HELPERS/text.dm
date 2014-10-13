@@ -42,6 +42,46 @@
 			index = findtext(t, char)
 	return t
 
+
+
+//Filter out and replace unwanted words, prettify sentences
+/proc/pretty_filter(var/text)
+	//force_crash_here_because_incredibly_bad_code()
+
+	var/path = "config/pretty_filter.txt"
+
+	//load text from file
+	var/list/filter_lines = file2list(path)
+
+	//process each line seperately
+	for(var/line in filter_lines)
+		if(!length(line))
+			continue
+
+		if(findtextEx(line,"#",1,2))
+			continue
+
+		//Split the line at every "="
+		var/list/parts = text2list(line, " = ")
+		if(!parts.len)
+			continue
+
+		//regex pattern is before the first "="
+		var/pattern = parts[1]
+		if(!pattern)
+			continue
+
+		//replacement follows the first "="
+		var/replacement = ""
+		if(parts.len >= 2)
+			replacement = parts[2]
+
+		if(!replacement)
+			continue
+
+		world << "[pattern] replace with [replacement]"
+		// Do something with the pattern and replacement here
+
 //Runs byond's sanitization proc along-side sanitize_simple
 /proc/sanitize(var/t,var/list/repl_chars = null)
 	return html_encode(sanitize_simple(t,repl_chars))
