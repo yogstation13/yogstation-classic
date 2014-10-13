@@ -258,7 +258,7 @@
 		var/obj/item/organ/limb/affecting = get_organ(ran_zone(dam_zone))
 		var/armor_block = run_armor_check(affecting, "melee")
 		apply_damage(damage, BRUTE, affecting, armor_block)
-
+		add_logs(M, src, "glomped", admin=1)
 
 		if(M.powerlevel > 0)
 			var/stunprob = 10
