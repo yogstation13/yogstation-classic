@@ -67,11 +67,12 @@
 	var/brandnew = 0
 	if(client.player_age == "Requires database")
 		brandnew = 1
+		joining_forbidden = 1
 	var/current_agree = client.prefs.agree
 	var/output = ""
 	output += "Welcome [brandnew ? "" : "back "]to Yogstation!<br>"
 	if(brandnew)
-		output += "This appears to be your first time here. Please take a moment to read the server rules.<br>"
+		output += "This appears to be your first time here. Please take a moment to read the server rules.<br>You will not be able to join this round. Take this time to acknowledge yourself with the map, rules, and playstyle.<br>Don't forget to set up your character preferences!"
 	else if(current_agree == 0)
 		output += "Even though you've been here before, please take a moment to read the server rules.<br>"
 
@@ -281,6 +282,8 @@
 			client.prefs.agree = MAXAGREE;
 			client.prefs.save_preferences();
 			src << browse(null, "window=disclaimer");
+			if(joining_forbidden)
+				src << "Please spend this round observing the game to familiarise yourself with the map, rules, and general playstyle."
 			new_player_panel();
 		return
 	else if(!href_list["late_join"])

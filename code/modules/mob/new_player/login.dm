@@ -32,7 +32,7 @@
 		loc = pick(watch_locations)
 */
 
-	if(!(client && client.prefs && (client.prefs.agree == MAXAGREE)))
+	if(client.prefs.agree < MAXAGREE)
 		disclaimer()
 	else
 		new_player_panel()
