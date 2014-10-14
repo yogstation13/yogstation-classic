@@ -10,15 +10,15 @@
 		if(usr != owner)
 			handling_admin = usr
 			add_log("[handling_admin] has been assigned to this ticket as primary admin.");
-			world << output("[handling_admin]", "ViewTicketLog[ticket_id].browser:handling_user")
+			world << output("[key_name(handling_admin, 1)]", "ViewTicketLog[ticket_id].browser:handling_user")
 
-	var/time = time2text(world.timeofday, "hh:mm")
-	var/message = "[time] - <b>[usr]</b> - [log_message]"
+	//var/time = time2text(world.timeofday, "hh:mm")
+	var/message = "[time_stamp()] - <b>[usr]</b> - [log_message]"
 	log += "[message]"
 
 	world << output(message, "ViewTicketLog[ticket_id].browser:add_message")
 
-	log_file << "<p>[message]</p>"
+	log_admin("Ticket message: [message]")
 
 	var/found = 0
 
@@ -50,14 +50,14 @@
 			found = 1
 
 	if(!found)
-		log_file << "<p>[usr] is now monitoring this ticket.</p>"
+		log_admin("[usr] is now monitoring ticket #[ticket_id]")
 		monitors += usr
 		usr << "<span class='boldnotice'>You are now monitoring this ticket</span>"
 		if(owner)
 			owner << "<span class='boldnotice'>[usr] is now monitoring your ticket</span>"
 		return 1
 	else
-		log_file << "<p>[usr] is no longer monitoring this ticket.</p>"
+		log_admin("[usr] is no longer monitoring ticket #[ticket_id]")
 		monitors -= usr
 		usr << "<span class='boldnotice'>You are no longer monitoring this ticket</span>"
 		if(owner)

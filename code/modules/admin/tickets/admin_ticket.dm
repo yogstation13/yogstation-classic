@@ -10,7 +10,7 @@
 	var/resolved = 0
 	var/list/monitors = list()
 	var/mob/handling_admin = null
-	var/log_file
+	//var/log_file
 
 /datum/admin_ticket/New(nowner, ntitle)
 	owner = nowner
@@ -19,14 +19,12 @@
 	ticket_count++
 	ticket_id = ticket_count
 
-	var/path = "data/logs/tickets/[time2text(world.realtime,"YYYY/MM-Month/DD-Day/[owner ? owner.client.ckey : owner]-[ticket_id]")].html"
-	log_file = file(path)
+	//var/path = "data/logs/tickets/[time2text(world.realtime,"YYYY/MM-Month/DD-Day/[owner ? owner.client.ckey : owner]-[ticket_id]")].html"
+	//log_file = file(path)
 
 	// var/ai_found = isAI(owner.ckey)
 	// var/msg = "<span class='boldnotice'><font color=red>New ticket created: </font>[key_name(owner, 1)] (<a href='?_src_=holder;adminmoreinfo=\ref[owner.mob]'>?</a>) (<a href='?_src_=holder;adminplayeropts=\ref[owner.mob]'>PP</a>) (<a href='?_src_=vars;Vars=\ref[owner.mob]'>VV</a>) (<a href='?_src_=holder;subtlemessage=\ref[owner.mob]'>SM</a>) (<a href='?_src_=holder;adminplayerobservejump=\ref[owner.mob]'>JMP</a>) (<a href='?_src_=holder;secretsadmin=check_antagonist'>CA</a>) [ai_found ? " (<a href='?_src_=holder;adminchecklaws=\ref[owner.mob]'>CL</a>)" : ""]:</b> [title] <a href='?src=\ref[owner];action=view_admin_ticket;ticket=\ref[src]'>View</a> <a href='?src=\ref[owner];action=monitor_admin_ticket;ticket=\ref[src]'>(Un)Monitor</a> <a href='?src=\ref[owner];action=resolve_admin_ticket;ticket=\ref[src]'>(Un)Resolve</a></span>"
 	var/msg = "<span class='boldnotice'><font color=red>New ticket created: </font>[key_name(owner, 1)]: [title] <b><a href='?src=\ref[owner];action=view_admin_ticket;ticket=\ref[src]'>View</a></b></span>"
-
-	log_file << "<p>[msg]</p>"
 
 	//send this msg to all admins
 	var/admin_number_total = 0		//Total number of admins
@@ -50,9 +48,9 @@
 
 	owner << "<font color='blue'><b>Ticket</b> created for <b>Admins</b>: \"[title]\" <b><a href='?src=\ref[owner];action=view_admin_ticket;ticket=\ref[src]'>View</a></b></font>"
 
-	var/time = time2text(world.timeofday, "hh:mm")
+	//var/time = time2text(world.timeofday, "hh:mm")
 	log += "<b>[title]</b>"
-	log += "[time] - Ticket created by <b>[owner]</b>"
+	log += "[time_stamp()] - Ticket created by <b>[owner]</b>"
 
 	var/admin_number_present = admin_number_total - admin_number_decrease	//Number of admins who are neither afk nor invalid
 	log_admin("TICKET: [key_name(owner)]: [title] - heard by [admin_number_present] non-AFK admins who have +BAN.")

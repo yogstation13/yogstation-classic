@@ -43,19 +43,19 @@
 	else if(href_list["action"] == "administer_admin_ticket")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 		T.handling_admin = C
-		T.log_file << "<p>[T.handling_admin] has been assigned to this ticket as primary admin.</p>"
+		log_admin("[T.handling_admin] has been assigned to ticket [T.ticket_id] as primary admin.")
 		T.add_log("[T.handling_admin] has been assigned to this ticket as primary admin.");
 		world << output("[usr != null ? "[key_name(usr, 1)]" : "Unassigned"]", "ViewTicketLog[T.ticket_id].browser:handling_user")
 	else if(href_list["action"] == "resolve_admin_ticket")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 		T.resolved = !T.resolved
 		if(T.resolved)
-			T.log_file << "<p>Ticket marked as resolved by [usr].</p>"
+			log_admin("Ticket [T.ticket_id] marked as resolved by [usr].")
 			T.owner << "<span class='boldnotice'>Your ticket has been marked as resolved.</span>"
 			for(var/O in T.monitors)
 				O << "<span class='boldnotice'>\"[T.title]\" was marked as resolved.</span>"
 		else
-			T.log_file << "<p>Ticket marked as unresolved by [usr].</p>"
+			log_admin("Ticket [T.ticket_id] marked as unresolved by [usr].")
 			T.owner << "<span class='boldnotice'>Your ticket has been marked as unresolved.</span>"
 			for(var/O in T.monitors)
 				O << "<span class='boldnotice'>\"[T.title]\" was marked as unresolved.</span>"
