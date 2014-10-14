@@ -13,7 +13,7 @@
 			world << output("[key_name(handling_admin, 1)]", "ViewTicketLog[ticket_id].browser:handling_user")
 
 	//var/time = time2text(world.timeofday, "hh:mm")
-	var/message = "[time_stamp()] - <b>[usr]</b> - [log_message]"
+	var/message = "[gameTimestamp()] - <b>[usr]</b> - [log_message]"
 	log += "[message]"
 
 	world << output(message, "ViewTicketLog[ticket_id].browser:add_message")

@@ -50,7 +50,7 @@
 
 	//var/time = time2text(world.timeofday, "hh:mm")
 	log += "<b>[title]</b>"
-	log += "[time_stamp()] - Ticket created by <b>[owner]</b>"
+	log += "[gameTimestamp()] - Ticket created by <b>[owner]</b>"
 
 	var/admin_number_present = admin_number_total - admin_number_decrease	//Number of admins who are neither afk nor invalid
 	log_admin("TICKET: [key_name(owner)]: [title] - heard by [admin_number_present] non-AFK admins who have +BAN.")

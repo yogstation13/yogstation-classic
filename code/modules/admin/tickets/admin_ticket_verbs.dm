@@ -23,7 +23,7 @@
 		//var/time = time2text(world.timeofday, "hh:mm")
 		//usr << output("[time] - <b>[found_ticket.owner]</b> - [ticket_title]", "ViewTicketLog[found_ticket.ticket_id].browser:add_message")
 		if(usr != found_ticket.owner)
-			found_ticket.owner << output("[time_stamp()] - <b>[key_name(found_ticket.owner, 1)]</b> - [ticket_title]", "ViewTicketLog[found_ticket.ticket_id].browser:add_message")
+			found_ticket.owner << output("[gameTimestamp()] - <b>[key_name(found_ticket.owner, 1)]</b> - [ticket_title]", "ViewTicketLog[found_ticket.ticket_id].browser:add_message")
 		found_ticket.add_log(ticket_title)
 
 // Admin proc-verb @see admin_verbs.dm
