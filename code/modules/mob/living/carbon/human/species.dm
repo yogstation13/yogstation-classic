@@ -1297,7 +1297,7 @@
 		H.update_fire()
 
 /datum/species/proc/ExtinguishMob(var/mob/living/carbon/human/H)
-	if(H.on_fire)
+	if(H && H.on_fire)
 		H.on_fire = 0
 		H.fire_stacks = 0
 		H.AddLuminosity(-3)

@@ -228,6 +228,10 @@
 
 //Mergsort: does the actual sorting and returns the results back to sortAtom
 /proc/mergeAtoms(var/list/atom/L, var/list/atom/R, var/order = 1)
+	if(isnull(L))
+		L = list()
+	if(isnull(R))
+		R = list()
 	var/Li=1
 	var/Ri=1
 	var/list/result = new()

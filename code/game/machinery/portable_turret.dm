@@ -72,7 +72,7 @@
 		var/obj/item/weapon/gun/energy/E=new installation	//All energy-based weapons are applicable
 		var/obj/item/ammo_casing/shottype = E.ammo_type[1]
 		projectile = shottype.projectile_type
-		eprojectile = projectile
+		eprojectile = /obj/item/projectile/beam
 
 		switch(E.type)
 			if(/obj/item/weapon/gun/energy/laser/bluetag)
@@ -100,7 +100,6 @@
 
 			if(/obj/item/weapon/gun/energy/laser/practice)
 				iconholder = 1
-				eprojectile = /obj/item/projectile/beam
 
 //			if(/obj/item/weapon/gun/energy/laser/practice/sc_laser)
 //				iconholder = 1
@@ -119,17 +118,14 @@
 				iconholder = 1
 
 			if(/obj/item/weapon/gun/energy/taser)
-				eprojectile = /obj/item/projectile/beam
+
 
 			if(/obj/item/weapon/gun/energy/stunrevolver)
-				eprojectile = /obj/item/projectile/beam
 
 			if(/obj/item/weapon/gun/energy/gun)
-				eprojectile = /obj/item/projectile/beam	//If it has, going to kill mode
 				egun = 1
 
 			if(/obj/item/weapon/gun/energy/gun/nuclear)
-				eprojectile = /obj/item/projectile/beam	//If it has, going to kill mode
 				egun = 1
 
 

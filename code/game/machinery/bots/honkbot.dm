@@ -33,7 +33,7 @@
 	status_flags = CANSTUN|CANWEAKEN|CANPUSH
 	stop_automated_movement_when_pulled = 0
 	mouse_opacity = 1
-	faction = "honkbot"
+	faction = list("honkbot")
 	a_intent = "harm"
 	min_oxy = 0
 	max_oxy = 0

@@ -88,7 +88,7 @@
 				A.client.eye = A.eyeobj
 			if(ispAI(user))
 				var/mob/living/silicon/pai/A = user
-				A.switchCamera(t)
+				A.switchCamera(C)
 			else if ((get_dist(user, src) > 1) || (user.machine != src)|| user.blinded || !( C.can_use() ))
 				src.current = null
 				return 0
