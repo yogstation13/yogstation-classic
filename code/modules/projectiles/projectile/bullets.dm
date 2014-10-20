@@ -8,6 +8,7 @@
 
 
 /obj/item/projectile/bullet/weakbullet
+	name = "beanbag"
 	damage = 5
 	stun = 5
 	weaken = 5

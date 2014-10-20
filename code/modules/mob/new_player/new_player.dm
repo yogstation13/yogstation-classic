@@ -81,6 +81,8 @@
 		output += "There has been an update in the server rules:<br>"
 		if(current_agree < 2)
 			output += "Wizard added to murderboning exception list.<br>Added rule 0.6 (Use proper IC language).<br>"
+		if(current_agree < 3)
+			output += "Added rule 0.8 (Use common sense).<br>Added rule 1.3 (Do not act as antagonist when not).<br>Expanded rule 0.7 (Listen to admins).<br>Griefing and powergaming rules now mention critting as well as killing.<br>"
 
 	output += "Violation of server rules can lead to a ban from certain roles, a temporary ban, or a permanent ban.<br>"
 	output += "If you have trouble understanding some of the game mechanics, check out the wiki.<br>"
