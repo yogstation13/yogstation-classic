@@ -7,6 +7,8 @@
 	var/totalPlayersReady = 0
 	var/joining_forbidden = 0
 
+	flags = NONE
+
 	invisibility = 101
 
 	density = 0
@@ -115,11 +117,13 @@
 			stat("Time To Start:", "DELAYED")
 
 		if(ticker.current_state == GAME_STATE_PREGAME)
-			stat("Players: [totalPlayers]", "Players Ready: [totalPlayersReady]")
+			stat("Players:", "[totalPlayers]")
+			if(src.client in admins)
+				stat("Players Ready:", "[totalPlayersReady]")
 			totalPlayers = 0
 			totalPlayersReady = 0
 			for(var/mob/new_player/player in player_list)
-				stat("[player.key]", (player.ready)?("(Playing)"):(null))
+				stat("[player.key]", (player.ready && src.client in admins)?("(Playing)"):(null))
 				totalPlayers++
 				if(player.ready)totalPlayersReady++
 
@@ -270,6 +274,10 @@
 					usr << "The option ID difference is too big. Please contact administration or the database admin."
 					return
 
+				for(var/optionid = id_min; optionid <= id_max; optionid++)
+					if(!isnull(href_list["option_[optionid]"]))	//Test if this optionid was selected
+						vote_on_poll(pollid, optionid, 1)
+
 
 	if(href_list["drules"])
 		src << browse(file('html/rules.html'), "window=rules;size=480x320")
@@ -278,6 +286,7 @@
 	if(href_list["dtgwiki"])
 		src << link("http://tgstation13.org/wiki/Main_Page")
 		return
+		
 	if(href_list["dismiss"])
 		var/eula = alert("I have read and understood the server rules and agree to abide by them.", "Security question", "Cancel", "Agree")
 		if(eula == "Agree")
@@ -293,11 +302,18 @@
 
 /mob/new_player/proc/IsJobAvailable(rank)
 	var/datum/job/job = job_master.GetJob(rank)
-	if(!job)	return 0
-	if((job.current_positions >= job.total_positions) && job.total_positions != -1)	return 0
-	if(jobban_isbanned(src,rank))	return 0
-	if(!job.player_old_enough(src.client))	return 0
-	if(job.whitelisted && !(ckey in whitelist)) return 0
+	if(!job)
+		return 0
+	if((job.current_positions >= job.total_positions) && job.total_positions != -1)
+		return 0
+	if(jobban_isbanned(src,rank))
+		return 0
+	if(!job.player_old_enough(src.client))
+		return 0
+	if(config.enforce_human_authority && (rank in command_positions) && client.prefs.pref_species.id != "human")
+		return 0
+	if(job.whitelisted && !(ckey in whitelist))
+		return 0
 	return 1
 
 

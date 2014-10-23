@@ -63,10 +63,6 @@
 	if (config.log_adminchat)
 		admindiary << "\[[time_stamp()]]ADMINSAY: [text]"
 
-/proc/log_adminwarn(text)
-	if (config.log_adminwarn)
-		admindiary << "\[[time_stamp()]]ADMINWARN: [text]"
-
 /proc/log_pda(text)
 	if (config.log_pda)
 		diary << "\[[time_stamp()]]PDA: [text]"

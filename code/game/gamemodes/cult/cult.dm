@@ -30,8 +30,6 @@
 	required_enemies = 6
 	recommended_enemies = 6
 
-	uplink_welcome = "Nar-Sie Uplink Console:"
-	uplink_uses = 10
 
 	var/finished = 0
 
@@ -334,7 +332,7 @@
 		feedback_set("round_end_result",acolytes_survived)
 		world << "<span class='danger'><FONT size = 3>The staff managed to stop the cult!</FONT></span>"
 
-	var/text = "<b>Cultists escaped:</b> [acolytes_survived]"
+	var/text = ""
 
 	if(cult_objectives.len)
 		text += "<br><b>The cultists' objectives were:</b>"
@@ -343,10 +341,10 @@
 			switch(cult_objectives[obj_count])
 				if("survive")
 					if(!check_survive())
-						explanation = "Make sure at least [acolytes_needed] acolytes escape on the shuttle. <font color='green'><B>Success!</B></font>"
+						explanation = "Make sure at least [acolytes_needed] acolytes escape on the shuttle. ([acolytes_survived] escaped) <font color='green'><B>Success!</B></font>"
 						feedback_add_details("cult_objective","cult_survive|SUCCESS|[acolytes_needed]")
 					else
-						explanation = "Make sure at least [acolytes_needed] acolytes escape on the shuttle. <span class='danger'>Fail.</span>"
+						explanation = "Make sure at least [acolytes_needed] acolytes escape on the shuttle. ([acolytes_survived] escaped) <span class='danger'>Fail.</span>"
 						feedback_add_details("cult_objective","cult_survive|FAIL|[acolytes_needed]")
 				if("sacrifice")
 					if(sacrifice_target)
@@ -377,18 +375,8 @@
 	if( cult.len || (ticker && istype(ticker.mode,/datum/game_mode/cult)) )
 		var/text = "<br><font size=3><b>The cultists were:</b></font>"
 		for(var/datum/mind/cultist in cult)
+			text += printplayer(cultist)
 
-			text += "<br><b>[cultist.key]</b> was <b>[cultist.name]</b> ("
-			if(cultist.current)
-				if(cultist.current.stat == DEAD)
-					text += "died"
-				else
-					text += "survived"
-				if(cultist.current.real_name != cultist.name)
-					text += " as <b>[cultist.current.real_name]</b>"
-			else
-				text += "body destroyed"
-			text += ")"
 		text += "<br>"
 
 		world << text
