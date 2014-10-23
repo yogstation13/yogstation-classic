@@ -211,8 +211,15 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	if(!holder)
 		src << "Only administrators may use this command."
 		return
+
 	var/input = ckey(input(src, "Please specify which key will be respawned.", "Key", ""))
 	if(!input)
+		return
+
+	if((input == ckey) && check_rights_for(src, R_NOJOIN))
+		src << "Not the droids you're looking for."
+		log_admin("[key_name(src)] tried to spawn himself to avoid NOJOIN. Shame!")
+		message_admins("[key_name(src)] tried to spawn himself to avoid NOJOIN. Shame!")
 		return
 
 	var/mob/dead/observer/G_found

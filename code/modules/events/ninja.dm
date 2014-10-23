@@ -2229,6 +2229,8 @@ ________________________________________________________________________________
 	return 0
 
 /obj/item/clothing/suit/space/space_ninja/proc/blade_check(mob/living/carbon/U, X = 1)//Default to checking for blade energy.
+	if(!istype(U))
+		return 1
 	switch(X)
 		if(1)
 			if(istype(U.get_active_hand(), /obj/item/weapon/melee/energy/blade))

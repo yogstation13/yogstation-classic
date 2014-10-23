@@ -32,9 +32,10 @@ var/list/admin_ranks = list()								//list of all admin_rank datums
 		if("stealth")					flag = R_STEALTH
 		if("rejuv","rejuvinate")		flag = R_REJUVINATE
 		if("varedit")					flag = R_VAREDIT
-		if("everything","host","all")	flag = 65535
+		if("everything","host","all")	flag = 57343 //65535-R_NOJOIN
 		if("sound","sounds")			flag = R_SOUNDS
 		if("spawn","create")			flag = R_SPAWN
+		if("nojoin")					flag = R_NOJOIN
 		if("@","prev")					flag = previous_rights
 		else
 			//isn't a keyword so maybe it's a verbpath?

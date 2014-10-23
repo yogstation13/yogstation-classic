@@ -17,6 +17,9 @@
 		if(tool && tool_check(user, tool))
 			success = 1
 	else
+		if(user == target)
+			user << "<span class='notice'>You can't operate on yourself!</span>"
+			return 1
 		for(var/path in implements)
 			if(istype(tool, path))
 				implement_type = path

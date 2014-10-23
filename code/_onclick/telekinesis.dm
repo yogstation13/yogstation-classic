@@ -134,6 +134,10 @@ var/const/tk_maxrange = 15
 	else
 		apply_focus_overlay()
 		focus.throw_at(target, 10, 1)
+		if(ismob(target))
+			add_logs(user, target, "thrown [focus] at", addition="with telekinesis")
+		else
+			add_logs(user, focus, "thrown", addition="with telekinesis")
 		last_throw = world.time
 	return
 

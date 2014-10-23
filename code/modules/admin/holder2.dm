@@ -76,6 +76,9 @@ you will have to do something like if(client.rights & R_ADMIN) yourself.
 
 
 /client/proc/deadmin()
+	if(check_rights_for(src, R_NOJOIN))
+		src << "No deadmin for you. You're here to administrate, not have fun."
+		return
 	admin_datums -= ckey
 	if(holder)
 		holder.disassociate()

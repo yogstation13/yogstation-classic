@@ -3,6 +3,7 @@
 var/list/preferences_datums = list()
 
 #define IS_MODE_COMPILED(MODE) (ispath(text2path("/datum/game_mode/"+(MODE))))
+#define MAXAGREE 3
 
 var/global/list/special_roles = list( //keep synced with the defines BE_* in setup.dm
 //some autodetection here.
@@ -818,3 +819,7 @@ datum/preferences
 				character.gender = MALE
 		*/
 
+/mob/proc/reset_agree()
+	if(!client) return
+	client.prefs.agree = 0
+	client.prefs.save_preferences()

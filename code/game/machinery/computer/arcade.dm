@@ -397,7 +397,7 @@
 	if(href_list["close"])
 		usr.unset_machine()
 		usr << browse(null, "window=arcade")
-	else if (href_list["continue"]) //Continue your travels
+	else if (!gameover && href_list["continue"]) //Continue your travels
 		if(turns >= 9)
 			win()
 		else if(turns == 2)

@@ -46,6 +46,7 @@ var/global/datum/controller/occupations/job_master
 		if(!job)	return 0
 		if(jobban_isbanned(player, rank))	return 0
 		if(!job.player_old_enough(player.client)) return 0
+		if(job.whitelisted && !(player.ckey in whitelist)) return 0
 		var/position_limit = job.total_positions
 		if(!latejoin)
 			position_limit = job.spawn_positions

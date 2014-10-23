@@ -5,8 +5,8 @@
 	qdel(hud_used)
 	if(mind && mind.current == src)
 		spellremove(src)
-	for(var/infection in viruses)
-		qdel(infection)
+	for(var/datum/disease/infection in viruses)
+		infection.cure(0)
 	ghostize()
 	..()
 
