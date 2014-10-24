@@ -165,11 +165,14 @@ var/next_external_rsc = 0
 	if(prefs.lastchangelog != changelog_hash) //bolds the changelog button on the interface so we know there are updates.
 		winset(src, "rpane.changelog", "background-color=#eaeaea;font-style=bold")
 
-
 	//////////////
 	//DISCONNECT//
 	//////////////
 /client/Del()
+	for(var/datum/admin_ticket/T in tickets_list)
+		if(compare_ckey(T.owner_ckey, usr))
+			T.add_log("- Disconnected -")
+
 	if(holder)
 		holder.owner = null
 		admins -= src

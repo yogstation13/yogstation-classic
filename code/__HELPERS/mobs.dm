@@ -89,3 +89,65 @@ Proc for attack log creation, because really why not
 		target.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been [what_done] by [user ? "[user.name][(ismob(user) && user.ckey) ? "([user.ckey])" : ""]" : "NON-EXISTANT SUBJECT"][object ? " with [object]" : " "][addition]</font>")
 	if(admin)
 		log_attack("<font color='red'>[user ? "[user.name][(ismob(user) && user.ckey) ? "([user.ckey])" : ""]" : "NON-EXISTANT SUBJECT"] [what_done] [target ? "[target.name][(ismob(target) && target.ckey)? "([target.ckey])" : ""]" : "NON-EXISTANT SUBJECT"][object ? " with [object]" : " "][addition]</font>")
+
+/proc/get_ckey(mob/user)
+	if(user.ckey)
+		return user.ckey
+	if(user.client.ckey)
+		return user.client.ckey
+
+	return 0
+
+/proc/has_pref(var/user, var/pref)
+	if(ismob(user))
+		var/mob/temp = user
+
+		if(temp && temp.client && temp.client.prefs && temp.client.prefs.toggles & pref)
+			return 1
+	else if(istype(user, /client))
+		var/client/temp = user
+
+		if(temp && temp.prefs && temp.prefs.toggles & pref)
+			return 1
+
+	return 0
+
+/proc/is_admin(var/user)
+	if(ismob(user))
+		var/mob/temp = user
+
+		if(temp && temp.client && temp.client.holder)
+			return 1
+	else if(istype(user, /client))
+		var/client/temp = user
+
+		if(temp && temp.holder)
+			return 1
+
+	return 0
+
+/proc/compare_ckey(var/user, var/target)
+	if(!user || !target)
+		return 0
+
+	var/key1 = user
+	var/key2 = target
+
+	if(ismob(user))
+		var/mob/M = user
+		if(M.ckey)
+			key1 = M.ckey
+		else if(M.client && M.client.ckey)
+			key1 = M.client.ckey
+
+	if(ismob(target))
+		var/mob/M = target
+		if(M.ckey)
+			key2 = M.ckey
+		else if(M.client && M.client.ckey)
+			key2 = M.client.ckey
+
+	if(key1 == key2)
+		return 1
+	else
+		return 0

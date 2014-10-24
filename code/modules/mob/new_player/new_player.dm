@@ -18,6 +18,12 @@
 	tag = "mob_[next_mob_id++]"
 	mob_list += src
 
+	spawn(10)
+		for(var/datum/admin_ticket/T in tickets_list)
+			if(compare_ckey(T.owner_ckey, ckey))
+				T.add_log("* Connected *")
+				break
+
 /mob/new_player/proc/new_player_panel()
 
 	var/output = "<center><p><a href='byond://?src=\ref[src];show_preferences=1'>Setup Character</A></p>"

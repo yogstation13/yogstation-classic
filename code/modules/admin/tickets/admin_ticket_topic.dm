@@ -17,7 +17,7 @@
 			usr << "<span class='boldnotice'>This ticket is marked as resolved. You may not add any more information to it.</span>"
 			return
 
-		if(T.handling_admin && usr != T.handling_admin && usr != T.owner)
+		if(!compare_ckey(usr, T.handling_admin) && !compare_ckey(usr, T.owner_ckey))
 			usr << "<span class='boldnotice'>You are not the owner or primary admin of this ticket. You may not reply to it.</span>"
 			return
 
@@ -43,23 +43,27 @@
 	else if(href_list["action"] == "administer_admin_ticket")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 		T.handling_admin = C
-		log_admin("[T.handling_admin] has been assigned to ticket [T.ticket_id] as primary admin.")
+		log_admin("[T.handling_admin] has been assigned to ticket #[T.ticket_id] as primary admin.")
 		T.add_log("[T.handling_admin] has been assigned to this ticket as primary admin.");
 		world << output("[usr != null ? "[key_name(usr, 1)]" : "Unassigned"]", "ViewTicketLog[T.ticket_id].browser:handling_user")
+
+		C.view_tickets()
 	else if(href_list["action"] == "resolve_admin_ticket")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 		T.resolved = !T.resolved
 		if(T.resolved)
-			log_admin("Ticket [T.ticket_id] marked as resolved by [usr].")
+			log_admin("Ticket #[T.ticket_id] marked as resolved by [usr].")
 			T.owner << "<span class='boldnotice'>Your ticket has been marked as resolved.</span>"
 			for(var/O in T.monitors)
 				O << "<span class='boldnotice'>\"[T.title]\" was marked as resolved.</span>"
 		else
-			log_admin("Ticket [T.ticket_id] marked as unresolved by [usr].")
+			log_admin("Ticket #[T.ticket_id] marked as unresolved by [usr].")
 			T.owner << "<span class='boldnotice'>Your ticket has been marked as unresolved.</span>"
 			for(var/O in T.monitors)
 				O << "<span class='boldnotice'>\"[T.title]\" was marked as unresolved.</span>"
 		world << output("[T.resolved]", "ViewTicketLog[T.ticket_id].browser:set_resolved")
+
+		C.view_tickets()
 	else if(href_list["action"] == "refresh_admin_ticket")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 		T.view_log(C)

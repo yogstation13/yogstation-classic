@@ -175,6 +175,10 @@
 					color: red;
 				}
 
+				.admin {
+					color: blue;
+				}
+
 				#monitors {
 					margin: 2px 4px 2px 4px;
 					padding: 4px;

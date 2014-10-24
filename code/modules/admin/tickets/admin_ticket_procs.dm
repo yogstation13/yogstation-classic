@@ -2,51 +2,65 @@
 /datum/admin_ticket/proc/test()
 	owner << "Ticket title is \"[title]\" for user \"[owner]\""
 
-/datum/admin_ticket/proc/add_log(log_message as text)
+/datum/admin_ticket/proc/add_log(log_message as text, mob/user)
+	if(!user)
+		user = usr
+
 	if(!log_message)
 		return
 
-	if(usr.client.holder && !handling_admin)
-		if(usr != owner)
-			handling_admin = usr
+	if(compare_ckey(user, owner_ckey))
+		owner = user
+
+	if(user.client.holder && !handling_admin)
+		if(!compare_ckey(user, owner_ckey))
+			handling_admin = user
 			add_log("[handling_admin] has been assigned to this ticket as primary admin.");
 			world << output("[key_name(handling_admin, 1)]", "ViewTicketLog[ticket_id].browser:handling_user")
 
 	//var/time = time2text(world.timeofday, "hh:mm")
-	var/message = "[gameTimestamp()] - <b>[usr]</b> - [log_message]"
+	var/message = "[gameTimestamp()] - <b>[user]</b> - [log_message]"
 	log += "[message]"
 
 	world << output(message, "ViewTicketLog[ticket_id].browser:add_message")
 
-	log_admin("Ticket message: [message]")
+	log_admin("Ticket #[ticket_id] message: [message]")
 
 	var/found = 0
 
 	for(var/M in monitors)
-		if(owner == M || usr == handling_admin)
+		if(compare_ckey(owner_ckey, M) || compare_ckey(user, handling_admin))
 			break
 
-		M << "<font color='red' size='3'><b>-- Ticket #[ticket_id] - New message - <a href='?src=\ref[usr];action=view_admin_ticket;ticket=\ref[src]'>View</a> --</b></font>"
-		M << "<span style='margin-left: 10px;'>-- <b>[key_name(usr, 1)]</b>: [log_message]</span>"
-		if(M == usr)
+		M << "<font color='red' size='3'><b>-- Ticket #[ticket_id] - New message - <a href='?src=\ref[user];action=view_admin_ticket;ticket=\ref[src]'>View</a> --</b></font>"
+		M << "<span style='margin-left: 10px;'>-- <b>[key_name(user, 1)]</b>: [log_message]</span>"
+		if(has_pref(M, SOUND_ADMINHELP))
+			M << 'sound/effects/adminhelp.ogg'
+		if(compare_ckey(M, user))
 			found = 1
 
-	if(handling_admin != usr)
-		handling_admin << "<font color='red' size='3'><b>-- Ticket #[ticket_id] - New message - <a href='?src=\ref[usr];action=view_admin_ticket;ticket=\ref[src]'>View</a> --</b></font>"
-		handling_admin << "<span style='margin-left: 10px;'>-- <b>[key_name(usr, 1)]</b>: [log_message]</span>"
+	if(!compare_ckey(handling_admin, user))
+		handling_admin << "<font color='red' size='3'><b>-- Ticket #[ticket_id] - New message - <a href='?src=\ref[user];action=view_admin_ticket;ticket=\ref[src]'>View</a> --</b></font>"
+		handling_admin << "<span style='margin-left: 10px;'>-- <b>[key_name(user, 1)]</b>: [log_message]</span>"
+		if(has_pref(handling_admin, SOUND_ADMINHELP))
+			handling_admin << 'sound/effects/adminhelp.ogg'
 
-	if(owner != usr)
-		owner << "<font color='red' size='3'><b>-- Ticket #[ticket_id] - New message - <a href='?src=\ref[usr];action=view_admin_ticket;ticket=\ref[src]'>View</a> --</b></font>"
-	owner << "<span style='margin-left: 10px;'>-- <b>[key_name(usr, 1)]</b>: [log_message]</span>"
+	if(!compare_ckey(owner_ckey, user))
+		owner << "<font color='red' size='3'><b>-- Ticket #[ticket_id] - New message - <a href='?src=\ref[user];action=view_admin_ticket;ticket=\ref[src]'>View</a> --</b></font>"
+		if(has_pref(owner, SOUND_ADMINHELP))
+			owner << 'sound/effects/adminhelp.ogg'
+	owner << "<span style='margin-left: 10px;'>-- <b>[key_name(user, 1)]</b>: [log_message]</span>"
 
-	if(!found && usr != owner)
-		//usr << "<font color='red' size='3'><b>-- Ticket #[ticket_id] - New message - <a href='?src=\ref[usr];action=view_admin_ticket;ticket=\ref[src]'>View</a> --</b></font>"
-		usr << "<span style='margin-left: 10px;'>-- <b>[usr]</b>: [log_message]</span>"
+	if(!found && !compare_ckey(user, owner_ckey))
+		//user << "<font color='red' size='3'><b>-- Ticket #[ticket_id] - New message - <a href='?src=\ref[user];action=view_admin_ticket;ticket=\ref[src]'>View</a> --</b></font>"
+		user << "<span style='margin-left: 10px;'>-- <b>[key_name(user, 1)]</b>: [log_message]</span>"
+		if(has_pref(user, SOUND_ADMINHELP))
+			user << 'sound/effects/adminhelp.ogg'
 
 /datum/admin_ticket/proc/toggle_monitor()
 	var/found = 0
 	for(var/M in monitors)
-		if(M == usr)
+		if(compare_ckey(M, usr))
 			found = 1
 
 	if(!found)
@@ -80,11 +94,11 @@
 
 	content += "<p class='resolved-bar [resolved ? "resolved" : "unresolved"]' id='resolved'>[resolved ? "Is resolved" : "Is not resolved"]</p>"
 
-	if(usr.client.holder)
+	if(usr.client.holder && owner)
 		content += {"<div class='user-bar'>
 			<p>[key_name(owner, 1)]</p>"}
 
-		if(owner && owner.client.mob)
+		if(owner.client && owner.client.mob)
 			content += {"<p style='margin-top: 5px;'>
 					<a href='?_src_=holder;adminmoreinfo=\ref[owner.client.mob]'><img width='16' height='16' class='uiIcon16 icon-search' /> ?</a>
 					<a href='?pp=\ref[owner.client.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> PP</a>
@@ -94,8 +108,7 @@
 					<a href='?src=\ref[usr];action=monitor_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
 					<a href='?src=\ref[usr];action=resolve_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
 					<a href='?src=\ref[usr];action=administer_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-flag' /> Administer</a>
-				</p>
-				</div>"}
+				</p>"}
 
 			if(owner.client.mob.mind && owner.client.mob.mind.assigned_role)
 				content += "<p class='user-info-bar'>Role: [owner.client.mob.mind.assigned_role]</p>"
@@ -115,6 +128,8 @@
 
 			if(location)
 				content += "<p class='user-info-bar'>Location: [location]</p>"
+
+		content += "</div>"
 
 	content += "<div id='messages'>"
 

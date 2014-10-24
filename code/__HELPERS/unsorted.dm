@@ -580,6 +580,62 @@ Turf and target are seperate in case you want to teleport some distance from a t
 
 	return .
 
+
+/proc/key_name_params(var/whom, var/include_link = null, var/include_name = 1, var/anchor_params = null)
+	var/mob/M
+	var/client/C
+	var/key
+	var/ckey
+
+	if(!whom)	return "*null*"
+	if(istype(whom, /client))
+		C = whom
+		M = C.mob
+		key = C.key
+		ckey = C.ckey
+	else if(ismob(whom))
+		M = whom
+		C = M.client
+		key = M.key
+		ckey = M.ckey
+	else if(istext(whom))
+		key = whom
+		ckey = ckey(whom)
+		C = directory[ckey]
+		if(C)
+			M = C.mob
+	else
+		return "*invalid*"
+
+	. = ""
+
+	if(!ckey)
+		include_link = 0
+
+	if(key)
+		if(include_link)
+			. += "<a href='?priv_msg=[ckey][anchor_params ? ";[anchor_params]" : ""]'>"
+
+		if(C && C.holder && C.holder.fakekey && !include_name)
+			. += "Administrator"
+		else
+			. += key
+		if(!C)
+			. += "\[DC\]"
+
+		if(include_link)
+			. += "</a>"
+	else
+		. += "*no key*"
+
+	if(include_name && M)
+		if(M.real_name)
+			. += "/([M.real_name])"
+		else if(M.name)
+			. += "/([M.name])"
+
+	return .
+
 /proc/key_name_admin(var/whom, var/include_name = 1)
 	return key_name(whom, 1, include_name)
 

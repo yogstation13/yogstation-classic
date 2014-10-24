@@ -50,9 +50,18 @@
 		else		adminhelp(msg)	//admin we are replying to left. adminhelp instead
 		return
 
+	// Search current tickets, is this user the owner or primary admin of a ticket
+	// We are searching initially, to avoid wasting the users time. We will add more
+	// information to the input dialog.
+	var/addToOther = 0
+	for(var/datum/admin_ticket/T in tickets_list)
+		if(!T.resolved && holder && compare_ckey(T.owner_ckey, C.ckey))
+			addToOther = T.ticket_id
+			break
+
 	//get message text, limit it's length.and clean/escape html
 	if(!msg)
-		msg = input(src,"Message:", "Private message to [key_name(C, 0, 0)]") as text|null
+		msg = input(src,"[addToOther ? "You are not the primary admin of ticket #[addToOther], your message will be added as supplimentary. " : ""]Message:", "Reply to [key_name(C, 0, 0)]s ticket") as text|null
 
 		if(!msg)	return
 		if(!C)
@@ -70,18 +79,37 @@
 
 	// Search current tickets, is this user the owner or primary admin of a ticket
 	for(var/datum/admin_ticket/T in tickets_list)
-		if((T.owner == usr || (!T.handling_admin || T.handling_admin == usr)) && ((T.owner && T.owner.client == C) || (!T.handling_admin || (T.handling_admin && T.handling_admin.client == C))))
+		//world << "Start PM"
+		//world << "Compare: (compare_ckey([T.owner], [usr]) || compare_ckey([T.handling_admin], [usr])) && (compare_ckey([T.owner], [C.mob]) || compare_ckey([T.handling_admin], [C.mob]))"
+		//world << "End PM"
+		if(!T.handling_admin || ((compare_ckey(T.owner, usr) || compare_ckey(T.handling_admin, usr)) && (compare_ckey(T.owner, C.mob) || compare_ckey(T.handling_admin, C.mob))))
 			// Hijack this PM!
 			if(T.resolved && !holder)
-				usr << "<span class='boldnotice'>This ticket is marked as resolved. You may not add any more information to it.</span>"
+				//Instead of blocking the user with a resolved ticket, let them continue
+				//usr << "<span class='boldnotice'>This ticket is marked as resolved. You may not add any more information to it.</span>"
+				continue
+
+			if(T.handling_admin && !compare_ckey(usr, T.handling_admin) && !compare_ckey(usr, T.owner))
+				if(!holder)
+					usr << "<span class='boldnotice'>You are not the owner or primary admin of this users ticket. You may not reply to it.</span>"
 				return
 
-			if(T.handling_admin && usr != T.handling_admin && usr != T.owner)
-				usr << "<span class='boldnotice'>You are not the owner or primary admin of this ticket. You may not reply to it.</span>"
+			if(!T.resolved)
+				T.add_log(msg)
 				return
 
-			T.add_log(msg)
-			return
+	/*	if(!T.resolved && holder && compare_ckey(T.owner_ckey, C.ckey))
+			T.add_log("<font color='red'>(Other Admin)</font> [msg]")
+			return*/
+
+	// If we didn't find a ticket, we should make one. This bypasses the rest of the original PM system
+
+	var/datum/admin_ticket/T = new /datum/admin_ticket(usr, msg, C.mob)
+	tickets_list.Add(T)
+
+	return
+
+
 
 	if(C.holder)
 		if(holder)	//both are admins
