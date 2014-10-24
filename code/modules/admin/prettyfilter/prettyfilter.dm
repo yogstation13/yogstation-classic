@@ -32,6 +32,9 @@
 		pretty_filter_items.Add(line)
 
 /client/proc/list_pretty_filters()
+	set category = "Admin"
+	set name = "Pretty Filters List"
+
 	usr << "--- Pretty filters list"
 	for(var/line in pretty_filter_items)
 		var/list/parts = text2list(line, "=")
@@ -40,6 +43,12 @@
 
 		usr << "[pattern] -> [replacement]"
 	usr << "--- End of list"
+
+/client/proc/test_pretty_filters(msg as text)
+	set category = "Admin"
+	set name = "Pretty Filters Test"
+
+	usr << "\"[msg]\" becomes: \"[pretty_filter(msg)]\""
 
 //Filter out and replace unwanted words, prettify sentences
 /proc/pretty_filter(var/text)
