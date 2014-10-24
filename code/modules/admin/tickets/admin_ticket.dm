@@ -41,7 +41,7 @@
 	var/tellAdmins = 1
 	if(compare_ckey(owner, ntarget))
 		tellAdmins = 0
-		owner << "<font color='blue'><b>Ticket</b> created by <b>[key_name(handling_admin, 1, 1, "new=1")]</b> for <b>you</b>: \"[title]\" <b><a href='?src=\ref[owner];action=view_admin_ticket;ticket=\ref[src]'>View</a></b></font>"
+		owner << "<font color='blue'><b>Ticket</b> created by <b>[key_name(handling_admin, 1, 1, "new=1;ticket=\ref[ticket_id]")]</b> for <b>you</b>: \"[title]\" <b><a href='?src=\ref[owner];action=view_admin_ticket;ticket=\ref[src]'>View</a></b></font>"
 		handling_admin << "<font color='blue'><b>Ticket</b> created by <b>you</b> for <b>[key_name(ntarget, 1)]</b>: \"[title]\" <b><a href='?src=\ref[owner];action=view_admin_ticket;ticket=\ref[src]'>View</a></b></font>"
 		log += "[gameTimestamp()] - Ticket created by <b>[handling_admin] for [ntarget]</b>"
 		if(has_pref(owner, SOUND_ADMINHELP))
