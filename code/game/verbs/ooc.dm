@@ -40,7 +40,7 @@
 			message_admins("[key_name_admin(src)] has attempted to advertise in OOC: [msg]")
 			return
 
-	pretty_filter(msg)
+	msg = pretty_filter(msg)
 
 	log_ooc("[mob.name]/[key] : [msg]")
 

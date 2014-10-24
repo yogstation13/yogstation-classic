@@ -1,3 +1,4 @@
-balls = unicorns
-badmins = funmins
-griff = grief
+balls=unicorns
+badmins=funmins
+
+griff=grief
