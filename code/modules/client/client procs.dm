@@ -47,7 +47,16 @@
 
 	//Admin PM
 	if(href_list["priv_msg"])
+		if(href_list["new"])
+			var/datum/admin_ticket/T = locate(href_list["ticket"])
+			if(T.handling_admin && !compare_ckey(T.handling_admin, usr))
+				usr << "Using this PM-link for this ticket would usually be the first response to a ticket. However, an admin has already responded to this ticket. This link is now disabled, to ensure that no additional tickets are created for the same problem. You can create a new ticket by PMing the user any other way."
+				return
+			else
+				T.pm_started_user = usr
+
 		cmd_admin_pm(href_list["priv_msg"],null)
+
 		return
 
 	//Logs all hrefs

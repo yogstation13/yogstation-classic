@@ -47,7 +47,8 @@
 		T.add_log("[T.handling_admin] has been assigned to this ticket as primary admin.");
 		world << output("[usr != null ? "[key_name(usr, 1)]" : "Unassigned"]", "ViewTicketLog[T.ticket_id].browser:handling_user")
 
-		C.view_tickets()
+		if(href_list["reloadlist"])
+			C.view_tickets()
 	else if(href_list["action"] == "resolve_admin_ticket")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 		T.resolved = !T.resolved
@@ -63,7 +64,8 @@
 				O << "<span class='boldnotice'>\"[T.title]\" was marked as unresolved.</span>"
 		world << output("[T.resolved]", "ViewTicketLog[T.ticket_id].browser:set_resolved")
 
-		C.view_tickets()
+		if(href_list["reloadlist"])
+			C.view_tickets()
 	else if(href_list["action"] == "refresh_admin_ticket")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 		T.view_log(C)

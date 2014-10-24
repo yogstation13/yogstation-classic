@@ -52,18 +52,38 @@
 
 	// Search current tickets, is this user the owner or primary admin of a ticket
 	// We are searching initially, to avoid wasting the users time. We will add more
-	// information to the input dialog.
+	// information to the input dialog. Check to see if an admin has already started
+	// to reply to this ticket
 	var/addToOther = 0
+	var/clickedId = 0
+	var/datum/admin_ticket/wasAlreadyClicked = null
 	for(var/datum/admin_ticket/T in tickets_list)
-		if(!T.resolved && holder && compare_ckey(T.owner_ckey, C.ckey))
+		if(!T.resolved && T.handling_admin && !compare_ckey(T.handling_admin, usr) && compare_ckey(T.owner, C.mob))
 			addToOther = T.ticket_id
-			break
+		if(!T.resolved && T.pm_started_user && compare_ckey(T.owner, C.mob) && !compare_ckey(T.handling_admin, usr))
+			if(T.pm_started_flag)
+				clickedId = T.ticket_id
+
+			wasAlreadyClicked = T
 
 	//get message text, limit it's length.and clean/escape html
 	if(!msg)
-		msg = input(src,"[addToOther ? "You are not the primary admin of ticket #[addToOther], your message will be added as supplimentary. " : ""]Message:", "Reply to [key_name(C, 0, 0)]s ticket") as text|null
+		var/instructions = {"[addToOther ? "* You are not the primary admin of ticket #[addToOther], your message will be added as supplimentary. " : ""]
+[clickedId ? "* Someone already started to reply to this ticket. If you reply, you may start a new ticket! " : ""]
+Message:"}
 
-		if(!msg)	return
+		if(wasAlreadyClicked)
+			wasAlreadyClicked.pm_started_flag = 1
+
+		msg = input(src, instructions, "Reply to [key_name(C, 0, 0)]s ticket") as text|null
+
+		if(!msg)
+			// If the user was the user that started PM replying initially, then
+			// if the user cancels the reply, we should reset it. So others can reply.
+			if(wasAlreadyClicked)
+				wasAlreadyClicked.pm_started_user = null
+				wasAlreadyClicked.pm_started_flag = 0
+			return
 		if(!C)
 			if(holder)	src << "<font color='red'>Error: Admin-PM: Client not found.</font>"
 			else		adminhelp(msg)	//admin we are replying to has vanished, adminhelp instead

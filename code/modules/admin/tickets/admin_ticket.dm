@@ -11,6 +11,8 @@
 	var/resolved = 0
 	var/list/monitors = list()
 	var/mob/handling_admin = null
+	var/mob/pm_started_user = null
+	var/mob/pm_started_flag = 0
 	//var/log_file
 
 /datum/admin_ticket/New(nowner, ntitle, ntarget)
@@ -32,7 +34,7 @@
 
 	// var/ai_found = isAI(owner.ckey)
 	// var/msg = "<span class='boldnotice'><font color=red>New ticket created: </font>[key_name(owner, 1)] (<a href='?_src_=holder;adminmoreinfo=\ref[owner.mob]'>?</a>) (<a href='?_src_=holder;adminplayeropts=\ref[owner.mob]'>PP</a>) (<a href='?_src_=vars;Vars=\ref[owner.mob]'>VV</a>) (<a href='?_src_=holder;subtlemessage=\ref[owner.mob]'>SM</a>) (<a href='?_src_=holder;adminplayerobservejump=\ref[owner.mob]'>JMP</a>) (<a href='?_src_=holder;secretsadmin=check_antagonist'>CA</a>) [ai_found ? " (<a href='?_src_=holder;adminchecklaws=\ref[owner.mob]'>CL</a>)" : ""]:</b> [title] <a href='?src=\ref[owner];action=view_admin_ticket;ticket=\ref[src]'>View</a> <a href='?src=\ref[owner];action=monitor_admin_ticket;ticket=\ref[src]'>(Un)Monitor</a> <a href='?src=\ref[owner];action=resolve_admin_ticket;ticket=\ref[src]'>(Un)Resolve</a></span>"
-	var/msg = "<span class='boldnotice'><font color=red>New ticket created: </font>[key_name_params(owner, 1, 1, "new=1;ticket=\ref[ticket_id]")]: [title] <b><a href='?src=\ref[owner];action=view_admin_ticket;ticket=\ref[src]'>View</a></b></span>"
+	var/msg = "<span class='boldnotice'><font color=red>New ticket created: </font>[key_name_params(owner, 1, 1, "new=1;ticket=\ref[src]")]: [title] <b><a href='?src=\ref[owner];action=view_admin_ticket;ticket=\ref[src]'>View</a></b></span>"
 
 	//var/time = time2text(world.timeofday, "hh:mm")
 	log += "<b>[title]</b>"
@@ -41,7 +43,7 @@
 	var/tellAdmins = 1
 	if(compare_ckey(owner, ntarget))
 		tellAdmins = 0
-		owner << "<font color='blue'><b>Ticket</b> created by <b>[key_name(handling_admin, 1, 1, "new=1;ticket=\ref[ticket_id]")]</b> for <b>you</b>: \"[title]\" <b><a href='?src=\ref[owner];action=view_admin_ticket;ticket=\ref[src]'>View</a></b></font>"
+		owner << "<font color='blue'><b>Ticket</b> created by <b>[key_name(handling_admin, 1)]</b> for <b>you</b>: \"[title]\" <b><a href='?src=\ref[owner];action=view_admin_ticket;ticket=\ref[src]'>View</a></b></font>"
 		handling_admin << "<font color='blue'><b>Ticket</b> created by <b>you</b> for <b>[key_name(ntarget, 1)]</b>: \"[title]\" <b><a href='?src=\ref[owner];action=view_admin_ticket;ticket=\ref[src]'>View</a></b></font>"
 		log += "[gameTimestamp()] - Ticket created by <b>[handling_admin] for [ntarget]</b>"
 		if(has_pref(owner, SOUND_ADMINHELP))
