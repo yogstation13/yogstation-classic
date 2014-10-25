@@ -16,6 +16,10 @@
 	//var/log_file
 
 /datum/admin_ticket/New(nowner, ntitle, ntarget)
+	if(compare_ckey(nowner, ntarget))
+		usr << "<span class='boldnotice'>You cannot make a ticket for yourself</span>"
+		return
+
 	owner = nowner
 	owner_ckey = get_ckey(owner)
 

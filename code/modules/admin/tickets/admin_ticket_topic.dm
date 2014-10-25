@@ -8,7 +8,7 @@
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 		// Close ticket list when opening ticket
 		//src << browse(null, "window=ViewTickets;size=700x500")
-		T.view_log(C)
+		T.view_log(C.mob)
 	else if(href_list["action"] == "reply_to_ticket")
 		//var/time = time2text(world.timeofday, "hh:mm")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
@@ -42,7 +42,7 @@
 		world << output("[monitors_text] ", "ViewTicketLog[T.ticket_id].browser:set_monitors")
 	else if(href_list["action"] == "administer_admin_ticket")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
-		T.handling_admin = C
+		T.handling_admin = C.mob
 		log_admin("[T.handling_admin] has been assigned to ticket #[T.ticket_id] as primary admin.")
 		T.add_log("[T.handling_admin] has been assigned to this ticket as primary admin.");
 		world << output("[usr != null ? "[key_name(usr, 1)]" : "Unassigned"]", "ViewTicketLog[T.ticket_id].browser:handling_user")

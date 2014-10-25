@@ -32,11 +32,6 @@
 	set name = "Adminlisttickets"
 	set category = "Admin"
 
-	// Add code to prevent non-admins from using this function. It still has the functionality for non-admins, if it becomes necessary
-	/*if(!holder)
-		set hidden = 1
-		return*/
-
 	var/content = ""
 
 	if(holder)

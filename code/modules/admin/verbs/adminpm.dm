@@ -99,14 +99,9 @@ Message:"}
 
 	// Search current tickets, is this user the owner or primary admin of a ticket
 	for(var/datum/admin_ticket/T in tickets_list)
-		//world << "Start PM"
-		//world << "Compare: (compare_ckey([T.owner], [usr]) || compare_ckey([T.handling_admin], [usr])) && (compare_ckey([T.owner], [C.mob]) || compare_ckey([T.handling_admin], [C.mob]))"
-		//world << "End PM"
 		if(!T.handling_admin || ((compare_ckey(T.owner, usr) || compare_ckey(T.handling_admin, usr)) && (compare_ckey(T.owner, C.mob) || compare_ckey(T.handling_admin, C.mob))))
 			// Hijack this PM!
 			if(T.resolved && !holder)
-				//Instead of blocking the user with a resolved ticket, let them continue
-				//usr << "<span class='boldnotice'>This ticket is marked as resolved. You may not add any more information to it.</span>"
 				continue
 
 			if(T.handling_admin && !compare_ckey(usr, T.handling_admin) && !compare_ckey(usr, T.owner))
@@ -118,12 +113,7 @@ Message:"}
 				T.add_log(msg)
 				return
 
-	/*	if(!T.resolved && holder && compare_ckey(T.owner_ckey, C.ckey))
-			T.add_log("<font color='red'>(Other Admin)</font> [msg]")
-			return*/
-
 	// If we didn't find a ticket, we should make one. This bypasses the rest of the original PM system
-
 	var/datum/admin_ticket/T = new /datum/admin_ticket(usr, msg, C.mob)
 	tickets_list.Add(T)
 
