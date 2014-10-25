@@ -57,7 +57,7 @@
 		var/pattern = parts[1]
 		var/replacement = parts[2]
 
-		var/regex/R = new("/\\b[pattern]\\b/[replacement]/")
+		var/regex/R = new("/[pattern]/[replacement]/")
 		var/newtxt = R.Replace(text)
 		while(newtxt)
 			text = newtxt
