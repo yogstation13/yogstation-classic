@@ -13,7 +13,7 @@
 # Activate the ([\\S]+?)=use $1
 #	This would match a group, and use it in a pattern. So "Activate the probulator" would become "use probulator".
 # 
-# \\b[fF]+[uU]+\\b=fun you
+# \\b[f]+[u]+\\b=fun you
 #	This would make any word with combinations of "f" followed by "u" be replaced with fun you. So "ffffffffuuuuuuuuuuu" becomes "fun you".
 
 balls=unicorns

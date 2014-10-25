@@ -60,6 +60,7 @@ var/list/admin_verbs_admin = list(
 	/client/proc/cmd_admin_create_centcom_report,
 	/client/proc/list_pretty_filters,
 	/client/proc/test_pretty_filters,
+	/client/proc/add_pretty_filter,
 	/client/proc/check_words			/*displays cult-words*/
 	)
 var/list/admin_verbs_ban = list(
