@@ -43,21 +43,21 @@
 	set category = "Admin"
 	set name = "Pretty Filters - List"
 
-	usr << "--- Pretty filters list"
+	usr << "<font size='3'><b>Pretty filters list</b></font>"
 	for(var/line in pretty_filter_items)
 		var/list/parts = text2list(line, "=")
 		var/pattern = parts[1]
 		var/replacement = parts[2]
 
-		usr << "[pattern] -> [replacement]"
-	usr << "--- End of list"
+		usr << "&nbsp;&nbsp;&nbsp;<font color='#994400'><b>[pattern]</b></font> -> <font color='#004499'><b>[replacement]</b></font>"
+	usr << "<font size='3'><b>End of list</b></font>"
 
 // Enter a piece of text and have it tested against the filter list
 /client/proc/test_pretty_filters(msg as text)
 	set category = "Admin"
 	set name = "Pretty Filters - Test"
 
-	usr << "\"[msg]\" becomes: \"[pretty_filter(msg)]\""
+	usr << "\"[msg]\" becomes: \"[pretty_filter(msg)]\"."
 
 // Enter a piece of text and have it tested against the filter list
 /client/proc/add_pretty_filter(line as text)
@@ -65,9 +65,9 @@
 	set name = "Pretty Filters - Add Pattern"
 
 	if(add_pretty_filter_line(line))
-		usr << "\"[line]\" was added"
+		usr << "\"[line]\" was added for this round - It has not been added to the permanent file."
 	else
-		usr << "\"[line]\" was not added"
+		usr << "\"[line]\" was not added."
 
 //Filter out and replace unwanted words, prettify sentences
 /proc/pretty_filter(var/text)
