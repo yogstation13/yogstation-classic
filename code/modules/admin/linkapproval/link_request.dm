@@ -3,15 +3,18 @@
 	set category = "Admin"
 	set name = "Approve Link"
 
-	// 30 second cool-down for link posting
+	// 15 second cool-down for link posting
 	src.verbs -= /client/verb/admin_link_approval
-	spawn(300)
+	spawn(150)
 		src.verbs += /client/verb/admin_link_approval
+
+	var/datum/link_approval/link = new /datum/link_approval(hyperlink)
+	link_approval_list.Add(link)
 
 	for(var/client/X in admins)
 		if(X.prefs.toggles & SOUND_ADMINHELP)
 			X << 'sound/effects/adminhelp.ogg'
-		X << "<span class='boldnotice'>[src] would like to <a href='?poster=\ref[src];admin=\ref[X];link=[url_encode(hyperlink)];action=admin_link_approval;approved=1'>approve</a> | <a href='?poster=\ref[src];admin=\ref[X];link=[url_encode(hyperlink)];action=admin_link_approval;approved=0'>deny</a> this link: [hyperlink]</span>"
+		X << "<span class='boldnotice'>[src] would like to <a href='?poster=\ref[src];admin=\ref[X];link=\ref[link];action=admin_link_approval;approved=1'>approve</a> | <a href='?poster=\ref[src];admin=\ref[X];link=\ref[link];action=admin_link_approval;approved=0'>deny</a> this link: [hyperlink]</span>"
 
 /client/Topic(href, href_list[])
 	..()
@@ -19,15 +22,45 @@
 	if(href_list["action"] == "admin_link_approval")
 		var/client/poster = locate(href_list["poster"])
 		var/client/admin = locate(href_list["admin"])
-		var/link = url_decode(href_list["link"])
+		var/datum/link_approval/link = locate(href_list["link"])
 		var/approved = href_list["approved"]
 
+		if(!link)
+			usr << "<span class='boldnotice'>Error: No link was found. It may already have been accepted or denied.</span>"
+			return
+
+		if(link.approved > -1)
+			admin << "<span class='boldnotice'>This link was already [link.approved == 1 ? "approved" : "denied"] by [link.admin]</span>"
+			return
+
 		if(approved == "1")
-			admin.ooc("Approved link from [poster]: [link]")
+			link.approved = 1
+			link.admin = admin
+			poster.ooc("Approved by [admin]: [link.link]")
+
+			log_admin("Link Approved: Poster=[poster] Admin=[admin] Link=[link.link]")
 		else
+			link.approved = 0
+			link.admin = admin
 			var/why = input("Reason (or leave empty):")
 
 			poster << "<span class='boldnotice'>Your link was denied.[why ? " Reason: [why]." : ""]</span>"
 
 			for(var/client/X in admins)
-				X << "<span class='boldnotice'>[admin] denied [poster]'s link: [link].[why ? " Reason: [why]." : ""]</span>"
+				X << "<span class='boldnotice'>[admin] denied [poster]'s link: [link.link].[why ? " Reason: [why]." : ""]</span>"
+
+			log_admin("Link Denied: Poster=[poster] Admin=[admin] Link=[link.link]")
+
+		link_approval_list.Remove(link)
+
+
+/var/list/link_approval_list = list()
+/datum/link_approval
+	var/mob/poster = null
+	var/link = null
+	var/approved = -1
+	var/mob/admin = null
+
+/datum/link_approval/New(var/hyperlink)
+	poster = usr
+	link = hyperlink
