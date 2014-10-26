@@ -16,6 +16,4 @@
 # \\b[f]+[u]+\\b=fun you
 #	This would make any word with combinations of "f" followed by "u" be replaced with fun you. So "ffffffffuuuuuuuuuuu" becomes "fun you".
 
-balls=unicorns
-badmins=funmins
-griff=grief
+fuck=duck
