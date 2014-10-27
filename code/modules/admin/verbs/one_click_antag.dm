@@ -17,6 +17,7 @@ client/proc/one_click_antag()
 		<a href='?src=\ref[src];makeAntag=4'>Make Cult</a><br>
 		<a href='?src=\ref[src];makeAntag=5'>Make Malf AI</a><br>
 		<a href='?src=\ref[src];makeAntag=11'>Make Blob</a><br>
+		<a href='?src=\ref[src];makeAntag=12'>Make Gangsters</a><br>
 		<a href='?src=\ref[src];makeAntag=6'>Make Wizard (Requires Ghosts)</a><br>
 		<a href='?src=\ref[src];makeAntag=7'>Make Nuke Team (Requires Ghosts)</a><br>
 		<a href='?src=\ref[src];makeAntag=10'>Make Deathsquad (Requires Ghosts)</a><br>
@@ -61,6 +62,9 @@ client/proc/one_click_antag()
 	if(config.protect_roles_from_antagonist)
 		temp.restricted_jobs += temp.protected_jobs
 
+	if(config.protect_assistant_from_antagonist)
+		temp.restricted_jobs += "Assistant"
+
 	var/list/mob/living/carbon/human/candidates = list()
 	var/mob/living/carbon/human/H = null
 
@@ -93,6 +97,9 @@ client/proc/one_click_antag()
 	if(config.protect_roles_from_antagonist)
 		temp.restricted_jobs += temp.protected_jobs
 
+	if(config.protect_assistant_from_antagonist)
+		temp.restricted_jobs += "Assistant"
+
 	var/list/mob/living/carbon/human/candidates = list()
 	var/mob/living/carbon/human/H = null
 
@@ -122,6 +129,9 @@ client/proc/one_click_antag()
 	var/datum/game_mode/revolution/temp = new
 	if(config.protect_roles_from_antagonist)
 		temp.restricted_jobs += temp.protected_jobs
+
+	if(config.protect_assistant_from_antagonist)
+		temp.restricted_jobs += "Assistant"
 
 	var/list/mob/living/carbon/human/candidates = list()
 	var/mob/living/carbon/human/H = null
@@ -187,6 +197,9 @@ client/proc/one_click_antag()
 	var/datum/game_mode/cult/temp = new
 	if(config.protect_roles_from_antagonist)
 		temp.restricted_jobs += temp.protected_jobs
+
+	if(config.protect_assistant_from_antagonist)
+		temp.restricted_jobs += "Assistant"
 
 	var/list/mob/living/carbon/human/candidates = list()
 	var/mob/living/carbon/human/H = null
@@ -342,8 +355,9 @@ client/proc/one_click_antag()
 			if( alertNotice )
 				set_security_level("charlie foxtrot")
 		var/numagents = min(5,candidates.len) //How many commandos to spawn
-		while(numagents && deathsquadspawn.len && candidates.len)
-			var/spawnloc = deathsquadspawn[1]
+		var/list/spawnpoints = deathsquadspawn
+		while(numagents && spawnpoints.len && candidates.len)
+			var/spawnloc = spawnpoints[1]
 			var/mob/dead/observer/chosen_candidate = pick(candidates)
 			candidates -= chosen_candidate
 			if(!chosen_candidate.key)
@@ -383,14 +397,47 @@ client/proc/one_click_antag()
 
 			//Logging and cleanup
 			if(numagents == 1)
-				message_admins("The deathsquad has spawned with [key_name_admin(Commando)] as squad leader.")
+				message_admins("The deathsquad has spawned with the mission: [mission].")
 			log_game("[key_name(Commando)] has been selected as a Death Commando")
-			deathsquadspawn -= spawnloc
+			spawnpoints -= spawnloc
 			numagents--
 
 		return 1
 
 	return
+
+
+/datum/admins/proc/makeGangsters()
+
+	var/datum/game_mode/gang/temp = new
+	if(config.protect_roles_from_antagonist)
+		temp.restricted_jobs += temp.protected_jobs
+
+	if(config.protect_assistant_from_antagonist)
+		temp.restricted_jobs += "Assistant"
+
+	var/list/mob/living/carbon/human/candidates = list()
+	var/mob/living/carbon/human/H = null
+
+	for(var/mob/living/carbon/human/applicant in player_list)
+		if(applicant.client.prefs.be_special & BE_GANG)
+			if(applicant.stat == CONSCIOUS)
+				if(applicant.mind)
+					if(!applicant.mind.special_role)
+						if(!jobban_isbanned(applicant, "gangster") && !jobban_isbanned(applicant, "Syndicate"))
+							if(!(applicant.job in temp.restricted_jobs))
+								candidates += applicant
+
+	if(candidates.len >= 2)
+		H = pick(candidates)
+		H.mind.make_Gang("A")
+		candidates.Remove(H)
+		H = pick(candidates)
+		H.mind.make_Gang("B")
+		candidates.Remove(H)
+		return 1
+
+	return 0
 
 
 /datum/admins/proc/makeBody(var/mob/dead/observer/G_found) // Uses stripped down and bastardized code from respawn character
@@ -436,7 +483,7 @@ client/proc/one_click_antag()
 	equip_to_slot_or_del(new /obj/item/weapon/storage/box/flashbangs(src), slot_in_backpack)
 	equip_to_slot_or_del(new /obj/item/device/flashlight(src), slot_in_backpack)
 
-	equip_to_slot_or_del(new /obj/item/weapon/plastique(src), slot_in_backpack)
+	equip_to_slot_or_del(new /obj/item/weapon/c4(src), slot_in_backpack)
 
 	equip_to_slot_or_del(new /obj/item/weapon/melee/energy/sword(src), slot_l_store)
 	equip_to_slot_or_del(new /obj/item/weapon/grenade/flashbang(src), slot_r_store)
@@ -488,7 +535,7 @@ client/proc/one_click_antag()
 	equip_to_slot_or_del(new /obj/item/weapon/storage/box/flashbangs(src), slot_in_backpack)
 	equip_to_slot_or_del(new /obj/item/device/flashlight(src), slot_in_backpack)
 
-	equip_to_slot_or_del(new /obj/item/weapon/plastique(src), slot_in_backpack)
+	equip_to_slot_or_del(new /obj/item/weapon/c4(src), slot_in_backpack)
 
 	equip_to_slot_or_del(new /obj/item/weapon/melee/energy/sword(src), slot_l_store)
 	equip_to_slot_or_del(new /obj/item/weapon/grenade/flashbang(src), slot_r_store)

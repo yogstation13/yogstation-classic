@@ -43,6 +43,9 @@ var/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","Epsilon"
 	if(config.protect_roles_from_antagonist)
 		restricted_jobs += protected_jobs
 
+	if(config.protect_assistant_from_antagonist)
+		restricted_jobs += "Assistant"
+
 	var/num_changelings = 1
 
 	if(config.changeling_scaling_coeff)
@@ -77,7 +80,7 @@ var/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","Epsilon"
 	return
 
 /datum/game_mode/changeling/make_antag_chance(var/mob/living/carbon/human/character) //Assigns changeling to latejoiners
-	var/changelingcap = min( round(num_players()/(config.changeling_scaling_coeff*2))+2, round(num_players()/config.changeling_scaling_coeff) )
+	var/changelingcap = min( round(joined_player_list.len/(config.changeling_scaling_coeff*2))+2, round(joined_player_list.len/config.changeling_scaling_coeff) )
 	if(changelings.len >= changelingcap) //Caps number of latejoin antagonists
 		return
 	if(changelings.len <= (changelingcap - 2) || prob(100 - (config.changeling_scaling_coeff*2)))
@@ -137,6 +140,7 @@ var/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","Epsilon"
 /datum/game_mode/proc/greet_changeling(var/datum/mind/changeling, var/you_are=1)
 	if (you_are)
 		changeling.current << "<span class='userdanger'>You are [changeling.changeling.changelingID], a changeling! You have absorbed and taken the form of a human.</span>"
+	changeling.current << "<span class='userdanger'>Use say \":g message\" to communicate with your fellow changelings.</span>"
 	changeling.current << "<b>You must complete the following tasks:</b>"
 
 	if (changeling.current.mind)
@@ -223,7 +227,7 @@ var/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","Epsilon"
 	var/changelingID = "Changeling"
 	var/geneticdamage = 0
 	var/isabsorbing = 0
-	var/geneticpoints = 5
+	var/geneticpoints = 10
 	var/purchasedpowers = list()
 	var/mimicing = ""
 	var/canrespec = 0

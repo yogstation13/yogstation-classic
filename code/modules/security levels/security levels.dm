@@ -48,23 +48,19 @@
 				security_level = SEC_LEVEL_GREEN
 				for(var/obj/machinery/firealarm/FA in world)
 					if(FA.z == 1)
-						//FA.overlays = list()
-						FA.overlays.Remove(toStrip)
-						FA.overlays += alertOverlayGreen
+						FA.update_icon()
 			if(SEC_LEVEL_BLUE)
 				if(security_level < SEC_LEVEL_BLUE)
-					minor_announce(config.alert_desc_blue_upto, "Attention! Security level elevated to blue:")
+					minor_announce(config.alert_desc_blue_upto, "Attention! Security level elevated to blue:",1)
 				else
 					minor_announce(config.alert_desc_blue_downto, "Attention! Security level lowered to blue:")
 				security_level = SEC_LEVEL_BLUE
 				for(var/obj/machinery/firealarm/FA in world)
 					if(FA.z == 1)
-						//FA.overlays = list()
-						FA.overlays.Remove(toStrip)
-						FA.overlays += alertOverlayBlue
+						FA.update_icon()
 			if(SEC_LEVEL_RED)
 				if(security_level < SEC_LEVEL_RED)
-					minor_announce(config.alert_desc_red_upto, "Attention! Code red!")
+					minor_announce(config.alert_desc_red_upto, "Attention! Code red!",1)
 				else
 					minor_announce(config.alert_desc_red_downto, "Attention! Code red!")
 				security_level = SEC_LEVEL_RED
@@ -76,17 +72,13 @@
 
 				for(var/obj/machinery/firealarm/FA in world)
 					if(FA.z == 1)
-						//FA.overlays = list()
-						FA.overlays.Remove(toStrip)
-						FA.overlays += alertOverlayRed
+						FA.update_icon()
 			if(SEC_LEVEL_DELTA)
-				minor_announce(config.alert_desc_delta, "Attention! Delta security level reached!")
+				minor_announce(config.alert_desc_delta, "Attention! Delta security level reached!",1)
 				security_level = SEC_LEVEL_DELTA
 				for(var/obj/machinery/firealarm/FA in world)
 					if(FA.z == 1)
-						//FA.overlays = list()
-						FA.overlays.Remove(toStrip)
-						FA.overlays += alertOverlayDelta
+						FA.update_icon()
 			if(SEC_LEVEL_CF)
 				world << "<font size=4 color='red'>Attention! Code Charlie Foxtrot has been declared!</font>"
 				// !! comment out the following 1 line of code when config.alert_desc_cf exists

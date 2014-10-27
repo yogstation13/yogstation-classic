@@ -20,4 +20,7 @@
 	message_admins("Random Event: Carp Migration")
 	for(var/obj/effect/landmark/C in landmarks_list)
 		if(C.name == "carpspawn")
-			new /mob/living/simple_animal/hostile/carp(C.loc)
+			if(prob(95))
+				new /mob/living/simple_animal/hostile/carp(C.loc)
+			else
+				new /mob/living/simple_animal/hostile/carp/megacarp(C.loc)

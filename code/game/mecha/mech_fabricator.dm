@@ -49,6 +49,7 @@
 					),
 	"Ripley"=list(
 						/obj/item/mecha_parts/chassis/ripley,
+						/obj/item/mecha_parts/chassis/firefighter,
 						/obj/item/mecha_parts/part/ripley_torso,
 						/obj/item/mecha_parts/part/ripley_left_arm,
 						/obj/item/mecha_parts/part/ripley_right_arm,
@@ -93,7 +94,17 @@
 						/obj/item/mecha_parts/part/honker_right_arm,
 						/obj/item/mecha_parts/part/honker_left_leg,
 						/obj/item/mecha_parts/part/honker_right_leg
-						),
+					),
+	"Phazon"=list(
+						/obj/item/mecha_parts/chassis/phazon,
+						/obj/item/mecha_parts/part/phazon_torso,
+						/obj/item/mecha_parts/part/phazon_head,
+						/obj/item/mecha_parts/part/phazon_left_arm,
+						/obj/item/mecha_parts/part/phazon_right_arm,
+						/obj/item/mecha_parts/part/phazon_left_leg,
+						/obj/item/mecha_parts/part/phazon_right_leg,
+						/obj/item/mecha_parts/part/phazon_armor
+					),
 	"Exosuit Equipment"=list(
 						/obj/item/mecha_parts/mecha_equipment/tool/hydraulic_clamp,
 						/obj/item/mecha_parts/mecha_equipment/tool/drill,
@@ -101,8 +112,7 @@
 						/obj/item/mecha_parts/mecha_equipment/tool/cable_layer,
 						/obj/item/mecha_parts/mecha_equipment/tool/sleeper,
 						/obj/item/mecha_parts/mecha_equipment/tool/syringe_gun,
-						/obj/item/mecha_parts/chassis/firefighter,
-						///obj/item/mecha_parts/mecha_equipment/repair_droid,
+						/obj/item/mecha_parts/mecha_equipment/repair_droid,
 						/obj/item/mecha_parts/mecha_equipment/generator,
 						///obj/item/mecha_parts/mecha_equipment/jetpack, //TODO MECHA JETPACK SPRITE MISSING
 						/obj/item/mecha_parts/mecha_equipment/weapon/energy/taser,
@@ -724,7 +734,7 @@
 		if("uranium")
 			type = /obj/item/stack/sheet/mineral/uranium
 		if("bananium")
-			type = /obj/item/stack/sheet/mineral/clown
+			type = /obj/item/stack/sheet/mineral/bananium
 		else
 			return 0
 	var/result = 0
@@ -785,7 +795,7 @@
 				G.amount = min(sheet_conversion, G.max_amount)
 				src.resources["diamond"] -= (G.amount * MINERAL_MATERIAL_AMOUNT)
 			while(src.resources["bananium"] >= MINERAL_MATERIAL_AMOUNT)
-				var/obj/item/stack/sheet/mineral/clown/G = new /obj/item/stack/sheet/mineral/clown(src.loc)
+				var/obj/item/stack/sheet/mineral/bananium/G = new /obj/item/stack/sheet/mineral/bananium(src.loc)
 				var/sheet_conversion = round(src.resources["bananium"] / MINERAL_MATERIAL_AMOUNT)
 				G.amount = min(sheet_conversion, G.max_amount)
 				src.resources["bananium"] -= (G.amount * MINERAL_MATERIAL_AMOUNT)
@@ -812,7 +822,7 @@
 			material = "metal"
 		if(/obj/item/stack/sheet/glass)
 			material = "glass"
-		if(/obj/item/stack/sheet/mineral/clown)
+		if(/obj/item/stack/sheet/mineral/bananium)
 			material = "bananium"
 		if(/obj/item/stack/sheet/mineral/uranium)
 			material = "uranium"

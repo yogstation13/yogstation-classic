@@ -36,6 +36,7 @@
 
 	weldingvisortoggle()
 
+
 // ********************************************************************
 
 // **** Security gas mask ****
@@ -182,11 +183,13 @@
 	name = "\improper SWAT mask"
 	desc = "A close-fitting tactical mask that can be connected to an air supply."
 	icon_state = "swat"
+	strip_delay = 60
 
 /obj/item/clothing/mask/gas/syndicate
 	name = "syndicate mask"
 	desc = "A close-fitting tactical mask that can be connected to an air supply."
 	icon_state = "swat"
+	strip_delay = 60
 
 /obj/item/clothing/mask/gas/voice
 	name = "gas mask"
@@ -195,6 +198,11 @@
 	var/voice = "Unknown"
 	var/vchange = 0//This didn't do anything before. It now checks if the mask has special functions/N
 	origin_tech = "syndicate=4"
+	action_button_name = "Toggle mask"
+
+/obj/item/clothing/mask/gas/voice/attack_self(mob/user)
+	vchange = !vchange
+	user << "<span class='notice'>The voice changer is now [vchange ? "on" : "off"]!</span>"
 
 /obj/item/clothing/mask/gas/voice/space_ninja
 	name = "ninja mask"
@@ -202,6 +210,7 @@
 	icon_state = "s-ninja"
 	item_state = "s-ninja_mask"
 	vchange = 1
+	strip_delay = 120
 
 /obj/item/clothing/mask/gas/voice/space_ninja/speechModification(message)
 	if(voice == "Unknown")

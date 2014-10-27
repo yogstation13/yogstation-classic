@@ -4,7 +4,7 @@
 	oxygen_alert = 0
 	toxins_alert = 0
 	fire_alert = 0
-
+	pass_flags = PASSTABLE
 	var/temperature_alert = 0
 
 
@@ -365,6 +365,8 @@
 
 		if(weakened)
 			weakened = max(weakened-1,0)
+			if(!weakened)
+				update_icons()
 
 		if(stuttering)
 			stuttering = max(stuttering-1, 0)

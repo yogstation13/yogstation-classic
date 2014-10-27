@@ -45,26 +45,36 @@ var/global/pipe_processing_killed = 0
 			del(master_controller)
 		master_controller = src
 
+	if(!events)
+		new /datum/controller/event()
+
+	if(!air_master)
+		air_master = new /datum/controller/air_system()
+		air_master.setup()
+
+	if(!job_master)
+		job_master = new /datum/controller/occupations()
+		job_master.SetupOccupations()
+		job_master.LoadJobs("config/jobs.txt")
+		world << "<span class='userdanger'>Job setup complete</span>"
+
+	if(!syndicate_code_phrase)		syndicate_code_phrase	= generate_code_phrase()
+	if(!syndicate_code_response)	syndicate_code_response	= generate_code_phrase()
+	if(!ticker)						ticker = new /datum/controller/gameticker()
+	if(!emergency_shuttle)			emergency_shuttle = new /datum/shuttle_controller/emergency_shuttle()
+	if(!supply_shuttle)				supply_shuttle = new /datum/controller/supply_shuttle()
+
 /datum/controller/game_controller/proc/setup()
 	world.tick_lag = config.Ticklag
 
-	new /datum/controller/event()
-	air_master = new /datum/controller/air_system()
-	air_master.setup()
-	job_master = new /datum/controller/occupations()
-	job_master.SetupOccupations()
-	job_master.LoadJobs("config/jobs.txt")
-	world << "<span class='userdanger'>Job setup complete</span>"
-	ticker = new /datum/controller/gameticker()
-	emergency_shuttle = new /datum/shuttle_controller/emergency_shuttle()
-	supply_shuttle = new /datum/controller/supply_shuttle()
-
 	world << "<span class='userdanger'>Randomizing map...</span>"
 
-	createRandomZlevel()
+	setup_map_transitions()
 
 	for(var/i=0, i<max_secret_rooms, i++)
 		make_mining_asteroid_secret()
+
+	createRandomZlevel()
 
 	setup_objects()
 	setupgenetics()
@@ -112,6 +122,10 @@ var/global/pipe_processing_killed = 0
 			if(!Failsafe)	new /datum/controller/failsafe()
 
 			var/currenttime = world.timeofday
+
+			if((last_tick_timeofday - currenttime) > 1e5) //midnight rollover protection
+				last_tick_timeofday -= MIDNIGHT_ROLLOVER
+
 			last_tick_duration = (currenttime - last_tick_timeofday) / 10
 			last_tick_timeofday = currenttime
 

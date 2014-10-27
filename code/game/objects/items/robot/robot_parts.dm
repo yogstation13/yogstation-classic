@@ -196,7 +196,7 @@
 				user << "<span class='danger'>Sticking a dead brain into the frame would sort of defeat the purpose.</span>"
 				return
 
-			if(M.brainmob.mind in ticker.mode.head_revolutionaries)
+			if((M.brainmob.mind in ticker.mode.head_revolutionaries) || (M.brainmob.mind in ticker.mode.A_bosses) || (M.brainmob.mind in ticker.mode.B_bosses))
 				user << "<span class='danger'>The frame's firmware lets out a shrill sound, and flashes 'Abnormal Memory Engram'. It refuses to accept the MMI.</span>"
 				return
 
@@ -330,8 +330,8 @@
 
 /obj/item/robot_parts/head/attackby(obj/item/W as obj, mob/user as mob)
 	..()
-	if(istype(W, /obj/item/device/flash))
-		var/obj/item/device/flash/F = W
+	if(istype(W, /obj/item/device/flash/handheld))
+		var/obj/item/device/flash/handheld/F = W
 		if(src.flash1 && src.flash2)
 			user << "<span class='notice'>You have already inserted the eyes!</span>"
 			return
