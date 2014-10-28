@@ -320,6 +320,10 @@ var/round_start_time = 0
 			if(blackbox)
 				blackbox.save_all_data_to_sql()
 
+			for(var/datum/admin_ticket/T in tickets_list)
+				if(!T.resolved)
+					ticker.delay_end = 1
+
 			if(!delay_end)
 				sleep(restart_timeout)
 				kick_clients_in_lobby("\red The round came to an end with you in the lobby.", 1) //second parameter ensures only afk clients are kicked

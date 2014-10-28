@@ -70,8 +70,7 @@
 	if(!msg)
 		// Removed this one, not really necessary
 		// [addToOther ? "* You are not the primary admin of ticket #[addToOther], your message will be added as supplimentary. " : ""]
-		var/instructions = {"[clickedId ? "* Someone already started to reply to this ticket. If you reply, you may start a new ticket! " : ""]
-Message:"}
+		var/instructions = {"[clickedId ? "* Someone already started to reply to this ticket. If you reply, you may start a new ticket! " : ""]Message:"}
 
 		if(wasAlreadyClicked)
 			wasAlreadyClicked.pm_started_flag = 1
