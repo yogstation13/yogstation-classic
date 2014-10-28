@@ -5,10 +5,10 @@
 	set category = "Admin"
 	set name = "Adminhelp"
 
-	// 1 minute cool-down for ticket creation
-	src.verbs -= /client/verb/admin_ticket
-	spawn(600)
-		src.verbs += /client/verb/admin_ticket
+	// 1 minute cool-down for ticket creation? Timeout removed for this system.
+	//src.verbs -= /client/verb/admin_ticket
+	//spawn(600)
+	//	src.verbs += /client/verb/admin_ticket
 
 	var/datum/admin_ticket/found_ticket = null
 	for(var/datum/admin_ticket/T in tickets_list)
@@ -53,7 +53,7 @@
 				unresolved.Add(T)
 
 		if(unresolved.len == 0 && resolved.len == 0)
-			usr << "<p>There are no tickets in the system</p>"
+			usr << "<p class='ticket-status'>There are no tickets in the system</p>"
 			return
 
 		if(unresolved.len > 0)
@@ -126,7 +126,7 @@
 					</p>"}
 	else
 		if(tickets_list.len == 0)
-			usr << "<p>There are no tickets in the system</p>"
+			usr << "<p class='ticket-status'>There are no tickets in the system</p>"
 			return
 		else
 			content += "<p class='info-bar emboldened'>Your tickets:</p>"

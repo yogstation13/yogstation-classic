@@ -14,11 +14,11 @@
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 
 		if(T.resolved && !holder)
-			usr << "<span class='boldnotice'>This ticket is marked as resolved. You may not add any more information to it.</span>"
+			usr << "<p class='ticket-status'>This ticket is marked as resolved. You may not add any more information to it.</p>"
 			return
 
 		if(!compare_ckey(usr, T.handling_admin) && !compare_ckey(usr, T.owner_ckey))
-			usr << "<span class='boldnotice'>You are not the owner or primary admin of this ticket. You may not reply to it.</span>"
+			usr << "<p class='ticket-status'>You are not the owner or primary admin of this ticket. You may not reply to it.</p>"
 			return
 
 		var/logtext = input("Please enter your reply:")
@@ -54,14 +54,14 @@
 		T.resolved = !T.resolved
 		if(T.resolved)
 			log_admin("Ticket #[T.ticket_id] marked as resolved by [usr].")
-			T.owner << "<span class='boldnotice'>Your ticket has been marked as resolved.</span>"
+			T.owner << "<p class='ticket-text-received'>Your ticket has been marked as resolved.</p>"
 			for(var/O in T.monitors)
-				O << "<span class='boldnotice'>\"[T.title]\" was marked as resolved.</span>"
+				O << "<p class='ticket-text-received'>\"[T.title]\" was marked as resolved.</p>"
 		else
 			log_admin("Ticket #[T.ticket_id] marked as unresolved by [usr].")
-			T.owner << "<span class='boldnotice'>Your ticket has been marked as unresolved.</span>"
+			T.owner << "<p class='ticket-text-received'>Your ticket has been marked as unresolved.</p>"
 			for(var/O in T.monitors)
-				O << "<span class='boldnotice'>\"[T.title]\" was marked as unresolved.</span>"
+				O << "<p class='ticket-text-received'>\"[T.title]\" was marked as unresolved.</p>"
 		world << output("[T.resolved]", "ViewTicketLog[T.ticket_id].browser:set_resolved")
 
 		if(href_list["reloadlist"])

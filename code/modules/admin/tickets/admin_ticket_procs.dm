@@ -32,28 +32,28 @@
 		if(compare_ckey(owner_ckey, M) || compare_ckey(user, handling_admin))
 			break
 
-		M << "<font color='red' size='3'><b>-- Ticket #[ticket_id] - New message - <a href='?src=\ref[user];action=view_admin_ticket;ticket=\ref[src]'>View</a> --</b></font>"
-		M << "<span style='margin-left: 10px;'>-- <b>[key_name(user, 1)]</b>: [log_message]</span>"
+		M << "<p class='ticket-header-recieved'>-- <a href='?src=\ref[user];action=view_admin_ticket;ticket=\ref[src]'>Ticket #[ticket_id]</a> - New message --</p>"
+		M << "<p class='ticket-text-received'>-- <i>[key_name(user, 1)]</i>: [log_message]</p>"
 		if(has_pref(M, SOUND_ADMINHELP))
 			M << 'sound/effects/adminhelp.ogg'
 		if(compare_ckey(M, user))
 			found = 1
 
 	if(!compare_ckey(handling_admin, user))
-		handling_admin << "<font color='red' size='3'><b>-- Ticket #[ticket_id] - New message - <a href='?src=\ref[user];action=view_admin_ticket;ticket=\ref[src]'>View</a> --</b></font>"
-		handling_admin << "<span style='margin-left: 10px;'>-- <b>[key_name(user, 1)]</b>: [log_message]</span>"
+		// no bigred for admins - handling_admin << "<p class='ticket-header-recieved'>-- <a href='?src=\ref[user];action=view_admin_ticket;ticket=\ref[src]'>Ticket #[ticket_id]</a> - New message --</p>"
+		handling_admin << "<p class='ticket-text-received'>-- <i>[key_name(user, 1)]</i>: [log_message]</p>"
 		if(has_pref(handling_admin, SOUND_ADMINHELP))
 			handling_admin << 'sound/effects/adminhelp.ogg'
 
 	if(!compare_ckey(owner_ckey, user))
-		owner << "<font color='red' size='3'><b>-- Ticket #[ticket_id] - New message - <a href='?src=\ref[user];action=view_admin_ticket;ticket=\ref[src]'>View</a> --</b></font>"
+		if(!is_admin(owner)) owner << "<p class='ticket-header-recieved'>-- <a href='?src=\ref[user];action=view_admin_ticket;ticket=\ref[src]'>Ticket #[ticket_id]</a> - New message --</p>"
 		if(has_pref(owner, SOUND_ADMINHELP))
 			owner << 'sound/effects/adminhelp.ogg'
-	owner << "<span style='margin-left: 10px;'>-- <b>[key_name(user, 1)]</b>: [log_message]</span>"
+	owner << "<p class='[compare_ckey(owner_ckey, user) ? "ticket-text-sent" : "ticket-text-received"]'>-- <i>[compare_ckey(owner_ckey, user) ? "[get_ckey(user)]" : is_admin(owner) ? key_name(user, 1) : "<a href='?priv_msg=[get_ckey(user)]'>[get_ckey(user)]</a>"]</i>: [log_message]</p>"
 
 	if(!found && !compare_ckey(user, owner_ckey))
-		//user << "<font color='red' size='3'><b>-- Ticket #[ticket_id] - New message - <a href='?src=\ref[user];action=view_admin_ticket;ticket=\ref[src]'>View</a> --</b></font>"
-		user << "<span style='margin-left: 10px;'>-- <b>[key_name(user, 1)]</b>: [log_message]</span>"
+		//user << "<p class='ticket-header-recieved'>-- <a href='?src=\ref[user];action=view_admin_ticket;ticket=\ref[src]'>Ticket #[ticket_id]</a> - New message --</p>"
+		user << "<p class='ticket-text-sent'>-- <i>[is_admin(user) ? key_name(user, 1) : "<a href='?priv_msg=[get_ckey(user)]'>[get_ckey(user)]</a>"]</i>: [log_message]</p>"
 		if(has_pref(user, SOUND_ADMINHELP))
 			user << 'sound/effects/adminhelp.ogg'
 
@@ -66,16 +66,16 @@
 	if(!found)
 		log_admin("[usr] is now monitoring ticket #[ticket_id]")
 		monitors += usr
-		usr << "<span class='boldnotice'>You are now monitoring this ticket</span>"
+		usr << "<p class='ticket-status'>You are now monitoring this ticket</p>"
 		if(owner)
-			owner << "<span class='boldnotice'>[usr] is now monitoring your ticket</span>"
+			owner << "<p class='ticket-status'>[usr] is now monitoring your ticket</p>"
 		return 1
 	else
 		log_admin("[usr] is no longer monitoring ticket #[ticket_id]")
 		monitors -= usr
-		usr << "<span class='boldnotice'>You are no longer monitoring this ticket</span>"
+		usr << "<p class='ticket-status'>You are no longer monitoring this ticket</p>"
 		if(owner)
-			owner << "<span class='boldnotice'>[usr] is no longer monitoring your ticket</span>"
+			owner << "<p class='ticket-status'>[usr] is no longer monitoring your ticket</p>"
 		return 0
 
 /datum/admin_ticket/proc/view_log()
