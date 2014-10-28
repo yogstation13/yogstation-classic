@@ -17,7 +17,7 @@
 
 /datum/admin_ticket/New(nowner, ntitle, ntarget)
 	if(compare_ckey(nowner, ntarget))
-		usr << "<p class='ticket-status'>You cannot make a ticket for yourself</span>"
+		usr << "<span class='ticket-status'>You cannot make a ticket for yourself</span>"
 		return
 
 	owner = nowner
@@ -37,8 +37,8 @@
 	//log_file = file(path)
 
 	// var/ai_found = isAI(owner.ckey)
-	// var/msg = "<p class='ticket-text-received'><font color=red>New ticket created: </font>[key_name(owner, 1)] (<a href='?_src_=holder;adminmoreinfo=\ref[owner.mob]'>?</a>) (<a href='?_src_=holder;adminplayeropts=\ref[owner.mob]'>PP</a>) (<a href='?_src_=vars;Vars=\ref[owner.mob]'>VV</a>) (<a href='?_src_=holder;subtlemessage=\ref[owner.mob]'>SM</a>) (<a href='?_src_=holder;adminplayerobservejump=\ref[owner.mob]'>JMP</a>) (<a href='?_src_=holder;secretsadmin=check_antagonist'>CA</a>) [ai_found ? " (<a href='?_src_=holder;adminchecklaws=\ref[owner.mob]'>CL</a>)" : ""]:</b> [title] <a href='?src=\ref[owner];action=view_admin_ticket;ticket=\ref[src]'>View</a> <a href='?src=\ref[owner];action=monitor_admin_ticket;ticket=\ref[src]'>(Un)Monitor</a> <a href='?src=\ref[owner];action=resolve_admin_ticket;ticket=\ref[src]'>(Un)Resolve</a></p>"
-	var/msg = "<p class='ticket-text-received'><font color=red>New ticket created: </font>[key_name_params(owner, 1, 1, "new=1;ticket=\ref[src]")]: [title] <b><a href='?src=\ref[owner];action=view_admin_ticket;ticket=\ref[src]'>View</a></b></p>"
+	// var/msg = "<span class='ticket-text-received'><font color=red>New ticket created: </font>[key_name(owner, 1)] (<a href='?_src_=holder;adminmoreinfo=\ref[owner.mob]'>?</a>) (<a href='?_src_=holder;adminplayeropts=\ref[owner.mob]'>PP</a>) (<a href='?_src_=vars;Vars=\ref[owner.mob]'>VV</a>) (<a href='?_src_=holder;subtlemessage=\ref[owner.mob]'>SM</a>) (<a href='?_src_=holder;adminplayerobservejump=\ref[owner.mob]'>JMP</a>) (<a href='?_src_=holder;secretsadmin=check_antagonist'>CA</a>) [ai_found ? " (<a href='?_src_=holder;adminchecklaws=\ref[owner.mob]'>CL</a>)" : ""]:</b> [title] <a href='?src=\ref[owner];action=view_admin_ticket;ticket=\ref[src]'>View</a> <a href='?src=\ref[owner];action=monitor_admin_ticket;ticket=\ref[src]'>(Un)Monitor</a> <a href='?src=\ref[owner];action=resolve_admin_ticket;ticket=\ref[src]'>(Un)Resolve</a></span>"
+	var/msg = "<span class='ticket-text-received'><font color=red>New ticket created: </font>[key_name_params(owner, 1, 1, "new=1;ticket=\ref[src]")]: [title] <b><a href='?src=\ref[owner];action=view_admin_ticket;ticket=\ref[src]'>View</a></b></span>"
 
 	//var/time = time2text(world.timeofday, "hh:mm")
 	log += "<b>[title]</b>"
@@ -47,9 +47,9 @@
 	var/tellAdmins = 1
 	if(compare_ckey(owner, ntarget))
 		tellAdmins = 0
-		if(!is_admin(owner)) owner << "<p class='ticket-header-recieved'>-- <a href='?src=\ref[owner];action=view_admin_ticket;ticket=\ref[src]'>Ticket #[ticket_id]</a> - New Ticket --</p>"
-		owner << "<p class='ticket-text-received'><a href='?src=\ref[owner];action=view_admin_ticket;ticket=\ref[src]'>Ticket</a> created by <i>[is_admin(owner) ? key_name(handling_admin, 1) : "<a href='?priv_msg=[get_ckey(handling_admin)]'>[get_ckey(handling_admin)]</a>"]</i> for <i>you</i>: \"[title]\"</p>"
-		handling_admin << "<p class='ticket-text-sent'><a href='?src=\ref[owner];action=view_admin_ticket;ticket=\ref[src]'>Ticket</a> created by <i>you</i> for <i>[is_admin(handling_admin) ? key_name(ntarget, 1) : "<a href='?priv_msg=[get_ckey(ntarget)]'>[get_ckey(ntarget)]</a>"]</i>: \"[title]\"</p>"
+		if(!is_admin(owner)) owner << "<span class='ticket-header-recieved'>-- <a href='?src=\ref[owner];action=view_admin_ticket;ticket=\ref[src]'>Ticket #[ticket_id]</a> - New Ticket --</span>"
+		owner << "<span class='ticket-text-received'><a href='?src=\ref[owner];action=view_admin_ticket;ticket=\ref[src]'>Ticket</a> created by <i>[is_admin(owner) ? key_name(handling_admin, 1) : "<a href='?priv_msg=[get_ckey(handling_admin)]'>[get_ckey(handling_admin)]</a>"]</i> for <i>you</i>: \"[title]\"</span>"
+		handling_admin << "<span class='ticket-text-sent'><a href='?src=\ref[owner];action=view_admin_ticket;ticket=\ref[src]'>Ticket</a> created by <i>you</i> for <i>[is_admin(handling_admin) ? key_name(ntarget, 1) : "<a href='?priv_msg=[get_ckey(ntarget)]'>[get_ckey(ntarget)]</a>"]</i>: \"[title]\"</span>"
 		log += "[gameTimestamp()] - Ticket created by <b>[handling_admin] for [ntarget]</b>"
 		if(has_pref(owner, SOUND_ADMINHELP))
 			owner << 'sound/effects/adminhelp.ogg'
@@ -57,7 +57,7 @@
 			handling_admin << 'sound/effects/adminhelp.ogg'
 	else
 		log += "[gameTimestamp()] - Ticket created by <b>[owner]</b>"
-		owner << "<p class='ticket-status'><a href='?src=\ref[owner];action=view_admin_ticket;ticket=\ref[src]'>Ticket</a> created for <i>Admins</i>: \"[title]\"</p>"
+		owner << "<span class='ticket-status'><a href='?src=\ref[owner];action=view_admin_ticket;ticket=\ref[src]'>Ticket</a> created for <i>Admins</i>: \"[title]\"</span>"
 		if(has_pref(owner, SOUND_ADMINHELP))
 			owner << 'sound/effects/adminhelp.ogg'
 

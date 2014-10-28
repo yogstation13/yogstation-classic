@@ -53,7 +53,7 @@
 				unresolved.Add(T)
 
 		if(unresolved.len == 0 && resolved.len == 0)
-			usr << "<p class='ticket-status'>There are no tickets in the system</p>"
+			usr << "<span class='ticket-status'>There are no tickets in the system</span>"
 			return
 
 		if(unresolved.len > 0)
@@ -126,7 +126,7 @@
 					</p>"}
 	else
 		if(tickets_list.len == 0)
-			usr << "<p class='ticket-status'>There are no tickets in the system</p>"
+			usr << "<span class='ticket-status'>There are no tickets in the system</span>"
 			return
 		else
 			content += "<p class='info-bar emboldened'>Your tickets:</p>"

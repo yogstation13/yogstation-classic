@@ -54,12 +54,12 @@
 	// We are searching initially, to avoid wasting the users time. We will add more
 	// information to the input dialog. Check to see if an admin has already started
 	// to reply to this ticket
-	var/addToOther = 0
+	//var/addToOther = 0
 	var/clickedId = 0
 	var/datum/admin_ticket/wasAlreadyClicked = null
 	for(var/datum/admin_ticket/T in tickets_list)
-		if(!T.resolved && T.handling_admin && !compare_ckey(T.handling_admin, usr) && compare_ckey(T.owner, C.mob))
-			addToOther = T.ticket_id
+		//if(!T.resolved && T.handling_admin && !compare_ckey(T.handling_admin, usr) && compare_ckey(T.owner, C.mob))
+		//	addToOther = T.ticket_id
 		if(!T.resolved && T.pm_started_user && compare_ckey(T.owner, C.mob) && !compare_ckey(T.handling_admin, usr))
 			if(T.pm_started_flag)
 				clickedId = T.ticket_id
@@ -68,8 +68,9 @@
 
 	//get message text, limit it's length.and clean/escape html
 	if(!msg)
-		var/instructions = {"[addToOther ? "* You are not the primary admin of ticket #[addToOther], your message will be added as supplimentary. " : ""]
-[clickedId ? "* Someone already started to reply to this ticket. If you reply, you may start a new ticket! " : ""]
+		// Removed this one, not really necessary
+		// [addToOther ? "* You are not the primary admin of ticket #[addToOther], your message will be added as supplimentary. " : ""]
+		var/instructions = {"[clickedId ? "* Someone already started to reply to this ticket. If you reply, you may start a new ticket! " : ""]
 Message:"}
 
 		if(wasAlreadyClicked)
