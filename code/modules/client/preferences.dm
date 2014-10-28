@@ -3,7 +3,8 @@
 var/list/preferences_datums = list()
 
 #define IS_MODE_COMPILED(MODE) (ispath(text2path("/datum/game_mode/"+(MODE))))
-#define MAXAGREE 3
+
+
 
 var/global/list/special_roles = list( //keep synced with the defines BE_* in setup.dm
 //some autodetection here.
@@ -30,6 +31,7 @@ datum/preferences
 
 	//non-preference stuff
 	var/muted = 0
+	var/afreeze = 0
 	var/last_ip
 	var/last_id
 
@@ -841,8 +843,3 @@ datum/preferences
 				message_admins("[character] ([character.ckey]) has spawned with their gender as plural or neuter. Please notify coders.")
 				character.gender = MALE
 		*/
-
-/mob/proc/reset_agree()
-	if(!client) return
-	client.prefs.agree = 0
-	client.prefs.save_preferences()

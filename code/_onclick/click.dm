@@ -38,6 +38,10 @@
 		return
 	next_click = world.time + 1
 
+	if(client.prefs.afreeze)
+		client << "<span class='userdanger'>You are frozen by an administrator.</span>"
+		return
+
 	if(client.buildmode)
 		build_click(src, client.buildmode, params, A)
 		return

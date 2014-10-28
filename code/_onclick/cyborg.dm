@@ -10,7 +10,9 @@
 	if(world.time <= next_click)
 		return
 	next_click = world.time + 1
-
+	if(client.prefs.afreeze)
+		client << "<span class='userdanger'>You are frozen by an administrator.</span>"
+		return
 	if(client.buildmode) // comes after object.Click to allow buildmode gui objects to be clicked
 		build_click(src, client.buildmode, params, A)
 		return

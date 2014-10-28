@@ -50,6 +50,10 @@
 		cmd_admin_pm(href_list["priv_msg"],null)
 		return
 
+	if(prefs.afreeze && !holder)
+		src << "<span class='userdanger'>You are frozen by an administrator.</span>"
+		return
+
 	//Logs all hrefs
 	if(config && config.log_hrefs && href_logfile)
 		href_logfile << "<small>[time2text(world.timeofday,"hh:mm")] [src] (usr:[usr])</small> || [hsrc ? "[hsrc] " : ""][href]<br>"

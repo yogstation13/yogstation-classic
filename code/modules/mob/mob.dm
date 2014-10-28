@@ -892,3 +892,16 @@ var/list/slot_equipment_priority = list( \
 				if(G.can_reenter_corpse || even_if_they_cant_reenter)
 					return G
 				break
+
+/mob/proc/toggleafreeze(mob/admin)
+	if(client)
+		if(client.prefs.afreeze)
+			client.prefs.afreeze = 0
+			client << "<span class='userdanger'>You have been unfrozen.</span>"
+			log_admin("[key_name(admin)] unfroze [key_name(src)].")
+			message_admins("[key_name(admin, admin.client)] unfroze [key_name(src, src.client)].")
+		else
+			client.prefs.afreeze = 1
+			client << "<span class='userdanger'>You are frozen by an administrator.</span>"
+			log_admin("[key_name(admin)] froze [key_name(src)].")
+			message_admins("[key_name(admin, admin.client)] froze [key_name(src, src.client)].")

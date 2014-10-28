@@ -7,6 +7,7 @@
 
 #define RECOMMENDED_VERSION 495
 
+
 /world/New()
 #if (PRELOAD_RSC == 0)
 	external_rsc_urls = file2list("config/external_rsc_urls.txt","\n")

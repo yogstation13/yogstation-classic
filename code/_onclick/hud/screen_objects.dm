@@ -50,7 +50,9 @@
 		return 1
 	if(usr.next_move >= world.time)
 		return
-
+	if(usr.client && usr.client.prefs.afreeze)
+		usr.client << "<span class='userdanger'>You are frozen by an administrator.</span>"
+		return
 	if(!owner.action_button_is_hands_free && (usr.restrained() || usr.stunned || usr.lying))
 		return 1
 
@@ -72,6 +74,9 @@
 	name = "grab"
 
 /obj/screen/grab/Click()
+	if(usr.client && usr.client.prefs.afreeze)
+		usr.client << "<span class='userdanger'>You are frozen by an administrator.</span>"
+		return
 	if(master)
 		var/obj/item/weapon/grab/G = master
 		G.s_click(src)
@@ -90,6 +95,9 @@
 /obj/screen/storage/Click()
 	if(world.time <= usr.next_move)
 		return 1
+	if(usr.client && usr.client.prefs.afreeze)
+		usr.client << "<span class='userdanger'>You are frozen by an administrator.</span>"
+		return
 	if(usr.stat || usr.paralysis || usr.stunned || usr.weakened)
 		return 1
 	if (istype(usr.loc,/obj/mecha)) // stops inventory actions in a mech
@@ -166,7 +174,9 @@
 
 /obj/screen/Click(location, control, params)
 	if(!usr)	return 1
-
+	if(usr.client && usr.client.prefs.afreeze)
+		usr.client << "<span class='userdanger'>You are frozen by an administrator.</span>"
+		return
 	switch(name)
 		if("toggle")
 			if(usr.hud_used.inventory_shown)
@@ -411,7 +421,9 @@
 	// We don't even know if it's a middle click
 	if(world.time <= usr.next_move)
 		return 1
-
+	if(usr.client && usr.client.prefs.afreeze)
+		usr.client << "<span class='userdanger'>You are frozen by an administrator.</span>"
+		return
 	if(usr.stat || usr.paralysis || usr.stunned || usr.weakened)
 		return 1
 	if (istype(usr.loc,/obj/mecha)) // stops inventory actions in a mech

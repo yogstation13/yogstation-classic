@@ -1448,6 +1448,43 @@
 		var/mob/M = locate(href_list["jumpto"])
 		usr.client.jumptomob(M)
 
+	else if(href_list["afreeze"])
+		if(!check_rights(R_ADMIN))	return
+
+		var/mob/M = locate(href_list["afreeze"])
+		if(istype(M))
+			M.toggleafreeze(usr)
+
+	else if(href_list["forceagree"])
+		if(!check_rights(R_ADMIN))	return
+
+		var/mob/M = locate(href_list["forceagree"])
+		if(M && M.client && M.client.prefs)
+			M.client.prefs.agree = -1
+			M.client.prefs.save_preferences()
+			log_admin("[src.owner] forced the rules to appear every time for [key_name(M)].")
+			message_admins("[src.owner] forced the rules to appear every time for [key_name(M)].")
+
+	else if(href_list["resetagree"])
+		if(!check_rights(R_ADMIN))	return
+
+		var/mob/M = locate(href_list["resetagree"])
+		if(M && M.client && M.client.prefs)
+			M.client.prefs.agree = 0
+			M.client.prefs.save_preferences()
+			log_admin("[src.owner] reset the rules popup for [key_name(M)].")
+			message_admins("[src.owner] reset the rules popup for [key_name(M)].")
+
+	else if(href_list["fixagree"])
+		if(!check_rights(R_ADMIN))	return
+
+		var/mob/M = locate(href_list["fixagree"])
+		if(M && M.client && M.client.prefs)
+			M.client.prefs.agree = MAXAGREE
+			M.client.prefs.save_preferences()
+			log_admin("[src.owner] stopped forcing the rules popup for [key_name(M)].")
+			message_admins("[src.owner] stopped forcing the rules popup for [key_name(M)].")
+
 	else if(href_list["getmob"])
 		if(!check_rights(R_ADMIN))	return
 
@@ -2272,6 +2309,6 @@
 	else if(href_list["ac_set_signature"])
 		src.admincaster_signature = adminscrub(input(usr, "Provide your desired signature", "Network Identity Handler", ""))
 		src.access_news_network()
-		
+
 	else if(href_list["sendtoprison"])
 		usr.client.sendmob(locate(href_list["sendtoprison"]),/area/centcom/prison)

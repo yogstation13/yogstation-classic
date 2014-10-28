@@ -14,16 +14,25 @@
 
 
 /client/Northeast()
+	if(prefs.afreeze)
+		src << "<span class='userdanger'>You are frozen by an administrator.</span>"
+		return
 	swap_hand()
 	return
 
 
 /client/Southeast()
+	if(prefs.afreeze)
+		src << "<span class='userdanger'>You are frozen by an administrator.</span>"
+		return
 	attack_self()
 	return
 
 
 /client/Southwest()
+	if(prefs.afreeze)
+		src << "<span class='userdanger'>You are frozen by an administrator.</span>"
+		return
 	if(iscarbon(usr))
 		var/mob/living/carbon/C = usr
 		C.toggle_throw_mode()
@@ -33,6 +42,9 @@
 
 
 /client/Northwest()
+	if(prefs.afreeze)
+		src << "<span class='userdanger'>You are frozen by an administrator.</span>"
+		return
 	if(!usr.get_active_hand())
 		usr << "<span class='warning'>You have nothing to drop in your hand!</span>"
 		return
@@ -41,7 +53,9 @@
 //This gets called when you press the delete button.
 /client/verb/delete_key_pressed()
 	set hidden = 1
-
+	if(prefs.afreeze)
+		src << "<span class='userdanger'>You are frozen by an administrator.</span>"
+		return
 	if(!usr.pulling)
 		usr << "<span class='notice'>You are not pulling anything.</span>"
 		return
@@ -50,12 +64,17 @@
 /client/verb/swap_hand()
 	set category = "IC"
 	set name = "Swap hands"
-
+	if(prefs.afreeze)
+		src << "<span class='userdanger'>You are frozen by an administrator.</span>"
+		return
 	if(mob)
 		mob.swap_hand()
 
 /client/verb/attack_self()
 	set hidden = 1
+	if(prefs.afreeze)
+		src << "<span class='userdanger'>You are frozen by an administrator.</span>"
+		return
 	if(mob)
 		mob.mode()
 	return
@@ -73,12 +92,18 @@
 
 /client/verb/drop_item()
 	set hidden = 1
+	if(prefs.afreeze)
+		src << "<span class='userdanger'>You are frozen by an administrator.</span>"
+		return
 	if(!isrobot(mob))
 		mob.drop_item_v()
 	return
 
 
 /client/Center()
+	if(prefs.afreeze)
+		src << "<span class='userdanger'>You are frozen by an administrator.</span>"
+		return
 	if (isobj(mob.loc))
 		var/obj/O = mob.loc
 		if (mob.canmove)
@@ -134,6 +159,9 @@
 
 
 /client/Move(n, direct)
+	if(prefs.afreeze)
+		src << "<span class='userdanger'>You are frozen by an administrator.</span>"
+		return 0
 	if(!mob)
 		return 0
 	if(mob.notransform)

@@ -118,7 +118,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	default_slot	= sanitize_integer(default_slot, 1, max_save_slots, initial(default_slot))
 	toggles			= sanitize_integer(toggles, 0, 65535, initial(toggles))
 	ghost_form		= sanitize_inlist(ghost_form, ghost_forms, initial(ghost_form))
-	agree			= sanitize_integer(agree, 0, 65535, 0)
+	agree			= sanitize_integer(agree, -1, 65535, 0)
 
 	return 1
 

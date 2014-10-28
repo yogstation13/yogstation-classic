@@ -74,10 +74,11 @@
 	var/output = ""
 	output += "Welcome [brandnew ? "" : "back "]to Yogstation!<br>"
 	if(brandnew)
-		output += "This appears to be your first time here. Please take a moment to read the server rules.<br>You will not be able to join this round. Take this time to acknowledge yourself with the map, rules, and playstyle.<br>Don't forget to set up your character preferences!"
+		output += "This appears to be your first time here. Please take a moment to read the server rules.<br>You will not be able to join this round. Take this time to acknowledge yourself with the map, rules, and playstyle.<br>Don't forget to set up your character preferences!<br>"
 	else if(current_agree == 0)
 		output += "Even though you've been here before, please take a moment to read the server rules.<br>"
-
+	else if(current_agree == -1)
+		output += "Please read the server rules carefully. To stop receiving this popup, contact an administrator using Adminhelp (F1).<br>"
 
 	if(current_agree > 0)
 		output += "There has been an update in the server rules:<br>"
@@ -286,12 +287,13 @@
 	if(href_list["dtgwiki"])
 		src << link("http://tgstation13.org/wiki/Main_Page")
 		return
-		
+
 	if(href_list["dismiss"])
 		var/eula = alert("I have read and understood the server rules and agree to abide by them.", "Security question", "Cancel", "Agree")
 		if(eula == "Agree")
-			client.prefs.agree = MAXAGREE;
-			client.prefs.save_preferences();
+			if(client.prefs.agree != -1)
+				client.prefs.agree = MAXAGREE;
+				client.prefs.save_preferences();
 			src << browse(null, "window=disclaimer");
 			if(joining_forbidden)
 				src << "Please spend this round observing the game to familiarise yourself with the map, rules, and general playstyle."
