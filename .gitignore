@@ -2,6 +2,9 @@
 
 #Ignore everything in data subdirectories
 /data/**/*
+/data/*
+/data/*
+/_maps/map_files/backup
 
 #Ignore generated files in data
 /data/appearance_full.ban
