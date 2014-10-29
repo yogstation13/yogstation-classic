@@ -142,7 +142,7 @@ Class Procs:
 			pulse2.delete()
 	..()
 
-/obj/machinery/proc/open_machine()
+/obj/machinery/proc/open_machine(updateDialog = 1)
 	var/turf/T = get_turf(src)
 	if(T)
 		state_open = 1
@@ -154,9 +154,10 @@ Class Procs:
 				occupant.client.perspective = MOB_PERSPECTIVE
 			occupant = null
 	update_icon()
-	updateUsrDialog()
+	if(updateDialog)
+		updateUsrDialog()
 
-/obj/machinery/proc/close_machine(mob/living/target = null)
+/obj/machinery/proc/close_machine(mob/living/target = null, updateDialog = 1)
 	state_open = 0
 	density = 1
 	if(!target)
@@ -172,7 +173,8 @@ Class Procs:
 		occupant = target
 		target.loc = src
 		target.stop_pulling()
-	updateUsrDialog()
+	if(updateDialog)
+		updateUsrDialog()
 	update_icon()
 
 /obj/machinery/ex_act(severity)

@@ -384,6 +384,8 @@
 			return "Weapon Permit"
 		if(access_counter)
 			return "Bar Counter"
+		if(access_paramedic)
+			return "Paramedic Room"
 
 /proc/get_centcom_access_desc(A)
 	switch(A)

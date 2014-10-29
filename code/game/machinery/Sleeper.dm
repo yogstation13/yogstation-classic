@@ -226,11 +226,11 @@
 
 /obj/machinery/sleeper/open_machine()
 	if(!state_open && !panel_open)
-		..()
+		..(0)
 
 /obj/machinery/sleeper/close_machine(mob/target)
 	if(state_open && !panel_open)
-		..(target)
+		..(target, 0)
 
 /obj/machinery/sleeper/proc/inject_chem(mob/user, chem)
 	if(occupant && occupant.reagents)

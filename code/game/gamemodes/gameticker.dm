@@ -273,8 +273,11 @@ var/round_start_time = 0
 				player.create_character()
 				qdel(player)
 		else
-			if(player.client && player.client.prefs && player.client.prefs.agree)
-				player.new_player_panel()
+			if(player.client)
+				if(player.client.prefs.agree < MAXAGREE)
+					player.disclaimer()
+				else
+					player.new_player_panel()
 
 
 /datum/controller/gameticker/proc/collect_minds()

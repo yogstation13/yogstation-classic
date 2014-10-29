@@ -653,6 +653,9 @@
 //////////////////
 
 /datum/species/proc/spec_attack_hand(var/mob/living/carbon/human/M, var/mob/living/carbon/human/H)
+	if(!istype(M) || !istype(H))
+		return 0
+
 	if((M != H) && H.check_shields(0, M.name))
 		add_logs(M, H, "attempted to touch")
 		H.visible_message("<span class='warning'>[M] attempted to touch [H]!</span>")

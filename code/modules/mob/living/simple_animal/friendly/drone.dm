@@ -552,6 +552,8 @@
 		else
 			return
 
+	if(!drone)
+		return
 	contents -= drone
 	drone.loc = get_turf(src)
 	drone.reset_view()

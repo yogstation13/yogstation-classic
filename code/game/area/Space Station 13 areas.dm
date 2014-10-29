@@ -1819,10 +1819,14 @@ var/list/the_station_areas = list (
 	/area/toxins,
 	/area/storage,
 	/area/construction,
+	/area/tcommsat,
 	/area/ai_monitored/storage/eva, //do not try to simplify to "/area/ai_monitored" --rastaf0
+	/area/ai_monitored/storage/satellite,
+	/area/ai_monitored/nuke_storage,
+	/area/ai_monitored/security/armory,
 //	/area/ai_monitored/storage/secure,	//not present on map
 //	/area/ai_monitored/storage/emergency,	//not present on map
 	/area/turret_protected/ai_upload, //do not try to simplify to "/area/turret_protected" --rastaf0
 	/area/turret_protected/ai_upload_foyer,
-	/area/turret_protected/ai,
+	/area/turret_protected/ai
 )
