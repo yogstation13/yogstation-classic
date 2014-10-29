@@ -1,7 +1,17 @@
 ###Files and folders specified here will never be tracked.
 
-#Ignore everything in datafolder and subdirectories
+#Ignore everything in data subdirectories
 /data/**/*
+
+#Ignore generated files in data
+/data/appearance_full.ban
+/data/banlist.bdb
+/data/job_full.ban
+/data/job_fullnew.bdb
+/data/memo.sav
+
+#Do not store automatic map backups
+/_maps/map_files/backup
 
 #Ignore compiled files and other files generated during compilation.
 *.dmb

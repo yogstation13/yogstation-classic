@@ -259,10 +259,7 @@
 		movement_dir = get_dir(src,target) //moves to a singulo beacon, if there is one
 
 	if(current_size >= 9)//The superlarge one does not care about things in its way
-		spawn(0)
-			step(src, movement_dir)
-		spawn(1)
-			step(src, movement_dir)
+		step(src, movement_dir)
 		return 1
 	else if(check_turfs_in(movement_dir))
 		last_failed_movement = 0//Reset this because we moved
@@ -408,3 +405,6 @@
 	explosion(src.loc,(dist),(dist*2),(dist*4))
 	qdel(src)
 	return(gain)
+
+/obj/machinery/singularity/Process_Spacemove()
+	return 1
