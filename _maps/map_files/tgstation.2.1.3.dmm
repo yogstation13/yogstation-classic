@@ -8970,7 +8970,7 @@
 "dqz" = (/obj/machinery/power/smes,/obj/structure/cable{icon_state = "0-4"; d2 = 4},/turf/simulated/floor{icon_state = "vault"; dir = 1},/area/engine/engine_smes)
 "dqA" = (/obj/structure/disposalpipe/segment,/obj/machinery/door/airlock/maintenance{name = "Engineering Maintenance"; req_access_txt = "10"},/obj/machinery/atmospherics/pipe/simple/supply/hidden,/turf/simulated/floor/plating,/area/engine/engineering)
 "dqB" = (/obj/machinery/conveyor_switch/oneway{id = "gulag"},/turf/simulated/floor{icon_state = "floorgrime"},/area/mine/laborcamp)
-"dqC" = (/obj/machinery/atmospherics/unary/vent_scrubber,/turf/simulated/floor,/area/engine/engineering)
+"dqC" = (/obj/machinery/atmospherics/unary/vent_scrubber{on = 1; scrub_N2O = 0; scrub_Toxins = 0},/turf/simulated/floor,/area/engine/engineering)
 "dqD" = (/obj/machinery/computer/security/telescreen{desc = "Used for watching the singularity chamber."; dir = 1; layer = 4; name = "Singularity Engine Telescreen"; network = list("Singularity"); pixel_x = 0; pixel_y = -30},/obj/structure/cable/yellow{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor,/area/engine/engineering)
 "dqE" = (/obj/structure/cable/yellow{d1 = 2; d2 = 4; icon_state = "2-4"},/turf/simulated/floor,/area/engine/engineering)
 "dqF" = (/obj/structure/cable/yellow{d1 = 2; d2 = 8; icon_state = "2-8"},/turf/simulated/floor,/area/engine/engineering)

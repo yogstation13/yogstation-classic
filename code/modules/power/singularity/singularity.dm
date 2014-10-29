@@ -405,3 +405,6 @@
 	explosion(src.loc,(dist),(dist*2),(dist*4))
 	qdel(src)
 	return(gain)
+
+/obj/machinery/singularity/Process_Spacemove()
+	return 1
