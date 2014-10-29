@@ -277,6 +277,11 @@
 	if (!..())
 		return
 
+	if(!path)
+		path = new()
+		mode = BOT_IDLE
+		last_found = world.time
+
 	if(mode == BOT_HEALING)
 		return
 

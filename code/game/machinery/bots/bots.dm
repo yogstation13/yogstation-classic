@@ -409,6 +409,8 @@ obj/machinery/bot/proc/bot_move(var/dest, var/move_speed)
 
 
 obj/machinery/bot/proc/bot_step(var/dest)
+	if(!path)
+		path = list()
 	if(path.len > 1)
 		step_to(src, path[1])
 		if(get_turf(src) == path[1]) //Successful move
