@@ -1573,7 +1573,7 @@ datum/reagent/toxin/spore_burning
 	description = "A burning spore cloud."
 	reagent_state = LIQUID
 	color = "#9ACD32"
-	toxpwr = 0.5
+	toxpwr = 1.5
 
 datum/reagent/toxin/spore_burning/on_mob_life(var/mob/living/M as mob)
 	..()

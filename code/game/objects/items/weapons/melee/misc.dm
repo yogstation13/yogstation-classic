@@ -116,6 +116,11 @@
 		if (user.a_intent == "harm")
 			if(!..()) return
 			if(!isrobot(target)) return
+		if(isrobot(target))
+			..()
+			return
+		if(!isliving(target))
+			return
 		else
 			if(cooldown <= 0)
 				playsound(get_turf(src), 'sound/effects/woodhit.ogg', 75, 1, -1)
