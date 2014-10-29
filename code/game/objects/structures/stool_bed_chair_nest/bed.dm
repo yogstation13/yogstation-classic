@@ -124,6 +124,7 @@
 	M.buckled = src
 	M.loc = src.loc
 	M.dir = src.dir
+	M.anchored = 1
 	M.update_canmove()
 	src.buckled_mob = M
 	src.add_fingerprint(user)
