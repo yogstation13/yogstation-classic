@@ -122,15 +122,16 @@
 /mob/living/silicon/robot/Destroy()
 	if(mmi && mind)//Safety for when a cyborg gets dust()ed. Or there is no MMI inside.
 		var/turf/T = get_turf(loc)//To hopefully prevent run time errors.
-		if(T)	mmi.loc = T
-		if(!mmi.brainmob)
-			mmi.brainmob = new(src)
-			mmi.brainmob.name = src.real_name
-			mmi.brainmob.real_name = src.real_name
-			mmi.brainmob.container = mmi
-			mmi.contents += mmi.brainmob
-		mind.transfer_to(mmi.brainmob)
-		mmi = null
+		if(T)
+			mmi.loc = T
+			if(!mmi.brainmob)
+				mmi.brainmob = new(src)
+				mmi.brainmob.name = src.real_name
+				mmi.brainmob.real_name = src.real_name
+				mmi.brainmob.container = mmi
+				mmi.contents += mmi.brainmob
+			mind.transfer_to(mmi.brainmob)
+			mmi = null
 	..()
 
 /mob/living/silicon/robot/proc/connect_ai(var/mob/living/silicon/ai/ai = null)
@@ -988,6 +989,7 @@
 	if(emagged)
 		if(mmi)
 			qdel(mmi)
+			mmi = null
 		explosion(src.loc,1,2,4,flame_range = 2)
 	else
 		explosion(src.loc,-1,0,2)

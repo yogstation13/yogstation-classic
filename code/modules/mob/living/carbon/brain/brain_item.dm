@@ -28,6 +28,8 @@
 	brainmob.real_name = H.real_name
 	brainmob.dna = H.dna
 	brainmob.timeofhostdeath = H.timeofdeath
+	brainmob.loc = src
+	brainmob.container = src
 	if(H.mind)
 		H.mind.transfer_to(brainmob)
 	brainmob << "<span class='notice'>You feel slightly disoriented. That's normal when you're just a brain.</span>"
