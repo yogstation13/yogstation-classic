@@ -159,3 +159,5 @@
 	item_state = "nullrod"
 
 /obj/item/device/flash/handheld //this is now the regular pocket flashes
+	var/list/construction_cost = list("metal"=750,"glass"=750)
+	var/construction_time = 50
