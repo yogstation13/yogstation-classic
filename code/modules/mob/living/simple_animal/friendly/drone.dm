@@ -68,6 +68,10 @@
 
 	alert_drones(DRONE_NET_CONNECT)
 
+/mob/living/simple_animal/drone/Destroy()
+	qdel(access_card) //Otherwise it ends up on the floor!
+	..()
+
 /mob/living/simple_animal/drone/attack_hand(mob/user)
 	if(isdrone(user))
 		var/mob/living/simple_animal/drone/D = user
