@@ -11,22 +11,10 @@
 	return sorttext(a,b)
 
 /proc/cmp_name_asc(atom/a, atom/b)
-	var/an = ""
-	var/bn = ""
-	if(a)
-		an = a.name
-	if(b)
-		bn = b.name
-	return sorttext(bn, an)
+	return sorttext(b.name, a.name)
 
 /proc/cmp_name_dsc(atom/a, atom/b)
-	var/an = ""
-	var/bn = ""
-	if(a)
-		an = a.name
-	if(b)
-		bn = b.name
-	return sorttext(an, bn)
+	return sorttext(a.name, b.name)
 
 var/cmp_field = "name"
 /proc/cmp_records_asc(datum/data/record/a, datum/data/record/b)

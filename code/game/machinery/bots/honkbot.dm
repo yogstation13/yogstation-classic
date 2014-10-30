@@ -164,5 +164,5 @@
  	..()
  	visible_message("<span class='danger'>[src] is destroyed!</span>")
  	new /obj/effect/decal/cleanable/robot_debris(src.loc)
- 	del src
+ 	qdel(src)
  	return

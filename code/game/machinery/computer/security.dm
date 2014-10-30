@@ -420,6 +420,7 @@ What a mess.*/
 
 			if ("Purge All Records")
 				for(var/datum/data/record/R in data_core.security)
+					data_core.security -= R
 					del(R)
 				temp = "All Security records deleted."
 
@@ -627,16 +628,20 @@ What a mess.*/
 
 					if ("Delete Record (Security) Execute")
 						if (active2)
+							data_core.security -= active2
 							del(active2)
 
 					if ("Delete Record (ALL) Execute")
 						if (active1)
 							for(var/datum/data/record/R in data_core.medical)
 								if ((R.fields["name"] == active1.fields["name"] || R.fields["id"] == active1.fields["id"]))
+									data_core.medical -= R
 									del(R)
 								else
+							data_core.security -= active1
 							del(active1)
 						if (active2)
+							data_core.security -= active2
 							del(active2)
 					else
 						temp = "This function does not appear to be working at the moment. Our apologies."
@@ -668,6 +673,7 @@ What a mess.*/
 			continue
 
 		else if(prob(1))
+			data_core.security -= R
 			del(R)
 			continue
 

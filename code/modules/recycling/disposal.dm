@@ -582,6 +582,8 @@
 
 // called to vent all gas in holder to a location
 /obj/structure/disposalholder/proc/vent_gas(var/atom/location)
+	if(!location)
+		return
 	location.assume_air(gas)  // vent all gas to turf
 	air_update_turf()
 	return
