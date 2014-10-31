@@ -166,7 +166,7 @@ var/const/VOX_DELAY = 600
 			for(var/mob/M in player_list)
 				if(M.client)
 					var/turf/T = get_turf(M)
-					if(T.z == z_level)
+					if(T && (T.z == z_level))
 						M << voice
 		else
 			only_listener << voice

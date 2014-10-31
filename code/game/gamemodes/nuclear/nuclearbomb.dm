@@ -25,6 +25,10 @@ var/bomb_set
 	var/obj/item/device/pda/hacker = null
 	var/hacktime = 330
 
+/obj/machinery/nuclearbomb/New()
+	..()
+	wires = new(src)
+
 
 /obj/machinery/nuclearbomb/process()
 	if (src.timing)
