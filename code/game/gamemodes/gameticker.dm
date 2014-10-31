@@ -359,7 +359,9 @@ var/round_start_time = 0
 				num_survivors++
 				if(station_evacuated) //If the shuttle has already left the station
 					var/turf/playerTurf = get_turf(Player)
-					if(playerTurf.z != 2)
+					if(!playerTurf)
+						Player << "<font color='black'><b>Wait, where are you?...</b></FONT>"
+					else if(playerTurf.z != 2)
 						Player << "<font color='blue'><b>You managed to survive, but were marooned on [station_name()]...</b></FONT>"
 					else
 						num_escapees++
