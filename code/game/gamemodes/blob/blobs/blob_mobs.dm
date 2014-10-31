@@ -139,7 +139,7 @@
 	if(isliving(target))
 		var/mob/living/L = target
 		if(L.reagents)
-			L.reagents.add_reagent("spore_burning", 1)
+			L.reagents.add_reagent("spore_burning", REAGENTS_METABOLISM)
 
 
 /mob/living/simple_animal/hostile/blobbernaut/blob_act()

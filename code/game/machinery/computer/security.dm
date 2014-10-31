@@ -638,7 +638,7 @@ What a mess.*/
 									data_core.medical -= R
 									del(R)
 								else
-							data_core.security -= active1
+							data_core.general -= active1
 							del(active1)
 						if (active2)
 							data_core.security -= active2
