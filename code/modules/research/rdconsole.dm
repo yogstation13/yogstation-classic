@@ -49,6 +49,8 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 
 	req_access = list(access_tox)	//Data and setting manipulation requires scientist access.
 
+	var/chosen_category = null
+
 
 /obj/machinery/computer/rdconsole/proc/CallTechName(var/ID) //A simple helper proc to find the name of a tech with a given ID.
 	var/datum/tech/check_tech
@@ -173,6 +175,12 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 	add_fingerprint(usr)
 
 	usr.set_machine(src)
+
+	if(href_list["choose_category"]) // In appropriate screens, choose a category
+                chosen_category = url_decode(href_list["choose_category"])
+        else if(href_list["clear_category"]) // In appropriate screens, clear the chosen category
+                chosen_category = null
+
 	if(href_list["menu"]) //Switches menu screens. Converts a sent text string into a number. Saves a LOT of code.
 		var/temp_screen = text2num(href_list["menu"])
 		if(temp_screen <= 1.1 || (3 <= temp_screen && 4.9 >= temp_screen) || src.allowed(usr) || emagged) //Unless you are making something, you need access.
@@ -776,33 +784,52 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			dat += "<B>Material Amount:</B> [linked_lathe.TotalMaterials()] / [linked_lathe.max_material_storage]<BR>"
 			dat += "<B>Chemical Volume:</B> [linked_lathe.reagents.total_volume] / [linked_lathe.reagents.maximum_volume]<HR>"
 			var/coeff = linked_lathe.efficiency_coeff
-			for(var/datum/design/D in files.known_designs)
-				if(!(D.build_type & PROTOLATHE))
-					continue
-				var/temp_dat = "[D.name]"
-				var/temp_material
-				var/c = 50
-				var/t
-				for(var/M in D.materials)
-					t = linked_lathe.check_mat(D, M)
-					if (!t)
-						temp_material += " <span style=\"color:red\">[D.materials[M]/coeff] [CallMaterialName(M)]</span>"
+			if(!chosen_category)
+				var/list/categories = list()
+				for(var/datum/design/D in files.known_designs)
+                                        if(!(D.build_type & PROTOLATHE))
+						continue
+					
+					if(!D.ui_category in categories)
+						categories.Add(D.ui_category)
+				
+				dat += "<ol>"
+				for(var/cat in categories)
+					dat += "<li><a href='?src=\ref[src];menu=3.1;choose_category=[url_encode(cat)]'></a></li>"
+				dat += "</ol>"
+			else
+				dat += "<a href='?src=\ref[src];menu=3.1;clear_category=1'></a><HR>"
+				for(var/datum/design/D in files.known_designs)
+					if(!(D.build_type & PROTOLATHE))
+						continue
+
+					if(D.ui_category != chosen_category)
+						continue
+
+					var/temp_dat = "[D.name]"
+					var/temp_material
+					var/c = 50
+					var/t
+					for(var/M in D.materials)
+						t = linked_lathe.check_mat(D, M)
+						if (!t)
+							temp_material += " <span style=\"color:red\">[D.materials[M]/coeff] [CallMaterialName(M)]</span>"
+						else
+							temp_material += " [D.materials[M]/coeff] [CallMaterialName(M)]"
+						c = min(c,t)
+	
+					if (c)
+						dat += "* <A href='?src=\ref[src];build=[D.id];amount=1'>[temp_dat]</A>"
+						if(c >= 5.0)
+							dat += "<A href='?src=\ref[src];build=[D.id];amount=5'>x5</A>"
+						if(c >= 10.0)
+							dat += "<A href='?src=\ref[src];build=[D.id];amount=10'>x10</A>"
+						dat += "[temp_material]"
 					else
-						temp_material += " [D.materials[M]/coeff] [CallMaterialName(M)]"
-					c = min(c,t)
-
-				if (c)
-					dat += "* <A href='?src=\ref[src];build=[D.id];amount=1'>[temp_dat]</A>"
-					if(c >= 5.0)
-						dat += "<A href='?src=\ref[src];build=[D.id];amount=5'>x5</A>"
-					if(c >= 10.0)
-						dat += "<A href='?src=\ref[src];build=[D.id];amount=10'>x10</A>"
-					dat += "[temp_material]"
-				else
-					dat += "* <span class='linkOff'>[temp_dat]</span>[temp_material]"
-				dat += "<BR>"
+						dat += "* <span class='linkOff'>[temp_dat]</span>[temp_material]"
+					dat += "<BR>"
 			dat += "</div>"
-
+			
 		if(3.2) //Protolathe Material Storage Sub-menu
 			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A>"
 			dat += "<A href='?src=\ref[src];menu=3.1'>Protolathe Menu</A><div class='statusDisplay'>"
@@ -878,22 +905,42 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			dat += "Material Amount: [linked_imprinter.TotalMaterials()]<BR>"
 			dat += "Chemical Volume: [linked_imprinter.reagents.total_volume]<HR>"
 			var/coeff = linked_imprinter.efficiency_coeff
-			for(var/datum/design/D in files.known_designs)
-				if(!(D.build_type & IMPRINTER))
-					continue
-				var/temp_dat = "[D.name]"
-				var/temp_materials
-				var/check_materials = 1
-				for(var/M in D.materials)
-					if (!linked_imprinter.check_mat(D, M))
-						check_materials = 0
-						temp_materials += " <span style=\"color:red\">[D.materials[M]/coeff] [CallMaterialName(M)]</span>"
+
+			if(!chosen_category)
+                                var/list/categories = list()
+                                for(var/datum/design/D in files.known_designs)
+                                        if(!(D.build_type & IMPRINTER))
+                                                continue
+
+                                        if(!D.ui_category in categories)
+                                                categories.Add(D.ui_category)
+
+                                dat += "<ol>"
+                                for(var/cat in categories)
+                                        dat += "<li><a href='?src=\ref[src];menu=4.1;choose_category=[url_encode(cat)]'></a></li>"
+                                dat += "</ol>"
+                        else
+                                dat += "<a href='?src=\ref[src];menu=4.1;clear_category=1'></a><HR>"
+				for(var/datum/design/D in files.known_designs)
+					if(!(D.build_type & IMPRINTER))
+						continue
+
+					if(D.ui_category != chosen_category)
+						continue
+
+					var/temp_dat = "[D.name]"
+					var/temp_materials
+					var/check_materials = 1
+					for(var/M in D.materials)
+						if (!linked_imprinter.check_mat(D, M))
+							check_materials = 0
+							temp_materials += " <span style=\"color:red\">[D.materials[M]/coeff] [CallMaterialName(M)]</span>"
+						else
+							temp_materials += " [D.materials[M]/coeff] [CallMaterialName(M)]"
+					if (check_materials)
+						dat += "* <A href='?src=\ref[src];imprint=[D.id]'>[temp_dat]</A>[temp_materials]<BR>"
 					else
-						temp_materials += " [D.materials[M]/coeff] [CallMaterialName(M)]"
-				if (check_materials)
-					dat += "* <A href='?src=\ref[src];imprint=[D.id]'>[temp_dat]</A>[temp_materials]<BR>"
-				else
-					dat += "* <span class='linkOff'>[temp_dat]</span>[temp_materials]<BR>"
+						dat += "* <span class='linkOff'>[temp_dat]</span>[temp_materials]<BR>"
 			dat += "</div>"
 
 		if(4.2)

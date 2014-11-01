@@ -48,6 +48,7 @@ datum/design						//Datum for object designs, used in construction
 	var/build_path = ""					//The file path of the object that gets created
 	var/locked = 0						//If true it will spawn inside a lockbox with currently sec access
 	var/category = null //Primarily used for Mech Fabricators, but can be used for anything
+	var/ui_category = null
 
 
 //A proc to calculate the reliability of a design based on tech levels and innate modifiers.

@@ -10,6 +10,7 @@ datum/design/safeguard_module
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20, "$gold" = 100)
 	build_path = /obj/item/weapon/aiModule/supplied/safeguard
+	ui_category = "AI Module"
 
 datum/design/onehuman_module
 	name = "Module Design (OneHuman)"
@@ -19,6 +20,7 @@ datum/design/onehuman_module
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20, "$diamond" = 100)
 	build_path = /obj/item/weapon/aiModule/zeroth/oneHuman
+	ui_category = "AI Module"
 
 datum/design/protectstation_module
 	name = "Module Design (ProtectStation)"
@@ -28,6 +30,7 @@ datum/design/protectstation_module
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20, "$gold" = 100)
 	build_path = /obj/item/weapon/aiModule/supplied/protectStation
+        ui_category = "AI Module"
 
 datum/design/quarantine_module
 	name = "Module Design (Quarantine)"
@@ -37,6 +40,7 @@ datum/design/quarantine_module
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20, "$gold" = 100)
 	build_path = /obj/item/weapon/aiModule/supplied/quarantine
+        ui_category = "AI Module"
 
 datum/design/oxygen_module
 	name = "Module Design (OxygenIsToxicToHumans)"
@@ -46,6 +50,7 @@ datum/design/oxygen_module
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20, "$gold" = 100)
 	build_path = /obj/item/weapon/aiModule/supplied/oxygen
+        ui_category = "AI Module"
 
 datum/design/freeform_module
 	name = "Module Design (Freeform)"
@@ -55,6 +60,7 @@ datum/design/freeform_module
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20, "$gold" = 100)
 	build_path = /obj/item/weapon/aiModule/supplied/freeform
+        ui_category = "AI Module"
 
 datum/design/reset_module
 	name = "Module Design (Reset)"
@@ -64,6 +70,7 @@ datum/design/reset_module
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20, "$gold" = 100)
 	build_path = /obj/item/weapon/aiModule/reset
+        ui_category = "AI Module"
 
 datum/design/purge_module
 	name = "Module Design (Purge)"
@@ -73,6 +80,7 @@ datum/design/purge_module
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20, "$diamond" = 100)
 	build_path = /obj/item/weapon/aiModule/reset/purge
+        ui_category = "AI Module"
 
 datum/design/freeformcore_module
 	name = "Core Module Design (Freeform)"
@@ -82,6 +90,7 @@ datum/design/freeformcore_module
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20, "$diamond" = 100)
 	build_path = /obj/item/weapon/aiModule/core/freeformcore
+        ui_category = "AI Module"
 
 datum/design/asimov
 	name = "Core Module Design (Asimov)"
@@ -91,6 +100,7 @@ datum/design/asimov
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20, "$diamond" = 100)
 	build_path = /obj/item/weapon/aiModule/core/full/asimov
+        ui_category = "AI Module"
 
 datum/design/paladin_module
 	name = "Core Module Design (P.A.L.A.D.I.N.)"
@@ -100,6 +110,7 @@ datum/design/paladin_module
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20, "$diamond" = 100)
 	build_path = /obj/item/weapon/aiModule/core/full/paladin
+        ui_category = "AI Module"
 
 datum/design/tyrant_module
 	name = "Core Module Design (T.Y.R.A.N.T.)"
@@ -109,6 +120,7 @@ datum/design/tyrant_module
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20, "$diamond" = 100)
 	build_path = /obj/item/weapon/aiModule/core/full/tyrant
+        ui_category = "AI Module"
 
 datum/design/corporate_module
 	name = "Core Module Design (Corporate)"
@@ -118,6 +130,7 @@ datum/design/corporate_module
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20, "$diamond" = 100)
 	build_path = /obj/item/weapon/aiModule/core/full/corp
+        ui_category = "AI Module"
 
 datum/design/custom_module
 	name = "Core Module Design (Custom)"
@@ -127,3 +140,4 @@ datum/design/custom_module
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20, "$diamond" = 100)
 	build_path = /obj/item/weapon/aiModule/core/full/custom
+        ui_category = "AI Module"
