@@ -108,7 +108,7 @@
 
 		if(unresolvedCount)
 			if(alert(usr, "You have resolved the last ticket (the server restart is currently delayed!). Would you like to restart the server now?", "Restart Server", "Restart", "Cancel") == "Restart")
-				sleep(restart_timeout)
+				sleep(ticker.restart_timeout)
 				kick_clients_in_lobby("\red The round came to an end with you in the lobby.", 1) //second parameter ensures only afk clients are kicked
 				world.Reboot()
 			else
