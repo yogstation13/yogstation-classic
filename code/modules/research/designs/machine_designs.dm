@@ -10,8 +10,8 @@ datum/design/smes
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/smes
-        ui_category = "Miscellaneous Machine Boards"
-
+	ui_category = "Miscellaneous Machine Boards"
+	
 datum/design/turbine_computer
 	name = "Computer Design (Power Turbine Console Board)"
 	desc = "The circuit board for a power turbine console."
@@ -20,7 +20,7 @@ datum/design/turbine_computer
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/turbine_computer
-        ui_category = "Miscellaneous Machine Boards"
+	ui_category = "Miscellaneous Machine Boards"
 
 datum/design/power_compressor
 	name = "Machine Design (Power Compressor Board)"
@@ -30,7 +30,7 @@ datum/design/power_compressor
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/power_compressor
-        ui_category = "Miscellaneous Machine Boards"
+	ui_category = "Miscellaneous Machine Boards"
 
 datum/design/power_turbine
 	name = "Machine Design (Power Turbine Board)"
@@ -40,7 +40,7 @@ datum/design/power_turbine
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/power_turbine
-        ui_category = "Miscellaneous Machine Boards"
+	ui_category = "Miscellaneous Machine Boards"
 
 datum/design/teleport_station
 	name = "Machine Design (Teleportation Station Board)"
@@ -50,7 +50,7 @@ datum/design/teleport_station
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/teleporter_station
-        ui_category = "Miscellaneous Machine Boards"
+	ui_category = "Miscellaneous Machine Boards"
 
 datum/design/teleport_hub
 	name = "Machine Design (Teleportation Hub Board)"
@@ -60,7 +60,7 @@ datum/design/teleport_hub
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/teleporter_hub
-        ui_category = "Miscellaneous Machine Boards"
+	ui_category = "Miscellaneous Machine Boards"
 
 datum/design/telepad
 	name = "Machine Design (Telepad Board)"
@@ -70,7 +70,7 @@ datum/design/telepad
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/telesci_pad
-        ui_category = "Miscellaneous Machine Boards"
+	ui_category = "Miscellaneous Machine Boards"
 
 datum/design/sleeper
 	name = "Machine Design (Sleeper Board)"
@@ -80,7 +80,7 @@ datum/design/sleeper
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/sleeper
-        ui_category = "Miscellaneous Machine Boards"
+	ui_category = "Miscellaneous Machine Boards"
 
 datum/design/cryotube
 	name = "Machine Design (Cryotube Board)"
@@ -90,7 +90,7 @@ datum/design/cryotube
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/cryo_tube
-        ui_category = "Miscellaneous Machine Boards"
+	ui_category = "Miscellaneous Machine Boards"
 
 datum/design/thermomachine
 	name = "Machine Design (Freezer/Heater Board)"
@@ -100,7 +100,7 @@ datum/design/thermomachine
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/thermomachine
-        ui_category = "Miscellaneous Machine Boards"
+	ui_category = "Miscellaneous Machine Boards"
 
 datum/design/biogenerator
 	name = "Machine Design (Biogenerator Board)"
@@ -110,7 +110,7 @@ datum/design/biogenerator
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/biogenerator
-        ui_category = "Miscellaneous Machine Boards"
+	ui_category = "Miscellaneous Machine Boards"
 
 datum/design/hydroponics
 	name = "Machine Design (Hydroponics Tray Board)"
@@ -120,7 +120,7 @@ datum/design/hydroponics
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/hydroponics
-        ui_category = "Miscellaneous Machine Boards"
+	ui_category = "Miscellaneous Machine Boards"
 
 datum/design/microwave
 	name = "Machine Design (Microwave Board)"
@@ -130,7 +130,7 @@ datum/design/microwave
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/microwave
-        ui_category = "Miscellaneous Machine Boards"
+	ui_category = "Miscellaneous Machine Boards"
 
 datum/design/chem_dispenser
 	name = "Machine Design (Portable Chem Dispenser Board)"
@@ -140,7 +140,7 @@ datum/design/chem_dispenser
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/chem_dispenser
-        ui_category = "Miscellaneous Machine Boards"
+	ui_category = "Miscellaneous Machine Boards"
 
 datum/design/destructive_analyzer
 	name = "Machine Design (Destructive Analyzer Board)"
@@ -150,7 +150,7 @@ datum/design/destructive_analyzer
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/destructive_analyzer
-        ui_category = "Miscellaneous Machine Boards"
+	ui_category = "Miscellaneous Machine Boards"
 
 datum/design/protolathe
 	name = "Machine Design (Protolathe Board)"
@@ -160,7 +160,7 @@ datum/design/protolathe
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/protolathe
-        ui_category = "Miscellaneous Machine Boards"
+	ui_category = "Miscellaneous Machine Boards"
 
 datum/design/circuit_imprinter
 	name = "Machine Design (Circuit Imprinter Board)"
@@ -170,7 +170,7 @@ datum/design/circuit_imprinter
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/circuit_imprinter
-        ui_category = "Miscellaneous Machine Boards"
+	ui_category = "Miscellaneous Machine Boards"
 
 datum/design/autolathe
 	name = "Machine Design (Autolathe Board)"
@@ -180,7 +180,7 @@ datum/design/autolathe
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/autolathe
-        ui_category = "Miscellaneous Machine Boards"
+	ui_category = "Miscellaneous Machine Boards"
 
 datum/design/rdservercontrol
 	name = "Computer Design (R&D Server Control Console Board)"
@@ -190,7 +190,7 @@ datum/design/rdservercontrol
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/rdservercontrol
-        ui_category = "Miscellaneous Machine Boards"
+	ui_category = "Miscellaneous Machine Boards"
 
 datum/design/rdserver
 	name = "Machine Design (R&D Server Board)"
@@ -200,7 +200,7 @@ datum/design/rdserver
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/rdserver
-        ui_category = "Miscellaneous Machine Boards"
+	ui_category = "Miscellaneous Machine Boards"
 
 datum/design/mechfab
 	name = "Machine Design (Exosuit Fabricator Board)"
@@ -209,7 +209,7 @@ datum/design/mechfab
 	req_tech = list("programming" = 3, "engineering" = 3)
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
-        ui_category = "Miscellaneous Machine Boards"
+	ui_category = "Miscellaneous Machine Boards"
 	build_path = /obj/item/weapon/circuitboard/mechfab
 
 datum/design/cyborgrecharger
@@ -220,7 +220,7 @@ datum/design/cyborgrecharger
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/cyborgrecharger
-        ui_category = "Miscellaneous Machine Boards"
+	ui_category = "Miscellaneous Machine Boards"
 
 datum/design/mech_recharger
 	name = "Machine Design (Mechbay Recharger Board)"
@@ -230,7 +230,7 @@ datum/design/mech_recharger
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/mech_recharger
-        ui_category = "Miscellaneous Machine Boards"
+	ui_category = "Miscellaneous Machine Boards"
 
 datum/design/vendor
 	name = "Machine Design (Vendor Board)"
@@ -240,7 +240,7 @@ datum/design/vendor
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/vendor
-        ui_category = "Miscellaneous Machine Boards"
+	ui_category = "Miscellaneous Machine Boards"
 
 datum/design/ore_redemption
 	name = "Machine Design (Ore Redemption Board)"
@@ -250,7 +250,7 @@ datum/design/ore_redemption
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/ore_redemption
-        ui_category = "Miscellaneous Machine Boards"
+	ui_category = "Miscellaneous Machine Boards"
 
 
 datum/design/mining_equipment_vendor
@@ -261,4 +261,4 @@ datum/design/mining_equipment_vendor
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/mining_equipment_vendor
-        ui_category = "Miscellaneous Machine Boards"
+	ui_category = "Miscellaneous Machine Boards"

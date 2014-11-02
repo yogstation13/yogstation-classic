@@ -177,9 +177,9 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 	usr.set_machine(src)
 
 	if(href_list["choose_category"]) // In appropriate screens, choose a category
-                chosen_category = url_decode(href_list["choose_category"])
-        else if(href_list["clear_category"]) // In appropriate screens, clear the chosen category
-                chosen_category = null
+		chosen_category = url_decode(href_list["choose_category"])
+	else if(href_list["clear_category"]) // In appropriate screens, clear the chosen category
+		chosen_category = null
 
 	if(href_list["menu"]) //Switches menu screens. Converts a sent text string into a number. Saves a LOT of code.
 		var/temp_screen = text2num(href_list["menu"])
@@ -787,12 +787,12 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			if(!chosen_category)
 				var/list/categories = list()
 				for(var/datum/design/D in files.known_designs)
-                                        if(!(D.build_type & PROTOLATHE))
+					if(!(D.build_type & PROTOLATHE))
 						continue
-					
+
 					if(!D.ui_category in categories)
 						categories.Add(D.ui_category)
-				
+
 				dat += "<ol>"
 				for(var/cat in categories)
 					dat += "<li><a href='?src=\ref[src];menu=3.1;choose_category=[url_encode(cat)]'></a></li>"
@@ -817,7 +817,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 						else
 							temp_material += " [D.materials[M]/coeff] [CallMaterialName(M)]"
 						c = min(c,t)
-	
+
 					if (c)
 						dat += "* <A href='?src=\ref[src];build=[D.id];amount=1'>[temp_dat]</A>"
 						if(c >= 5.0)
@@ -829,7 +829,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 						dat += "* <span class='linkOff'>[temp_dat]</span>[temp_material]"
 					dat += "<BR>"
 			dat += "</div>"
-			
+
 		if(3.2) //Protolathe Material Storage Sub-menu
 			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A>"
 			dat += "<A href='?src=\ref[src];menu=3.1'>Protolathe Menu</A><div class='statusDisplay'>"
@@ -907,20 +907,20 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			var/coeff = linked_imprinter.efficiency_coeff
 
 			if(!chosen_category)
-                                var/list/categories = list()
-                                for(var/datum/design/D in files.known_designs)
-                                        if(!(D.build_type & IMPRINTER))
-                                                continue
+				var/list/categories = list()
+				for(var/datum/design/D in files.known_designs)
+					if(!(D.build_type & IMPRINTER))
+						continue
 
-                                        if(!D.ui_category in categories)
-                                                categories.Add(D.ui_category)
+					if(!D.ui_category in categories)
+						categories.Add(D.ui_category)
 
-                                dat += "<ol>"
-                                for(var/cat in categories)
-                                        dat += "<li><a href='?src=\ref[src];menu=4.1;choose_category=[url_encode(cat)]'></a></li>"
-                                dat += "</ol>"
-                        else
-                                dat += "<a href='?src=\ref[src];menu=4.1;clear_category=1'></a><HR>"
+				dat += "<ol>"
+				for(var/cat in categories)
+					dat += "<li><a href='?src=\ref[src];menu=4.1;choose_category=[url_encode(cat)]'></a></li>"
+				dat += "</ol>"
+			else
+				dat += "<a href='?src=\ref[src];menu=4.1;clear_category=1'></a><HR>"
 				for(var/datum/design/D in files.known_designs)
 					if(!(D.build_type & IMPRINTER))
 						continue

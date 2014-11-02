@@ -11,8 +11,8 @@ datum/design/RPED
 	build_type = PROTOLATHE
 	materials = list("$metal" = 15000, "$glass" = 5000) //hardcore
 	build_path = /obj/item/weapon/storage/part_replacer
-        ui_category = "Stock parts"
-
+	ui_category = "Stock parts"
+	
 datum/design/basic_capacitor
 	name = "Basic Capacitor"
 	desc = "A stock part used in the construction of various devices."
@@ -21,7 +21,7 @@ datum/design/basic_capacitor
 	build_type = PROTOLATHE | AUTOLATHE
 	materials = list("$metal" = 50, "$glass" = 50)
 	build_path = /obj/item/weapon/stock_parts/capacitor
-        ui_category = "Stock parts"
+	ui_category = "Stock parts"
 
 datum/design/basic_scanning
 	name = "Basic Scanning Module"
@@ -31,7 +31,7 @@ datum/design/basic_scanning
 	build_type = PROTOLATHE | AUTOLATHE
 	materials = list("$metal" = 50, "$glass" = 20)
 	build_path = /obj/item/weapon/stock_parts/scanning_module
-        ui_category = "Stock parts"
+	ui_category = "Stock parts"
 
 datum/design/micro_mani
 	name = "Micro Manipulator"
@@ -41,7 +41,7 @@ datum/design/micro_mani
 	build_type = PROTOLATHE | AUTOLATHE
 	materials = list("$metal" = 30)
 	build_path = /obj/item/weapon/stock_parts/manipulator
-        ui_category = "Stock parts"
+	ui_category = "Stock parts"
 
 datum/design/basic_micro_laser
 	name = "Basic Micro-Laser"
@@ -51,7 +51,7 @@ datum/design/basic_micro_laser
 	build_type = PROTOLATHE | AUTOLATHE
 	materials = list("$metal" = 10, "$glass" = 20)
 	build_path = /obj/item/weapon/stock_parts/micro_laser
-        ui_category = "Stock parts"
+	ui_category = "Stock parts"
 
 datum/design/basic_matter_bin
 	name = "Basic Matter Bin"
@@ -61,7 +61,7 @@ datum/design/basic_matter_bin
 	build_type = PROTOLATHE | AUTOLATHE
 	materials = list("$metal" = 80)
 	build_path = /obj/item/weapon/stock_parts/matter_bin
-        ui_category = "Stock parts"
+	ui_category = "Stock parts"
 
 datum/design/adv_capacitor
 	name = "Advanced Capacitor"
@@ -71,7 +71,7 @@ datum/design/adv_capacitor
 	build_type = PROTOLATHE
 	materials = list("$metal" = 50, "$glass" = 50)
 	build_path = /obj/item/weapon/stock_parts/capacitor/adv
-        ui_category = "Stock parts"
+	ui_category = "Stock parts"
 
 datum/design/adv_scanning
 	name = "Advanced Scanning Module"
@@ -81,7 +81,7 @@ datum/design/adv_scanning
 	build_type = PROTOLATHE
 	materials = list("$metal" = 50, "$glass" = 20)
 	build_path = /obj/item/weapon/stock_parts/scanning_module/adv
-        ui_category = "Stock parts"
+	ui_category = "Stock parts"
 
 datum/design/nano_mani
 	name = "Nano Manipulator"
@@ -91,7 +91,7 @@ datum/design/nano_mani
 	build_type = PROTOLATHE
 	materials = list("$metal" = 30)
 	build_path = /obj/item/weapon/stock_parts/manipulator/nano
-        ui_category = "Stock parts"
+	ui_category = "Stock parts"
 
 datum/design/high_micro_laser
 	name = "High-Power Micro-Laser"
@@ -101,7 +101,7 @@ datum/design/high_micro_laser
 	build_type = PROTOLATHE
 	materials = list("$metal" = 10, "$glass" = 20)
 	build_path = /obj/item/weapon/stock_parts/micro_laser/high
-        ui_category = "Stock parts"
+	ui_category = "Stock parts"
 
 datum/design/adv_matter_bin
 	name = "Advanced Matter Bin"
@@ -111,7 +111,7 @@ datum/design/adv_matter_bin
 	build_type = PROTOLATHE
 	materials = list("$metal" = 80)
 	build_path = /obj/item/weapon/stock_parts/matter_bin/adv
-        ui_category = "Stock parts"
+	ui_category = "Stock parts"
 
 datum/design/super_capacitor
 	name = "Super Capacitor"
@@ -122,7 +122,7 @@ datum/design/super_capacitor
 	reliability = 71
 	materials = list("$metal" = 50, "$glass" = 50, "$gold" = 20)
 	build_path = /obj/item/weapon/stock_parts/capacitor/super
-        ui_category = "Stock parts"
+	ui_category = "Stock parts"
 
 datum/design/phasic_scanning
 	name = "Phasic Scanning Module"
@@ -133,7 +133,7 @@ datum/design/phasic_scanning
 	materials = list("$metal" = 50, "$glass" = 20, "$silver" = 10)
 	reliability = 72
 	build_path = /obj/item/weapon/stock_parts/scanning_module/phasic
-        ui_category = "Stock parts"
+	ui_category = "Stock parts"
 
 datum/design/pico_mani
 	name = "Pico Manipulator"
@@ -144,7 +144,7 @@ datum/design/pico_mani
 	materials = list("$metal" = 30)
 	reliability = 73
 	build_path = /obj/item/weapon/stock_parts/manipulator/pico
-        ui_category = "Stock parts"
+	ui_category = "Stock parts"
 
 datum/design/ultra_micro_laser
 	name = "Ultra-High-Power Micro-Laser"
@@ -155,7 +155,7 @@ datum/design/ultra_micro_laser
 	materials = list("$metal" = 10, "$glass" = 20, "$uranium" = 10)
 	reliability = 70
 	build_path = /obj/item/weapon/stock_parts/micro_laser/ultra
-        ui_category = "Stock parts"
+	ui_category = "Stock parts"
 
 datum/design/super_matter_bin
 	name = "Super Matter Bin"
@@ -166,7 +166,7 @@ datum/design/super_matter_bin
 	materials = list("$metal" = 80)
 	reliability = 75
 	build_path = /obj/item/weapon/stock_parts/matter_bin/super
-        ui_category = "Stock parts"
+	ui_category = "Stock parts"
 
 datum/design/subspace_ansible
 	name = "Subspace Ansible"
@@ -176,7 +176,7 @@ datum/design/subspace_ansible
 	build_type = PROTOLATHE
 	materials = list("$metal" = 80, "$silver" = 20)
 	build_path = /obj/item/weapon/stock_parts/subspace/ansible
-        ui_category = "Stock parts"
+	ui_category = "Stock parts"
 
 datum/design/hyperwave_filter
 	name = "Hyperwave Filter"
@@ -186,7 +186,7 @@ datum/design/hyperwave_filter
 	build_type = PROTOLATHE
 	materials = list("$metal" = 40, "$silver" = 10)
 	build_path = /obj/item/weapon/stock_parts/subspace/filter
-        ui_category = "Stock parts"
+	ui_category = "Stock parts"
 
 datum/design/subspace_amplifier
 	name = "Subspace Amplifier"
@@ -196,7 +196,7 @@ datum/design/subspace_amplifier
 	build_type = PROTOLATHE
 	materials = list("$metal" = 10, "$gold" = 30, "$uranium" = 15)
 	build_path = /obj/item/weapon/stock_parts/subspace/amplifier
-        ui_category = "Stock parts"
+	ui_category = "Stock parts"
 
 datum/design/subspace_treatment
 	name = "Subspace Treatment Disk"
@@ -206,7 +206,7 @@ datum/design/subspace_treatment
 	build_type = PROTOLATHE
 	materials = list("$metal" = 10, "$silver" = 20)
 	build_path = /obj/item/weapon/stock_parts/subspace/treatment
-        ui_category = "Stock parts"
+	ui_category = "Stock parts"
 
 datum/design/subspace_analyzer
 	name = "Subspace Analyzer"
@@ -216,7 +216,7 @@ datum/design/subspace_analyzer
 	build_type = PROTOLATHE
 	materials = list("$metal" = 10, "$gold" = 15)
 	build_path = /obj/item/weapon/stock_parts/subspace/analyzer
-        ui_category = "Stock parts"
+	ui_category = "Stock parts"
 
 datum/design/subspace_crystal
 	name = "Ansible Crystal"
@@ -226,7 +226,7 @@ datum/design/subspace_crystal
 	build_type = PROTOLATHE
 	materials = list("$glass" = 1000, "$silver" = 20, "$gold" = 20)
 	build_path = /obj/item/weapon/stock_parts/subspace/crystal
-        ui_category = "Stock parts"
+	ui_category = "Stock parts"
 
 datum/design/subspace_transmitter
 	name = "Subspace Transmitter"
@@ -236,4 +236,4 @@ datum/design/subspace_transmitter
 	build_type = PROTOLATHE
 	materials = list("$glass" = 100, "$silver" = 10, "$uranium" = 15)
 	build_path = /obj/item/weapon/stock_parts/subspace/transmitter
-        ui_category = "Stock parts"
+	ui_category = "Stock parts"
