@@ -15,55 +15,74 @@
 	if(user.client.holder && !handling_admin)
 		if(!compare_ckey(user, owner_ckey))
 			handling_admin = user
-			add_log("[handling_admin] has been assigned to this ticket as primary admin.");
-			world << output("[key_name(handling_admin, 1)]", "ViewTicketLog[ticket_id].browser:handling_user")
+			// For Alex: Do not report primary admin set
+			//add_log("[handling_admin] has been assigned to this ticket as primary admin.");
+			world << output("[key_name_params(handling_admin, 1, 1, null, src)]", "ViewTicketLog[ticket_id].browser:handling_user")
 
 	//var/time = time2text(world.timeofday, "hh:mm")
-	var/message = "[gameTimestamp()] - <b>[user]</b> - [log_message]"
+	var/message = "[gameTimestamp()] - <b>[key_name_params(user, 0, 0, null, src)]</b> - [log_message]"
 	log += "[message]"
 
 	world << output(message, "ViewTicketLog[ticket_id].browser:add_message")
 
 	log_admin("Ticket #[ticket_id] message: [message]")
 
-	var/found = 0
-
+	var/foundMonitor = 0
 	for(var/M in monitors)
 		if(compare_ckey(owner_ckey, M) || compare_ckey(user, handling_admin))
 			break
 
-		M << "<span class='ticket-header-recieved'>-- <a href='?src=\ref[user];action=view_admin_ticket;ticket=\ref[src]'>Ticket #[ticket_id]</a> - New message --</span>"
-		M << "<span class='ticket-text-received'>-- <i>[key_name(user, 1)]</i>: [log_message]</span>"
+		// For Alex: No bigred text for monitors
+		//M << "<span class='ticket-header-recieved'>-- Administrator private message --</span>"
+		if(compare_ckey(user, owner))
+			M << "<span class='ticket-text-monitored'>-- <i>[key_name_params(user, 1, 1, null, src)]</i> -> <i>[key_name_params(owner, 0, 0, null, src)]</i>: [log_message]</span>"
+		else
+			M << "<span class='ticket-text-monitored'>-- <i>[key_name_params(user, 1, 1, null, src)]</i> -> <i>[key_name_params(handling_admin, 0, 0, null, src)]</i>: [log_message]</span>"
+
 		if(has_pref(M, SOUND_ADMINHELP))
 			M << 'sound/effects/adminhelp.ogg'
 		if(compare_ckey(M, user))
-			found = 1
+			foundMonitor = 1
+
+	for(var/client/X in admins)
+		if(has_pref(X, TICKET_ALL))
+			if(compare_ckey(owner, X) || compare_ckey(handling_admin, X) || X in monitors)
+				continue
+			X << "<span class='ticket-text-monitored'>-- <i>[key_name_params(user, 1, 1)]</i> -> <i><a href='?src=\ref[user];action=view_admin_ticket;ticket=\ref[src]'>Ticket #[src.ticket_id]</a></i>: [log_message]</span>"
 
 	if(!compare_ckey(handling_admin, user))
-		// no bigred for admins - handling_admin << "<span class='ticket-header-recieved'>-- <a href='?src=\ref[user];action=view_admin_ticket;ticket=\ref[src]'>Ticket #[ticket_id]</a> - New message --</span>"
-		handling_admin << "<span class='ticket-text-received'>-- <i>[key_name(user, 1)]</i>: [log_message]</span>"
+		// For Alex: No bigred for admins
+		//handling_admin << "<span class='ticket-header-recieved'>-- Administrator private message --</span>"
+		handling_admin << "<span class='ticket-text-received'>-- <i>[key_name_params(user, 1, 1, null, src)]</i> -> <i>[key_name_params(handling_admin, 0, 0, null, src)]</i>: [log_message]</span>"
 		if(has_pref(handling_admin, SOUND_ADMINHELP))
 			handling_admin << 'sound/effects/adminhelp.ogg'
 
 	if(!compare_ckey(owner_ckey, user))
-		if(!is_admin(owner)) owner << "<span class='ticket-header-recieved'>-- <a href='?src=\ref[user];action=view_admin_ticket;ticket=\ref[src]'>Ticket #[ticket_id]</a> - New message --</span>"
+		if(!is_admin(owner)) owner << "<span class='ticket-header-recieved'>-- Administrator private message --</span>"
 		if(has_pref(owner, SOUND_ADMINHELP))
 			owner << 'sound/effects/adminhelp.ogg'
-	owner << "<span class='[compare_ckey(owner_ckey, user) ? "ticket-text-sent" : "ticket-text-received"]'>-- <i>[compare_ckey(owner_ckey, user) ? user : is_admin(owner) ? key_name(user, 1) : "<a href='?priv_msg=[get_ckey(user)]'>[get_ckey(user)]</a>"]</i>: [log_message]</span>"
 
-	if(!found && !compare_ckey(user, owner_ckey))
-		//user << "<span class='ticket-header-recieved'>-- <a href='?src=\ref[user];action=view_admin_ticket;ticket=\ref[src]'>Ticket #[ticket_id]</a> - New message --</span>"
-		user << "<span class='ticket-text-sent'>-- <i>[is_admin(user) ? key_name(user, 1) : "<a href='?priv_msg=[get_ckey(user)]'>[get_ckey(user)]</a>"]</i>: [log_message]</span>"
-		if(has_pref(user, SOUND_ADMINHELP))
-			user << 'sound/effects/adminhelp.ogg'
+	if(compare_ckey(owner_ckey, user))
+		owner << "<span class='ticket-text-sent'>-- <i>[key_name_params(owner, 0, 0, null, src)]</i> -> <i>[is_admin(owner) ? key_name_params(handling_admin, 1, 1, null, src) : key_name_params(handling_admin, 1, 0, null, src)]</i>: [log_message]</span>"
+	else
+		owner << "<span class='ticket-text-received'>-- <i>[is_admin(owner) ? key_name_params(user, 1, 1, null, src) : key_name_params(user, 1, 0, null, src)]</i> -> <i>[key_name_params(owner, 0, 0, null, src)]</i>: [log_message]</span>"
+
+	if(!foundMonitor && !compare_ckey(user, owner_ckey))
+		//user << "<span class='ticket-header-recieved'>-- Administrator private message --</span>"
+		user << "<span class='ticket-text-sent'>-- <i>[is_admin(user) ? key_name_params(user, 0, 1, null, src) : "[key_name_params(user, 0, 0, null, src)]"]</i> -> <i>[is_admin(owner) ? key_name_params(owner, 1, 1, null, src) : "[key_name_params(owner, 1, 0, null, src)]"]</i>: [log_message]</span>"
+		//user << "<span class='ticket-text-sent'>-- <i>[is_admin(user) ? key_name(user, 1) : "<a href='?priv_msg=[get_ckey(user)]'>[get_ckey(user)]</a>"]</i> -> <i>[get_fancy_key(owner)]</i>: [log_message]</span>"
+
+		// Is this necessary? It sounds when YOU send a message.
+		//if(has_pref(user, SOUND_ADMINHELP))
+		//	user << 'sound/effects/adminhelp.ogg'
 
 /datum/admin_ticket/proc/toggle_monitor()
-	var/found = 0
+	var/foundMonitor = 0
 	for(var/M in monitors)
 		if(compare_ckey(M, usr))
-			found = 1
+			foundMonitor = 1
 
-	if(!found)
+	if(!foundMonitor)
 		log_admin("[usr] is now monitoring ticket #[ticket_id]")
 		monitors += usr
 		usr << "<span class='ticket-status'>You are now monitoring this ticket</span>"
@@ -85,11 +104,11 @@
 	var/content = ""
 	content += "<p class='control-bar'>[reply_link] [refresh_link]</p>"
 	content += "<p class='title-bar'>[title]</p>"
-	content += "<p class='info-bar'>Primary Admin: <span id='primary-admin'>[handling_admin != null ? (usr.client.holder ? key_name(handling_admin, 1) : "[handling_admin]") : "Unassigned"]</span></p>"
+	content += "<p class='info-bar'>Primary Admin: <span id='primary-admin'>[handling_admin != null ? (usr.client.holder ? key_name_params(handling_admin, 1, 1, null, src) : "[key_name_params(handling_admin, 1, 0, null, src)]") : "Unassigned"]</span></p>"
 
 	content += "<p id='monitors' class='[monitors.len > 0 ? "shown" : "hidden"]'>Monitors:"
 	for(var/M in monitors)
-		content += " <span class='monitor'>[M]</span>"
+		content += " <span class='monitor'>[key_name(M, 0, 0)]</span>"
 	content += "</p>"
 
 	content += "<p class='resolved-bar [resolved ? "resolved" : "unresolved"]' id='resolved'>[resolved ? "Is resolved" : "Is not resolved"]</p>"

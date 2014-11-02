@@ -17,7 +17,8 @@ var/list/admin_verbs_default = list(
 	/client/proc/cmd_admin_pm_context,	/*right-click adminPM interface*/
 	/client/proc/cmd_admin_pm_panel,		/*admin-pm list*/
 	/client/proc/reload_donators,
-	/client/proc/view_tickets
+	/client/proc/view_tickets,
+	/client/proc/toggleticketlistenall
 	)
 var/list/admin_verbs_admin = list(
 	/client/proc/player_panel,			/*shows an interface for all players, with links to various panels (old style)*/

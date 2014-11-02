@@ -37,14 +37,15 @@
 		if(T.monitors.len > 0)
 			monitors_text += "Monitors:"
 			for(var/MO in T.monitors)
-				monitors_text += " <span class='monitor'>[MO]</span>"
+				monitors_text += " <span class='monitor'>[get_fancy_key(MO)]</span>"
 
 		world << output("[monitors_text] ", "ViewTicketLog[T.ticket_id].browser:set_monitors")
 	else if(href_list["action"] == "administer_admin_ticket")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 		T.handling_admin = C.mob
 		log_admin("[T.handling_admin] has been assigned to ticket #[T.ticket_id] as primary admin.")
-		T.add_log("[T.handling_admin] has been assigned to this ticket as primary admin.");
+		// For Alex: Primary admin notification not necessary
+		//T.add_log("[T.handling_admin] has been assigned to this ticket as primary admin.");
 		world << output("[usr != null ? "[key_name(usr, 1)]" : "Unassigned"]", "ViewTicketLog[T.ticket_id].browser:handling_user")
 
 		if(href_list["reloadlist"])
@@ -53,12 +54,12 @@
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 		T.resolved = !T.resolved
 		if(T.resolved)
-			log_admin("Ticket #[T.ticket_id] marked as resolved by [usr].")
+			log_admin("Ticket #[T.ticket_id] marked as resolved by [get_fancy_key(usr)].")
 			T.owner << "<span class='ticket-text-received'>Your ticket has been marked as resolved.</span>"
 			for(var/O in T.monitors)
 				O << "<span class='ticket-text-received'>\"[T.title]\" was marked as resolved.</span>"
 		else
-			log_admin("Ticket #[T.ticket_id] marked as unresolved by [usr].")
+			log_admin("Ticket #[T.ticket_id] marked as unresolved by [get_fancy_key(usr)].")
 			T.owner << "<span class='ticket-text-received'>Your ticket has been marked as unresolved.</span>"
 			for(var/O in T.monitors)
 				O << "<span class='ticket-text-received'>\"[T.title]\" was marked as unresolved.</span>"

@@ -91,12 +91,20 @@ Proc for attack log creation, because really why not
 		log_attack("<font color='red'>[user ? "[user.name][(ismob(user) && user.ckey) ? "([user.ckey])" : ""]" : "NON-EXISTANT SUBJECT"] [what_done] [target ? "[target.name][(ismob(target) && target.ckey)? "([target.ckey])" : ""]" : "NON-EXISTANT SUBJECT"][object ? " with [object]" : " "][addition]</font>")
 
 /proc/get_ckey(mob/user)
-	if(user.ckey)
+	if(user && user.ckey)
 		return user.ckey
-	if(user.client.ckey)
+	if(user && user.client && user.client.ckey)
 		return user.client.ckey
 
-	return 0
+	return "* Unknown *"
+
+/proc/get_fancy_key(mob/user)
+	if(user && user.key)
+		return user.key
+	if(user && user.client && user.client.key)
+		return user.client.key
+
+	return "* Unknown *"
 
 /proc/has_pref(var/user, var/pref)
 	if(ismob(user))

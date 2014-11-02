@@ -47,6 +47,11 @@
 
 	//Admin PM
 	if(href_list["priv_msg"])
+		if(href_list["ticket"])
+			var/datum/admin_ticket/T = locate(href_list["ticket"])
+			cmd_admin_pm(T.owner.ckey,null)
+			return
+
 		if(href_list["new"])
 			var/datum/admin_ticket/T = locate(href_list["ticket"])
 			if(T.handling_admin && !compare_ckey(T.handling_admin, usr))
@@ -179,7 +184,7 @@ var/next_external_rsc = 0
 	//////////////
 /client/Del()
 	for(var/datum/admin_ticket/T in tickets_list)
-		if(compare_ckey(T.owner_ckey, usr))
+		if(compare_ckey(T.owner_ckey, usr) && !T.resolved)
 			T.add_log("- Disconnected -")
 
 	if(holder)

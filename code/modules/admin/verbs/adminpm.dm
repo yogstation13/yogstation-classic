@@ -75,7 +75,7 @@
 		if(wasAlreadyClicked)
 			wasAlreadyClicked.pm_started_flag = 1
 
-		msg = input(src, instructions, "Reply to [key_name(C, 0, 0)]s ticket") as text|null
+		msg = input(src, instructions, "Reply to ticket") as text|null
 
 		if(!msg)
 			// If the user was the user that started PM replying initially, then
@@ -115,7 +115,10 @@
 
 	// If we didn't find a ticket, we should make one. This bypasses the rest of the original PM system
 	var/datum/admin_ticket/T = new /datum/admin_ticket(usr, msg, C.mob)
-	tickets_list.Add(T)
+	if(!T.error)
+		tickets_list.Add(T)
+	else
+		T = null
 
 	return
 

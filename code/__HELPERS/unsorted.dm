@@ -581,7 +581,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 	return .
 
 
-/proc/key_name_params(var/whom, var/include_link = null, var/include_name = 1, var/anchor_params = null)
+/proc/key_name_params(var/whom, var/include_link = null, var/include_name = 1, var/anchor_params = null, var/datum/admin_ticket/T = null)
 	var/mob/M
 	var/client/C
 	var/key
@@ -614,7 +614,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 
 	if(key)
 		if(include_link)
-			. += "<a href='?priv_msg=[ckey][anchor_params ? ";[anchor_params]" : ""]'>"
+			. += "<a href='?priv_msg=[T ? "ticket;ticket=\ref[T]" : ckey][anchor_params ? ";[anchor_params]" : ""]'>"
 
 		if(C && C.holder && C.holder.fakekey && !include_name)
 			. += "Administrator"

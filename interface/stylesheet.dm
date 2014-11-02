@@ -83,6 +83,11 @@ BIG IMG.icon 			{width: 32px; height: 32px;}
 	font-weight: bold;
 }
 
+.ticket-text-monitored {
+	color: #ff00ff;
+	font-weight: bold;
+}
+
 .ticket-header-recieved {
 	color: #ff0000;
 	font-weight: bold;
