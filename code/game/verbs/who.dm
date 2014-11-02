@@ -49,7 +49,7 @@
 	msg += "<b>Total Players: [length(Lines)]</b>"
 	src << msg
 
-/client/verb/adminwho()
+/client/proc/adminwho()
 	set category = "Admin"
 	set name = "Adminwho"
 
