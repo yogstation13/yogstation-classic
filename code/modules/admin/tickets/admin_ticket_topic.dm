@@ -25,7 +25,20 @@
 		logtext = sanitize(logtext)
 
 		if(logtext)
-			T.add_log(logtext)
+			T.add_log(logtext, src.mob)
+
+		//AdminPM popup for ApocStation and anybody else who wants to use it. Set it with POPUP_ADMIN_PM in config.txt ~Carn
+		if(holder && T.owner && T.owner.client && compare_ckey(usr, T.handling_admin) && config.popup_admin_pm)
+			spawn()	//so we don't hold the caller proc up
+				var/sender = C
+				var/sendername = C.key
+				var/reply = input(T.owner, logtext,"Admin PM from-[sendername]", "") as text|null		//show message and await a reply
+				if(reply)
+					if(sender)
+						T.owner.client.cmd_admin_pm(sender,reply)										//sender is still about, let's reply to them
+					else
+						adminhelp(reply)													//sender has left, adminhelp instead
+				return
 	else if(href_list["action"] == "monitor_admin_ticket")
 		if(!holder)
 			return
