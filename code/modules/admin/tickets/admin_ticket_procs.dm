@@ -97,6 +97,23 @@
 			owner << "<span class='ticket-status'>[usr] is no longer monitoring your ticket</span>"
 		return 0
 
+/datum/admin_ticket/proc/toggle_resolved()
+	resolved = !resolved
+
+	if(resolved && ticker.delay_end)
+		var/unresolvedCount = 0
+		for(var/datum/admin_ticket/T in tickets_list)
+			if(!resolved)
+				unresolvedCount++
+
+		if(unresolvedCount)
+			if(alert(usr, "You have resolved the last ticket (the server restart is currently delayed!). Would you like to restart the server now?", "Restart Server", "Restart", "Cancel") == "Restart")
+				sleep(restart_timeout)
+				kick_clients_in_lobby("\red The round came to an end with you in the lobby.", 1) //second parameter ensures only afk clients are kicked
+				world.Reboot()
+			else
+				usr << "<span class='ticket-status'>You chose not to restart the server. If you do not have permissions to restart the server normally, you can still do so by making a new ticket and resolving it again.</span>"
+
 /datum/admin_ticket/proc/view_log()
 	var/reply_link = "<a href='?src=\ref[usr];action=reply_to_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-comment' /> Reply</a>"
 	var/refresh_link = "<a href='?src=\ref[usr];action=refresh_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-refresh' /> Refresh</a>"

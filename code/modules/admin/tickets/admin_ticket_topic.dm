@@ -52,7 +52,7 @@
 			C.view_tickets()
 	else if(href_list["action"] == "resolve_admin_ticket")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
-		T.resolved = !T.resolved
+		T.toggle_resolved()
 		if(T.resolved)
 			log_admin("Ticket #[T.ticket_id] marked as resolved by [get_fancy_key(usr)].")
 			T.owner << "<span class='ticket-text-received'>Your ticket has been marked as resolved.</span>"

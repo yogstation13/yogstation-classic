@@ -322,7 +322,16 @@ var/round_start_time = 0
 
 			for(var/datum/admin_ticket/T in tickets_list)
 				if(!T.resolved)
-					ticker.delay_end = 1
+					var/count = 0
+					for(var/client/X in admins)
+						if(!check_rights_for(X, R_ADMIN))
+							continue
+						if(X.is_afk())
+							continue
+						count++
+
+					if(count)
+						ticker.delay_end = 1
 
 			if(!delay_end)
 				sleep(restart_timeout)
