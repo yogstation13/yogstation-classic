@@ -114,8 +114,8 @@
 	pass_flags = PASSBLOB
 	health = 240
 	maxHealth = 240
-	melee_damage_lower = 10
-	melee_damage_upper = 10
+	melee_damage_lower = 20
+	melee_damage_upper = 20
 	attacktext = "hits"
 	attack_sound = 'sound/effects/blobattack.ogg'
 	faction = list("blob")
@@ -138,8 +138,8 @@
 	..()
 	if(isliving(target))
 		var/mob/living/L = target
-		if(L.reagents)
-			L.reagents.add_reagent("spore_burning", REAGENTS_METABOLISM)
+		L.adjust_fire_stacks(2)
+		L.IgniteMob()
 
 
 /mob/living/simple_animal/hostile/blobbernaut/blob_act()

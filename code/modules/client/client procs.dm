@@ -172,7 +172,8 @@ var/next_external_rsc = 0
 		if((global.comms_key == "default_pwd" || length(global.comms_key) <= 6) && global.comms_allowed) //It's the default value or less than 6 characters long, but it somehow didn't disable comms.
 			src << "<span class='danger'>The server's API key is either too short or is the default value! Consider changing it immediately!</span>"
 
-	send_resources()
+	spawn(0)
+		send_resources()
 
 	if(prefs.lastchangelog != changelog_hash) //bolds the changelog button on the interface so we know there are updates.
 		winset(src, "rpane.changelog", "background-color=#eaeaea;font-style=bold")
