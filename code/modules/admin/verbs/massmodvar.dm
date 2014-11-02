@@ -115,7 +115,7 @@
 		if(dir)
 			usr << "If a direction, direction is: [dir]"
 
-	var/class = input("What kind of variable?","Variable Type",default) as null|anything in list("text",
+	var/class = input("What kind of variable?","Variable Type",default) as null|anything in list("null", "text",
 		"num","type","icon","file","edit referenced object","restore to default")
 
 	if(!class)
@@ -129,6 +129,40 @@
 		original_name = O:name
 
 	switch(class)
+
+		if("null")
+			O.vars[variable] = null
+			if(method)
+				if(istype(O, /mob))
+					for(var/mob/M in mob_list)
+						if ( istype(M , O.type) )
+							M.vars[variable] = O.vars[variable]
+
+				else if(istype(O, /obj))
+					for(var/obj/A in world)
+						if ( istype(A , O.type) )
+							A.vars[variable] = O.vars[variable]
+
+				else if(istype(O, /turf))
+					for(var/turf/A in world)
+						if ( istype(A , O.type) )
+							A.vars[variable] = O.vars[variable]
+
+			else
+				if(istype(O, /mob))
+					for(var/mob/M in mob_list)
+						if (M.type == O.type)
+							M.vars[variable] = O.vars[variable]
+
+				else if(istype(O, /obj))
+					for(var/obj/A in world)
+						if (A.type == O.type)
+							A.vars[variable] = O.vars[variable]
+
+				else if(istype(O, /turf))
+					for(var/turf/A in world)
+						if (A.type == O.type)
+							A.vars[variable] = O.vars[variable]
 
 		if("restore to default")
 			O.vars[variable] = initial(O.vars[variable])

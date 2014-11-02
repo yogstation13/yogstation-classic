@@ -291,6 +291,10 @@
 	if(href_list["dismiss"])
 		var/eula = alert("I have read and understood the server rules and agree to abide by them.", "Security question", "Cancel", "Agree")
 		if(eula == "Agree")
+			if(!client)
+				return
+			if(client.prefs.agree == MAXAGREE)
+				return
 			if(client.prefs.agree != -1)
 				client.prefs.agree = MAXAGREE;
 				client.prefs.save_preferences();

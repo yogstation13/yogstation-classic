@@ -28,10 +28,10 @@ var/list/forbidden_varedit_object_types = list(
 
 	var/class = "text"
 	if(src.holder && src.holder.marked_datum)
-		class = input("What kind of variable?","Variable Type") as null|anything in list("text",
+		class = input("What kind of variable?","Variable Type") as null|anything in list("null", "text",
 			"num","type","reference","mob reference", "icon","file","list","edit referenced object","restore to default","marked datum ([holder.marked_datum.type])")
 	else
-		class = input("What kind of variable?","Variable Type") as null|anything in list("text",
+		class = input("What kind of variable?","Variable Type") as null|anything in list("null", "text",
 			"num","type","reference","mob reference", "icon","file","list","edit referenced object","restore to default")
 
 	if(!class)
@@ -43,6 +43,9 @@ var/list/forbidden_varedit_object_types = list(
 	var/var_value = null
 
 	switch(class)
+
+		if("null")
+			var_value = null
 
 		if("text")
 			var_value = input("Enter new text:","Text") as null|text
@@ -68,19 +71,19 @@ var/list/forbidden_varedit_object_types = list(
 		if("marked datum")
 			var_value = holder.marked_datum
 
-	if(!var_value) return
+	if((class != "null") && !var_value) return
 
 	return var_value
 
 
-/client/proc/mod_list_add(var/list/L)
+/client/proc/mod_list_add(var/list/L, var/atom/hobject = null, var/listname = "")
 
 	var/class = "text"
 	if(src.holder && src.holder.marked_datum)
-		class = input("What kind of variable?","Variable Type") as null|anything in list("text",
+		class = input("What kind of variable?","Variable Type") as null|anything in list("null", "text",
 			"num","type","reference","mob reference", "icon","file","list","edit referenced object","restore to default","marked datum ([holder.marked_datum.type])")
 	else
-		class = input("What kind of variable?","Variable Type") as null|anything in list("text",
+		class = input("What kind of variable?","Variable Type") as null|anything in list("null", "text",
 			"num","type","reference","mob reference", "icon","file","list","edit referenced object","restore to default")
 
 	if(!class)
@@ -92,6 +95,9 @@ var/list/forbidden_varedit_object_types = list(
 	var/var_value = null
 
 	switch(class)
+
+		if("null")
+			var_value = null
 
 		if("text")
 			var_value = input("Enter new text:","Text") as text
@@ -117,16 +123,21 @@ var/list/forbidden_varedit_object_types = list(
 		if("marked datum")
 			var_value = holder.marked_datum
 
-	if(!var_value) return
+	if((class != "null") && !var_value) return
 
-	switch(alert("Would you like to associate a var with the list entry?",,"Yes","No"))
+	var/ass_list_entry = alert("Would you like to associate a var with the list entry?",,"Yes","No")
+	switch(ass_list_entry)
 		if("Yes")
 			L += var_value
 			L[var_value] = mod_list_add_ass() //haha
 		if("No")
 			L += var_value
+	world.log << "### VarEdit by [src]: [hobject ? hobject.type : "???"] [listname]\[[var_value]\]=[(ass_list_entry == "Yes") ? html_encode(L[var_value]) : "added"]"
+	log_admin("[key_name(src)] added [hobject]'s [listname]\[[var_value]\]=[(ass_list_entry == "Yes") ? L[var_value] : "null"]")
+	message_admins("[key_name_admin(src)] added [hobject]'s [listname]\[[var_value]\]=[(ass_list_entry == "Yes") ? L[var_value] : "null"]")
 
-/client/proc/mod_list(var/list/L)
+
+/client/proc/mod_list(var/list/L, var/atom/hobject = null, var/listname = "")
 	if(!check_rights(R_VAREDIT))	return
 
 	if(!istype(L,/list)) src << "Not a List."
@@ -139,7 +150,7 @@ var/list/forbidden_varedit_object_types = list(
 	var/variable = input("Which var?","Var") as null|anything in names + "(ADD VAR)"
 
 	if(variable == "(ADD VAR)")
-		mod_list_add(L)
+		mod_list_add(L, hobject, listname)
 		return
 
 	if(!variable)
@@ -220,10 +231,10 @@ var/list/forbidden_varedit_object_types = list(
 
 	var/class = "text"
 	if(src.holder && src.holder.marked_datum)
-		class = input("What kind of variable?","Variable Type",default) as null|anything in list("text",
+		class = input("What kind of variable?","Variable Type",default) as null|anything in list("null", "text",
 			"num","type","reference","mob reference", "icon","file","list","edit referenced object","restore to default","marked datum ([holder.marked_datum.type])", "DELETE FROM LIST")
 	else
-		class = input("What kind of variable?","Variable Type",default) as null|anything in list("text",
+		class = input("What kind of variable?","Variable Type",default) as null|anything in list("null", "text",
 			"num","type","reference","mob reference", "icon","file","list","edit referenced object","restore to default", "DELETE FROM LIST")
 
 	if(!class)
@@ -236,6 +247,7 @@ var/list/forbidden_varedit_object_types = list(
 
 		if("list")
 			mod_list(variable)
+			return
 
 		if("restore to default")
 			L[L.Find(variable)]=initial(variable)
@@ -245,7 +257,13 @@ var/list/forbidden_varedit_object_types = list(
 
 		if("DELETE FROM LIST")
 			L -= variable
+			world.log << "### VarEdit by [src]: [hobject ? hobject.type : "???"] [listname]\[[variable]\]=removed"
+			log_admin("[key_name(src)] removed [hobject]'s [listname]\[[variable]\]")
+			message_admins("[key_name_admin(src)] removed [hobject]'s [listname]\[[variable]\]")
 			return
+
+		if("null")
+			L[L.Find(variable)] = null
 
 		if("text")
 			L[L.Find(variable)] = input("Enter new text:","Text") as text
@@ -270,6 +288,9 @@ var/list/forbidden_varedit_object_types = list(
 
 		if("marked datum")
 			L[L.Find(variable)] = holder.marked_datum
+	world.log << "### VarEdit by [src]: [hobject ? hobject.type : "???"] [listname]\[[variable]\]=[html_encode(L.Find(variable))]"
+	log_admin("[key_name(src)] modified [hobject]'s [listname]\[[variable]\] to [L.Find(variable)]")
+	message_admins("[key_name_admin(src)] modified [hobject]'s [listname]\[[variable]\] to [L.Find(variable)]")
 
 
 /client/proc/modify_variables(var/atom/O, var/param_var_name = null, var/autodetect_class = 0)
@@ -432,10 +453,10 @@ var/list/forbidden_varedit_object_types = list(
 				usr << "If a direction, direction is: [dir]"
 
 		if(src.holder && src.holder.marked_datum)
-			class = input("What kind of variable?","Variable Type",default) as null|anything in list("text",
+			class = input("What kind of variable?","Variable Type",default) as null|anything in list("null", "text",
 				"num","type","reference","mob reference", "icon","file","list","edit referenced object","restore to default","marked datum ([holder.marked_datum.type])")
 		else
-			class = input("What kind of variable?","Variable Type",default) as null|anything in list("text",
+			class = input("What kind of variable?","Variable Type",default) as null|anything in list("null", "text",
 				"num","type","reference","mob reference", "icon","file","list","edit referenced object","restore to default")
 
 		if(!class)
@@ -454,7 +475,7 @@ var/list/forbidden_varedit_object_types = list(
 	switch(class)
 
 		if("list")
-			mod_list(O.vars[variable])
+			mod_list(O.vars[variable], O, variable)
 			return
 
 		if("restore to default")
@@ -462,6 +483,9 @@ var/list/forbidden_varedit_object_types = list(
 
 		if("edit referenced object")
 			return .(O.vars[variable])
+
+		if("null")
+			O.vars[variable] = null
 
 		if("text")
 			var/var_new = input("Enter new text:","Text",O.vars[variable]) as null|text

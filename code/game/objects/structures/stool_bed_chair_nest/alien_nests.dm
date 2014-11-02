@@ -51,6 +51,7 @@
 	M.update_canmove()
 	M.pixel_y = 1
 	M.pixel_x = 2
+	M.anchored = 1
 	src.buckled_mob = M
 	src.add_fingerprint(user)
 	src.overlays += image('icons/mob/alien.dmi', "nestoverlay", layer=6)
