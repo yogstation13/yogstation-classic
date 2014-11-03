@@ -75,6 +75,7 @@ datum/design/intellicard
 	build_type = PROTOLATHE
 	materials = list("$glass" = 1000, "$gold" = 200)
 	build_path = /obj/item/device/aicard
+	ui_category = "Cards"
 
 datum/design/paicard
 	name = "Personal Artificial Intelligence Card"
@@ -84,6 +85,7 @@ datum/design/paicard
 	build_type = PROTOLATHE
 	materials = list("$glass" = 500, "$metal" = 500)
 	build_path = /obj/item/device/paicard
+	ui_category = "Cards"
 
 
 ////////////////////////////////////////
@@ -97,6 +99,7 @@ datum/design/design_disk
 	build_type = PROTOLATHE | AUTOLATHE
 	materials = list("$metal" = 30, "$glass" = 10)
 	build_path = /obj/item/weapon/disk/design_disk
+	ui_category = "Disks"
 
 datum/design/tech_disk
 	name = "Technology Data Storage Disk"
@@ -106,6 +109,7 @@ datum/design/tech_disk
 	build_type = PROTOLATHE | AUTOLATHE
 	materials = list("$metal" = 30, "$glass" = 10)
 	build_path = /obj/item/weapon/disk/tech_disk
+	ui_category = "Disks"
 
 
 /////////////////////////////////////////
@@ -120,6 +124,7 @@ datum/design/jackhammer
 	build_type = PROTOLATHE
 	materials = list("$metal" = 2000, "$glass" = 500, "$silver" = 500)
 	build_path = /obj/item/weapon/pickaxe/jackhammer
+	ui_category = "Mining"
 
 datum/design/drill
 	name = "Mining Drill"
@@ -129,6 +134,7 @@ datum/design/drill
 	build_type = PROTOLATHE
 	materials = list("$metal" = 6000, "$glass" = 1000) //expensive, but no need for miners.
 	build_path = /obj/item/weapon/pickaxe/drill
+	ui_category = "Mining"
 
 datum/design/plasmacutter
 	name = "Plasma Cutter"
@@ -139,6 +145,7 @@ datum/design/plasmacutter
 	materials = list("$metal" = 1500, "$glass" = 500, "$gold" = 500, "$plasma" = 500)
 	reliability = 79
 	build_path = /obj/item/weapon/pickaxe/plasmacutter
+	ui_category = "Mining"
 
 datum/design/pick_diamond
 	name = "Diamond Pickaxe"
@@ -148,6 +155,7 @@ datum/design/pick_diamond
 	build_type = PROTOLATHE
 	materials = list("$diamond" = 3000)
 	build_path = /obj/item/weapon/pickaxe/diamond
+	ui_category = "Mining"
 
 datum/design/drill_diamond
 	name = "Diamond Mining Drill"
@@ -158,6 +166,7 @@ datum/design/drill_diamond
 	materials = list("$metal" = 3000, "$glass" = 1000, "$diamond" = 3750) //Yes, a whole diamond is needed.
 	reliability = 79
 	build_path = /obj/item/weapon/pickaxe/diamonddrill
+	ui_category = "Mining"
 
 /////////////////////////////////////////
 //////////////Blue Space/////////////////
@@ -171,6 +180,7 @@ datum/design/beacon
 	build_type = PROTOLATHE
 	materials = list ("$metal" = 20, "$glass" = 10)
 	build_path = /obj/item/device/radio/beacon
+	ui_category = "Bluespace"
 
 datum/design/bag_holding
 	name = "Bag of Holding"
@@ -181,6 +191,7 @@ datum/design/bag_holding
 	materials = list("$gold" = 3000, "$diamond" = 1500, "$uranium" = 250)
 	reliability = 80
 	build_path = /obj/item/weapon/storage/backpack/holding
+	ui_category = "Bluespace"
 
 datum/design/bluespace_crystal
 	name = "Artificial Bluespace Crystal"
@@ -191,6 +202,7 @@ datum/design/bluespace_crystal
 	materials = list("$diamond" = 1500, "$plasma" = 1500)
 	reliability = 100
 	build_path = /obj/item/bluespace_crystal/artificial
+	ui_category = "Bluespace"
 
 datum/design/telesci_gps
 	name = "GPS Device"
@@ -200,6 +212,7 @@ datum/design/telesci_gps
 	build_type = PROTOLATHE
 	materials = list("$metal" = 500, "$glass" = 1000)
 	build_path = /obj/item/device/gps
+	ui_category = "Bluespace"
 
 
 
@@ -215,6 +228,7 @@ datum/design/health_hud
 	build_type = PROTOLATHE
 	materials = list("$metal" = 50, "$glass" = 50)
 	build_path = /obj/item/clothing/glasses/hud/health
+	ui_category = "HUDs"
 
 datum/design/health_hud_night
 	name = "Night Vision Health Scanner HUD"
@@ -224,6 +238,7 @@ datum/design/health_hud_night
 	build_type = PROTOLATHE
 	materials = list("$metal" = 200, "$glass" = 200, "$uranium" = 1000, "$silver" = 250)
 	build_path = /obj/item/clothing/glasses/hud/health/night
+	ui_category = "HUDs"
 
 datum/design/security_hud
 	name = "Security HUD"
@@ -233,6 +248,7 @@ datum/design/security_hud
 	build_type = PROTOLATHE
 	materials = list("$metal" = 50, "$glass" = 50)
 	build_path = /obj/item/clothing/glasses/hud/security
+	ui_category = "HUDs"
 
 datum/design/security_hud_night
 	name = "Night Vision Security HUD"
@@ -242,6 +258,7 @@ datum/design/security_hud_night
 	build_type = PROTOLATHE
 	materials = list("$metal" = 200, "$glass" = 200, "$uranium" = 1000, "$gold" = 350)
 	build_path = /obj/item/clothing/glasses/hud/security/night
+	ui_category = "HUDs"
 
 /////////////////////////////////////////
 //////////////////Test///////////////////
@@ -288,6 +305,7 @@ datum/design/borg_syndicate_module
 	req_tech = list("combat" = 4, "syndicate" = 3)
 	build_path = /obj/item/borg/upgrade/syndicate
 	category = "Cyborg Upgrade Modules"
+	ui_category = "Illegal"
 
 
 /////////////////////////////////////////
@@ -302,6 +320,7 @@ datum/design/welding_mask
 	build_type = PROTOLATHE
 	materials = list("$metal" = 4000, "$glass" = 1000)
 	build_path = /obj/item/clothing/mask/gas/welding
+	ui_category = "Equipment"
 
 datum/design/mesons
 	name = "Optical Meson Scanners"
@@ -311,6 +330,8 @@ datum/design/mesons
 	build_type = PROTOLATHE
 	materials = list("$metal" = 200, "$glass" = 300, "$plasma" = 100)
 	build_path = /obj/item/clothing/glasses/meson
+	ui_category = "Masks"
+	ui_category = "Equipment"
 
 datum/design/night_vision_goggles
 	name = "Night Vision Goggles"
@@ -320,6 +341,7 @@ datum/design/night_vision_goggles
 	build_type = PROTOLATHE
 	materials = list("$metal" = 100, "$glass" = 100, "$uranium" = 1000)
 	build_path = /obj/item/clothing/glasses/night
+	ui_category = "Equipment"
 
 datum/design/magboots
 	name = "Magnetic Boots"
@@ -329,6 +351,7 @@ datum/design/magboots
 	build_type = PROTOLATHE
 	materials = list("$metal" = 4500, "$silver" = 1500, "$gold" = 2500)
 	build_path = /obj/item/clothing/shoes/magboots
+	ui_category = "Equipment"
 
 datum/design/drone_shell
 	name = "drone shell"
@@ -339,3 +362,4 @@ datum/design/drone_shell
 	materials = list("$metal" = 800, "$glass" = 350)
 	build_path = /obj/item/drone_shell
 	category = "Misc"
+	ui_category = "Drones"

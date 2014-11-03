@@ -790,15 +790,15 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 					if(!(D.build_type & PROTOLATHE))
 						continue
 
-					if(!D.ui_category in categories)
+					if(!(D.ui_category in categories))
 						categories.Add(D.ui_category)
 
 				dat += "<ol>"
 				for(var/cat in categories)
-					dat += "<li><a href='?src=\ref[src];menu=3.1;choose_category=[url_encode(cat)]'></a></li>"
+					dat += "<li><a href='?src=\ref[src];menu=3.1;choose_category=[url_encode(cat)]'>[cat]</a></li>"
 				dat += "</ol>"
 			else
-				dat += "<a href='?src=\ref[src];menu=3.1;clear_category=1'></a><HR>"
+				dat += "<a href='?src=\ref[src];menu=3.1;clear_category=1'>Show categories</a><HR>"
 				for(var/datum/design/D in files.known_designs)
 					if(!(D.build_type & PROTOLATHE))
 						continue
@@ -912,15 +912,15 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 					if(!(D.build_type & IMPRINTER))
 						continue
 
-					if(!D.ui_category in categories)
+					if(!(D.ui_category in categories))
 						categories.Add(D.ui_category)
 
 				dat += "<ol>"
 				for(var/cat in categories)
-					dat += "<li><a href='?src=\ref[src];menu=4.1;choose_category=[url_encode(cat)]'></a></li>"
+					dat += "<li><a href='?src=\ref[src];menu=4.1;choose_category=[url_encode(cat)]'>[cat]</a></li>"
 				dat += "</ol>"
 			else
-				dat += "<a href='?src=\ref[src];menu=4.1;clear_category=1'></a><HR>"
+				dat += "<a href='?src=\ref[src];menu=4.1;clear_category=1'>Back to categories</a><HR>"
 				for(var/datum/design/D in files.known_designs)
 					if(!(D.build_type & IMPRINTER))
 						continue
