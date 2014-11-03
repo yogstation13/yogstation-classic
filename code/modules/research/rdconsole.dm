@@ -621,6 +621,8 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			dat += "<div class='statusDisplay'>Imprinting Circuit. Please Wait...</div>"
 
 		if(1.0) //Main Menu
+			chosen_category = null
+
 			dat += "<div class='statusDisplay'>"
 			dat += "<h3>Main Menu:</h3><BR>"
 			dat += "<A href='?src=\ref[src];menu=1.1'>Current Research Levels</A><BR>"
