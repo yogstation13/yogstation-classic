@@ -10,6 +10,10 @@
 		//src << browse(null, "window=ViewTickets;size=700x500")
 		T.view_log(C.mob)
 	else if(href_list["action"] == "reply_to_ticket")
+		if(prefs.muted & MUTE_ADMINHELP)
+			src << "<font color='red'>Error: Admin-PM: You are unable to use admin PM-s (muted).</font>"
+			return
+
 		//var/time = time2text(world.timeofday, "hh:mm")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 
@@ -22,7 +26,9 @@
 			return
 
 		var/logtext = input("Please enter your reply:")
-		logtext = sanitize(logtext)
+		//clean the message if it's not sent by a high-rank admin
+		if(!check_rights(R_SERVER|R_DEBUG,0))
+			logtext = sanitize(copytext(logtext,1,MAX_MESSAGE_LEN))
 
 		if(logtext)
 			T.add_log(logtext, src.mob)
