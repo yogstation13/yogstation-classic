@@ -8,6 +8,8 @@
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 		// Close ticket list when opening ticket
 		//src << browse(null, "window=ViewTickets;size=700x500")
+		if(!istype(T, /datum/admin_ticket))
+			return
 		T.view_log(C.mob)
 	else if(href_list["action"] == "reply_to_ticket")
 		if(prefs.muted & MUTE_ADMINHELP)
@@ -16,6 +18,9 @@
 
 		//var/time = time2text(world.timeofday, "hh:mm")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
+
+		if(!istype(T, /datum/admin_ticket))
+			return
 
 		if(T.resolved && !holder)
 			usr << "<span class='ticket-status'>This ticket is marked as resolved. You may not add any more information to it.</span>"
@@ -50,6 +55,8 @@
 			return
 
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
+		if(!istype(T, /datum/admin_ticket))
+			return
 		T.toggle_monitor()
 
 		var/monitors_text = ""
@@ -61,6 +68,8 @@
 		world << output("[monitors_text] ", "ViewTicketLog[T.ticket_id].browser:set_monitors")
 	else if(href_list["action"] == "administer_admin_ticket")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
+		if(!istype(T, /datum/admin_ticket))
+			return
 		T.handling_admin = C.mob
 		log_admin("[T.handling_admin] has been assigned to ticket #[T.ticket_id] as primary admin.")
 		// For Alex: Primary admin notification not necessary
@@ -71,6 +80,8 @@
 			C.view_tickets()
 	else if(href_list["action"] == "resolve_admin_ticket")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
+		if(!istype(T, /datum/admin_ticket))
+			return
 		T.toggle_resolved()
 		if(T.resolved)
 			log_admin("Ticket #[T.ticket_id] marked as resolved by [get_fancy_key(usr)].")
@@ -88,21 +99,33 @@
 			C.view_tickets()
 	else if(href_list["action"] == "refresh_admin_ticket")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
+		if(!istype(T, /datum/admin_ticket))
+			return
 		T.view_log(C)
 	else if(href_list["action"] == "get_admin_ticket_json")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
+		if(!istype(T, /datum/admin_ticket))
+			return
 		world << "get_admin_ticket_json [T.title]"
 		//return "{'test':'test2'}"
 
 	else if(href_list["vv"])
+		if(!holder || !ismob(locate(href_list["vv"])))
+			return
 		C.debug_variables(locate(href_list["vv"]))
 	else if(href_list["pp"])
+		if(!holder || !ismob(locate(href_list["pp"])))
+			return
 		C.holder.show_player_panel(locate(href_list["pp"]))
 	else if(href_list["pm"])
 		C.cmd_admin_pm(href_list["pm"],null)
 	else if(href_list["sm"])
+		if(!holder || !ismob(locate(href_list["sm"])))
+			return
 		C.cmd_admin_subtle_message(locate(href_list["sm"]))
 	else if(href_list["jmp"])
+		if(!holder || !ismob(locate(href_list["jmp"])))
+			return
 		var/mob/N = locate(href_list["jmp"])
 		if(N)
 			if(!isobserver(usr))	C.admin_ghost()
