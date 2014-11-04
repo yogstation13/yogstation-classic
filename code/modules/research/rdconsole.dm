@@ -792,6 +792,9 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 					if(!(D.build_type & PROTOLATHE))
 						continue
 
+					if(!D.ui_category && (!(D.ui_category in categories)))
+						categories.Add("Unknown")
+
 					if(!(D.ui_category in categories))
 						categories.Add(D.ui_category)
 
@@ -805,7 +808,10 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 					if(!(D.build_type & PROTOLATHE))
 						continue
 
-					if(D.ui_category != chosen_category)
+					if(!D.ui_category && chosen_category == "Unknown")
+						// Unknown item category, and we have the Unknown category selected.
+						log_admin("R&D Organisation: \"[D.name]\" \"[D]\" is missing a ui_category. Please tell Kn0ss0s so he can assign a category.")
+					else if(D.ui_category != chosen_category)
 						continue
 
 					var/temp_dat = "[D.name]"
