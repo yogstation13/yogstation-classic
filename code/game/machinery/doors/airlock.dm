@@ -49,6 +49,7 @@
 	var/list/temp_access = null
 	var/access_set = 1 //this defaults to 1. only newly RCD'd doors should have it at 0
 	var/securewires = 0
+	var/boltsCut = 0
 
 /obj/machinery/door/airlock/command
 	icon = 'icons/obj/doors/Doorcom.dmi'
@@ -725,6 +726,8 @@ About the new airlock wires panel:
 					//drop door bolts
 					if(src.isWireCut(AIRLOCK_WIRE_DOOR_BOLTS))
 						usr << "You can't drop the door bolts - The door bolt dropping wire has been cut."
+					else if(src.boltsCut)
+						usr << "You can't drop the door bolts - The door bolts have been cut."
 					else if(src.locked!=1)
 						src.locked = 1
 						update_icon()
@@ -761,7 +764,7 @@ About the new airlock wires panel:
 					//close door
 					if(src.welded)
 						usr << text("The airlock has been welded shut!")
-					else if(src.locked)
+					else if(src.locked && !src.boltsCut)
 						usr << text("The door bolts are down!")
 					else if(!src.density)
 						close()
@@ -802,6 +805,8 @@ About the new airlock wires panel:
 						usr << text("The door bolt drop wire is cut - you can't raise the door bolts.<br>\n")
 					else if(!src.locked)
 						usr << text("The door bolts are already up.<br>\n")
+					else if(src.boltsCut)
+						usr << text("The door bolts are cut and cannot be raised.<br>\n")
 					else
 						if(src.hasPower())
 							src.locked = 0
@@ -854,7 +859,7 @@ About the new airlock wires panel:
 					//open door
 					if(src.welded)
 						usr << text("The airlock has been welded shut!")
-					else if(src.locked)
+					else if(src.locked && !src.boltsCut)
 						usr << text("The door bolts are down!")
 					else if(src.density)
 						open()
@@ -892,19 +897,55 @@ About the new airlock wires panel:
 	if((istype(C, /obj/item/weapon/weldingtool) && !( src.operating ) && src.density))
 		var/obj/item/weapon/weldingtool/W = C
 		if(W.remove_fuel(0,user))
-			user.visible_message("<span class='warning'>[user] is [welded ? "unwelding":"welding"] the airlock.</span>", \
-							"You begin [welded ? "unwelding":"welding"] the airlock...", \
-							"You hear welding.")
-			playsound(loc, 'sound/items/Welder.ogg', 40, 1)
-			if(do_after(user,40,5,1))
-				if(density && !operating)//Door must be closed to weld.
-					if( !istype(src, /obj/machinery/door/airlock) || !user || !W || !W.isOn() || !user.loc )
-						return					playsound(loc, 'sound/items/Welder2.ogg', 50, 1)
-					welded = !welded
-					user.visible_message("<span class='warning'>[src] has been [welded? "welded shut":"unwelded"] by [user.name].</span>", \
-										"<span class='notice'>You've [welded ? "welded the airlock shut":"unwelded the airlock"].</span>")
-					update_icon()
+			if(boltsCut)
+				user.visible_message("<span class='warning'>[user] is repairing the airlocks bolts with their [C].</span>", \
+								"You begin repairing the airlocks bolts with your [C]...", \
+								"You hear welding.")
+				playsound(loc, 'sound/items/Welder.ogg', 40, 1)
+				if(do_after(user,80,5,1))
+					if(density && !operating)//Door must be closed to weld.
+						if( !istype(src, /obj/machinery/door/airlock) || !user || !W || !W.isOn() || !user.loc )
+							return					playsound(loc, 'sound/items/Welder2.ogg', 50, 1)
+						boltsCut = 0
+						user.visible_message("<span class='warning'>[src] bolts have been repaired by [user.name].</span>", \
+											"<span class='notice'>You've welded the bolts together.</span>")
+						update_icon()
+			else
+				user.visible_message("<span class='warning'>[user] is [welded ? "unwelding":"welding"] the airlock.</span>", \
+								"You begin [welded ? "unwelding":"welding"] the airlock...", \
+								"You hear welding.")
+				playsound(loc, 'sound/items/Welder.ogg', 40, 1)
+				if(do_after(user,40,5,1))
+					if(density && !operating)//Door must be closed to weld.
+						if( !istype(src, /obj/machinery/door/airlock) || !user || !W || !W.isOn() || !user.loc )
+							return					playsound(loc, 'sound/items/Welder2.ogg', 50, 1)
+						welded = !welded
+						user.visible_message("<span class='warning'>[src] has been [welded? "welded shut":"unwelded"] by [user.name].</span>", \
+											"<span class='notice'>You've [welded ? "welded the airlock shut":"unwelded the airlock"].</span>")
+						update_icon()
 		return
+	else if(istype(C, /obj/item/weapon/melee/energy/sword))
+		var/obj/item/weapon/melee/energy/sword/S = C
+		if(S.icon_state == "sword0" || S.icon_state == "dualsaber0" || S.icon_state == "axe0")
+			user << "<span class='notice'>The sword is not engaged, you cannot cut anything!</span>"
+		else if(!locked)
+			user << "<span class='notice'>The airlock bolts are not down, you cannot access the bolts to cut them.</span>"
+		else if(!boltsCut)
+			user.visible_message("<span class='warning'>[user] is cutting through the airlocks bolts with their [C].</span>", \
+					"You begin cutting through the airlocks bolts with your [C]...", \
+					"You hear sparks.")
+			playsound(loc, 'sound/weapons/saberon.ogg', 40, 1)
+			if(do_after(user,rand(100,300),5,1))
+				if(density && !operating)//Door must be closed to cut.
+					if( !istype(src, /obj/machinery/door/airlock) || !user || !S || S.icon_state == "sword0" || S.icon_state == "dualsaber0" || S.icon_state == "axe0" || !user.loc )
+						return
+					playsound(loc, 'sound/weapons/saberoff.ogg', 40, 1)
+					boltsCut = 1
+					user.visible_message("<span class='warning'>[src] bolts have been cut by [user.name].</span>", \
+							"<span class='notice'>You've cut the bolts on the airlock.</span>")
+					update_icon()
+		else
+			user << "<span class='notice'>The bolts of this airlock are already cut.</span>"
 	else if(istype(C, /obj/item/weapon/screwdriver))
 		src.p_open = !( src.p_open )
 		user << "<span class='notice'>You [p_open ? "open":"close"] the maintenance panel of the airlock.</span>"
@@ -993,7 +1034,7 @@ About the new airlock wires panel:
 	..()
 
 /obj/machinery/door/airlock/open(var/forced=0)
-	if( operating || welded || locked )
+	if( operating || welded || (locked && !boltsCut) )
 		return 0
 	if(!forced)
 		if( !hasPower() || isWireCut(AIRLOCK_WIRE_OPEN_DOOR) )
@@ -1024,7 +1065,7 @@ About the new airlock wires panel:
 
 
 /obj/machinery/door/airlock/close(var/forced=0)
-	if(operating || welded || locked)
+	if(operating || welded || (locked && !boltsCut))
 		return
 	if(!forced)
 		if( !hasPower() || isWireCut(AIRLOCK_WIRE_DOOR_BOLTS) )
