@@ -1,70 +1,84 @@
 //This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:31
 
-var/global/list/autolathe_recipes = list( \
-		/* screwdriver removed*/ \
-		new /obj/item/weapon/reagent_containers/glass/bucket(), \
-		new /obj/item/weapon/crowbar(), \
-		new /obj/item/device/flashlight(), \
-		new /obj/item/weapon/extinguisher(), \
-		new /obj/item/device/multitool(), \
-		new /obj/item/device/analyzer(), \
-		new /obj/item/device/t_scanner(), \
-		new /obj/item/weapon/weldingtool(), \
-		new /obj/item/weapon/screwdriver(), \
-		new /obj/item/weapon/wirecutters(), \
-		new /obj/item/weapon/wrench(), \
-		new /obj/item/clothing/head/welding(), \
-		new /obj/item/weapon/stock_parts/console_screen(), \
-		new /obj/item/weapon/airlock_electronics(), \
-		new /obj/item/weapon/airalarm_electronics(), \
-		new /obj/item/weapon/firealarm_electronics(), \
-		new /obj/item/device/pipe_painter(), \
-		new /obj/item/stack/sheet/metal(), \
-		new /obj/item/stack/sheet/glass(), \
-		new /obj/item/stack/sheet/rglass(), \
-		new /obj/item/stack/rods(), \
-		new /obj/item/weapon/rcd_ammo(), \
-		new /obj/item/weapon/kitchenknife(), \
-		new /obj/item/weapon/scalpel(), \
-		new /obj/item/weapon/circular_saw(), \
-		new /obj/item/weapon/surgicaldrill(),\
-		new /obj/item/weapon/retractor(),\
-		new /obj/item/weapon/cautery(),\
-		new /obj/item/weapon/hemostat(),\
-		new /obj/item/weapon/reagent_containers/glass/beaker(), \
-		new /obj/item/weapon/reagent_containers/glass/beaker/large(), \
-		new /obj/item/ammo_casing/shotgun/beanbag(), \
-		new /obj/item/ammo_box/c38(), \
-		new /obj/item/device/taperecorder/empty(), \
-		new /obj/item/device/tape(), \
-		new /obj/item/device/assembly/igniter(), \
-		new /obj/item/device/assembly/signaler(), \
-		new /obj/item/device/radio/headset(), \
-		new /obj/item/device/radio/off(), \
-		new /obj/item/device/assembly/infra(), \
-		new /obj/item/device/assembly/timer(), \
-		new /obj/item/device/assembly/voice(), \
-		new /obj/item/weapon/light/tube(), \
-		new /obj/item/weapon/light/bulb(), \
-		new /obj/item/weapon/camera_assembly(), \
-		new /obj/item/newscaster_frame(), \
-		new /obj/item/weapon/reagent_containers/syringe(), \
-		new /obj/item/device/assembly/prox_sensor(), \
-	)
-
-var/global/list/autolathe_recipes_hidden = list( \
-		new /obj/item/weapon/flamethrower/full(), \
-		new /obj/item/weapon/rcd(), \
-		new /obj/item/device/electropack(), \
-		new /obj/item/device/radio/security(), \
-		new /obj/item/weapon/weldingtool/largetank(), \
-		new /obj/item/weapon/restraints/handcuffs(), \
-		new /obj/item/ammo_box/a357(), \
-		new /obj/item/ammo_casing/shotgun(), \
-		new /obj/item/ammo_casing/shotgun/buckshot(), \
-		new /obj/item/ammo_casing/shotgun/dart(), \
-		new /obj/item/ammo_casing/shotgun/incendiary(), \
-		/* new /obj/item/weapon/shield/riot(), */ \
+var/global/list/autolathe_category_list = list( \
+		"Tools"=list( \
+			new /obj/item/weapon/reagent_containers/glass/bucket(), \
+			new /obj/item/weapon/crowbar(), \
+			new /obj/item/device/flashlight(), \
+			new /obj/item/weapon/extinguisher(), \
+			new /obj/item/device/multitool(), \
+			new /obj/item/device/analyzer(), \
+			new /obj/item/device/t_scanner(), \
+			new /obj/item/weapon/weldingtool(), \
+			new /obj/item/weapon/screwdriver(), \
+			new /obj/item/weapon/wirecutters(), \
+			new /obj/item/weapon/wrench(), \
+			new /obj/item/device/pipe_painter(), \
+		), \
+		"Wearable"=list( \
+			new /obj/item/clothing/head/welding(), \
+			new /obj/item/device/radio/headset(), \
+		), \
+		"Electronics / Parts"=list( \
+			new /obj/item/weapon/stock_parts/console_screen(), \
+			new /obj/item/weapon/airlock_electronics(), \
+			new /obj/item/weapon/airalarm_electronics(), \
+			new /obj/item/weapon/firealarm_electronics(), \
+			new /obj/item/newscaster_frame(), \
+			new /obj/item/weapon/camera_assembly(), \
+			new /obj/item/device/taperecorder/empty(), \
+			new /obj/item/device/assembly/igniter(), \
+			new /obj/item/device/assembly/signaler(), \
+			new /obj/item/device/radio/off(), \
+			new /obj/item/device/assembly/infra(), \
+			new /obj/item/device/assembly/timer(), \
+			new /obj/item/device/assembly/voice(), \
+			new /obj/item/device/assembly/prox_sensor(), \
+		), \
+		"Medical"=list( \
+			new /obj/item/weapon/scalpel(), \
+			new /obj/item/weapon/circular_saw(), \
+			new /obj/item/weapon/surgicaldrill(),\
+			new /obj/item/weapon/retractor(),\
+			new /obj/item/weapon/cautery(),\
+			new /obj/item/weapon/hemostat(),\
+			new /obj/item/weapon/reagent_containers/syringe(), \
+		), \
+		"Science"=list( \
+			new /obj/item/weapon/reagent_containers/glass/beaker(), \
+			new /obj/item/weapon/reagent_containers/glass/beaker/large(), \
+		), \
+		"Culinary"=list( \
+			new /obj/item/weapon/kitchenknife(), \
+		), \
+		"Consumables / Ammo"=list( \
+			new /obj/item/weapon/rcd_ammo(), \
+			new /obj/item/ammo_casing/shotgun/beanbag(), \
+			new /obj/item/ammo_box/c38(), \
+			new /obj/item/device/tape(), \
+			new /obj/item/weapon/light/tube(), \
+			new /obj/item/weapon/light/bulb(), \
+		), \
+		"Raw Materials"=list( \
+			new /obj/item/stack/sheet/metal(), \
+			new /obj/item/stack/sheet/glass(), \
+			new /obj/item/stack/sheet/rglass(), \
+			new /obj/item/stack/rods(), \
+		), \
+		"Sh0#t~cIR$&It... Errä"=list( \
+			new /obj/item/weapon/flamethrower/full(), \
+			new /obj/item/weapon/rcd(), \
+			new /obj/item/device/electropack(), \
+			new /obj/item/device/radio/security(), \
+			new /obj/item/weapon/weldingtool/largetank(), \
+			new /obj/item/weapon/restraints/handcuffs(), \
+			new /obj/item/ammo_box/a357(), \
+			new /obj/item/ammo_casing/shotgun(), \
+			new /obj/item/ammo_casing/shotgun/buckshot(), \
+			new /obj/item/ammo_casing/shotgun/dart(), \
+			new /obj/item/ammo_casing/shotgun/incendiary(), \
+			/* new /obj/item/weapon/shield/riot(), */ \
+		)
 	)
 
 /obj/machinery/autolathe
@@ -81,8 +95,6 @@ var/global/list/autolathe_recipes_hidden = list( \
 
 	var/operating = 0.0
 	anchored = 1.0
-	var/list/L = list()
-	var/list/LL = list()
 	var/hacked = 0
 	var/disabled = 0
 	var/shocked = 0
@@ -95,6 +107,8 @@ var/global/list/autolathe_recipes_hidden = list( \
 	var/busy = 0
 	var/prod_coeff
 	var/datum/wires/autolathe/wires = null
+	var/dat
+	var/category = null
 
 /obj/machinery/autolathe/New()
 	..()
@@ -108,8 +122,6 @@ var/global/list/autolathe_recipes_hidden = list( \
 	RefreshParts()
 
 	wires = new(src)
-	src.L = autolathe_recipes
-	src.LL = autolathe_recipes_hidden
 
 /obj/machinery/autolathe/interact(mob/user)
 	if(..())
@@ -197,7 +209,12 @@ var/global/list/autolathe_recipes_hidden = list( \
 /obj/machinery/autolathe/Topic(href, href_list)
 	if(..())
 		return
-	if (!busy)
+
+	if(href_list["category"])
+		category = url_decode(href_list["category"])
+	else if(href_list["category-clear"])
+		category = null
+	else if (!busy)
 		if(href_list["make"])
 			var/coeff = 2 ** prod_coeff
 			var/turf/T = get_step(src.loc, get_dir(src,usr))
@@ -209,11 +226,14 @@ var/global/list/autolathe_recipes_hidden = list( \
 			if(!attempting_to_build)
 				return
 
-			if(locate(attempting_to_build, src.L) || locate(attempting_to_build, src.LL)) // see if the requested object is in one of the construction lists, if so, it is legit -walter0o
-				template = attempting_to_build
+			var/found = 0
+			for(var/cat in autolathe_category_list)
+				if(locate(attempting_to_build, autolathe_category_list[cat])) // see if the requested object is in one of the construction lists, if so, it is legit -walter0o
+					template = attempting_to_build
+					found = 1
+					break
 
-			else // somebody is trying to exploit, alert admins -walter0o
-
+			if(!found)  // somebody is trying to exploit, alert admins -walter0o
 				var/turf/LOC = get_turf(usr)
 				message_admins("[key_name_admin(usr)] tried to exploit an autolathe to duplicate <a href='?_src_=vars;Vars=\ref[attempting_to_build]'>[attempting_to_build]</a> ! ([LOC ? "<a href='?_src_=holder;adminplayerobservecoodjump=1;X=[LOC.x];Y=[LOC.y];Z=[LOC.z]'>JMP</a>" : "null"])", 0)
 				log_admin("EXPLOIT : [key_name(usr)] tried to exploit an autolathe to duplicate [attempting_to_build] !")
@@ -279,35 +299,39 @@ var/global/list/autolathe_recipes_hidden = list( \
 		prod_coeff += M.rating - 1
 
 /obj/machinery/autolathe/proc/regular_win(mob/user)
-	var/dat
 	if(!panel_open)
 		var/coeff = 2 ** prod_coeff
 		dat = "<div class='statusDisplay'><b>Metal amount:</b> [src.m_amount] / [max_m_amount] cm<sup>3</sup><br>"
 		dat += "<b>Glass amount:</b> [src.g_amount] / [max_g_amount] cm<sup>3</sup><hr>"
-		var/list/objs = list()
-		objs += src.L
-		if(src.hacked)
-			objs += src.LL
-		for(var/obj/t in objs)
-			if(disabled || m_amount<t.m_amt || g_amount<t.g_amt)
-				dat += replacetext("<span class='linkOff'>[t]</span>", "The ", "")
-			else
-				dat += replacetext("<a href='?src=\ref[src];make=\ref[t]'>[t]</a>", "The ", "")
 
-			if(istype(t, /obj/item/stack))
-				var/obj/item/stack/S = t
-				var/max_multiplier = min(S.max_amount, S.m_amt?round(m_amount/S.m_amt):INFINITY, S.g_amt?round(g_amount/S.g_amt):INFINITY)
-				if (max_multiplier>10 && !disabled)
-					dat += " <a href='?src=\ref[src];make=\ref[t];multiplier=[10]'>x[10]</a>"
-				if (max_multiplier>25 && !disabled)
-					dat += " <a href='?src=\ref[src];make=\ref[t];multiplier=[25]'>x[25]</a>"
-				if (max_multiplier>1 && !disabled)
-					dat += " <a href='?src=\ref[src];make=\ref[t];multiplier=[max_multiplier]'>x[max_multiplier]</a>"
-				dat += " [t.m_amt] m / [t.g_amt] g"
-			else
-				dat += " [t.m_amt/coeff] m / [t.g_amt/coeff] g"
-			dat += "<br>"
-		dat += "</span>"
+		if(category)
+			dat += "<a href='?src=\ref[src];category-clear=1'>Return to Categories</a><hr>"
+
+			for(var/obj/item in autolathe_category_list[category])
+				if(disabled || m_amount<item.m_amt || g_amount<item.g_amt)
+					dat += replacetext("<li><span class='linkOff'>[item]</span></li>", "The ", "")
+				else
+					dat += replacetext("<li><a href='?src=\ref[src];make=\ref[item]'>[item]</a></li>", "The ", "")
+
+				if(istype(item, /obj/item/stack))
+					var/obj/item/stack/S = item
+					var/max_multiplier = min(S.max_amount, S.m_amt?round(m_amount/S.m_amt):INFINITY, S.g_amt?round(g_amount/S.g_amt):INFINITY)
+					if (max_multiplier>10 && !disabled)
+						dat += " <a href='?src=\ref[src];make=\ref[item];multiplier=[10]'>x[10]</a>"
+					if (max_multiplier>25 && !disabled)
+						dat += " <a href='?src=\ref[src];make=\ref[item];multiplier=[25]'>x[25]</a>"
+					if (max_multiplier>1 && !disabled)
+						dat += " <a href='?src=\ref[src];make=\ref[item];multiplier=[max_multiplier]'>x[max_multiplier]</a>"
+					dat += " [item.m_amt] m / [item.g_amt] g"
+				else
+					dat += " [item.m_amt/coeff] m / [item.g_amt/coeff] g"
+		else
+			dat += "<ol>"
+			for(var/cat in autolathe_category_list)
+				if(!src.hacked && cat == "Sh0#t~cIR$&It... Errä")
+					continue
+				dat += "<li><a href='?src=\ref[src];mob=\ref[user];category=[url_encode(cat)]'>[cat]</a></li>"
+			dat += "</ol>"
 	else
 		dat = wires.GetInteractWindow()
 
