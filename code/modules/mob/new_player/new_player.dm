@@ -20,7 +20,7 @@
 
 	spawn(10)
 		for(var/datum/admin_ticket/T in tickets_list)
-			if(compare_ckey(T.owner_ckey, ckey))
+			if(compare_ckey(T.owner_ckey, ckey) && !T.resolved)
 				T.add_log("* Connected *")
 				break
 

@@ -29,12 +29,14 @@
 		owner = ntarget
 		owner_ckey = get_ckey(ntarget)
 
-	for(var/datum/admin_ticket/T in tickets_list)
+	// Code removed. This would usually enable adding comments to tickets.
+	//   we instead want a new ticket to be created.
+	/*for(var/datum/admin_ticket/T in tickets_list)
 		if(compare_ckey(owner_ckey, T.owner_ckey))
 			error = 1
 			if(alert(usr, "This user already has a ticket. Would you like to add to it as a supplimentary comment?", "Supplimentary comment", "Add comment", "Cancel") == "Add comment")
 				T.add_log(ntitle)
-			return
+			return*/
 
 	if(ntitle)
 		title = format_text(ntitle)

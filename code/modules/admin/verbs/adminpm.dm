@@ -97,12 +97,14 @@
 		msg = sanitize(copytext(msg,1,MAX_MESSAGE_LEN))
 		if(!msg)	return
 
+	var/has_resolved_ticket = 0
+
 	// Search current tickets, is this user the owner or primary admin of a ticket
 	for(var/datum/admin_ticket/T in tickets_list)
 		if(!T.handling_admin || ((compare_ckey(T.owner, usr) || compare_ckey(T.handling_admin, usr)) && (compare_ckey(T.owner, C.mob) || compare_ckey(T.handling_admin, C.mob))))
 			// Hijack this PM!
 			if(T.resolved && !holder)
-				continue
+				has_resolved_ticket = 1
 
 			if(T.handling_admin && !compare_ckey(usr, T.handling_admin) && !compare_ckey(usr, T.owner))
 				if(!holder)
@@ -126,6 +128,10 @@
 						return
 
 				return
+
+	if(has_resolved_ticket)
+		usr << "<span class='boldnotice'>Your ticket was closed. Only admins can add finishing comments to it.</span>"
+		return
 
 	// If we didn't find a ticket, we should make one. This bypasses the rest of the original PM system
 	var/datum/admin_ticket/T = new /datum/admin_ticket(usr, msg, C.mob)
