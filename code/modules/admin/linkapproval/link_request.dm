@@ -25,6 +25,15 @@
 		var/datum/link_approval/link = locate(href_list["link"])
 		var/approved = href_list["approved"]
 
+		if(!istype(link, /datum/link_approval))
+			return
+
+		if(!istype(admin, /client))
+			return
+
+		if(!istype(poster, /client))
+			return
+
 		if(!link)
 			usr << "<span class='boldnotice'>Error: No link was found. It may already have been accepted or denied.</span>"
 			return
@@ -36,6 +45,7 @@
 		if(approved == "1")
 			link.approved = 1
 			link.admin = admin
+			bypass_ooc_approval = usr
 			poster.ooc("Approved by [admin]: [link.link]")
 
 			log_admin("Link Approved: Poster=[poster] Admin=[admin] Link=[link.link]")
