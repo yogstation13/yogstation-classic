@@ -26,11 +26,11 @@
 			usr << "<span class='ticket-status'>This ticket is marked as resolved. You may not add any more information to it.</span>"
 			return
 
-		if(!compare_ckey(usr, T.handling_admin) && !compare_ckey(usr, T.owner_ckey))
+		if(!compare_ckey(usr, T.handling_admin) && !compare_ckey(usr, T.owner_ckey) && !holder)
 			usr << "<span class='ticket-status'>You are not the owner or primary admin of this ticket. You may not reply to it.</span>"
 			return
 
-		var/logtext = input("Please enter your reply:")
+		var/logtext = input("Please enter your [(!compare_ckey(usr, T.handling_admin) && !compare_ckey(usr, T.owner_ckey) ? "supplimentary comment" : "reply")]:")
 		//clean the message if it's not sent by a high-rank admin
 		if(!check_rights(R_SERVER|R_DEBUG,0))
 			logtext = sanitize(copytext(logtext,1,MAX_MESSAGE_LEN))
