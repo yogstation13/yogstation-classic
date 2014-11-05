@@ -432,7 +432,7 @@ About the new airlock wires panel:
 			icon_state = "door_locked"
 		else
 			icon_state = "door_closed"
-		if(p_open || welded || emergency)
+		if(p_open || welded || boltsCut || emergency)
 			overlays = list()
 			if(p_open)
 				overlays += image(icon, "panel_open")
@@ -440,6 +440,8 @@ About the new airlock wires panel:
 				overlays += image(icon, "welded")
 			if(emergency && !locked)
 				overlays += image(icon, "elights")
+			if(boltsCut)
+				overlays += image(icon, "bolts_cut")
 	else
 		icon_state = "door_open"
 
