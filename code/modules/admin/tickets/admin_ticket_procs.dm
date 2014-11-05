@@ -57,15 +57,16 @@
 		if(has_pref(handling_admin, SOUND_ADMINHELP))
 			handling_admin << 'sound/effects/adminhelp.ogg'
 
-	if(!compare_ckey(owner_ckey, user))
-		if(!is_admin(owner)) owner << "<span class='ticket-header-recieved'>-- Administrator private message --</span>"
-		if(has_pref(owner, SOUND_ADMINHELP))
-			owner << 'sound/effects/adminhelp.ogg'
+	if(compare_ckey(owner_ckey, user) || compare_ckey(handling_admin, user))
+		if(!compare_ckey(owner_ckey, user))
+			if(!is_admin(owner)) owner << "<span class='ticket-header-recieved'>-- Administrator private message --</span>"
+			if(has_pref(owner, SOUND_ADMINHELP))
+				owner << 'sound/effects/adminhelp.ogg'
 
-	if(compare_ckey(owner_ckey, user))
-		owner << "<span class='ticket-text-sent'>-- <i>[key_name_params(owner, 0, 0, null, src)]</i> -> <i>[is_admin(owner) ? key_name_params(handling_admin, 1, 1, null, src) : key_name_params(handling_admin, 1, 0, null, src)]</i>: [log_message]</span>"
-	else
-		owner << "<span class='ticket-text-received'>-- <i>[is_admin(owner) ? key_name_params(user, 1, 1, null, src) : key_name_params(user, 1, 0, null, src)]</i> -> <i>[key_name_params(owner, 0, 0, null, src)]</i>: [log_message]</span>"
+		if(compare_ckey(owner_ckey, user))
+			owner << "<span class='ticket-text-sent'>-- <i>[key_name_params(owner, 0, 0, null, src)]</i> -> <i>[is_admin(owner) ? key_name_params(handling_admin, 1, 1, null, src) : key_name_params(handling_admin, 1, 0, null, src)]</i>: [log_message]</span>"
+		else
+			owner << "<span class='ticket-text-received'>-- <i>[is_admin(owner) ? key_name_params(user, 1, 1, null, src) : key_name_params(user, 1, 0, null, src)]</i> -> <i>[key_name_params(owner, 0, 0, null, src)]</i>: [log_message]</span>"
 
 	if(!foundMonitor && !compare_ckey(user, owner_ckey))
 		//user << "<span class='ticket-header-recieved'>-- Administrator private message --</span>"
