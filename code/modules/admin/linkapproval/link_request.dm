@@ -3,13 +3,22 @@
 	set category = "Admin"
 	set name = "Approve Link"
 
-	// 15 second cool-down for link posting
+	/*// 15 second cool-down for link posting
 	src.verbs -= /client/verb/admin_link_approval
 	spawn(150)
-		src.verbs += /client/verb/admin_link_approval
+		src.verbs += /client/verb/admin_link_approval*/
+
+	for(var/datum/link_approval/test in link_approval_list)
+		if(test.link == hyperlink)
+			usr << "<span class='boldnotice'>Error: This link is already under approval.</span>"
+			return
+
+		if(ckey(test.poster) == ckey(usr))
+			usr << "<span class='boldnotice'>Error: You already have a link waiting for approval.</span>"
+			return
 
 	var/datum/link_approval/link = new /datum/link_approval(hyperlink)
-	link_approval_list.Add(link)
+	link_approval_list += link
 
 	for(var/client/X in admins)
 		if(X.prefs.toggles & SOUND_ADMINHELP)
@@ -26,12 +35,15 @@
 		var/approved = href_list["approved"]
 
 		if(!istype(link, /datum/link_approval))
+			usr << "<span class='boldnotice'>Error: It may already have been accepted or denied.</span>"
 			return
 
 		if(!istype(admin, /client))
+			usr << "<span class='boldnotice'>Error: It may already have been accepted or denied.</span>"
 			return
 
 		if(!istype(poster, /client))
+			usr << "<span class='boldnotice'>Error: It may already have been accepted or denied.</span>"
 			return
 
 		if(!link)
@@ -61,10 +73,10 @@
 
 			log_admin("Link Denied: Poster=[poster] Admin=[admin] Link=[link.link]")
 
-		link_approval_list.Remove(link)
+		link_approval_list -= link
 
 
-/var/list/link_approval_list = list()
+/var/global/list/link_approval_list = list()
 /datum/link_approval
 	var/mob/poster = null
 	var/link = null
