@@ -246,7 +246,24 @@ var/list/donators = list()
 		if(P)
 			P.unlock_content &= 1
 	donators = list()
-	var/list/donatorskeys = file2list("config/donators.txt")
+	var/list/donatorskeys = list()
+	if(config.donator_legacy_system)
+		donatorskeys = file2list("config/donators.txt")
+	else
+		establish_db_connection()
+		if(!dbcon.IsConnected())
+			world.log << "Failed to connect to database in load_donators(). Reverting to legacy system."
+			diary << "Failed to connect to database in load_donators(). Reverting to legacy system."
+			config.donator_legacy_system = 1
+			load_donators()
+			return
+
+		var/DBQuery/query = dbcon.NewQuery("SELECT ckey FROM [format_table_name("donors")] WHERE (expiration_time > Now()) AND (revoked IS NULL)")
+		query.Execute()
+		while(query.NextRow())
+			ckey = query.item[1]
+			if(ckey)
+				donatorskeys |= ckey
 	for(var/key in donatorskeys)
 		ckey = ckey(key)
 		donators += ckey

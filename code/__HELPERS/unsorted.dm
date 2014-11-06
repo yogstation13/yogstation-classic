@@ -1213,7 +1213,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 		var/turf/T = locate(/turf) in AM.locs
 		if(!T)
 			if(istype(AM, /mob))
-				warning("mob with loc = null. Name:[AM.name]; Type:[AM.type]; In mob list:[AM in mob_list ? "YES" : "no"]")
+				warning("mob with loc = null. Name:[AM.name]; Type:[AM.type]; In mob list:[(AM in mob_list) ? "YES" : "no"]")
 		return T
 	else if(isturf(AM))
 		return AM
