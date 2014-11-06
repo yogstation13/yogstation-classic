@@ -186,9 +186,7 @@ var/next_external_rsc = 0
 	if(holder)
 		holder.owner = null
 		admins -= src
-	var/conn_number = connection_number
-	spawn(0)
-		sync_logout_with_db(conn_number)
+	sync_logout_with_db(connection_number)
 	directory -= ckey
 	clients -= src
 	return ..()
@@ -254,7 +252,7 @@ var/next_external_rsc = 0
 	var/DBQuery/query_getid = dbcon.NewQuery("SELECT `id` FROM `[format_table_name("connection_log")]` WHERE `serverip`='[serverip]' AND `ckey`='[sql_ckey]' AND `ip`='[sql_ip]' AND `computerid`='[sql_computerid]' ORDER BY datetime DESC LIMIT 1;")
 	query_getid.Execute()
 	while (query_getid.NextRow())
-		connection_number = query_getid.item[1]
+		connection_number = text2num(query_getid.item[1])
 
 proc/sync_logout_with_db(number)
 	if(!number || !isnum(number))
