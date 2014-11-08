@@ -1,6 +1,7 @@
 //This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:31
 
 var/global/list/autolathe_category_list = list( \
+		"Show All"=null, \
 		"Tools"=list( \
 			new /obj/item/weapon/reagent_containers/glass/bucket(), \
 			new /obj/item/weapon/crowbar(), \
@@ -301,30 +302,78 @@ var/global/list/autolathe_category_list = list( \
 /obj/machinery/autolathe/proc/regular_win(mob/user)
 	if(!panel_open)
 		var/coeff = 2 ** prod_coeff
-		dat = "<div class='statusDisplay'><b>Metal amount:</b> [src.m_amount] / [max_m_amount] cm<sup>3</sup><br>"
+
+		dat = "<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js\"></script>"
+		dat += "<div class='statusDisplay'><b>Metal amount:</b> [src.m_amount] / [max_m_amount] cm<sup>3</sup><br>"
 		dat += "<b>Glass amount:</b> [src.g_amount] / [max_g_amount] cm<sup>3</sup><hr>"
 
-		if(category)
-			dat += "<a href='?src=\ref[src];category-clear=1'>Return to Categories</a><hr>"
+		dat += {"<input type='text' id='search-field' value='Enter a search string' style='background-color: #333; width: 90%; padding: 2px; color: #eee; font-weight: bold; border: solid 1px #888; border-bottom: solid 3px #f90;' /><br /><div id='results'></div><hr /><script>"}
+
+		dat += "var designs = \["
+		var/designIndex = 0
+		for(var/category in autolathe_category_list)
+			if(!src.hacked && category == "Sh0#t~cIR$&It... Errä")
+				continue
 
 			for(var/obj/item in autolathe_category_list[category])
+				designIndex++
+
+				var/itemLine = ""
 				if(disabled || m_amount<item.m_amt || g_amount<item.g_amt)
-					dat += replacetext("<li><span class='linkOff'>[item]</span></li>", "The ", "")
+					itemLine += replacetext("* <span class='linkOff'>[item]</span> ", "The ", "")
 				else
-					dat += replacetext("<li><a href='?src=\ref[src];make=\ref[item]'>[item]</a></li>", "The ", "")
+					itemLine += replacetext("* <a href='?src=\ref[src];make=\ref[item]'>[item]</a> ", "The ", "")
 
 				if(istype(item, /obj/item/stack))
 					var/obj/item/stack/S = item
 					var/max_multiplier = min(S.max_amount, S.m_amt?round(m_amount/S.m_amt):INFINITY, S.g_amt?round(g_amount/S.g_amt):INFINITY)
 					if (max_multiplier>10 && !disabled)
-						dat += " <a href='?src=\ref[src];make=\ref[item];multiplier=[10]'>x[10]</a>"
+						itemLine += " <a href='?src=\ref[src];make=\ref[item];multiplier=[10]'>x[10]</a>"
 					if (max_multiplier>25 && !disabled)
-						dat += " <a href='?src=\ref[src];make=\ref[item];multiplier=[25]'>x[25]</a>"
+						itemLine += " <a href='?src=\ref[src];make=\ref[item];multiplier=[25]'>x[25]</a>"
 					if (max_multiplier>1 && !disabled)
-						dat += " <a href='?src=\ref[src];make=\ref[item];multiplier=[max_multiplier]'>x[max_multiplier]</a>"
-					dat += " [item.m_amt] m / [item.g_amt] g"
+						itemLine += " <a href='?src=\ref[src];make=\ref[item];multiplier=[max_multiplier]'>x[max_multiplier]</a>"
+					itemLine += " [item.m_amt] m / [item.g_amt] g"
 				else
-					dat += " [item.m_amt/coeff] m / [item.g_amt/coeff] g"
+					itemLine += " [item.m_amt/coeff] m / [item.g_amt/coeff] g"
+
+				itemLine = url_encode(itemLine)
+
+				dat += "[designIndex > 1 ? ", " : ""]{\"name\": \"[item]\", \"html\": \"[itemLine]\"}"
+		dat += "\];"
+
+		dat += {"
+			$('#search-field').click(function() {
+				if($(this).val() == 'Enter a search string') {
+					$(this).val('');
+				}
+			});
+
+			function urldecode(str) {
+				return decodeURIComponent((str+'').replace(/\\+/g, '%20').replace(/%ff/g, ''));
+			}
+
+			$('#search-field').keyup(function() {
+				$('#results').html('');
+				var search = $(this).val();
+				if(search == "")
+					return;
+				for(var i = 0; i < designs.length; i++) {
+					if(designs\[i\].name.toLowerCase().indexOf(search.toLowerCase()) > -1) {
+						$('#results').append('<p style=\"padding: 0px; margin: 0px;\">'+urldecode(designs\[i\].html)+'</p>');
+					}
+				}
+			});
+		</script>"}
+
+		if(category)
+			dat += "<a href='?src=\ref[src];category-clear=1'>Return to Categories</a><hr>"
+
+			if(category == "Show All")
+				for(var/cat in autolathe_category_list)
+					dat += listCategory(cat)
+			else
+				dat += listCategory(category)
 		else
 			dat += "<ol>"
 			for(var/cat in autolathe_category_list)
@@ -339,6 +388,30 @@ var/global/list/autolathe_category_list = list( \
 	popup.set_content(dat)
 	popup.open()
 	return
+
+/obj/machinery/autolathe/proc/listCategory(var/category)
+	var/coeff = 2 ** prod_coeff
+	var/data = ""
+	for(var/obj/item in autolathe_category_list[category])
+		if(disabled || m_amount<item.m_amt || g_amount<item.g_amt)
+			data += replacetext("<li><span class='linkOff'>[item]</span> ", "The ", "")
+		else
+			data += replacetext("<li><a href='?src=\ref[src];make=\ref[item]'>[item]</a> ", "The ", "")
+
+		if(istype(item, /obj/item/stack))
+			var/obj/item/stack/S = item
+			var/max_multiplier = min(S.max_amount, S.m_amt?round(m_amount/S.m_amt):INFINITY, S.g_amt?round(g_amount/S.g_amt):INFINITY)
+			if (max_multiplier>10 && !disabled)
+				data += " <a href='?src=\ref[src];make=\ref[item];multiplier=[10]'>x[10]</a>"
+			if (max_multiplier>25 && !disabled)
+				data += " <a href='?src=\ref[src];make=\ref[item];multiplier=[25]'>x[25]</a>"
+			if (max_multiplier>1 && !disabled)
+				data += " <a href='?src=\ref[src];make=\ref[item];multiplier=[max_multiplier]'>x[max_multiplier]</a>"
+			data += " [item.m_amt] m / [item.g_amt] g"
+		else
+			data += " [item.m_amt/coeff] m / [item.g_amt/coeff] g"
+		data += "</li>"
+	return data
 
 /obj/machinery/autolathe/proc/shock(mob/user, prb)
 	if(stat & (BROKEN|NOPOWER))		// unpowered, no shock

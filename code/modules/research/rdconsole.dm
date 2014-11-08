@@ -833,7 +833,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 				});
 
 				function urldecode(str) {
-					return decodeURIComponent((str+'').replace(/\\+/g, '%20'));
+					return decodeURIComponent((str+'').replace(/\\+/g, '%20').replace(/%ff/g, ''));
 				}
 
 				$('#search-field').keyup(function() {
@@ -1016,7 +1016,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 				});
 
 				function urldecode(str) {
-					return decodeURIComponent((str+'').replace(/\\+/g, '%20'));
+					return decodeURIComponent((str+'').replace(/\\+/g, '%20').replace(/%ff/g, ''));
 				}
 
 				$('#search-field').keyup(function() {
