@@ -584,7 +584,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 /obj/machinery/computer/rdconsole/interact(mob/user)
 
 	user.set_machine(src)
-	var/dat = ""
+	var/dat = "<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js\"></script>"
 	files.RefreshResearch()
 	switch(screen) //A quick check to make sure you get the right screen when a device is disconnected.
 		if(2 to 2.9)
@@ -785,9 +785,73 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			dat += "<h3>Protolathe Menu:</h3><BR>"
 			dat += "<B>Material Amount:</B> [linked_lathe.TotalMaterials()] / [linked_lathe.max_material_storage]<BR>"
 			dat += "<B>Chemical Volume:</B> [linked_lathe.reagents.total_volume] / [linked_lathe.reagents.maximum_volume]<HR>"
+
 			var/coeff = linked_lathe.efficiency_coeff
+
+			dat += {"<input type='text' id='search-field' value='Enter a search string' style='background-color: #333; width: 90%; padding: 2px; color: #eee; font-weight: bold; border: solid 1px #888; border-bottom: solid 3px #f90;' /><br /><div id='results'></div><hr /><script>"}
+
+			dat += "var designs = \["
+			var/designIndex = 0
+			for(var/datum/design/D in files.known_designs)
+				if(!(D.build_type & PROTOLATHE))
+					continue
+				designIndex++
+
+				var/item = ""
+				var/temp_dat = "[D.name]"
+				var/temp_material
+				var/c = 50
+				var/t
+				for(var/M in D.materials)
+					t = linked_lathe.check_mat(D, M)
+					if (!t)
+						temp_material += " <span style=\"color:red\">[D.materials[M]/coeff] [CallMaterialName(M)]</span>"
+					else
+						temp_material += " [D.materials[M]/coeff] [CallMaterialName(M)]"
+					c = min(c,t)
+
+				if (c)
+					item += "* <A href='?src=\ref[src];build=[D.id];amount=1'>[temp_dat]</A>"
+					if(c >= 5.0)
+						item += "<A href='?src=\ref[src];build=[D.id];amount=5'>x5</A>"
+					if(c >= 10.0)
+						item += "<A href='?src=\ref[src];build=[D.id];amount=10'>x10</A>"
+					item += "[temp_material]"
+				else
+					item += "* <span class='linkOff'>[temp_dat]</span>[temp_material]"
+
+				item = url_encode(item)
+
+				dat += "[designIndex > 1 ? ", " : ""]{\"name\": \"[D.name]\", \"html\": \"[item]\"}"
+			dat += "\];"
+
+			dat += {"
+				$('#search-field').click(function() {
+					if($(this).val() == 'Enter a search string') {
+						$(this).val('');
+					}
+				});
+
+				function urldecode(str) {
+					return decodeURIComponent((str+'').replace(/\\+/g, '%20'));
+				}
+
+				$('#search-field').keyup(function() {
+					$('#results').html('');
+					var search = $(this).val();
+					if(search == "")
+						return;
+					for(var i = 0; i < designs.length; i++) {
+						if(designs\[i\].name.toLowerCase().indexOf(search.toLowerCase()) > -1) {
+							$('#results').append('<p style=\"padding: 0px; margin: 0px;\">'+urldecode(designs\[i\].html)+'</p>');
+						}
+					}
+				});
+			</script>"}
+
 			if(!chosen_category)
 				var/list/categories = list()
+				categories.Add("Show All")
 				for(var/datum/design/D in files.known_designs)
 					if(!(D.build_type & PROTOLATHE))
 						continue
@@ -808,11 +872,12 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 					if(!(D.build_type & PROTOLATHE))
 						continue
 
-					if(!D.ui_category && chosen_category == "Unknown")
-						// Unknown item category, and we have the Unknown category selected.
-						log_admin("R&D Organisation: \"[D.name]\" \"[D]\" is missing a ui_category. Please tell Kn0ss0s so he can assign a category.")
-					else if(D.ui_category != chosen_category)
-						continue
+					if(chosen_category != "Show All")
+						if(!D.ui_category && chosen_category == "Unknown")
+							// Unknown item category, and we have the Unknown category selected.
+							log_admin("R&D Organisation: \"[D.name]\" \"[D]\" is missing a ui_category. Please tell Kn0ss0s so he can assign a category.")
+						else if(D.ui_category != chosen_category)
+							continue
 
 					var/temp_dat = "[D.name]"
 					var/temp_material
@@ -914,8 +979,62 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			dat += "Chemical Volume: [linked_imprinter.reagents.total_volume]<HR>"
 			var/coeff = linked_imprinter.efficiency_coeff
 
+			dat += {"<input type='text' id='search-field' value='Enter a search string' style='background-color: #333; width: 90%; padding: 2px; color: #eee; font-weight: bold; border: solid 1px #888; border-bottom: solid 3px #f90;' /><br /><div id='results'></div><hr /><script>"}
+
+			dat += "var designs = \["
+			var/designIndex = 0
+			for(var/datum/design/D in files.known_designs)
+				if(!(D.build_type & IMPRINTER))
+					continue
+				designIndex++
+
+				var/item = ""
+				var/temp_dat = "[D.name]"
+				var/temp_materials
+				var/check_materials = 1
+				for(var/M in D.materials)
+					if (!linked_imprinter.check_mat(D, M))
+						check_materials = 0
+						temp_materials += " <span style=\"color:red\">[D.materials[M]/coeff] [CallMaterialName(M)]</span>"
+					else
+						temp_materials += " [D.materials[M]/coeff] [CallMaterialName(M)]"
+				if (check_materials)
+					item += "* <A href='?src=\ref[src];imprint=[D.id]'>[temp_dat]</A>[temp_materials]<BR>"
+				else
+					item += "* <span class='linkOff'>[temp_dat]</span>[temp_materials]<BR>"
+
+				item = url_encode(item)
+
+				dat += "[designIndex > 1 ? ", " : ""]{\"name\": \"[D.name]\", \"html\": \"[item]\"}"
+			dat += "\];"
+
+			dat += {"
+				$('#search-field').click(function() {
+					if($(this).val() == 'Enter a search string') {
+						$(this).val('');
+					}
+				});
+
+				function urldecode(str) {
+					return decodeURIComponent((str+'').replace(/\\+/g, '%20'));
+				}
+
+				$('#search-field').keyup(function() {
+					$('#results').html('');
+					var search = $(this).val();
+					if(search == "")
+						return;
+					for(var i = 0; i < designs.length; i++) {
+						if(designs\[i\].name.toLowerCase().indexOf(search.toLowerCase()) > -1) {
+							$('#results').append('<p style=\"padding: 0px; margin: 0px;\">'+urldecode(designs\[i\].html)+'</p>');
+						}
+					}
+				});
+			</script>"}
+
 			if(!chosen_category)
 				var/list/categories = list()
+				categories.Add("Show All")
 				for(var/datum/design/D in files.known_designs)
 					if(!(D.build_type & IMPRINTER))
 						continue
@@ -933,8 +1052,9 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 					if(!(D.build_type & IMPRINTER))
 						continue
 
-					if(D.ui_category != chosen_category)
-						continue
+					if(chosen_category != "Show All")
+						if(D.ui_category != chosen_category)
+							continue
 
 					var/temp_dat = "[D.name]"
 					var/temp_materials
@@ -983,7 +1103,9 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			if(linked_imprinter.diamond_amount >= 2000) dat += "<A href='?src=\ref[src];imprinter_ejectsheet=diamond;imprinter_ejectsheet_amt=50'>All</A>"
 			dat += "</div>"
 
-	var/datum/browser/popup = new(user, "rndconsole", name, 420, 450)
+	var/datum/browser/popup = new(user, "rndconsole", name, 620, 450)
+	//popup.add_script("1.jquery.js", "1.jquery.js")
+
 	popup.set_content(dat)
 	popup.open()
 	return
