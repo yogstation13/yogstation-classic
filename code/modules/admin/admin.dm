@@ -90,6 +90,12 @@ var/global/floorIsLava = 0
 			else
 				body += "<A href='?_src_=holder;monkeyone=\ref[M]'>Monkeyize</A> | "
 
+			//Zombie
+			if(iszombie(M))
+				body += "<B>Zombieized</B> | "
+			else
+				body += "<A href='?_src_=holder;zombieone=\ref[M]'>Zombieize</A> | "
+
 			//Corgi
 			if(iscorgi(M))
 				body += "<B>Corgized</B> | "

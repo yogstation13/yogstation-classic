@@ -256,6 +256,7 @@
 			body += "<option value='?_src_=vars;makeai=\ref[D]'>Make AI</option>"
 			body += "<option value='?_src_=vars;makerobot=\ref[D]'>Make cyborg</option>"
 			body += "<option value='?_src_=vars;makemonkey=\ref[D]'>Make monkey</option>"
+			body += "<option value='?_src_=vars;makezombie=\ref[D]'>Make zombie</option>"
 			body += "<option value='?_src_=vars;makealien=\ref[D]'>Make alien</option>"
 			body += "<option value='?_src_=vars;makeslime=\ref[D]'>Make slime</option>"
 		body += "<option value>---</option>"
@@ -716,6 +717,20 @@ body
 				usr << "Mob doesn't exist anymore"
 				return
 			holder.Topic(href, list("monkeyone"=href_list["makemonkey"]))
+
+		else if(href_list["makezombie"])
+			if(!check_rights(R_SPAWN))	return
+
+			var/mob/living/carbon/human/H = locate(href_list["makezombie"])
+			if(!istype(H))
+				usr << "This can only be done to instances of type /mob/living/carbon/human"
+				return
+
+			if(alert("Confirm mob type change?",,"Transform","Cancel") != "Transform")	return
+			if(!H)
+				usr << "Mob doesn't exist anymore"
+				return
+			holder.Topic(href, list("zombieone"=href_list["makezombie"]))
 
 		else if(href_list["makerobot"])
 			if(!check_rights(R_SPAWN))	return

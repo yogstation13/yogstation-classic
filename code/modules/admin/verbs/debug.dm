@@ -265,6 +265,21 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 	else
 		alert("Invalid mob")
 
+/client/proc/cmd_admin_zombieize(var/mob/M in world)
+	set category = "Fun"
+	set name = "Make Zombie"
+
+	if(!ticker)
+		alert("Wait until the game starts")
+		return
+	if(istype(M, /mob/living/carbon/human))
+		var/mob/living/carbon/human/target = M
+		log_admin("[key_name(src)] is attempting to zombieize [M.key].")
+		spawn(10)
+			target.zombieize()
+	else
+		alert("Invalid mob")
+
 /*
 /client/proc/cmd_admin_monkeyize(var/mob/M in world)
 	set category = "Fun"

@@ -123,6 +123,7 @@
 	var/alien_delay = 0
 	var/slime_delay = 0
 	var/animal_delay = 0
+	var/zombie_delay = 0
 
 	var/use_recursive_explosions //Defines whether the server uses recursive or circular explosions.
 

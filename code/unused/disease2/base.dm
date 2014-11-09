@@ -245,6 +245,14 @@
 			var/mob/living/carbon/human/h = mob
 			h.monkeyize()
 
+/datum/disease2/effect/rage_virus
+	name = "Rage Virus"
+	stage = 4
+	activate(var/mob/living/carbon/mob,var/multiplier)
+		if(istype(mob,/mob/living/carbon/human))
+			var/mob/living/carbon/human/h = mob
+			h.zombieize()
+
 /datum/disease2/effect/sneeze
 	name = "Coldingtons Effect"
 	stage = 1

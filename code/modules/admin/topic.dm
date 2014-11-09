@@ -962,6 +962,18 @@
 		message_admins("<span class='adminnotice'>[key_name_admin(usr)] attempting to monkeyize [key_name_admin(H)]</span>")
 		H.monkeyize()
 
+	else if(href_list["zombieone"])
+		if(!check_rights(R_SPAWN))	return
+
+		var/mob/living/carbon/zombie/H = locate(href_list["zombieone"])
+		if(!istype(H))
+			usr << "This can only be used on instances of type /mob/living/carbon/zombie"
+			return
+
+		log_admin("[key_name(usr)] attempting to zombieize [key_name(H)]")
+		message_admins("<span class='adminnotice'>[key_name_admin(usr)] attempting to zombieize [key_name_admin(H)]</span>")
+		H.zombieize()
+
 	else if(href_list["humanone"])
 		if(!check_rights(R_SPAWN))	return
 

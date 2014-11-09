@@ -10,6 +10,11 @@
 		return 1
 	return 0
 
+/proc/iszombie(A)
+	if(A && istype(A, /mob/living/carbon/zombie))
+		return 1
+	return 0
+
 /proc/isbrain(A)
 	if(A && istype(A, /mob/living/carbon/brain))
 		return 1

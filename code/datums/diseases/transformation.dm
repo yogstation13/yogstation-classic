@@ -115,6 +115,56 @@
 	..()
 
 
+/datum/disease/transformation/rage_virus
+	name = "Rage Virus"
+	cure = "Bananas"
+	cure_id = "banana"
+	spread = "Zombie Bites"
+	spread_type = SPECIAL
+	affected_species = list("Human")
+	permeability_mod = 1
+	cure_chance = 1
+	curable = 0
+	longevity = 30
+	desc = "Crewmembers with this disease will bite other humans, causing them to turn into zombies."
+	severity = "BIOHAZARD THREAT!"
+	hidden = list(0, 0)//Not hidden, with the exception of the starting zombie.
+	stage_prob = 4
+	agent = "Rage T-1"
+	new_form = /mob/living/carbon/zombie
+
+	stage1	= null
+	stage2	= null
+	stage3	= null
+	stage4	= list("<span class='warning'>You twitch violently.</span>", "<span class='warning'>You feel unreasonably angry.</span>",
+					"<span class='warning'>You find yourself staring at the head of your coworkers.</span>")
+	stage5	= list("<span class='warning'>You are angry at your coworkers, filled by the desire to eat brains.</span>")
+
+/datum/disease/transformation/rage_virus/do_disease_transformation(var/mob/living/carbon/affected_mob)
+	if(!ismonkey(affected_mob))
+		affected_mob.zombieize(TR_KEEPITEMS | TR_KEEPIMPLANTS | TR_KEEPDAMAGE | TR_KEEPVIRUS | TR_KEEPSE)
+		ticker.mode.add_zombie(affected_mob.mind)
+
+/datum/disease/transformation/rage_virus/stage_act()
+	..()
+	switch(stage)
+		if(2)
+			if(prob(2))
+				affected_mob << "<span class='notice'>Your [pick("back", "arm", "leg", "elbow", "head")] twitches violently.</span>"
+		if(3)
+			if(prob(4))
+				affected_mob << "<span class='danger'>Your head hurts inexplicably. You feel extremely angry.</span>"
+				affected_mob.confused += 10
+		if(4)
+			if(prob(3))
+				affected_mob.say(pick("Uuuuuurrrr!", "URRrrr!", "UUhhhhhhhhhhhh!", "UUUuurrrrrrhhhhhhhhhhhhh."))
+
+/datum/disease/transformation/rage_virus/cure()
+	//ticker.mode.remove_zombie(affected_mob.mind)
+	affected_mob << "<span class='notice'>Your affliction could not be cured!</span>"
+	..()
+
+
 /datum/disease/transformation/robot
 
 	name = "Robotic Transformation"
