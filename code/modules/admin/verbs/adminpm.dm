@@ -58,6 +58,7 @@
 	var/clickedId = 0
 	var/datum/admin_ticket/wasAlreadyClicked = null
 	for(var/datum/admin_ticket/T in tickets_list)
+		world << "[T.ticket_id] T.handling_admin=[T.handling_admin] [get_ckey(T.handling_admin)] T.owner=[T.owner] [get_ckey(T.owner)]"
 		//if(!T.resolved && T.handling_admin && !compare_ckey(T.handling_admin, usr) && compare_ckey(T.owner, C.mob))
 		//	addToOther = T.ticket_id
 		if(!T.resolved && T.pm_started_user && compare_ckey(T.owner, C.mob) && !compare_ckey(T.handling_admin, usr))
@@ -115,7 +116,7 @@
 				T.add_log(msg, src.mob)
 
 				//AdminPM popup for ApocStation and anybody else who wants to use it. Set it with POPUP_ADMIN_PM in config.txt ~Carn
-				if(holder && config.popup_admin_pm)
+				if(holder && !C.holder && config.popup_admin_pm)
 					spawn()	//so we don't hold the caller proc up
 						var/sender = src
 						var/sendername = key

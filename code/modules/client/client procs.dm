@@ -63,7 +63,7 @@
 			if(holder && T.resolved)
 				var/found_ticket = 0
 				for(var/datum/admin_ticket/T2 in tickets_list)
-					if(!T.resolved && compare_ckey(T.owner.ckey, T2.owner_ckey))
+					if(!T.resolved && compare_ckey(T.owner_ckey, T2.owner_ckey))
 						found_ticket = 1
 
 				if(!found_ticket)
@@ -73,7 +73,7 @@
 				usr << "<span class='boldnotice'>Your ticket was closed. Only admins can add finishing comments to it.</span>"
 				return
 
-			cmd_admin_pm(T.owner.ckey,null)
+			cmd_admin_pm(get_ckey(T.owner),null)
 			return
 
 		if(href_list["new"])
@@ -82,7 +82,7 @@
 				usr << "Using this PM-link for this ticket would usually be the first response to a ticket. However, an admin has already responded to this ticket. This link is now disabled, to ensure that no additional tickets are created for the same problem. You can create a new ticket by PMing the user any other way."
 				return
 			else
-				T.pm_started_user = usr
+				T.pm_started_user = get_client(usr)
 
 		cmd_admin_pm(href_list["priv_msg"],null)
 

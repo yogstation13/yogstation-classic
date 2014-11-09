@@ -39,14 +39,14 @@
 			T.add_log(logtext, src.mob)
 
 		//AdminPM popup for ApocStation and anybody else who wants to use it. Set it with POPUP_ADMIN_PM in config.txt ~Carn
-		if(holder && T.owner && T.owner.client && compare_ckey(usr, T.handling_admin) && config.popup_admin_pm)
+		if(holder && T.owner && !T.owner.holder && compare_ckey(usr, T.handling_admin) && config.popup_admin_pm)
 			spawn()	//so we don't hold the caller proc up
 				var/sender = C
 				var/sendername = C.key
 				var/reply = input(T.owner, logtext,"Admin PM from-[sendername]", "") as text|null		//show message and await a reply
 				if(reply)
 					if(sender)
-						T.owner.client.cmd_admin_pm(sender,reply)										//sender is still about, let's reply to them
+						T.owner.cmd_admin_pm(sender,reply)										//sender is still about, let's reply to them
 					else
 						adminhelp(reply)													//sender has left, adminhelp instead
 				return
@@ -70,7 +70,7 @@
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 		if(!istype(T, /datum/admin_ticket))
 			return
-		T.handling_admin = C.mob
+		T.handling_admin = C
 		log_admin("[T.handling_admin] has been assigned to ticket #[T.ticket_id] as primary admin.")
 		// For Alex: Primary admin notification not necessary
 		//T.add_log("[T.handling_admin] has been assigned to this ticket as primary admin.");

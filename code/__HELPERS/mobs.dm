@@ -98,6 +98,13 @@ Proc for attack log creation, because really why not
 
 	return "* Unknown *"
 
+/proc/get_client(var/user)
+	if(istype(user, /client))
+		return user
+	if(ismob(user))
+		var/mob/temp = user
+		return temp.client
+
 /proc/get_fancy_key(mob/user)
 	if(user && user.key)
 		return user.key

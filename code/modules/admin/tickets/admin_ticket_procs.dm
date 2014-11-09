@@ -2,9 +2,17 @@
 /datum/admin_ticket/proc/test()
 	owner << "Ticket title is \"[title]\" for user \"[owner]\""
 
-/datum/admin_ticket/proc/add_log(log_message as text, mob/user)
+/datum/admin_ticket/proc/add_log(log_message as text, var/user_in)
+	var/client/user
 	if(!user)
-		user = usr
+		user = get_client(usr)
+	else
+		if(ismob(user_in))
+			var/mob/temp = user_in
+			user = temp.client
+		else if(istype(user_in, /client))
+			var/client/temp = user_in
+			user = temp
 
 	if(!log_message)
 		return
@@ -12,9 +20,9 @@
 	if(compare_ckey(user, owner_ckey))
 		owner = user
 
-	if(user.client.holder && !handling_admin)
+	if(user.holder && !handling_admin)
 		if(!compare_ckey(user, owner_ckey))
-			handling_admin = user
+			handling_admin = get_client(user)
 			// For Alex: Do not report primary admin set
 			//add_log("[handling_admin] has been assigned to this ticket as primary admin.");
 			world << output("[key_name_params(handling_admin, 1, 1, null, src)]", "ViewTicketLog[ticket_id].browser:handling_user")
@@ -23,59 +31,83 @@
 	var/message = "[gameTimestamp()] - <b>[key_name_params(user, 0, 0, null, src)]</b> - [log_message]"
 	log += "[message]"
 
+	var/admin_log_message = generate_admin_info(log_message)
+
 	world << output(message, "ViewTicketLog[ticket_id].browser:add_message")
 
 	log_admin("Ticket #[ticket_id] message: [message]")
 
-	var/foundMonitor = 0
+	var/list/messageSentTo = list()
+
+	if(!compare_ckey(handling_admin, user))
+		if(!(get_ckey(handling_admin) in messageSentTo))
+			messageSentTo += get_ckey(handling_admin)
+			// For Alex: No bigred for admins
+			//handling_admin << "<span class='ticket-header-recieved'>-- Administrator private message --</span>"
+			handling_admin << "<span class='ticket-text-received'>-- [get_view_link(user)] <i>[key_name_params(user, 1, 1, null, src)]</i> -> <i>[key_name_params(handling_admin, 0, 0, null, src)]</i>: [admin_log_message]</span>"
+			if(has_pref(handling_admin, SOUND_ADMINHELP))
+				handling_admin << 'sound/effects/adminhelp.ogg'
+
+	if(compare_ckey(owner_ckey, user) || compare_ckey(handling_admin, user))
+		if(!(get_ckey(owner) in messageSentTo))
+			messageSentTo += get_ckey(owner)
+
+			if(!compare_ckey(owner_ckey, user))
+				if(!is_admin(owner)) owner << "<span class='ticket-header-recieved'>-- Administrator private message --</span>"
+				if(has_pref(owner, SOUND_ADMINHELP))
+					owner << 'sound/effects/adminhelp.ogg'
+
+			if(compare_ckey(owner_ckey, user))
+				var/toLink
+				if(!handling_admin)
+					toLink = "Admins"
+				else
+					toLink = is_admin(owner) ? key_name_params(handling_admin, 1, 1, null, src) : key_name_params(handling_admin, 1, 0, null, src)
+
+				owner << "<span class='ticket-text-sent'>-- <i>[key_name_params(owner, 0, 0, null, src)]</i> -> <i>[toLink]</i>: [log_message]</span>"
+			else
+				owner << "<span class='ticket-text-received'>-- <i>[is_admin(owner) ? key_name_params(user, 1, 1, null, src) : key_name_params(user, 1, 0, null, src)]</i> -> <i>[key_name_params(owner, 0, 0, null, src)]</i>: [log_message]</span>"
+
+	if(!compare_ckey(user, owner_ckey))
+		if(!(get_ckey(user) in messageSentTo))
+			messageSentTo += get_ckey(user)
+
+			//user << "<span class='ticket-header-recieved'>-- Administrator private message --</span>"
+			user << "<span class='ticket-text-sent'>-- <i>[is_admin(user) ? key_name_params(user, 0, 1, null, src) : "[key_name_params(user, 0, 0, null, src)]"]</i> -> <i>[is_admin(owner) ? key_name_params(owner, 1, 1, null, src) : "[key_name_params(owner, 1, 0, null, src)]"]</i>: [log_message]</span>"
+			//user << "<span class='ticket-text-sent'>-- <i>[is_admin(user) ? key_name(user, 1) : "<a href='?priv_msg=[get_ckey(user)]'>[get_ckey(user)]</a>"]</i> -> <i>[get_fancy_key(owner)]</i>: [log_message]</span>"
+
+			// Is this necessary? It sounds when YOU send a message.
+			//if(has_pref(user, SOUND_ADMINHELP))
+			//	user << 'sound/effects/adminhelp.ogg'
+
 	for(var/M in monitors)
 		if(compare_ckey(owner_ckey, M) || compare_ckey(user, handling_admin))
 			break
+		if(get_ckey(M) in messageSentTo)
+			continue
+		messageSentTo += get_ckey(M)
 
 		// For Alex: No bigred text for monitors
 		//M << "<span class='ticket-header-recieved'>-- Administrator private message --</span>"
 		if(compare_ckey(user, owner))
-			M << "<span class='ticket-text-monitored'>-- <i>[key_name_params(user, 1, 1, null, src)]</i> -> <i>[key_name_params(owner, 0, 0, null, src)]</i>: [log_message]</span>"
+			M << "<span class='ticket-text-sent'>-- [get_view_link(user)] <i>[key_name_params(user, 1, 1, null, src)]</i> -> <i>[key_name_params(owner, 0, 0, null, src)]</i>: [admin_log_message]</span>"
 		else
-			M << "<span class='ticket-text-monitored'>-- <i>[key_name_params(user, 1, 1, null, src)]</i> -> <i>[key_name_params(handling_admin, 0, 0, null, src)]</i>: [log_message]</span>"
+			M << "<span class='ticket-text-received'>-- [get_view_link(user)] <i>[key_name_params(user, 1, 1, null, src)]</i> -> <i>[key_name_params(handling_admin, 0, 0, null, src)]</i>: [admin_log_message]</span>"
 
 		if(has_pref(M, SOUND_ADMINHELP))
 			M << 'sound/effects/adminhelp.ogg'
-		if(compare_ckey(M, user))
-			foundMonitor = 1
 
 	for(var/client/X in admins)
 		if(has_pref(X, TICKET_ALL))
 			if(compare_ckey(owner, X) || compare_ckey(handling_admin, X) || X in monitors)
 				continue
-			X << "<span class='ticket-text-monitored'>-- <i>[key_name_params(user, 1, 1)]</i> -> <i><a href='?src=\ref[user];action=view_admin_ticket;ticket=\ref[src]'>Ticket #[src.ticket_id]</a></i>: [log_message]</span>"
+			if(get_ckey(X) in messageSentTo)
+				continue
+			messageSentTo += get_ckey(X)
+			X << "<span class='ticket-text-received'>-- [get_view_link(user)] <i>[key_name_params(user, 1, 1)]</i> -> <i>[get_view_link(user)]</i>: [admin_log_message]</span>"
 
-	if(!compare_ckey(handling_admin, user))
-		// For Alex: No bigred for admins
-		//handling_admin << "<span class='ticket-header-recieved'>-- Administrator private message --</span>"
-		handling_admin << "<span class='ticket-text-received'>-- <i>[key_name_params(user, 1, 1, null, src)]</i> -> <i>[key_name_params(handling_admin, 0, 0, null, src)]</i>: [log_message]</span>"
-		if(has_pref(handling_admin, SOUND_ADMINHELP))
-			handling_admin << 'sound/effects/adminhelp.ogg'
-
-	if(compare_ckey(owner_ckey, user) || compare_ckey(handling_admin, user))
-		if(!compare_ckey(owner_ckey, user))
-			if(!is_admin(owner)) owner << "<span class='ticket-header-recieved'>-- Administrator private message --</span>"
-			if(has_pref(owner, SOUND_ADMINHELP))
-				owner << 'sound/effects/adminhelp.ogg'
-
-		if(compare_ckey(owner_ckey, user))
-			owner << "<span class='ticket-text-sent'>-- <i>[key_name_params(owner, 0, 0, null, src)]</i> -> <i>[is_admin(owner) ? key_name_params(handling_admin, 1, 1, null, src) : key_name_params(handling_admin, 1, 0, null, src)]</i>: [log_message]</span>"
-		else
-			owner << "<span class='ticket-text-received'>-- <i>[is_admin(owner) ? key_name_params(user, 1, 1, null, src) : key_name_params(user, 1, 0, null, src)]</i> -> <i>[key_name_params(owner, 0, 0, null, src)]</i>: [log_message]</span>"
-
-	if(!foundMonitor && !compare_ckey(user, owner_ckey))
-		//user << "<span class='ticket-header-recieved'>-- Administrator private message --</span>"
-		user << "<span class='ticket-text-sent'>-- <i>[is_admin(user) ? key_name_params(user, 0, 1, null, src) : "[key_name_params(user, 0, 0, null, src)]"]</i> -> <i>[is_admin(owner) ? key_name_params(owner, 1, 1, null, src) : "[key_name_params(owner, 1, 0, null, src)]"]</i>: [log_message]</span>"
-		//user << "<span class='ticket-text-sent'>-- <i>[is_admin(user) ? key_name(user, 1) : "<a href='?priv_msg=[get_ckey(user)]'>[get_ckey(user)]</a>"]</i> -> <i>[get_fancy_key(owner)]</i>: [log_message]</span>"
-
-		// Is this necessary? It sounds when YOU send a message.
-		//if(has_pref(user, SOUND_ADMINHELP))
-		//	user << 'sound/effects/adminhelp.ogg'
+/datum/admin_ticket/proc/get_view_link(var/mob/user)
+	return "<a href='?src=\ref[user];action=view_admin_ticket;ticket=\ref[src]'>Ticket #[src.ticket_id]</a>"
 
 /datum/admin_ticket/proc/toggle_monitor()
 	var/foundMonitor = 0
@@ -85,17 +117,17 @@
 
 	if(!foundMonitor)
 		log_admin("[usr] is now monitoring ticket #[ticket_id]")
-		monitors += usr
+		monitors += get_client(usr)
 		usr << "<span class='ticket-status'>You are now monitoring this ticket</span>"
-		if(owner)
-			owner << "<span class='ticket-status'>[usr] is now monitoring your ticket</span>"
+		/*if(owner)
+			owner << "<span class='ticket-status'>[usr] is now monitoring your ticket</span>"*/
 		return 1
 	else
 		log_admin("[usr] is no longer monitoring ticket #[ticket_id]")
-		monitors -= usr
+		monitors -= get_client(usr)
 		usr << "<span class='ticket-status'>You are no longer monitoring this ticket</span>"
-		if(owner)
-			owner << "<span class='ticket-status'>[usr] is no longer monitoring your ticket</span>"
+		/*if(owner)
+			owner << "<span class='ticket-status'>[usr] is no longer monitoring your ticket</span>"*/
 		return 0
 
 /datum/admin_ticket/proc/toggle_resolved()
@@ -135,33 +167,33 @@
 		content += {"<div class='user-bar'>
 			<p>[key_name(owner, 1)]</p>"}
 
-		if(owner.client && owner.client.mob)
+		if(owner && owner.mob)
 			content += {"<p style='margin-top: 5px;'>
-					<a href='?_src_=holder;adminmoreinfo=\ref[owner.client.mob]'><img width='16' height='16' class='uiIcon16 icon-search' /> ?</a>
-					<a href='?pp=\ref[owner.client.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> PP</a>
-					<a href='?vv=\ref[owner.client.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> VV</a>
-					<a href='?sm=\ref[owner.client.mob]'><img width='16' height='16' class='uiIcon16 icon-mail-closed' /> SM</a>
-					<a href='?jmp=\ref[owner.client.mob]'><img width='16' height='16' class='uiIcon16 icon-arrowthick-1-e' /> JMP</a>
+					<a href='?_src_=holder;adminmoreinfo=\ref[owner.mob]'><img width='16' height='16' class='uiIcon16 icon-search' /> ?</a>
+					<a href='?pp=\ref[owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> PP</a>
+					<a href='?vv=\ref[owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> VV</a>
+					<a href='?sm=\ref[owner.mob]'><img width='16' height='16' class='uiIcon16 icon-mail-closed' /> SM</a>
+					<a href='?jmp=\ref[owner.mob]'><img width='16' height='16' class='uiIcon16 icon-arrowthick-1-e' /> JMP</a>
 					<a href='?src=\ref[usr];action=monitor_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
 					<a href='?src=\ref[usr];action=resolve_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
 					<a href='?src=\ref[usr];action=administer_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-flag' /> Administer</a>
 				</p>"}
 
-			if(owner.client.mob.mind && owner.client.mob.mind.assigned_role)
-				content += "<p class='user-info-bar'>Role: [owner.client.mob.mind.assigned_role]</p>"
-				if(owner.client.mob.mind.special_role)
-					content += "<p class='user-info-bar'>Antagonist: [owner.client.mob.mind.special_role]</p>"
+			if(owner.mob.mind && owner.mob.mind.assigned_role)
+				content += "<p class='user-info-bar'>Role: [owner.mob.mind.assigned_role]</p>"
+				if(owner.mob.mind.special_role)
+					content += "<p class='user-info-bar'>Antagonist: [owner.mob.mind.special_role]</p>"
 				else
 					content += "<p class='user-info-bar'>Antagonist: No</p>"
 
-			var/turf/T = get_turf(owner.client.mob)
+			var/turf/T = get_turf(owner.mob)
 
 			var/location = ""
 			if(isturf(T))
 				if(isarea(T.loc))
-					location = "([owner.client.mob.loc == T ? "at " : "in [owner.client.mob.loc] at "] [T.x], [T.y], [T.z] in area <b>[T.loc]</b>)"
+					location = "([owner.mob.loc == T ? "at " : "in [owner.mob.loc] at "] [T.x], [T.y], [T.z] in area <b>[T.loc]</b>)"
 				else
-					location = "([owner.client.mob.loc == T ? "at " : "in [owner.client.mob.loc] at "] [T.x], [T.y], [T.z])"
+					location = "([owner.mob.loc == T ? "at " : "in [owner.mob.loc] at "] [T.x], [T.y], [T.z])"
 
 			if(location)
 				content += "<p class='user-info-bar'>Location: [location]</p>"
