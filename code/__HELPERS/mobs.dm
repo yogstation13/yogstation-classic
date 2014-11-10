@@ -104,6 +104,7 @@ Proc for attack log creation, because really why not
 	if(ismob(user))
 		var/mob/temp = user
 		return temp.client
+	return user
 
 /proc/get_fancy_key(mob/user)
 	if(user && user.key)

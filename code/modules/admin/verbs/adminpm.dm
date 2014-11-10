@@ -102,18 +102,18 @@
 
 	// Search current tickets, is this user the owner or primary admin of a ticket
 	for(var/datum/admin_ticket/T in tickets_list)
-		if(!T.handling_admin || ((compare_ckey(T.owner, usr) || compare_ckey(T.handling_admin, usr)) && (compare_ckey(T.owner, C.mob) || compare_ckey(T.handling_admin, C.mob))))
+		if(!T.handling_admin || ((compare_ckey(T.owner, get_client(usr)) || compare_ckey(T.handling_admin, get_client(usr))) && (compare_ckey(T.owner, C) || compare_ckey(T.handling_admin, C))))
 			// Hijack this PM!
 			if(T.resolved && !holder)
 				has_resolved_ticket = 1
 
-			if(T.handling_admin && !compare_ckey(usr, T.handling_admin) && !compare_ckey(usr, T.owner))
+			if(T.handling_admin && !compare_ckey(get_client(usr), T.handling_admin) && !compare_ckey(get_client(usr), T.owner))
 				if(!holder)
 					usr << "<span class='boldnotice'>You are not the owner or primary admin of this users ticket. You may not reply to it.</span>"
 				return
 
 			if(!T.resolved)
-				T.add_log(msg, src.mob)
+				T.add_log(msg, get_client(usr))
 
 				//AdminPM popup for ApocStation and anybody else who wants to use it. Set it with POPUP_ADMIN_PM in config.txt ~Carn
 				if(holder && !C.holder && config.popup_admin_pm)

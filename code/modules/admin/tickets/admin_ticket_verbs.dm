@@ -91,13 +91,18 @@
 						<b>Owner:</b> <b>[key_name(T.owner, 1)]</b><br />
 						[T.handling_admin ? " <b>Admin:</b> [T.handling_admin]<br />" : ""]
 						<a href='?src=\ref[src];action=view_admin_ticket;ticket=\ref[T]'><img width='16' height='16' class='uiIcon16 icon-search' /> View</a>
-						<a href='?_src_=holder;adminmoreinfo=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-search' /> ?</a>
-						<a href='?_src_=holder;adminplayeropts=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> PP</a>
-						<a href='?_src_=vars;Vars=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> VV</a>
-						<a href='?_src_=holder;subtlemessage=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-mail-closed' /> SM</a>
-						<a href='?_src_=holder;adminplayerobservejump=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-arrowthick-1-e' /> JMP</a>
-						<a href='?_src_=holder;secretsadmin=check_antagonist'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> CA</a>
-						[ai_found ? " <a href='?_src_=holder;adminchecklaws=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> CL</a>" : ""]
+						"}
+					if(T.owner.mob)
+						content += {"
+							<a href='?_src_=holder;adminmoreinfo=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-search' /> ?</a>
+							<a href='?_src_=holder;adminplayeropts=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> PP</a>
+							<a href='?_src_=vars;Vars=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> VV</a>
+							<a href='?_src_=holder;subtlemessage=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-mail-closed' /> SM</a>
+							<a href='?_src_=holder;adminplayerobservejump=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-arrowthick-1-e' /> JMP</a>
+							<a href='?_src_=holder;secretsadmin=check_antagonist'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> CA</a>
+							[ai_found ? " <a href='?_src_=holder;adminchecklaws=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> CL</a>" : ""]
+							"}
+					content += {"
 						<a href='?src=\ref[src];action=monitor_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
 						<a href='?src=\ref[src];action=resolve_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
 						</p>"}
@@ -123,13 +128,18 @@
 						<b>Owner:</b> <b>[key_name(T.owner, 1)]</b><br />
 						[T.handling_admin ? " <b>Admin:</b> [T.handling_admin]<br />" : ""]
 						<a href='?src=\ref[src];action=view_admin_ticket;ticket=\ref[T]'><img width='16' height='16' class='uiIcon16 icon-search' /> View</a>
-						<a href='?_src_=holder;adminmoreinfo=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-search' /> ?</a>
-						<a href='?_src_=holder;adminplayeropts=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> PP</a>
-						<a href='?_src_=vars;Vars=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> VV</a>
-						<a href='?_src_=holder;subtlemessage=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-mail-closed' /> SM</a>
-						<a href='?_src_=holder;adminplayerobservejump=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-arrowthick-1-e' /> JMP</a>
-						<a href='?_src_=holder;secretsadmin=check_antagonist'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> CA</a>
-						[ai_found ? " <a href='?_src_=holder;adminchecklaws=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> CL</a>" : ""]
+						"}
+					if(T.owner.mob)
+						content += {"
+							<a href='?_src_=holder;adminmoreinfo=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-search' /> ?</a>
+							<a href='?_src_=holder;adminplayeropts=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> PP</a>
+							<a href='?_src_=vars;Vars=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> VV</a>
+							<a href='?_src_=holder;subtlemessage=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-mail-closed' /> SM</a>
+							<a href='?_src_=holder;adminplayerobservejump=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-arrowthick-1-e' /> JMP</a>
+							<a href='?_src_=holder;secretsadmin=check_antagonist'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> CA</a>
+							[ai_found ? " <a href='?_src_=holder;adminchecklaws=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> CL</a>" : ""]
+								"}
+					content += {"
 						<a href='?src=\ref[src];action=monitor_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
 						<a href='?src=\ref[src];action=resolve_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
 						</p>"}
@@ -155,13 +165,18 @@
 						<b>Owner:</b> <b>[key_name(T.owner, 1)]</b><br />
 						[T.handling_admin ? " <b>Admin:</b> [T.handling_admin]<br />" : ""]
 						<a href='?src=\ref[src];action=view_admin_ticket;ticket=\ref[T]'><img width='16' height='16' class='uiIcon16 icon-search' /> View</a>
-						<a href='?_src_=holder;adminmoreinfo=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-search' /> ?</a>
-						<a href='?_src_=holder;adminplayeropts=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> PP</a>
-						<a href='?_src_=vars;Vars=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> VV</a>
-						<a href='?_src_=holder;subtlemessage=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-mail-closed' /> SM</a>
-						<a href='?_src_=holder;adminplayerobservejump=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-arrowthick-1-e' /> JMP</a>
-						<a href='?_src_=holder;secretsadmin=check_antagonist'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> CA</a>
-						[ai_found ? " <a href='?_src_=holder;adminchecklaws=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> CL</a>" : ""]
+						"}
+					if(T.owner.mob)
+						content += {"
+							<a href='?_src_=holder;adminmoreinfo=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-search' /> ?</a>
+							<a href='?_src_=holder;adminplayeropts=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> PP</a>
+							<a href='?_src_=vars;Vars=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> VV</a>
+							<a href='?_src_=holder;subtlemessage=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-mail-closed' /> SM</a>
+							<a href='?_src_=holder;adminplayerobservejump=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-arrowthick-1-e' /> JMP</a>
+							<a href='?_src_=holder;secretsadmin=check_antagonist'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> CA</a>
+							[ai_found ? " <a href='?_src_=holder;adminchecklaws=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> CL</a>" : ""]
+								"}
+					content += {"
 						<a href='?src=\ref[src];action=monitor_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
 						<a href='?src=\ref[src];action=resolve_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
 						</p>"}
