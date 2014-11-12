@@ -303,7 +303,7 @@ var/global/list/autolathe_category_list = list( \
 	if(!panel_open)
 		var/coeff = 2 ** prod_coeff
 
-		dat = "<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js\"></script>"
+		dat = "<script src=\"libraries.min.js\"></script>"
 		dat += "<div class='statusDisplay'><b>Metal amount:</b> [src.m_amount] / [max_m_amount] cm<sup>3</sup><br>"
 		dat += "<b>Glass amount:</b> [src.g_amount] / [max_g_amount] cm<sup>3</sup><hr>"
 

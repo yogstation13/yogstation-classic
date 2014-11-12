@@ -584,7 +584,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 /obj/machinery/computer/rdconsole/interact(mob/user)
 
 	user.set_machine(src)
-	var/dat = "<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js\"></script>"
+	var/dat = "<script src=\"libraries.min.js\"></script>"
 	files.RefreshResearch()
 	switch(screen) //A quick check to make sure you get the right screen when a device is disconnected.
 		if(2 to 2.9)
@@ -1104,7 +1104,6 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			dat += "</div>"
 
 	var/datum/browser/popup = new(user, "rndconsole", name, 620, 450)
-	//popup.add_script("1.jquery.js", "1.jquery.js")
 
 	popup.set_content(dat)
 	popup.open()
