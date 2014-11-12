@@ -73,7 +73,12 @@
 				usr << "<span class='boldnotice'>Your ticket was closed. Only admins can add finishing comments to it.</span>"
 				return
 
-			cmd_admin_pm(get_ckey(T.owner),null)
+			if(get_ckey(usr) == get_ckey(T.owner))
+				T.owner.cmd_admin_pm(get_ckey(T.handling_admin),null)
+			else if(get_ckey(usr) == get_ckey(T.handling_admin))
+				T.handling_admin.cmd_admin_pm(get_ckey(T.owner),null)
+			else
+				cmd_admin_pm(get_ckey(T.owner),null)
 			return
 
 		if(href_list["new"])

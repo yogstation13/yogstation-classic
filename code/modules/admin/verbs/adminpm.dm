@@ -113,7 +113,7 @@
 				return
 
 			if(!T.resolved)
-				T.add_log(msg, get_client(usr))
+				T.add_log(msg, get_client(src))
 
 				//AdminPM popup for ApocStation and anybody else who wants to use it. Set it with POPUP_ADMIN_PM in config.txt ~Carn
 				if(holder && !C.holder && config.popup_admin_pm)
@@ -123,7 +123,7 @@
 						var/reply = input(C, msg,"Admin PM from-[sendername]", "") as text|null		//show message and await a reply
 						if(C && reply)
 							if(sender)
-								C.cmd_admin_pm(sender,reply)										//sender is still about, let's reply to them
+								C.cmd_admin_pm(src,reply)										//sender is still about, let's reply to them
 							else
 								adminhelp(reply)													//sender has left, adminhelp instead
 						return
@@ -135,7 +135,7 @@
 		return
 
 	// If we didn't find a ticket, we should make one. This bypasses the rest of the original PM system
-	var/datum/admin_ticket/T = new /datum/admin_ticket(usr, msg, C.mob)
+	var/datum/admin_ticket/T = new /datum/admin_ticket(usr, msg, C)
 	if(!T.error)
 		tickets_list.Add(T)
 	else

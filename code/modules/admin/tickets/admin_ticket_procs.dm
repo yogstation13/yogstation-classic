@@ -4,7 +4,7 @@
 
 /datum/admin_ticket/proc/add_log(log_message as text, var/user_in)
 	var/client/user
-	if(!user)
+	if(!user_in)
 		user = get_client(usr)
 	else
 		if(ismob(user_in))

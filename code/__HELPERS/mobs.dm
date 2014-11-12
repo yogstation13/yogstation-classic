@@ -90,11 +90,13 @@ Proc for attack log creation, because really why not
 	if(admin)
 		log_attack("<font color='red'>[user ? "[user.name][(ismob(user) && user.ckey) ? "([user.ckey])" : ""]" : "NON-EXISTANT SUBJECT"] [what_done] [target ? "[target.name][(ismob(target) && target.ckey)? "([target.ckey])" : ""]" : "NON-EXISTANT SUBJECT"][object ? " with [object]" : " "][addition]</font>")
 
-/proc/get_ckey(mob/user)
-	if(user && user.ckey)
-		return user.ckey
-	if(user && user.client && user.client.ckey)
-		return user.client.ckey
+/proc/get_ckey(var/user)
+	if(ismob(user))
+		var/mob/temp = user
+		return temp.ckey
+	else if(istype(user, /client))
+		var/client/temp = user
+		return temp.ckey
 
 	return "* Unknown *"
 
@@ -107,10 +109,12 @@ Proc for attack log creation, because really why not
 	return user
 
 /proc/get_fancy_key(mob/user)
-	if(user && user.key)
-		return user.key
-	if(user && user.client && user.client.key)
-		return user.client.key
+	if(ismob(user))
+		var/mob/temp = user
+		return temp.key
+	else if(istype(user, /client))
+		var/client/temp = user
+		return temp.key
 
 	return "* Unknown *"
 
@@ -155,6 +159,9 @@ Proc for attack log creation, because really why not
 			key1 = M.ckey
 		else if(M.client && M.client.ckey)
 			key1 = M.client.ckey
+	else if(istype(user, /client))
+		var/client/C = user
+		key1 = C.ckey
 
 	if(ismob(target))
 		var/mob/M = target
@@ -162,6 +169,10 @@ Proc for attack log creation, because really why not
 			key2 = M.ckey
 		else if(M.client && M.client.ckey)
 			key2 = M.client.ckey
+	else if(istype(target, /client))
+		var/client/C = target
+		key2 = C.ckey
+
 
 	if(key1 == key2)
 		return 1
