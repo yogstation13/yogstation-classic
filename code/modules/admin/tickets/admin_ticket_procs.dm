@@ -30,7 +30,7 @@
 	var/otherAdmin = (usr.client.holder && !(compare_ckey(owner_ckey, usr) || compare_ckey(handling_admin, usr)) ? 1 : 0)
 
 	//var/time = time2text(world.timeofday, "hh:mm")
-	var/message = "[gameTimestamp()] - <b>[key_name_params(user, 0, 0, null, src)]</b> - [log_message]"
+	var/message = "[gameTimestamp()] - [otherAdmin ? "<font color='red'>" : ""]<b>[key_name_params(user, 0, 0, null, src)]</b>[otherAdmin ? "</font>" : ""] - [log_message]"
 	// log += "[message]"
 	log += new /datum/ticket_log(message, otherAdmin)
 
