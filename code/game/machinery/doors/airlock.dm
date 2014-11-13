@@ -427,6 +427,11 @@ About the new airlock wires panel:
 
 /obj/machinery/door/airlock/update_icon()
 	if(overlays) overlays.Cut()
+	if(underlays) underlays.Cut()
+
+	if(boltsCut)
+		underlays += image(icon, "bolts_cut")
+
 	if(density)
 		if(locked && lights)
 			icon_state = "door_locked"
@@ -440,8 +445,6 @@ About the new airlock wires panel:
 				overlays += image(icon, "welded")
 			if(emergency && !locked)
 				overlays += image(icon, "elights")
-			if(boltsCut)
-				overlays += image(icon, "bolts_cut")
 	else
 		icon_state = "door_open"
 
