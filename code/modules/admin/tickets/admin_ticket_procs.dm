@@ -27,13 +27,20 @@
 			//add_log("[handling_admin] has been assigned to this ticket as primary admin.");
 			world << output("[key_name_params(handling_admin, 1, 1, null, src)]", "ViewTicketLog[ticket_id].browser:handling_user")
 
+	var/otherAdmin = (usr.client.holder && !(compare_ckey(owner_ckey, usr) || compare_ckey(handling_admin, usr)) ? 1 : 0)
+
 	//var/time = time2text(world.timeofday, "hh:mm")
 	var/message = "[gameTimestamp()] - <b>[key_name_params(user, 0, 0, null, src)]</b> - [log_message]"
-	log += "[message]"
+	// log += "[message]"
+	log += new /datum/ticket_log(message, otherAdmin)
 
 	var/admin_log_message = generate_admin_info(log_message)
 
-	world << output(message, "ViewTicketLog[ticket_id].browser:add_message")
+	if(!otherAdmin)
+		world << output(message, "ViewTicketLog[ticket_id].browser:add_message")
+	else
+		for(var/client/X in admins)
+			X << output(message, "ViewTicketLog[ticket_id].browser:add_message")
 
 	log_admin("Ticket #[ticket_id] message: [message]")
 
@@ -205,7 +212,9 @@
 
 	var/i = 0
 	for(i = log.len; i > 0; i--)
-		content += "<p class='message-bar'>[log[i]]</p>"
+		var/datum/ticket_log/item = log[i]
+		if((item.admin_only && usr.client.holder) || !item.admin_only)
+			content += "<p class='message-bar'>[item.text]</p>"
 
 	/*for(var/line in log)
 		content += "<p class='message-bar'>[line]</p>"*/
