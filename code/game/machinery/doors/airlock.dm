@@ -454,6 +454,8 @@ About the new airlock wires panel:
 	switch(animation)
 		if("opening")
 			if(overlays) overlays.Cut()
+			if(boltsCut)
+				overlays += image(icon, "bolts_cut")
 			if(p_open)
 				spawn(2) // The only work around that works. Downside is that the door will be gone for a millisecond.
 					flick("o_door_opening", src)  //can not use flick due to BYOND bug updating overlays right before flicking
@@ -461,6 +463,8 @@ About the new airlock wires panel:
 				flick("door_opening", src)
 		if("closing")
 			if(overlays) overlays.Cut()
+			if(boltsCut)
+				overlays += image(icon, "bolts_cut")
 			if(p_open)
 				flick("o_door_closing", src)
 			else
@@ -977,7 +981,7 @@ About the new airlock wires panel:
 			beingcrowbarred = 1 //derp, Agouri
 		else
 			beingcrowbarred = 0
-		if( beingcrowbarred && (density && welded && !operating && src.p_open && (!hasPower()) && !src.locked) )
+		if( beingcrowbarred && (density && welded && !operating && src.p_open && (!hasPower()) && (!src.locked || src.boltsCut)) )
 			playsound(src.loc, 'sound/items/Crowbar.ogg', 100, 1)
 			user.visible_message("<span class='warning'>[user] removes the electronics from the airlock assembly.</span>", \
 								 "You start to remove electronics from the airlock assembly.")
