@@ -549,6 +549,7 @@ About the new airlock wires panel:
 		"idoverride" = aiDisabledIdScanner,
 		"emergency" = emergency,
 		"bolt" = locked,
+		"boltscut" = boltsCut,
 		"boltwire" = isWireCut(AIRLOCK_WIRE_DOOR_BOLTS),
 		"light" = lights,
 		"lightwire" = isWireCut(AIRLOCK_WIRE_LIGHT),
@@ -939,22 +940,22 @@ About the new airlock wires panel:
 			user.visible_message("<span class='warning'>[user] is cutting through the airlocks bolts with their [C].</span>", \
 					"You begin cutting through the airlocks bolts with your [C]...", \
 					"You hear sparks.")
+
 			playsound(loc, 'sound/weapons/saberon.ogg', 40, 1)
 			if(do_after(user,rand(40,80),5,1))
 				playsound(loc, 'sound/weapons/saberon.ogg', 40, 1)
-				if(do_after(user,rand(40,80),5,1))
-					playsound(loc, 'sound/weapons/saberon.ogg', 40, 1)
-					if(do_after(user,rand(40,80),5,1))
-						playsound(loc, 'sound/weapons/saberon.ogg', 40, 1)
-						if(do_after(user,rand(40,80),5,1))
-							if(density && !operating)//Door must be closed to cut.
-								if( !istype(src, /obj/machinery/door/airlock) || !user || !S || S.icon_state == "sword0" || S.icon_state == "dualsaber0" || S.icon_state == "axe0" || !user.loc )
-									return
-								playsound(loc, 'sound/weapons/saberoff.ogg', 40, 1)
-								boltsCut = 1
-								user.visible_message("<span class='warning'>[src] bolts have been cut by [user.name].</span>", \
-										"<span class='notice'>You've cut the bolts on the airlock.</span>")
-								update_icon()
+			if(do_after(user,rand(40,80),5,1))
+				playsound(loc, 'sound/weapons/saberon.ogg', 40, 1)
+			if(do_after(user,rand(40,80),5,1))
+				playsound(loc, 'sound/weapons/saberon.ogg', 40, 1)
+			if(do_after(user,rand(40,80),5,1))
+				if((density && !operating) && !istype(src, /obj/machinery/door/airlock) || !user || !S || S.icon_state == "sword0" || S.icon_state == "dualsaber0" || S.icon_state == "axe0" || !user.loc )
+					return
+				playsound(loc, 'sound/weapons/saberoff.ogg', 40, 1)
+				boltsCut = 1
+				user.visible_message("<span class='warning'>[src] bolts have been cut by [user.name].</span>", \
+						"<span class='notice'>You've cut the bolts on the airlock.</span>")
+				update_icon()
 		else
 			user << "<span class='notice'>The bolts of this airlock are already cut.</span>"
 	else if(istype(C, /obj/item/weapon/screwdriver))

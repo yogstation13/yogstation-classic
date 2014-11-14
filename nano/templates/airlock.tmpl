@@ -214,7 +214,7 @@
 				Door control
 			</div>
 			<div class='itemContent'>
-				{{if !(powerlost && powerlost_b) && !bolt && !welded}}
+				{{if !(powerlost && powerlost_b) && (!bolt || boltscut) && !welded}}
 					{{:~link('Open','power',{'aiEnable':7},density?null:'selected')}}
 					{{:~link('Close','close',{'aiDisable':7},density?'selected':null)}}
 				{{else}}
@@ -224,6 +224,8 @@
 				<span class='bad'>
 				{{if welded}}
 					Door welded
+				{{else boltscut}}
+					Door bolted
 				{{else bolt}}
 					Door bolted
 				{{else powerlost && powerlost_b}}
