@@ -427,17 +427,17 @@ About the new airlock wires panel:
 
 /obj/machinery/door/airlock/update_icon()
 	if(overlays) overlays.Cut()
-	if(underlays) underlays.Cut()
+	//if(underlays) underlays.Cut()
 
 	if(boltsCut)
-		underlays += image(icon, "bolts_cut")
+		overlays += image(icon, "bolts_cut")
 
 	if(density)
 		if(locked && lights)
 			icon_state = "door_locked"
 		else
 			icon_state = "door_closed"
-		if(p_open || welded || boltsCut || emergency)
+		if(p_open || welded || emergency)
 			overlays = list()
 			if(p_open)
 				overlays += image(icon, "panel_open")
@@ -808,7 +808,7 @@ About the new airlock wires panel:
 					//raise door bolts
 					if(src.isWireCut(AIRLOCK_WIRE_DOOR_BOLTS))
 						usr << text("The door bolt drop wire is cut - you can't raise the door bolts.<br>\n")
-					else if(!src.locked)
+					else if(!src.locked && !src.boltsCut)
 						usr << text("The door bolts are already up.<br>\n")
 					else if(src.boltsCut)
 						usr << text("The door bolts are cut and cannot be raised.<br>\n")
@@ -1008,7 +1008,7 @@ About the new airlock wires panel:
 					return
 		else if(hasPower())
 			user << "<span class='warning'> The airlock's motors resist your efforts to force it.</span>"
-		else if(locked)
+		else if(locked && !boltsCut)
 			user << "<span class='warning'> The airlock's bolts prevent it from being forced.</span>"
 		else if( !welded && !operating)
 			if(density)
@@ -1132,7 +1132,7 @@ About the new airlock wires panel:
 
 
 /obj/machinery/door/airlock/proc/autoclose()
-	if(!density && !operating && !locked && !welded && autoclose)
+	if(!density && !operating && (!locked || boltsCut) && !welded && autoclose)
 		close()
 
 /obj/machinery/door/airlock/proc/change_paintjob(obj/item/C as obj, mob/user as mob)
