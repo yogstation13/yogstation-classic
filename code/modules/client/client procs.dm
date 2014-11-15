@@ -303,6 +303,7 @@ proc/sync_logout_with_db(number)
 		'icons/pda_icons/pda_blank.png',
 		'icons/pda_icons/pda_boom.png',
 		'icons/pda_icons/pda_bucket.png',
+		'icons/pda_icons/pda_chatroom.png',
 		'icons/pda_icons/pda_medbot.png',
 		'icons/pda_icons/pda_floorbot.png',
 		'icons/pda_icons/pda_cleanbot.png',

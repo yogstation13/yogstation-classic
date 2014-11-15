@@ -84,6 +84,8 @@ Class Procs:
    process()                  'game/machinery/machine.dm'
       Called by the 'master_controller' once per game tick for each machine that is listed in the 'machines' list.
 
+	is_operational()
+		Returns 0 if the machine is unpowered, broken or undergoing maintenance, 1 if not
 
 	Compiled by Aygar
 */
@@ -142,22 +144,23 @@ Class Procs:
 			pulse2.delete()
 	..()
 
-/obj/machinery/proc/open_machine(updateDialog = 1)
-	var/turf/T = get_turf(src)
-	if(T)
-		state_open = 1
-		density = 0
-		T.contents += contents
-		if(occupant)
-			if(occupant.client)
-				occupant.client.eye = occupant
-				occupant.client.perspective = MOB_PERSPECTIVE
-			occupant = null
+/obj/machinery/proc/open_machine()
+	state_open = 1
+	density = 0
+	dropContents()
 	update_icon()
-	if(updateDialog)
-		updateUsrDialog()
+	updateUsrDialog()
 
-/obj/machinery/proc/close_machine(mob/living/target = null, updateDialog = 1)
+/obj/machinery/proc/dropContents()
+	var/turf/T = get_turf(src)
+	T.contents += contents
+	if(occupant)
+		if(occupant.client)
+			occupant.client.eye = occupant
+			occupant.client.perspective = MOB_PERSPECTIVE
+		occupant = null
+
+/obj/machinery/proc/close_machine(mob/living/target = null)
 	state_open = 0
 	density = 1
 	if(!target)
@@ -173,8 +176,7 @@ Class Procs:
 		occupant = target
 		target.loc = src
 		target.stop_pulling()
-	if(updateDialog)
-		updateUsrDialog()
+	updateUsrDialog()
 	update_icon()
 
 /obj/machinery/ex_act(severity)
@@ -215,6 +217,11 @@ Class Procs:
 	add_fingerprint(usr)
 	return 0
 
+/obj/machinery/proc/is_operational()
+	return !(stat & (NOPOWER|BROKEN|MAINT))
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
 /mob/proc/canUseTopic() //TODO: once finished, place these procs on the respective mob files
 	return
 
@@ -230,10 +237,13 @@ Class Procs:
 		src << "<span class='notice'>You don't have the dexterity to do this!</span>"
 	return
 
-/mob/living/carbon/human/canUseTopic(atom/movable/M)
+/mob/living/carbon/human/canUseTopic(atom/movable/M, be_close = 0)
 	if(restrained() || lying || stat || stunned || weakened)
 		return
 	if(!in_range(M, src))
+		if((be_close == 0) && (TK in mutations))
+			if(tkMaxRangeCheck(src, M))
+				return 1
 		return
 	if(!isturf(M.loc) && M.loc != src)
 		return
@@ -315,7 +325,7 @@ Class Procs:
 		var/obj/machinery/constructable_frame/machine_frame/M = new /obj/machinery/constructable_frame/machine_frame(src.loc)
 		M.state = 2
 		M.icon_state = "box_1"
-		for(var/obj/I in component_parts)
+		for(var/obj/item/I in component_parts)
 			if(I.reliability != 100 && crit_fail)
 				I.crit_fail = 1
 			I.loc = src.loc
@@ -355,14 +365,15 @@ Class Procs:
 	return 0
 
 /obj/machinery/proc/exchange_parts(mob/user, obj/item/weapon/storage/part_replacer/W)
+	var/shouldplaysound = 0
 	if(istype(W) && component_parts)
 		if(panel_open)
 			var/obj/item/weapon/circuitboard/CB = locate(/obj/item/weapon/circuitboard) in component_parts
 			var/P
 			for(var/obj/item/weapon/stock_parts/A in component_parts)
 				for(var/D in CB.req_components)
-					if(ispath(A.type, text2path(D)))
-						P = text2path(D)
+					if(ispath(A.type, D))
+						P = D
 						break
 				for(var/obj/item/weapon/stock_parts/B in W.contents)
 					if(istype(B, P) && istype(A, P))
@@ -373,11 +384,14 @@ Class Procs:
 							component_parts += B
 							B.loc = null
 							user << "<span class='notice'>[A.name] replaced with [B.name].</span>"
+							shouldplaysound = 1 //Only play the sound when parts are actually replaced!
 							break
 			RefreshParts()
 		else
 			user << "<span class='notice'>Following parts detected in the machine:</span>"
 			for(var/var/obj/item/C in component_parts)
 				user << "<span class='notice'>    [C.name]</span>"
+		if(shouldplaysound)
+			W.play_rped_sound()
 		return 1
 	return 0

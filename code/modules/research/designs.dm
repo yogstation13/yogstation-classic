@@ -354,7 +354,7 @@ datum/design/magboots
 	ui_category = "Equipment"
 
 datum/design/drone_shell
-	name = "drone shell"
+	name = "Drone Shell"
 	desc = "A shell of a maintenance drone, an expendable robot built to perform station repairs."
 	id = "drone_shell"
 	req_tech = list("programming" = 2, "biotech" = 4)
@@ -363,3 +363,27 @@ datum/design/drone_shell
 	build_path = /obj/item/drone_shell
 	category = "Misc"
 	ui_category = "Drones"
+
+/////////////////////////////////////////
+////////////Janitor Designs//////////////
+/////////////////////////////////////////
+
+datum/design/advmop
+	name = "Advanced Mop"
+	desc = "An upgraded mop with a large internal capacity for holding water or other cleaning chemicals."
+	id = "advmop"
+	req_tech = list("materials" = 4, "engineering" = 3)
+	build_type = PROTOLATHE
+	materials = list("$metal" = 2500, "$glass" = 200)
+	build_path = /obj/item/weapon/mop/advanced
+	ui_category = "Equipment"
+
+datum/design/holosign
+	name = "Holographic Sign Projector"
+	desc = "A holograpic projector used to project various warning signs."
+	id = "holosign"
+	req_tech = list("magnets" = 3, "powerstorage" = 2)
+	build_type = PROTOLATHE
+	materials = list("$metal" = 2000, "$glass" = 1000)
+	build_path = /obj/item/weapon/holosign_creator
+	ui_category = "Equipment"

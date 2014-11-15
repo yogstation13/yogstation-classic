@@ -122,6 +122,7 @@
 			"You are buckled in to [src] by [user.name].",\
 			"You hear metal clanking")
 	M.buckled = src
+	M.anchored = anchored
 	M.loc = src.loc
 	M.dir = src.dir
 	M.anchored = 1
@@ -146,11 +147,14 @@
 	if(buckled_mob)
 		density = 1
 		icon_state = "up"
-		M.pixel_y += buckled_pixel_y_offset
+		M.pixel_y = initial(M.pixel_y)
 	else
 		density = 0
 		icon_state = "down"
-		M.pixel_y -= buckled_pixel_y_offset
+		M.pixel_y = initial(M.pixel_y)
+		if(M.lying)
+			M.pixel_y -= buckled_pixel_y_offset
+
 
 
 /obj/item/roller

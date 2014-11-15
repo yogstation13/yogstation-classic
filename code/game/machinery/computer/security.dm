@@ -122,7 +122,7 @@
 						for(var/datum/data/record/R in sortRecord(data_core.general, sortBy, order))
 							var/crimstat = ""
 							for(var/datum/data/record/E in data_core.security)
-								if ((E.fields["name"] == R.fields["name"] && E.fields["id"] == R.fields["id"]))
+								if ((E.fields["name"] == R.fields["name"]) && (E.fields["id"] == R.fields["id"]))
 									crimstat = E.fields["criminal"]
 							var/background
 							switch(crimstat)
@@ -324,7 +324,7 @@ What a mess.*/
 			if ("Browse Record")
 				var/datum/data/record/R = locate(href_list["d_rec"])
 				var/S = locate(href_list["d_rec"])
-				if (!( data_core.general.Find(R) ) || !R)
+				if (!( data_core.general.Find(R) ))
 					temp = "Record Not Found!"
 				else
 					for(var/datum/data/record/E in data_core.security)
@@ -419,9 +419,10 @@ What a mess.*/
 				temp += "<a href='?src=\ref[src];choice=Clear Screen'>No</a>"
 
 			if ("Purge All Records")
+				investigate_log("[usr.name] ([usr.key]) has purged all the security records.", "records")
 				for(var/datum/data/record/R in data_core.security)
-					data_core.security -= R
 					del(R)
+				data_core.security.Cut()
 				temp = "All Security records deleted."
 
 			if ("Add Entry")
@@ -467,6 +468,7 @@ What a mess.*/
 					screen = 3
 
 			if ("New Record (General)")
+				//General Record
 				var/datum/data/record/G = new /datum/data/record()
 				G.fields["name"] = "New Record"
 				G.fields["id"] = "[num2hex(rand(1, 1.6777215E7), 6)]"
@@ -479,6 +481,7 @@ What a mess.*/
 				data_core.general += G
 				active1 = G
 
+				//Security Record
 				var/datum/data/record/R = new /datum/data/record()
 				R.fields["name"] = active1.fields["name"]
 				R.fields["id"] = active1.fields["id"]
@@ -490,7 +493,7 @@ What a mess.*/
 				data_core.security += R
 				active2 = R
 
-						//Medical Record
+				//Medical Record
 				var/datum/data/record/M = new /datum/data/record()
 				M.fields["id"]			= active1.fields["id"]
 				M.fields["name"]		= active1.fields["name"]
@@ -513,13 +516,17 @@ What a mess.*/
 			if ("Edit Field")
 				var/a1 = active1
 				var/a2 = active2
+
 				switch(href_list["field"])
 					if("name")
-						if (istype(active1, /datum/data/record))
+						if (istype(active1, /datum/data/record) || istype(active2, /datum/data/record))
 							var/t1 = input("Please input name:", "Secure. records", active1.fields["name"], null)  as text
 							if ((!( t1 ) || !length(trim(t1)) || !( authenticated ) || usr.stat || usr.restrained() || (!in_range(src, usr) && (!istype(usr, /mob/living/silicon)))) || active1 != a1)
 								return
-							active1.fields["name"] = t1
+							if(istype(active1, /datum/data/record))
+								active1.fields["name"] = t1
+							if(istype(active2, /datum/data/record))
+								active2.fields["name"] = t1
 					if("id")
 						if(istype(active2,/datum/data/record) || istype(active1,/datum/data/record))
 							var/t1 = copytext(sanitize(input("Please input id:", "Secure. records", active1.fields["id"], null)  as text),1,MAX_MESSAGE_LEN)
@@ -614,6 +621,7 @@ What a mess.*/
 
 					if ("Change Criminal Status")
 						if (active2)
+							var/old_field = active2.fields["criminal"]
 							switch(href_list["criminal2"])
 								if("none")
 									active2.fields["criminal"] = "None"
@@ -625,21 +633,25 @@ What a mess.*/
 									active2.fields["criminal"] = "Parolled"
 								if("released")
 									active2.fields["criminal"] = "Discharged"
+							investigate_log("[active1.fields["name"]] has been set from [old_field] to [active2.fields["criminal"]] by [usr.name] ([usr.key]).", "records")
 
 					if ("Delete Record (Security) Execute")
+						investigate_log("[usr.name] ([usr.key]) has deleted the security records for [active1.fields["name"]].", "records")
 						if (active2)
 							data_core.security -= active2
 							del(active2)
 
 					if ("Delete Record (ALL) Execute")
 						if (active1)
+							investigate_log("[usr.name] ([usr.key]) has deleted all records for [active1.fields["name"]].", "records")
 							for(var/datum/data/record/R in data_core.medical)
 								if ((R.fields["name"] == active1.fields["name"] || R.fields["id"] == active1.fields["id"]))
 									data_core.medical -= R
 									del(R)
-								else
+									break
 							data_core.general -= active1
 							del(active1)
+
 						if (active2)
 							data_core.security -= active2
 							del(active2)

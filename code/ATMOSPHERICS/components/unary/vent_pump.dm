@@ -114,8 +114,7 @@
 				loc.assume_air(removed)
 				air_update_turf()
 
-				if(network)
-					network.update = 1
+				parent.update = 1
 
 	else //external -> internal
 		var/pressure_delta = 10000
@@ -135,8 +134,7 @@
 				air_contents.merge(removed)
 				air_update_turf()
 
-				if(network)
-					network.update = 1
+				parent.update = 1
 
 	return 1
 
@@ -323,12 +321,8 @@
 		L << "You can't vent crawl from inside of a container!"
 		return
 
-	if(!network || !network.normal_members.len)
-		L << "This vent is not connected to anything."
-		return
-
 	var/list/vents = list()
-	for(var/obj/machinery/atmospherics/unary/vent_pump/temp_vent in network.normal_members)
+	for(var/obj/machinery/atmospherics/unary/vent_pump/temp_vent in parent.other_atmosmch)
 		if(temp_vent.welded)
 			continue
 		if(temp_vent in loc)
@@ -362,7 +356,7 @@
 	var/obj/machinery/atmospherics/unary/vent_pump/target_vent = vents[selection]
 	if(!target_vent)
 		return
-		
+
 	for(var/mob/O in viewers(L, null))
 		O.show_message(text("<B>[L] scrambles into the ventilation ducts!</B>"), 1)
 

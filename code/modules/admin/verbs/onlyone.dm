@@ -11,9 +11,8 @@
 		H.mind.special_role = "traitor"
 
 		var/datum/objective/steal/steal_objective = new
-		var/datum/objective_item/steal/nukedisc/nukedisk = new
-		steal_objective.set_target(nukedisk)
 		steal_objective.owner = H.mind
+		steal_objective.set_target(new /datum/objective_item/steal/nukedisc)
 		H.mind.objectives += steal_objective
 
 		var/datum/objective/hijack/hijack_objective = new

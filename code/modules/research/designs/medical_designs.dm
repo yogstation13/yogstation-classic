@@ -95,3 +95,15 @@ datum/design/bluespacebodybag
 	build_path = /obj/item/bodybag/bluespace
 	category = "Misc"
 	ui_category = "Medical"
+
+datum/design/defib
+	name = "Defibrillator"
+	desc = "A device that delivers powerful shocks to detachable paddles that resuscitate incapacitated patients."
+	id = "defib"
+	req_tech = list("materials" = 7, "biotech" = 5, "powerstorage" = 5)
+	build_type = PROTOLATHE
+	materials = list("$metal" = 5000, "$glass" = 2000, "$silver" = 1000)
+	reliability = 76
+	build_path = /obj/item/weapon/defibrillator
+	category = "Misc"
+	ui_category = "Medical"
