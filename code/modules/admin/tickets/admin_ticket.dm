@@ -40,7 +40,7 @@
 		owner_ckey = get_ckey(ntarget)
 
 	for(var/datum/admin_ticket/T in tickets_list)
-		if(!T.resolved && (compare_ckey(owner_ckey, T.owner_ckey) || compare_ckey(handling_admin, T.handling_admin)))
+		if(!T.resolved && (compare_ckey(owner_ckey, T.owner_ckey)/* || compare_ckey(handling_admin, T.handling_admin)*/))
 			error = 1
 			usr << "<span class='ticket-status'>Ticket not created. This user already has a ticket. You can view it here: [T.get_view_link(usr)]</span>"
 			// Code removed. This would usually enable adding comments to tickets.
