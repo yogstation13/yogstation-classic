@@ -51,7 +51,7 @@
 			messageSentTo += get_ckey(handling_admin)
 			// For Alex: No bigred for admins
 			//handling_admin << "<span class='ticket-header-recieved'>-- Administrator private message --</span>"
-			handling_admin << "<span class='ticket-text-received'>-- [get_view_link(user)] <i>[key_name_params(user, 1, 1, null, src)]</i> -> <i>[key_name_params(handling_admin, 0, 0, null, src)]</i>: [admin_log_message]</span>"
+			handling_admin << "<span class='ticket-text-received'>-- [get_view_link(user)] [key_name_params(user, 1, 1, null, src)] -> [key_name_params(handling_admin, 0, 0, null, src)]: [admin_log_message]</span>"
 			if(has_pref(handling_admin, SOUND_ADMINHELP))
 				handling_admin << 'sound/effects/adminhelp.ogg'
 
@@ -71,17 +71,18 @@
 				else
 					toLink = is_admin(owner) ? key_name_params(handling_admin, 1, 1, null, src) : key_name_params(handling_admin, 1, 0, null, src)
 
-				owner << "<span class='ticket-text-sent'>-- <i>[key_name_params(owner, 0, 0, null, src)]</i> -> <i>[toLink]</i>: [log_message]</span>"
+				owner << "<span class='ticket-text-sent'>-- [key_name_params(owner, 0, 0, null, src)] -> [toLink]: [log_message]</span>"
 			else
-				owner << "<span class='ticket-text-received'>-- <i>[is_admin(owner) ? key_name_params(user, 1, 1, null, src) : key_name_params(user, 1, 0, null, src)]</i> -> <i>[key_name_params(owner, 0, 0, null, src)]</i>: [log_message]</span>"
+				owner << "<span class='ticket-text-received'>-- [is_admin(owner) ? key_name_params(user, 1, 1, null, src) : key_name_params(user, 1, 0, null, src)] -> [key_name_params(owner, 0, 0, null, src)]: [log_message]</span>"
+				if(!is_admin(owner)) owner << "<span class='ticket-admin-reply'>Click on the administrator's name to reply.</span>"
 
 	if(!compare_ckey(user, owner_ckey))
 		if(!(get_ckey(user) in messageSentTo))
 			messageSentTo += get_ckey(user)
 
 			//user << "<span class='ticket-header-recieved'>-- Administrator private message --</span>"
-			user << "<span class='ticket-text-sent'>-- <i>[is_admin(user) ? key_name_params(user, 0, 1, null, src) : "[key_name_params(user, 0, 0, null, src)]"]</i> -> <i>[is_admin(owner) ? key_name_params(owner, 1, 1, null, src) : "[key_name_params(owner, 1, 0, null, src)]"]</i>: [log_message]</span>"
-			//user << "<span class='ticket-text-sent'>-- <i>[is_admin(user) ? key_name(user, 1) : "<a href='?priv_msg=[get_ckey(user)]'>[get_ckey(user)]</a>"]</i> -> <i>[get_fancy_key(owner)]</i>: [log_message]</span>"
+			user << "<span class='ticket-text-sent'>-- [is_admin(user) ? key_name_params(user, 0, 1, null, src) : "[key_name_params(user, 0, 0, null, src)]"] -> [is_admin(owner) ? key_name_params(owner, 1, 1, null, src) : "[key_name_params(owner, 1, 0, null, src)]"]: [log_message]</span>"
+			//user << "<span class='ticket-text-sent'>-- [is_admin(user) ? key_name(user, 1) : "<a href='?priv_msg=[get_ckey(user)]'>[get_ckey(user)]</a>"] -> [get_fancy_key(owner)]: [log_message]</span>"
 
 			// Is this necessary? It sounds when YOU send a message.
 			//if(has_pref(user, SOUND_ADMINHELP))
@@ -97,9 +98,9 @@
 		// For Alex: No bigred text for monitors
 		//M << "<span class='ticket-header-recieved'>-- Administrator private message --</span>"
 		if(compare_ckey(user, owner))
-			M << "<span class='ticket-text-sent'>-- [get_view_link(user)] <i>[key_name_params(user, 1, 1, null, src)]</i> -> <i>[key_name_params(owner, 0, 0, null, src)]</i>: [admin_log_message]</span>"
+			M << "<span class='ticket-text-sent'>-- [get_view_link(user)] [key_name_params(user, 1, 1, null, src)] -> [key_name_params(owner, 0, 0, null, src)]: [admin_log_message]</span>"
 		else
-			M << "<span class='ticket-text-received'>-- [get_view_link(user)] <i>[key_name_params(user, 1, 1, null, src)]</i> -> <i>[key_name_params(handling_admin, 0, 0, null, src)]</i>: [admin_log_message]</span>"
+			M << "<span class='ticket-text-received'>-- [get_view_link(user)] [key_name_params(user, 1, 1, null, src)] -> [key_name_params(handling_admin, 0, 0, null, src)]: [admin_log_message]</span>"
 
 		if(has_pref(M, SOUND_ADMINHELP))
 			M << 'sound/effects/adminhelp.ogg'
@@ -111,7 +112,7 @@
 			if(get_ckey(X) in messageSentTo)
 				continue
 			messageSentTo += get_ckey(X)
-			X << "<span class='ticket-text-received'>-- [get_view_link(user)] <i>[key_name_params(user, 1, 1)]</i> -> <i>[get_view_link(user)]</i>: [admin_log_message]</span>"
+			X << "<span class='ticket-text-received'>-- [get_view_link(user)] [key_name_params(user, 1, 1)] -> [get_view_link(user)]: [admin_log_message]</span>"
 
 /datum/admin_ticket/proc/get_view_link(var/mob/user)
 	return "<a href='?src=\ref[user];action=view_admin_ticket;ticket=\ref[src]'>Ticket #[src.ticket_id]</a>"

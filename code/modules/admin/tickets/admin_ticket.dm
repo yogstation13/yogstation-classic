@@ -70,8 +70,9 @@
 	if(compare_ckey(owner, ntarget))
 		tellAdmins = 0
 		if(!is_admin(owner)) owner << "<span class='ticket-header-recieved'>-- Administrator private message --</span>"
-		owner << "<span class='ticket-text-received'>Ticket created by <i>[is_admin(owner) ? key_name_params(handling_admin, 1, 1, null, src) : key_name_params(handling_admin, 1, 0, null, src)]</i> for <i>you</i>: \"[title]\"</span>"
-		handling_admin << "<span class='ticket-text-sent'>Ticket created by <i>you</i> for <i>[is_admin(handling_admin) ? key_name_params(ntarget, 1, 1, null, src) : key_name_params(ntarget, 1, 0, null, src)]</i>: \"[admin_title]\"</span>"
+		owner << "<span class='ticket-text-received'>Ticket created by [is_admin(owner) ? key_name_params(handling_admin, 1, 1, null, src) : key_name_params(handling_admin, 1, 0, null, src)] for you: \"[title]\"</span>"
+		if(!is_admin(owner)) owner << "<span class='ticket-admin-reply'>Click on the administrator's name to reply.</span>"
+		handling_admin << "<span class='ticket-text-sent'>Ticket created by you for [is_admin(handling_admin) ? key_name_params(ntarget, 1, 1, null, src) : key_name_params(ntarget, 1, 0, null, src)]: \"[admin_title]\"</span>"
 		// log += "[gameTimestamp()] - Ticket created by <b>[handling_admin] for [ntarget]</b>"
 		log += new /datum/ticket_log("[gameTimestamp()] - Ticket created by <b>[handling_admin] for [ntarget]</b>", 0)
 		if(has_pref(owner, SOUND_ADMINHELP))
@@ -81,7 +82,7 @@
 	else
 		// log += "[gameTimestamp()] - Ticket created by <b>[owner]</b>"
 		log += new /datum/ticket_log("[gameTimestamp()] - Ticket created by <b>[owner]</b>", 0)
-		owner << "<span class='ticket-status'>Ticket created for <i>Admins</i>: \"[title]\"</span>"
+		owner << "<span class='ticket-status'>Ticket created for Admins: \"[title]\"</span>"
 		if(has_pref(owner, SOUND_ADMINHELP))
 			owner << 'sound/effects/adminhelp.ogg'
 

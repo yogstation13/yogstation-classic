@@ -94,4 +94,10 @@ BIG IMG.icon 			{width: 32px; height: 32px;}
 	font-size: 15px;
 }
 
+.ticket-admin-reply {
+	color: #ff0000;
+	font-weight: bold;
+	font-style: italic;
+}
+
 </style>"}
