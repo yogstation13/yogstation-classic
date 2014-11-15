@@ -99,9 +99,9 @@ datum/reagent/blood/reaction_mob(var/mob/M, var/method=TOUCH, var/volume)
 				continue
 
 			if(method == TOUCH)
-				M.ContractDisease(D)
+				M.ContractDisease(D, "blood spatter")
 			else //injected
-				M.ForceContractDisease(D)
+				M.ForceContractDisease(D, "blood injection")
 
 datum/reagent/blood/on_new(var/list/data)
 	if(istype(data))

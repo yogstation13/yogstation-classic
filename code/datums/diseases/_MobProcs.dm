@@ -25,22 +25,32 @@
 	return 1
 
 
-/mob/proc/ContractDisease(var/datum/disease/D)
+/mob/proc/ContractDisease(var/datum/disease/D, var/source = null)
 	if(!CanContractDisease(D))
 		return 0
-	AddDisease(D)
+	AddDisease(D, source)
 
 
-/mob/proc/AddDisease(var/datum/disease/D)
+/mob/proc/AddDisease(var/datum/disease/D, var/source = null)
 	var/datum/disease/DD = new D.type()
+	var/log = "has contracted [DD.name]"
+	if(istype(DD, /datum/disease/advance))
+		var/datum/disease/advance/DDD = DD
+		log += " \[ symptoms: "
+		for(var/datum/symptom/S in DDD.symptoms)
+			log += "[S.name] "
+		log += "\]"
 	viruses += DD
 	DD.affected_mob = src
 	DD.holder = src
 	if(DD.disease_flags & CAN_CARRY && prob(5))
 		DD.carrier++
+		log += " as a carrier"
+	log += " from [ismob(source) ? key_name(source) : source]."
+	investigate_log(log, "viro")
 
 
-/mob/living/carbon/ContractDisease(var/datum/disease/D)
+/mob/living/carbon/ContractDisease(var/datum/disease/D, var/source = null)
 	if(!CanContractDisease(D))
 		return 0
 
@@ -115,11 +125,11 @@
 		passed = (prob((50*D.permeability_mod) - 1))
 
 	if(passed)
-		AddDisease(D)
+		AddDisease(D, source)
 
 
 //Same as ContractDisease, except never overidden clothes checks
-/mob/proc/ForceContractDisease(var/datum/disease/D)
+/mob/proc/ForceContractDisease(var/datum/disease/D, var/source = null)
 	if(!CanContractDisease(D))
 		return 0
-	AddDisease(D)
+	AddDisease(D, source)

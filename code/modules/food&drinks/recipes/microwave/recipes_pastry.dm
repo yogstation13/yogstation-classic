@@ -71,7 +71,7 @@
 /datum/recipe/donkpocket
 	reagents = list("flour" = 5)
 	items = list(
-		/obj/item/weapon/reagent_containers/food/snacks/faggot,
+		/obj/item/weapon/reagent_containers/food/snacks/meatball,
 	)
 	result = /obj/item/weapon/reagent_containers/food/snacks/donkpocket //SPECIAL
 	proc/warm_up(var/obj/item/weapon/reagent_containers/food/snacks/donkpocket/being_cooked)
@@ -145,7 +145,7 @@
 /datum/recipe/meatbun
 	reagents = list("soysauce" = 5, "flour" = 5)
 	items = list(
-		/obj/item/weapon/reagent_containers/food/snacks/faggot,
+		/obj/item/weapon/reagent_containers/food/snacks/meatball,
 		/obj/item/weapon/reagent_containers/food/snacks/grown/cabbage,
 	)
 	result = /obj/item/weapon/reagent_containers/food/snacks/meatbun

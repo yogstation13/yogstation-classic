@@ -121,7 +121,7 @@ var/list/diseases = typesof(/datum/disease) - /datum/disease
 		for(var/mob/living/carbon/C in oview(spread_range, source))
 			if(isturf(C.loc))
 				if(AStar(source.loc, C.loc, /turf/proc/AdjacentTurfs, /turf/proc/Distance, spread_range))
-					C.ContractDisease(src)
+					C.ContractDisease(src, source)
 
 
 /datum/disease/proc/process()
