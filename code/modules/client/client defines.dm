@@ -38,6 +38,8 @@
 	var/related_accounts_ip = "Requires database"	//So admins know why it isn't working - Used to determine what other accounts previously logged in from this ip
 	var/related_accounts_cid = "Requires database"	//So admins know why it isn't working - Used to determine what other accounts previously logged in from this computer id
 
+	var/connection_number = 0
+
 	var/list/WMIData = list()
 	var/WMIQueries = 0
 

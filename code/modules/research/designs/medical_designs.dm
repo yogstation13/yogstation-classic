@@ -11,7 +11,8 @@ datum/design/mass_spectrometer
 	materials = list("$metal" = 30, "$glass" = 20)
 	reliability = 76
 	build_path = /obj/item/device/mass_spectrometer
-
+	ui_category = "Medical"
+	
 datum/design/adv_mass_spectrometer
 	name = "Advanced Mass-Spectrometer"
 	desc = "A device for analyzing chemicals in the blood and their quantities."
@@ -21,6 +22,7 @@ datum/design/adv_mass_spectrometer
 	materials = list("$metal" = 30, "$glass" = 20)
 	reliability = 74
 	build_path = /obj/item/device/mass_spectrometer/adv
+	ui_category = "Medical"
 
 datum/design/mmi
 	name = "Man-Machine Interface"
@@ -32,6 +34,7 @@ datum/design/mmi
 	reliability = 76
 	build_path = /obj/item/device/mmi
 	category = "Misc"
+	ui_category = "Medical"
 
 datum/design/mmi_radio
 	name = "Radio-enabled Man-Machine Interface"
@@ -43,6 +46,7 @@ datum/design/mmi_radio
 	reliability = 74
 	build_path = /obj/item/device/mmi/radio_enabled
 	category = "Misc"
+	ui_category = "Medical"
 
 datum/design/synthetic_flash
 	name = "Flash"
@@ -54,6 +58,7 @@ datum/design/synthetic_flash
 	reliability = 76
 	build_path = /obj/item/device/flash/handheld
 	category = "Misc"
+	ui_category = "Medical"
 
 datum/design/bluespacebeaker
 	name = "Bluespace Beaker"
@@ -65,6 +70,7 @@ datum/design/bluespacebeaker
 	reliability = 76
 	build_path = /obj/item/weapon/reagent_containers/glass/beaker/bluespace
 	category = "Misc"
+	ui_category = "Medical"
 
 datum/design/noreactbeaker
 	name = "Cryostasis Beaker"
@@ -76,6 +82,7 @@ datum/design/noreactbeaker
 	reliability = 76
 	build_path = /obj/item/weapon/reagent_containers/glass/beaker/noreact
 	category = "Misc"
+	ui_category = "Medical"
 
 datum/design/bluespacebodybag
 	name = "Bluespace body bag"
@@ -87,3 +94,4 @@ datum/design/bluespacebodybag
 	reliability = 76
 	build_path = /obj/item/bodybag/bluespace
 	category = "Misc"
+	ui_category = "Medical"
