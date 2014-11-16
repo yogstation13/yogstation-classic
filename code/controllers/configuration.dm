@@ -221,7 +221,7 @@
 				if("log_hrefs")
 					config.log_hrefs = 1
 				if("admin_who_blocked")
-					admin_who_blocked = 0
+					admin_who_blocked = 1
 				if("allow_admin_ooccolor")
 					config.allow_admin_ooccolor = 1
 				if("allow_vote_restart")
