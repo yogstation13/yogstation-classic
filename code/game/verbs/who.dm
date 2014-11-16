@@ -91,7 +91,7 @@
 				msg += " (AFK)"
 			msg += "\n"
 	else
-		if(!config.admin_who_blocked)
+		if(config.admin_who_blocked)
 			src << "<b>Adminwho is currently disabled</b>"
 			verbs -= /client/proc/adminwho
 			return
