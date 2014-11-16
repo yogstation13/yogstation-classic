@@ -39,7 +39,7 @@
 	var/Ticklag = 0.9
 	var/Tickcomp = 0
 	var/allow_holidays = 0				//toggles whether holiday-specific content should be used
-	var/admin_who_allowed = 1			// log OOC channel
+	var/admin_who_blocked = 0			// log OOC channel
 
 	var/hostedby = null
 	var/respawn = 1
@@ -220,8 +220,8 @@
 					config.log_pda = 1
 				if("log_hrefs")
 					config.log_hrefs = 1
-				if("admin_who_allowed")
-					admin_who_allowed = 1
+				if("admin_who_blocked")
+					admin_who_blocked = 0
 				if("allow_admin_ooccolor")
 					config.allow_admin_ooccolor = 1
 				if("allow_vote_restart")

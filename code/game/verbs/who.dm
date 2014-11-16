@@ -54,17 +54,19 @@
 	set name = "Admin Who Toggle"
 
 	if(holder)
-		config.admin_who_allowed = !config.admin_who_allowed
-		src << "Adminwho is [config.admin_who_allowed ? "now" : "no longer"] displayed to non-admins."
+		if(check_rights(R_ADMIN,0))
+			config.admin_who_blocked = !config.admin_who_blocked
+			for(var/client/X in admins)
+				X << "Set by [src]: Adminwho is [config.admin_who_blocked ? "now" : "no longer"] displayed to non-admins."
 
-		for(var/client/C in clients)
-			if(!C.holder)
-				if(config.admin_who_allowed)
-					//if(!(/client/proc/adminwho in C.verbs))
-					C.verbs += /client/proc/adminwho
-				else
-					//if(/client/proc/adminwho in C.verbs)
-					C.verbs -= /client/proc/adminwho
+			for(var/client/C in clients)
+				if(!C.holder)
+					if(config.admin_who_allowed)
+						//if(!(/client/proc/adminwho in C.verbs))
+						C.verbs += /client/proc/adminwho
+					else
+						//if(/client/proc/adminwho in C.verbs)
+						C.verbs -= /client/proc/adminwho
 
 /client/proc/adminwho()
 	set category = "Admin"
@@ -89,8 +91,8 @@
 				msg += " (AFK)"
 			msg += "\n"
 	else
-		if(!config.admin_who_allowed)
-			src << "<b>adminwho is currently disabled</b>"
+		if(!config.admin_who_blocked)
+			src << "<b>Adminwho is currently disabled</b>"
 			verbs -= /client/proc/adminwho
 			return
 
