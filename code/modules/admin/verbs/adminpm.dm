@@ -61,7 +61,7 @@
 		//world << "[T.ticket_id] T.handling_admin=[T.handling_admin] [get_ckey(T.handling_admin)] T.owner=[T.owner] [get_ckey(T.owner)]"
 		//if(!T.resolved && T.handling_admin && !compare_ckey(T.handling_admin, usr) && compare_ckey(T.owner, C.mob))
 		//	addToOther = T.ticket_id
-		if(!T.resolved && T.pm_started_user && compare_ckey(T.owner, C.mob) && !compare_ckey(T.handling_admin, usr))
+		if(!T.resolved && T.pm_started_user && compare_ckey(T.owner, C.mob) && !compare_ckey(T.handling_admin, src))
 			if(T.pm_started_flag)
 				clickedId = T.ticket_id
 
@@ -102,12 +102,12 @@
 
 	// Search current tickets, is this user the owner or primary admin of a ticket
 	for(var/datum/admin_ticket/T in tickets_list)
-		if(!T.handling_admin || ((compare_ckey(T.owner, get_client(usr)) || compare_ckey(T.handling_admin, get_client(usr))) && (compare_ckey(T.owner, C) || compare_ckey(T.handling_admin, C))))
+		if(!T.handling_admin || ((compare_ckey(T.owner, get_client(src)) || compare_ckey(T.handling_admin, get_client(src))) && (compare_ckey(T.owner, C) || compare_ckey(T.handling_admin, C))))
 			// Hijack this PM!
 			if(T.resolved && !holder)
 				has_resolved_ticket = 1
 
-			if(T.handling_admin && !compare_ckey(get_client(usr), T.handling_admin) && !compare_ckey(get_client(usr), T.owner))
+			if(T.handling_admin && !compare_ckey(get_client(src), T.handling_admin) && !compare_ckey(get_client(src), T.owner))
 				if(!holder)
 					usr << "<span class='boldnotice'>You are not the owner or primary admin of this users ticket. You may not reply to it.</span>"
 				return
@@ -131,11 +131,11 @@
 				return
 
 	if(has_resolved_ticket)
-		usr << "<span class='boldnotice'>Your ticket was closed. Only admins can add finishing comments to it.</span>"
+		src << "<span class='boldnotice'>Your ticket was closed. Only admins can add finishing comments to it.</span>"
 		return
 
 	// If we didn't find a ticket, we should make one. This bypasses the rest of the original PM system
-	var/datum/admin_ticket/T = new /datum/admin_ticket(usr, msg, C)
+	var/datum/admin_ticket/T = new /datum/admin_ticket(src, msg, C)
 	if(!T.error)
 		tickets_list.Add(T)
 	else
