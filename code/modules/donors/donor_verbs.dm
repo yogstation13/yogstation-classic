@@ -13,7 +13,7 @@ var/list/donor_verbs_list = list(
 			donor_verbs_list,
 			)
 
-var/global/normal_donor_ooc_colour = "#B26B00"
+var/global/normal_donor_ooc_colour = "#555555"
 
 /client/proc/donor_ooc(msg as text)
 	set name = "Donor OOC"
