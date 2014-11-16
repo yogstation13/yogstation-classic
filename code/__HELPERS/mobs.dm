@@ -80,19 +80,23 @@ var/global/list/roundstart_species[0]
 
 /proc/is_donator(mob/user)
 	if(ismob(user))
-		return (user.client.prefs.unlock_content & 2)
+		if(user.client && user.client.prefs)
+			return (user.client.prefs.unlock_content & 2)
 	else if(istype(user, /client))
 		var/client/C = user
-		return (C.prefs.unlock_content & 2)
+		if(C.prefs)
+			return (C.prefs.unlock_content & 2)
 	else
 		return 0
 
 /proc/is_veteran(mob/user)
 	if(ismob(user))
-		return (user.client.prefs.unlock_content & 4)
+		if(user.client && user.client.prefs)
+			return (user.client.prefs.unlock_content & 4)
 	else if(istype(user, /client))
 		var/client/C = user
-		return (C.prefs.unlock_content & 4)
+		if(C.prefs)
+			return (C.prefs.unlock_content & 4)
 	else
 		return 0
 
