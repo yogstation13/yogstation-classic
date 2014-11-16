@@ -40,7 +40,7 @@
 
 // List all filters that have been loaded
 /client/proc/list_pretty_filters()
-	set category = "Admin"
+	set category = "Special Verbs"
 	set name = "Pretty Filters - List"
 
 	usr << "<font size='3'><b>Pretty filters list</b></font>"
@@ -54,14 +54,14 @@
 
 // Enter a piece of text and have it tested against the filter list
 /client/proc/test_pretty_filters(msg as text)
-	set category = "Admin"
+	set category = "Special Verbs"
 	set name = "Pretty Filters - Test"
 
 	usr << "\"[msg]\" becomes: \"[pretty_filter(msg)]\"."
 
 // Enter a piece of text and have it tested against the filter list
 /client/proc/add_pretty_filter(line as text)
-	set category = "Admin"
+	set category = "Special Verbs"
 	set name = "Pretty Filters - Add Pattern"
 
 	if(add_pretty_filter_line(line))
