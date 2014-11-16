@@ -78,6 +78,24 @@ var/global/list/roundstart_species[0]
 		if(70 to INFINITY)	return "elderly"
 		else				return "unknown"
 
+/proc/is_donator(mob/user)
+	if(ismob(user))
+		return (user.client.prefs.unlock_content & 2)
+	else if(istype(user, /client))
+		var/client/C = user
+		return (C.prefs.unlock_content & 2)
+	else
+		return 0
+
+/proc/is_veteran(mob/user)
+	if(ismob(user))
+		return (user.client.prefs.unlock_content & 4)
+	else if(istype(user, /client))
+		var/client/C = user
+		return (C.prefs.unlock_content & 4)
+	else
+		return 0
+
 /*
 Proc for attack log creation, because really why not
 1 argument is the actor
