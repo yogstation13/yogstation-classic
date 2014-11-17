@@ -17,7 +17,6 @@ var/list/admin_verbs_default = list(
 	/client/proc/reestablish_db_connection,/*reattempt a connection to the database*/
 	/client/proc/cmd_admin_pm_context,	/*right-click adminPM interface*/
 	/client/proc/cmd_admin_pm_panel,		/*admin-pm list*/
-	/client/proc/donator_who,
 	/client/proc/reload_donators
 	)
 var/list/admin_verbs_admin = list(
