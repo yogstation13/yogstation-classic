@@ -195,7 +195,7 @@
 				[css]
 				</style>
 
-				<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+				<script src="libraries.min.js"></script>
 				<script type='text/javascript'>
 					function add_message(message) {
 						$('#messages').prepend('<p class=\"message-bar\" style=\"display: none;\">'+message+'</p>');

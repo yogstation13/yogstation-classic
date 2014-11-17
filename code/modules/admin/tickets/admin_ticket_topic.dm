@@ -10,6 +10,11 @@
 		//src << browse(null, "window=ViewTickets;size=700x500")
 		if(!istype(T, /datum/admin_ticket))
 			return
+
+		// If you are not the owner, handling admin or a general admin, then break out
+		if(!holder && !compare_ckey(src, T.owner_ckey) && !compare_ckey(src, T.handling_admin))
+			return
+
 		T.view_log(C.mob)
 	else if(href_list["action"] == "reply_to_ticket")
 		if(prefs.muted & MUTE_ADMINHELP)
@@ -26,7 +31,8 @@
 			usr << "<span class='ticket-status'>This ticket is marked as resolved. You may not add any more information to it.</span>"
 			return
 
-		if(!compare_ckey(usr, T.handling_admin) && !compare_ckey(usr, T.owner_ckey) && !holder)
+		// If you are not the owner, handling admin or a general admin, then break out
+		if(!holder && !compare_ckey(src, T.owner_ckey) && !compare_ckey(src, T.handling_admin))
 			usr << "<span class='ticket-status'>You are not the owner or primary admin of this ticket. You may not reply to it.</span>"
 			return
 
@@ -57,6 +63,11 @@
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 		if(!istype(T, /datum/admin_ticket))
 			return
+
+		// This is limited to admins
+		if(!holder)
+			return
+
 		T.toggle_monitor()
 
 		var/monitors_text = ""
@@ -70,6 +81,11 @@
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 		if(!istype(T, /datum/admin_ticket))
 			return
+
+		// This is limited to admins
+		if(!holder)
+			return
+
 		T.handling_admin = C
 		log_admin("[T.handling_admin] has been assigned to ticket #[T.ticket_id] as primary admin.")
 		// For Alex: Primary admin notification not necessary
@@ -82,6 +98,11 @@
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 		if(!istype(T, /datum/admin_ticket))
 			return
+
+		// This is limited to admins
+		if(!holder)
+			return
+
 		T.toggle_resolved()
 		if(T.resolved)
 			log_admin("Ticket #[T.ticket_id] marked as resolved by [get_fancy_key(usr)].")
@@ -101,14 +122,12 @@
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 		if(!istype(T, /datum/admin_ticket))
 			return
-		T.view_log(C)
-	else if(href_list["action"] == "get_admin_ticket_json")
-		var/datum/admin_ticket/T = locate(href_list["ticket"])
-		if(!istype(T, /datum/admin_ticket))
-			return
-		world << "get_admin_ticket_json [T.title]"
-		//return "{'test':'test2'}"
 
+		// If you are not the owner, handling admin or a general admin, then break out
+		if(!holder && !compare_ckey(src, T.owner_ckey) && !compare_ckey(src, T.handling_admin))
+			return
+
+		T.view_log(C)
 	else if(href_list["vv"])
 		if(!holder || !ismob(locate(href_list["vv"])))
 			return
