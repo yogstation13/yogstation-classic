@@ -98,7 +98,7 @@ var/global/normal_ooc_colour = "#002eb8"
 	return
 
 /client/verb/donator_who()
-	set category = "OOC"
+	set category = "Donor"
 	set name = "Donator Who"
 
 	var/msg = "<b>Current Donators:</b>\n"
