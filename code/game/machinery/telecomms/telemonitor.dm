@@ -96,7 +96,7 @@
 					temp = "<font color = #D70B00>- FAILED: CANNOT PROBE WHEN BUFFER FULL -</font color>"
 
 				else
-					for(var/obj/machinery/telecomms/T in range(25, src))
+					for(var/obj/machinery/telecomms/T in range(50, src))
 						if(T.network == network)
 							machinelist.Add(T)
 

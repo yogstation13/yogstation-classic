@@ -150,6 +150,8 @@ update_flag
 		else
 			environment = loc.return_air()
 
+		if(!environment)
+			return
 		var/env_pressure = environment.return_pressure()
 		var/pressure_delta = min(release_pressure - env_pressure, (air_contents.return_pressure() - env_pressure)/2)
 		//Can not have a pressure delta that would cause environment pressure > tank pressure
@@ -292,7 +294,7 @@ Release Pressure: <A href='?src=\ref[src];pressure_adj=-1000'>-</A> <A href='?sr
 
 	if (((get_dist(src, usr) <= 1) && istype(src.loc, /turf)))
 		usr.set_machine(src)
-		
+
 		var/area/A = get_area(get_turf(src))
 		var/contents = "[usr]/[usr.ckey](<A HREF='?_src_=holder;adminmoreinfo=\ref[usr]'>?</A>) at <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[src.x];Y=[src.y];Z=[src.z]'>[A.name]</a><br>"
 		contents += "Release pressure: [src.release_pressure] "
@@ -336,7 +338,7 @@ Release Pressure: <A href='?src=\ref[src];pressure_adj=-1000'>-</A> <A href='?sr
 				holding = null
 				if(valve_open)
 					message_admins("Tank removed from canister with open valve by [contents]", 0, 1)
-				
+
 		if (href_list["pressure_adj"])
 			var/diff = text2num(href_list["pressure_adj"])
 			if(diff > 0)

@@ -24,10 +24,11 @@ var/const/DOCTOR			=(1<<4)
 var/const/GENETICIST		=(1<<5)
 var/const/VIROLOGIST		=(1<<6)
 var/const/MMEDIC			=(1<<7)
-var/const/TOUR				=(1<<8)
-var/const/WAITER			=(1<<9)
-var/const/RA				=(1<<10) // I know these are not medsci job, but only place I am able to stick to get gui to work proper.
-var/const/CLERK				=(1<<11)
+var/const/PARAMEDIC			=(1<<8)
+var/const/PSYCH				=(1<<9)
+var/const/TOUR				=(1<<10)
+var/const/WAITER			=(1<<11)
+var/const/CLERK				=(1<<12)
 
 
 
@@ -51,12 +52,13 @@ var/const/ASSISTANT			=(1<<13)
 
 var/list/assistant_occupations = list(
 	"Assistant",
-	"Atmospheric Technician",
 	"Cargo Technician",
 	"Chaplain",
 	"Lawyer",
 	"Tourist",
-	"Librarian"
+	"Clerk",
+	"Librarian",
+	"Psychiatrist"
 )
 
 
@@ -66,8 +68,7 @@ var/list/command_positions = list(
 	"Head of Security",
 	"Chief Engineer",
 	"Research Director",
-	"Chief Medical Officer",
-	"Recovery Agent"
+	"Chief Medical Officer"
 )
 
 
@@ -81,18 +82,19 @@ var/list/engineering_positions = list(
 var/list/medical_positions = list(
 	"Chief Medical Officer",
 	"Medical Doctor",
-	"Geneticist",	//Part of both medical and science
+	"Geneticist",
 	"Virologist",
 	"Chemist",
-	"Mining Medic"
+	"Mining Medic",
+	"Paramedic",
+	"Psychiatrist"
 )
 
 
 var/list/science_positions = list(
 	"Research Director",
 	"Scientist",
-	"Geneticist",	//Part of both medical and science
-	"Roboticist"
+	"Roboticist",
 )
 
 
@@ -108,7 +110,6 @@ var/list/civilian_positions = list(
 	"Quartermaster",
 	"Cargo Technician",
 	"Shaft Miner",
-	"Mining Medic",
 	"Lawyer",
 	"Chaplain",
 	"Clown",
@@ -134,11 +135,12 @@ var/list/nonhuman_positions = list(
 )
 
 var/list/yog_positions = list(
-	"Recovery Agent",
 	"Waiter",
 	"Tourist",
 	"Mining Medic",
-	"Clerk"
+	"Clerk",
+	"Paramedic",
+	"Psychiatrist"
 )
 
 /proc/guest_jobbans(var/job)

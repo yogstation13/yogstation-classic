@@ -20,6 +20,8 @@
 	sight |= SEE_TURFS
 	player_list |= src
 
+	if(check_rights(R_NOJOIN, 0))
+		joining_forbidden = 1
 /*
 	var/list/watch_locations = list()
 	for(var/obj/effect/landmark/landmark in landmarks_list)
@@ -30,7 +32,7 @@
 		loc = pick(watch_locations)
 */
 
-	if(!(client && client.prefs && client.prefs.agree))
+	if(client.prefs.agree < MAXAGREE)
 		disclaimer()
 	else
 		new_player_panel()

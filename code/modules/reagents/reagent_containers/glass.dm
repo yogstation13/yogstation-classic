@@ -32,15 +32,7 @@
 		/mob/living/simple_animal/hostile/retaliate/goat
 	)
 
-/obj/item/weapon/reagent_containers/glass/examine()
-	set src in view()
-	..()
-	if(!(usr in view(2)) && usr != loc)
-		return
-	if(reagents && reagents.reagent_list.len)
-		usr << "It contains:"
-		for(var/datum/reagent/R in reagents.reagent_list)
-			usr << "[R.volume] units of [R.name]"
+
 
 /obj/item/weapon/reagent_containers/glass/afterattack(obj/target, mob/user, proximity)
 	if(!proximity) return // not adjacent
@@ -59,7 +51,7 @@
 				R += num2text(A.volume) + "),"
 		add_logs(user, M, "splashed", object="[R]")
 		reagents.reaction(target, TOUCH)
-		spawn(5) reagents.clear_reagents()
+		reagents.clear_reagents()
 		return
 
 	else if(istype(target, /obj/structure/reagent_dispensers)) //A dispenser. Transfer FROM it TO us.
@@ -94,8 +86,7 @@
 	else if(reagents.total_volume)
 		user << "<span class='notice'>You splash the solution onto [target].</span>"
 		reagents.reaction(target, TOUCH)
-		spawn(5)
-			reagents.clear_reagents()
+		reagents.clear_reagents()
 
 
 /obj/item/weapon/reagent_containers/glass/beaker

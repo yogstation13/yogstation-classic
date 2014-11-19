@@ -18,7 +18,6 @@
 
 	var/turns_per_move = 1
 	var/turns_since_move = 0
-	universal_speak = 1
 	var/meat_amount = 0
 	var/meat_type
 	var/stop_automated_movement = 0 //Use this to temporarely stop random movement or to if you write special movement code for animals.
@@ -47,7 +46,7 @@
 	var/max_co2 = 5
 	var/min_n2 = 0
 	var/max_n2 = 0
-	var/unsuitable_atoms_damage = 2	//This damage is taken when atmos doesn't fit all the requirements above
+	var/unsuitable_atmos_damage = 2	//This damage is taken when atmos doesn't fit all the requirements above
 
 
 	//LETTING SIMPLE ANIMALS ATTACK? WHAT COULD GO WRONG. Defaults to zero so Ian can still be cuddly
@@ -65,9 +64,13 @@
 	var/scan_ready = 1
 	var/species //Sorry, no spider+corgi buttbabies.
 
+	//simple_animal access
+	var/obj/item/weapon/card/id/access_card = null	//innate access uses an internal ID card
+
+
 /mob/living/simple_animal/New()
 	..()
-	reagents = new()
+	create_reagents(1000)
 	verbs -= /mob/verb/observe
 	if(!real_name)
 		real_name = name
@@ -113,8 +116,10 @@
 			turns_since_move++
 			if(turns_since_move >= turns_per_move)
 				if(!(stop_automated_movement_when_pulled && pulledby)) //Soma animals don't move when pulled
-					Move(get_step(src,pick(cardinal)))
-					turns_since_move = 0
+					var/anydir = pick(cardinal)
+					if(Process_Spacemove(anydir))
+						Move(get_step(src, anydir), anydir)
+						turns_since_move = 0
 
 	//Speaking
 	if(!client && speak_chance)
@@ -132,23 +137,23 @@
 					else
 						randomValue -= speak.len
 						if(emote_see && randomValue <= emote_see.len)
-							emote(pick(emote_see),1)
+							emote("me", 1, pick(emote_see))
 						else
-							emote(pick(emote_hear),2)
+							emote("me", 2, pick(emote_hear))
 				else
 					say(pick(speak))
 			else
 				if(!(emote_hear && emote_hear.len) && (emote_see && emote_see.len))
-					emote(pick(emote_see),1)
+					emote("me", 1, pick(emote_see))
 				if((emote_hear && emote_hear.len) && !(emote_see && emote_see.len))
-					emote(pick(emote_hear),2)
+					emote("me", 2, pick(emote_hear))
 				if((emote_hear && emote_hear.len) && (emote_see && emote_see.len))
 					var/length = emote_hear.len + emote_see.len
 					var/pick = rand(1,length)
 					if(pick <= emote_see.len)
-						emote(pick(emote_see),1)
+						emote("me", 1, pick(emote_see))
 					else
-						emote(pick(emote_hear),2)
+						emote("me", 2, pick(emote_hear))
 
 
 	//Atmos
@@ -204,7 +209,7 @@
 		adjustBruteLoss(heat_damage_per_tick)
 
 	if(!atmos_suitable)
-		adjustBruteLoss(unsuitable_atoms_damage)
+		adjustBruteLoss(unsuitable_atmos_damage)
 	return 1
 
 /mob/living/simple_animal/Bumped(AM as mob|obj)
@@ -241,25 +246,18 @@
 			return "[emote], \"[text]\""
 	return "says, \"[text]\"";
 
-/mob/living/simple_animal/emote(var/act)
+/mob/living/simple_animal/emote(var/act, var/m_type=1, var/message = null)
 	if(stat)
 		return
-	if(act)
-		if(act == "scream")	act = "makes a loud and pained whimper" //ugly hack to stop animals screaming when crushed :P
-		visible_message("<B>[src]</B> [act].")
-
+	if(act == "scream")
+		message = "makes a loud and pained whimper" //ugly hack to stop animals screaming when crushed :P
+		act = "me"
+	..(act, m_type, message)
 
 /mob/living/simple_animal/attack_animal(mob/living/simple_animal/M as mob)
-	if(M.melee_damage_upper == 0)
-		M.emote("[M.friendly] [src]")
-	else
-		if(M.attack_sound)
-			playsound(loc, M.attack_sound, 50, 1, 1)
-		visible_message("<span class='danger'>\The [M] [M.attacktext] [src]!</span>", \
-				"<span class='userdanger'>\The [M] [M.attacktext] [src]!</span>")
-		add_logs(M, src, "attacked", admin=0)
+	if(..())
 		var/damage = rand(M.melee_damage_lower, M.melee_damage_upper)
-		adjustBruteLoss(damage)
+		attack_threshold_check(damage)
 
 /mob/living/simple_animal/bullet_act(var/obj/item/projectile/Proj)
 	if(!Proj)
@@ -270,111 +268,78 @@
 	return 0
 
 /mob/living/simple_animal/attack_hand(mob/living/carbon/human/M as mob)
-	..()
-
 	switch(M.a_intent)
 
 		if("help")
 			if (health > 0)
-				visible_message("<span class='notice'> [M] [response_help] [src].</span>")
+				visible_message("<span class='notice'>[M] [response_help] [src].</span>")
+				playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 
 		if("grab")
-			if (M == src || anchored)
-				return
-			if (!(status_flags & CANPUSH))
-				return
-
-			var/obj/item/weapon/grab/G = new /obj/item/weapon/grab(M, src )
-
-			M.put_in_active_hand(G)
-
-			G.synch()
-
-			LAssailant = M
-
-			visible_message("<span class='warning'>[M] has grabbed [src] passively!</span>")
+			grabbedby(M)
 
 		if("harm", "disarm")
-			adjustBruteLoss(harm_intent_damage)
+			M.do_attack_animation(src)
 			visible_message("<span class='danger'>[M] [response_harm] [src]!</span>")
+			playsound(loc, "punch", 25, 1, -1)
+			adjustBruteLoss(harm_intent_damage)
+			add_logs(M, src, "attacked", admin=0)
+			updatehealth()
+	return
+
+/mob/living/simple_animal/attack_paw(mob/living/carbon/monkey/M as mob)
+	if(..()) //successful monkey bite.
+		if(stat != DEAD)
+			var/damage = rand(1, 3)
+			attack_threshold_check(damage)
+	if (M.a_intent == "help")
+		if (health > 0)
+			visible_message("<span class='notice'>[M.name] [response_help] [src].</span>")
+			playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 
 	return
 
 /mob/living/simple_animal/attack_alien(mob/living/carbon/alien/humanoid/M as mob)
-
-	switch(M.a_intent)
-
-		if ("help")
-
-			visible_message("<span class='notice'>[M] caresses [src] with its scythe like arm.</span>")
-		if ("grab")
-			if(M == src || anchored)
-				return
-			if(!(status_flags & CANPUSH))
-				return
-
-			var/obj/item/weapon/grab/G = new /obj/item/weapon/grab(M, src )
-
-			M.put_in_active_hand(G)
-
-			G.synch()
-			LAssailant = M
-
-			playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
-			visible_message("<span class='warning'>[M] has grabbed [src] passively!</span>")
-
-		if("harm", "disarm")
-			var/damage = rand(15, 30)
-			visible_message("<span class='danger'>[M] has slashed at [src]!</span>", \
-					"<span class='userdanger'>[M] has slashed at [src]!</span>")
-			adjustBruteLoss(damage)
-
+	if(..()) //if harm or disarm intent.
+		var/damage = rand(15, 30)
+		visible_message("<span class='danger'>[M] has slashed at [src]!</span>", \
+				"<span class='userdanger'>[M] has slashed at [src]!</span>")
+		playsound(loc, 'sound/weapons/slice.ogg', 25, 1, -1)
+		add_logs(M, src, "attacked", admin=0)
+		attack_threshold_check(damage)
 	return
 
 /mob/living/simple_animal/attack_larva(mob/living/carbon/alien/larva/L as mob)
-
-	switch(L.a_intent)
-		if("help")
-			visible_message("<span class='notice'>[L] rubs its head against [src].</span>")
-
-
-		else
-
-			var/damage = rand(5, 10)
-			visible_message("<span class='danger'>[L] bites [src]!</span>", \
-					"<span class='userdanger'>[L] bites [src]!</span>")
-
-			if(stat != DEAD)
-				L.amount_grown = min(L.amount_grown + damage, L.max_grown)
-				adjustBruteLoss(damage)
-
+	if(..()) //successful larva bite
+		var/damage = rand(5, 10)
+		if(stat != DEAD)
+			L.amount_grown = min(L.amount_grown + damage, L.max_grown)
+			attack_threshold_check(damage)
 
 /mob/living/simple_animal/attack_slime(mob/living/carbon/slime/M as mob)
-	if (!ticker)
-		M << "You cannot attack people before the game has started."
-		return
-
-	if(M.Victim) return // can't attack while eating!
-
-	visible_message("<span class='danger'>[M.name] glomps [src]!</span>", \
-			"<span class='userdanger'>[M.name] glomps [src]!</span>")
-
+	..()
 	var/damage = rand(1, 3)
 
 	if(M.is_adult)
 		damage = rand(20, 40)
 	else
 		damage = rand(5, 35)
-
-	adjustBruteLoss(damage)
-
-
+	attack_threshold_check(damage)
 	return
 
+/mob/living/simple_animal/proc/attack_threshold_check(var/damage)
+	if(damage <= force_threshold)
+		visible_message("<span class='warning'>[src] looks unharmed.</span>")
+	else
+		adjustBruteLoss(damage)
+		updatehealth()
 
-/mob/living/simple_animal/attackby(var/obj/item/O as obj, var/mob/user as mob)  //Marker -Agouri
+
+/mob/living/simple_animal/attackby(var/obj/item/O as obj, var/mob/living/user as mob) //Marker -Agouri
+	if(O.flags & NOBLUDGEON)
+		return
+
 	if(istype(O, /obj/item/stack/medical))
-
 		if(stat != DEAD)
 			var/obj/item/stack/medical/MED = O
 			if(health < maxHealth)
@@ -395,25 +360,28 @@
 		else
 			user << "<span class='notice'> [src] is dead, medical items won't bring it back to life.</span>"
 			return
-	else if(meat_type && (stat == DEAD))	//if the animal has a meat, and if it is dead.
+	if(meat_type && (stat == DEAD))	//if the animal has a meat, and if it is dead.
 		if(istype(O, /obj/item/weapon/kitchenknife) || istype(O, /obj/item/weapon/butch))
 			harvest()
-	else
-		user.changeNext_move(CLICK_CD_MELEE)
-		if(O.force)
-			if(O.force >= force_threshold)
-				var/damage = O.force
-				if (O.damtype == STAMINA)
-					damage = 0
-				adjustBruteLoss(damage)
-				visible_message("<span class='danger'>[src] has been attacked with [O] by [user]!</span>",\
-								"<span class='userdanger'>[src] has been attacked with [O] by [user]!</span>")
-			else
-				visible_message("<span class='danger'>[O] bounces harmlessly off of [src].</span>",\
-								"<span class='userdanger'>[O] bounces harmlessly off of [src].</span>")
+
+	user.changeNext_move(CLICK_CD_MELEE)
+	user.do_attack_animation(src)
+	var/damage = 0
+	if(O.force)
+		if(O.force >= force_threshold)
+			damage = O.force
+			if (O.damtype == STAMINA)
+				damage = 0
+			visible_message("<span class='danger'>[src] has been [O.attack_verb.len ? "[pick(O.attack_verb)]": "attacked"] with [O] by [user]!</span>",\
+							"<span class='userdanger'>[src] has been attacked with [O] by [user]!</span>")
 		else
-			user.visible_message("<span class='warning'>[user] gently taps [src] with [O].</span>",\
+			visible_message("<span class='danger'>[O] bounces harmlessly off of [src].</span>",\
+							"<span class='userdanger'>[O] bounces harmlessly off of [src].</span>")
+		playsound(loc, O.hitsound, 50, 1, -1)
+	else
+		user.visible_message("<span class='warning'>[user] gently taps [src] with [O].</span>",\
 							"<span class='warning'>This weapon is ineffective, it does no damage.</span>")
+	adjustBruteLoss(damage)
 
 /mob/living/simple_animal/movement_delay()
 	var/tally = 0 //Incase I need to add stuff other than "speed" later
@@ -519,10 +487,16 @@
 	gib()
 	return
 
-/mob/living/simple_animal/stripPanelUnequip(obj/item/what, mob/who)
-	src << "<span class='warning'>You don't have the dexterity to do this!</span>"
-	return
+/mob/living/simple_animal/stripPanelUnequip(obj/item/what, mob/who, where, child_override)
+	if(!child_override)
+		src << "<span class='warning'>You don't have the dexterity to do this!</span>"
+		return
+	else
+		..()
 
-/mob/living/simple_animal/stripPanelEquip(obj/item/what, mob/who)
-	src << "<span class='warning'>You don't have the dexterity to do this!</span>"
-	return
+/mob/living/simple_animal/stripPanelEquip(obj/item/what, mob/who, where, child_override)
+	if(!child_override)
+		src << "<span class='warning'>You don't have the dexterity to do this!</span>"
+		return
+	else
+		..()

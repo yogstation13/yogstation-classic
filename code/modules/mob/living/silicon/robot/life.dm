@@ -153,7 +153,8 @@
 			src.see_invisible = SEE_INVISIBLE_MINIMUM
 		else if (src.sight_mode & BORGMESON)
 			src.sight |= SEE_TURFS
-			see_invisible = SEE_INVISIBLE_MINIMUM
+			src.see_invisible = SEE_INVISIBLE_MINIMUM
+			src.see_in_dark = 1
 		else if (src.sight_mode & BORGTHERM)
 			src.sight |= SEE_MOBS
 			src.see_invisible = SEE_INVISIBLE_LEVEL_TWO
@@ -165,12 +166,10 @@
 		if(see_override)
 			see_invisible = see_override
 
-	for(var/image/hud in client.images)
-		if(copytext(hud.icon_state,1,4) == "hud") //ugly, but icon comparison is worse, I believe
-			client.images.Remove(hud)
+	regular_hud_updates() //Handles MED/SEC HUDs for borgs.
 
-	var/obj/item/borg/sight/hud/hud = (locate(/obj/item/borg/sight/hud) in src)
-	if(hud && hud.hud)	hud.hud.process_hud(src)
+	if(sensor_mode)
+		process_data_hud(src,sensor_mode,DATA_HUD_ADVANCED)
 
 	if (src.healths)
 		if (src.stat != 2)
@@ -293,7 +292,7 @@
 		fire_stacks = max(0, fire_stacks)
 	else
 		ExtinguishMob()
-	
+
 	//adjustFireLoss(3)
 	return
 

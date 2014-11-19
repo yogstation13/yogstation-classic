@@ -35,8 +35,7 @@
 
 
 /obj/item/weapon/robot_module/New()
-	modules += new /obj/item/device/flashlight(src)
-	modules += new /obj/item/device/flash(src)
+	modules += new /obj/item/device/flash/cyborg(src)
 	emag = new /obj/item/toy/sword(src)
 	emag.name = "Placeholder Emag Item"
 //		jetpack = new /obj/item/toy/sword(src)
@@ -63,12 +62,13 @@
 
 /obj/item/weapon/robot_module/standard/New()
 	..()
+	modules += new /obj/item/device/flashlight(src)
 	modules += new /obj/item/weapon/melee/baton/loaded(src)
 	modules += new /obj/item/weapon/extinguisher(src)
 	modules += new /obj/item/weapon/wrench(src)
 	modules += new /obj/item/weapon/crowbar(src)
 	modules += new /obj/item/device/healthanalyzer(src)
-	emag = new /obj/item/weapon/melee/energy/sword(src)
+	emag = new /obj/item/weapon/melee/energy/sword/cyborg(src)
 
 
 /obj/item/weapon/robot_module/medical
@@ -76,7 +76,7 @@
 
 /obj/item/weapon/robot_module/medical/New()
 	..()
-	modules += new /obj/item/borg/sight/hud/med(src)
+	modules += new /obj/item/device/flashlight(src)
 	modules += new /obj/item/device/healthanalyzer(src)
 	modules += new /obj/item/weapon/reagent_containers/borghypo(src)
 	modules += new /obj/item/weapon/reagent_containers/glass/beaker/large(src)
@@ -95,6 +95,7 @@
 
 /obj/item/weapon/robot_module/engineering/New()
 	..()
+	modules += new /obj/item/device/flashlight(src)
 	modules += new /obj/item/borg/sight/meson(src)
 	emag = new /obj/item/borg/stun(src)
 	modules += new /obj/item/weapon/rcd/borg(src)
@@ -146,8 +147,8 @@
 
 /obj/item/weapon/robot_module/security/New()
 	..()
-	modules += new /obj/item/borg/sight/hud/sec(src)
-	modules += new /obj/item/weapon/handcuffs/cyborg(src)
+	modules += new /obj/item/device/flashlight/seclite(src)
+	modules += new /obj/item/weapon/restraints/handcuffs/cable/zipties/cyborg(src)
 	modules += new /obj/item/weapon/melee/baton/loaded(src)
 	modules += new /obj/item/weapon/gun/energy/taser/cyborg(src)
 	modules += new /obj/item/clothing/mask/gas/sechailer/cyborg(src)
@@ -159,10 +160,12 @@
 
 /obj/item/weapon/robot_module/janitor/New()
 	..()
+	modules += new /obj/item/device/flashlight(src)
 	modules += new /obj/item/weapon/soap/nanotrasen(src)
 	modules += new /obj/item/weapon/storage/bag/trash/cyborg(src)
 	modules += new /obj/item/weapon/mop/cyborg(src)
 	modules += new /obj/item/device/lightreplacer/cyborg(src)
+	modules += new /obj/item/weapon/holosign_creator(src)
 	emag = new /obj/item/weapon/reagent_containers/spray(src)
 
 	emag.reagents.add_reagent("lube", 250)
@@ -174,6 +177,7 @@
 
 /obj/item/weapon/robot_module/butler/New()
 	..()
+	modules += new /obj/item/device/flashlight(src)
 	modules += new /obj/item/weapon/reagent_containers/food/drinks/drinkingglass(src)
 	modules += new /obj/item/weapon/reagent_containers/food/condiment/enzyme(src)
 	modules += new /obj/item/weapon/pen(src)
@@ -208,8 +212,9 @@
 		modules += new /obj/item/weapon/pickaxe/diamonddrill(src)
 	else
 		modules += new /obj/item/weapon/pickaxe/borgdrill(src)
+	modules += new /obj/item/device/flashlight/lantern(src)
 	modules += new /obj/item/weapon/storage/bag/sheetsnatcher/borg(src)
-	modules += new /obj/item/device/mining_scanner(src)
+	modules += new /obj/item/device/t_scanner/adv_mining_scanner(src)
 	modules += new /obj/item/weapon/gun/energy/kinetic_accelerator(src)
 
 /obj/item/weapon/robot_module/miner/on_emag()
@@ -225,9 +230,9 @@
 
 /obj/item/weapon/robot_module/syndicate/New()
 	..()
+	modules += new /obj/item/device/flashlight(src)
 	modules += new /obj/item/weapon/melee/energy/sword/cyborg(src)
-	modules += new /obj/item/weapon/gun/energy/crossbow/cyborg(src)
-	modules += new /obj/item/weapon/card/emag(src)
+	modules += new /obj/item/weapon/gun/energy/taser/cyborg(src)
 	modules += new /obj/item/weapon/gun/energy/laser/cyborg(src)
 	modules += new /obj/item/weapon/tank/jetpack/carbondioxide(src)
 	modules += new /obj/item/weapon/crowbar(src)

@@ -1,15 +1,26 @@
-#Files and folders specified here will never be tracked.
+###Files and folders specified here will never be tracked.
 
-*.ban
-*.bdb
-*.log
-*.sav
+#Ignore everything in data subdirectories
+/data/**/*
+/data/*
+/_maps/map_files/backup
 
-#Compiled files and other files generated during compilation.
+/data/mode.txt
+/data/logs
+/data/investigate
+
+#Ignore generated files in data
+/data/appearance_full.ban
+/data/banlist.bdb
+/data/job_full.ban
+/data/job_fullnew.bdb
+/data/memo.sav
+
+#Do not store automatic map backups
+/_maps/map_files/backup
+
+#Ignore compiled files and other files generated during compilation.
 *.dmb
 *.rsc
 *.lk
 *.int
-/data/mode.txt
-/data/logs
-/data/investigate

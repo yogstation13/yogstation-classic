@@ -8,7 +8,8 @@ datum/design/seccamera
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/security
-
+	ui_category = "Computer Boards"
+	
 datum/design/aicore
 	name = "AI Design (AI Core)"
 	desc = "Allows for the construction of circuit boards used to build new AI cores."
@@ -17,6 +18,7 @@ datum/design/aicore
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/aicore
+	ui_category = "Computer Boards"
 
 datum/design/aiupload
 	name = "Computer Design (AI Upload)"
@@ -26,6 +28,7 @@ datum/design/aiupload
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/aiupload
+	ui_category = "Computer Boards"
 
 datum/design/borgupload
 	name = "Computer Design (Cyborg Upload)"
@@ -35,6 +38,7 @@ datum/design/borgupload
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/borgupload
+	ui_category = "Computer Boards"
 
 datum/design/med_data
 	name = "Computer Design (Medical Records)"
@@ -44,6 +48,7 @@ datum/design/med_data
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/med_data
+	ui_category = "Computer Boards"
 
 datum/design/operating
 	name = "Computer Design (Operating Computer)"
@@ -53,6 +58,7 @@ datum/design/operating
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/operating
+	ui_category = "Computer Boards"
 
 datum/design/pandemic
 	name = "Computer Design (PanD.E.M.I.C. 2200)"
@@ -62,6 +68,7 @@ datum/design/pandemic
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/pandemic
+	ui_category = "Computer Boards"
 
 datum/design/scan_console
 	name = "Computer Design (DNA Machine)"
@@ -71,6 +78,7 @@ datum/design/scan_console
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/scan_consolenew
+	ui_category = "Computer Boards"
 
 datum/design/comconsole
 	name = "Computer Design (Communications)"
@@ -80,6 +88,7 @@ datum/design/comconsole
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/communications
+	ui_category = "Computer Boards"
 
 datum/design/idcardconsole
 	name = "Computer Design (ID Console)"
@@ -89,6 +98,7 @@ datum/design/idcardconsole
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/card
+	ui_category = "Computer Boards"
 
 datum/design/crewconsole
 	name = "Computer Design (Crew monitoring computer)"
@@ -98,6 +108,7 @@ datum/design/crewconsole
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/crew
+	ui_category = "Computer Boards"
 
 datum/design/teleconsole
 	name = "Computer Design (Teleporter Console)"
@@ -106,7 +117,8 @@ datum/design/teleconsole
 	req_tech = list("programming" = 3, "bluespace" = 2)
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/teleporter
+	build_path = /obj/item/weapon/circuitboard/teleporter       
+	ui_category = "Computer Boards"
 
 datum/design/secdata
 	name = "Computer Design (Security Records Console)"
@@ -116,6 +128,7 @@ datum/design/secdata
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/secure_data
+	ui_category = "Computer Boards"
 
 datum/design/atmosalerts
 	name = "Computer Design (Atmosphere Alert)"
@@ -125,6 +138,7 @@ datum/design/atmosalerts
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/atmos_alert
+	ui_category = "Computer Boards"
 
 datum/design/air_management
 	name = "Computer Design (Atmospheric Monitor)"
@@ -134,6 +148,7 @@ datum/design/air_management
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/air_management
+	ui_category = "Computer Boards"
 
 datum/design/robocontrol
 	name = "Computer Design (Robotics Control Console)"
@@ -143,6 +158,7 @@ datum/design/robocontrol
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/robotics
+	ui_category = "Computer Boards"
 
 datum/design/clonecontrol
 	name = "Computer Design (Cloning Machine Console)"
@@ -152,6 +168,7 @@ datum/design/clonecontrol
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/cloning
+	ui_category = "Computer Boards"
 
 datum/design/clonepod
 	name = "Machine Design (Clone Pod)"
@@ -161,6 +178,7 @@ datum/design/clonepod
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/clonepod
+	ui_category = "Computer Boards"
 
 datum/design/clonescanner
 	name = "Machine Design (Cloning Scanner)"
@@ -170,6 +188,7 @@ datum/design/clonescanner
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/clonescanner
+	ui_category = "Computer Boards"
 
 datum/design/arcadebattle
 	name = "Computer Design (Battle Arcade Machine)"
@@ -179,6 +198,7 @@ datum/design/arcadebattle
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/arcade/battle
+	ui_category = "Computer Boards"
 
 datum/design/orion_trail
 	name = "Computer Design (Orion Trail Arcade Machine)"
@@ -188,6 +208,7 @@ datum/design/orion_trail
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/arcade/orion_trail
+	ui_category = "Computer Boards"
 
 datum/design/orion_trail
 	name = "Computer Design (Slot Machine)"
@@ -197,6 +218,7 @@ datum/design/orion_trail
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/slot_machine
+	ui_category = "Computer Boards"
 
 datum/design/powermonitor
 	name = "Computer Design (Power Monitor)"
@@ -206,6 +228,7 @@ datum/design/powermonitor
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/powermonitor
+	ui_category = "Computer Boards"
 
 datum/design/solarcontrol
 	name = "Computer Design (Solar Control)"
@@ -215,6 +238,7 @@ datum/design/solarcontrol
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/solar_control
+	ui_category = "Computer Boards"
 
 datum/design/prisonmanage
 	name = "Computer Design (Prisoner Management Console)"
@@ -224,6 +248,7 @@ datum/design/prisonmanage
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/prisoner
+	ui_category = "Computer Boards"
 
 datum/design/mechacontrol
 	name = "Computer Design (Exosuit Control Console)"
@@ -233,6 +258,7 @@ datum/design/mechacontrol
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/mecha_control
+	ui_category = "Computer Boards"
 
 datum/design/mechapower
 	name = "Computer Design (Mech Bay Power Control Console)"
@@ -242,8 +268,9 @@ datum/design/mechapower
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/mech_bay_power_console
+	ui_category = "Computer Boards"
 
-datum/design/rdconsole
+datum/design/rdconsole 
 	name = "Computer Design (R&D Console)"
 	desc = "Allows for the construction of circuit boards used to build a new R&D console."
 	id = "rdconsole"
@@ -251,6 +278,7 @@ datum/design/rdconsole
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/rdconsole
+	ui_category = "Computer Boards"
 
 datum/design/ordercomp
 	name = "Computer Design (Supply ordering console)"
@@ -260,6 +288,7 @@ datum/design/ordercomp
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/ordercomp
+	ui_category = "Computer Boards"
 
 datum/design/supplycomp
 	name = "Computer Design (Supply shuttle console)"
@@ -269,6 +298,7 @@ datum/design/supplycomp
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/supplycomp
+	ui_category = "Computer Boards"
 
 datum/design/mining
 	name = "Computer Design (Outpost Status Display)"
@@ -278,6 +308,7 @@ datum/design/mining
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/mining
+	ui_category = "Computer Boards"
 
 datum/design/comm_monitor
 	name = "Computer Design (Telecommunications Monitoring Console)"
@@ -287,6 +318,7 @@ datum/design/comm_monitor
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/comm_monitor
+	ui_category = "Computer Boards"
 
 datum/design/comm_server
 	name = "Computer Design (Telecommunications Server Monitoring Console)"
@@ -296,6 +328,7 @@ datum/design/comm_server
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/comm_server
+	ui_category = "Computer Boards"
 
 datum/design/message_monitor
 	name = "Computer Design (Messaging Monitor Console)"
@@ -305,6 +338,7 @@ datum/design/message_monitor
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/message_monitor
+	ui_category = "Computer Boards"
 
 datum/design/comm_traffic
 	name = "Computer Design (Telecommunications Traffic Control Console)"
@@ -314,6 +348,7 @@ datum/design/comm_traffic
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/comm_traffic
+	ui_category = "Computer Boards"
 
 datum/design/telesci_console
 	name = "Computer Design (Telepad Control Console Board)"
@@ -323,6 +358,7 @@ datum/design/telesci_console
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/telesci_console
+	ui_category = "Computer Boards"
 
 datum/design/aifixer
 	name = "Computer Design (AI Integrity Restorer)"
@@ -332,3 +368,4 @@ datum/design/aifixer
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/aifixer
+	ui_category = "Computer Boards"

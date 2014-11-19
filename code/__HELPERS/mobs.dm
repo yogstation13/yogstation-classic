@@ -13,10 +13,20 @@
 		else			return "000"
 
 /proc/random_underwear(gender)
+	if(!underwear_list.len)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/underwear, underwear_list, underwear_m, underwear_f)
 	switch(gender)
 		if(MALE)	return pick(underwear_m)
 		if(FEMALE)	return pick(underwear_f)
-		else		return pick(underwear_all)
+		else		return pick(underwear_list)
+
+/proc/random_undershirt(gender)
+	if(!undershirt_list.len)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/undershirt, undershirt_list, undershirt_m, undershirt_f)
+	switch(gender)
+		if(MALE)	return pick(undershirt_m)
+		if(FEMALE)	return pick(undershirt_f)
+		else		return pick(undershirt_list)
 
 /proc/random_hair_style(gender)
 	switch(gender)
@@ -71,6 +81,28 @@ var/global/list/roundstart_species[0]
 		if(60 to 70)		return "aging"
 		if(70 to INFINITY)	return "elderly"
 		else				return "unknown"
+
+/proc/is_donator(mob/user)
+	if(ismob(user))
+		if(user.client && user.client.prefs)
+			return (user.client.prefs.unlock_content & 2)
+	else if(istype(user, /client))
+		var/client/C = user
+		if(C.prefs)
+			return (C.prefs.unlock_content & 2)
+	else
+		return 0
+
+/proc/is_veteran(mob/user)
+	if(ismob(user))
+		if(user.client && user.client.prefs)
+			return (user.client.prefs.unlock_content & 4)
+	else if(istype(user, /client))
+		var/client/C = user
+		if(C.prefs)
+			return (C.prefs.unlock_content & 4)
+	else
+		return 0
 
 /*
 Proc for attack log creation, because really why not

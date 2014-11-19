@@ -8,13 +8,13 @@
 	icon_gib = "pine_1"
 	speak_chance = 0
 	turns_per_move = 5
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/carpmeat
 	response_help = "brushes"
 	response_disarm = "pushes"
 	response_harm = "hits"
 	speed = 1
 	maxHealth = 250
 	health = 250
+	mob_size = 2
 
 	pixel_x = -16
 
@@ -40,7 +40,7 @@
 /mob/living/simple_animal/hostile/tree/FindTarget()
 	. = ..()
 	if(.)
-		emote("growls at [.]")
+		emote("me", 1, "growls at [.].")
 
 /mob/living/simple_animal/hostile/tree/AttackingTarget()
 	. =..()

@@ -52,7 +52,7 @@
 		if(((CLUMSY in user.mutations) || user.getBrainLoss() >= 60) && prob(50))	//too dumb to use flashlight properly
 			return ..()	//just hit them in the head
 
-		if(!(istype(user, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")	//don't have dexterity
+		if(!user.IsAdvancedToolUser())
 			user << "<span class='notice'>You don't have the dexterity to do this!</span>"
 			return
 
@@ -248,10 +248,6 @@
 		charge_tick = 0
 		emp_cur_charges = min(emp_cur_charges+1, emp_max_charges)
 		return 1
-
-/obj/item/device/flashlight/emp/examine()
-	..()
-	return
 
 /obj/item/device/flashlight/emp/attack(mob/living/M as mob, mob/living/user as mob)
 	if(on && user.zone_sel.selecting == "eyes") // call original attack proc only if aiming at the eyes

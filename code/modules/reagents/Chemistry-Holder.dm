@@ -368,6 +368,8 @@ datum/reagents/proc/add_reagent(var/reagent, var/amount, var/list/data=null)
 	for(var/A in reagent_list)
 
 		var/datum/reagent/R = A
+		if(!istype(R))
+			WARNING("[my_atom] contains ' [R] ' in the reagent list. That's not a reagent ([usr])")
 		if (R.id == reagent)
 			R.volume += amount
 			update_total()

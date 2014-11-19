@@ -50,8 +50,9 @@
 		/obj/item/device/flashlight,
 		/obj/item/stack/cable_coil,
 		/obj/item/device/t_scanner,
-		/obj/item/device/analyzer)
-
+		/obj/item/device/analyzer,
+		/obj/item/weapon/extinguisher/mini
+		)
 
 /obj/item/weapon/storage/belt/utility/full/New()
 	..()
@@ -71,6 +72,7 @@
 	new /obj/item/weapon/crowbar(src)
 	new /obj/item/weapon/wirecutters(src)
 	new /obj/item/device/t_scanner(src)
+	new /obj/item/weapon/extinguisher/mini(src)
 
 
 
@@ -91,8 +93,11 @@
 		/obj/item/weapon/storage/fancy/cigarettes,
 		/obj/item/weapon/storage/pill_bottle,
 		/obj/item/stack/medical,
-		/obj/item/device/flashlight/pen
-	)
+		/obj/item/device/flashlight/pen,
+		/obj/item/weapon/extinguisher/mini,
+		/obj/item/weapon/reagent_containers/hypospray,
+		/obj/item/device/rad_laser
+		)
 
 
 /obj/item/weapon/storage/belt/security
@@ -107,8 +112,8 @@
 		/obj/item/weapon/melee/classic_baton,
 		/obj/item/weapon/grenade,
 		/obj/item/weapon/reagent_containers/spray/pepper,
-		/obj/item/weapon/handcuffs,
-		/obj/item/device/flash,
+		/obj/item/weapon/restraints/handcuffs,
+		/obj/item/device/flash/handheld,
 		/obj/item/clothing/glasses,
 		/obj/item/ammo_casing/shotgun,
 		/obj/item/ammo_box,
@@ -116,7 +121,8 @@
 		/obj/item/weapon/reagent_containers/food/snacks/donut/jelly,
 		/obj/item/device/flashlight/seclite,
 		/obj/item/device/radio,
-		/obj/item/weapon/evidencebag
+		/obj/item/weapon/evidencebag,
+		/obj/item/weapon/melee/telebaton
 		)
 
 /obj/item/weapon/storage/belt/security/New()
@@ -194,5 +200,6 @@
 		/obj/item/device/lightreplacer,
 		/obj/item/device/flashlight,
 		/obj/item/weapon/reagent_containers/spray,
-		/obj/item/weapon/soap
-		)
+		/obj/item/weapon/soap,
+		/obj/item/weapon/holosign_creator
+	)
