@@ -34,8 +34,9 @@ var/const/AIRLOCK_WIRE_LIGHT = 2048
 /datum/wires/airlock/GetInteractWindow()
 	var/obj/machinery/door/airlock/A = holder
 	. += ..()
-	. += text("<br>\n[]<br>\n[]<br>\n[]<br>\n[]<br>\n[]<br>\n[]<br>\n[]", (A.locked ? "The door bolts have fallen!" : "The door bolts look up."),
+	. += text("<br>\n[]<br>\n[]<br>\n[]<br>\n[]<br>\n[]<br>\n[]<br>\n[]<br>\n[]", (A.locked ? "The door bolts have fallen!" : "The door bolts look up."),
 	(A.lights ? "The door bolt lights are on." : "The door bolt lights are off!"),
+	(A.boltsCut ? "The door bolts have been cut through." : "The door bolts are intact!"),
 	((A.hasPower()) ? "The test light is on." : "The test light is off!"),
 	((A.aiControlDisabled==0 && !A.emagged) ? "The 'AI control allowed' light is on." : "The 'AI control allowed' light is off."),
 	(A.safe==0 ? "The 'Check Wiring' light is on." : "The 'Check Wiring' light is off."),
