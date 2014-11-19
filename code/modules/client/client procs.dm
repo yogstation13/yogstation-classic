@@ -142,6 +142,7 @@ var/next_external_rsc = 0
 	prefs.last_id = computer_id			//these are gonna be used for banning
 	if(ckey in donators)
 		prefs.unlock_content |= 2
+		add_donor_verbs()
 	else
 		prefs.unlock_content &= 1
 
@@ -168,6 +169,7 @@ var/next_external_rsc = 0
 			message_admins("Admin with +SERVER logged in. Restart vote disallowed.")
 			config.allow_vote_restart = 0
 		add_admin_verbs()
+		add_donor_verbs()
 		admin_memo_show()
 		if((global.comms_key == "default_pwd" || length(global.comms_key) <= 6) && global.comms_allowed) //It's the default value or less than 6 characters long, but it somehow didn't disable comms.
 			src << "<span class='danger'>The server's API key is either too short or is the default value! Consider changing it immediately!</span>"
