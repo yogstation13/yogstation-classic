@@ -22,7 +22,6 @@ var/list/admin_verbs_default = list(
 	/client/proc/reload_donators,
 	/client/proc/view_tickets,
 	/client/proc/toggleticketlistenall,
-	/client/proc/donator_who,
 	/client/proc/reload_donators
 	)
 var/list/admin_verbs_admin = list(

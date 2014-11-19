@@ -80,9 +80,9 @@
 					content += {"<p class='ticket-bar'>
 						<b>[T.title]</b><br />
 						<b>Owner:</b> <b>[T.owner_ckey] (DC)</b>
-						<a href='?src=\ref[src];action=view_admin_ticket;ticket=\ref[T]'><img width='16' height='16' class='uiIcon16 icon-search' /> View</a>
-						<a href='?src=\ref[src];action=monitor_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
-						<a href='?src=\ref[src];action=resolve_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
+						<a href='?src=\ref[T];user=\ref[src];action=view_admin_ticket;ticket=\ref[T]'><img width='16' height='16' class='uiIcon16 icon-search' /> View</a>
+						<a href='?src=\ref[T];user=\ref[src];action=monitor_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
+						<a href='?src=\ref[T];user=\ref[src];action=resolve_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
 						</p>"}
 				else
 					var/ai_found = (T.owner && isAI(get_ckey(T.owner)))
@@ -90,7 +90,7 @@
 						<b>[T.title]</b><br />
 						<b>Owner:</b> <b>[key_name(T.owner, 1)]</b><br />
 						[T.handling_admin ? " <b>Admin:</b> [T.handling_admin]<br />" : ""]
-						<a href='?src=\ref[src];action=view_admin_ticket;ticket=\ref[T]'><img width='16' height='16' class='uiIcon16 icon-search' /> View</a>
+						<a href='?src=\ref[T];user=\ref[src];action=view_admin_ticket;ticket=\ref[T]'><img width='16' height='16' class='uiIcon16 icon-search' /> View</a>
 						"}
 					if(T.owner.mob)
 						content += {"
@@ -103,8 +103,8 @@
 							[ai_found ? " <a href='?_src_=holder;adminchecklaws=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> CL</a>" : ""]
 							"}
 					content += {"
-						<a href='?src=\ref[src];action=monitor_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
-						<a href='?src=\ref[src];action=resolve_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
+						<a href='?src=\ref[T];user=\ref[src];action=monitor_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
+						<a href='?src=\ref[T];user=\ref[src];action=resolve_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
 						</p>"}
 
 		if(resolved.len > 0)
@@ -117,9 +117,9 @@
 					content += {"<p class='ticket-bar'>
 						<b>[T.title]</b><br />
 						<b>Owner:</b> <b>[T.owner_ckey] (DC)</b>
-						<a href='?src=\ref[src];action=view_admin_ticket;ticket=\ref[T]'><img width='16' height='16' class='uiIcon16 icon-search' /> View</a>
-						<a href='?src=\ref[src];action=monitor_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
-						<a href='?src=\ref[src];action=resolve_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
+						<a href='?src=\ref[T];user=\ref[src];action=view_admin_ticket;ticket=\ref[T]'><img width='16' height='16' class='uiIcon16 icon-search' /> View</a>
+						<a href='?src=\ref[T];user=\ref[src];action=monitor_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
+						<a href='?src=\ref[T];user=\ref[src];action=resolve_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
 						</p>"}
 				else
 					var/ai_found = (T.owner && isAI(get_ckey(T.owner)))
@@ -127,7 +127,7 @@
 						<b>[T.title]</b><br />
 						<b>Owner:</b> <b>[key_name(T.owner, 1)]</b><br />
 						[T.handling_admin ? " <b>Admin:</b> [T.handling_admin]<br />" : ""]
-						<a href='?src=\ref[src];action=view_admin_ticket;ticket=\ref[T]'><img width='16' height='16' class='uiIcon16 icon-search' /> View</a>
+						<a href='?src=\ref[T];user=\ref[src];action=view_admin_ticket;ticket=\ref[T]'><img width='16' height='16' class='uiIcon16 icon-search' /> View</a>
 						"}
 					if(T.owner.mob)
 						content += {"
@@ -140,8 +140,8 @@
 							[ai_found ? " <a href='?_src_=holder;adminchecklaws=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> CL</a>" : ""]
 								"}
 					content += {"
-						<a href='?src=\ref[src];action=monitor_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
-						<a href='?src=\ref[src];action=resolve_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
+						<a href='?src=\ref[T];user=\ref[src];action=monitor_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
+						<a href='?src=\ref[T];user=\ref[src];action=resolve_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
 						</p>"}
 
 		if(admin2admin.len > 0)
@@ -155,8 +155,8 @@
 						<b>[T.title]</b><br />
 						<b>Owner:</b> <b>[T.owner_ckey] (DC)</b>
 						<a href='?src=\ref[src];action=view_admin_ticket;ticket=\ref[T]'><img width='16' height='16' class='uiIcon16 icon-search' /> View</a>
-						<a href='?src=\ref[src];action=monitor_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
-						<a href='?src=\ref[src];action=resolve_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
+						<a href='?src=\ref[T];user=\ref[src];action=monitor_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
+						<a href='?src=\ref[T];user=\ref[src];action=resolve_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
 						</p>"}
 				else
 					var/ai_found = (T.owner && isAI(get_ckey(T.owner)))
@@ -164,7 +164,7 @@
 						<b>[T.title]</b><br />
 						<b>Owner:</b> <b>[key_name(T.owner, 1)]</b><br />
 						[T.handling_admin ? " <b>Admin:</b> [T.handling_admin]<br />" : ""]
-						<a href='?src=\ref[src];action=view_admin_ticket;ticket=\ref[T]'><img width='16' height='16' class='uiIcon16 icon-search' /> View</a>
+						<a href='?src=\ref[T];user=\ref[src];action=view_admin_ticket;ticket=\ref[T]'><img width='16' height='16' class='uiIcon16 icon-search' /> View</a>
 						"}
 					if(T.owner.mob)
 						content += {"
@@ -177,8 +177,8 @@
 							[ai_found ? " <a href='?_src_=holder;adminchecklaws=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> CL</a>" : ""]
 								"}
 					content += {"
-						<a href='?src=\ref[src];action=monitor_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
-						<a href='?src=\ref[src];action=resolve_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
+						<a href='?src=\ref[T];user=\ref[src];action=monitor_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
+						<a href='?src=\ref[T];user=\ref[src];action=resolve_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
 						</p>"}
 	else
 		if(tickets_list.len == 0)
@@ -190,7 +190,7 @@
 				if(compare_ckey(T.owner, usr))
 					content += {"<p class='ticket-bar [T.resolved ? "resolved" : "unresolved"]'>
 						<b>[T.title]</b>
-						<a href='?src=\ref[src];action=view_admin_ticket;ticket=\ref[T]'><img width='16' height='16' class='uiIcon16 icon-search' /> View</a>
+						<a href='?src=\ref[T];user=\ref[src];action=view_admin_ticket;ticket=\ref[T]'><img width='16' height='16' class='uiIcon16 icon-search' /> View</a>
 						</p>"}
 
 	var/html = get_html("Admin Tickets", "", "", content)

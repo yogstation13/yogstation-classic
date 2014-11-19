@@ -1,38 +1,45 @@
 
-/client/Topic(href, href_list[])
+/datum/admin_ticket/Topic(href, href_list[])
 	..()
-	//var/mob/M = locate(href_list["src"])
+	var/mob/M = locate(href_list["user"])
 	var/client/C = usr.client
+
+	if(!M)
+		message_admins("EXPLOIT \[admin_ticket\]: [usr] attempted to operate a ticket, it is missing a src key.")
+		return
 
 	if(href_list["action"] == "view_admin_ticket")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 		// Close ticket list when opening ticket
-		//src << browse(null, "window=ViewTickets;size=700x500")
+		//M << browse(null, "window=ViewTickets;size=700x500")
 		if(!istype(T, /datum/admin_ticket))
+			message_admins("EXPLOIT \[admin_ticket\]: [M] attempted to view a ticket, the ref supplied was not a ticket.")
 			return
 
 		// If you are not the owner, handling admin or a general admin, then break out
-		if(!holder && !compare_ckey(src, T.owner_ckey) && !compare_ckey(src, T.handling_admin))
+		if(!C.holder && !compare_ckey(M, T.owner_ckey))
+			message_admins("EXPLOIT \[admin_ticket\]: [M] attempted to view a ticket, they are not an admin or the owner of the ticket.")
 			return
 
 		T.view_log(C.mob)
 	else if(href_list["action"] == "reply_to_ticket")
-		if(prefs.muted & MUTE_ADMINHELP)
-			src << "<font color='red'>Error: Admin-PM: You are unable to use admin PM-s (muted).</font>"
+		if(C.prefs.muted & MUTE_ADMINHELP)
+			M << "<font color='red'>Error: Admin-PM: You are unable to use admin PM-s (muted).</font>"
 			return
 
 		//var/time = time2text(world.timeofday, "hh:mm")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 
 		if(!istype(T, /datum/admin_ticket))
+			message_admins("EXPLOIT \[admin_ticket\]: [M] attempted to reply to a ticket, the ref supplied was not a ticket.")
 			return
 
-		if(T.resolved && !holder)
+		if(T.resolved && !C.holder)
 			usr << "<span class='ticket-status'>This ticket is marked as resolved. You may not add any more information to it.</span>"
 			return
 
 		// If you are not the owner, handling admin or a general admin, then break out
-		if(!holder && !compare_ckey(src, T.owner_ckey) && !compare_ckey(src, T.handling_admin))
+		if(!C.holder && !compare_ckey(M, T.owner_ckey))
 			usr << "<span class='ticket-status'>You are not the owner or primary admin of this ticket. You may not reply to it.</span>"
 			return
 
@@ -42,10 +49,10 @@
 			logtext = sanitize(copytext(logtext,1,MAX_MESSAGE_LEN))
 
 		if(logtext)
-			T.add_log(logtext, src.mob)
+			T.add_log(logtext, M)
 
 		//AdminPM popup for ApocStation and anybody else who wants to use it. Set it with POPUP_ADMIN_PM in config.txt ~Carn
-		if(holder && T.owner && !T.owner.holder && compare_ckey(usr, T.handling_admin) && config.popup_admin_pm)
+		if(C.holder && T.owner && !T.owner.holder && compare_ckey(usr, T.handling_admin) && config.popup_admin_pm)
 			spawn()	//so we don't hold the caller proc up
 				var/sender = C
 				var/sendername = C.key
@@ -54,18 +61,17 @@
 					if(sender)
 						T.owner.cmd_admin_pm(sender,reply)										//sender is still about, let's reply to them
 					else
-						adminhelp(reply)													//sender has left, adminhelp instead
+						C.adminhelp(reply)													//sender has left, adminhelp instead
 				return
 	else if(href_list["action"] == "monitor_admin_ticket")
-		if(!holder)
+		// Limited to admins
+		if(!C.holder)
+			message_admins("EXPLOIT \[admin_ticket\]: [M] attempted to monitor a ticket, but the user is not an admin.")
 			return
 
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 		if(!istype(T, /datum/admin_ticket))
-			return
-
-		// This is limited to admins
-		if(!holder)
+			message_admins("EXPLOIT \[admin_ticket\]: [M] attempted to monitor a ticket, the ref supplied was not a ticket.")
 			return
 
 		T.toggle_monitor()
@@ -80,10 +86,12 @@
 	else if(href_list["action"] == "administer_admin_ticket")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 		if(!istype(T, /datum/admin_ticket))
+			message_admins("EXPLOIT \[admin_ticket\]: [M] attempted to administer a ticket, the ref supplied was not a ticket.")
 			return
 
 		// This is limited to admins
-		if(!holder)
+		if(!C.holder)
+			message_admins("EXPLOIT \[admin_ticket\]: [M] attempted to administer a ticket, but the user is not an admin.")
 			return
 
 		T.handling_admin = C
@@ -97,10 +105,12 @@
 	else if(href_list["action"] == "resolve_admin_ticket")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 		if(!istype(T, /datum/admin_ticket))
+			message_admins("EXPLOIT \[admin_ticket\]: [M] attempted to resolve a ticket, the ref supplied was not a ticket.")
 			return
 
 		// This is limited to admins
-		if(!holder)
+		if(!C.holder)
+			message_admins("EXPLOIT \[admin_ticket\]: [M] attempted to resolve a ticket, but the user is not an admin.")
 			return
 
 		T.toggle_resolved()
@@ -121,29 +131,31 @@
 	else if(href_list["action"] == "refresh_admin_ticket")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 		if(!istype(T, /datum/admin_ticket))
+			message_admins("EXPLOIT \[admin_ticket\]: [M] attempted to refresh a ticket, the ref supplied was not a ticket.")
 			return
 
 		// If you are not the owner, handling admin or a general admin, then break out
-		if(!holder && !compare_ckey(src, T.owner_ckey) && !compare_ckey(src, T.handling_admin))
+		if(!C.holder && !compare_ckey(M, T.owner_ckey))
+			message_admins("EXPLOIT \[admin_ticket\]: [M] attempted to view a ticket, but the user is not an admin or the ticket owner.")
 			return
 
 		T.view_log(C)
 	else if(href_list["vv"])
-		if(!holder || !ismob(locate(href_list["vv"])))
+		if(!C.holder || !ismob(locate(href_list["vv"])))
 			return
 		C.debug_variables(locate(href_list["vv"]))
 	else if(href_list["pp"])
-		if(!holder || !ismob(locate(href_list["pp"])))
+		if(!C.holder || !ismob(locate(href_list["pp"])))
 			return
 		C.holder.show_player_panel(locate(href_list["pp"]))
 	else if(href_list["pm"])
 		C.cmd_admin_pm(href_list["pm"],null)
 	else if(href_list["sm"])
-		if(!holder || !ismob(locate(href_list["sm"])))
+		if(!C.holder || !ismob(locate(href_list["sm"])))
 			return
 		C.cmd_admin_subtle_message(locate(href_list["sm"]))
 	else if(href_list["jmp"])
-		if(!holder || !ismob(locate(href_list["jmp"])))
+		if(!C.holder || !ismob(locate(href_list["jmp"])))
 			return
 		var/mob/N = locate(href_list["jmp"])
 		if(N)
