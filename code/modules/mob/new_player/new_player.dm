@@ -7,6 +7,8 @@
 	var/totalPlayersReady = 0
 	var/joining_forbidden = 0
 
+	var/list/donorItems = list()
+
 	flags = NONE
 
 	invisibility = 101
@@ -140,6 +142,69 @@
 
 	if(href_list["ready"])
 		ready = text2num(href_list["ready"])
+
+		if(ready)
+			var/list/items = list( \
+				/obj/item/clothing/head/collectable/petehat, \
+				/obj/item/clothing/head/collectable/slime, \
+				/obj/item/clothing/head/collectable/xenom, \
+				/obj/item/clothing/head/collectable/chef, \
+				/obj/item/clothing/head/collectable/paper, \
+				/obj/item/clothing/head/collectable/tophat, \
+				/obj/item/clothing/head/collectable/captain, \
+				/obj/item/clothing/head/collectable/police, \
+				/obj/item/clothing/head/collectable/welding, \
+				/obj/item/clothing/head/collectable/flatcap, \
+				/obj/item/clothing/head/collectable/pirate, \
+				/obj/item/clothing/head/collectable/kitty, \
+				/obj/item/clothing/head/collectable/rabbitears, \
+				/obj/item/clothing/head/collectable/wizard, \
+				/obj/item/clothing/head/collectable/hardhat, \
+				/obj/item/clothing/head/collectable/HoS, \
+				/obj/item/clothing/head/collectable/thunderdome, \
+				/obj/item/clothing/head/collectable/swat, \
+				/obj/item/clothing/head/cakehat, \
+				/obj/item/clothing/head/ushanka, \
+				/obj/item/clothing/head/hardhat/pumpkinhead, \
+				/obj/item/clothing/head/kitty, \
+				/obj/item/clothing/head/hardhat/reindeer, \
+				/obj/item/clothing/head/centhat, \
+				/obj/item/clothing/head/powdered_wig, \
+				/obj/item/clothing/head/that, \
+				/obj/item/clothing/head/redcoat, \
+				/obj/item/clothing/head/mailman, \
+				/obj/item/clothing/head/plaguedoctorhat, \
+				/obj/item/clothing/head/hasturhood, \
+				/obj/item/clothing/head/nursehat, \
+				/obj/item/clothing/head/syndicatefake, \
+				/obj/item/clothing/head/greenbandana, \
+				/obj/item/clothing/head/cardborg, \
+				/obj/item/clothing/head/justice, \
+				/obj/item/clothing/head/rabbitears, \
+				/obj/item/clothing/head/flatcap, \
+				/obj/item/clothing/head/pirate, \
+				/obj/item/clothing/head/hgpiratecap, \
+				/obj/item/clothing/head/bowler, \
+				/obj/item/clothing/head/witchwig, \
+				/obj/item/clothing/head/chicken, \
+				/obj/item/clothing/head/bearpelt, \
+				/obj/item/clothing/head/xenos, \
+				/obj/item/clothing/head/fedora, \
+				/obj/item/clothing/head/sombrero, \
+				/obj/item/clothing/head/sombrero/green, \
+				/obj/item/clothing/head/sombrero/shamebrero, \
+				/obj/item/clothing/head/cone, \
+				/obj/item/clothing/head/collectable/beret \
+			)
+
+			/*var/obj/item/clothing/head/C
+			for(C in /obj/item/clothing/head)
+				world << "Items added: [C]"
+				items += C*/
+
+			var/obj/item/clothing/head/item = input(usr, "What would you like to start with?","Donator fun","Nothing") as null|anything in items
+			if(item)
+				donorItems += item
 
 	if(href_list["refresh"])
 		src << browse(null, "window=playersetup") //closes the player setup window
@@ -409,6 +474,7 @@
 	close_spawn_windows()
 
 	var/mob/living/carbon/human/new_character = new(loc)
+	new_character.donorItems = donorItems
 	new_character.lastarea = get_area(loc)
 
 	create_dna(new_character)
