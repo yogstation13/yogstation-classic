@@ -7,8 +7,6 @@
 	var/totalPlayersReady = 0
 	var/joining_forbidden = 0
 
-	var/list/donorItems = list()
-
 	flags = NONE
 
 	invisibility = 101
@@ -411,7 +409,6 @@
 	close_spawn_windows()
 
 	var/mob/living/carbon/human/new_character = new(loc)
-	new_character.donorItems = donorItems
 	new_character.lastarea = get_area(loc)
 
 	create_dna(new_character)

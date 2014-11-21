@@ -5,7 +5,6 @@
 	icon = 'icons/mob/human.dmi'
 	icon_state = "caucasian1_m_s"
 	var/list/hud_list = list()
-	var/list/donorItems = list()
 
 
 
