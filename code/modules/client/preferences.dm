@@ -605,7 +605,7 @@ datum/preferences
 						else
 							donor_hat = null
 			else
-				message_admins("EXPLOIT \[donor\]: [user] access donor only functions (as a non-donor). Attempt made on \"[href_list["preference"]]\" -> \"[href_list["task"]]\".")
+				message_admins("EXPLOIT \[donor\]: [user] tried to access donor only functions (as a non-donor). Attempt made on \"[href_list["preference"]]\" -> \"[href_list["task"]]\".")
 
 		if(href_list["preference"] == "job")
 			switch(href_list["task"])
