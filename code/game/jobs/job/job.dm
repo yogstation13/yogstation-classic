@@ -63,15 +63,15 @@
 			new default_storagebox(BPK)
 			H.equip_to_slot_or_del(BPK, slot_back,1)
 
-			for(var/O in H.donorItems)
-				BPK.contents += new O
+			if(H.client && H.client.prefs && H.client.prefs.donor_hat)
+				BPK.contents += H.client.prefs.donor_hat
 		if(3) //Satchel
 			var/obj/item/weapon/storage/backpack/BPK = new default_satchel(H)
 			new default_storagebox(BPK)
 			H.equip_to_slot_or_del(BPK, slot_back,1)
 
-			for(var/O in H.donorItems)
-				BPK.contents += new O
+			if(H.client && H.client.prefs && H.client.prefs.donor_hat)
+				BPK.contents += H.client.prefs.donor_hat
 
 //But don't override this
 /datum/job/proc/equip(var/mob/living/carbon/human/H)

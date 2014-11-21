@@ -201,6 +201,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	S["job_engsec_med"]		>> job_engsec_med
 	S["job_engsec_low"]		>> job_engsec_low
 
+	S["donor_hat"]			>> donor_hat
+
 	//try to fix any outdated data if necessary
 	if(needs_update >= 0)
 		update_character(needs_update)		//needs_update == savefile_version if we need an update (positive integer)
@@ -284,6 +286,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	S["job_engsec_high"]	<< job_engsec_high
 	S["job_engsec_med"]		<< job_engsec_med
 	S["job_engsec_low"]		<< job_engsec_low
+
+	S["donor_hat"]			<< donor_hat
 
 	return 1
 
