@@ -1,3 +1,12 @@
+/obj/item/weapon/reagent_containers/food/snacks/burger/rainbow
+	name = "rainbow burger"
+	desc = "The colours man.. the colours.."
+	icon_state = "superbiteburger"
+
+/obj/item/weapon/reagent_containers/food/snacks/burger/rainbow/New()
+	..()
+	bitesize = 3
+
 /obj/item/weapon/reagent_containers/food/snacks/burger
 	name = "burger"
 	desc = "The cornerstone of every nutritious breakfast."

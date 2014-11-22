@@ -1,4 +1,23 @@
 
+/obj/item/weapon/reagent_containers/food/snacks/sliceable/store/rainbowmeatbread
+	name = "rainbowmeatbread loaf"
+	desc = "The density of the rainbow is so high you can see two of them"
+	icon_state = "bread"
+	slice_path = /obj/item/weapon/reagent_containers/food/snacks/rainbowmeatbreadslice
+	slices_num = 5
+
+/obj/item/weapon/reagent_containers/food/snacks/sliceable/store/rainbowmeatbread/New()
+	..()
+	reagents.add_reagent("nutriment", 30)
+	bitesize = 2
+
+/obj/item/weapon/reagent_containers/food/snacks/rainbowmeatbreadslice
+	name = "rainbow meat bread slice"
+	desc = "A slice of the rainbow"
+	icon_state = "breadslice"
+	trash = /obj/item/trash/plate
+	bitesize = 2
+
 /obj/item/weapon/reagent_containers/food/snacks/sliceable/store/meatbread
 	name = "meatbread loaf"
 	desc = "The culinary base of every self-respecting eloquen/tg/entleman."

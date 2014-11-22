@@ -76,3 +76,11 @@
 /obj/item/weapon/reagent_containers/food/snacks/meat/pug
 	name = "Pug meat"
 	desc = "Tastes like... well you know..."
+
+/obj/item/weapon/reagent_containers/food/snacks/meat/human/rainbow
+	name = "Rainbow Meat"
+	icon_state = "rainbowmeat"
+	desc = "Taste the rainbow!"
+	New()
+		..()
+		reagents.add_reagent("space_drugs", 10)

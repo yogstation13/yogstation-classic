@@ -3,6 +3,18 @@
 
 ////////////////////////////////////////////////BREAD////////////////////////////////////////////////
 
+/datum/recipe/bread/rainbow
+	reagents = list("flour" = 15)
+	items = list(
+		/obj/item/weapon/reagent_containers/food/snacks/meat/human/rainbow,
+		/obj/item/weapon/reagent_containers/food/snacks/meat/human/rainbow,
+		/obj/item/weapon/reagent_containers/food/snacks/meat/human/rainbow,
+		/obj/item/weapon/reagent_containers/food/snacks/cheesewedge,
+		/obj/item/weapon/reagent_containers/food/snacks/cheesewedge,
+		/obj/item/weapon/reagent_containers/food/snacks/cheesewedge,
+	)
+	result = /obj/item/weapon/reagent_containers/food/snacks/sliceable/store/rainbowmeatbread
+
 /datum/recipe/bread
 	reagents = list("flour" = 15)
 	result = /obj/item/weapon/reagent_containers/food/snacks/sliceable/store/bread

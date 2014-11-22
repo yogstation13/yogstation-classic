@@ -1,4 +1,13 @@
 
+/obj/item/weapon/reagent_containers/food/snacks/rainbowpie
+	name = "rainbow pie"
+	desc = "After eating this, your life will be rainbows."
+	icon_state = "cherrypie"
+
+/obj/item/weapon/reagent_containers/food/snacks/rainbowpie/New()
+	..()
+	bitesize = 3
+
 /obj/item/weapon/reagent_containers/food/snacks/pie
 	name = "banana cream pie"
 	desc = "Just like back home, on clown planet! HONK!"
