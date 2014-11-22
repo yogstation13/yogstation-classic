@@ -1525,3 +1525,81 @@ datum/chemical_reaction/pestkiller
 	if(P)
 		P.loc = get_turf(holder.my_atom)
 
+//Rainbow
+
+/datum/chemical_reaction/clownspawn
+	name = "Clown Spawn"
+	id = "c_spawn"
+	result = null
+	required_reagents = list("plasma" = 1)
+	result_amount = 1
+	required_container = /obj/item/slime_extract/rainbow
+	required_other = 1
+/datum/chemical_reaction/clownspawn/on_reaction(var/datum/reagents/holder)
+	feedback_add_details("slime_cores_used","[replacetext(name," ","_")]")
+	for(var/mob/O in viewers(get_turf(holder.my_atom), null))
+		O.show_message(text("<span class='danger'>The slime extract begins to vibrate violently !</span>"), 1)
+	spawn(50)
+
+	if(holder && holder.my_atom)
+
+		var/list/critters = /mob/living/simple_animal/hostile/retaliate/clown // list of possible hostile mobs
+
+		var/atom/A = holder.my_atom
+		var/turf/T = get_turf(A)
+		var/area/my_area = get_area(T)
+		var/message = "A rainbow slime reaction has occured in [my_area.name]. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP</A>)"
+		message += " (<A HREF='?_src_=vars;Vars=\ref[A]'>VV</A>)"
+
+		var/mob/M = get(A, /mob)
+		if(M)
+			message += " - Carried By: [M.real_name] ([M.key]) (<A HREF='?_src_=holder;adminplayeropts=\ref[M]'>PP</A>) (<A HREF='?_src_=holder;adminmoreinfo=\ref[M]'>?</A>)"
+		else
+			message += " - Last Fingerprint: [(A.fingerprintslast ? A.fingerprintslast : "N/A")]"
+
+		message_admins(message, 0, 1)
+
+		playsound(get_turf(holder.my_atom), 'sound/items/bikehorn.ogg', 100, 1)
+
+		for(var/mob/living/carbon/human/H in viewers(get_turf(holder.my_atom), null))
+			if(H:eyecheck() <= 0)
+				flick("e_flash", H.flash)
+
+		for(var/i = 1, i <= 5, i++)
+			var/chosen = pick(critters)
+			var/mob/living/simple_animal/hostile/C = new chosen
+			C.faction |= "slimesummon"
+			C.loc = get_turf(holder.my_atom)
+			if(prob(50))
+				for(var/j = 1, j <= rand(1, 3), j++)
+					step(C, pick(NORTH,SOUTH,EAST,WEST))
+
+/datum/chemical_reaction/rainbowmeat
+	name = "Clown Bork"
+	id = "c_bork"
+	result = null
+	required_reagents = list("blood" = 1)
+	result_amount = 1
+	required_container = /obj/item/slime_extract/rainbow
+	required_other = 1
+/datum/chemical_reaction/rainbowmeat/on_reaction(var/datum/reagents/holder)
+
+	feedback_add_details("slime_cores_used","[replacetext(name," ","_")]")
+
+	var/list/borks = /obj/item/weapon/reagent_containers/food/snacks/meat/human/rainbow
+	// BORK BORK BORK
+
+	playsound(get_turf(holder.my_atom), 'sound/items/bikehorn.ogg', 100, 1)
+
+	for(var/mob/living/carbon/human/M in viewers(get_turf(holder.my_atom), null))
+		if(M:eyecheck() <= 0)
+			flick("e_flash", M.flash)
+
+	for(var/i = 1, i <= 4 + rand(1,2), i++)
+		var/chosen = pick(borks)
+		var/obj/B = new chosen
+		if(B)
+			B.loc = get_turf(holder.my_atom)
+			if(prob(50))
+				for(var/j = 1, j <= rand(1, 3), j++)
+					step(B, pick(NORTH,SOUTH,EAST,WEST))
