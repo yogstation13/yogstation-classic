@@ -383,3 +383,10 @@
 	item_state = "gy_suit"
 	item_color = "tourist"
 	can_adjust = 0
+
+/obj/item/clothing/under/scratch
+	name = "white suit"
+	desc = "A white suit, suitable for an excellent host"
+	icon_state = "scratch"
+	item_state = "scratch"
+	item_color = "scratch"
