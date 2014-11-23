@@ -35,11 +35,11 @@
 	icon_state = "spidermeatbread"
 	slice_path = /obj/item/weapon/reagent_containers/food/snacks/meatbreadslice/spider
 
-/obj/item/weapon/reagent_containers/food/snacks/sliceable/store/meatbreadslice/spider/New()
+/obj/item/weapon/reagent_containers/food/snacks/sliceable/store/meatbread/spider/New()
 	..()
 	reagents.add_reagent("toxin", 15)
 
-/obj/item/weapon/reagent_containers/food/snacks/meatbreadslice/spider
+/obj/item/weapon/reagent_containers/food/snacks/snacks/meatbreadslice/spider
 	name = "spider meat bread slice"
 	desc = "A slice of meatloaf made from an animal that most likely still wants you dead."
 	icon_state = "xenobreadslice"
