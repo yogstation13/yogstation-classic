@@ -3,13 +3,6 @@
 
 ////////////////////////////////////////////////PIES////////////////////////////////////////////////
 
-/datum/recipe/pie/rainbow
-	reagents = list("flour" = 10)
-	items = list(
-		/obj/item/weapon/reagent_containers/food/snacks/meat/human/rainbow,
-	)
-	result=	/obj/item/weapon/reagent_containers/food/snacks/rainbowpie
-
 /datum/recipe/pie
 	reagents = list("flour" = 10)
 	items = list(
@@ -81,3 +74,10 @@
 		/obj/item/weapon/reagent_containers/food/snacks/egg,
 	)
 	result = /obj/item/weapon/reagent_containers/food/snacks/sliceable/pumpkinpie
+
+/datum/recipe/pie/rainbow
+	reagents = list("flour" = 10)
+	items = list(
+		/obj/item/weapon/reagent_containers/food/snacks/meat/rainbow,
+	)
+	result=	/obj/item/weapon/reagent_containers/food/snacks/rainbowpie
