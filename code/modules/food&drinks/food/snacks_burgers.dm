@@ -195,7 +195,3 @@
 	name = "rainbow burger"
 	desc = "The colours man.. the colours.."
 	icon_state = "superbiteburger"
-
-/obj/item/weapon/reagent_containers/food/snacks/burger/rainbow/New()
-	..()
-	bitesize = 3

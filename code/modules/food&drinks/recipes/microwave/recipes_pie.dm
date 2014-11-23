@@ -80,4 +80,4 @@
 	items = list(
 		/obj/item/weapon/reagent_containers/food/snacks/meat/rainbow,
 	)
-	result=	/obj/item/weapon/reagent_containers/food/snacks/rainbowpie
+	result=	/obj/item/weapon/reagent_containers/food/snacks/pie/rainbow

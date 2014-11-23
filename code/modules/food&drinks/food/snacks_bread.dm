@@ -1,11 +1,4 @@
 
-/obj/item/weapon/reagent_containers/food/snacks/rainbowmeatbreadslice
-	name = "rainbow meat bread slice"
-	desc = "A slice of the rainbow"
-	icon_state = "breadslice"
-	trash = /obj/item/trash/plate
-	bitesize = 2
-
 /obj/item/weapon/reagent_containers/food/snacks/sliceable/store/meatbread
 	name = "meatbread loaf"
 	desc = "The culinary base of every self-respecting eloquen/tg/entleman."
@@ -25,46 +18,33 @@
 	trash = /obj/item/trash/plate
 	bitesize = 2
 
-/obj/item/weapon/reagent_containers/food/snacks/sliceable/store/xenomeatbread
+/obj/item/weapon/reagent_containers/food/snacks/sliceable/store/meatbread/xeno
 	name = "xenomeatbread loaf"
 	desc = "The culinary base of every self-respecting eloquen/tg/entleman. Extra Heretical."
 	icon_state = "xenomeatbread"
-	slice_path = /obj/item/weapon/reagent_containers/food/snacks/xenomeatbreadslice
-	slices_num = 5
+	slice_path = /obj/item/weapon/reagent_containers/food/snacks/meatbreadslice/xeno
 
-/obj/item/weapon/reagent_containers/food/snacks/sliceable/store/xenomeatbread/New()
-	..()
-	reagents.add_reagent("nutriment", 30)
-	bitesize = 2
-
-/obj/item/weapon/reagent_containers/food/snacks/xenomeatbreadslice
+/obj/item/weapon/reagent_containers/food/snacks/meatbreadslice/xeno
 	name = "xenomeatbread slice"
 	desc = "A slice of delicious meatbread. Extra Heretical."
 	icon_state = "xenobreadslice"
-	trash = /obj/item/trash/plate
-	bitesize = 2
 
-/obj/item/weapon/reagent_containers/food/snacks/sliceable/store/spidermeatbread
+/obj/item/weapon/reagent_containers/food/snacks/sliceable/store/meatbread/spider
 	name = "spider meat loaf"
 	desc = "Reassuringly green meatloaf made from spider meat."
 	icon_state = "spidermeatbread"
-	slice_path = /obj/item/weapon/reagent_containers/food/snacks/spidermeatbreadslice
-	slices_num = 5
+	slice_path = /obj/item/weapon/reagent_containers/food/snacks/meatbreadslice/spider
 
-/obj/item/weapon/reagent_containers/food/snacks/sliceable/store/spidermeatbread/New()
+/obj/item/weapon/reagent_containers/food/snacks/sliceable/store/meatbreadslice/spider/New()
 	..()
-	reagents.add_reagent("nutriment", 30)
 	reagents.add_reagent("toxin", 15)
-	bitesize = 2
 
-/obj/item/weapon/reagent_containers/food/snacks/spidermeatbreadslice
+/obj/item/weapon/reagent_containers/food/snacks/meatbreadslice/spider
 	name = "spider meat bread slice"
 	desc = "A slice of meatloaf made from an animal that most likely still wants you dead."
 	icon_state = "xenobreadslice"
-	trash = /obj/item/trash/plate
-	bitesize = 2
 
-/obj/item/weapon/reagent_containers/food/snacks/spidermeatbreadslice/New()
+/obj/item/weapon/reagent_containers/food/snacks/meatbreadslice/spider/New()
 	..()
 	reagents.add_reagent("toxin", 2)
 
@@ -158,14 +138,13 @@
 	reagents.add_reagent("sodiumchloride", 1)
 	bitesize = 3
 
-/obj/item/weapon/reagent_containers/food/snacks/sliceable/store/rainbowmeatbread
+/obj/item/weapon/reagent_containers/food/snacks/sliceable/store/meatbread/rainbow
 	name = "rainbowmeatbread loaf"
 	desc = "The density of the rainbow is so high you can see two of them"
 	icon_state = "bread"
-	slice_path = /obj/item/weapon/reagent_containers/food/snacks/rainbowmeatbreadslice
-	slices_num = 5
+	slice_path = /obj/item/weapon/reagent_containers/food/snacks/meatbreadslice/rainbow
 
-/obj/item/weapon/reagent_containers/food/snacks/sliceable/store/rainbowmeatbread/New()
-	..()
-	reagents.add_reagent("nutriment", 30)
-	bitesize = 2
+/obj/item/weapon/reagent_containers/food/snacks/meatbreadslice/rainbow
+	name = "rainbow meat bread slice"
+	desc = "A slice of the rainbow"
+	icon_state = "breadslice"
