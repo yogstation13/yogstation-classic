@@ -87,4 +87,4 @@
 		/obj/item/weapon/reagent_containers/food/snacks/cheesewedge,
 		/obj/item/weapon/reagent_containers/food/snacks/cheesewedge,
 	)
-	result = /obj/item/weapon/reagent_containers/food/snacks/sliceable/store/rainbowmeatbread
+	result = /obj/item/weapon/reagent_containers/food/snacks/sliceable/store/meatbread/rainbow
