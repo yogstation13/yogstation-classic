@@ -4,7 +4,7 @@
 	var/mob/M = locate(href_list["user"])
 	var/client/C = usr.client
 
-	if(!M)
+	if(!C.holder && !M)
 		message_admins("EXPLOIT \[admin_ticket\]: [usr] attempted to operate a ticket, it is missing a src key.")
 		return
 

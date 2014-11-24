@@ -232,7 +232,7 @@ var/next_external_rsc = 0
 /client/Del()
 	for(var/datum/admin_ticket/T in tickets_list)
 		if(compare_ckey(T.owner_ckey, usr) && !T.resolved)
-			T.add_log("- Disconnected -")
+			T.add_log("* Disconnected *")
 
 	if(holder)
 		holder.owner = null
