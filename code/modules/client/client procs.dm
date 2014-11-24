@@ -161,6 +161,12 @@ var/next_external_rsc = 0
 	if(byond_version < MIN_CLIENT_VERSION)		//Out of date client.
 		return null
 
+	spawn(100)
+		for(var/datum/admin_ticket/T in tickets_list)
+			if(compare_ckey(T.owner_ckey, src) && !T.resolved)
+				T.add_log("* Connected *")
+				break
+
 #if (PRELOAD_RSC == 0)
 	if(external_rsc_urls && external_rsc_urls.len)
 		next_external_rsc = Wrap(next_external_rsc+1, 1, external_rsc_urls.len+1)
