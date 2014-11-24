@@ -62,7 +62,7 @@
 /client/proc/getserverlog()
 	set name = ".getserverlog"
 	set desc = "Fetch logfiles from data/logs"
-	set category = null
+	set category = "Admin"
 
 	var/path = browse_files("data/logs/")
 	if(!path)
