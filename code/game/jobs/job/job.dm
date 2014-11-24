@@ -58,6 +58,7 @@
 	switch(H.backbag)
 		if(1) //No backpack or satchel
 			H.equip_to_slot_or_del(new default_storagebox(H), slot_r_hand)
+			H.equip_to_slot_if_possible(H.client.prefs.donor_hat, slot_head, 1, 1, 1)
 		if(2) // Backpack
 			var/obj/item/weapon/storage/backpack/BPK = new default_backpack(H)
 			new default_storagebox(BPK)
