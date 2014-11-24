@@ -92,7 +92,7 @@ datum/preferences
 
 	var/agree = 0
 
-	var/donor_hat
+	var/donor_hat = null
 
 /datum/preferences/New(client/C)
 	blood_type = random_blood_type()
