@@ -1586,7 +1586,7 @@ datum/chemical_reaction/pestkiller
 
 	feedback_add_details("slime_cores_used","[replacetext(name," ","_")]")
 
-	var/list/borks = /obj/item/weapon/reagent_containers/food/snacks/meat/human/rainbow
+	var/list/borks = /obj/item/weapon/reagent_containers/food/snacks/meat/rainbow
 	// BORK BORK BORK
 
 	playsound(get_turf(holder.my_atom), 'sound/items/bikehorn.ogg', 100, 1)

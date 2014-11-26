@@ -5,7 +5,7 @@
 	icon_living = "clown"
 	icon_dead = "clown_dead"
 	icon_gib = "clown_gib"
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/human/rainbow
+	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/rainbow
 	meat_amount = 3
 	speak_chance = 0
 	turns_per_move = 5
