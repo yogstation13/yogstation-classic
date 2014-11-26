@@ -131,7 +131,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/pie/rainbow
 	name = "rainbow pie"
 	desc = "After eating this, your life will be rainbows."
-	icon_state = "cherrypie"
+	icon_state = "rainbowmeatpie"
 
 /obj/item/weapon/reagent_containers/food/snacks/pie/rainbow/throw_impact(atom/hit_atom)
 	..()

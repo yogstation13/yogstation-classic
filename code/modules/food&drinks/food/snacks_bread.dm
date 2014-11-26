@@ -141,10 +141,10 @@
 /obj/item/weapon/reagent_containers/food/snacks/sliceable/store/meatbread/rainbow
 	name = "rainbowmeatbread loaf"
 	desc = "The density of the rainbow is so high you can see two of them"
-	icon_state = "bread"
+	icon_state = "rainbowbread"
 	slice_path = /obj/item/weapon/reagent_containers/food/snacks/meatbreadslice/rainbow
 
 /obj/item/weapon/reagent_containers/food/snacks/meatbreadslice/rainbow
 	name = "rainbow meat bread slice"
 	desc = "A slice of the rainbow"
-	icon_state = "breadslice"
+	icon_state = "rainbowbreadslice"

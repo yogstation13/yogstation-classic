@@ -194,4 +194,4 @@
 /obj/item/weapon/reagent_containers/food/snacks/burger/rainbow
 	name = "rainbow burger"
 	desc = "The colours man.. the colours.."
-	icon_state = "superbiteburger"
+	icon_state = "rainbowmeatburger"
