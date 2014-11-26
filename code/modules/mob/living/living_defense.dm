@@ -190,10 +190,10 @@ proc/vol_by_throwforce_and_or_w_class(var/obj/item/I)
 	if (M.a_intent == "harm" && !M.is_muzzled())
 		M.do_attack_animation(src)
 		if (prob(75))
-			add_logs(M, src, "attacked", admin=0)
 			playsound(loc, 'sound/weapons/bite.ogg', 50, 1, -1)
 			visible_message("<span class='danger'>[M.name] bites [src]!</span>", \
 					"<span class='userdanger'>[M.name] bites [src]!</span>")
+			add_logs(M, src, "attacked", admin=0)
 			return 1
 		else
 			visible_message("<span class='danger'>[M.name] has attempted to bite [src]!</span>", \
