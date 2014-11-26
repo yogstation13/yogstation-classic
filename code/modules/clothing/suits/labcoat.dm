@@ -17,10 +17,13 @@
 	if(!can_use(usr))
 		return 0
 
-	open = !open
-	icon_state = "[initial(icon_state)][open ? "_open":""]"
-	usr << "You [open ? "unbutton":"button up"] the labcoat"
-	usr.update_inv_wear_suit()
+	if(istype(src, /obj/item/clothing/suit/labcoat/old))
+		usr << "You try to button your labcoat, but realise that it is missing buttons!"
+	else
+		open = !open
+		icon_state = "[initial(icon_state)][open ? "_open":""]"
+		usr << "You [open ? "unbutton":"button up"] the labcoat"
+		usr.update_inv_wear_suit()
 
 /obj/item/clothing/suit/labcoat/cmo
 	name = "chief medical officer's labcoat"
@@ -59,3 +62,36 @@
 	name = "scientist labcoat"
 	desc = "A suit that protects against minor chemical spills. Has a purple stripe on the shoulder."
 	icon_state = "labcoat_tox"
+
+
+/obj/item/clothing/suit/labcoat/old
+	name = "weathered labcoat"
+	desc = "A suit that protects against minor chemical spills. This one looks old."
+	icon = 'icons/obj/clothing/oldlabcoats.dmi'
+	icon_state = "labcoat_open"
+
+/obj/item/clothing/suit/labcoat/old/cmold
+	name = "weathered chief medical officer's labcoat"
+	desc = "Bluer than the standard model. This one looks old"
+	icon_state = "labcoat_cmo_open"
+	item_state = "labcoat_cmo"
+
+/obj/item/clothing/suit/labcoat/old/genold
+	name = "weathered geneticist labcoat"
+	desc = "A suit that protects against minor chemical spills. Has blue stripes on the shoulder. This one looks old."
+	icon_state = "labcoat_gen_open"
+
+/obj/item/clothing/suit/labcoat/old/chemold
+	name = "weathered chemist labcoat"
+	desc = "A suit that protects against minor chemical spills. Has orange stripes on the shoulder. This one looks old."
+	icon_state = "labcoat_chem_open"
+
+/obj/item/clothing/suit/labcoat/old/virold
+	name = "weathered virologist labcoat"
+	desc = "A suit that protects against minor chemical spills. Has a green stripe on the shoulder.  This one looks old."
+	icon_state = "labcoat_vir_open"
+
+/obj/item/clothing/suit/labcoat/old/sciold
+	name = "weathered scientist labcoat"
+	desc = "A suit that protects against minor chemical spills. Has a purple stripe on the shoulder. This one looks old."
+	icon_state = "labcoat_tox_open"
