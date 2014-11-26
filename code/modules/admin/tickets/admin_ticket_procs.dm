@@ -29,7 +29,7 @@
 			//add_log("[handling_admin] has been assigned to this ticket as primary admin.");
 			world << output("[key_name_params(handling_admin, 1, 1, null, src)]", "ViewTicketLog[ticket_id].browser:handling_user")
 
-	var/otherAdmin = (usr.client.holder && !(compare_ckey(owner_ckey, usr) || compare_ckey(handling_admin, usr)) ? 1 : 0)
+	var/otherAdmin = (user.holder && !(compare_ckey(owner_ckey, usr) || compare_ckey(handling_admin, usr)) ? 1 : 0)
 
 	//var/time = time2text(world.timeofday, "hh:mm")
 	var/message = "[gameTimestamp()] - [otherAdmin ? "<font color='red'>" : ""]<b>[key_name_params(user, 0, 0, null, src)]</b>[otherAdmin ? "</font>" : ""] - [log_message]"
@@ -189,6 +189,7 @@
 					<a href='?src=\ref[src];user=\ref[usr];action=administer_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-flag' /> Administer</a>
 				</p>"}
 
+		if(owner && owner.mob)
 			if(owner.mob.mind && owner.mob.mind.assigned_role)
 				content += "<p class='user-info-bar'>Role: [owner.mob.mind.assigned_role]</p>"
 				if(owner.mob.mind.special_role)
@@ -208,6 +209,14 @@
 			if(location)
 				content += "<p class='user-info-bar'>Location: [location]</p>"
 
+		content += "</div>"
+	else
+		content += "<div class='user-bar'>"
+		content += {"<p style='margin-top: 5px;'>
+				<a href='?src=\ref[src];user=\ref[usr];action=monitor_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
+				<a href='?src=\ref[src];user=\ref[usr];action=resolve_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
+				<a href='?src=\ref[src];user=\ref[usr];action=administer_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-flag' /> Administer</a>
+			</p>"}
 		content += "</div>"
 
 	content += "<div id='messages'>"

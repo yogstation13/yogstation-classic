@@ -161,10 +161,15 @@ var/next_external_rsc = 0
 	if(byond_version < MIN_CLIENT_VERSION)		//Out of date client.
 		return null
 
-	spawn(100)
+	spawn(30)
 		for(var/datum/admin_ticket/T in tickets_list)
 			if(compare_ckey(T.owner_ckey, src) && !T.resolved)
-				T.add_log("* Connected *")
+				T.owner = src
+				T.add_log("¤ Connected ¤", src)
+				break
+			if(compare_ckey(T.handling_admin, src) && !T.resolved)
+				T.handling_admin = src
+				T.add_log("¤ Connected ¤", src)
 				break
 
 #if (PRELOAD_RSC == 0)
@@ -238,7 +243,7 @@ var/next_external_rsc = 0
 /client/Del()
 	for(var/datum/admin_ticket/T in tickets_list)
 		if(compare_ckey(T.owner_ckey, usr) && !T.resolved)
-			T.add_log("* Disconnected *")
+			T.add_log("¤ Disconnected ¤")
 
 	if(holder)
 		holder.owner = null
