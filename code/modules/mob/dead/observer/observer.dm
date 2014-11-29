@@ -172,6 +172,17 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		src << "\blue Antag icons toggled [ninjahud ? "on" : "off"]."
 	feedback_add_details("admin_verb","TNH")
 
+/mob/dead/observer/verb/register_pai_candidate()
+	set category = "Ghost"
+	set name = "Register as pAI Candidate"
+	set desc = "Upload a fragment of your personality to the global pAI databanks."
+
+	if (istype(usr, /mob/dead/observer))
+		paiController.recruitWindow(client.mob)
+	else
+		usr << "Can't become a pAI candidate while not dead!"
+		return
+
 /mob/dead/observer/proc/dead_tele()
 	set category = "Ghost"
 	set name = "Teleport"
