@@ -58,23 +58,23 @@
 	switch(H.backbag)
 		if(1) //No backpack or satchel
 			H.equip_to_slot_or_del(new default_storagebox(H), slot_r_hand)
-			H.equip_to_slot_if_possible(H.client.prefs.donor_hat, slot_head, 1, 1, 1)
+
+			if(is_donator(H))
+				H.equip_to_slot_or_del(H.client.prefs.donor_hat, slot_head)
 		if(2) // Backpack
 			var/obj/item/weapon/storage/backpack/BPK = new default_backpack(H)
 			new default_storagebox(BPK)
 			H.equip_to_slot_or_del(BPK, slot_back,1)
 
-			if(H.client && H.client.prefs && H.client.prefs.donor_hat)
-				if(!H.equip_to_slot_if_possible(H.client.prefs.donor_hat, slot_head, 1, 1, 1))
-					BPK.contents += H.client.prefs.donor_hat
+			if(is_donator(H))
+				H.equip_to_slot_or_del(H.client.prefs.donor_hat, slot_head)
 		if(3) //Satchel
 			var/obj/item/weapon/storage/backpack/BPK = new default_satchel(H)
 			new default_storagebox(BPK)
 			H.equip_to_slot_or_del(BPK, slot_back,1)
 
-			if(H.client && H.client.prefs && H.client.prefs.donor_hat)
-				if(!H.equip_to_slot_if_possible(H.client.prefs.donor_hat, slot_head, 1, 1, 1))
-					BPK.contents += H.client.prefs.donor_hat
+			if(is_donator(H))
+				H.equip_to_slot_or_del(H.client.prefs.donor_hat, slot_head)
 
 //But don't override this
 /datum/job/proc/equip(var/mob/living/carbon/human/H)
