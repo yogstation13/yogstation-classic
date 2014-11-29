@@ -20,6 +20,7 @@
 		if(H)
 			user << "<span class='notice'>You use [src] to destroy [H].</span>"
 			qdel(H)
+			signs -= H
 		else
 			if(signs.len < max_signs)
 				H = new(get_turf(target))
