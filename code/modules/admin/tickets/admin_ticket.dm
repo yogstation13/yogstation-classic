@@ -29,6 +29,7 @@
 /datum/admin_ticket/New(nowner, ntitle, ntarget)
 	if(compare_ckey(nowner, ntarget))
 		usr << "<span class='ticket-status'>You cannot make a ticket for yourself</span>"
+		error = 1
 		return
 
 	owner = get_client(nowner)
