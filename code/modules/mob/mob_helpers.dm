@@ -11,7 +11,7 @@
 	return 0
 
 /proc/iszombie(A)
-	if(A && istype(A, /mob/living/carbon/zombie))
+	if(A && istype(A, /mob/living/carbon/human/zombie))
 		return 1
 	return 0
 

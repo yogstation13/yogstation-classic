@@ -1,4 +1,4 @@
-/mob/living/carbon/zombie
+/mob/living/carbon/human/zombie
 	name = "zombie"
 	voice_name = "zombie"
 	say_message = "moans"
@@ -8,9 +8,9 @@
 	pass_flags = PASSTABLE
 	languages = ZOMBIE
 	update_icon = 0		///no need to call regenerate_icon
-	ventcrawler = 1
+	ventcrawler = 0
 
-/mob/living/carbon/zombie/New()
+/mob/living/carbon/human/zombie/New()
 	create_reagents(1000)
 	verbs += /mob/living/proc/mob_sleep
 	verbs += /mob/living/proc/lay_down
@@ -26,7 +26,7 @@
 
 	..()
 
-/mob/living/carbon/zombie/movement_delay()
+/mob/living/carbon/human/zombie/movement_delay()
 	var/tally = 0
 	if(reagents)
 		if(reagents.has_reagent("hyperzine")) return -1
@@ -40,7 +40,7 @@
 		tally += (283.222 - bodytemperature) / 10 * 1.75
 	return tally+config.zombie_delay
 
-/mob/living/carbon/zombie/Bump(atom/movable/AM as mob|obj, yes)
+/mob/living/carbon/human/zombie/Bump(atom/movable/AM as mob|obj, yes)
 	if ((!( yes ) || now_pushing))
 		return
 	now_pushing = 1
@@ -68,7 +68,7 @@
 		now_pushing = null
 
 
-/mob/living/carbon/zombie/attack_paw(mob/M as mob)
+/mob/living/carbon/human/zombie/attack_paw(mob/M as mob)
 	..()
 
 	if (M.a_intent == "help")
@@ -90,7 +90,7 @@
 					"<span class='userdanger'>[M.name] has attempted to bite [name]!</span>")
 	return
 
-/mob/living/carbon/zombie/attack_larva(mob/living/carbon/alien/larva/L as mob)
+/mob/living/carbon/human/zombie/attack_larva(mob/living/carbon/alien/larva/L as mob)
 
 	switch(L.a_intent)
 		if("help")
@@ -108,7 +108,7 @@
 				L.amount_grown = min(L.amount_grown + damage, L.max_grown)
 				adjustBruteLoss(damage)
 
-/mob/living/carbon/zombie/attack_hand(mob/living/carbon/human/M as mob)
+/mob/living/carbon/human/zombie/attack_hand(mob/living/carbon/human/M as mob)
 	if (!ticker)
 		M << "You cannot attack people before the game has started."
 		return
@@ -174,7 +174,7 @@
 									"<span class='userdanger'>[M] has disarmed [src]!</span>")
 	return
 
-/mob/living/carbon/zombie/attack_alien(mob/living/carbon/alien/humanoid/M as mob)
+/mob/living/carbon/human/zombie/attack_alien(mob/living/carbon/alien/humanoid/M as mob)
 	if (!ticker)
 		M << "You cannot attack people before the game has started."
 		return
@@ -237,7 +237,7 @@
 			updatehealth()
 	return
 
-/mob/living/carbon/zombie/attack_animal(mob/living/simple_animal/M as mob)
+/*/mob/living/carbon/zombie/attack_animal(mob/living/simple_animal/M as mob)
 	if(M.melee_damage_upper == 0)
 		M.emote("[M.friendly] [src]")
 	else
@@ -248,10 +248,10 @@
 		add_logs(M, src, "attacked", admin=0)
 		var/damage = rand(M.melee_damage_lower, M.melee_damage_upper)
 		adjustBruteLoss(damage)
-		updatehealth()
+		updatehealth()*/
 
 
-/mob/living/carbon/zombie/attack_slime(mob/living/carbon/slime/M as mob)
+/mob/living/carbon/human/zombie/attack_slime(mob/living/carbon/slime/M as mob)
 	if (!ticker)
 		M << "You cannot attack people before the game has started."
 		return
@@ -309,7 +309,7 @@
 
 	return
 
-/mob/living/carbon/zombie/Stat()
+/mob/living/carbon/human/zombie/Stat()
 	..()
 	statpanel("Status")
 	stat(null, text("Intent: []", a_intent))
@@ -322,16 +322,16 @@
 	return
 
 
-/mob/living/carbon/zombie/verb/removeinternal()
+/mob/living/carbon/human/zombie/verb/removeinternal()
 	set name = "Remove Internals"
 	set category = "IC"
 	internal = null
 	return
 
-/mob/living/carbon/zombie/var/co2overloadtime = null
-/mob/living/carbon/zombie/var/temperature_resistance = T0C+75
+///mob/living/carbon/human/zombie/var/co2overloadtime = null
+///mob/living/carbon/human/zombie/var/temperature_resistance = T0C+75
 
-/mob/living/carbon/zombie/ex_act(severity)
+/mob/living/carbon/human/zombie/ex_act(severity)
 	..()
 	switch(severity)
 		if(1.0)
@@ -346,7 +346,7 @@
 				Paralyse(10)
 	return
 
-/mob/living/carbon/zombie/blob_act()
+/mob/living/carbon/human/zombie/blob_act()
 	if (stat != 2)
 		show_message("<span class='userdanger'>The blob attacks you!</span>")
 		adjustFireLoss(60)
@@ -362,13 +362,13 @@
 		return
 
 
-/mob/living/carbon/zombie/IsAdvancedToolUser()
+/mob/living/carbon/human/zombie/IsAdvancedToolUser()
 	return 0
 
-/mob/living/carbon/zombie/canBeHandcuffed()
+/mob/living/carbon/human/zombie/canBeHandcuffed()
 	return 1
 
-/mob/living/carbon/zombie/assess_threat(var/obj/machinery/bot/secbot/judgebot, var/lasercolor)
+/mob/living/carbon/human/zombie/assess_threat(var/obj/machinery/bot/secbot/judgebot, var/lasercolor)
 	if(judgebot.emagged == 2)
 		return 10 //Everyone is a criminal!
 	var/threatcount = 0
@@ -402,5 +402,5 @@
 
 	return threatcount
 
-/mob/living/carbon/zombie/SpeciesCanConsume()
+/mob/living/carbon/human/zombie/SpeciesCanConsume()
 	return 1 // Monkeys can eat, drink, and be forced to do so

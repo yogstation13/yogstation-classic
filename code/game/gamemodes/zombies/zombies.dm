@@ -70,7 +70,7 @@
 	..()
 
 /datum/game_mode/zombies/proc/check_zombies_victory()
-	for(var/mob/living/carbon/zombie/M in living_mob_list)
+	for(var/mob/living/carbon/human/zombie/M in living_mob_list)
 		if (M.has_disease(/datum/disease/transformation/rage_virus))
 			var/area/A = get_area(M)
 			if(is_type_in_list(A, centcom_areas))

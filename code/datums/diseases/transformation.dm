@@ -131,7 +131,7 @@
 	hidden = list(0, 0)//Not hidden, with the exception of the starting zombie.
 	stage_prob = 4
 	agent = "Rage T-1"
-	new_form = /mob/living/carbon/zombie
+	new_form = /mob/living/carbon/human/zombie
 
 	stage1	= null
 	stage2	= null
@@ -141,7 +141,7 @@
 	stage5	= list("<span class='warning'>You are angry at your coworkers, filled by the desire to eat brains.</span>")
 
 /datum/disease/transformation/rage_virus/do_disease_transformation(var/mob/living/carbon/affected_mob)
-	if(!ismonkey(affected_mob))
+	if(!iszombie(affected_mob))
 		affected_mob.zombieize(TR_KEEPITEMS | TR_KEEPIMPLANTS | TR_KEEPDAMAGE | TR_KEEPVIRUS | TR_KEEPSE)
 		ticker.mode.add_zombie(affected_mob.mind)
 

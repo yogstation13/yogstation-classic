@@ -110,10 +110,13 @@
 	animation.icon_state = "blank"
 	animation.icon = 'icons/mob/mob.dmi'
 	animation.master = src
-	flick("h2zombie", animation)
-	sleep(22)
+
+	// Todo: Add proper human to zombie animation
+	//flick("h2zombie", animation)
+	//sleep(22)
+
 	//animation = null
-	var/mob/living/carbon/zombie/O = new /mob/living/carbon/zombie( loc )
+	var/mob/living/carbon/human/zombie/O = new /mob/living/carbon/human/zombie( loc )
 	qdel(animation)
 
 
@@ -209,8 +212,15 @@
 	animation.icon_state = "blank"
 	animation.icon = 'icons/mob/mob.dmi'
 	animation.master = src
-	flick("monkey2h", animation)
-	sleep(22)
+
+	if(istype(src, /mob/living/carbon/human/zombie))
+		// Todo: Add proper zombie to human animation
+		//flick("zombie2h", animation)
+		//sleep(22)
+	else
+		flick("monkey2h", animation)
+		sleep(22)
+
 	var/mob/living/carbon/human/O = new( loc )
 	for(var/obj/item/C in O.loc)
 		O.equip_to_appropriate_slot(C)
