@@ -427,7 +427,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 
 /client/proc/cmd_admin_create_faction_announcements()
 	set category = "Special Verbs"
-	set name = "Communicate Announcement
+	set name = "Create Announcement"
 	if(!holder)
 		src << "Only administrators may use this command."
 		return
@@ -464,8 +464,8 @@ Traitors and the like can also be revived with the previous role mostly intact.
 			if("Clown Empire")
 				what += "Clown Empire"
 
-			if("cult of Nar-sie")
-				what += "cult of Narsie"
+			if("Cult of Nar-sie")
+				what += "Cult of Narsie"
 
 		var/input = input(usr, "Please enter anything you want. Anything Serious.", "What?", "") as message|null
 		if(!input)

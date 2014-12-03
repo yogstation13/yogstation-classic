@@ -23,7 +23,7 @@
 	else if(type == "Clown Empire")
 		announcement += "<h1 class='alert'>The Clown Empire Announces</h1>"
 
-	else if(type == "cult of Narsie")
+	else if(type == "Cult of Narsie")
 		announcement += "<h1 class='alert'>The Cult of Nar-sie Announces</h1>"
 
 	else
