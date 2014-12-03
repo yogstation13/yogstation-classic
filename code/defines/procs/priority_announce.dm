@@ -11,6 +11,21 @@
 		announcement += "<h1 class='alert'>Captain Announces</h1>"
 		news_network.SubmitArticle(text, "Captain's Announcement", "Station Announcements", null)
 
+	else if(type == "Syndicate")
+		announcement += "<h1 class='alert'>Syndicate Announcement</h1>"
+
+	else if(type == "Wizards Federation")
+		announcement += "<h1 class='alert'>The Wizard's federation Announces</h1>"
+
+	else if(type == "Unknown")
+		announcement += "<h1 class='alert'>U$!%&o#@</h1>"
+
+	else if(type == "Clown Empire")
+		announcement += "<h1 class='alert'>The Clown Empire Announces</h1>"
+
+	else if(type == "cult of Narsie")
+		announcement += "<h1 class='alert'>The Cult of Nar-sie Announces</h1>"
+
 	else
 		announcement += "<h1 class='alert'>[command_name()] Update</h1>"
 		if (title && length(title) > 0)
@@ -28,6 +43,22 @@
 			M << announcement
 			M << sound(sound)
 
+/proc/custom_priority_announce(var/text, var/title = "", var/sound = 'sound/AI/attention.ogg',  var/name)
+	if(!text)
+		return
+
+	var/announcement
+
+	announcement += "<h1 class='alert'>[name]</h1>"
+
+	announcement += "<br><span class='alert'>[html_encode(text)]</span><br>"
+	announcement += "<br>"
+
+	for(var/mob/M in player_list)
+		if(!istype(M,/mob/new_player) && !M.ear_deaf)
+			M << announcement
+			M << sound(sound)
+
 /proc/print_command_report(var/text = "", var/title = "Central Command Update")
 	for (var/obj/machinery/computer/communications/C in machines)
 		if(!(C.stat & (BROKEN|NOPOWER)) && C.z == 1)
@@ -36,6 +67,7 @@
 			P.info = text
 			C.messagetitle.Add("[title]")
 			C.messagetext.Add(text)
+
 
 /proc/minor_announce(var/message, var/title = "Attention:", var/alert)
 	if(!message)
