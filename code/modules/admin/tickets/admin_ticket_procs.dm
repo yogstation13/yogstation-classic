@@ -50,7 +50,7 @@
 			messageSentTo += get_ckey(handling_admin)
 			// For Alex: No bigred for admins
 			//handling_admin << "<span class='ticket-header-recieved'>-- Administrator private message --</span>"
-			handling_admin << "<span class='ticket-text-received'>-- [get_view_link(user)] [key_name_params(user, 1, 1, null, src)] -> [key_name_params(handling_admin, 0, 0, null, src)]: [log_item.text]</span>"
+			handling_admin << "<span class='ticket-text-received'>-- [get_view_link(user)] [key_name_params(user, 1, 1, null, src)] -> [log_item.isAdminComment() ? get_view_link(user) : key_name_params(handling_admin, 0, 0, null, src)]: [log_item.text]</span>"
 			if(has_pref(handling_admin, SOUND_ADMINHELP))
 				handling_admin << 'sound/effects/adminhelp.ogg'
 
@@ -75,12 +75,12 @@
 				owner << "<span class='ticket-text-received'>-- [is_admin(owner) ? key_name_params(user, 1, 1, null, src) : key_name_params(user, 1, 0, null, src)] -> [key_name_params(owner, 0, 0, null, src)]: [log_item.text]</span>"
 				if(!is_admin(owner)) owner << "<span class='ticket-admin-reply'>Click on the administrator's name to reply.</span>"
 
-	if(!log_item.for_admins && !compare_ckey(user, owner_ckey))
+	if(!compare_ckey(user, owner_ckey))
 		if(!(get_ckey(user) in messageSentTo))
 			messageSentTo += get_ckey(user)
 
 			//user << "<span class='ticket-header-recieved'>-- Administrator private message --</span>"
-			user << "<span class='ticket-text-sent'>-- [is_admin(user) ? key_name_params(user, 0, 1, null, src) : "[key_name_params(user, 0, 0, null, src)]"] -> [is_admin(owner) ? key_name_params(owner, 1, 1, null, src) : "[key_name_params(owner, 1, 0, null, src)]"]: [log_item.text]</span>"
+			user << "<span class='ticket-text-sent'>-- [is_admin(user) ? key_name_params(user, 0, 1, null, src) : "[key_name_params(user, 0, 0, null, src)]"] -> [log_item.isAdminComment() ? get_view_link(user) : (is_admin(owner) ? key_name_params(owner, 1, 1, null, src) : "[key_name_params(owner, 1, 0, null, src)]")]: [log_item.text]</span>"
 			//user << "<span class='ticket-text-sent'>-- [is_admin(user) ? key_name(user, 1) : "<a href='?priv_msg=[get_ckey(user)]'>[get_ckey(user)]</a>"] -> [get_fancy_key(owner)]: [log_item.text]</span>"
 
 			// Is this necessary? It sounds when YOU send a message.
