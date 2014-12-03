@@ -1193,7 +1193,7 @@
 	icon_state = "seed-stobacco"
 	species = "stobacco"
 	plantname = "Space Tobacco Plant"
-	product = /obj/item/weapon/reagent_containers/food/snacks/grown/tobacco/space
+	product = /obj/item/weapon/reagent_containers/food/snacks/grown/tobacco_space
 	lifespan = 20
 	endurance = 15
 	maturation = 5
