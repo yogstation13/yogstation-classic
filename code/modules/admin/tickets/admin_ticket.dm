@@ -3,12 +3,34 @@
 /var/ticket_count = 0;
 
 /datum/ticket_log
+	var/datum/admin_ticket/parent
+	var/gametime
+	var/user
+	var/user_admin = 0
 	var/text
-	var/admin_only = 0
+	var/text_admin
+	var/for_admins
 
-/datum/ticket_log/New(ntext, nadmin = 0)
-	text = ntext
-	admin_only = nadmin
+/datum/ticket_log/New(var/datum/admin_ticket/parent, var/client/user, var/text, var/for_admins = 0)
+	src.gametime = gameTimestamp()
+	src.parent = parent
+	src.user_admin = is_admin(user)
+	src.for_admins = for_admins
+	src.user = get_ckey(user)
+	src.text = text
+	src.text_admin = generate_admin_info(text)
+
+/datum/ticket_log/proc/isAdminComment()
+	return (for_admins && !(compare_ckey(parent.owner_ckey, user) || compare_ckey(parent.handling_admin, user)) ? 1 : 0)
+
+/datum/ticket_log/proc/toString()
+	return "[gametime] - [isAdminComment() ? "<font color='red'>" : ""]<b>[key_name_params(user, 0, 0, null, parent)]</b>[isAdminComment() ? "</font>" : ""] - [text]"
+
+/datum/ticket_log/proc/toAdminString()
+	return "[gametime] - [isAdminComment() ? "<font color='red'>" : ""]<b>[key_name_params(user, 0, 0, null, parent)]</b>[isAdminComment() ? "</font>" : ""] - [text_admin]"
+
+/datum/ticket_log/proc/toLogString()
+	return "[isAdminComment() ? "COMMENT - " : ""][key_name_params(user, 0, 0, null, parent)] - [text]"
 
 
 
@@ -60,7 +82,8 @@
 
 	var/admin_title = generate_admin_info(title)
 	//var/time = time2text(world.timeofday, "hh:mm")
-	log += new /datum/ticket_log("<b>[title]</b>", 0)
+
+	log += new /datum/ticket_log(src, usr, title, 0)
 
 	// var/ai_found = isAI(owner.ckey)
 	// var/msg = "<span class='ticket-text-received'><font color=red>New ticket created: </font>[key_name(owner, 1)] (<a href='?_src_=holder;adminmoreinfo=\ref[owner.mob]'>?</a>) (<a href='?_src_=holder;adminplayeropts=\ref[owner.mob]'>PP</a>) (<a href='?_src_=vars;Vars=\ref[owner.mob]'>VV</a>) (<a href='?_src_=holder;subtlemessage=\ref[owner.mob]'>SM</a>) (<a href='?_src_=holder;adminplayerobservejump=\ref[owner.mob]'>JMP</a>) (<a href='?_src_=holder;secretsadmin=check_antagonist'>CA</a>) [ai_found ? " (<a href='?_src_=holder;adminchecklaws=\ref[owner.mob]'>CL</a>)" : ""]:</b> [title] <a href='?src=\ref[owner];action=view_admin_ticket;ticket=\ref[src]'>View</a> <a href='?src=\ref[owner];action=monitor_admin_ticket;ticket=\ref[src]'>(Un)Monitor</a> <a href='?src=\ref[owner];action=resolve_admin_ticket;ticket=\ref[src]'>(Un)Resolve</a></span>"
@@ -75,14 +98,16 @@
 		if(!is_admin(owner)) owner << "<span class='ticket-admin-reply'>Click on the administrator's name to reply.</span>"
 		handling_admin << "<span class='ticket-text-sent'>Ticket created by you for [is_admin(handling_admin) ? key_name_params(ntarget, 1, 1, null, src) : key_name_params(ntarget, 1, 0, null, src)]: \"[admin_title]\"</span>"
 		// log += "[gameTimestamp()] - Ticket created by <b>[handling_admin] for [ntarget]</b>"
-		log += new /datum/ticket_log("[gameTimestamp()] - Ticket created by <b>[handling_admin] for [ntarget]</b>", 0)
+		log += new /datum/ticket_log(src, usr, "Ticket created by <b>[handling_admin] for [ntarget]</b>", 0)
+		//log += new /datum/ticket_log("[gameTimestamp()] - Ticket created by <b>[handling_admin] for [ntarget]</b>", 0)
 		if(has_pref(owner, SOUND_ADMINHELP))
 			owner << 'sound/effects/adminhelp.ogg'
 		if(has_pref(handling_admin, SOUND_ADMINHELP))
 			handling_admin << 'sound/effects/adminhelp.ogg'
 	else
 		// log += "[gameTimestamp()] - Ticket created by <b>[owner]</b>"
-		log += new /datum/ticket_log("[gameTimestamp()] - Ticket created by <b>[owner]</b>", 0)
+		log += new /datum/ticket_log(src, usr, "Ticket created by <b>[owner]</b>", 0)
+		//log += new /datum/ticket_log("[gameTimestamp()] - Ticket created by <b>[owner]</b>", 0)
 		owner << "<span class='ticket-status'>Ticket created for Admins: \"[title]\"</span>"
 		if(has_pref(owner, SOUND_ADMINHELP))
 			owner << 'sound/effects/adminhelp.ogg'
@@ -120,7 +145,7 @@
 			X << msg
 
 	var/admin_number_present = admin_number_total - admin_number_decrease	//Number of admins who are neither afk nor invalid
-	log_admin("TICKET #[ticket_id]: [key_name(owner)]: [title] - heard by [admin_number_present] non-AFK admins who have +BAN.")
+	log_admin("Ticket #[ticket_id]: [key_name(owner)]: [title] - heard by [admin_number_present] non-AFK admins who have +BAN.")
 	if(admin_number_present <= 0)
 		if(!admin_number_afk && !admin_number_ignored)
 			send2irc(owner.ckey, "Ticket - [title] - No admins online")

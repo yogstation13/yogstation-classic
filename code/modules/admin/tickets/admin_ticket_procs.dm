@@ -2,7 +2,7 @@
 /datum/admin_ticket/proc/test()
 	owner << "Ticket title is \"[title]\" for user \"[owner]\""
 
-/datum/admin_ticket/proc/add_log(log_message as text, var/user_in)
+/datum/admin_ticket/proc/add_log(var/message, var/user_in)
 	var/client/user
 	if(!user_in)
 		user = get_client(usr)
@@ -16,7 +16,7 @@
 		else
 			user = get_client(usr)
 
-	if(!log_message)
+	if(!log)
 		return
 
 	if(compare_ckey(user, owner_ckey))
@@ -29,22 +29,19 @@
 			//add_log("[handling_admin] has been assigned to this ticket as primary admin.");
 			world << output("[key_name_params(handling_admin, 1, 1, null, src)]", "ViewTicketLog[ticket_id].browser:handling_user")
 
-	var/otherAdmin = (user.holder && !(compare_ckey(owner_ckey, usr) || compare_ckey(handling_admin, usr)) ? 1 : 0)
+	var/datum/ticket_log/log_item = null
+	if(istype(message, /datum/ticket_log))
+		log_item = message
+	else
+		log_item = new /datum/ticket_log(src, user, message, 0)
 
-	//var/time = time2text(world.timeofday, "hh:mm")
-	var/message = "[gameTimestamp()] - [otherAdmin ? "<font color='red'>" : ""]<b>[key_name_params(user, 0, 0, null, src)]</b>[otherAdmin ? "</font>" : ""] - [log_message]"
-	// log += "[message]"
-	log += new /datum/ticket_log(message, otherAdmin)
+	log += log_item
 
-	var/admin_log_message = generate_admin_info(log_message)
-
-	if(!otherAdmin)
-		world << output(message, "ViewTicketLog[ticket_id].browser:add_message")
+	if(!log_item.for_admins)
+		world << output(log_item.toString(), "ViewTicketLog[ticket_id].browser:add_message")
 	else
 		for(var/client/X in admins)
-			X << output(message, "ViewTicketLog[ticket_id].browser:add_message")
-
-	log_admin("Ticket #[ticket_id] message: [message]")
+			X << output(log_item.toAdminString(), "ViewTicketLog[ticket_id].browser:add_message")
 
 	var/list/messageSentTo = list()
 
@@ -53,11 +50,11 @@
 			messageSentTo += get_ckey(handling_admin)
 			// For Alex: No bigred for admins
 			//handling_admin << "<span class='ticket-header-recieved'>-- Administrator private message --</span>"
-			handling_admin << "<span class='ticket-text-received'>-- [get_view_link(user)] [key_name_params(user, 1, 1, null, src)] -> [key_name_params(handling_admin, 0, 0, null, src)]: [admin_log_message]</span>"
+			handling_admin << "<span class='ticket-text-received'>-- [get_view_link(user)] [key_name_params(user, 1, 1, null, src)] -> [key_name_params(handling_admin, 0, 0, null, src)]: [log_item.text]</span>"
 			if(has_pref(handling_admin, SOUND_ADMINHELP))
 				handling_admin << 'sound/effects/adminhelp.ogg'
 
-	if(compare_ckey(owner_ckey, user) || compare_ckey(handling_admin, user))
+	if(!log_item.for_admins && compare_ckey(owner_ckey, user) || compare_ckey(handling_admin, user))
 		if(!(get_ckey(owner) in messageSentTo))
 			messageSentTo += get_ckey(owner)
 
@@ -73,18 +70,18 @@
 				else
 					toLink = is_admin(owner) ? key_name_params(handling_admin, 1, 1, null, src) : key_name_params(handling_admin, 1, 0, null, src)
 
-				owner << "<span class='ticket-text-sent'>-- [key_name_params(owner, 0, 0, null, src)] -> [toLink]: [log_message]</span>"
+				owner << "<span class='ticket-text-sent'>-- [key_name_params(owner, 0, 0, null, src)] -> [toLink]: [log_item.text]</span>"
 			else
-				owner << "<span class='ticket-text-received'>-- [is_admin(owner) ? key_name_params(user, 1, 1, null, src) : key_name_params(user, 1, 0, null, src)] -> [key_name_params(owner, 0, 0, null, src)]: [log_message]</span>"
+				owner << "<span class='ticket-text-received'>-- [is_admin(owner) ? key_name_params(user, 1, 1, null, src) : key_name_params(user, 1, 0, null, src)] -> [key_name_params(owner, 0, 0, null, src)]: [log_item.text]</span>"
 				if(!is_admin(owner)) owner << "<span class='ticket-admin-reply'>Click on the administrator's name to reply.</span>"
 
-	if(!compare_ckey(user, owner_ckey))
+	if(!log_item.for_admins && !compare_ckey(user, owner_ckey))
 		if(!(get_ckey(user) in messageSentTo))
 			messageSentTo += get_ckey(user)
 
 			//user << "<span class='ticket-header-recieved'>-- Administrator private message --</span>"
-			user << "<span class='ticket-text-sent'>-- [is_admin(user) ? key_name_params(user, 0, 1, null, src) : "[key_name_params(user, 0, 0, null, src)]"] -> [is_admin(owner) ? key_name_params(owner, 1, 1, null, src) : "[key_name_params(owner, 1, 0, null, src)]"]: [log_message]</span>"
-			//user << "<span class='ticket-text-sent'>-- [is_admin(user) ? key_name(user, 1) : "<a href='?priv_msg=[get_ckey(user)]'>[get_ckey(user)]</a>"] -> [get_fancy_key(owner)]: [log_message]</span>"
+			user << "<span class='ticket-text-sent'>-- [is_admin(user) ? key_name_params(user, 0, 1, null, src) : "[key_name_params(user, 0, 0, null, src)]"] -> [is_admin(owner) ? key_name_params(owner, 1, 1, null, src) : "[key_name_params(owner, 1, 0, null, src)]"]: [log_item.text]</span>"
+			//user << "<span class='ticket-text-sent'>-- [is_admin(user) ? key_name(user, 1) : "<a href='?priv_msg=[get_ckey(user)]'>[get_ckey(user)]</a>"] -> [get_fancy_key(owner)]: [log_item.text]</span>"
 
 			// Is this necessary? It sounds when YOU send a message.
 			//if(has_pref(user, SOUND_ADMINHELP))
@@ -100,9 +97,9 @@
 		// For Alex: No bigred text for monitors
 		//M << "<span class='ticket-header-recieved'>-- Administrator private message --</span>"
 		if(compare_ckey(user, owner))
-			M << "<span class='ticket-text-sent'>-- [get_view_link(user)] [key_name_params(user, 1, 1, null, src)] -> [key_name_params(owner, 0, 0, null, src)]: [admin_log_message]</span>"
+			M << "<span class='ticket-text-sent'>-- [get_view_link(user)] [key_name_params(user, 1, 1, null, src)] -> [key_name_params(owner, 0, 0, null, src)]: [log_item.text_admin]</span>"
 		else
-			M << "<span class='ticket-text-received'>-- [get_view_link(user)] [key_name_params(user, 1, 1, null, src)] -> [key_name_params(handling_admin, 0, 0, null, src)]: [admin_log_message]</span>"
+			M << "<span class='ticket-text-received'>-- [get_view_link(user)] [key_name_params(user, 1, 1, null, src)] -> [key_name_params(handling_admin, 0, 0, null, src)]: [log_item.text_admin]</span>"
 
 		if(has_pref(M, SOUND_ADMINHELP))
 			M << 'sound/effects/adminhelp.ogg'
@@ -114,7 +111,14 @@
 			if(get_ckey(X) in messageSentTo)
 				continue
 			messageSentTo += get_ckey(X)
-			X << "<span class='ticket-text-received'>-- [get_view_link(user)] [key_name_params(user, 1, 1)] -> [get_view_link(user)]: [admin_log_message]</span>"
+			X << "<span class='ticket-text-received'>-- [get_view_link(user)] [key_name_params(user, 1, 1)] -> [get_view_link(user)]: [log_item.text_admin]</span>"
+
+	if(log_item.isAdminComment())
+		log_admin("Ticket #[ticket_id]: [log_item.user] -> Ticket - [log_item.text]")
+	else if(compare_ckey(log_item.user, owner_ckey))
+		log_admin("Ticket #[ticket_id]: [log_item.user] -> [handling_admin ? handling_admin : "Ticket"] - [log_item.text]")
+	else if(compare_ckey(log_item.user, handling_admin))
+		log_admin("Ticket #[ticket_id]: [log_item.user] -> [owner_ckey] - [log_item.text]")
 
 /datum/admin_ticket/proc/get_view_link(var/mob/user)
 	return "<a href='?src=\ref[src];user=\ref[user];action=view_admin_ticket;ticket=\ref[src]'>Ticket #[src.ticket_id]</a>"
@@ -225,8 +229,8 @@
 	var/i = 0
 	for(i = log.len; i > 0; i--)
 		var/datum/ticket_log/item = log[i]
-		if((item.admin_only && usr.client.holder) || !item.admin_only)
-			content += "<p class='message-bar'>[item.text]</p>"
+		if((item.for_admins && usr.client.holder) || !item.for_admins)
+			content += "<p class='message-bar'>[item.toString()]</p>"
 
 	/*for(var/line in log)
 		content += "<p class='message-bar'>[line]</p>"*/
