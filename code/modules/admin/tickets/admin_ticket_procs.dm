@@ -146,7 +146,7 @@
 	if(resolved && ticker.delay_end)
 		var/unresolvedCount = 0
 		for(var/datum/admin_ticket/T in tickets_list)
-			if(!resolved)
+			if(!T.resolved)
 				unresolvedCount++
 
 		if(unresolvedCount)
