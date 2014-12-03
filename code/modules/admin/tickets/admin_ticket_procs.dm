@@ -50,7 +50,7 @@
 			messageSentTo += get_ckey(handling_admin)
 			// For Alex: No bigred for admins
 			//handling_admin << "<span class='ticket-header-recieved'>-- Administrator private message --</span>"
-			handling_admin << "<span class='ticket-text-received'>-- [get_view_link(user)] [key_name_params(user, 1, 1, null, src)] -> [log_item.isAdminComment() ? get_view_link(user) : key_name_params(handling_admin, 0, 0, null, src)]: [log_item.text]</span>"
+			handling_admin << "<span class='ticket-text-received'>-- [get_view_link(user)] [key_name_params(user, 1, 1, null, src)] -> [log_item.isAdminComment() ? get_view_link(user) : key_name_params(handling_admin, 0, 1, null, src)]: [log_item.text]</span>"
 			if(has_pref(handling_admin, SOUND_ADMINHELP))
 				handling_admin << 'sound/effects/adminhelp.ogg'
 
@@ -80,7 +80,7 @@
 			messageSentTo += get_ckey(user)
 
 			//user << "<span class='ticket-header-recieved'>-- Administrator private message --</span>"
-			user << "<span class='ticket-text-sent'>-- [is_admin(user) ? key_name_params(user, 0, 1, null, src) : "[key_name_params(user, 0, 0, null, src)]"] -> [log_item.isAdminComment() ? get_view_link(user) : (is_admin(owner) ? key_name_params(owner, 1, 1, null, src) : "[key_name_params(owner, 1, 0, null, src)]")]: [log_item.text]</span>"
+			user << "<span class='ticket-text-sent'>-- [is_admin(user) ? key_name_params(user, 0, 1, null, src) : "[key_name_params(user, 0, 0, null, src)]"] -> [log_item.isAdminComment() ? get_view_link(user) : (is_admin(user) ? key_name_params(owner, 1, 1, null, src) : "[key_name_params(owner, 1, 0, null, src)]")]: [log_item.text]</span>"
 			//user << "<span class='ticket-text-sent'>-- [is_admin(user) ? key_name(user, 1) : "<a href='?priv_msg=[get_ckey(user)]'>[get_ckey(user)]</a>"] -> [get_fancy_key(owner)]: [log_item.text]</span>"
 
 			// Is this necessary? It sounds when YOU send a message.
@@ -97,9 +97,9 @@
 		// For Alex: No bigred text for monitors
 		//M << "<span class='ticket-header-recieved'>-- Administrator private message --</span>"
 		if(compare_ckey(user, owner))
-			M << "<span class='ticket-text-sent'>-- [get_view_link(user)] [key_name_params(user, 1, 1, null, src)] -> [key_name_params(owner, 0, 0, null, src)]: [log_item.text_admin]</span>"
+			M << "<span class='ticket-text-sent'>-- [get_view_link(user)] [key_name_params(user, 1, 1, null, src)] -> [key_name_params(owner, 0, 1, null, src)]: [log_item.text_admin]</span>"
 		else
-			M << "<span class='ticket-text-received'>-- [get_view_link(user)] [key_name_params(user, 1, 1, null, src)] -> [key_name_params(handling_admin, 0, 0, null, src)]: [log_item.text_admin]</span>"
+			M << "<span class='ticket-text-received'>-- [get_view_link(user)] [key_name_params(user, 1, 1, null, src)] -> [key_name_params(handling_admin, 0, 1, null, src)]: [log_item.text_admin]</span>"
 
 		if(has_pref(M, SOUND_ADMINHELP))
 			M << 'sound/effects/adminhelp.ogg'

@@ -27,10 +27,10 @@
 	return "[gametime] - [isAdminComment() ? "<font color='red'>" : ""]<b>[key_name_params(user, 0, 0, null, parent)]</b>[isAdminComment() ? "</font>" : ""] - [text]"
 
 /datum/ticket_log/proc/toAdminString()
-	return "[gametime] - [isAdminComment() ? "<font color='red'>" : ""]<b>[key_name_params(user, 0, 0, null, parent)]</b>[isAdminComment() ? "</font>" : ""] - [text_admin]"
+	return "[gametime] - [isAdminComment() ? "<font color='red'>" : ""]<b>[key_name_params(user, 0, 1, null, parent)]</b>[isAdminComment() ? "</font>" : ""] - [text_admin]"
 
 /datum/ticket_log/proc/toLogString()
-	return "[isAdminComment() ? "COMMENT - " : ""][key_name_params(user, 0, 0, null, parent)] - [text]"
+	return "[isAdminComment() ? "COMMENT - " : ""][key_name_params(user, 0, 1, null, parent)] - [text]"
 
 
 
