@@ -49,7 +49,7 @@
 			logtext = sanitize(copytext(logtext,1,MAX_MESSAGE_LEN))
 
 		if(logtext)
-			T.add_log(logtext, M)
+			T.add_log(new /datum/ticket_log(src, M, logtext, (!compare_ckey(usr, T.handling_admin) && !compare_ckey(usr, T.owner_ckey)) ? 1 : 0), M)
 
 		//AdminPM popup for ApocStation and anybody else who wants to use it. Set it with POPUP_ADMIN_PM in config.txt ~Carn
 		if(C.holder && T.owner && !T.owner.holder && compare_ckey(usr, T.handling_admin) && config.popup_admin_pm)

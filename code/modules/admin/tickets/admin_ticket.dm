@@ -16,7 +16,7 @@
 	src.parent = parent
 	src.user_admin = is_admin(user)
 	src.for_admins = for_admins
-	src.user = get_ckey(user)
+	src.user = get_fancy_key(user)
 	src.text = text
 	src.text_admin = generate_admin_info(text)
 
