@@ -194,6 +194,8 @@ Proc for attack log creation, because really why not
 	else if(istype(user, /client))
 		var/client/C = user
 		key1 = C.ckey
+	else
+		key1 = lowertext(key1)
 
 	if(ismob(target))
 		var/mob/M = target
@@ -204,6 +206,8 @@ Proc for attack log creation, because really why not
 	else if(istype(target, /client))
 		var/client/C = target
 		key2 = C.ckey
+	else
+		key2 = lowertext(key2)
 
 
 	if(key1 == key2)

@@ -113,12 +113,15 @@
 			messageSentTo += get_ckey(X)
 			X << "<span class='ticket-text-received'>-- [get_view_link(user)] [key_name_params(user, 1, 1)] -> [get_view_link(user)]: [log_item.text_admin]</span>"
 
-	if(log_item.isAdminComment())
-		log_admin("Ticket #[ticket_id]: [log_item.user] -> Ticket - [log_item.text]")
-	else if(compare_ckey(log_item.user, owner_ckey))
+	world << "DEBUG:: log_item.user=[log_item.user] owner_ckey=[owner_ckey] handling_admin=[handling_admin]"
+	if(compare_ckey(log_item.user, owner_ckey))
 		log_admin("Ticket #[ticket_id]: [log_item.user] -> [handling_admin ? handling_admin : "Ticket"] - [log_item.text]")
 	else if(compare_ckey(log_item.user, handling_admin))
 		log_admin("Ticket #[ticket_id]: [log_item.user] -> [owner_ckey] - [log_item.text]")
+	//else if(log_item.isAdminComment())
+	//	log_admin("Ticket #[ticket_id]: [log_item.user] -> Ticket #[ticket_id] - [log_item.text]")
+	else
+		log_admin("Ticket #[ticket_id]: [log_item.user] -> Ticket #[ticket_id] - [log_item.text]")
 
 /datum/admin_ticket/proc/get_view_link(var/mob/user)
 	return "<a href='?src=\ref[src];user=\ref[user];action=view_admin_ticket;ticket=\ref[src]'>Ticket #[src.ticket_id]</a>"
@@ -153,9 +156,13 @@
 			if(!T.resolved)
 				unresolvedCount++
 
-		if(unresolvedCount)
+		if(unresolvedCount == 0)
 			if(alert(usr, "You have resolved the last ticket (the server restart is currently delayed!). Would you like to restart the server now?", "Restart Server", "Restart", "Cancel") == "Restart")
+				world << "<span class='userdanger'>Restarting world!</span> <span class='adminnotice'> Initiated by [usr.client.holder.fakekey ? "Admin" : usr.key]!</span>"
+				log_admin("[key_name(usr)] initiated a reboot.")
+
 				sleep(ticker.restart_timeout)
+
 				kick_clients_in_lobby("\red The round came to an end with you in the lobby.", 1) //second parameter ensures only afk clients are kicked
 				world.Reboot()
 			else
