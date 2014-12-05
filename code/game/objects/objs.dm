@@ -67,8 +67,10 @@
 					is_in_use = 1
 					src.attack_ai(usr)
 		else if(istype(usr, /mob/living/silicon/pai))
-			is_in_use = 1
-			src.attack_hand(usr)
+			var/mob/living/silicon/pai/pai = usr
+			if(pai.paired != null && pai.paired == src)
+				is_in_use = 1
+				src.attack_hand(usr)
 
 		// check for TK users
 
