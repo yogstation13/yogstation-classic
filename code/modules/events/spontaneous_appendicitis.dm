@@ -19,7 +19,7 @@
 		for(var/obj/item/organ/limb/chest/robot/C in H.organs)
 			if(istype(obj/item/organ/limb/chest/robot, C))
 				has_robotchest = 1
-		if(H.stat == 2 || foundAlready || has_appendix == 0 || has_robotchest = 1)
+		if(H.stat == 2 || foundAlready || has_appendix == 0 || has_robotchest == 1)
 			continue
 
 		var/datum/disease/D = new /datum/disease/appendicitis
