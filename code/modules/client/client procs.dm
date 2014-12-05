@@ -50,16 +50,6 @@
 		if(href_list["ticket"])
 			var/datum/admin_ticket/T = locate(href_list["ticket"])
 
-			/*var/found_ticket = 0
-			if(T)
-				for(var/datum/admin_ticket/T2 in tickets_list)
-					if(!T.resolved && compare_ckey(T.owner.ckey, T2.owner_ckey) || compare_ckey(T.owner.ckey, T2.handling_admin))
-						found_ticket = 1
-
-			if(!found_ticket)
-				if(alert(usr, "No open ticket exists, would you like to make a new one?", "Tickets", "New ticket", "Cancel") == "Cancel")
-					return*/
-
 			if(holder && T.resolved)
 				var/found_ticket = 0
 				for(var/datum/admin_ticket/T2 in tickets_list)

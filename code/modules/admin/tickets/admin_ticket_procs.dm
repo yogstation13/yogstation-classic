@@ -1,7 +1,4 @@
 
-/datum/admin_ticket/proc/test()
-	owner << "Ticket title is \"[title]\" for user \"[owner]\""
-
 /datum/admin_ticket/proc/add_log(var/message, var/user_in)
 	var/client/user
 	if(!user_in)
@@ -25,8 +22,6 @@
 	if(user.holder && !handling_admin)
 		if(!compare_ckey(user, owner_ckey))
 			handling_admin = get_client(user)
-			// For Alex: Do not report primary admin set
-			//add_log("[handling_admin] has been assigned to this ticket as primary admin.");
 			world << output("[key_name_params(handling_admin, 1, 1, null, src)]", "ViewTicketLog[ticket_id].browser:handling_user")
 
 	var/datum/ticket_log/log_item = null
@@ -48,8 +43,6 @@
 	if(!compare_ckey(handling_admin, user))
 		if(!(get_ckey(handling_admin) in messageSentTo))
 			messageSentTo += get_ckey(handling_admin)
-			// For Alex: No bigred for admins
-			//handling_admin << "<span class='ticket-header-recieved'>-- Administrator private message --</span>"
 			handling_admin << "<span class='ticket-text-received'>-- [get_view_link(user)] [key_name_params(user, 1, 1, null, src)] -> [log_item.isAdminComment() ? get_view_link(user) : key_name_params(handling_admin, 0, 1, null, src)]: [log_item.text]</span>"
 			if(has_pref(handling_admin, SOUND_ADMINHELP))
 				handling_admin << 'sound/effects/adminhelp.ogg'
@@ -79,13 +72,8 @@
 		if(!(get_ckey(user) in messageSentTo))
 			messageSentTo += get_ckey(user)
 
-			//user << "<span class='ticket-header-recieved'>-- Administrator private message --</span>"
 			user << "<span class='ticket-text-sent'>-- [is_admin(user) ? key_name_params(user, 0, 1, null, src) : "[key_name_params(user, 0, 0, null, src)]"] -> [log_item.isAdminComment() ? get_view_link(user) : (is_admin(user) ? key_name_params(owner, 1, 1, null, src) : "[key_name_params(owner, 1, 0, null, src)]")]: [log_item.text]</span>"
-			//user << "<span class='ticket-text-sent'>-- [is_admin(user) ? key_name(user, 1) : "<a href='?priv_msg=[get_ckey(user)]'>[get_ckey(user)]</a>"] -> [get_fancy_key(owner)]: [log_item.text]</span>"
 
-			// Is this necessary? It sounds when YOU send a message.
-			//if(has_pref(user, SOUND_ADMINHELP))
-			//	user << 'sound/effects/adminhelp.ogg'
 
 	for(var/M in monitors)
 		if(compare_ckey(owner_ckey, M) || compare_ckey(user, handling_admin))
@@ -94,8 +82,6 @@
 			continue
 		messageSentTo += get_ckey(M)
 
-		// For Alex: No bigred text for monitors
-		//M << "<span class='ticket-header-recieved'>-- Administrator private message --</span>"
 		if(compare_ckey(user, owner))
 			M << "<span class='ticket-text-sent'>-- [get_view_link(user)] [key_name_params(user, 1, 1, null, src)] -> [key_name_params(owner, 0, 1, null, src)]: [log_item.text_admin]</span>"
 		else
@@ -117,8 +103,6 @@
 		log_admin("Ticket #[ticket_id]: [log_item.user] -> [handling_admin ? handling_admin : "Ticket"] - [log_item.text]")
 	else if(compare_ckey(log_item.user, handling_admin))
 		log_admin("Ticket #[ticket_id]: [log_item.user] -> [owner_ckey] - [log_item.text]")
-	//else if(log_item.isAdminComment())
-	//	log_admin("Ticket #[ticket_id]: [log_item.user] -> Ticket #[ticket_id] - [log_item.text]")
 	else
 		log_admin("Ticket #[ticket_id]: [log_item.user] -> Ticket #[ticket_id] - [log_item.text]")
 
@@ -135,15 +119,11 @@
 		log_admin("[usr] is now monitoring ticket #[ticket_id]")
 		monitors += get_client(usr)
 		usr << "<span class='ticket-status'>You are now monitoring this ticket</span>"
-		/*if(owner)
-			owner << "<span class='ticket-status'>[usr] is now monitoring your ticket</span>"*/
 		return 1
 	else
 		log_admin("[usr] is no longer monitoring ticket #[ticket_id]")
 		monitors -= get_client(usr)
 		usr << "<span class='ticket-status'>You are no longer monitoring this ticket</span>"
-		/*if(owner)
-			owner << "<span class='ticket-status'>[usr] is no longer monitoring your ticket</span>"*/
 		return 0
 
 /datum/admin_ticket/proc/toggle_resolved()
@@ -237,9 +217,6 @@
 		var/datum/ticket_log/item = log[i]
 		if((item.for_admins && usr.client.holder) || !item.for_admins)
 			content += "<p class='message-bar'>[item.toString()]</p>"
-
-	/*for(var/line in log)
-		content += "<p class='message-bar'>[line]</p>"*/
 
 	content += "</div>"
 	content += "<p class='control-bar'>[reply_link] [refresh_link]</p>"

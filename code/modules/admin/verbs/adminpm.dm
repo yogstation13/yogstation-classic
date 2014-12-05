@@ -54,13 +54,9 @@
 	// We are searching initially, to avoid wasting the users time. We will add more
 	// information to the input dialog. Check to see if an admin has already started
 	// to reply to this ticket
-	//var/addToOther = 0
 	var/clickedId = 0
 	var/datum/admin_ticket/wasAlreadyClicked = null
 	for(var/datum/admin_ticket/T in tickets_list)
-		//world << "[T.ticket_id] T.handling_admin=[T.handling_admin] [get_ckey(T.handling_admin)] T.owner=[T.owner] [get_ckey(T.owner)]"
-		//if(!T.resolved && T.handling_admin && !compare_ckey(T.handling_admin, usr) && compare_ckey(T.owner, C.mob))
-		//	addToOther = T.ticket_id
 		if(!T.resolved && T.pm_started_user && compare_ckey(T.owner, C.mob) && !compare_ckey(T.handling_admin, src))
 			if(T.pm_started_flag)
 				clickedId = T.ticket_id
@@ -69,8 +65,6 @@
 
 	//get message text, limit it's length.and clean/escape html
 	if(!msg)
-		// Removed this one, not really necessary
-		// [addToOther ? "* You are not the primary admin of ticket #[addToOther], your message will be added as supplimentary. " : ""]
 		var/instructions = {"[clickedId ? "* Someone already started to reply to this ticket. If you reply, you may start a new ticket! " : ""]Message:"}
 
 		if(wasAlreadyClicked)
@@ -142,52 +136,3 @@
 		T = null
 
 	return
-
-
-
-	if(C.holder)
-		if(holder)	//both are admins
-			C << "<font color='red'>Admin PM from-<b>[key_name(src, C, 1)]</b>: [msg]</font>"
-			src << "<font color='blue'>Admin PM to-<b>[key_name(C, src, 1)]</b>: [msg]</font>"
-
-		else		//recipient is an admin but sender is not
-			C << "<font color='red'>Reply PM from-<b>[key_name(src, C, 1)]</b>: [msg]</font>"
-			src << "<font color='blue'>PM to-<b>Admins</b>: [msg]</font>"
-
-		//play the recieving admin the adminhelp sound (if they have them enabled)
-		if(C.prefs.toggles & SOUND_ADMINHELP)
-			C << 'sound/effects/adminhelp.ogg'
-
-	else
-		if(holder)	//sender is an admin but recipient is not. Do BIG RED TEXT
-			C << "<font color='red' size='4'><b>-- Administrator private message --</b></font>"
-			C << "<font color='red'>Admin PM from-<b>[key_name(src, C, 0)]</b>: [msg]</font>"
-			C << "<font color='red'><i>Click on the administrator's name to reply.</i></font>"
-			src << "<font color='blue'>Admin PM to-<b>[key_name(C, src, 1)]</b>: [msg]</font>"
-
-			//always play non-admin recipients the adminhelp sound
-			C << 'sound/effects/adminhelp.ogg'
-
-			//AdminPM popup for ApocStation and anybody else who wants to use it. Set it with POPUP_ADMIN_PM in config.txt ~Carn
-			if(config.popup_admin_pm)
-				spawn()	//so we don't hold the caller proc up
-					var/sender = src
-					var/sendername = key
-					var/reply = input(C, msg,"Admin PM from-[sendername]", "") as text|null		//show message and await a reply
-					if(C && reply)
-						if(sender)
-							C.cmd_admin_pm(sender,reply)										//sender is still about, let's reply to them
-						else
-							adminhelp(reply)													//sender has left, adminhelp instead
-					return
-
-		else		//neither are admins
-			src << "<font color='red'>Error: Admin-PM: Non-admin to non-admin PM communication is forbidden.</font>"
-			return
-
-	log_admin("PM: [key_name(src)]->[key_name(C)]: [msg]")
-
-	//we don't use message_admins here because the sender/receiver might get it too
-	for(var/client/X in admins)
-		if(X.key!=key && X.key!=C.key)	//check client/X is an admin and isn't the sender or recipient
-			X << "<B><font color='blue'>PM: [key_name(src, X, 0)]-&gt;[key_name(C, X, 0)]:</B> \blue [msg]</font>" //inform X

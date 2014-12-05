@@ -10,13 +10,10 @@
 
 	if(href_list["action"] == "view_admin_ticket")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
-		// Close ticket list when opening ticket
-		//M << browse(null, "window=ViewTickets;size=700x500")
 		if(!istype(T, /datum/admin_ticket))
 			message_admins("EXPLOIT \[admin_ticket\]: [M] attempted to view a ticket, the ref supplied was not a ticket.")
 			return
 
-		// If you are not the owner, handling admin or a general admin, then break out
 		if(!C.holder && !compare_ckey(M, T.owner_ckey))
 			message_admins("EXPLOIT \[admin_ticket\]: [M] attempted to view a ticket, they are not an admin or the owner of the ticket.")
 			return
@@ -27,7 +24,6 @@
 			M << "<font color='red'>Error: Admin-PM: You are unable to use admin PM-s (muted).</font>"
 			return
 
-		//var/time = time2text(world.timeofday, "hh:mm")
 		var/datum/admin_ticket/T = locate(href_list["ticket"])
 
 		if(!istype(T, /datum/admin_ticket))
@@ -38,13 +34,12 @@
 			usr << "<span class='ticket-status'>This ticket is marked as resolved. You may not add any more information to it.</span>"
 			return
 
-		// If you are not the owner, handling admin or a general admin, then break out
 		if(!C.holder && !compare_ckey(M, T.owner_ckey))
 			usr << "<span class='ticket-status'>You are not the owner or primary admin of this ticket. You may not reply to it.</span>"
 			return
 
 		var/logtext = input("Please enter your [(!compare_ckey(usr, T.handling_admin) && !compare_ckey(usr, T.owner_ckey) ? "supplimentary comment" : "reply")]:")
-		//clean the message if it's not sent by a high-rank admin
+
 		if(!check_rights(R_SERVER|R_DEBUG,0))
 			logtext = sanitize(copytext(logtext,1,MAX_MESSAGE_LEN))
 
@@ -96,8 +91,7 @@
 
 		T.handling_admin = C
 		log_admin("[T.handling_admin] has been assigned to ticket #[T.ticket_id] as primary admin.")
-		// For Alex: Primary admin notification not necessary
-		//T.add_log("[T.handling_admin] has been assigned to this ticket as primary admin.");
+
 		world << output("[usr != null ? "[key_name(usr, 1)]" : "Unassigned"]", "ViewTicketLog[T.ticket_id].browser:handling_user")
 
 		if(href_list["reloadlist"])
@@ -134,7 +128,6 @@
 			message_admins("EXPLOIT \[admin_ticket\]: [M] attempted to refresh a ticket, the ref supplied was not a ticket.")
 			return
 
-		// If you are not the owner, handling admin or a general admin, then break out
 		if(!C.holder && !compare_ckey(M, T.owner_ckey))
 			message_admins("EXPLOIT \[admin_ticket\]: [M] attempted to view a ticket, but the user is not an admin or the ticket owner.")
 			return
