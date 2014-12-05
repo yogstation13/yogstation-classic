@@ -113,7 +113,6 @@
 			messageSentTo += get_ckey(X)
 			X << "<span class='ticket-text-received'>-- [get_view_link(user)] [key_name_params(user, 1, 1)] -> [get_view_link(user)]: [log_item.text_admin]</span>"
 
-	world << "DEBUG:: log_item.user=[log_item.user] owner_ckey=[owner_ckey] handling_admin=[handling_admin]"
 	if(compare_ckey(log_item.user, owner_ckey))
 		log_admin("Ticket #[ticket_id]: [log_item.user] -> [handling_admin ? handling_admin : "Ticket"] - [log_item.text]")
 	else if(compare_ckey(log_item.user, handling_admin))
