@@ -3,8 +3,11 @@
 #Ignore everything in data subdirectories
 /data/**/*
 /data/*
-/data/*
 /_maps/map_files/backup
+
+/data/mode.txt
+/data/logs
+/data/investigate
 
 #Ignore generated files in data
 /data/appearance_full.ban
