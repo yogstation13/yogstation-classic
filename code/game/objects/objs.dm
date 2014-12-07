@@ -66,6 +66,11 @@
 				if (usr.client && usr.machine==src) // && M.machine == src is omitted because if we triggered this by using the dialog, it doesn't matter if our machine changed in between triggering it and this - the dialog is probably still supposed to refresh.
 					is_in_use = 1
 					src.attack_ai(usr)
+		else if(istype(usr, /mob/living/silicon/pai))
+			var/mob/living/silicon/pai/pai = usr
+			if(pai.paired != null && pai.paired == src)
+				is_in_use = 1
+				src.attack_hand(usr)
 
 		// check for TK users
 

@@ -1063,7 +1063,7 @@ obj/item/weapon/reagent_containers/food/snacks/grown/shell/eggy/add_juice()
 	desc = "Dry them out to make some space-smokes."
 	icon_state = "stobacco_leaves"
 
-/obj/item/weapon/reagent_containers/food/snacks/grown/tobacco/space/add_juice()
+/obj/item/weapon/reagent_containers/food/snacks/grown/tobacco_space/add_juice()
 	..()
 	reagents.add_reagent("dexalin", 1 + round((potency / 20), 1))
 

@@ -69,4 +69,36 @@ h1.alert, h2.alert		{color: #000000;}
 
 BIG IMG.icon 			{width: 32px; height: 32px;}
 
+.ticket-status {
+	color: #000099;
+	font-weight: bold;
+}
+
+.ticket-text-sent {
+	color: #000099;
+	font-weight: bold;
+}
+
+.ticket-text-received {
+	color: #ff0000;
+	font-weight: bold;
+}
+
+.ticket-text-monitored {
+	color: #ff00ff;
+	font-weight: bold;
+}
+
+.ticket-header-recieved {
+	color: #ff0000;
+	font-weight: bold;
+	font-size: 15px;
+}
+
+.ticket-admin-reply {
+	color: #ff0000;
+	font-weight: bold;
+	font-style: italic;
+}
+
 </style>"}
