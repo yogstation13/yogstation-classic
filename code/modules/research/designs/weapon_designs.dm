@@ -12,7 +12,8 @@ datum/design/nuclear_gun
 	reliability = 76
 	build_path = /obj/item/weapon/gun/energy/gun/nuclear
 	locked = 1
-
+	ui_category = "Weaponry"
+	
 datum/design/stunrevolver
 	name = "Stun Revolver"
 	desc = "The prize of the Head of Security."
@@ -22,6 +23,18 @@ datum/design/stunrevolver
 	materials = list("$metal" = 4000)
 	build_path = /obj/item/weapon/gun/energy/stunrevolver
 	locked = 1
+	ui_category = "Weaponry"
+
+datum/design/tele_shield
+	name = "Telescopic Riot Shield"
+	desc = "An advanced riot shield made of lightweight materials that collapses for easy storage."
+	id = "tele_shield"
+	req_tech = list("combat" = 4, "materials" = 3, "engineering" = 3)
+	build_type = PROTOLATHE
+	materials = list("$metal" = 4000, "$glass" = 5000, "$silver" = 300)
+	build_path = /obj/item/weapon/shield/riot/tele
+	locked = 1
+	ui_category = "Weaponry"
 
 datum/design/lasercannon
 	name = "Laser Cannon"
@@ -32,6 +45,7 @@ datum/design/lasercannon
 	materials = list("$metal" = 10000, "$glass" = 2000, "$diamond" = 2000)
 	build_path = /obj/item/weapon/gun/energy/lasercannon
 	locked = 1
+	ui_category = "Weaponry"
 
 datum/design/decloner
 	name = "Decloner"
@@ -42,6 +56,7 @@ datum/design/decloner
 	materials = list("$gold" = 5000,"$uranium" = 10000, "mutagen" = 40)
 	build_path = /obj/item/weapon/gun/energy/decloner
 	locked = 1
+	ui_category = "Weaponry"
 /*
 datum/design/chemsprayer
 	name = "Chem Sprayer"
@@ -52,6 +67,7 @@ datum/design/chemsprayer
 	materials = list("$metal" = 5000, "$glass" = 1000)
 	reliability = 100
 	build_path = /obj/item/weapon/chemsprayer"
+	ui_category = "Weaponry"
 */
 datum/design/rapidsyringe
 	name = "Rapid Syringe Gun"
@@ -61,16 +77,19 @@ datum/design/rapidsyringe
 	build_type = PROTOLATHE
 	materials = list("$metal" = 5000, "$glass" = 1000)
 	build_path = /obj/item/weapon/gun/syringe/rapidsyringe
-/*
+	ui_category = "Weaponry"
+
 datum/design/largecrossbow
 	name = "Energy Crossbow"
-	desc = "A weapon favoured by syndicate infiltration teams."
+	desc = "A reverse-engineered energy crossbow favored by syndicate infiltration teams and carp hunters."
 	id = "largecrossbow"
-	req_tech = list("combat" = 4, "materials" = 5, "engineering" = 3, "biotech" = 4, "syndicate" = 3)
+	req_tech = list("combat" = 5, "materials" = 5, "engineering" = 3, "biotech" = 4, "syndicate" = 3)
 	build_type = PROTOLATHE
-	materials = list("$metal" = 5000, "$glass" = 1000, "$uranium" = 1000, "$silver" = 1000)
-	build_path = /obj/item/weapon/gun/energy/crossbow/largecrossbow"
-*/
+	materials = list("$metal" = 5000, "$glass" = 1500, "$uranium" = 1500, "$silver" = 1500)
+	build_path = /obj/item/weapon/gun/energy/crossbow/largecrossbow
+	locked = 1
+	ui_category = "Weaponry"
+
 datum/design/temp_gun
 	name = "Temperature Gun"
 	desc = "A gun that shoots temperature bullet energythings to change temperature."//Change it if you want
@@ -80,6 +99,7 @@ datum/design/temp_gun
 	materials = list("$metal" = 5000, "$glass" = 500, "$silver" = 3000)
 	build_path = /obj/item/weapon/gun/energy/temperature
 	locked = 1
+	ui_category = "Weaponry"
 
 datum/design/flora_gun
 	name = "Floral Somatoray"
@@ -89,6 +109,7 @@ datum/design/flora_gun
 	build_type = PROTOLATHE
 	materials = list("$metal" = 2000, "$glass" = 500, "radium" = 20)
 	build_path = /obj/item/weapon/gun/energy/floragun
+	ui_category = "Weaponry"
 
 datum/design/large_grenade
 	name = "Large Grenade"
@@ -99,6 +120,7 @@ datum/design/large_grenade
 	materials = list("$metal" = 3000)
 	reliability = 79
 	build_path = /obj/item/weapon/grenade/chem_grenade/large
+	ui_category = "Weaponry"
 
 datum/design/smg
 	name = "Submachine Gun"
@@ -109,6 +131,7 @@ datum/design/smg
 	materials = list("$metal" = 8000, "$silver" = 2000, "$diamond" = 1000)
 	build_path = /obj/item/weapon/gun/projectile/automatic
 	locked = 1
+	ui_category = "Weaponry"
 
 datum/design/xray
 	name = "Xray Laser Gun"
@@ -119,6 +142,7 @@ datum/design/xray
 	materials = list("$gold" = 5000,"$uranium" = 10000, "$metal" = 4000)
 	build_path = /obj/item/weapon/gun/energy/xray
 	locked = 1
+	ui_category = "Weaponry"
 
 datum/design/ionrifle
 	name = "Ion Rifle"
@@ -129,6 +153,17 @@ datum/design/ionrifle
 	materials = list("$silver" = 4000, "$metal" = 6000, "$uranium" = 1000)
 	build_path = /obj/item/weapon/gun/energy/ionrifle
 	locked = 1
+	ui_category = "Weaponry"
+
+datum/design/reciever
+	name = "Modular Reciever"
+	desc = "A prototype modular reciever and trigger assembly for a variety of firearms."
+	id = "reciever"
+	req_tech = list("combat" = 5, "materials" = 4)
+	build_type = PROTOLATHE
+	materials = list("$metal" = 6500, "$silver" = 500)
+	build_path = /obj/item/weaponcrafting/reciever
+	ui_category = "Weaponry"
 
 datum/design/ammo_9mm
 	name = "Ammunition Box (9mm)"
@@ -138,6 +173,7 @@ datum/design/ammo_9mm
 	build_type = PROTOLATHE
 	materials = list("$metal" = 2000)
 	build_path = /obj/item/ammo_box/c9mm
+	ui_category = "Weaponry"
 
 datum/design/mag_smg
 	name = "Submachine Gun Magazine (9mm)"
@@ -147,6 +183,7 @@ datum/design/mag_smg
 	build_type = PROTOLATHE
 	materials = list("$metal" = 2000)
 	build_path = /obj/item/ammo_box/magazine/msmg9mm
+	ui_category = "Weaponry"
 
 datum/design/stunshell
 	name = "Stun Shell"
@@ -155,7 +192,8 @@ datum/design/stunshell
 	req_tech = list("combat" = 3, "materials" = 3)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 200)
-	build_path = /obj/item/ammo_casing/shotgun/stunshell
+	build_path = /obj/item/ammo_casing/shotgun/stunslug
+	ui_category = "Weaponry"
 
 datum/design/techshell
 	name = "Unloaded Technological Shotshell"
@@ -165,3 +203,4 @@ datum/design/techshell
 	build_type = PROTOLATHE
 	materials = list("$metal" = 1000, "$glass" = 200, "$silver" = 300)
 	build_path = /obj/item/ammo_casing/shotgun/techshell
+	ui_category = "Weaponry"

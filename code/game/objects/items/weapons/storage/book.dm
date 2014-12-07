@@ -7,6 +7,7 @@
 	throw_range = 5
 	w_class = 3.0
 	var/title = "book"
+
 /obj/item/weapon/storage/book/attack_self(mob/user)
 		user << "<span class='notice'>The pages of [title] have been cut out!</span>"
 
@@ -52,7 +53,7 @@
 
 	add_logs(user, M, "attacked", object="[src.name]")
 
-	if (!(istype(user, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
+	if (!user.IsAdvancedToolUser())
 		user << "<span class='danger'>You don't have the dexterity to do this!</span>"
 		return
 	if(!chaplain)
@@ -127,7 +128,7 @@
 			user << "<span class='notice'> You purify [A].</span>"
 			var/unholy2clean = A.reagents.get_reagent_amount("unholywater")
 			A.reagents.del_reagent("unholywater")
-			A.reagents.add_reagent("cleaner",unholy2clean)		//it cleans their soul, get it? I'll get my coat...
+			A.reagents.add_reagent("holywater",unholy2clean)
 
 /obj/item/weapon/storage/book/bible/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	playsound(src.loc, "rustle", 50, 1, -5)

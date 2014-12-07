@@ -70,7 +70,7 @@ var/round_start_time = 0
 		if((master_mode=="secret") && (secret_force_mode != "secret"))
 			var/datum/game_mode/smode = config.pick_mode(secret_force_mode)
 			if (!smode.can_start())
-				message_admins("\blue Unable to force secret [secret_force_mode]. [smode.required_players] players and [smode.required_enemies] eligible antagonists needed.", 1)
+				message_admins("\blue Unable to force secret [secret_force_mode]. [smode.required_players] players and [smode.required_enemies] eligible antagonists needed.")
 			else
 				src.mode = smode
 
@@ -208,6 +208,11 @@ var/round_start_time = 0
 					world << sound('sound/effects/explosionfar.ogg')
 					flick("station_intact_fade_red",cinematic)
 					cinematic.icon_state = "summary_nukefail"
+				if("fake") //The round isn't over, we're just freaking people out for fun
+					flick("intro_nuke",cinematic)
+					sleep(35)
+					world << sound('sound/items/bikehorn.ogg')
+					flick("summary_selfdes",cinematic)
 				else
 					flick("intro_nuke",cinematic)
 					sleep(35)
@@ -268,8 +273,11 @@ var/round_start_time = 0
 				player.create_character()
 				qdel(player)
 		else
-			if(player.client && player.client.prefs && player.client.prefs.agree)
-				player.new_player_panel()
+			if(player.client)
+				if(player.client.prefs.agree < MAXAGREE)
+					player.disclaimer()
+				else
+					player.new_player_panel()
 
 
 /datum/controller/gameticker/proc/collect_minds()
@@ -320,6 +328,19 @@ var/round_start_time = 0
 			if(blackbox)
 				blackbox.save_all_data_to_sql()
 
+			for(var/datum/admin_ticket/T in tickets_list)
+				if(!T.resolved)
+					var/count = 0
+					for(var/client/X in admins)
+						if(!check_rights_for(X, R_ADMIN))
+							continue
+						if(X.is_afk())
+							continue
+						count++
+
+					if(count)
+						ticker.delay_end = 1
+
 			if(!delay_end)
 				sleep(restart_timeout)
 				kick_clients_in_lobby("\red The round came to an end with you in the lobby.", 1) //second parameter ensures only afk clients are kicked
@@ -336,23 +357,49 @@ var/round_start_time = 0
 
 
 /datum/controller/gameticker/proc/declare_completion()
+	var/station_evacuated
+	if(emergency_shuttle.location > 0)
+		station_evacuated = 1
+	var/num_survivors = 0
+	var/num_escapees = 0
+
 	world << "<BR><BR><BR><FONT size=3><B>The round has ended.</B></FONT>"
-	for(var/mob/Player in player_list)
-		if(Player.mind)
-			if(Player.stat != DEAD)
-				if(emergency_shuttle.location > 0) //If the shuttle has already left the station
+
+	//Player status report
+	for(var/mob/Player in mob_list)
+		if(Player.mind && !isnewplayer(Player))
+			if(Player.stat != DEAD && !isbrain(Player))
+				num_survivors++
+				if(station_evacuated) //If the shuttle has already left the station
 					var/turf/playerTurf = get_turf(Player)
-					if(playerTurf.z != 2)
+					if(!playerTurf)
+						Player << "<font color='black'><b>Wait, where are you?...</b></FONT>"
+					else if(playerTurf.z != 2)
 						Player << "<font color='blue'><b>You managed to survive, but were marooned on [station_name()]...</b></FONT>"
 					else
+						num_escapees++
 						Player << "<font color='green'><b>You managed to survive the events on [station_name()] as [Player.real_name].</b></FONT>"
 				else
 					Player << "<font color='green'><b>You managed to survive the events on [station_name()] as [Player.real_name].</b></FONT>"
 			else
 				Player << "<font color='red'><b>You did not survive the events on [station_name()]...</b></FONT>"
 
+	//Round statistics report
+	var/datum/station_state/end_state = new /datum/station_state()
+	end_state.count()
+	var/station_integrity = round( 100.0 *  start_state.score(end_state), 0.1)
+
+	world << "<BR>[TAB]Shift Duration: <B>[round(world.time / 36000)]:[add_zero("[world.time / 600 % 60]", 2)]:[world.time / 100 % 6][world.time / 100 % 10]</B>"
+	world << "<BR>[TAB]Station Integrity: <B>[mode.station_was_nuked ? "<font color='red'>Destroyed</font>" : "[station_integrity]%"]</B>"
+	if(joined_player_list.len)
+		world << "<BR>[TAB]Total Population: <B>[joined_player_list.len]</B>"
+		if(station_evacuated)
+			world << "<BR>[TAB]Evacuation Rate: <B>[num_escapees] ([round((num_escapees/joined_player_list.len)*100, 0.1)]%)</B>"
+		else
+			world << "<BR>[TAB]Survival Rate: <B>[num_survivors] ([round((num_survivors/joined_player_list.len)*100, 0.1)]%)</B>"
 	world << "<BR>"
 
+	//Silicon laws report
 	for (var/mob/living/silicon/ai/aiPlayer in mob_list)
 		if (aiPlayer.stat != 2 && aiPlayer.mind)
 			world << "<b>[aiPlayer.name] (Played by: [aiPlayer.mind.key])'s laws at the end of the round were:</b>"

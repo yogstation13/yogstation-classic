@@ -26,6 +26,7 @@ var/global/pipe_processing_killed = 0
 	var/mobs_cost		= 0
 	var/diseases_cost	= 0
 	var/machines_cost	= 0
+	var/aibots_cost		= 0
 	var/objects_cost	= 0
 	var/networks_cost	= 0
 	var/powernets_cost	= 0
@@ -45,26 +46,36 @@ var/global/pipe_processing_killed = 0
 			del(master_controller)
 		master_controller = src
 
+	if(!events)
+		new /datum/controller/event()
+
+	if(!air_master)
+		air_master = new /datum/controller/air_system()
+		air_master.setup()
+
+	if(!job_master)
+		job_master = new /datum/controller/occupations()
+		job_master.SetupOccupations()
+		job_master.LoadJobs("config/jobs.txt")
+		world << "<span class='userdanger'>Job setup complete</span>"
+
+	if(!syndicate_code_phrase)		syndicate_code_phrase	= generate_code_phrase()
+	if(!syndicate_code_response)	syndicate_code_response	= generate_code_phrase()
+	if(!ticker)						ticker = new /datum/controller/gameticker()
+	if(!emergency_shuttle)			emergency_shuttle = new /datum/shuttle_controller/emergency_shuttle()
+	if(!supply_shuttle)				supply_shuttle = new /datum/controller/supply_shuttle()
+
 /datum/controller/game_controller/proc/setup()
 	world.tick_lag = config.Ticklag
 
-	new /datum/controller/event()
-	air_master = new /datum/controller/air_system()
-	air_master.setup()
-	job_master = new /datum/controller/occupations()
-	job_master.SetupOccupations()
-	job_master.LoadJobs("config/jobs.txt")
-	world << "<span class='userdanger'>Job setup complete</span>"
-	ticker = new /datum/controller/gameticker()
-	emergency_shuttle = new /datum/shuttle_controller/emergency_shuttle()
-	supply_shuttle = new /datum/controller/supply_shuttle()
-
 	world << "<span class='userdanger'>Randomizing map...</span>"
 
-	createRandomZlevel()
+	setup_map_transitions()
 
 	for(var/i=0, i<max_secret_rooms, i++)
 		make_mining_asteroid_secret()
+
+	createRandomZlevel()
 
 	setup_objects()
 	setupgenetics()
@@ -112,6 +123,10 @@ var/global/pipe_processing_killed = 0
 			if(!Failsafe)	new /datum/controller/failsafe()
 
 			var/currenttime = world.timeofday
+
+			if((last_tick_timeofday - currenttime) > 1e5) //midnight rollover protection
+				last_tick_timeofday -= MIDNIGHT_ROLLOVER
+
 			last_tick_duration = (currenttime - last_tick_timeofday) / 10
 			last_tick_timeofday = currenttime
 
@@ -161,6 +176,13 @@ var/global/pipe_processing_killed = 0
 
 				sleep(breather_ticks)
 
+				//BOTS
+				timer = world.timeofday
+				process_bots()
+				aibots_cost = (world.timeofday - timer) / 10
+
+				sleep(breather_ticks)
+
 				//OBJECTS
 				timer = world.timeofday
 				process_objects()
@@ -207,7 +229,7 @@ var/global/pipe_processing_killed = 0
 				gc_cost = (world.timeofday - timer) / 10
 
 				//TIMING
-				total_cost = air_cost + sun_cost + mobs_cost + diseases_cost + machines_cost + objects_cost + networks_cost + powernets_cost + nano_cost + events_cost + ticker_cost + gc_cost
+				total_cost = air_cost + sun_cost + mobs_cost + diseases_cost + machines_cost + aibots_cost + objects_cost + networks_cost + powernets_cost + nano_cost + events_cost + ticker_cost + gc_cost
 
 				var/end_time = world.timeofday
 				if(end_time < start_time)
@@ -230,83 +252,62 @@ var/global/pipe_processing_killed = 0
 */
 
 /datum/controller/game_controller/proc/process_mobs()
-	var/i = 1
-	while(i<=mob_list.len)
-		var/mob/M = mob_list[i]
-		if(M && !M.gc_destroyed)
+	for(var/mob/M in mob_list)
+		if(!M.gc_destroyed)
 			last_thing_processed = M.type
 			M.Life()
-			i++
 			continue
-		mob_list.Cut(i,i+1)
+		mob_list -= M
 
 /datum/controller/game_controller/proc/process_diseases()
-	var/i = 1
-	while(i<=active_diseases.len)
-		var/datum/disease/Disease = active_diseases[i]
-		if(Disease)
-			last_thing_processed = Disease.type
-			Disease.process()
-			i++
-			continue
-		active_diseases.Cut(i,i+1)
+	for(var/datum/disease/Disease in active_diseases)
+		last_thing_processed = Disease.type
+		Disease.process()
 
 /datum/controller/game_controller/proc/process_machines()
-	var/i = 1
-	while(i<=machines.len)
-		var/obj/machinery/Machine = machines[i]
-		if(Machine && !Machine.gc_destroyed)
+	for(var/obj/machinery/Machine in machines)
+		if(!Machine.gc_destroyed)
 			last_thing_processed = Machine.type
 			if(Machine.process() != PROCESS_KILL)
 				if(Machine)
 					if(Machine.use_power)
 						Machine.auto_use_power()
-					i++
 					continue
-		machines.Cut(i,i+1)
+		machines -= Machine
+
+/datum/controller/game_controller/proc/process_bots()
+	for(var/obj/machinery/bot/Bot in aibots)
+		if(!Bot.gc_destroyed)
+			last_thing_processed = Bot.type
+			spawn(0)
+				Bot.bot_process()
+			continue
+		aibots -= Bot
 
 /datum/controller/game_controller/proc/process_objects()
-	var/i = 1
-	while(i<=processing_objects.len)
-		var/obj/Object = processing_objects[i]
-		if(Object && !Object.gc_destroyed)
+	for(var/obj/Object in processing_objects)
+		if(!Object.gc_destroyed)
 			last_thing_processed = Object.type
 			Object.process()
-			i++
 			continue
-		processing_objects.Cut(i,i+1)
+		processing_objects -= Object
 
 /datum/controller/game_controller/proc/process_pipenets()
-	last_thing_processed = /datum/pipe_network
-	var/i = 1
-	while(i<=pipe_networks.len)
-		var/datum/pipe_network/Network = pipe_networks[i]
-		if(Network)
-			Network.process()
-			i++
-			continue
-		pipe_networks.Cut(i,i+1)
+	last_thing_processed = /datum/pipeline
+	for(var/datum/pipeline/P in pipe_networks)
+		P.process()
 
 /datum/controller/game_controller/proc/process_powernets()
 	last_thing_processed = /datum/powernet
-	var/i = 1
-	while(i<=powernets.len)
-		var/datum/powernet/Powernet = powernets[i]
-		if(Powernet)
-			Powernet.reset()
-			i++
-			continue
-		powernets.Cut(i,i+1)
+	for(var/datum/powernet/Powernet in powernets)
+		Powernet.reset()
 
 /datum/controller/game_controller/proc/process_nano()
-	var/i = 1
-	while(i<=nanomanager.processing_uis.len)
-		var/datum/nanoui/ui = nanomanager.processing_uis[i]
-		if(ui && ui.src_object && ui.user)
+	for(var/datum/nanoui/ui in nanomanager.processing_uis)
+		if(ui.src_object && ui.user)
 			ui.process()
-			i++
 			continue
-		nanomanager.processing_uis.Cut(i,i+1)
+		nanomanager.processing_uis -= ui
 
 /datum/controller/game_controller/proc/Recover()		//Mostly a placeholder for now.
 	var/msg = "## DEBUG: [time2text(world.timeofday)] MC restarted. Reports:\n"

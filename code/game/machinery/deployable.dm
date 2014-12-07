@@ -64,6 +64,7 @@ for reference:
 	var/maxhealth = 100.0
 
 /obj/structure/barricade/wooden/attackby(obj/item/W as obj, mob/user as mob)
+	user.changeNext_move(CLICK_CD_MELEE)
 	if (istype(W, /obj/item/stack/sheet/mineral/wood))
 		if (src.health < src.maxhealth)
 			visible_message("<span class='danger'>[user] begins to repair the [src]!</span>")
@@ -113,8 +114,8 @@ for reference:
 		qdel(src)
 	return
 
-/obj/structure/barricade/wooden/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)//So bullets will fly over and stuff.
-	if(air_group || (height==0))
+/obj/structure/barricade/wooden/CanPass(atom/movable/mover, turf/target, height=0)//So bullets will fly over and stuff.
+	if(height==0)
 		return 1
 	if(istype(mover) && mover.checkpass(PASSTABLE))
 		return 1
@@ -234,8 +235,8 @@ for reference:
 		src.explode()
 	return
 
-/obj/machinery/deployable/barrier/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)//So bullets will fly over and stuff.
-	if(air_group || (height==0))
+/obj/machinery/deployable/barrier/CanPass(atom/movable/mover, turf/target, height=0)//So bullets will fly over and stuff.
+	if(height==0)
 		return 1
 	if(istype(mover) && mover.checkpass(PASSTABLE))
 		return 1

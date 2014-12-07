@@ -196,6 +196,7 @@
 	item_state = "straight_jacket"
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS|HANDS
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
+	strip_delay = 60
 
 /obj/item/clothing/suit/ianshirt
 	name = "worn shirt"
@@ -209,13 +210,25 @@
 	icon_state = "nerdshirt"
 	item_state = "nerdshirt"
 
+/obj/item/clothing/suit/jacket
+	name = "bomber jacket"
+	desc = "Aviators not included."
+	icon_state = "bomberjacket"
+	item_state = "johnny"
+	allowed = list(/obj/item/device/flashlight,/obj/item/weapon/tank/emergency_oxygen,/obj/item/toy,/obj/item/weapon/storage/fancy/cigarettes,/obj/item/weapon/lighter)
+
+/obj/item/clothing/suit/jacket/leather
+	name = "leather jacket"
+	desc = "Pompadour not included."
+	icon_state = "leatherjacket"
+
 //Blue suit jacket toggle
 /obj/item/clothing/suit/suit/verb/toggle()
 	set name = "Toggle Jacket Buttons"
 	set category = "Object"
 	set src in usr
 
-	if(!usr.canmove || usr.stat || usr.restrained())
+	if(!can_use(usr))
 		return 0
 
 	if(src.icon_state == "suitjacket_blue_open")	//no god no

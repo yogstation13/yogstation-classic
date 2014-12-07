@@ -34,6 +34,7 @@ By design, d1 is the smallest direction and d2 is the highest
 	var/d2 = 1   // cable direction 2 (see above)
 	layer = 2.44 //Just below unary stuff, which is at 2.45 and above pipes, which are at 2.4
 	var/cable_color = "red"
+	var/obj/item/stack/cable_coil/stored
 
 /obj/structure/cable/yellow
 	cable_color = "yellow"
@@ -81,12 +82,20 @@ By design, d1 is the smallest direction and d2 is the highest
 	if(level==1) hide(T.intact)
 	cable_list += src //add it to the global cable list
 
+	if(d1)
+		stored = new/obj/item/stack/cable_coil(src,2,cable_color)
+	else stored = new/obj/item/stack/cable_coil(src,1,cable_color)
 
 /obj/structure/cable/Destroy()					// called when a cable is deleted
 	if(powernet)
 		cut_cable_from_powernet()				// update the powernets
 	cable_list -= src							//remove it from global cable list
 	..()										// then go ahead and delete the cable
+
+/obj/structure/cable/Deconstruct()
+	var/turf/T = loc
+	stored.loc = T
+	..()
 
 ///////////////////////////////////
 // General procedures
@@ -120,29 +129,17 @@ By design, d1 is the smallest direction and d2 is the highest
 //   - Multitool : get the power currently passing through the cable
 //
 /obj/structure/cable/attackby(obj/item/W, mob/user)
-
 	var/turf/T = src.loc
 	if(T.intact)
 		return
-
 	if(istype(W, /obj/item/weapon/wirecutters))
-
 		if (shock(user, 50))
 			return
-
-		if(src.d1)	// 0-X cables are 1 unit, X-X cables are 2 units long
-			new/obj/item/stack/cable_coil(T, 2, cable_color)
-		else
-			new/obj/item/stack/cable_coil(T, 1, cable_color)
-
-		for(var/mob/O in viewers(src, null))
-			O.show_message("<span class='danger'>[user] cuts the cable.</span>", 1)
-
+		visible_message("<span class='warning'>[user] cuts the cable.</span>")
+		stored.add_fingerprint(user)
 		investigate_log("was cut by [key_name(usr, usr.client)] in [user.loc.loc]","wires")
-
-		qdel(src)
+		Deconstruct()
 		return
-
 
 	else if(istype(W, /obj/item/stack/cable_coil))
 		var/obj/item/stack/cable_coil/coil = W
@@ -152,13 +149,10 @@ By design, d1 is the smallest direction and d2 is the highest
 		coil.cable_join(src, user)
 
 	else if(istype(W, /obj/item/device/multitool))
-
 		if(powernet && (powernet.avail > 0))		// is it powered?
 			user << "<span class='danger'>[powernet.avail]W in power network.</span>"
-
 		else
 			user << "<span class='danger'>The cable is not powered.</span>"
-
 		shock(user, 5, 0.2)
 
 	else
@@ -186,14 +180,16 @@ By design, d1 is the smallest direction and d2 is the highest
 			qdel(src)
 		if(2.0)
 			if (prob(50))
-				new/obj/item/stack/cable_coil(src.loc, src.d1 ? 2 : 1, cable_color)
-				qdel(src)
+				Deconstruct()
 
 		if(3.0)
 			if (prob(25))
-				new/obj/item/stack/cable_coil(src.loc, src.d1 ? 2 : 1, cable_color)
-				qdel(src)
+				Deconstruct()
 	return
+
+/obj/structure/cable/singularity_pull(S, current_size)
+	if(current_size >= STAGE_FIVE)
+		Deconstruct()
 
 obj/structure/cable/proc/cableColor(var/colorC)
 	var/color_n = "red"
@@ -461,6 +457,7 @@ obj/structure/cable/proc/avail()
 
 /obj/item/stack/cable_coil
 	name = "cable coil"
+	gender = NEUTER //That's a cable coil sounds better than that's some cable coils
 	icon = 'icons/obj/power.dmi'
 	icon_state = "coil_red"
 	item_state = "coil_red"
@@ -476,6 +473,7 @@ obj/structure/cable/proc/avail()
 	flags = CONDUCT
 	slot_flags = SLOT_BELT
 	attack_verb = list("whipped", "lashed", "disciplined", "flogged")
+	singular_name = "cable piece"
 
 /obj/item/stack/cable_coil/cyborg
 	is_cyborg = 1
@@ -531,31 +529,18 @@ obj/structure/cable/proc/avail()
 		name = "cable coil"
 
 
-/obj/item/stack/cable_coil/examine()
-	set src in view(1)
-
-	if (is_cyborg)
-		usr << "A cable synthesizer. Currently has energy for [get_amount()] lengths of cable."
-	else
-		if(get_amount() == 1)
-			usr << "A short piece of power cable."
-		else if(get_amount() == 2)
-			usr << "A piece of power cable."
-		else
-			usr << "A coil of power cable. There are [get_amount()] lengths of cable in the coil."
-
-
 /obj/item/stack/cable_coil/verb/make_restraint()
 	set name = "Make Cable Restraints"
 	set category = "Object"
 	var/mob/M = usr
 
-	if(ishuman(M) && !M.restrained() && !M.stat && !M.paralysis && ! M.stunned)
-		if(!istype(usr.loc,/turf)) return
+	if(ishuman(M) && !M.restrained() && !M.stat && M.canmove)
+		if(!istype(usr.loc,/turf))
+			return
 		if(src.amount <= 14)
 			usr << "<span class='danger'>You need at least 15 lengths to make restraints!</span>"
 			return
-		var/obj/item/weapon/handcuffs/cable/B = new /obj/item/weapon/handcuffs/cable(usr.loc)
+		var/obj/item/weapon/restraints/handcuffs/cable/B = new /obj/item/weapon/restraints/handcuffs/cable(usr.loc)
 		B.icon_state = "cuff_[item_color]"
 		usr << "<span class='notice'>You wind some cable together to make some restraints.</span>"
 		src.use(15)
@@ -687,8 +672,7 @@ obj/structure/cable/proc/avail()
 
 		if (C.shock(user, 50))
 			if (prob(50)) //fail
-				new/obj/item/stack/cable_coil(C.loc, 1, C.cable_color)
-				qdel(C)
+				C.Deconstruct()
 
 // called when cable_coil is click on an installed obj/cable
 // or click on a turf that already contains a "node" cable
@@ -751,8 +735,7 @@ obj/structure/cable/proc/avail()
 
 			if (NC.shock(user, 50))
 				if (prob(50)) //fail
-					new/obj/item/stack/cable_coil(NC.loc, 1, NC.cable_color)
-					qdel(NC)
+					NC.Deconstruct()
 
 			return
 
@@ -799,8 +782,7 @@ obj/structure/cable/proc/avail()
 
 		if (C.shock(user, 50))
 			if (prob(50)) //fail
-				new/obj/item/stack/cable_coil(C.loc, 2, C.cable_color)
-				qdel(C)
+				C.Deconstruct()
 				return
 
 		C.denode()// this call may have disconnected some cables that terminated on the centre of the turf, if so split the powernets.

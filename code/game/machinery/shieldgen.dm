@@ -26,8 +26,8 @@
 	..()
 	move_update_air(T)
 
-/obj/machinery/shield/CanPass(atom/movable/mover, turf/target, height, air_group)
-	if(!height || air_group) return 0
+/obj/machinery/shield/CanPass(atom/movable/mover, turf/target, height)
+	if(!height) return 0
 	else return ..()
 
 /obj/machinery/shield/CanAtmosPass(var/turf/T)
@@ -46,7 +46,7 @@
 
 
 	if (src.health <= 0)
-		visible_message("<span class='notice'>The [src] dissapates.</span>")
+		visible_message("<span class='notice'>[src] dissipates.</span>")
 		qdel(src)
 		return
 
@@ -58,7 +58,7 @@
 	health -= Proj.damage
 	..()
 	if(health <=0)
-		visible_message("<span class='notice'>The [src] dissapates.</span>")
+		visible_message("<span class='notice'>The [src] dissipates.</span>")
 		qdel(src)
 		return
 	opacity = 1
@@ -107,7 +107,7 @@
 
 	//Handle the destruction of the shield
 	if (src.health <= 0)
-		visible_message("<span class='notice'>The [src] dissapates.</span>")
+		visible_message("<span class='notice'>[src] dissipates.</span>")
 		qdel(src)
 		return
 
@@ -343,7 +343,7 @@
 		if(PN) //runtime errors fixer. They were caused by PN.newload trying to access missing network in case of working on stored power.
 			storedpower += shieldload
 			PN.load += shieldload //uses powernet power.
-//		message_admins("[PN.load]", 1)
+//		message_admins("[PN.load]")
 //		use_power(250) //uses APC power
 
 /obj/machinery/shieldwallgen/attack_hand(mob/user as mob)
@@ -374,10 +374,9 @@
 	src.add_fingerprint(user)
 
 /obj/machinery/shieldwallgen/process()
-	spawn(100)
-		power()
-		if(power)
-			storedpower -= 50 //this way it can survive longer and survive at all
+	power()
+	if(power)
+		storedpower -= 50 //this way it can survive longer and survive at all
 	if(storedpower >= maxstoredpower)
 		storedpower = maxstoredpower
 	if(storedpower <= 0)
@@ -389,14 +388,10 @@
 		if(!anchored)
 			src.active = 0
 			return
-		spawn(1)
-			setup_field(1)
-		spawn(2)
-			setup_field(2)
-		spawn(3)
-			setup_field(4)
-		spawn(4)
-			setup_field(8)
+		setup_field(1)
+		setup_field(2)
+		setup_field(4)
+		setup_field(8)
 		src.active = 2
 	if(src.active >= 1)
 		if(src.power == 0)
@@ -404,14 +399,10 @@
 				"You hear heavy droning fade out")
 			icon_state = "Shield_Gen"
 			src.active = 0
-			spawn(1)
-				src.cleanup(1)
-			spawn(1)
-				src.cleanup(2)
-			spawn(1)
-				src.cleanup(4)
-			spawn(1)
-				src.cleanup(8)
+			src.cleanup(1)
+			src.cleanup(2)
+			src.cleanup(4)
+			src.cleanup(8)
 
 /obj/machinery/shieldwallgen/proc/setup_field(var/NSEW = 0)
 	var/turf/T = src.loc
@@ -484,8 +475,8 @@
 			user << "<span class='danger'>Access denied.</span>"
 
 	else
-		src.add_fingerprint(user)
-		visible_message("<span class='danger'>The [src.name] has been hit with the [W.name] by [user.name]!</span>")
+		add_fingerprint(user)
+		..()
 
 /obj/machinery/shieldwallgen/proc/cleanup(var/NSEW)
 	var/obj/machinery/shieldwall/F
@@ -603,8 +594,8 @@
 	return
 
 
-/obj/machinery/shieldwall/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(air_group || (height==0)) return 1
+/obj/machinery/shieldwall/CanPass(atom/movable/mover, turf/target, height=0)
+	if(height==0) return 1
 
 	if(istype(mover) && mover.checkpass(PASSGLASS))
 		return prob(20)

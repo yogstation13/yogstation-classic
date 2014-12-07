@@ -26,8 +26,6 @@
 /client/proc/massmodify_variables(var/atom/O, var/var_name = "", var/method = 0)
 	if(!check_rights(R_VAREDIT))	return
 
-	var/list/locked = list("vars", "key", "ckey", "client", "unlock_content")
-
 	for(var/p in forbidden_varedit_object_types)
 		if( istype(O,p) )
 			usr << "<span class='danger'>It is forbidden to edit this object's variables.</span>"
@@ -51,8 +49,13 @@
 	var/var_value = O.vars[variable]
 	var/dir
 
-	if(variable == "holder" || (variable in locked))
+	if(variable in VVckey_edit)
+		usr << "It's forbidden to mass-modify ckeys. I'll crash everyone's client you dummy."
+		return
+	if(variable in VVlocked)
 		if(!check_rights(R_DEBUG))	return
+	if(variable in VVicon_edit_lock)
+		if(!check_rights(R_FUN|R_DEBUG)) return
 
 	if(isnull(var_value))
 		usr << "Unable to determine variable type."
@@ -115,7 +118,7 @@
 		if(dir)
 			usr << "If a direction, direction is: [dir]"
 
-	var/class = input("What kind of variable?","Variable Type",default) as null|anything in list("text",
+	var/class = input("What kind of variable?","Variable Type",default) as null|anything in list("null", "text",
 		"num","type","icon","file","edit referenced object","restore to default")
 
 	if(!class)
@@ -129,6 +132,40 @@
 		original_name = O:name
 
 	switch(class)
+
+		if("null")
+			O.vars[variable] = null
+			if(method)
+				if(istype(O, /mob))
+					for(var/mob/M in mob_list)
+						if ( istype(M , O.type) )
+							M.vars[variable] = O.vars[variable]
+
+				else if(istype(O, /obj))
+					for(var/obj/A in world)
+						if ( istype(A , O.type) )
+							A.vars[variable] = O.vars[variable]
+
+				else if(istype(O, /turf))
+					for(var/turf/A in world)
+						if ( istype(A , O.type) )
+							A.vars[variable] = O.vars[variable]
+
+			else
+				if(istype(O, /mob))
+					for(var/mob/M in mob_list)
+						if (M.type == O.type)
+							M.vars[variable] = O.vars[variable]
+
+				else if(istype(O, /obj))
+					for(var/obj/A in world)
+						if (A.type == O.type)
+							A.vars[variable] = O.vars[variable]
+
+				else if(istype(O, /turf))
+					for(var/turf/A in world)
+						if (A.type == O.type)
+							A.vars[variable] = O.vars[variable]
 
 		if("restore to default")
 			O.vars[variable] = initial(O.vars[variable])
@@ -371,5 +408,6 @@
 						if (A.type == O.type)
 							A.vars[variable] = O.vars[variable]
 
+	world.log << "### MassVarEdit by [src]: [O.type] [variable]=[html_encode("[O.vars[variable]]")]"
 	log_admin("[key_name(src)] mass modified [original_name]'s [variable] to [O.vars[variable]]")
-	message_admins("[key_name_admin(src)] mass modified [original_name]'s [variable] to [O.vars[variable]]", 1)
+	message_admins("[key_name_admin(src)] mass modified [original_name]'s [variable] to [O.vars[variable]]")

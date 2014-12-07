@@ -11,6 +11,11 @@
 	explosion_resistance = 5
 	var/health = 10
 	var/destroyed = 0
+	var/obj/item/stack/rods/stored
+
+/obj/structure/grille/New()
+	stored = new/obj/item/stack/rods(src)
+	stored.amount = 2
 
 /obj/structure/grille/ex_act(severity)
 	qdel(src)
@@ -25,8 +30,9 @@
 /obj/structure/grille/attack_paw(mob/user as mob)
 	attack_hand(user)
 
-/obj/structure/grille/attack_hand(mob/user as mob)
+/obj/structure/grille/attack_hand(mob/living/user as mob)
 	user.changeNext_move(CLICK_CD_MELEE)
+	user.do_attack_animation(src)
 	playsound(loc, 'sound/effects/grillehit.ogg', 80, 1)
 	user.visible_message("<span class='warning'>[user] hits [src].</span>", \
 						 "<span class='warning'>You hit [src].</span>", \
@@ -37,10 +43,11 @@
 	if(HULK in user.mutations)
 		health -= 5
 	else
-		health -= 3
+		health -= rand(1,2)
 	healthcheck()
 
-/obj/structure/grille/attack_alien(mob/user as mob)
+/obj/structure/grille/attack_alien(mob/living/user as mob)
+	user.do_attack_animation(src)
 	if(istype(user, /mob/living/carbon/alien/larva))	return
 	user.changeNext_move(CLICK_CD_MELEE)
 	playsound(loc, 'sound/effects/grillehit.ogg', 80, 1)
@@ -55,6 +62,7 @@
 
 /obj/structure/grille/attack_slime(mob/living/carbon/slime/user as mob)
 	user.changeNext_move(CLICK_CD_MELEE)
+	user.do_attack_animation(src)
 	if(!user.is_adult)	return
 
 	playsound(loc, 'sound/effects/grillehit.ogg', 80, 1)
@@ -62,14 +70,14 @@
 						 "<span class='warning'>You smash against [src].</span>", \
 						 "You hear twisting metal.")
 
-	health -= rand(2,3)
+	health -= rand(1,2)
 	healthcheck()
 	return
 
 /obj/structure/grille/attack_animal(var/mob/living/simple_animal/M as mob)
 	M.changeNext_move(CLICK_CD_MELEE)
 	if(M.melee_damage_upper == 0)	return
-
+	M.do_attack_animation(src)
 	playsound(loc, 'sound/effects/grillehit.ogg', 80, 1)
 	M.visible_message("<span class='warning'>[M] smashes against [src].</span>", \
 					  "<span class='warning'>You smash against [src].</span>", \
@@ -80,8 +88,8 @@
 	return
 
 
-/obj/structure/grille/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(air_group || (height==0)) return 1
+/obj/structure/grille/CanPass(atom/movable/mover, turf/target, height=0)
+	if(height==0) return 1
 	if(istype(mover) && mover.checkpass(PASSGRILLE))
 		return 1
 	else
@@ -94,10 +102,24 @@
 	if(!Proj)
 		return
 	..()
-	if((Proj.damage_type == BRUTE || Proj.damage_type == BURN))
-		src.health -= Proj.damage*0.2
+	if((Proj.damage_type != STAMINA)) //Grilles can't be exhausted to death
+		src.health -= Proj.damage*0.3
 		healthcheck()
 	return
+
+/obj/structure/grille/Deconstruct()
+	transfer_fingerprints_to(stored)
+	var/turf/T = loc
+	stored.loc = T
+	..()
+
+/obj/structure/grille/proc/Break()
+	icon_state = "brokengrille"
+	density = 0
+	destroyed = 1
+	stored.amount = 1
+	var/obj/item/stack/rods/newrods = new(loc)
+	transfer_fingerprints_to(newrods)
 
 /obj/structure/grille/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	user.changeNext_move(CLICK_CD_MELEE)
@@ -105,17 +127,24 @@
 	if(istype(W, /obj/item/weapon/wirecutters))
 		if(!shock(user, 100))
 			playsound(loc, 'sound/items/Wirecutter.ogg', 100, 1)
-			var/obj/item/stack/rods/newrods = new(loc)
-			transfer_fingerprints_to(newrods)
-			if(!destroyed)
-				newrods.amount = 2
-			qdel(src)
+			Deconstruct()
 	else if((istype(W, /obj/item/weapon/screwdriver)) && (istype(loc, /turf/simulated) || anchored))
 		if(!shock(user, 90))
 			playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
 			anchored = !anchored
 			user.visible_message("<span class='notice'>[user] [anchored ? "fastens" : "unfastens"] the [src].</span>", \
 								 "<span class='notice'>You have [anchored ? "fastened the [src] to" : "unfastened the [src] from"] the floor.</span>")
+			return
+	else if(istype(W, /obj/item/stack/rods) && destroyed)
+		var/obj/item/stack/rods/R = W
+		if(!shock(user, 90))
+			user.visible_message("<span class='notice'>[user] rebuilds the broken grille.</span>", \
+								 "<span class='notice'>You rebuild the broken grille.</span>")
+			health = 10
+			density = 1
+			destroyed = 0
+			icon_state = "grille"
+			R.use(1)
 			return
 
 //window placing begin
@@ -172,12 +201,13 @@
 		playsound(loc, 'sound/effects/grillehit.ogg', 80, 1)
 		health -= W.force * 0.1
 	else if(!shock(user, 70))
-		playsound(loc, 'sound/effects/grillehit.ogg', 80, 1)
 		switch(W.damtype)
-			if("fire")
-				health -= W.force
-			if("brute")
-				health -= W.force * 0.1
+			if(BURN)
+				playsound(loc, 'sound/items/welder.ogg', 80, 1)
+			else
+				playsound(loc, 'sound/effects/grillehit.ogg', 80, 1)
+		health -= W.force * 0.3
+
 	healthcheck()
 	..()
 	return
@@ -186,16 +216,10 @@
 /obj/structure/grille/proc/healthcheck()
 	if(health <= 0)
 		if(!destroyed)
-			icon_state = "brokengrille"
-			density = 0
-			destroyed = 1
-			var/obj/item/stack/rods/newrods = new(loc)
-			transfer_fingerprints_to(newrods)
-
+			Break()
 		else
 			if(health <= -6)
-				qdel(src)
-				return
+				Deconstruct()
 	return
 
 // shock user with probability prb (if all connections & power are working)
@@ -226,3 +250,16 @@
 			health -= 1
 			healthcheck()
 	..()
+
+/obj/structure/grille/hitby(AM as mob|obj)
+	..()
+	visible_message("<span class='danger'>[src] was hit by [AM].</span>")
+	var/tforce = 0
+	if(ismob(AM))
+		tforce = 5
+	else if(isobj(AM))
+		var/obj/item/I = AM
+		tforce = I.throwforce - 5
+	playsound(loc, 'sound/effects/grillehit.ogg', 80, 1)
+	health = max(0, health - tforce)
+	healthcheck()

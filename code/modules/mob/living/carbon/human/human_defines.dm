@@ -1,4 +1,5 @@
 /mob/living/carbon/human
+	languages = HUMAN
 	//Hair colour and style
 	var/hair_color = "000"
 	var/hair_style = "Bald"
@@ -18,6 +19,7 @@
 	var/blood_type = "A+"	//Player's bloodtype (Not currently used, just character fluff)
 
 	var/underwear = "Nude"	//Which underwear the player wants
+	var/undershirt = "Nude" //Which undershirt the player wants
 	var/backbag = 2		//Which backpack type the player has chosen. Nothing, Satchel or Backpack.
 
 	//Equipment slots

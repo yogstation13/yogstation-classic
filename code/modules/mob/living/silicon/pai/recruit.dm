@@ -69,17 +69,7 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 			if("save")
 				candidate.savefile_save(usr)
 			if("load")
-				candidate.savefile_load(usr)
-				//In case people have saved unsanitized stuff.
-				if(candidate.name)
-					candidate.name = copytext(sanitize(candidate.name),1,MAX_NAME_LEN)
-				if(candidate.description)
-					candidate.description = copytext(sanitize(candidate.description),1,MAX_MESSAGE_LEN)
-				if(candidate.role)
-					candidate.role = copytext(sanitize(candidate.role),1,MAX_MESSAGE_LEN)
-				if(candidate.comments)
-					candidate.comments = copytext(sanitize(candidate.comments),1,MAX_MESSAGE_LEN)
-
+				loadPreferences(candidate)
 			if("submit")
 				if(candidate)
 					candidate.ready = 1
@@ -89,6 +79,18 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 				usr << browse(null, "window=paiRecruit")
 				return
 		recruitWindow(usr)
+
+/datum/paiController/proc/loadPreferences(var/datum/paiCandidate/candidate, var/forUser = usr)
+	candidate.savefile_load(forUser)
+	//In case people have saved unsanitized stuff.
+	if(candidate.name)
+		candidate.name = copytext(sanitize(candidate.name),1,MAX_NAME_LEN)
+	if(candidate.description)
+		candidate.description = copytext(sanitize(candidate.description),1,MAX_MESSAGE_LEN)
+	if(candidate.role)
+		candidate.role = copytext(sanitize(candidate.role),1,MAX_MESSAGE_LEN)
+	if(candidate.comments)
+		candidate.comments = copytext(sanitize(candidate.comments),1,MAX_MESSAGE_LEN)
 
 /datum/paiController/proc/recruitWindow(var/mob/M as mob)
 	var/datum/paiCandidate/candidate
@@ -100,6 +102,7 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 		candidate.key = M.key
 		pai_candidates.Add(candidate)
 
+	loadPreferences(candidate, M)
 
 	var/dat = ""
 	dat += {"
@@ -137,9 +140,9 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 	dat += "<br>"
 	dat += "<h3><a href='byond://?src=\ref[src];option=submit;new=1;candidate=\ref[candidate]'>Submit Personality</a></h3><br>"
 	dat += "<a href='byond://?src=\ref[src];option=save;new=1;candidate=\ref[candidate]'>Save Personality</a><br>"
-	dat += "<a href='byond://?src=\ref[src];option=load;new=1;candidate=\ref[candidate]'>Load Personality</a><br>"
+	//dat += "<a href='byond://?src=\ref[src];option=load;new=1;candidate=\ref[candidate]'>Load Personality</a><br>"
 
-	M << browse(dat, "window=paiRecruit")
+	M << browse(dat, "window=paiRecruit;size=500x650")
 
 /datum/paiController/proc/findPAI(var/obj/item/device/paicard/p, var/mob/user)
 	requestRecruits()

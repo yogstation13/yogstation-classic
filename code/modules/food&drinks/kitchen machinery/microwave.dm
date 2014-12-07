@@ -1,5 +1,6 @@
 /obj/machinery/microwave
 	name = "microwave"
+	desc = "Keeps hot things hot and cold things hot."
 	icon = 'icons/obj/kitchen.dmi'
 	icon_state = "mw"
 	layer = 2.9
@@ -121,11 +122,12 @@
 			return 1
 
 	else if(istype(O, /obj/item/weapon/soap/)) // If they're trying to clean it then let them
+		var/obj/item/weapon/soap/P = O
 		user.visible_message( \
 			"<span class='notice'>[user] starts to clean the microwave.</span>", \
 			"<span class='notice'>You start to clean the microwave.</span>" \
 		)
-		if (do_after(user,20))
+		if (do_after(user, P.cleanspeed))
 			user.visible_message( \
 				"<span class='notice'>[user]  has cleaned  the microwave.</span>", \
 				"<span class='notice'>You have cleaned the microwave.</span>" \
@@ -183,6 +185,8 @@
 	return 0
 
 /obj/machinery/microwave/attack_hand(mob/user as mob)
+	if(..())
+		return
 	user.set_machine(src)
 	interact(user)
 

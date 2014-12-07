@@ -250,7 +250,9 @@
 	O << "<B>To look at other parts of the station, click on yourself to get a camera menu.</B>"
 	O << "<B>While observing through a camera, you can use most (networked) devices which you can see, such as computers, APCs, intercoms, doors, etc.</B>"
 	O << "To use something, simply click on it."
-	O << {"Use say ":b to speak to your cyborgs through binary."}
+	O << {"Use say ":b to speak to your cyborgs through binary."} //"
+	O << "For department channels, use the following say commands:"
+	O << ":o - AI Private, :c - Command, :s - Security, :e - Engineering, :u - Supply, :v - Service, :m - Medical, :n - Science."
 	if (!(ticker && ticker.mode && (O.mind in ticker.mode.malf_ai)))
 		O.show_laws()
 		O << "<b>These laws may be changed by other players, or by you being the traitor.</b>"
@@ -308,9 +310,6 @@
 	O.loc = loc
 	O.job = "Cyborg"
 	O.notify_ai(1)
-
-	O.mmi = new /obj/item/device/mmi(O)
-	O.mmi.transfer_identity(src)//Does not transfer key/client.
 
 	. = O
 	qdel(src)

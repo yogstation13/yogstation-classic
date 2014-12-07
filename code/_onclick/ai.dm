@@ -10,6 +10,9 @@
 	Note that AI have no need for the adjacency proc, and so this proc is a lot cleaner.
 */
 /mob/living/silicon/ai/DblClickOn(var/atom/A, params)
+	if(client.prefs.afreeze)
+		client << "<span class='userdanger'>You are frozen by an administrator.</span>"
+		return
 	if(client.buildmode) // comes after object.Click to allow buildmode gui objects to be clicked
 		build_click(src, client.buildmode, params, A)
 		return
@@ -26,7 +29,9 @@
 	if(world.time <= next_click)
 		return
 	next_click = world.time + 1
-
+	if(client.prefs.afreeze)
+		client << "<span class='userdanger'>You are frozen by an administrator.</span>"
+		return
 	if(client.buildmode) // comes after object.Click to allow buildmode gui objects to be clicked
 		build_click(src, client.buildmode, params, A)
 		return
@@ -57,6 +62,10 @@
 	if(aicamera.in_camera_mode)
 		aicamera.camera_mode_off()
 		aicamera.captureimage(A, usr)
+		return
+	if(waypoint_mode)
+		set_waypoint(A)
+		waypoint_mode = 0
 		return
 
 	/*
@@ -138,10 +147,12 @@
 
 /obj/machinery/power/apc/AICtrlClick() // turns off/on APCs.
 	toggle_breaker()
+	add_fingerprint(usr)
 
 /obj/machinery/turretid/AICtrlClick() //turns off/on Turrets
 	src.enabled = !src.enabled
 	src.updateTurrets()
+	add_fingerprint(usr)
 
 
 /atom/proc/AIAltClick(var/mob/living/silicon/ai/user)
@@ -162,6 +173,7 @@
 /obj/machinery/turretid/AIAltClick() //toggles lethal on turrets
 	src.lethal = !src.lethal
 	src.updateTurrets()
+	add_fingerprint(usr)
 
 //
 // Override TurfAdjacent for AltClicking

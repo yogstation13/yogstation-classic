@@ -10,28 +10,7 @@
 	min_cold_protection_temperature = HELMET_MIN_TEMP_PROTECT
 	heat_protection = HEAD
 	max_heat_protection_temperature = HELMET_MAX_TEMP_PROTECT
-
-/obj/item/clothing/head/helmet/HoS
-	name = "head of security hat"
-	desc = "The robust hat of the Head of Security. For showing the officers who's in charge."
-	icon_state = "hoscap"
-	armor = list(melee = 80, bullet = 60, laser = 50,energy = 10, bomb = 25, bio = 10, rad = 0)
-	flags = 0
-	flags_inv = HIDEEARS
-
-/obj/item/clothing/head/helmet/HoS/dermal
-	name = "Dermal Armor Patch"
-	desc = "An armored implant that automatically integrates just below the scalp for robust protection without sacrificing style."
-	icon_state = "dermal"
-	item_state = "dermal"
-	flags_inv = 0
-
-/obj/item/clothing/head/helmet/warden
-	name = "warden's hat"
-	desc = "It's a special armored hat issued to the Warden of a security force. Protects the head from impacts."
-	icon_state = "policehelm"
-	flags = 0
-	flags_inv = HIDEEARS
+	strip_delay = 60
 
 /obj/item/clothing/head/helmet/riot
 	name = "riot helmet"
@@ -41,6 +20,27 @@
 	flags = HEADCOVERSEYES | HEADCOVERSMOUTH
 	armor = list(melee = 82, bullet = 15, laser = 5,energy = 5, bomb = 5, bio = 2, rad = 0)
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE
+	strip_delay = 80
+	action_button_name = "Toggle Helmet Visor"
+	visor_flags = HEADCOVERSEYES | HEADCOVERSMOUTH
+	visor_flags_inv = HIDEMASK|HIDEEYES|HIDEFACE
+
+/obj/item/clothing/head/helmet/riot/attack_self()
+	if(usr.canmove && !usr.stat && !usr.restrained())
+		if(up)
+			up = !up
+			flags |= (visor_flags)
+			flags_inv |= (visor_flags_inv)
+			icon_state = initial(icon_state)
+			usr << "You pull the [src] down."
+			usr.update_inv_head(0)
+		else
+			up = !up
+			flags &= ~(visor_flags)
+			flags_inv &= ~(visor_flags_inv)
+			icon_state = "[initial(icon_state)]up"
+			usr << "You push the [src] up."
+			usr.update_inv_head(0)
 
 /obj/item/clothing/head/helmet/swat
 	name = "\improper SWAT helmet"
@@ -52,6 +52,7 @@
 	min_cold_protection_temperature = SPACE_HELM_MIN_TEMP_PROTECT
 	heat_protection = HEAD
 	max_heat_protection_temperature = SPACE_HELM_MAX_TEMP_PROTECT
+	strip_delay = 80
 
 /obj/item/clothing/head/helmet/swat/syndicate
 	name = "blood-red helmet"
@@ -69,6 +70,7 @@
 	min_cold_protection_temperature = SPACE_HELM_MIN_TEMP_PROTECT
 	heat_protection = HEAD
 	max_heat_protection_temperature = SPACE_HELM_MAX_TEMP_PROTECT
+	strip_delay = 80
 
 /obj/item/clothing/head/helmet/roman
 	name = "roman helmet"
@@ -76,6 +78,7 @@
 	armor = list(melee = 25, bullet = 0, laser = 25, energy = 10, bomb = 10, bio = 0, rad = 0)
 	icon_state = "roman"
 	item_state = "roman"
+	strip_delay = 100
 
 /obj/item/clothing/head/helmet/roman/legionaire
 	name = "roman legionaire helmet"
@@ -87,7 +90,7 @@
 	name = "gladiator helmet"
 	desc = "Ave, Imperator, morituri te salutant."
 	icon_state = "gladiator"
-	flags = HEADCOVERSEYES|HEADCOVERSMOUTH|BLOCKHAIR
+	flags = HEADCOVERSEYES|BLOCKHAIR
 	item_state = "gladiator"
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES
 

@@ -8,6 +8,7 @@
 
 
 /obj/item/projectile/bullet/weakbullet
+	name = "beanbag"
 	damage = 5
 	stun = 5
 	weaken = 5
@@ -23,6 +24,8 @@
 	name = "pellet"
 	damage = 15
 
+/obj/item/projectile/bullet/pellet/weak
+	damage = 3
 
 /obj/item/projectile/bullet/midbullet
 	damage = 20

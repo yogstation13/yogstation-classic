@@ -16,7 +16,7 @@
 	icon_state = "bookempty"
 	anchored = 0
 	density = 1
-	opacity = 1
+	opacity = 0
 	var/state = 0
 
 
@@ -212,7 +212,7 @@
 					name = newtitle
 					title = newtitle
 			if("Contents")
-				var/content = strip_html(input(usr, "Write your book's contents (HTML NOT allowed):"),8192) as message|null
+				var/content = stripped_input(usr, "Write your book's contents (HTML NOT allowed):","","",8192)
 				if(!content)
 					usr << "The content is invalid."
 					return
@@ -265,6 +265,7 @@
 			var/obj/item/weapon/storage/book/B = new
 			B.name = src.name
 			B.title = src.title
+			B.icon_state = src.icon_state
 			if(user.l_hand == src || user.r_hand == src)
 				qdel(src)
 				user.put_in_hands(B)

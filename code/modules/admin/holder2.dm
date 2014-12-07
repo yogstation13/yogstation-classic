@@ -40,6 +40,16 @@ var/list/admin_datums = list()
 		owner.holder = null
 		owner = null
 
+/datum/admins/proc/check_if_greater_rights_than_holder(datum/admins/other)
+	if(!other)
+		return 1 //they have no rights
+	if(rank.rights == 65535)
+		return 1 //we have all the rights
+	if(rank.rights != other.rank.rights)
+		if( (rank.rights & other.rank.rights) == other.rank.rights )
+			return 1 //we have all the rights they have and more
+	return 0
+
 /*
 checks if usr is an admin with at least ONE of the flags in rights_required. (Note, they don't need all the flags)
 if rights_required == 0, then it simply checks if they are an admin.
@@ -68,14 +78,13 @@ you will have to do something like if(client.rights & R_ADMIN) yourself.
 		if(usr.client.holder)
 			if(!other || !other.holder)
 				return 1
-			if(usr.client.holder.rank.rights != other.holder.rank.rights)	//Check values smaller than 65536
-				if( (usr.client.holder.rank.rights & other.holder.rank.rights) == other.holder.rank.rights )
-					return 1	//we have all the rights they have and more
-		usr << "<font color='red'>Error: Cannot proceed. They have greater or equal rights to us.</font>"
+			return usr.client.holder.check_if_greater_rights_than_holder(other.holder)
 	return 0
 
-
 /client/proc/deadmin()
+	if(check_rights_for(src, R_NOJOIN))
+		src << "No deadmin for you. You're here to administrate, not have fun."
+		return
 	admin_datums -= ckey
 	if(holder)
 		holder.disassociate()

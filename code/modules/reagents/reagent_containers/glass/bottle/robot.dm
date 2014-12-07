@@ -4,7 +4,7 @@
 	possible_transfer_amounts = list(5,10,15,25,30,50,100)
 	flags = OPENCONTAINER
 	volume = 60
-	var/reagent = ""
+	var/reagent = null
 
 
 /obj/item/weapon/reagent_containers/glass/bottle/robot/inaprovaline
