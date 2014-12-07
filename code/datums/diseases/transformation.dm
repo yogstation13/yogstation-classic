@@ -1,15 +1,14 @@
 /datum/disease/transformation
-
 	name = "Transformation"
 	max_stages = 5
-	spread = "Acute"
-	spread_type = SPECIAL
-	cure = "A coder's love (theoretical)."
+	spread_text = "Acute"
+	spread_flags = SPECIAL
+	cure_text = "A coder's love (theoretical)."
 	agent = "Shenanigans"
-	affected_species = list("Human", "Monkey", "Alien")
-	severity = "Major"
+	viable_mobtypes = list(/mob/living/carbon/human, /mob/living/carbon/monkey, /mob/living/carbon/alien)
+	severity = HARMFUL
 	stage_prob = 10
-	hidden = list(1, 1)
+	visibility_flags = HIDDEN_SCANNER|HIDDEN_PANDEMIC
 	var/list/stage1 = list("You feel unremarkable.")
 	var/list/stage2 = list("You feel boring.")
 	var/list/stage3 = list("You feel utterly plain.")
@@ -58,7 +57,6 @@
 		var/mob/living/new_mob = new new_form(affected_mob.loc)
 		if(istype(new_mob))
 			new_mob.a_intent = "harm"
-			new_mob.universal_speak = 1
 			if(affected_mob.mind)
 				affected_mob.mind.transfer_to(new_mob)
 			else
@@ -69,19 +67,19 @@
 
 /datum/disease/transformation/jungle_fever
 	name = "Jungle Fever"
-	cure = "Bananas"
-	cure_id = "banana"
-	spread = "Monkey Bites"
-	spread_type = SPECIAL
-	affected_species = list("Monkey", "Human")
+	cure_text = "Bananas"
+	cures = list("banana")
+	spread_text = "Monkey Bites"
+	spread_flags = SPECIAL
+	viable_mobtypes = list(/mob/living/carbon/monkey, /mob/living/carbon/human)
 	permeability_mod = 1
 	cure_chance = 1
-	curable = 0
+	disease_flags = CAN_CARRY|CAN_RESIST
 	longevity = 30
 	desc = "Monkeys with this disease will bite humans, causing humans to mutate into a monkey."
-	severity = "Major"
-	hidden = list(0, 0)//Not hidden, with the exception of the starting ape.
+	severity = BIOHAZARD
 	stage_prob = 4
+	visibility_flags = 0
 	agent = "Kongey Vibrion M-909"
 	new_form = /mob/living/carbon/monkey
 
@@ -119,18 +117,20 @@
 /datum/disease/transformation/robot
 
 	name = "Robotic Transformation"
-	cure = "An injection of copper."
-	cure_id = list("copper")
+	cure_text = "An injection of copper."
+	cures = list("copper")
 	cure_chance = 5
 	agent = "R2D2 Nanomachines"
 	desc = "This disease, actually acute nanomachine infection, converts the victim into a cyborg."
-	hidden = list(0, 0)
+	severity = DANGEROUS
+	visibility_flags = 0
 	stage1	= null
 	stage2	= list("Your joints feel stiff.", "<span class='danger'>Beep...boop..</span>")
 	stage3	= list("<span class='danger'>Your joints feel very stiff.</span>", "Your skin feels loose.", "<span class='danger'>You can feel something move...inside.</span>")
 	stage4	= list("<span class='danger'>Your skin feels very loose.</span>", "<span class='danger'>You can feel... something...inside you.</span>")
 	stage5	= list("<span class='danger'>Your skin feels as if it's about to burst off!</span>")
 	new_form = /mob/living/silicon/robot
+
 
 /datum/disease/transformation/robot/stage_act()
 	..()
@@ -149,11 +149,13 @@
 /datum/disease/transformation/xeno
 
 	name = "Xenomorph Transformation"
-	cure = "Spaceacillin & Glycerol"
-	cure_id = list("spaceacillin", "glycerol")
+	cure_text = "Spaceacillin & Glycerol"
+	cures = list("spaceacillin", "glycerol")
 	cure_chance = 5
 	agent = "Rip-LEY Alien Microbes"
-	hidden = list(0, 0)
+	desc = "This disease changes the victim into a xenomorph."
+	severity = BIOHAZARD
+	visibility_flags = 0
 	stage1	= null
 	stage2	= list("Your throat feels scratchy.", "<span class='danger'>Kill...</span>")
 	stage3	= list("<span class='danger'>Your throat feels very scratchy.</span>", "Your skin feels tight.", "<span class='danger'>You can feel something move...inside.</span>")
@@ -175,12 +177,13 @@
 
 /datum/disease/transformation/slime
 	name = "Advanced Mutation Transformation"
-	cure = "frost oil"
-	cure_id = list("frostoil")
+	cure_text = "frost oil"
+	cures = list("frostoil")
 	cure_chance = 80
 	agent = "Advanced Mutation Toxin"
 	desc = "This highly concentrated extract converts anything into more of itself."
-	hidden = list(0, 0)
+	severity = BIOHAZARD
+	visibility_flags = 0
 	stage1	= list("You don't feel very well.")
 	stage2	= list("You are turning a little green.")
 	stage3	= list("<span class='danger'>Your limbs are getting oozy.</span>", "<span class='danger'>Your skin begins to peel away.</span>")
@@ -203,9 +206,10 @@
 
 /datum/disease/transformation/corgi
 	name = "The Barkening"
-	cure = "Death"
+	cure_text = "Death"
 	agent = "Fell Doge Majicks"
-	hidden = list(0, 0)
+	desc = "This disease transforms the victim into a corgi."
+	visibility_flags = 0
 	stage1	= list("BARK.")
 	stage2	= list("You feel the need to wear silly hats.")
 	stage3	= list("<span class='danger'>Must... eat... chocolate....</span>", "<span class='danger'>YAP</span>")

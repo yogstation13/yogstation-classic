@@ -43,7 +43,7 @@
 	return ..()
 
 /mob/living/carbon/human/Bump(atom/movable/AM as mob|obj, yes)
-	if ((!( yes ) || now_pushing))
+	if ((!( yes ) || now_pushing || buckled))
 		return
 	now_pushing = 1
 	if (ismob(AM))
@@ -108,13 +108,10 @@
 		now_pushing = 1
 
 		if (!AM.anchored)
+			if(pulling == AM)
+				stop_pulling()
 			var/t = get_dir(src, AM)
-			if (istype(AM, /obj/structure/window))
-				if(AM:ini_dir == NORTHWEST || AM:ini_dir == NORTHEAST || AM:ini_dir == SOUTHWEST || AM:ini_dir == SOUTHEAST)
-					for(var/obj/structure/window/win in get_step(AM,t))
-						now_pushing = 0
-						return
-			step(AM, t)
+			AM.Move(get_step(AM, t), t)
 		now_pushing = 0
 
 /mob/living/carbon/human/Stat()
@@ -124,8 +121,9 @@
 	stat(null, "Intent: [a_intent]")
 	stat(null, "Move Mode: [m_intent]")
 	if(ticker && ticker.mode && ticker.mode.name == "AI malfunction")
-		if(ticker.mode:malf_mode_declared && !(ticker.mode:intercept_hacked))
-			stat(null, "Time left: [max(ticker.mode:AI_win_timeleft/(ticker.mode:apcs/3), 0)]")
+		var/datum/game_mode/malfunction/malf = ticker.mode
+		if(malf.malf_mode_declared && (malf.apcs > 0) && !(malf.intercept_hacked))
+			stat(null, "Time left: [max(malf.AI_win_timeleft/malf.apcs, 0)]")
 	if(emergency_shuttle)
 		if(emergency_shuttle.online && emergency_shuttle.location < 2)
 			var/timeleft = emergency_shuttle.timeleft()
@@ -218,84 +216,6 @@
 	var/obj/item/organ/limb/affecting = get_organ(ran_zone(dam_zone))
 	apply_damage(rand(20,30), BRUTE, affecting, run_armor_check(affecting, "melee"))
 	return
-
-
-/mob/living/carbon/human/attack_animal(mob/living/simple_animal/M as mob)
-	if(M.melee_damage_upper == 0)
-		M.emote("[M.friendly] [src]")
-	else
-		if(M.attack_sound)
-			playsound(loc, M.attack_sound, 50, 1, 1)
-		visible_message("<span class='danger'>[M] [M.attacktext] [src]!</span>", \
-				"<span class='userdanger'>[M] [M.attacktext] [src]!</span>")
-		add_logs(M, src, "attacked", admin=0)
-		var/damage = rand(M.melee_damage_lower, M.melee_damage_upper)
-		var/dam_zone = pick("chest", "l_hand", "r_hand", "l_leg", "r_leg")
-		var/obj/item/organ/limb/affecting = get_organ(ran_zone(dam_zone))
-		var/armor = run_armor_check(affecting, "melee")
-		apply_damage(damage, BRUTE, affecting, armor)
-		if(armor >= 2)	return
-
-
-/mob/living/carbon/human/attack_slime(mob/living/carbon/slime/M as mob)
-	if(M.Victim) return // can't attack while eating!
-
-	if (health > -100)
-
-		visible_message("<span class='danger'>The [M.name] glomps [src]!</span>", \
-				"<span class='userdanger'>The [M.name] glomps [src]!</span>")
-
-		var/damage = rand(1, 3)
-
-		if(M.is_adult)
-			damage = rand(10, 35)
-		else
-			damage = rand(5, 25)
-
-
-		var/dam_zone = pick("head", "chest", "l_arm", "r_arm", "l_leg", "r_leg", "groin")
-
-		var/obj/item/organ/limb/affecting = get_organ(ran_zone(dam_zone))
-		var/armor_block = run_armor_check(affecting, "melee")
-		apply_damage(damage, BRUTE, affecting, armor_block)
-
-
-		if(M.powerlevel > 0)
-			var/stunprob = 10
-			var/power = M.powerlevel + rand(0,3)
-
-			switch(M.powerlevel)
-				if(1 to 2) stunprob = 20
-				if(3 to 4) stunprob = 30
-				if(5 to 6) stunprob = 40
-				if(7 to 8) stunprob = 60
-				if(9) 	   stunprob = 70
-				if(10) 	   stunprob = 95
-
-			if(prob(stunprob))
-				M.powerlevel -= 3
-				if(M.powerlevel < 0)
-					M.powerlevel = 0
-				visible_message("<span class='danger'>The [M.name] has shocked [src]!</span>", \
-						"<span class='userdanger'>The [M.name] has shocked [src]!</span>")
-
-				Weaken(power)
-				if (stuttering < power)
-					stuttering = power
-				Stun(power)
-
-				var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
-				s.set_up(5, 1, src)
-				s.start()
-
-				if (prob(stunprob) && M.powerlevel >= 8)
-					adjustFireLoss(M.powerlevel * rand(6,10))
-
-
-		updatehealth()
-
-	return
-
 
 /mob/living/carbon/human/var/co2overloadtime = null
 /mob/living/carbon/human/var/temperature_resistance = T0C+75
@@ -418,16 +338,18 @@
 
 			//visible_message("<span class='danger'>[usr] tries to empty [src]'s pockets.</span>", \
 							"<span class='userdanger'>[usr] tries to empty [src]'s pockets.</span>") // Pickpocketing!
+			var/delay_denominator = 1
 			if(pocket_item && !(pocket_item.flags&ABSTRACT))
 				if(pocket_item.flags & NODROP)
 					usr << "<span class='notice'>You try to empty [src]'s [pocket_side] pocket, it seems to be stuck!</span>"
 				usr << "<span class='notice'>You try to empty [src]'s [pocket_side] pocket.</span>"
 			else if(place_item && place_item.mob_can_equip(src, pocket_id, 1) && !(place_item.flags&ABSTRACT))
 				usr << "<span class='notice'>You try to place [place_item] into [src]'s [pocket_side] pocket.</span>"
+				delay_denominator = 4
 			else
 				return
 
-			if(do_mob(usr, src, STRIP_DELAY))
+			if(do_mob(usr, src, POCKET_STRIP_DELAY/delay_denominator)) //placing an item into the pocket is 4 times faster
 				if(pocket_item)
 					unEquip(pocket_item)
 				else
@@ -443,7 +365,6 @@
 				src << "<span class='warning'>You feel your [pocket_side] pocket being fumbled with!</span>"
 
 		..()
-		return
 
 
 	if(href_list["criminal"])
@@ -453,38 +374,107 @@
 				if(usr.stat || usr == src) //|| !usr.canmove || usr.restrained()) Fluff: Sechuds have eye-tracking technology and sets 'arrest' to people that the wearer looks and blinks at.
 					return													  //Non-fluff: This allows sec to set people to arrest as they get disarmed or beaten
 				// Checks the user has security clearence before allowing them to change arrest status via hud, comment out to enable all access
-				var/allowed_access = 0
+				var/allowed_access = null
 				var/obj/item/clothing/glasses/G = H.glasses
 				if (!G.emagged)
 					if(H.wear_id)
 						var/list/access = H.wear_id.GetAccess()
 						if(access_sec_doors in access)
-							allowed_access = 1
+							allowed_access = H.get_authentification_name()
 				else
-					allowed_access = 1
+					allowed_access = "@%&ERROR_%$*"
 
 
 				if(!allowed_access)
 					H << "<span class='warning'>ERROR: Invalid Access</span>"
 					return
 
-
-				var/modified = 0
 				var/perpname = get_face_name(get_id_name(""))
 				if(perpname)
 					var/datum/data/record/R = find_record("name", perpname, data_core.security)
 					if(R)
-						var/setcriminal = input(usr, "Specify a new criminal status for this person.", "Security HUD", R.fields["criminal"]) in list("None", "*Arrest*", "Incarcerated", "Parolled", "Discharged", "Cancel")
-						if(R)
-							if(istype(H.glasses, /obj/item/clothing/glasses/hud/security) || istype(H.glasses, /obj/item/clothing/glasses/hud/security/sunglasses))
-								if(setcriminal != "Cancel")
-									R.fields["criminal"] = setcriminal
-									modified = 1
+						if(href_list["status"])
+							var/setcriminal = input(usr, "Specify a new criminal status for this person.", "Security HUD", R.fields["criminal"]) in list("None", "*Arrest*", "Incarcerated", "Parolled", "Discharged", "Cancel")
+							if(R)
+								if(istype(H.glasses, /obj/item/clothing/glasses/hud/security) || istype(H.glasses, /obj/item/clothing/glasses/hud/security/sunglasses))
+									if(setcriminal != "Cancel")
+										investigate_log("[src.key] has been set from [R.fields["criminal"]] to [setcriminal] by [usr.name] ([usr.key]).", "records")
+										R.fields["criminal"] = setcriminal
 
-									spawn()
+										spawn()
 										H.handle_regular_hud_updates()
+								return
 
-				if(!modified)
+						if(href_list["view"])
+							if(R)
+								if(usr.stat || H.weakened || H.stunned || H.restrained() || !istype(H.glasses, /obj/item/clothing/glasses/hud/security) || !istype(H.glasses, /obj/item/clothing/glasses/hud/security/sunglasses))
+									return
+								usr << "<b>Name:</b> [R.fields["name"]]	<b>Criminal Status:</b> [R.fields["criminal"]]"
+								usr << "<b>Minor Crimes:</b>"
+								for(var/datum/data/crime/c in R.fields["mi_crim"])
+									usr << "<b>Crime:</b> [c.crimeName]"
+									usr << "<b>Details:</b> [c.crimeDetails]"
+									usr << "Added by [c.author] at [c.time]"
+									usr << "----------"
+								usr << "<b>Major Crimes:</b>"
+								for(var/datum/data/crime/c in R.fields["ma_crim"])
+									usr << "<b>Crime:</b> [c.crimeName]"
+									usr << "<b>Details:</b> [c.crimeDetails]"
+									usr << "Added by [c.author] at [c.time]"
+									usr << "----------"
+								usr << "<b>Notes:</b> [R.fields["notes"]]"
+								return
+
+						if(href_list["add_crime"])
+							switch(alert("What crime would you like to add?","Security HUD","Minor Crime","Major Crime","Cancel"))
+								if("Minor Crime")
+									if(R)
+										var/t1 = copytext(sanitize(input("Please input minor crime names:", "Security HUD", "", null)  as text),1,MAX_MESSAGE_LEN)
+										var/t2 = copytext(sanitize(input("Please input minor crime details:", "Security HUD", "", null)  as message),1,MAX_MESSAGE_LEN)
+										if(R)
+											if (!t1 || !t2 || !allowed_access || H.stat || H.weakened || H.stunned || H.restrained() || !istype(H.glasses, /obj/item/clothing/glasses/hud/security) || !istype(H.glasses, /obj/item/clothing/glasses/hud/security/sunglasses))
+												return
+											var/crime = data_core.createCrimeEntry(t1, t2, allowed_access, worldtime2text())
+											data_core.addMinorCrime(R.fields["id"], crime)
+											usr << "<span class='notice'>Successfully added a minor crime.</span>"
+											return
+								if("Major Crime")
+									if(R)
+										var/t1 = copytext(sanitize(input("Please input major crime names:", "Security HUD", "", null)  as text),1,MAX_MESSAGE_LEN)
+										var/t2 = copytext(sanitize(input("Please input major crime details:", "Security HUD", "", null)  as message),1,MAX_MESSAGE_LEN)
+										if(R)
+											if (!t1 || !t2 || !allowed_access || H.stat || H.weakened || H.stunned || H.restrained() || !istype(H.glasses, /obj/item/clothing/glasses/hud/security) || !istype(H.glasses, /obj/item/clothing/glasses/hud/security/sunglasses))
+												return
+											var/crime = data_core.createCrimeEntry(t1, t2, allowed_access, worldtime2text())
+											data_core.addMajorCrime(R.fields["id"], crime)
+											usr << "<span class='notice'>Successfully added a major crime.</span>"
+											return
+								else return
+
+						if(href_list["view_comment"])
+							if(R)
+								if(H.stat || H.weakened || H.stunned || H.restrained() || !istype(H.glasses, /obj/item/clothing/glasses/hud/security) || !istype(H.glasses, /obj/item/clothing/glasses/hud/security/sunglasses))
+									return
+								usr << "<b>Comments/Log:</b>"
+								var/counter = 1
+								while(R.fields[text("com_[]", counter)])
+									usr << R.fields[text("com_[]", counter)]
+									usr << "----------"
+									counter++
+								return
+
+						if(href_list["add_comment"])
+							if(R)
+								var/t1 = copytext(sanitize(input("Add Comment:", "Secure. records", null, null)  as message),1,MAX_MESSAGE_LEN)
+								if(R)
+									if (!t1 || !allowed_access || H.stat || H.weakened || H.stunned || H.restrained() || !istype(H.glasses, /obj/item/clothing/glasses/hud/security) || !istype(H.glasses, /obj/item/clothing/glasses/hud/security/sunglasses))
+										return
+									var/counter = 1
+									while(R.fields[text("com_[]", counter)])
+										counter++
+									R.fields[text("com_[]", counter)] = text("Made by [] on [] [], []<BR>[]", allowed_access, worldtime2text(), time2text(world.realtime, "MMM DD"), year_integer+540, t1,)
+									usr << "<span class='notice'>Successfully added comment.</span>"
+									return
 					usr << "<span class='warning'>Unable to locate a data core entry for this person.</span>"
 
 /mob/living/carbon/human/proc/play_xylophone()
@@ -564,7 +554,7 @@
 
 	//Check for ID
 	var/obj/item/weapon/card/id/idcard = get_idcard()
-	if(judgebot.idcheck && !idcard)
+	if(judgebot.idcheck && !idcard && name=="Unknown")
 		threatcount += 4
 
 	//Check for weapons
@@ -604,6 +594,40 @@
 
 	//Agent cards lower threatlevel.
 	if(istype(idcard, /obj/item/weapon/card/id/syndicate))
-		threatcount -= 2
+		threatcount -= 5
 
 	return threatcount
+
+
+//Used for new human mobs created by cloning/goleming/podding
+/mob/living/carbon/human/proc/set_cloned_appearance()
+	if(gender == MALE)
+		facial_hair_style = "Full Beard"
+	else
+		facial_hair_style = "Shaved"
+	hair_style = pick("Bedhead", "Bedhead 2", "Bedhead 3")
+	underwear = "Nude"
+	regenerate_icons()
+
+/mob/living/carbon/human/singularity_act()
+	var/gain = 20
+	if(mind)
+		if((mind.assigned_role == "Station Engineer") || (mind.assigned_role == "Chief Engineer") )
+			gain = 100
+		if(mind.assigned_role == "Clown")
+			gain = rand(-300, 300)
+	investigate_log(" has consumed [key_name(src)].","singulo") //Oh that's where the clown ended up!
+	gib()
+	return(gain)
+
+/mob/living/carbon/human/singularity_pull(S, current_size)
+	if(current_size >= STAGE_THREE)
+		var/list/handlist = list(l_hand, r_hand)
+		for(var/obj/item/hand in handlist)
+			if(prob(current_size * 5) && hand.w_class >= ((11-current_size)/2)  && unEquip(hand))
+				step_towards(hand, src)
+				src << "<span class='warning'>\The [S] pulls \the [hand] from your grip!</span>"
+	apply_effect(current_size * 3, IRRADIATE)
+	if(mob_negates_gravity())
+		return
+	..()

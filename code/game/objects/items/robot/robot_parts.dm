@@ -51,8 +51,8 @@
 	icon_state = "head"
 	construction_time = 350
 	construction_cost = list("metal"=5000)
-	var/obj/item/device/flash/flash1 = null
-	var/obj/item/device/flash/flash2 = null
+	var/obj/item/device/flash/handheld/flash1 = null
+	var/obj/item/device/flash/handheld/flash2 = null
 
 /obj/item/robot_parts/robot_suit
 	name = "cyborg endoskeleton"
@@ -196,7 +196,7 @@
 				user << "<span class='danger'>Sticking a dead brain into the frame would sort of defeat the purpose.</span>"
 				return
 
-			if(M.brainmob.mind in ticker.mode.head_revolutionaries)
+			if((M.brainmob.mind in ticker.mode.head_revolutionaries) || (M.brainmob.mind in ticker.mode.A_bosses) || (M.brainmob.mind in ticker.mode.B_bosses))
 				user << "<span class='danger'>The frame's firmware lets out a shrill sound, and flashes 'Abnormal Memory Engram'. It refuses to accept the MMI.</span>"
 				return
 
@@ -252,6 +252,8 @@
 		else
 			user << "<span class='notice'>The MMI must go in after everything else!</span>"
 
+	if(istype(W,/obj/item/weapon/pen))
+		user << "<span class='warning'>You need to use a multitool to name [src].</span>"
 	return
 
 /obj/item/robot_parts/robot_suit/proc/Interact(mob/user)
@@ -328,8 +330,8 @@
 
 /obj/item/robot_parts/head/attackby(obj/item/W as obj, mob/user as mob)
 	..()
-	if(istype(W, /obj/item/device/flash))
-		var/obj/item/device/flash/F = W
+	if(istype(W, /obj/item/device/flash/handheld))
+		var/obj/item/device/flash/handheld/F = W
 		if(src.flash1 && src.flash2)
 			user << "<span class='notice'>You have already inserted the eyes!</span>"
 			return

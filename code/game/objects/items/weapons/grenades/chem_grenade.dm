@@ -21,8 +21,7 @@
 	name = "[initial(name)] casing" // By adding the " casing" part here we can use initial(name) to get the final name, making it nice to say "large grenade" when it is a large grenade.
 
 
-/obj/item/weapon/grenade/chem_grenade/examine()
-	set src in usr
+/obj/item/weapon/grenade/chem_grenade/examine(mob/user)
 	display_timer = (stage == READY && !nadeassembly)	//show/hide the timer based on assembly state
 	..()
 
@@ -153,12 +152,6 @@
 /obj/item/weapon/grenade/chem_grenade/on_found(mob/finder)
 	if(nadeassembly)
 		nadeassembly.on_found(finder)
-
-/obj/item/weapon/grenade/chem_grenade/hear_talk(mob/living/M, msg)
-	if(nadeassembly)
-		nadeassembly.hear_talk(M, msg)
-
-
 
 /obj/item/weapon/grenade/chem_grenade/prime()
 	if(stage != READY)
@@ -340,6 +333,26 @@
 	var/obj/item/weapon/reagent_containers/glass/beaker/B2 = new(src)
 
 	B1.reagents.add_reagent("condensedcapsaicin", 25)
+	B1.reagents.add_reagent("potassium", 25)
+	B2.reagents.add_reagent("phosphorus", 25)
+	B2.reagents.add_reagent("sugar", 25)
+
+	beakers += B1
+	beakers += B2
+	icon_state = "grenade"
+
+
+/obj/item/weapon/grenade/chem_grenade/pacid
+	name = "acid grenade"
+	desc = "Used for melting armoured opponents."
+	stage = READY
+
+/obj/item/weapon/grenade/chem_grenade/pacid/New()
+	..()
+	var/obj/item/weapon/reagent_containers/glass/beaker/B1 = new(src)
+	var/obj/item/weapon/reagent_containers/glass/beaker/B2 = new(src)
+
+	B1.reagents.add_reagent("pacid", 100)
 	B1.reagents.add_reagent("potassium", 25)
 	B2.reagents.add_reagent("phosphorus", 25)
 	B2.reagents.add_reagent("sugar", 25)

@@ -22,6 +22,21 @@
 	unbuckle()
 	..()
 
+/obj/structure/stool/bed/Move(atom/newloc, direct) //Some bed children move
+	. = ..()
+	if(buckled_mob)
+		buckled_mob.loc = src.loc
+
+/obj/structure/stool/bed/Process_Spacemove(var/movement_dir = 0)
+	if(buckled_mob)
+		return buckled_mob.Process_Spacemove(movement_dir)
+	return ..()
+
+/obj/structure/stool/bed/CanPass(atom/movable/mover, turf/target, height=1.5)
+	if(mover == buckled_mob)
+		return 1
+	return ..()
+
 /obj/structure/stool/bed/attack_paw(mob/user as mob)
 	return src.attack_hand(user)
 
@@ -49,9 +64,10 @@
 			buckled_mob.anchored = initial(buckled_mob.anchored)
 			buckled_mob.update_canmove()
 
-			var/M = buckled_mob
+			var/mob/M = buckled_mob
 			buckled_mob = null
 
+			M.newtonian_move(inertia_dir)
 			afterbuckle(M)
 	return
 
@@ -106,8 +122,10 @@
 			"You are buckled in to [src] by [user.name].",\
 			"You hear metal clanking")
 	M.buckled = src
+	M.anchored = anchored
 	M.loc = src.loc
 	M.dir = src.dir
+	M.anchored = 1
 	M.update_canmove()
 	src.buckled_mob = M
 	src.add_fingerprint(user)
@@ -129,14 +147,37 @@
 	if(buckled_mob)
 		density = 1
 		icon_state = "up"
-		M.pixel_y += buckled_pixel_y_offset
+		M.pixel_y = initial(M.pixel_y)
 	else
 		density = 0
 		icon_state = "down"
-		M.pixel_y -= buckled_pixel_y_offset
+		M.pixel_y = initial(M.pixel_y)
+		if(M.lying)
+			M.pixel_y -= buckled_pixel_y_offset
 
-/obj/structure/stool/bed/roller/Move()
+
+
+/obj/item/roller
+	name = "roller bed"
+	desc = "A collapsed roller bed that can be carried around."
+	icon = 'icons/obj/rollerbed.dmi'
+	icon_state = "folded"
+	w_class = 4.0 // Can't be put in backpacks.
+
+
+/obj/item/roller/attack_self(mob/user)
+	var/obj/structure/stool/bed/roller/R = new /obj/structure/stool/bed/roller(user.loc)
+	R.add_fingerprint(user)
+	qdel(src)
+
+/obj/structure/stool/bed/roller/MouseDrop(over_object, src_location, over_location)
 	..()
-	if(buckled_mob)
-		if(buckled_mob.buckled == src)
-			buckled_mob.loc = src.loc
+	if(over_object == usr && Adjacent(usr) && (in_range(src, usr) || usr.contents.Find(src)))
+		if(!ishuman(usr))
+			return
+		if(buckled_mob)
+			return 0
+		visible_message("<span class='notice'>[usr] collapses \the [src.name].</span>")
+		new/obj/item/roller(get_turf(src))
+		qdel(src)
+		return

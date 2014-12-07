@@ -52,6 +52,7 @@
 		var object_list = document.spawner.object_list;
 		var object_paths = null /* object types */;
 		var objects = object_paths == null ? new Array() : object_paths.split(";");
+		var timeoutId = -1;
 		
 		document.spawner.filter.focus();
 		populateList(objects);
@@ -72,27 +73,33 @@
 		
 		function updateSearch()
 		{
-			if (old_search == document.spawner.filter.value)
-			{
-				return;
+			if(timeoutId > -1) {
+				window.clearTimeout(timeoutId);
 			}
 			
-			old_search = document.spawner.filter.value;
-			
-			
-			var filtered = new Array();
-			var i;
-			for (i in objects)
-			{
-				if(objects[i].search(old_search) < 0)
+			window.setTimeout(function() {
+				if (old_search == document.spawner.filter.value)
 				{
-					continue;
+					return;
 				}
 				
-				filtered.push(objects[i]);
-			}
-			
-			populateList(filtered);
+				old_search = document.spawner.filter.value;
+				
+				
+				var filtered = new Array();
+				var i;
+				for (i in objects)
+				{
+					if(objects[i].search(old_search) < 0)
+					{
+						continue;
+					}
+					
+					filtered.push(objects[i]);
+				}
+				
+				populateList(filtered);
+			}, 1000);
 		}
 		
 		function submitFirst(event)

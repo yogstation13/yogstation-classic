@@ -1,4 +1,4 @@
-
+F
 
 /mob/living/simple_animal/hostile/carp
 	name = "space carp"
@@ -10,6 +10,7 @@
 	speak_chance = 0
 	turns_per_move = 5
 	meat_type = /obj/item/weapon/reagent_containers/food/snacks/carpmeat
+	meat_amount = 2
 	response_help = "pets"
 	response_disarm = "gently pushes aside"
 	response_harm = "hits"
@@ -37,13 +38,13 @@
 
 	faction = list("carp")
 
-/mob/living/simple_animal/hostile/carp/Process_Spacemove(var/check_drift = 0)
+/mob/living/simple_animal/hostile/carp/Process_Spacemove(var/movement_dir = 0)
 	return 1	//No drifting in space for space carp!	//original comments do not steal
 
 /mob/living/simple_animal/hostile/carp/FindTarget()
 	. = ..()
 	if(.)
-		emote("nashes at [.]")
+		emote("me", 1, "nashes at [.]!")
 
 /mob/living/simple_animal/hostile/carp/AttackingTarget()
 	. =..()
@@ -61,3 +62,17 @@
 /mob/living/simple_animal/hostile/carp/holocarp/Die()
 	qdel(src)
 	return
+
+/mob/living/simple_animal/hostile/carp/megacarp
+	icon = 'icons/mob/alienqueen.dmi'
+	name = "Mega Space Carp"
+	desc = "A ferocious, fang bearing creature that resembles a shark. This one seems especially ticked off."
+	icon_state = "megacarp"
+	icon_living = "megacarp"
+	icon_dead = "megacarp_dead"
+	icon_gib = "megacarp_gib"
+	maxHealth = 65
+	health = 65
+
+	melee_damage_lower = 20
+	melee_damage_upper = 20

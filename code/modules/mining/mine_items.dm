@@ -21,7 +21,6 @@
 
 /obj/structure/closet/secure_closet/miner/New()
 	..()
-	sleep(2)
 	if(prob(50))
 		new /obj/item/weapon/storage/backpack/industrial(src)
 	else
@@ -43,6 +42,7 @@
 
 /obj/machinery/computer/shuttle/mining
 	name = "Mining Shuttle Console"
+	desc = "Used to call and send the mining shuttle."
 	req_access = list(access_mining)
 	circuit = /obj/item/weapon/circuitboard/mining_shuttle
 	id = "mining"
@@ -72,11 +72,6 @@
 	origin_tech = "materials=1;engineering=1"
 	attack_verb = list("hit", "pierced", "sliced", "attacked")
 
-/obj/item/weapon/pickaxe/hammer
-	name = "sledgehammer"
-	//icon_state = "sledgehammer" Waiting on sprite
-	desc = "A mining hammer made of reinforced metal. You feel like smashing your boss in the face with this."
-
 /obj/item/weapon/pickaxe/silver
 	name = "silver pickaxe"
 	icon_state = "spickaxe"
@@ -99,7 +94,7 @@
 	item_state = "jackhammer"
 	digspeed = 15 //faster than drill, but cannot dig
 	origin_tech = "materials=3;powerstorage=2;engineering=2"
-	desc = "Cracks rocks with sonic blasts, perfect for killing cave lizards."
+	desc = "Cracks rocks with sonic blasts, perfect for clearing large areas of rock."
 
 /obj/item/weapon/pickaxe/gold
 	name = "golden pickaxe"

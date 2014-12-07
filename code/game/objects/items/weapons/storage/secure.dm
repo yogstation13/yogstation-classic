@@ -27,10 +27,9 @@
 	max_w_class = 2
 	max_combined_w_class = 14
 
-/obj/item/weapon/storage/secure/examine()
-	set src in oview(1)
+/obj/item/weapon/storage/secure/examine(mob/user)
 	..()
-	usr << text("The service panel is [src.open ? "open" : "closed"].")
+	user << text("The service panel is [src.open ? "open" : "closed"].")
 
 /obj/item/weapon/storage/secure/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(locked)
@@ -153,11 +152,13 @@
 	item_state = "sec-case"
 	desc = "A large briefcase with a digital locking system."
 	force = 8.0
+	hitsound = "swing_hit"
 	throw_speed = 2
 	throw_range = 4
 	w_class = 4.0
 	max_w_class = 3
 	max_combined_w_class = 21
+	attack_verb = list("bashed", "battered", "bludgeoned", "thrashed", "whacked")
 
 /obj/item/weapon/storage/secure/briefcase/New()
 	..()

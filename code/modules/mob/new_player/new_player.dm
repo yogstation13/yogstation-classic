@@ -5,6 +5,9 @@
 	var/spawning = 0//Referenced when you want to delete the new_player later on in the code.
 	var/totalPlayers = 0		 //Player counts for the Lobby tab
 	var/totalPlayersReady = 0
+	var/joining_forbidden = 0
+
+	flags = NONE
 
 	invisibility = 101
 
@@ -22,12 +25,13 @@
 
 	var/output = "<center><p><a href='byond://?src=\ref[src];show_preferences=1'>Setup Character</A></p>"
 
-	if(!ticker || ticker.current_state <= GAME_STATE_PREGAME)
-		if(!ready)	output += "<p><a href='byond://?src=\ref[src];ready=1'>Declare Ready</A></p>"
-		else	output += "<p><b>You are ready</b> <a href='byond://?src=\ref[src];ready=0'>Cancel</A></p>"
+	if(!joining_forbidden)
+		if(!ticker || ticker.current_state <= GAME_STATE_PREGAME)
+			if(!ready)	output += "<p><a href='byond://?src=\ref[src];ready=1'>Declare Ready</A></p>"
+			else	output += "<p><b>You are ready</b> <a href='byond://?src=\ref[src];ready=0'>Cancel</A></p>"
 
-	else
-		output += "<p><a href='byond://?src=\ref[src];late_join=1'>Join Game!</A></p>"
+		else
+			output += "<p><a href='byond://?src=\ref[src];late_join=1'>Join Game!</A></p>"
 
 	output += "<p><a href='byond://?src=\ref[src];observe=1'>Observe</A></p>"
 
@@ -38,7 +42,7 @@
 			var/isadmin = 0
 			if(src.client && src.client.holder)
 				isadmin = 1
-			var/DBQuery/query = dbcon.NewQuery("SELECT id FROM erro_poll_question WHERE [(isadmin ? "" : "adminonly = false AND")] Now() BETWEEN starttime AND endtime AND id NOT IN (SELECT pollid FROM erro_poll_vote WHERE ckey = \"[ckey]\") AND id NOT IN (SELECT pollid FROM erro_poll_textreply WHERE ckey = \"[ckey]\")")
+			var/DBQuery/query = dbcon.NewQuery("SELECT id FROM [format_table_name("poll_question")] WHERE [(isadmin ? "" : "adminonly = false AND")] Now() BETWEEN starttime AND endtime AND id NOT IN (SELECT pollid FROM [format_table_name("poll_vote")] WHERE ckey = \"[ckey]\") AND id NOT IN (SELECT pollid FROM [format_table_name("poll_textreply")] WHERE ckey = \"[ckey]\")")
 			query.Execute()
 			var/newpoll = 0
 			while(query.NextRow())
@@ -65,12 +69,24 @@
 	var/brandnew = 0
 	if(client.player_age == "Requires database")
 		brandnew = 1
+		joining_forbidden = 1
+	var/current_agree = client.prefs.agree
 	var/output = ""
 	output += "Welcome [brandnew ? "" : "back "]to Yogstation!<br>"
 	if(brandnew)
-		output += "This appears to be your first time here. Please take a moment to read the server rules.<br>"
-	else
+		output += "This appears to be your first time here. Please take a moment to read the server rules.<br>You will not be able to join this round. Take this time to acknowledge yourself with the map, rules, and playstyle.<br>Don't forget to set up your character preferences!<br>"
+	else if(current_agree == 0)
 		output += "Even though you've been here before, please take a moment to read the server rules.<br>"
+	else if(current_agree == -1)
+		output += "Please read the server rules carefully. To stop receiving this popup, contact an administrator using Adminhelp (F1).<br>"
+
+	if(current_agree > 0)
+		output += "There has been an update in the server rules:<br>"
+		if(current_agree < 2)
+			output += "Wizard added to murderboning exception list.<br>Added rule 0.6 (Use proper IC language).<br>"
+		if(current_agree < 3)
+			output += "Added rule 0.8 (Use common sense).<br>Added rule 1.3 (Do not act as antagonist when not).<br>Expanded rule 0.7 (Listen to admins).<br>Griefing and powergaming rules now mention critting as well as killing.<br>"
+
 	output += "Violation of server rules can lead to a ban from certain roles, a temporary ban, or a permanent ban.<br>"
 	output += "If you have trouble understanding some of the game mechanics, check out the wiki.<br>"
 	output += "Any remaining questions can be resolved by using Adminhelp (F1).<br>"
@@ -102,11 +118,13 @@
 			stat("Time To Start:", "DELAYED")
 
 		if(ticker.current_state == GAME_STATE_PREGAME)
-			stat("Players: [totalPlayers]", "Players Ready: [totalPlayersReady]")
+			stat("Players:", "[totalPlayers]")
+			if(src.client in admins)
+				stat("Players Ready:", "[totalPlayersReady]")
 			totalPlayers = 0
 			totalPlayersReady = 0
 			for(var/mob/new_player/player in player_list)
-				stat("[player.key]", (player.ready)?("(Playing)"):(null))
+				stat("[player.key]", (player.ready && src.client in admins)?("(Playing)"):(null))
 				totalPlayers++
 				if(player.ready)totalPlayersReady++
 
@@ -143,6 +161,8 @@
 			observer.loc = O.loc
 			if(client.prefs.be_random_name)
 				client.prefs.real_name = random_name(gender)
+			if(client.prefs.be_random_body)
+				client.prefs.random_character(gender)
 			observer.real_name = client.prefs.real_name
 			observer.name = observer.real_name
 			observer.key = key
@@ -173,7 +193,7 @@
 		var/voted = 0
 
 		//First check if the person has not voted yet.
-		var/DBQuery/query = dbcon.NewQuery("SELECT * FROM erro_privacy WHERE ckey='[src.ckey]'")
+		var/DBQuery/query = dbcon.NewQuery("SELECT * FROM [format_table_name("privacy")] WHERE ckey='[src.ckey]'")
 		query.Execute()
 		while(query.NextRow())
 			voted = 1
@@ -198,7 +218,7 @@
 			return
 
 		if(!voted)
-			var/sql = "INSERT INTO erro_privacy VALUES (null, Now(), '[src.ckey]', '[option]')"
+			var/sql = "INSERT INTO [format_table_name("privacy")] VALUES (null, Now(), '[src.ckey]', '[option]')"
 			var/DBQuery/query_insert = dbcon.NewQuery(sql)
 			query_insert.Execute()
 			usr << "<b>Thank you for your vote!</b>"
@@ -257,6 +277,10 @@
 					usr << "The option ID difference is too big. Please contact administration or the database admin."
 					return
 
+				for(var/optionid = id_min; optionid <= id_max; optionid++)
+					if(!isnull(href_list["option_[optionid]"]))	//Test if this optionid was selected
+						vote_on_poll(pollid, optionid, 1)
+
 
 	if(href_list["drules"])
 		src << browse(file('html/rules.html'), "window=rules;size=480x320")
@@ -265,12 +289,20 @@
 	if(href_list["dtgwiki"])
 		src << link("http://tgstation13.org/wiki/Main_Page")
 		return
+
 	if(href_list["dismiss"])
 		var/eula = alert("I have read and understood the server rules and agree to abide by them.", "Security question", "Cancel", "Agree")
 		if(eula == "Agree")
-			client.prefs.agree = 1;
-			client.prefs.save_preferences();
+			if(!client)
+				return
+			if(client.prefs.agree == MAXAGREE)
+				return
+			if(client.prefs.agree != -1)
+				client.prefs.agree = MAXAGREE;
+				client.prefs.save_preferences();
 			src << browse(null, "window=disclaimer");
+			if(joining_forbidden)
+				src << "Please spend this round observing the game to familiarise yourself with the map, rules, and general playstyle."
 			new_player_panel();
 		return
 	else if(!href_list["late_join"])
@@ -278,11 +310,18 @@
 
 /mob/new_player/proc/IsJobAvailable(rank)
 	var/datum/job/job = job_master.GetJob(rank)
-	if(!job)	return 0
-	if((job.current_positions >= job.total_positions) && job.total_positions != -1)	return 0
-	if(jobban_isbanned(src,rank))	return 0
-	if(!job.player_old_enough(src.client))	return 0
-	if(job.whitelisted && !(ckey in whitelist)) return 0
+	if(!job)
+		return 0
+	if((job.current_positions >= job.total_positions) && job.total_positions != -1)
+		return 0
+	if(jobban_isbanned(src,rank))
+		return 0
+	if(!job.player_old_enough(src.client))
+		return 0
+	if(config.enforce_human_authority && (rank in command_positions) && client.prefs.pref_species.id != "human")
+		return 0
+	if(job.whitelisted && !(ckey in whitelist))
+		return 0
 	return 1
 
 

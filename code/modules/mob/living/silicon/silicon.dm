@@ -1,19 +1,21 @@
 /mob/living/silicon
 	gender = NEUTER
-	robot_talk_understand = 1
 	voice_name = "synthesized voice"
+	languages = ROBOT | HUMAN
 	var/syndicate = 0
 	var/datum/ai_laws/laws = null//Now... THEY ALL CAN ALL HAVE LAWS
 	var/list/alarms_to_show = list()
 	var/list/alarms_to_clear = list()
 	var/designation = ""
-
+	var/obj/item/device/radio/borg/radio = null //AIs dont use this but this is at the silicon level to advoid copypasta in say()
 
 	var/list/alarm_types_show = list("Motion" = 0, "Fire" = 0, "Atmosphere" = 0, "Power" = 0, "Camera" = 0)
 	var/list/alarm_types_clear = list("Motion" = 0, "Fire" = 0, "Atmosphere" = 0, "Power" = 0, "Camera" = 0)
 
 	var/lawcheck[1]
 	var/ioncheck[1]
+
+	var/sensor_mode = 0 //Determines the current HUD.
 
 /mob/living/silicon/proc/cancelAlarm()
 	return
@@ -314,3 +316,74 @@
 
 /mob/living/silicon/assess_threat() //Secbots won't hunt silicon units
 	return -10
+
+/mob/living/silicon/verb/sensor_mode()
+	set name = "Set Sensor Augmentation"
+	var/sensor_type = input("Please select sensor type.", "Sensor Integration", null) in list("Security", "Medical","Disable")
+	switch(sensor_type)
+		if ("Security")
+			sensor_mode = DATA_HUD_SECURITY
+			src << "<span class='notice'>Security records overlay enabled.</span>"
+		if ("Medical")
+			sensor_mode = DATA_HUD_MEDICAL
+			src << "<span class='notice'>Life signs monitor overlay enabled.</span>"
+		if ("Disable")
+			sensor_mode = 0
+			src << "Sensor augmentations disabled."
+
+
+/mob/living/silicon/attack_alien(mob/living/carbon/alien/humanoid/M as mob)
+	if(..()) //if harm or disarm intent
+		var/damage = rand(10, 20)
+		if (prob(90))
+			add_logs(M, src, "attacked", admin=0)
+			playsound(loc, 'sound/weapons/slash.ogg', 25, 1, -1)
+			visible_message("<span class='danger'>[M] has slashed at [src]!</span>", \
+							"<span class='userdanger'>[M] has slashed at [src]!</span>")
+			if(prob(8))
+				flick("noise", flash)
+			add_logs(M, src, "attacked", admin=0)
+			adjustBruteLoss(damage)
+			updatehealth()
+		else
+			playsound(loc, 'sound/weapons/slashmiss.ogg', 25, 1, -1)
+			visible_message("<span class='danger'>[M] took a swipe at [src]!</span>", \
+							"<span class='userdanger'>[M] took a swipe at [src]!</span>")
+	return
+
+/mob/living/silicon/attack_animal(mob/living/simple_animal/M as mob)
+	if(..())
+		var/damage = rand(M.melee_damage_lower, M.melee_damage_upper)
+		adjustBruteLoss(damage)
+		updatehealth()
+
+/mob/living/silicon/attack_paw(mob/living/user)
+	return attack_hand(user)
+
+/mob/living/silicon/attack_larva(mob/living/carbon/alien/larva/L)
+	if(L.a_intent == "help")
+		visible_message("<span class='notice'>[L.name] rubs its head against [src].</span>")
+	return
+
+/mob/living/silicon/attack_hand(mob/living/carbon/human/M)
+	switch(M.a_intent)
+		if ("help")
+			M.visible_message("<span class='notice'>[M] pets [src]!</span>", \
+							"<span class='notice'>You pet [src]!</span>")
+		if("grab")
+			grabbedby(M)
+		else
+			M.do_attack_animation(src)
+			playsound(src.loc, 'sound/effects/bang.ogg', 10, 1)
+			if (HULK in M.mutations)
+				var/damage = rand(10,15)
+				adjustBruteLoss(damage)
+				add_logs(M, src, "attacked", admin=0)
+				playsound(loc, "punch", 25, 1, -1)
+				visible_message("<span class='danger'>[M] has punched [src]!</span>", \
+						"<span class='userdanger'>[M] has punched [src]!</span>")
+				return 1
+			else
+				visible_message("<span class='danger'>[M] punches [src], but doesn't leave a dent.</span>", \
+						"<span class='userdanger'>[M] punches [src], but doesn't leave a dent.!</span>")
+	return 0

@@ -3,7 +3,7 @@
 //#define TESTING				//Enables in-depth debug messages to runtime log (used for debugging)
 								//By using the testing("message") proc you can create debug-feedback for people with this
 								//uncommented, but not visible in the release version)
-
+#define MAXAGREE 3
 #define PRELOAD_RSC	1			/*set to:
 								0 to allow using external resources or on-demand behaviour;
 								1 to use the default behaviour;
@@ -28,7 +28,7 @@
 #define AGE_MIN				17	//youngest a character can be
 #define AGE_MAX				85	//oldest a character can be
 #define SHOES_SLOWDOWN		0	//How much shoes slow you down by default. Negative values speed you up
-#define STRIP_DELAY			40	//time taken (in deciseconds) to strip somebody
+#define POCKET_STRIP_DELAY			40	//time taken (in deciseconds) to search somebody's pockets
 #define DOOR_CRUSH_DAMAGE	10	//the amount of damage that airlocks deal when they crush you
 
 #define	HUNGER_FACTOR		0.1	//factor at which mob nutrition decreases

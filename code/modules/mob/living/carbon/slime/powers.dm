@@ -60,6 +60,8 @@
 	if(istype(Victim, /mob/living/simple_animal))
 		health_minimum = 0
 
+	add_logs(src, M, "fed on")
+
 	while(Victim && Victim.health > health_minimum && stat != 2)
 		canmove = 0
 
@@ -217,11 +219,13 @@
 
 			var/mob/living/carbon/slime/new_slime = pick(babies)
 			new_slime.a_intent = "harm"
-			new_slime.universal_speak = universal_speak
+			new_slime.languages = languages
 			if(src.mind)
 				src.mind.transfer_to(new_slime)
 			else
 				new_slime.key = src.key
+			new_slime.attack_log = src.attack_log
+			add_logs(src, new_slime, "split into", addition="in [get_area(src)]")
 			qdel(src)
 		else
 			src << "<i>I am not ready to reproduce yet...</i>"

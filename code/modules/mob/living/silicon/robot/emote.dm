@@ -1,4 +1,4 @@
-/mob/living/silicon/robot/emote(var/act,var/m_type=1,var/message = null)
+/mob/living/silicon/emote(var/act,var/m_type=1,var/message = null)
 	var/param = null
 	if (findtext(act, "-", 1, null))
 		var/t1 = findtext(act, "-", 1, null)
@@ -201,10 +201,9 @@
 			src << "<span class='notice'>Unusable emote '[act]'. Say *help for a list.</span>"
 
 	if ((message && src.stat == 0))
+		log_emote("[name]/[key] : [message]")
 		if (m_type & 1)
-			for(var/mob/O in viewers(src, null))
-				O.show_message(message, m_type)
+			visible_message(message)
 		else
-			for(var/mob/O in hearers(src, null))
-				O.show_message(message, m_type)
+			src.loc.audible_message(message)
 	return

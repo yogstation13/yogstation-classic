@@ -11,7 +11,8 @@ datum/design/mass_spectrometer
 	materials = list("$metal" = 30, "$glass" = 20)
 	reliability = 76
 	build_path = /obj/item/device/mass_spectrometer
-
+	ui_category = "Medical"
+	
 datum/design/adv_mass_spectrometer
 	name = "Advanced Mass-Spectrometer"
 	desc = "A device for analyzing chemicals in the blood and their quantities."
@@ -21,6 +22,7 @@ datum/design/adv_mass_spectrometer
 	materials = list("$metal" = 30, "$glass" = 20)
 	reliability = 74
 	build_path = /obj/item/device/mass_spectrometer/adv
+	ui_category = "Medical"
 
 datum/design/mmi
 	name = "Man-Machine Interface"
@@ -32,6 +34,7 @@ datum/design/mmi
 	reliability = 76
 	build_path = /obj/item/device/mmi
 	category = "Misc"
+	ui_category = "Medical"
 
 datum/design/mmi_radio
 	name = "Radio-enabled Man-Machine Interface"
@@ -43,17 +46,19 @@ datum/design/mmi_radio
 	reliability = 74
 	build_path = /obj/item/device/mmi/radio_enabled
 	category = "Misc"
+	ui_category = "Medical"
 
 datum/design/synthetic_flash
-	name = "Synthetic Flash"
+	name = "Flash"
 	desc = "When a problem arises, SCIENCE is the solution."
 	id = "sflash"
 	req_tech = list("magnets" = 3, "combat" = 2)
 	build_type = MECHFAB
 	materials = list("$metal" = 750, "$glass" = 750)
 	reliability = 76
-	build_path = /obj/item/device/flash/synthetic
+	build_path = /obj/item/device/flash/handheld
 	category = "Misc"
+	ui_category = "Medical"
 
 datum/design/bluespacebeaker
 	name = "Bluespace Beaker"
@@ -65,6 +70,7 @@ datum/design/bluespacebeaker
 	reliability = 76
 	build_path = /obj/item/weapon/reagent_containers/glass/beaker/bluespace
 	category = "Misc"
+	ui_category = "Medical"
 
 datum/design/noreactbeaker
 	name = "Cryostasis Beaker"
@@ -76,3 +82,28 @@ datum/design/noreactbeaker
 	reliability = 76
 	build_path = /obj/item/weapon/reagent_containers/glass/beaker/noreact
 	category = "Misc"
+	ui_category = "Medical"
+
+datum/design/bluespacebodybag
+	name = "Bluespace body bag"
+	desc = "A bluespace body bag, powered by experimental bluespace technology. It can hold loads of bodies and the largest of creatures."
+	id = "bluespacebodybag"
+	req_tech = list("bluespace" = 2, "materials" = 6)
+	build_type = PROTOLATHE
+	materials = list("$metal" = 3000, "$plasma" = 2000, "$diamond" = 500)
+	reliability = 76
+	build_path = /obj/item/bodybag/bluespace
+	category = "Misc"
+	ui_category = "Medical"
+
+datum/design/defib
+	name = "Defibrillator"
+	desc = "A device that delivers powerful shocks to detachable paddles that resuscitate incapacitated patients."
+	id = "defib"
+	req_tech = list("materials" = 7, "biotech" = 5, "powerstorage" = 5)
+	build_type = PROTOLATHE
+	materials = list("$metal" = 5000, "$glass" = 2000, "$silver" = 1000)
+	reliability = 76
+	build_path = /obj/item/weapon/defibrillator
+	category = "Misc"
+	ui_category = "Medical"

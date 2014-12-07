@@ -35,7 +35,7 @@
 
 
 /obj/item/weapon/photo/attack_self(mob/user)
-	examine()
+	user.examinate(src)
 
 
 /obj/item/weapon/photo/attackby(obj/item/weapon/P, mob/user)
@@ -47,15 +47,13 @@
 	..()
 
 
-/obj/item/weapon/photo/examine()
-	set src in oview(1)
-	if(is_blind(usr))	return
+/obj/item/weapon/photo/examine(mob/user)
+	..()
 
-	if(in_range(usr, src))
-		show(usr)
-		usr << desc
+	if(in_range(user, src))
+		show(user)
 	else
-		usr << "<span class='notice'>It is too far away.</span>"
+		user << "You need to get closer to get a good look at this photo."
 
 
 /obj/item/weapon/photo/proc/show(mob/user)
@@ -75,7 +73,7 @@
 
 	var/n_name = copytext(sanitize(input(usr, "What would you like to label the photo?", "Photo Labelling", null)  as text), 1, MAX_NAME_LEN)
 	//loc.loc check is for making possible renaming photos in clipboards
-	if((loc == usr || loc.loc && loc.loc == usr) && usr.stat == 0)
+	if((loc == usr || loc.loc && loc.loc == usr) && usr.stat == 0 && usr.canmove && !usr.restrained())
 		name = "photo[(n_name ? text("- '[n_name]'") : null)]"
 	add_fingerprint(usr)
 
@@ -163,9 +161,9 @@
 	..()
 
 
-/obj/item/device/camera/examine()
+/obj/item/device/camera/examine(mob/user)
 	..()
-	usr << "It has [pictures_left] photos left."
+	user << "It has [pictures_left] photos left."
 
 
 /obj/item/device/camera/proc/camera_get_icon(list/turfs, turf/center)
@@ -201,7 +199,7 @@
 
 		res.Blend(img, blendMode2iconMode(A.blend_mode), offX, offY)
 
-		if(istype(A, /obj/item/blueprints))
+		if(istype(A, /obj/item/areaeditor/blueprints))
 			blueprints = 1
 
 	for(var/turf/T in turfs)
@@ -236,11 +234,11 @@
 	var/list/seen
 	if(!isAi) //crappy check, but without it AI photos would be subject to line of sight from the AI Eye object. Made the best of it by moving the sec camera check inside
 		if(user.client)		//To make shooting through security cameras possible
-			seen = hear(world.view, user.client.eye) //To make shooting through security cameras possible
+			seen = get_hear(world.view, user.client.eye) //To make shooting through security cameras possible
 		else
-			seen = hear(world.view, user)
+			seen = get_hear(world.view, user)
 	else
-		seen = hear(world.view, target)
+		seen = get_hear(world.view, target)
 
 	var/list/turfs = list()
 	for(var/turf/T in range(1, target))
