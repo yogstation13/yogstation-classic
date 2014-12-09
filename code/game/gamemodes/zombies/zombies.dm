@@ -69,16 +69,21 @@
 		carriermind.current.viruses += D
 	..()
 
+/datum/game_mode/zombies/check_finished()
+	return check_zombies_victory()
+
 /datum/game_mode/zombies/proc/check_zombies_victory()
-	for(var/mob/living/carbon/human/zombie/M in living_mob_list)
-		if (M.has_disease(/datum/disease/transformation/rage_virus))
-			var/area/A = get_area(M)
-			if(is_type_in_list(A, centcom_areas))
-				escaped_zombies++
-	if(escaped_zombies >= zombies_to_win)
-		return 0
-	else
+	var/total_humans = 0
+	//var/total_zombies = 0
+	for(var/mob/living/carbon/human/H in living_mob_list)
+		total_humans++
+	//for(var/mob/living/carbon/human/zombie/Z in living_mob_list)
+	//	total_zombies++
+
+	if(total_humans == 0)
 		return 1
+	else
+		return 0
 
 /datum/game_mode/proc/add_zombie(datum/mind/zombie_mind)
 	zombie_infectees |= zombie_mind
