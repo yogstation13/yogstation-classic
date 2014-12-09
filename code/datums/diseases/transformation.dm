@@ -142,8 +142,8 @@
 
 /datum/disease/transformation/rage_virus/do_disease_transformation(var/mob/living/carbon/affected_mob)
 	if(!iszombie(affected_mob))
-		affected_mob.zombieize(TR_KEEPITEMS | TR_KEEPIMPLANTS | TR_KEEPDAMAGE | TR_KEEPVIRUS | TR_KEEPSE)
 		ticker.mode.add_zombie(affected_mob.mind)
+		affected_mob.zombieize(TR_KEEPITEMS | TR_KEEPIMPLANTS | TR_KEEPDAMAGE | TR_KEEPVIRUS | TR_KEEPSE | TR_HASHNAME)
 
 /datum/disease/transformation/rage_virus/stage_act()
 	..()

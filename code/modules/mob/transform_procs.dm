@@ -15,7 +15,7 @@
 
 	//Make mob invisible and spawn animation
 	regenerate_icons()
-	notransform = 1
+	notransform = 0
 	canmove = 0
 	stunned = 1
 	icon = null
@@ -84,7 +84,7 @@
 
 
 
-/mob/living/carbon/proc/zombieize(tr_flags = (TR_KEEPITEMS | TR_KEEPVIRUS | TR_DEFAULTMSG), newname = null)
+/mob/living/carbon/proc/zombieize(tr_flags = (TR_KEEPITEMS | TR_KEEPVIRUS | TR_DEFAULTMSG))
 	if (notransform)
 		return
 	//Handle items on mob
@@ -95,8 +95,12 @@
 		for(var/obj/item/weapon/implant/W in src)
 			implants += W
 
+	var/list/items = list()
 	if(tr_flags & TR_KEEPITEMS)
 		for(var/obj/item/W in (src.contents-implants))
+			// Not allowing head wear. Makes it easier to spot a zombie.
+			if(!(W.slot_flags & SLOT_HEAD))
+				items += W
 			unEquip(W)
 
 	//Make mob invisible and spawn animation
@@ -106,10 +110,10 @@
 	stunned = 1
 	icon = null
 	invisibility = 101
-	var/atom/movable/overlay/animation = new /atom/movable/overlay( loc )
-	animation.icon_state = "blank"
-	animation.icon = 'icons/mob/mob.dmi'
-	animation.master = src
+	//var/atom/movable/overlay/animation = new /atom/movable/overlay( loc )
+	//animation.icon_state = "blank"
+	//animation.icon = 'icons/mob/mob.dmi'
+	//animation.master = src
 
 	// Todo: Add proper human to zombie animation
 	//flick("h2zombie", animation)
@@ -117,17 +121,21 @@
 
 	//animation = null
 	var/mob/living/carbon/human/zombie/O = new /mob/living/carbon/human/zombie( loc )
-	qdel(animation)
+	//qdel(animation)
 
 
+	if(tr_flags & TR_KEEPITEMS)
+		for(var/obj/item/W in items)
+			O.equip_to_appropriate_slot(W)
 
 	// hash the original name?
 	if	(tr_flags & TR_HASHNAME)
-		O.name = "zombie ([copytext(md5(real_name), 2, 6)])"
-		O.real_name = "zombie ([copytext(md5(real_name), 2, 6)])"
-	if (newname) //if there's a name as an argument, always take that one over the current name
-		O.name = newname
-		O.real_name = newname
+		var/number = rand(1, 1000)
+		O.name = "zombie ([number])"
+		O.real_name = "zombie ([number])"
+	else
+		O.name = name
+		O.real_name = real_name
 
 	//handle DNA and other attributes
 	O.dna = dna
@@ -169,6 +177,7 @@
 	. = O
 	if ( !(tr_flags & TR_KEEPSRC) ) //flag should be used if zombieize() is called inside another proc of src so that one does not crash
 		qdel(src)
+
 	return
 
 

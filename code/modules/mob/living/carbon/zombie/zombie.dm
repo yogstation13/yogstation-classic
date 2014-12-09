@@ -6,7 +6,7 @@
 	icon_state = "zombie1"
 	gender = NEUTER
 	pass_flags = PASSTABLE
-	languages = ZOMBIE
+	//languages = ZOMBIE
 	update_icon = 0		///no need to call regenerate_icon
 	ventcrawler = 0
 
@@ -26,6 +26,12 @@
 
 	..()
 
+/mob/living/carbon/human/zombie/Move(NewLoc, direct)
+	..(NewLoc, direct)
+
+	if(rand(1,20) == 1)
+		say("This message will be turned into urrs.")
+
 /mob/living/carbon/human/zombie/movement_delay()
 	var/tally = 0
 	if(reagents)
@@ -33,12 +39,16 @@
 
 		if(reagents.has_reagent("nuka_cola")) return -1
 
-	var/health_deficiency = (100 - health)
-	if(health_deficiency >= 45) tally += (health_deficiency / 25)
+	// Health will be ignored, zombies feel no pain
+	//var/health_deficiency = (100 - health)
+	//if(health_deficiency >= 45) tally += (health_deficiency / 25)
 
-	if (bodytemperature < 283.222)
-		tally += (283.222 - bodytemperature) / 10 * 1.75
-	return tally+config.zombie_delay
+	// Zombies will not feel the cold
+	//if (bodytemperature < 283.222)
+	//	tally += (283.222 - bodytemperature) / 10 * 1.75
+
+	// Add generic slowness for zombie
+	return tally+config.zombie_delay+(rand(1, 3))
 
 /mob/living/carbon/human/zombie/Bump(atom/movable/AM as mob|obj, yes)
 	if ((!( yes ) || now_pushing))
@@ -75,7 +85,7 @@
 		help_shake_act(M)
 	else
 		if (M.a_intent == "harm" && !M.is_muzzled())
-			if (prob(75))
+			if (prob(85))
 				playsound(loc, 'sound/weapons/bite.ogg', 50, 1, -1)
 				visible_message("<span class='danger'>[M.name] bites [name]!</span>", \
 						"<span class='userdanger'>[M.name] bites [name]!</span>")
@@ -404,3 +414,20 @@
 
 /mob/living/carbon/human/zombie/SpeciesCanConsume()
 	return 1 // Monkeys can eat, drink, and be forced to do so
+
+/mob/living/carbon/human/zombie/proc/urrizeText(var/message)
+	var/len = (length(message) / 10) + 1
+
+	message = ""
+	for(var/i = 0; i < len; i++)
+		message += pick("urrrrr", "Urrrhh", "URRR!", "URRRRR?", "Urrrrhhhhhhh", "uuuuuuuur", "uuhhhhhh", "uuuh", "urrrh")+" "
+
+	return message
+
+/mob/living/carbon/human/zombie/say(message, bubble_type)
+	message = urrizeText(message)
+
+	return ..(message, bubble_type)
+
+/mob/living/carbon/human/zombie/say_quote(var/text)
+	return "[say_message], \"[text]\"";
