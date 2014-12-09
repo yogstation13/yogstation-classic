@@ -76,10 +76,12 @@
 	var/total_humans = 0
 	//var/total_zombies = 0
 	for(var/mob/living/carbon/human/H in living_mob_list)
-		total_humans++
+		if(H.client && !istype(H, /mob/living/carbon/human/zombie))
+			total_humans++
 	//for(var/mob/living/carbon/human/zombie/Z in living_mob_list)
 	//	total_zombies++
 
+	world << "DEBUG:: total_humans=[total_humans]"
 	if(total_humans == 0)
 		return 1
 	else
@@ -95,7 +97,7 @@
 
 
 /datum/game_mode/zombies/declare_completion()
-	if(!check_zombies_victory())
+	if(check_zombies_victory())
 		feedback_set_details("round_end_result","win - zombies win")
 		feedback_set("round_end_result",escaped_zombies)
 		world << "<span class='userdanger'><FONT size = 3>The zombies have infected the crew! UUUuuRRRRRRGGHHHHHHHHHhhhhh!!</FONT></span>"
