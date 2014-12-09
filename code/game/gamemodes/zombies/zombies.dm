@@ -81,7 +81,6 @@
 	//for(var/mob/living/carbon/human/zombie/Z in living_mob_list)
 	//	total_zombies++
 
-	world << "DEBUG:: total_humans=[total_humans]"
 	if(total_humans == 0)
 		return 1
 	else
