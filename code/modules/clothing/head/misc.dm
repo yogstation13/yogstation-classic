@@ -202,3 +202,11 @@
 	throw_range = 5
 	w_class = 2.0
 	attack_verb = list("warned", "cautioned", "smashed")
+
+/obj/item/clothing/head/cueball
+	name = "cueball helmet"
+	desc = "A large, featureless white orb mean to be worn on your head. How do you even see out of this thing?"
+	icon_state = "cueball"
+	flags = HEADCOVERSEYES|HEADCOVERSMOUTH|BLOCKHAIR
+	item_state="cueball"
+	flags_inv = 0
