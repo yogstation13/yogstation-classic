@@ -16,7 +16,7 @@ datum/design/nuclear_gun
 	
 datum/design/stunrevolver
 	name = "Stun Revolver"
-	desc = "The prize of the Head of Security."
+	desc = "A high-tech revolver that fires internal, reusable stun cartidges in a revolving cylinder. The stun cartridges can be recharged using a conventional energy weapon recharger."
 	id = "stunrevolver"
 	req_tech = list("combat" = 3, "materials" = 3, "powerstorage" = 2)
 	build_type = PROTOLATHE
@@ -123,8 +123,8 @@ datum/design/large_grenade
 	ui_category = "Weaponry"
 
 datum/design/smg
-	name = "Submachine Gun"
-	desc = "A lightweight, fast firing gun."
+	name = "Prototype Submachine Gun"
+	desc = "A prototype weapon made using lightweight materials on a traditional frame, designed to fire standard 9mm rounds."
 	id = "smg"
 	req_tech = list("combat" = 4, "materials" = 3)
 	build_type = PROTOLATHE
@@ -132,6 +132,15 @@ datum/design/smg
 	build_path = /obj/item/weapon/gun/projectile/automatic
 	locked = 1
 	ui_category = "Weaponry"
+
+datum/design/mag_smg
+	name = "Submachine Gun Magazine (9mm)"
+	desc = "A 20-round magazine for the prototype submachine gun."
+	id = "mag_smg"
+	req_tech = list("combat" = 4, "materials" = 3)
+	build_type = PROTOLATHE
+	materials = list("$metal" = 2000)
+	build_path = /obj/item/ammo_box/magazine/smgm9mm
 
 datum/design/xray
 	name = "Xray Laser Gun"
@@ -164,6 +173,7 @@ datum/design/wormhole_projector
 	materials = list("$silver" = 1000, "$metal" = 5000, "$diamond" = 3000)
 	build_path = /obj/item/weapon/gun/energy/wormhole_projector
 	locked = 1
+	ui_category = "Bluespace"
 
 datum/design/reciever
 	name = "Modular Reciever"
@@ -175,25 +185,6 @@ datum/design/reciever
 	build_path = /obj/item/weaponcrafting/reciever
 	ui_category = "Weaponry"
 
-datum/design/ammo_9mm
-	name = "Ammunition Box (9mm)"
-	desc = "A box of prototype 9mm ammunition."
-	id = "ammo_9mm"
-	req_tech = list("combat" = 4, "materials" = 3)
-	build_type = PROTOLATHE
-	materials = list("$metal" = 2000)
-	build_path = /obj/item/ammo_box/c9mm
-	ui_category = "Weaponry"
-
-datum/design/mag_smg
-	name = "Submachine Gun Magazine (9mm)"
-	desc = "A prototype magazine for the submachine gun."
-	id = "mag_smg"
-	req_tech = list("combat" = 4, "materials" = 3)
-	build_type = PROTOLATHE
-	materials = list("$metal" = 2000)
-	build_path = /obj/item/ammo_box/magazine/msmg9mm
-	ui_category = "Weaponry"
 
 datum/design/stunshell
 	name = "Stun Shell"
@@ -213,4 +204,13 @@ datum/design/techshell
 	build_type = PROTOLATHE
 	materials = list("$metal" = 1000, "$glass" = 200, "$silver" = 300)
 	build_path = /obj/item/ammo_casing/shotgun/techshell
+	ui_category = "Weaponry"
+
+datum/design/suppressor
+	name = "Universal Suppressor"
+	desc = "A reverse-engineered universal suppressor that fits on most small arms with threaded barrels."
+	id = "suppressor"
+	req_tech = list("combat" = 6, "engineering" = 5, "syndicate" = 3)
+	build_type = PROTOLATHE
+	materials = list("$metal" = 2000, "$silver" = 500)
 	ui_category = "Weaponry"

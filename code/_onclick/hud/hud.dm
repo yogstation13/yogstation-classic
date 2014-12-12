@@ -232,6 +232,7 @@ datum/hud/New(mob/owner)
 			mymob.client.screen += mymob.bodytemp				//As are the rest of these...
 			mymob.client.screen += mymob.fire
 			mymob.client.screen += mymob.healths
+			mymob.client.screen += mymob.healthdoll
 			mymob.client.screen += mymob.internals
 			mymob.client.screen += mymob.nutrition_icon
 			mymob.client.screen += mymob.oxygen
@@ -284,6 +285,7 @@ datum/hud/New(mob/owner)
 			mymob.client.screen -= mymob.bodytemp
 			mymob.client.screen -= mymob.fire
 			mymob.client.screen -= mymob.healths
+			mymob.client.screen -= mymob.healthdoll
 			mymob.client.screen -= mymob.internals
 			mymob.client.screen -= mymob.nutrition_icon
 			mymob.client.screen -= mymob.oxygen
