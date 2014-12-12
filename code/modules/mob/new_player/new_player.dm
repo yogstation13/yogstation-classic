@@ -333,6 +333,7 @@
 	job_master.AssignRole(src, rank, 1)
 
 	var/mob/living/carbon/human/character = create_character()	//creates the human and transfers vars and mind
+	character.mind.quiet_round = character.client.prefs.be_special & QUIET_ROUND
 	job_master.EquipRank(character, rank, 1)					//equips the human
 	character.loc = pick(latejoin)
 	character.lastarea = get_area(loc)
@@ -346,7 +347,7 @@
 
 	joined_player_list += character.ckey
 
-	if(config.allow_latejoin_antagonists && emergency_shuttle.timeleft() > 300) //Don't make them antags if the station is evacuating
+	if(config.allow_latejoin_antagonists && emergency_shuttle.timeleft() > 300 && !character.mind.quiet_round) //Don't make them antags if the station is evacuating
 		ticker.mode.make_antag_chance(character)
 	qdel(src)
 

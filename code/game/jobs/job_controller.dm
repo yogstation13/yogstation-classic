@@ -65,6 +65,7 @@ var/global/datum/controller/occupations/job_master
 	var/list/candidates = list()
 	for(var/mob/new_player/player in unassigned)
 		if(job.whitelisted && !(player.ckey in whitelist))
+			Debug("FOC whitelist failed, Player: [player]")
 			continue
 		if(jobban_isbanned(player, job.title))
 			Debug("FOC isbanned failed, Player: [player]")
@@ -79,7 +80,9 @@ var/global/datum/controller/occupations/job_master
 		if(config.enforce_human_authority && (job.title in command_positions) && player.client.prefs.pref_species.id != "human")
 			Debug("FOC non-human failed, Player: [player]")
 			continue
-
+		if(((job.title in command_positions) || (job.title in nonhuman_positions)) && (player.client.prefs.be_special & QUIET_ROUND))
+			Debug("FOC quiet check failed, Player: [player]")
+			continue
 		if(player.client.prefs.GetJobDepartment(job, level) & job.flag)
 			Debug("FOC pass, Player: [player], Level:[level]")
 			candidates += player
@@ -318,6 +321,9 @@ var/global/datum/controller/occupations/job_master
 
 	if(H.mind)
 		H.mind.assigned_role = rank
+		if(H.mind.quiet_round && ((rank in command_positions) || (rank in nonhuman_positions)))
+			H.mind.quiet_round = 0
+			H << "<span class='userdanger'>You are an important role, so your quiet round setting will not be considered!</span>"
 
 	if(job)
 		var/new_mob = job.equip(H)

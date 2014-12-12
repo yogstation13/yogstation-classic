@@ -188,7 +188,10 @@ var/next_external_rsc = 0
 		prefs.unlock_content |= 2
 		add_donor_verbs()
 	else
-		prefs.unlock_content &= 1
+		prefs.unlock_content &= ~2
+		if(prefs.be_special & QUIET_ROUND)
+			prefs.be_special &= ~QUIET_ROUND
+			prefs.save_preferences()
 
 	set_client_age_from_db()
 

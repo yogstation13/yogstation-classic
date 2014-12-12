@@ -31,3 +31,4 @@
 #define BE_NINJA		1024
 #define BE_MONKEY		2048
 #define BE_GANG			4096
+#define QUIET_ROUND		8192
