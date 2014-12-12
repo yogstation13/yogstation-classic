@@ -79,7 +79,7 @@
 	healthcheck()
 
 
-/obj/structure/alien/resin/ex_act(severity)
+/obj/structure/alien/resin/ex_act(severity, target)
 	switch(severity)
 		if(1.0)
 			health -= 150
@@ -211,16 +211,16 @@
 			new /obj/structure/alien/weeds(T, linked_node)
 
 
-/obj/structure/alien/weeds/ex_act(severity)
+/obj/structure/alien/weeds/ex_act(severity, target)
 	qdel(src)
 
 
 /obj/structure/alien/weeds/attackby(obj/item/I, mob/user)
 	user.changeNext_move(CLICK_CD_MELEE)
 	if(I.attack_verb.len)
-		visible_message("<span class='danger'>[src] has been [pick(I.attack_verb)] with [I] by [user].</span>")
+		visible_message("<span class='danger'>[user] has [pick(I.attack_verb)] [src] with [I]!</span>")
 	else
-		visible_message("<span class='danger'>[src] has been attacked with [I] by [user]!</span>")
+		visible_message("<span class='danger'>[user] has attacked [src] with [I]!</span>")
 
 	var/damage = I.force / 4.0
 	if(istype(I, /obj/item/weapon/weldingtool))
@@ -373,9 +373,9 @@
 
 /obj/structure/alien/egg/attackby(obj/item/I, mob/user)
 	if(I.attack_verb.len)
-		visible_message("<span class='danger'>[src] has been [pick(I.attack_verb)] with [I] by [user].</span>")
+		visible_message("<span class='danger'>[user] has [pick(I.attack_verb)] [src] with [I]!</span>")
 	else
-		visible_message("<span class='danger'>[src] has been attacked with [I] by [user]!</span>")
+		visible_message("<span class='danger'>[user] has attacked [src] with [I]!</span>")
 
 	var/damage = I.force / 4
 	if(istype(I, /obj/item/weapon/weldingtool))
@@ -450,9 +450,9 @@
 	pixel_y = target.pixel_y
 
 	if(isturf(target))	//Turfs take twice as long to take down.
-		target_strength = 8
+		target_strength = 640
 	else
-		target_strength = 4
+		target_strength = 320
 	tick()
 
 
@@ -474,18 +474,20 @@
 		qdel(src)
 		return
 
-	loc = target.loc
+	x = target.x
+	y = target.y
+	z = target.z
 
 	switch(target_strength - ticks)
-		if(6)
+		if(480)
 			visible_message("<span class='warning'>[target] is holding up against the acid!</span>")
-		if(4)
+		if(320)
 			visible_message("<span class='warning'>[target] is being melted by the acid!</span>")
-		if(2)
+		if(160)
 			visible_message("<span class='warning'>[target] is struggling to withstand the acid!</span>")
-		if(0 to 1)
+		if(80)
 			visible_message("<span class='warning'>[target] begins to crumble under the acid!</span>")
 
-	spawn(rand(150, 200))
+	spawn(1)
 		if(src)
 			tick()

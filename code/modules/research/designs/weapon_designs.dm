@@ -155,6 +155,16 @@ datum/design/ionrifle
 	locked = 1
 	ui_category = "Weaponry"
 
+datum/design/wormhole_projector
+	name = "Bluespace Wormhole Projector"
+	desc = "A projector that emits high density quantum-coupled bluespace beams."
+	id = "wormholeprojector"
+	req_tech = list("combat" = 6, "materials" = 6, "bluespace" = 4)
+	build_type = PROTOLATHE
+	materials = list("$silver" = 1000, "$metal" = 5000, "$diamond" = 3000)
+	build_path = /obj/item/weapon/gun/energy/wormhole_projector
+	locked = 1
+
 datum/design/reciever
 	name = "Modular Reciever"
 	desc = "A prototype modular reciever and trigger assembly for a variety of firearms."

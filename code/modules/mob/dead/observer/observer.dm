@@ -19,6 +19,7 @@
 							//Note that this is not a reliable way to determine if admins started as observers, since they change mobs a lot.
 	var/atom/movable/following = null
 	var/fun_verbs = 0
+	var/list/datum/atom_hud/oldhuds = null //old antag hud, gets readded in cloning/plantpodding
 	var/ninjahud = 0
 
 /mob/dead/observer/New(mob/body)
@@ -72,6 +73,7 @@ Works together with spawning an observer, noted above.
 			if(!can_reenter_corpse)
 				add_logs(src, src, "ghosted permanently")
 			ghost.key = key
+			ghost.refresh_huds(src) //inherit the HUDs
 			return ghost
 
 /*

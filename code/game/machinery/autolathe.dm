@@ -125,10 +125,8 @@ var/global/list/autolathe_category_list = list( \
 	wires = new(src)
 
 /obj/machinery/autolathe/interact(mob/user)
-	if(..())
-		return
-	if (src.shocked)
-		src.shock(user,50)
+	if(shocked && !(stat & NOPOWER))
+		shock(user,50)
 	regular_win(user)
 	return
 
@@ -203,7 +201,7 @@ var/global/list/autolathe_category_list = list( \
 	return attack_hand(user)
 
 /obj/machinery/autolathe/attack_hand(mob/user)
-	if(..())
+	if(..(user, 0))
 		return
 	interact(user)
 
@@ -301,6 +299,8 @@ var/global/list/autolathe_category_list = list( \
 
 /obj/machinery/autolathe/proc/regular_win(mob/user)
 	if(!panel_open)
+		if(stat)
+			return
 		var/coeff = 2 ** prod_coeff
 
 		dat = "<script src=\"libraries.min.js\"></script>"
