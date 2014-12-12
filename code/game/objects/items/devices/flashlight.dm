@@ -52,7 +52,7 @@
 		if(((CLUMSY in user.mutations) || user.getBrainLoss() >= 60) && prob(50))	//too dumb to use flashlight properly
 			return ..()	//just hit them in the head
 
-		if(!(istype(user, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")	//don't have dexterity
+		if(!user.IsAdvancedToolUser())
 			user << "<span class='notice'>You don't have the dexterity to do this!</span>"
 			return
 
@@ -173,18 +173,25 @@
 	if(!fuel || !on)
 		turn_off()
 		if(!fuel)
-			src.icon_state = "[initial(icon_state)]-empty"
+			icon_state = "[initial(icon_state)]-empty"
 		processing_objects -= src
 
 /obj/item/device/flashlight/flare/proc/turn_off()
 	on = 0
-	src.force = initial(src.force)
-	src.damtype = initial(src.damtype)
+	force = initial(src.force)
+	damtype = initial(src.damtype)
 	if(ismob(loc))
 		var/mob/U = loc
 		update_brightness(U)
 	else
 		update_brightness(null)
+
+/obj/item/device/flashlight/flare/update_brightness(var/mob/user = null)
+	..()
+	if(on)
+		item_state = "[initial(item_state)]-on"
+	else
+		item_state = "[initial(item_state)]"
 
 /obj/item/device/flashlight/flare/attack_self(mob/user)
 
@@ -199,8 +206,8 @@
 	// All good, turn it on.
 	if(.)
 		user.visible_message("<span class='notice'>[user] lights the [src].</span>", "<span class='notice'>You light the [src]!</span>")
-		src.force = on_damage
-		src.damtype = "fire"
+		force = on_damage
+		damtype = "fire"
 		processing_objects += src
 
 /obj/item/device/flashlight/flare/torch
@@ -209,7 +216,7 @@
 	w_class = 4
 	brightness_on = 7
 	icon_state = "torch"
-	item_state = "torch_off"
+	item_state = "torch"
 	on_damage = 10
 
 
@@ -248,10 +255,6 @@
 		charge_tick = 0
 		emp_cur_charges = min(emp_cur_charges+1, emp_max_charges)
 		return 1
-
-/obj/item/device/flashlight/emp/examine()
-	..()
-	return
 
 /obj/item/device/flashlight/emp/attack(mob/living/M as mob, mob/living/user as mob)
 	if(on && user.zone_sel.selecting == "eyes") // call original attack proc only if aiming at the eyes

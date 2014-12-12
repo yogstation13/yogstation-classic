@@ -1,8 +1,14 @@
+
+/*
+
+Passive gate is similar to the regular pump except:
+* It doesn't require power
+* Can not transfer low pressure to higher pressure (so it's more like a valve where you can control the flow)
+
+*/
+
 /obj/machinery/atmospherics/binary/passive_gate
-	//Tries to achieve target pressure at output (like a normal pump) except
-	//	Uses no power but can not transfer gases from a low pressure area to a high pressure area
-	icon = 'icons/obj/atmospherics/passive_gate.dmi'
-	icon_state = "intact_off"
+	icon_state = "passgate_map"
 
 	name = "passive gate"
 	desc = "A one-way air valve that does not require power"
@@ -16,19 +22,15 @@
 	var/id = null
 	var/datum/radio_frequency/radio_connection
 
-/obj/machinery/atmospherics/binary/passive_gate/update_icon()
-	if(stat & NOPOWER)
-		icon_state = "intact_off"
-	else if(node1 && node2)
-		icon_state = "intact_[on?("on"):("off")]"
-	else
-		if(node1)
-			icon_state = "exposed_1_off"
-		else if(node2)
-			icon_state = "exposed_2_off"
-		else
-			icon_state = "exposed_3_off"
-	return
+/obj/machinery/atmospherics/binary/passive_gate/Destroy()
+	if(radio_controller)
+		radio_controller.remove_object(src,frequency)
+	..()
+
+/obj/machinery/atmospherics/binary/passive_gate/update_icon_nopipes()
+	overlays.Cut()
+	if(on & !(stat & NOPOWER))
+		overlays += getpipeimage('icons/obj/atmospherics/binary_devices.dmi', "passgate_on")
 
 /obj/machinery/atmospherics/binary/passive_gate/process()
 	..()
@@ -54,11 +56,9 @@
 		var/datum/gas_mixture/removed = air1.remove(transfer_moles)
 		air2.merge(removed)
 
-		if(network1)
-			network1.update = 1
+		parent1.update = 1
 
-		if(network2)
-			network2.update = 1
+		parent2.update = 1
 
 
 //Radio remote control
@@ -148,8 +148,7 @@
 	if(href_list["power"])
 		on = !on
 	if(href_list["set_press"])
-		var/new_pressure = input(usr,"Enter new output pressure (0-4500kPa)","Pressure control",src.target_pressure) as num
-		src.target_pressure = max(0, min(4500, new_pressure))
+		target_pressure = max(0, min(4500, safe_input("Pressure control", "Enter new output pressure (0-4500kPa)", target_pressure)))
 	usr.set_machine(src)
 	src.update_icon()
 	src.updateUsrDialog()

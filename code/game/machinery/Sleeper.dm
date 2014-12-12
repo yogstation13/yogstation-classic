@@ -11,14 +11,15 @@
 	icon_state = "sleeper-open"
 	density = 0
 	anchored = 1
-	var/efficiency
+	interact_offline = 1
 	state_open = 1
+	var/efficiency
 	var/initial_bin_rating = 1
 	var/min_health = 25
 	var/list/injection_chems = list() //list of injectable chems except inaprovaline, coz inaprovaline is always avalible
 	var/list/possible_chems = list(list("stoxin", "dexalin", "bicaridine", "kelotane"),
-								   list("stoxin", "dexalinp", "imidazoline", "dermaline", "bicaridine"),
-								   list("tricordrazine", "anti_toxin", "ryetalyn", "dermaline", "bicaridine", "imidazoline", "alkysine", "arithrazine"))
+								   list("stoxin", "dexalinp", "bicaridine", "dermaline", "imidazoline"),
+								   list("stoxin", "dexalinp", "bicaridine", "dermaline", "imidazoline", "anti_toxin", "ryetalyn", "alkysine", "arithrazine"))
 
 /obj/machinery/sleeper/New()
 	..()
@@ -65,6 +66,7 @@
 
 /obj/machinery/sleeper/attack_animal(var/mob/living/simple_animal/M)//Stop putting hostile mobs in things guise
 	if(M.environment_smash)
+		M.do_attack_animation(src)
 		visible_message("<span class='danger'>[M.name] smashes [src] apart!</span>")
 		qdel(src)
 	return
@@ -82,28 +84,9 @@
 
 	default_deconstruction_crowbar(I)
 
-/obj/machinery/sleeper/ex_act(severity)
-	switch(severity)
-		if(1.0)
-			for(var/atom/movable/A in src)
-				A.loc = loc
-				A.ex_act(severity)
-			qdel(src)
-			return
-		if(2.0)
-			if(prob(50))
-				for(var/atom/movable/A in src)
-					A.loc = loc
-					A.ex_act(severity)
-				qdel(src)
-				return
-		if(3.0)
-			if(prob(25))
-				for(var/atom/movable/A in src)
-					A.loc = loc
-					A.ex_act(severity)
-				qdel(src)
-
+/obj/machinery/sleeper/ex_act(severity, target)
+	go_out()
+	..()
 
 /obj/machinery/sleeper/emp_act(severity)
 	if(stat & (BROKEN|NOPOWER))
@@ -132,11 +115,17 @@
 	open_machine()
 
 /obj/machinery/sleeper/attack_hand(mob/user)
-	if(stat & (BROKEN|NOPOWER))
+	if(..())
+		return
+
+	//powerless interaction
+	if(!is_operational())
+		user.unset_machine()//essential to prevent infinite loops of opening/closing the machine
 		if(state_open)
 			close_machine()
 		else
 			open_machine()
+
 	else
 		sleeperUI(user)
 
@@ -174,13 +163,17 @@
 			else
 				dat += "<span class='bad'>DEAD</span>"
 		dat += "<br />"
-		dat +=  "<div class='line'><div class='statusLabel'>Health:</div><div class='progressBar'><div style='width: [occupant.health]%;' class='progressFill good'></div></div><div class='statusValue'>[occupant.health]%</div></div>"
+		dat +=  "<div class='line'><div class='statusLabel'>Health:</div><div class='progressBar'><div style='width: [occupant.health < 0 ? "0" : "[occupant.health]"]%;' class='progressFill good'></div></div><div class='statusValue'>[occupant.stat > 1 ? "" : "[occupant.health]%"]</div></div>"
 		dat +=  "<div class='line'><div class='statusLabel'>\> Brute Damage:</div><div class='progressBar'><div style='width: [occupant.getBruteLoss()]%;' class='progressFill bad'></div></div><div class='statusValue'>[occupant.getBruteLoss()]%</div></div>"
 		dat +=  "<div class='line'><div class='statusLabel'>\> Resp. Damage:</div><div class='progressBar'><div style='width: [occupant.getOxyLoss()]%;' class='progressFill bad'></div></div><div class='statusValue'>[occupant.getOxyLoss()]%</div></div>"
 		dat +=  "<div class='line'><div class='statusLabel'>\> Toxin Content:</div><div class='progressBar'><div style='width: [occupant.getToxLoss()]%;' class='progressFill bad'></div></div><div class='statusValue'>[occupant.getToxLoss()]%</div></div>"
 		dat +=  "<div class='line'><div class='statusLabel'>\> Burn Severity:</div><div class='progressBar'><div style='width: [occupant.getFireLoss()]%;' class='progressFill bad'></div></div><div class='statusValue'>[occupant.getFireLoss()]%</div></div>"
 
 		dat += "<HR><div class='line'><div class='statusLabel'>Paralysis Summary:</div><div class='statusValue'>[round(occupant.paralysis)]% [occupant.paralysis ? "([round(occupant.paralysis / 4)] seconds left)" : ""]</div></div>"
+		if(occupant.getCloneLoss())
+			dat += "<div class='line'><span class='average'>Subject appears to have cellular damage.</span></div>"
+		if(occupant.getBrainLoss())
+			dat += "<div class='line'><span class='average'>Significant brain damage detected.</span></div>"
 		if(occupant.reagents.reagent_list.len)
 			for(var/datum/reagent/R in occupant.reagents.reagent_list)
 				dat += text("<div class='line'><div class='statusLabel'>[R.name]:</div><div class='statusValue'>[] units</div></div>", round(R.volume, 0.1))
@@ -222,13 +215,15 @@
 
 /obj/machinery/sleeper/open_machine()
 	if(!state_open && !panel_open)
-		..()
+		..(0)
 
 /obj/machinery/sleeper/close_machine(mob/target)
 	if(state_open && !panel_open)
-		..(target)
+		..(target, 0)
 
 /obj/machinery/sleeper/proc/inject_chem(mob/user, chem)
+	if(!is_operational())
+		return
 	if(occupant && occupant.reagents)
 		if(chem in injection_chems + "inaprovaline")
 			if(occupant.reagents.get_reagent_amount(chem) + 10 <= 20 * efficiency)

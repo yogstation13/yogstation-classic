@@ -54,6 +54,7 @@ h1.alert, h2.alert		{color: #000000;}
 .info					{color: #0000CC;}
 .notice					{color: #000099;}
 .boldnotice				{color: #000099;	font-weight: bold;}
+.adminnotice			{color: #0000ff;}
 .unconscious			{color: #0000ff;	font-weight: bold;}
 .suicide				{color: #ff5050;	font-style: italic;}
 
@@ -67,5 +68,37 @@ h1.alert, h2.alert		{color: #000000;}
 .interface				{color: #330033;}
 
 BIG IMG.icon 			{width: 32px; height: 32px;}
+
+.ticket-status {
+	color: #000099;
+	font-weight: bold;
+}
+
+.ticket-text-sent {
+	color: #000099;
+	font-weight: bold;
+}
+
+.ticket-text-received {
+	color: #ff0000;
+	font-weight: bold;
+}
+
+.ticket-text-monitored {
+	color: #ff00ff;
+	font-weight: bold;
+}
+
+.ticket-header-recieved {
+	color: #ff0000;
+	font-weight: bold;
+	font-size: 15px;
+}
+
+.ticket-admin-reply {
+	color: #ff0000;
+	font-weight: bold;
+	font-style: italic;
+}
 
 </style>"}

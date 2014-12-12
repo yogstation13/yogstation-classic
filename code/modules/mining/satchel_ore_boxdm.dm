@@ -45,7 +45,7 @@
 			amt_gold++;
 		if (istype(C,/obj/item/weapon/ore/uranium))
 			amt_uranium++;
-		if (istype(C,/obj/item/weapon/ore/clown))
+		if (istype(C,/obj/item/weapon/ore/bananium))
 			amt_clown++;
 
 	var/dat = text("<b>The contents of the ore box reveal...</b><br>")
@@ -82,3 +82,7 @@
 		usr << "<span class='notice'>You empty the box.</span>"
 	src.updateUsrDialog()
 	return
+
+obj/structure/ore_box/ex_act(severity, target)
+	if(prob(100 / severity) && severity < 3)
+		qdel(src) //nothing but ores can get inside unless its a bug and ores just return nothing on ex_act, not point in calling it on them

@@ -277,6 +277,13 @@ silicate
 	required_reagents = list("carbon" = 1, "hydrogen" = 1, "anti_toxin" = 1)
 	result_amount = 2
 
+/datum/chemical_reaction/inacusiate
+	name = "inacusiate"
+	id = "inacusiate"
+	result = "inacusiate"
+	required_reagents = list("water" = 1, "carbon" = 1, "anti_toxin" = 1)
+	result_amount = 2
+
 /datum/chemical_reaction/ethylredoxrazine
 	name = "Ethylredoxrazine"
 	id = "ethylredoxrazine"
@@ -334,23 +341,14 @@ silicate
 	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 	s.set_up(2, 1, location)
 	s.start()
-	for(var/mob/living/carbon/M in viewers(world.view, location))
-		switch(get_dist(M, location))
-			if(0 to 3)
-				if(hasvar(M, "glasses"))
-					if(istype(M:glasses, /obj/item/clothing/glasses/sunglasses))
-						continue
-
-				flick("e_flash", M.flash)
-				M.Weaken(5)
-
-			if(4 to 5)
-				if(hasvar(M, "glasses"))
-					if(istype(M:glasses, /obj/item/clothing/glasses/sunglasses))
-						continue
-
-				flick("e_flash", M.flash)
-				M.Stun(5)
+	for(var/mob/living/carbon/C in get_hearers_in_view(5, location))
+		if(C.eyecheck())
+			continue
+		flick("e_flash", C.flash)
+		if(get_dist(C, location) < 4)
+			C.Weaken(5)
+			continue
+		C.Stun(5)
 
 /datum/chemical_reaction/napalm
 	name = "Napalm"
@@ -402,6 +400,7 @@ silicate
 	required_reagents = list("potassium" = 1, "sugar" = 1, "phosphorus" = 1)
 	result_amount = null
 	secondary = 1
+
 /datum/chemical_reaction/chemsmoke/on_reaction(var/datum/reagents/holder, var/created_volume)
 	var/turf/location = get_turf(holder.my_atom)
 
@@ -468,6 +467,7 @@ silicate
 	result = null
 	required_reagents = list("iron" = 5, "frostoil" = 5, "plasma" = 20)
 	result_amount = 1
+
 /datum/chemical_reaction/plasmasolidification/on_reaction(var/datum/reagents/holder, var/created_volume)
 	var/location = get_turf(holder.my_atom)
 	new /obj/item/stack/sheet/mineral/plasma(location)
@@ -610,6 +610,7 @@ silicate
 
 
 	var/location = get_turf(holder.my_atom)
+
 
 	for(var/mob/M in viewers(5, location))
 		M << "<span class='danger'>The solution spews out a metalic foam!</span>"
@@ -972,6 +973,16 @@ datum/chemical_reaction/pestkiller
 	var/mob/living/carbon/slime/S = new /mob/living/carbon/slime
 	S.loc = get_turf(holder.my_atom)
 
+/datum/chemical_reaction/slimeinaprov
+	name = "Slime Inaprovaline"
+	id = "m_inaprov"
+	result = "inaprovaline"
+	required_reagents = list("water" = 5)
+	result_amount = 3
+	required_other = 1
+	required_container = /obj/item/slime_extract/grey
+/datum/chemical_reaction/slimeinaprov/on_reaction(var/datum/reagents/holder)
+	feedback_add_details("slime_cores_used","[replacetext(name," ","_")]")
 
 /datum/chemical_reaction/slimemonkey
 	name = "Slime Monkey"
@@ -1054,7 +1065,8 @@ datum/chemical_reaction/pestkiller
 				/mob/living/simple_animal/hostile/asteroid/goliath,
 				/mob/living/simple_animal/hostile/asteroid/hivelord,
 				/mob/living/simple_animal/hostile/asteroid/hivelordbrood,
-				/mob/living/simple_animal/hostile/carp/holocarp
+				/mob/living/simple_animal/hostile/carp/holocarp,
+				/mob/living/simple_animal/hostile/mining_drone
 				)//exclusion list for things you don't want the reaction to create.
 			var/list/critters = typesof(/mob/living/simple_animal/hostile) - blocked // list of possible hostile mobs
 
@@ -1123,7 +1135,8 @@ datum/chemical_reaction/pestkiller
 				/mob/living/simple_animal/hostile/asteroid/goliath,
 				/mob/living/simple_animal/hostile/asteroid/hivelord,
 				/mob/living/simple_animal/hostile/asteroid/hivelordbrood,
-				/mob/living/simple_animal/hostile/carp/holocarp
+				/mob/living/simple_animal/hostile/carp/holocarp,
+				/mob/living/simple_animal/hostile/mining_drone
 				)//exclusion list for things you don't want the reaction to create.
 			var/list/critters = typesof(/mob/living/simple_animal/hostile) - blocked // list of possible hostile mobs
 
@@ -1374,7 +1387,7 @@ datum/chemical_reaction/pestkiller
 	for(var/mob/living/carbon/slime/slime in viewers(get_turf(holder.my_atom), null))
 		slime.rabid = 1
 		for(var/mob/O in viewers(get_turf(holder.my_atom), null))
-			O.show_message(text("<span class='danger'>The [slime] is driven into a frenzy!.</span>"), 1)
+			O.show_message(text("<span class='danger'>The [slime] is driven into a frenzy!</span>"), 1)
 
 //Pink
 /datum/chemical_reaction/slimeppotion
@@ -1524,3 +1537,81 @@ datum/chemical_reaction/pestkiller
 	if(P)
 		P.loc = get_turf(holder.my_atom)
 
+//Rainbow
+
+/datum/chemical_reaction/clownspawn
+	name = "Clown Spawn"
+	id = "c_spawn"
+	result = null
+	required_reagents = list("plasma" = 1)
+	result_amount = 1
+	required_container = /obj/item/slime_extract/rainbow
+	required_other = 1
+/datum/chemical_reaction/clownspawn/on_reaction(var/datum/reagents/holder)
+	feedback_add_details("slime_cores_used","[replacetext(name," ","_")]")
+	for(var/mob/O in viewers(get_turf(holder.my_atom), null))
+		O.show_message(text("<span class='danger'>The slime extract begins to vibrate violently !</span>"), 1)
+	spawn(50)
+
+	if(holder && holder.my_atom)
+
+		var/list/critters = /mob/living/simple_animal/hostile/retaliate/clown // list of possible hostile mobs
+
+		var/atom/A = holder.my_atom
+		var/turf/T = get_turf(A)
+		var/area/my_area = get_area(T)
+		var/message = "A rainbow slime reaction has occured in [my_area.name]. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP</A>)"
+		message += " (<A HREF='?_src_=vars;Vars=\ref[A]'>VV</A>)"
+
+		var/mob/M = get(A, /mob)
+		if(M)
+			message += " - Carried By: [M.real_name] ([M.key]) (<A HREF='?_src_=holder;adminplayeropts=\ref[M]'>PP</A>) (<A HREF='?_src_=holder;adminmoreinfo=\ref[M]'>?</A>)"
+		else
+			message += " - Last Fingerprint: [(A.fingerprintslast ? A.fingerprintslast : "N/A")]"
+
+		message_admins(message, 0, 1)
+
+		playsound(get_turf(holder.my_atom), 'sound/items/bikehorn.ogg', 100, 1)
+
+		for(var/mob/living/carbon/human/H in viewers(get_turf(holder.my_atom), null))
+			if(H:eyecheck() <= 0)
+				flick("e_flash", H.flash)
+
+		for(var/i = 1, i <= 5, i++)
+			var/chosen = pick(critters)
+			var/mob/living/simple_animal/hostile/C = new chosen
+			C.faction |= "slimesummon"
+			C.loc = get_turf(holder.my_atom)
+			if(prob(50))
+				for(var/j = 1, j <= rand(1, 3), j++)
+					step(C, pick(NORTH,SOUTH,EAST,WEST))
+
+/datum/chemical_reaction/rainbowmeat
+	name = "Clown Bork"
+	id = "c_bork"
+	result = null
+	required_reagents = list("blood" = 1)
+	result_amount = 1
+	required_container = /obj/item/slime_extract/rainbow
+	required_other = 1
+/datum/chemical_reaction/rainbowmeat/on_reaction(var/datum/reagents/holder)
+
+	feedback_add_details("slime_cores_used","[replacetext(name," ","_")]")
+
+	var/list/borks = /obj/item/weapon/reagent_containers/food/snacks/meat/rainbow
+	// BORK BORK BORK
+
+	playsound(get_turf(holder.my_atom), 'sound/items/bikehorn.ogg', 100, 1)
+
+	for(var/mob/living/carbon/human/M in viewers(get_turf(holder.my_atom), null))
+		if(M:eyecheck() <= 0)
+			flick("e_flash", M.flash)
+
+	for(var/i = 1, i <= 4 + rand(1,2), i++)
+		var/chosen = pick(borks)
+		var/obj/B = new chosen
+		if(B)
+			B.loc = get_turf(holder.my_atom)
+			if(prob(50))
+				for(var/j = 1, j <= rand(1, 3), j++)
+					step(B, pick(NORTH,SOUTH,EAST,WEST))

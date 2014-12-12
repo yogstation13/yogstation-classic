@@ -6,7 +6,7 @@
 	var/e_cost = 100 //The amount of energy a cell needs to expend to create this shot.
 	var/select_name = "energy"
 	var/mod_name = null
-	var/fire_sound = 'sound/weapons/Laser.ogg'
+	fire_sound = 'sound/weapons/Laser.ogg'
 
 /obj/item/ammo_casing/energy/laser
 	projectile_type = /obj/item/projectile/beam
@@ -121,3 +121,15 @@
 	select_name  = "disable"
 	e_cost = 50
 	fire_sound = "sound/weapons/taser.ogg"
+
+/obj/item/ammo_casing/energy/wormhole
+	projectile_type = /obj/item/projectile/beam/wormhole
+	e_cost = 0
+	fire_sound = "sound/weapons/pulse3.ogg"
+	var/obj/item/weapon/gun/energy/wormhole_projector/gun = null
+	select_name = "blue"
+
+/obj/item/ammo_casing/energy/wormhole/orange
+	projectile_type = /obj/item/projectile/beam/wormhole/orange
+	select_name = "orange"
+

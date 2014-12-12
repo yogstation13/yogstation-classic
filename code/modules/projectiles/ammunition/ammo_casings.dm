@@ -8,18 +8,6 @@
 	caliber = ".50"
 	projectile_type = /obj/item/projectile/bullet
 
-/obj/item/ammo_casing/a418
-	desc = "A .418 bullet casing."
-	caliber = "357"
-	projectile_type = /obj/item/projectile/bullet/suffocationbullet
-
-
-/obj/item/ammo_casing/a666
-	desc = "A .666 bullet casing."
-	caliber = "357"
-	projectile_type = /obj/item/projectile/bullet/cyanideround
-
-
 /obj/item/ammo_casing/c38
 	desc = "A .38 bullet casing."
 	caliber = "38"
@@ -35,7 +23,7 @@
 /obj/item/ammo_casing/c9mm
 	desc = "A 9mm bullet casing."
 	caliber = "9mm"
-	projectile_type = /obj/item/projectile/bullet/midbullet2
+	projectile_type = /obj/item/projectile/bullet/weakbullet3
 
 
 /obj/item/ammo_casing/c45
@@ -46,7 +34,7 @@
 
 /obj/item/ammo_casing/shotgun
 	name = "shotgun slug"
-	desc = "A 12 gauge slug."
+	desc = "A 12 gauge lead slug."
 	icon_state = "blshell"
 	caliber = "shotgun"
 	projectile_type = /obj/item/projectile/bullet
@@ -54,8 +42,8 @@
 
 
 /obj/item/ammo_casing/shotgun/buckshot
-	name = "shotgun shell"
-	desc = "A 12 gauge shell."
+	name = "buckshot shell"
+	desc = "A 12 gauge buckshot shell."
 	icon_state = "gshell"
 	projectile_type = /obj/item/projectile/bullet/pellet
 	pellets = 5
@@ -63,19 +51,29 @@
 
 
 /obj/item/ammo_casing/shotgun/beanbag
-	name = "beanbag shell"
-	desc = "A weak beanbag shell."
+	name = "beanbag slug"
+	desc = "A weak beanbag slug for riot control."
 	icon_state = "bshell"
 	projectile_type = /obj/item/projectile/bullet/weakbullet
 	m_amt = 250
 
 
-/obj/item/ammo_casing/shotgun/stunshell
-	name = "stun shell"
-	desc = "A stunning shell."
+/obj/item/ammo_casing/shotgun/improvised
+	name = "improvised shell"
+	desc = "An extremely weak shotgun shell with multiple small pellets made out of metal shards."
+	icon_state = "gshell"
+	projectile_type = /obj/item/projectile/bullet/pellet/weak
+	m_amt = 250
+	pellets = 5
+	variance = 0.8
+
+
+/obj/item/ammo_casing/shotgun/stunslug
+	name = "taser slug"
+	desc = "A stunning taser slug."
 	icon_state = "stunshell"
 	projectile_type = /obj/item/projectile/bullet/stunshot
-	m_amt = 200
+	m_amt = 250
 
 
 /obj/item/ammo_casing/shotgun/meteorshot
@@ -94,13 +92,13 @@
 
 /obj/item/ammo_casing/shotgun/incendiary
 	name = "incendiary slug"
-	desc = "An incendiary shell which fires a single slug of incendiary ammo."
+	desc = "An incendiary-coated shotgun slug."
 	icon_state = "ishell"
 	projectile_type = /obj/item/projectile/bullet/incendiary/shell
 
 /obj/item/ammo_casing/shotgun/incendiary/dragonsbreath
 	name = "dragonsbreath shell"
-	desc = "An incendiary shell which fires a spread of incendiary ammo."
+	desc = "A shotgun shell which fires a spread of incendiary pellets."
 	icon_state = "ishell2"
 	projectile_type = /obj/item/projectile/bullet/incendiary/shell/dragonsbreath
 	pellets = 4
@@ -132,6 +130,10 @@
 	caliber = "a762"
 	projectile_type = /obj/item/projectile/bullet
 
+/obj/item/ammo_casing/a545
+	desc = "A 5.45mm bullet casing."
+	caliber = "a545"
+	projectile_type = /obj/item/projectile/bullet/heavybullet
 
 /obj/item/ammo_casing/caseless
 	desc = "A caseless bullet casing."
@@ -149,3 +151,10 @@
 	desc = "A .75 bullet casing."
 	caliber = "75"
 	projectile_type = /obj/item/projectile/bullet/gyro
+
+/obj/item/ammo_casing/a40mm
+	name = "40mm HE shell"
+	desc = "A cased high explosive grenade that can only be activated once fired out of a grenade launcher."
+	caliber = "40mm"
+	icon_state = "40mmHE"
+	projectile_type = /obj/item/projectile/bullet/a40mm

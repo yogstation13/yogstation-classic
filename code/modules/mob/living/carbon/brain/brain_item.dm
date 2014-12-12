@@ -28,20 +28,19 @@
 	brainmob.real_name = H.real_name
 	brainmob.dna = H.dna
 	brainmob.timeofhostdeath = H.timeofdeath
+	brainmob.loc = src
+	brainmob.container = src
 	if(H.mind)
 		H.mind.transfer_to(brainmob)
 	brainmob << "<span class='notice'>You feel slightly disoriented. That's normal when you're just a brain.</span>"
 
 
-/obj/item/organ/brain/examine()
-	set src in oview(12)
-	if(!usr)	return
-
+/obj/item/organ/brain/examine(mob/user)
 	..()
 	if(brainmob && brainmob.client)
-		usr << "You can feel the small spark of life still left in this one."
+		user << "You can feel the small spark of life still left in this one."
 	else
-		usr << "This one seems particularly lifeless. Perhaps it will regain some of it's luster later.."
+		user << "This one seems particularly lifeless. Perhaps it will regain some of its luster later."
 
 
 /obj/item/organ/brain/attack(mob/living/carbon/M, mob/user)
@@ -85,12 +84,10 @@
 		else
 			M.key = brainmob.key
 
+		qdel(brainmob)
+
 		M.internal_organs += src
 		loc = null
-
-		//Update the body's icon so it doesnt appear debrained anymore
-		if(ishuman(M))
-			H.update_hair(0)
 
 		//Update the body's icon so it doesnt appear debrained anymore
 		if(ishuman(M))

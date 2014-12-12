@@ -1,10 +1,4 @@
-/mob/living/carbon/human/examine()
-	set src in view()
-
-	if(!usr || !src)	return
-	if( usr.sdisabilities & BLIND || usr.blinded || usr.stat==UNCONSCIOUS )
-		usr << "<span class='notice'>Something is there but you can't see it.</span>"
-		return
+/mob/living/carbon/human/examine(mob/user)
 
 	var/list/obscured = check_obscured_slots()
 	var/skipface = 0
@@ -110,7 +104,7 @@
 
 	//handcuffed?
 	if(handcuffed)
-		if(istype(handcuffed, /obj/item/weapon/handcuffs/cable))
+		if(istype(handcuffed, /obj/item/weapon/restraints/handcuffs/cable))
 			msg += "<span class='warning'>[t_He] [t_is] \icon[handcuffed] restrained with cable!</span>\n"
 		else
 			msg += "<span class='warning'>[t_He] [t_is] \icon[handcuffed] handcuffed!</span>\n"
@@ -156,7 +150,7 @@
 		else if(istype(wear_id, /obj/item/weapon/card/id)) //just in case something other than a PDA/ID card somehow gets in the ID slot :[
 			var/obj/item/weapon/card/id/idcard = wear_id
 			id = idcard.registered_name
-		if(id && (id != real_name) && (get_dist(src, usr) <= 1) && prob(10))
+		if(id && (id != real_name) && (get_dist(src, user) <= 1) && prob(10))
 			msg += "<span class='warning'>[t_He] [t_is] wearing \icon[wear_id] \a [wear_id] yet something doesn't seem right...</span>\n"
 		else*/
 		msg += "[t_He] [t_is] wearing \icon[wear_id] \a [wear_id].\n"
@@ -170,9 +164,6 @@
 		if(100 to 200)
 			msg += "<span class='warning'>[t_He] [t_is] twitching ever so slightly.</span>\n"
 
-	if(suiciding)
-		msg += "<span class='warning'>[t_He] appears to have commited suicide... there is no hope of recovery.</span>\n"
-
 	if(gender_ambiguous) //someone fucked up a gender reassignment surgery
 		if (gender == MALE)
 			msg += "[t_He] has a strange feminine quality to [t_him].\n"
@@ -183,8 +174,9 @@
 	if(stat == DEAD || (status_flags & FAKEDEATH))
 		appears_dead = 1
 		if(getorgan(/obj/item/organ/brain))//Only perform these checks if there is no brain
+			if(suiciding)
+				msg += "<span class='warning'>[t_He] appears to have commited suicide... there is no hope of recovery.</span>\n"
 			msg += "<span class='deadsay'>[t_He] [t_is] limp and unresponsive; there are no signs of life"
-
 			if(!key)
 				var/foundghost = 0
 				if(mind)
@@ -220,9 +212,9 @@
 	temp = getCloneLoss()
 	if(temp)
 		if(temp < 30)
-			msg += "[t_He] [t_has] minor genetic deformities.\n"
+			msg += "[t_He] [t_has] minor cellular damage.\n"
 		else
-			msg += "<B>[t_He] [t_has] severe genetic deformities.</B>\n"
+			msg += "<B>[t_He] [t_has] severe cellular damage.</B>\n"
 
 	if(fire_stacks > 0)
 		msg += "[t_He] [t_is] covered in something flammable.\n"
@@ -233,7 +225,7 @@
 	if(nutrition < 100)
 		msg += "[t_He] [t_is] severely malnourished.\n"
 	else if(nutrition >= 500)
-		if(usr.nutrition < 100)
+		if(user.nutrition < 100)
 			msg += "[t_He] [t_is] plump and delicious looking - Like a fat little piggy. A tasty piggy.\n"
 		else
 			msg += "[t_He] [t_is] quite chubby.\n"
@@ -256,10 +248,10 @@
 			msg += "[t_He] [t_is] moving [t_his] body in an unnatural and blatantly inhuman manner.\n"
 
 
-	if(istype(usr, /mob/living/carbon/human))
-		var/mob/living/carbon/human/H = usr
+	if(istype(user, /mob/living/carbon/human))
+		var/mob/living/carbon/human/H = user
 		if(istype(H.glasses, /obj/item/clothing/glasses/hud/security) || istype(H.glasses, /obj/item/clothing/glasses/hud/security/sunglasses))
-			if(!usr.stat && usr != src) //|| !usr.canmove || usr.restrained()) Fluff: Sechuds have eye-tracking technology and sets 'arrest' to people that the wearer looks and blinks at.
+			if(!user.stat && user != src) //|| !user.canmove || user.restrained()) Fluff: Sechuds have eye-tracking technology and sets 'arrest' to people that the wearer looks and blinks at.
 				var/criminal = "None"
 
 				var/perpname = get_face_name(get_id_name(""))
@@ -268,8 +260,12 @@
 					if(R)
 						criminal = R.fields["criminal"]
 
-					msg += "<span class = 'deptradio'>Criminal status:</span> <a href='?src=\ref[src];criminal=1'>\[[criminal]\]</a>\n"
+					msg += "<span class = 'deptradio'>Criminal status:</span> <a href='?src=\ref[src];criminal=1;status=1'>\[[criminal]\]</a>\n"
+					msg += "<span class = 'deptradio'>Security record:</span> <a href='?src=\ref[src];criminal=1;view=1'>\[View\]</a> "
+					msg += "<a href='?src=\ref[src];criminal=1;add_crime=1'>\[Add crime\]</a> "
+					msg += "<a href='?src=\ref[src];criminal=1;view_comment=1'>\[View comment log\]</a> "
+					msg += "<a href='?src=\ref[src];criminal=1;add_comment=1'>\[Add comment\]</a>\n"
 
 	msg += "*---------*</span>"
 
-	usr << msg
+	user << msg

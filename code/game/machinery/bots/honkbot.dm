@@ -81,11 +81,11 @@
 
 	var/obj/item/weapon/honkbox/A = new /obj/item/weapon/honkbox
 
-	del(S)
+	qdel(S)
 	user.put_in_hands(A)
 	user << "<span class='notice'>You crudely attach the bikehorn to the side of the [src].</span>"
 	user.unEquip(src, 1)
-	del(src)
+	qdel(src)
 
 
 /obj/item/weapon/honkbox/attackby(var/obj/item/clothing/mask/gas/clown_hat/W, mob/user as mob)
@@ -97,11 +97,11 @@
 
 	var/obj/item/weapon/honkbox_mask/A = new /obj/item/weapon/honkbox_mask
 
-	del(W)
+	qdel(W)
 	user.put_in_hands(A)
 	user << "<span class='notice'>You crudely staple the mask to the top of the [src].</span>"
 	user.unEquip(src, 1)
-	del(src)
+	qdel(src)
 
 
 /obj/item/weapon/honkbox_mask/attackby(var/obj/item/W, mob/user as mob)
@@ -117,16 +117,17 @@
 	else
 		if(isprox(W))
 			user.drop_item()
-			del(W)
+			qdel(W)
 			user << "<span class='notice'>You complete the Honkbot! Beep boop.</span>"
 			var/mob/living/simple_animal/hostile/honkbot/S = new /mob/living/simple_animal/hostile/honkbot/(user.loc)
 			S.name = src.created_name
 			user.unEquip(src, 1)
-			del(src)
+			qdel(src)
 
 /obj/item/projectile/clownblast
 	name = "honk"
 	icon_state = ""
+	hitsound = 'sound/items/bikehorn.ogg'
 	damage = 0
 	damage_type = BURN
 	nodamage = 1
@@ -164,5 +165,5 @@
  	..()
  	visible_message("<span class='danger'>[src] is destroyed!</span>")
  	new /obj/effect/decal/cleanable/robot_debris(src.loc)
- 	del src
+ 	qdel(src)
  	return

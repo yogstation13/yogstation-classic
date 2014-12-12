@@ -3,8 +3,8 @@
 	var/flash_protect = 0		//Malk: What level of bright light protection item has. 1 = Flashers, Flashes, & Flashbangs | 2 = Welding | -1 = OH GOD WELDING BURNT OUT MY RETINAS
 	var/tint = 0				//Malk: Sets the item's level of visual impairment tint, normally set to the same as flash_protect
 	var/up = 0					//	   but seperated to allow items to protect but not impair vision, like space helmets
-	var/visor_flags = null
-	var/visor_flags_inv = null
+	var/visor_flags = 0			// flags that are added/removed when an item is adjusted up/down
+	var/visor_flags_inv = 0		// same as visor_flags, but for flags_inv
 
 //Ears: currently only used for headsets and earmuffs
 /obj/item/clothing/ears
@@ -18,6 +18,9 @@
 	desc = "Protects your hearing from loud noises, and quiet ones as well."
 	icon_state = "earmuffs"
 	item_state = "earmuffs"
+	flags = EARBANGPROTECT
+	strip_delay = 15
+	put_on_delay = 25
 
 
 //Glasses
@@ -31,11 +34,9 @@
 	var/darkness_view = 2//Base human is 2
 	var/invis_view = SEE_INVISIBLE_LIVING
 	var/emagged = 0
-	var/hud = null
 	var/list/icon/current = list() //the current hud icons
-
-/obj/item/clothing/glasses/proc/process_hud(var/mob/M)
-	return
+	strip_delay = 20
+	put_on_delay = 25
 
 /*
 SEE_SELF  // can see self, no matter what
@@ -59,6 +60,8 @@ BLIND     // can't see anything
 	slot_flags = SLOT_GLOVES
 	attack_verb = list("challenged")
 	var/transfer_prints = FALSE
+	strip_delay = 20
+	put_on_delay = 40
 
 // Called just before an attack_hand(), in mob/UnarmedAttack()
 /obj/item/clothing/gloves/proc/Touch(var/atom/A, var/proximity)
@@ -78,11 +81,39 @@ BLIND     // can't see anything
 	body_parts_covered = HEAD
 	slot_flags = SLOT_MASK
 	var/alloweat = 0
-
+	strip_delay = 40
+	put_on_delay = 40
+	var/mask_adjusted = 0
+	var/ignore_maskadjust = 1
 
 //Override this to modify speech like luchador masks.
 /obj/item/clothing/mask/proc/speechModification(message)
 	return message
+
+//Proc that moves gas/breath masks out of the way, disabling them and allowing pill/food consumption
+/obj/item/clothing/mask/proc/adjustmask(var/mob/user)
+	if(!ignore_maskadjust)
+		if(!user.canmove || user.stat || user.restrained())
+			return
+		if(src.mask_adjusted == 1)
+			src.icon_state = initial(icon_state)
+			gas_transfer_coefficient = initial(gas_transfer_coefficient)
+			permeability_coefficient = initial(permeability_coefficient)
+			flags |= visor_flags
+			flags_inv |= visor_flags_inv
+			user << "You push \the [src] back into place."
+			src.mask_adjusted = 0
+		else
+			src.icon_state += "_up"
+			user << "You push \the [src] out of the way."
+			gas_transfer_coefficient = null
+			permeability_coefficient = null
+			flags &= ~visor_flags
+			flags_inv &= ~visor_flags_inv
+			src.mask_adjusted = 1
+		usr.update_inv_wear_mask()
+
+
 
 //Shoes
 /obj/item/clothing/shoes
@@ -110,6 +141,7 @@ BLIND     // can't see anything
 	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
 	slot_flags = SLOT_OCLOTHING
 	var/blood_overlay_type = "suit"
+	var/togglename = null
 
 //Spacesuit
 //Note: Everything in modules/clothing/spacesuits should have the entire suit grouped together.
@@ -128,6 +160,8 @@ BLIND     // can't see anything
 	heat_protection = HEAD
 	max_heat_protection_temperature = SPACE_HELM_MAX_TEMP_PROTECT
 	flash_protect = 2
+	strip_delay = 50
+	put_on_delay = 50
 
 /obj/item/clothing/suit/space
 	name = "space suit"
@@ -147,6 +181,8 @@ BLIND     // can't see anything
 	min_cold_protection_temperature = SPACE_SUIT_MIN_TEMP_PROTECT
 	heat_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 	max_heat_protection_temperature = SPACE_SUIT_MAX_TEMP_PROTECT
+	strip_delay = 80
+	put_on_delay = 80
 
 
 //Under clothing
@@ -160,6 +196,10 @@ BLIND     // can't see anything
 	var/fitted = 1// For use in alternate clothing styles for women, if clothes vary from a jumpsuit in shape, set this to 0
 	var/has_sensor = 1//For the crew computer 2 = unable to change mode
 	var/sensor_mode = 0
+	var/can_adjust = 1
+	var/adjusted = 0
+	var/suit_color = null
+
 		/*
 		1 = Report living/dead
 		2 = Report detailed damages
@@ -198,35 +238,36 @@ BLIND     // can't see anything
 			return 1
 
 
-/obj/item/clothing/under/examine()
-	set src in view()
+/obj/item/clothing/under/examine(mob/user)
 	..()
 	switch(src.sensor_mode)
 		if(0)
-			usr << "Its sensors appear to be disabled."
+			user << "Its sensors appear to be disabled."
 		if(1)
-			usr << "Its binary life sensors appear to be enabled."
+			user << "Its binary life sensors appear to be enabled."
 		if(2)
-			usr << "Its vital tracker appears to be enabled."
+			user << "Its vital tracker appears to be enabled."
 		if(3)
-			usr << "Its vital tracker and tracking beacon appear to be enabled."
+			user << "Its vital tracker and tracking beacon appear to be enabled."
 	if(hastie)
-		usr << "\A [hastie] is attached to it."
+		user << "\A [hastie] is attached to it."
 
-atom/proc/generate_uniform(index,t_color)
-	var/icon/female_uniform_icon	= icon("icon"='icons/mob/uniform.dmi', "icon_state"="[t_color]_s")
+atom/proc/generate_female_clothing(index,t_color,icon)
+	var/icon/female_clothing_icon	= icon("icon"=icon, "icon_state"="[t_color]_s")
 	var/icon/female_s				= icon("icon"='icons/mob/uniform.dmi', "icon_state"="female_s")
-	female_uniform_icon.Blend(female_s, ICON_MULTIPLY)
-	female_uniform_icon 			= fcopy_rsc(female_uniform_icon)
-	female_uniform_icons[index] = female_uniform_icon
+	female_clothing_icon.Blend(female_s, ICON_MULTIPLY)
+	female_clothing_icon 			= fcopy_rsc(female_clothing_icon)
+	female_clothing_icons[index] = female_clothing_icon
 
 /obj/item/clothing/under/verb/toggle()
 	set name = "Toggle Suit Sensors"
 	set category = "Object"
 	set src in usr
 	var/mob/M = usr
-	if (istype(M, /mob/dead/)) return
-	if (usr.stat) return
+	if (istype(M, /mob/dead/))
+		return
+	if (!can_use(M))
+		return
 	if(src.has_sensor >= 2)
 		usr << "The controls are locked."
 		return 0
@@ -238,21 +279,48 @@ atom/proc/generate_uniform(index,t_color)
 		src.sensor_mode = 0
 	switch(src.sensor_mode)
 		if(0)
-			usr << "You disable your suit's remote sensing equipment."
+			M << "You disable your suit's remote sensing equipment."
 		if(1)
-			usr << "Your suit will now report whether you are live or dead."
+			M << "Your suit will now report whether you are live or dead."
 		if(2)
-			usr << "Your suit will now report your vital lifesigns."
+			M << "Your suit will now report your vital lifesigns."
 		if(3)
-			usr << "Your suit will now report your vital lifesigns as well as your coordinate position."
+			M << "Your suit will now report your vital lifesigns as well as your coordinate position."
+	if(istype(loc,/mob/living/carbon/human))
+		var/mob/living/carbon/human/H = loc
+		if(H.w_uniform == src)
+			H.update_suit_sensors()
+	..()
+
+/obj/item/clothing/under/verb/rolldown()
+	set name = "Adjust Jumpsuit Style"
+	set category = "Object"
+	set src in usr
+	if(!can_use(usr))
+		return
+	if(!can_adjust)
+		usr << "You cannot wear this suit any differently."
+		return
+	if(src.adjusted == 1)
+		src.item_color = initial(item_color)
+		src.item_color = src.suit_color //colored jumpsuits are shit and break without this
+		usr << "You adjust the suit back to normal."
+		src.adjusted = 0
+	else
+		src.item_color += "_d"
+		usr << "You adjust the suit to wear it more casually."
+		src.adjusted = 1
+	usr.update_inv_w_uniform()
 	..()
 
 /obj/item/clothing/under/verb/removetie()
 	set name = "Remove Accessory"
 	set category = "Object"
 	set src in usr
-	if(!istype(usr, /mob/living)) return
-	if(usr.stat) return
+	if(!istype(usr, /mob/living))
+		return
+	if(!can_use(usr))
+		return
 
 	if(hastie)
 		hastie.transform *= 2
@@ -267,12 +335,14 @@ atom/proc/generate_uniform(index,t_color)
 			var/mob/living/carbon/human/H = loc
 			H.update_inv_w_uniform(0)
 
-/obj/item/clothing/under/rank/New()
+/obj/item/clothing/under/New()
 	sensor_mode = pick(0,1,2,3)
+	adjusted = 0
+	suit_color = item_color
 	..()
 
 /obj/item/clothing/proc/weldingvisortoggle()			//Malk: proc to toggle welding visors on helmets, masks, goggles, etc.
-	if(usr.canmove && !usr.stat && !usr.restrained())
+	if(can_use(usr))
 		if(up)
 			up = !up
 			flags |= (visor_flags)
@@ -296,3 +366,9 @@ atom/proc/generate_uniform(index,t_color)
 		usr.update_inv_glasses(0)
 	if(istype(src, /obj/item/clothing/mask))
 		usr.update_inv_wear_mask(0)
+
+/obj/item/clothing/proc/can_use(mob/user)
+	if(user && ismob(user))
+		if(!user.stat && user.canmove && !user.restrained())
+			return 1
+	return 0

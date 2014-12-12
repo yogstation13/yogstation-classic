@@ -28,7 +28,7 @@ var/const/GRAV_NEEDS_WRENCH = 3
 	unacidable = 1
 	var/sprite_number = 0
 
-/obj/machinery/gravity_generator/ex_act(severity)
+/obj/machinery/gravity_generator/ex_act(severity, target)
 	if(severity == 1) // Very sturdy.
 		set_broken()
 
@@ -186,6 +186,8 @@ var/const/GRAV_NEEDS_WRENCH = 3
 					user << "<span class='notice'>You mend the damaged framework.</span>"
 					playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
 					broken_state++
+				else if(WT.isOn())
+					user << "<span class='notice'>You don't have enough fuel to mend the damaged framework.</span>"
 		if(GRAV_NEEDS_PLASTEEL)
 			if(istype(I, /obj/item/stack/sheet/plasteel))
 				var/obj/item/stack/sheet/plasteel/PS = I

@@ -1,13 +1,14 @@
+//In this file: Summon Magic/Summon Guns/Summon Events
 
-
-/mob/proc/rightandwrong(var/summon_type) //0 = Summon Guns, 1 = Summon Magic
-	var/list/gunslist 			= list("taser","egun","laser","revolver","detective","smg","nuclear","deagle","gyrojet","pulse","suppressed","cannon","doublebarrel","shotgun","combatshotgun","mateba","smg","uzi","crossbow","saw")
+/proc/rightandwrong(var/summon_type, var/mob/user) //0 = Summon Guns, 1 = Summon Magic
+	var/list/gunslist 			= list("taser","egun","laser","revolver","detective","c20r","nuclear","deagle","gyrojet","pulse","suppressed","cannon","doublebarrel","shotgun","combatshotgun","bulldog","mateba","sabr","uzi","crossbow","saw","car")
 	var/list/magiclist 			= list("fireball","smoke","blind","mindswap","forcewall","knock","horsemask","charge","wandnothing", "wanddeath", "wandresurrection", "wandpolymorph", "wandteleport", "wanddoor", "wandfireball", "staffchange", "staffhealing", "armor", "scrying", "staffdoor", "special")
 	var/list/magicspeciallist	= list("staffchange","staffanimation", "wandbelt", "contract", "staffchaos")
 
-	usr << "<B>You summoned [summon_type ? "magic" : "guns"]!</B>"
-	message_admins("[key_name_admin(usr, 1)] summoned [summon_type ? "magic" : "guns"]!")
-	log_game("[key_name(usr)] summoned [summon_type ? "magic" : "guns"]!")
+	if(user) //in this case either someone holding a spellbook or a badmin
+		user << "<B>You summoned [summon_type ? "magic" : "guns"]!</B>"
+		message_admins("[key_name_admin(user, 1)] summoned [summon_type ? "magic" : "guns"]!")
+		log_game("[key_name(user)] summoned [summon_type ? "magic" : "guns"]!")
 	for(var/mob/living/carbon/human/H in player_list)
 		if(H.stat == 2 || !(H.client)) continue
 		if(H.mind)
@@ -39,7 +40,7 @@
 					new /obj/item/weapon/gun/projectile/revolver(get_turf(H))
 				if("detective")
 					new /obj/item/weapon/gun/projectile/revolver/detective(get_turf(H))
-				if("smg")
+				if("c20r")
 					new /obj/item/weapon/gun/projectile/automatic/c20r(get_turf(H))
 				if("nuclear")
 					new /obj/item/weapon/gun/energy/gun/nuclear(get_turf(H))
@@ -57,19 +58,21 @@
 				if("doublebarrel")
 					new /obj/item/weapon/gun/projectile/revolver/doublebarrel(get_turf(H))
 				if("shotgun")
-					new /obj/item/weapon/gun/projectile/shotgun/(get_turf(H))
+					new /obj/item/weapon/gun/projectile/shotgun(get_turf(H))
 				if("combatshotgun")
 					new /obj/item/weapon/gun/projectile/shotgun/combat(get_turf(H))
+				if("bulldog")
+					new /obj/item/weapon/gun/projectile/automatic/bulldog(get_turf(H))
 				if("mateba")
 					new /obj/item/weapon/gun/projectile/revolver/mateba(get_turf(H))
-				if("smg")
+				if("sabr")
 					new /obj/item/weapon/gun/projectile/automatic(get_turf(H))
-				if("uzi")
-					new /obj/item/weapon/gun/projectile/automatic/mini_uzi(get_turf(H))
 				if("crossbow")
 					new /obj/item/weapon/gun/energy/crossbow(get_turf(H))
 				if("saw")
 					new /obj/item/weapon/gun/projectile/automatic/l6_saw(get_turf(H))
+				if("car")
+					new /obj/item/weapon/gun/projectile/automatic/c90gl(get_turf(H))
 		else
 			switch (randomizemagic)
 				if("fireball")
@@ -100,6 +103,8 @@
 					new /obj/item/weapon/gun/magic/wand/teleport(get_turf(H))
 				if("wanddoor")
 					new /obj/item/weapon/gun/magic/wand/door(get_turf(H))
+				if("wandfireball")
+					new /obj/item/weapon/gun/magic/wand/fireball(get_turf(H))
 				if("staffhealing")
 					new /obj/item/weapon/gun/magic/staff/healing(get_turf(H))
 				if("staffdoor")
@@ -130,3 +135,21 @@
 						if("staffchaos")
 							new /obj/item/weapon/gun/magic/staff/chaos(get_turf(H))
 					H << "<span class='notice'>You suddenly feel lucky.</span>"
+
+/proc/summonevents()
+	if(events) 																//if there isn't something is very wrong
+		if(!events.wizardmode)
+			events.frequency_lower = 600									//1 minute lower bound
+			events.frequency_upper = 3000									//5 minutes upper bound
+			events.toggleWizardmode()
+			events.reschedule()
+
+		else 																//Speed it up
+			events.frequency_lower = round(events.frequency_lower * 0.8)	//1 minute | 48 seconds | 34.8 seconds | 30.7 seconds | 24.6 seconds
+			events.frequency_upper = round(events.frequency_upper * 0.6)	//5 minutes | 3 minutes | 1 minute 48 seconds | 1 minute 4.8 seconds | 38.9 seconds
+			if(events.frequency_upper < events.frequency_lower)
+				events.frequency_upper = events.frequency_lower				//this can't happen unless somehow multiple spellbooks are used, but just in case
+
+			events.reschedule()
+			message_admins("Summon Events intensifies, events will now occur every [events.frequency_lower / 600] to [events.frequency_upper / 600] minutes.")
+			log_game("Summon Events was increased!")

@@ -7,6 +7,7 @@
 	slot_flags = SLOT_BELT
 	throwforce = 0
 	w_class = 1.0
+	var/fire_sound = null						//What sound should play when this ammo is fired
 	var/caliber = null							//Which kind of guns it can be loaded into
 	var/projectile_type = null					//The bullet type to create when New() is called
 	var/obj/item/projectile/BB = null 			//The loaded bullet
@@ -28,7 +29,7 @@
 	icon_state = "[initial(icon_state)][BB ? "-live" : ""]"
 	desc = "[initial(desc)][BB ? "" : " This one is spent"]"
 
-/obj/item/ammo_casing/proc/newshot() //For energy weapons and shotgun shells.
+/obj/item/ammo_casing/proc/newshot() //For energy weapons, shotgun shells and wands (!).
 	if (!BB)
 		BB = new projectile_type(src)
 	return
@@ -99,12 +100,19 @@
 			AC.loc = src
 			num_loaded++
 	if(num_loaded)
-		if (!silent)
+		if(!silent)
 			user << "<span class='notice'>You load [num_loaded] shell\s into \the [src]!</span>"
 		A.update_icon()
 		update_icon()
 		return num_loaded
 	return 0
+
+/obj/item/ammo_box/attack_self(mob/user as mob)
+	var/obj/item/ammo_casing/A = get_round()
+	if(A)
+		user.put_in_hands(A)
+		user << "<span class='notice'>You remove a round from \the [src]!</span>"
+		update_icon()
 
 /obj/item/ammo_box/update_icon()
 	switch(multiple_sprites)

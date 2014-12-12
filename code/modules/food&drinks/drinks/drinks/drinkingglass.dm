@@ -91,7 +91,7 @@
 				name = "glass of vodka"
 				desc = "The glass contain wodka. Xynta."
 			if("goldschlager")
-				icon_state = "ginvodkaglass"
+				icon_state = "goldschlagerglass"
 				name = "glass of Goldschlager"
 				desc = "100 proof that teen girls will drink anything with gold in it."
 			if("wine")
@@ -153,7 +153,7 @@
 			if("gargleblaster")
 				icon_state = "gargleblasterglass"
 				name = "Pan-Galactic Gargle Blaster"
-				desc = "Does... does this mean that Arthur and Ford are on the station? Oh joy."
+				desc = "Like having your brain smashed out by a slice of lemon wrapped around a large gold brick."
 			if("bravebull")
 				icon_state = "bravebullglass"
 				name = "Brave Bull"

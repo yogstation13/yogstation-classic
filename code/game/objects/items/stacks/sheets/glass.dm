@@ -93,7 +93,7 @@
 					break
 
 			var/obj/structure/window/W
-			W = new /obj/structure/window/basic( user.loc, 0 )
+			W = new /obj/structure/window( user.loc, 0 )
 			W.dir = dir_to_set
 			W.ini_dir = W.dir
 			W.anchored = 0
@@ -110,7 +110,7 @@
 				user << "<span class='danger'>There is a window in the way.</span>"
 				return 1
 			var/obj/structure/window/W
-			W = new /obj/structure/window/basic( user.loc, 0 )
+			W = new /obj/structure/window/fulltile( user.loc, 0 )
 			W.dir = SOUTHWEST
 			W.ini_dir = SOUTHWEST
 			W.anchored = 0
@@ -210,7 +210,7 @@
 				user << "<span class='warning'>There is a window in the way.</span>"
 				return 1
 			var/obj/structure/window/W
-			W = new /obj/structure/window/reinforced(user.loc, 1)
+			W = new /obj/structure/window/reinforced/fulltile(user.loc, 1)
 			W.state = 0
 			W.dir = SOUTHWEST
 			W.ini_dir = SOUTHWEST
@@ -219,15 +219,18 @@
 			src.use(2)
 
 		if("Windoor")
-			if(!src || src.loc != user) return 1
-
-			if(isturf(user.loc) && locate(/obj/structure/windoor_assembly/, user.loc))
-				user << "<span class='warning'>There is already a windoor assembly in that location.</span>"
+			if(!src || src.loc != user || !isturf(user.loc))
 				return 1
 
-			if(isturf(user.loc) && locate(/obj/machinery/door/window/, user.loc))
-				user << "<span class='warning'>There is already a windoor in that location.</span>"
-				return 1
+			for(var/obj/structure/windoor_assembly/WA in user.loc)
+				if(WA.dir == user.dir)
+					user << "<span class='warning'>There is already a windoor assembly in that location.</span>"
+					return 1
+
+			for(var/obj/machinery/door/window/W in user.loc)
+				if(W.dir == user.dir)
+					user << "<span class='warning'>There is already a windoor in that location.</span>"
+					return 1
 
 			if(src.get_amount() < 5)
 				user << "<span class='warning'>You need more glass to do that.</span>"
@@ -306,10 +309,10 @@
 			var/obj/item/organ/limb/affecting = H.get_organ(organ)
 			if(affecting.take_damage(force / 2))
 				H.update_damage_overlays(0)
-	else if(isliving(user))
-		var/mob/living/L = user
-		L << "<span class='warning'>[src] cuts into your hand!</span>"
-		L.adjustBruteLoss(force / 2)
+	else if(ismonkey(user))
+		var/mob/living/carbon/monkey/M = user
+		M << "<span class='warning'>[src] cuts into your hand!</span>"
+		M.adjustBruteLoss(force / 2)
 
 
 /obj/item/weapon/shard/attackby(obj/item/I, mob/user)
@@ -323,7 +326,7 @@
 				if(G.amount >= G.max_amount)
 					continue
 				G.attackby(NG, user)
-				user << "<span class='notice'>You add the newly-formed glass to the stack. It now contains [NG.amount] sheet\s.</span>"
+			user << "<span class='notice'>You add the newly-formed glass to the stack. It now contains [NG.amount] sheet\s.</span>"
 			qdel(src)
 	..()
 

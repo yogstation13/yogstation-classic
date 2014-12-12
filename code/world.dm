@@ -7,6 +7,7 @@
 
 #define RECOMMENDED_VERSION 495
 
+
 /world/New()
 #if (PRELOAD_RSC == 0)
 	external_rsc_urls = file2list("config/external_rsc_urls.txt","\n")
@@ -56,8 +57,6 @@
 
 	timezoneOffset = text2num(time2text(0,"hh")) * 36000
 
-	makepowernets()
-
 	sun = new /datum/sun()
 	radio_controller = new /datum/controller/radio()
 	data_core = new /obj/effect/datacore()
@@ -80,6 +79,8 @@
 	slmaster.icon_state = "sleeping_agent"
 	slmaster.layer = FLY_LAYER
 	slmaster.mouse_opacity = 0
+
+	makepowernets()
 
 	master_controller = new /datum/controller/game_controller()
 	spawn(-1)
@@ -191,6 +192,9 @@
 		if(config.server)	//if you set a server location in config.txt, it sends you there instead of trying to reconnect to the same world address. -- NeoFite
 			C << link("byond://[config.server]")
 
+	if(tickets_list)
+		tickets_list.Cut()
+
 	// Note: all clients automatically connect to the world after it restarts
 
 	..(reason)
@@ -245,7 +249,24 @@ var/list/donators = list()
 		if(P)
 			P.unlock_content &= 1
 	donators = list()
-	var/list/donatorskeys = file2list("config/donators.txt")
+	var/list/donatorskeys = list()
+	if(config.donator_legacy_system)
+		donatorskeys = file2list("config/donators.txt")
+	else
+		establish_db_connection()
+		if(!dbcon.IsConnected())
+			world.log << "Failed to connect to database in load_donators(). Reverting to legacy system."
+			diary << "Failed to connect to database in load_donators(). Reverting to legacy system."
+			config.donator_legacy_system = 1
+			load_donators()
+			return
+
+		var/DBQuery/query = dbcon.NewQuery("SELECT ckey FROM [format_table_name("donors")] WHERE (expiration_time > Now()) AND (revoked IS NULL)")
+		query.Execute()
+		while(query.NextRow())
+			ckey = query.item[1]
+			if(ckey)
+				donatorskeys |= ckey
 	for(var/key in donatorskeys)
 		ckey = ckey(key)
 		donators += ckey

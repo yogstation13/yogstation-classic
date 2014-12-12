@@ -111,7 +111,7 @@
 /obj/effect/landmark/costume/madscientist/New()
 	new /obj/item/clothing/under/gimmick/rank/captain/suit(src.loc)
 	new /obj/item/clothing/head/flatcap(src.loc)
-	new /obj/item/clothing/suit/labcoat/mad(src.loc)
+	new /obj/item/clothing/suit/toggle/labcoat/mad(src.loc)
 	new /obj/item/clothing/glasses/gglasses(src.loc)
 	qdel(src)
 
@@ -139,14 +139,6 @@
 	new /obj/item/clothing/tie/waistcoat(src.loc)
 	new /obj/item/clothing/under/suit_jacket(src.loc)
 	new /obj/item/clothing/head/that(src.loc)
-	qdel(src)
-
-/obj/effect/landmark/costume/scratch/New()
-	new /obj/item/clothing/gloves/white(src.loc)
-	new /obj/item/clothing/shoes/sneakers/white(src.loc)
-	new /obj/item/clothing/under/scratch(src.loc)
-	if (prob(30))
-		new /obj/item/clothing/head/cueball(src.loc)
 	qdel(src)
 
 /obj/effect/landmark/costume/highlander/New()

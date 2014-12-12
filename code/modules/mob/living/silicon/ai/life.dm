@@ -37,10 +37,8 @@
 
 		//stage = 1
 		//if (istype(src, /mob/living/silicon/ai)) // Are we not sure what we are?
+		var/blindness = 0
 		//stage = 2
-
-		blinded = 0
-
 		var/area/loc = null
 		if (istype(T, /turf))
 			//stage = 3
@@ -49,11 +47,11 @@
 				//stage = 4
 				if (!loc.master.power_equip && loc.requires_power && !istype(src.loc,/obj/item))
 					//stage = 5
-					blinded = 1
+					blindness = 1
 
-		if (!blinded)
+		if (!blindness)
 			//stage = 4.5
-			if (src.blind && src.blind.layer != 0)
+			if (src.blind.layer != 0)
 				src.blind.layer = 0
 			src.sight |= SEE_TURFS
 			src.sight |= SEE_MOBS
@@ -81,7 +79,8 @@
 		else
 
 			//stage = 6
-			if (src.blind && src.blind.layer!=18)
+			src.blind.screen_loc = "1,1 to 15,15"
+			if (src.blind.layer!=18)
 				src.blind.layer = 18
 			src.sight = src.sight&~SEE_TURFS
 			src.sight = src.sight&~SEE_MOBS
@@ -157,7 +156,9 @@
 									src << "Receiving control information from APC."
 									sleep(2)
 									//bring up APC dialog
+									apc_override = 1
 									theAPC.attack_ai(src)
+									apc_override = 0
 									src:aiRestorePowerRoutine = 3
 									src << "Here are your current laws:"
 									src.show_laws()

@@ -1,5 +1,6 @@
 /obj/item/device/aicard
 	name = "inteliCard"
+	desc = "A storage device for AIs. Patent pending."
 	icon = 'icons/obj/aicards.dmi'
 	icon_state = "aicard" // aicard-full
 	item_state = "electronic"
@@ -17,13 +18,6 @@
 
 	transfer_ai("AICORE", "AICARD", M, user)
 	return
-
-/obj/item/device/aicard/attack(mob/living/silicon/decoy/M as mob, mob/user as mob)
-	if (!istype (M, /mob/living/silicon/decoy))
-		return ..()
-	else
-		M.death()
-		user << "<b>ERROR ERROR ERROR</b>"
 
 /obj/item/device/aicard/attack_self(mob/user)
 	if (!in_range(src, user))
@@ -68,6 +62,8 @@
 				dat += "<b>Wipe in progress</b>"
 			dat += "<br>"
 			dat += {"<a href='byond://?src=\ref[src];choice=Wireless'>[A.control_disabled ? "Enable" : "Disable"] Wireless Activity</a>"}
+			dat += "<br>"
+			dat += {"<a href='byond://?src=\ref[src];choice=Radio'>[A.radio_enabled ? "Disable" : "Enable"] Subspace Radio</a>"}
 			dat += "<br>"
 			dat += {"<a href='byond://?src=\ref[src];choice=Close'> Close</a>"}
 	user << browse(dat, "window=aicard")
@@ -116,4 +112,9 @@
 					overlays -= image('icons/obj/aicards.dmi', "aicard-on")
 				else
 					overlays += image('icons/obj/aicards.dmi', "aicard-on")
+
+		if ("Radio")
+			for(var/mob/living/silicon/ai/A in src)
+				A.radio_enabled = !A.radio_enabled
+				A << "Your Subspace Transceiver has been [A.radio_enabled ? "enabled" : "disabled"]!"
 	attack_self(U)

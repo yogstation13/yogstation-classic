@@ -49,6 +49,8 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 
 	req_access = list(access_tox)	//Data and setting manipulation requires scientist access.
 
+	var/chosen_category = null
+
 
 /obj/machinery/computer/rdconsole/proc/CallTechName(var/ID) //A simple helper proc to find the name of a tech with a given ID.
 	var/datum/tech/check_tech
@@ -173,12 +175,15 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 	add_fingerprint(usr)
 
 	usr.set_machine(src)
+
+	if(href_list["choose_category"]) // In appropriate screens, choose a category
+		chosen_category = url_decode(href_list["choose_category"])
+	else if(href_list["clear_category"]) // In appropriate screens, clear the chosen category
+		chosen_category = null
+
 	if(href_list["menu"]) //Switches menu screens. Converts a sent text string into a number. Saves a LOT of code.
 		var/temp_screen = text2num(href_list["menu"])
-		if(temp_screen <= 1.1 || (3 <= temp_screen && 4.9 >= temp_screen) || src.allowed(usr) || emagged) //Unless you are making something, you need access.
-			screen = temp_screen
-		else
-			usr << "Unauthorized Access."
+		screen = temp_screen
 
 	else if(href_list["updt_tech"]) //Update the research holder with information from the technology disk.
 		screen = 0.0
@@ -189,11 +194,13 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			griefProtection() //Update centcom too
 
 	else if(href_list["clear_tech"]) //Erase data on the technology disk.
-		t_disk.stored = null
+		if(t_disk)
+			t_disk.stored = null
 
 	else if(href_list["eject_tech"]) //Eject the technology disk.
-		t_disk:loc = src.loc
-		t_disk = null
+		if(t_disk)
+			t_disk.loc = src.loc
+			t_disk = null
 		screen = 1.0
 
 	else if(href_list["copy_tech"]) //Copys some technology data from the research holder to the disk.
@@ -212,11 +219,13 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			griefProtection() //Update centcom too
 
 	else if(href_list["clear_design"]) //Erases data on the design disk.
-		d_disk.blueprint = null
+		if(d_disk)
+			d_disk.blueprint = null
 
 	else if(href_list["eject_design"]) //Eject the design disk.
-		d_disk:loc = src.loc
-		d_disk = null
+		if(d_disk)
+			d_disk.loc = src.loc
+			d_disk = null
 		screen = 1.0
 
 	else if(href_list["copy_design"]) //Copy design data from the research holder to the design disk.
@@ -384,7 +393,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 								linked_lathe.uranium_amount = max(0, (linked_lathe.uranium_amount-(being_built.materials[M]/coeff * amount)))
 							if("$diamond")
 								linked_lathe.diamond_amount = max(0, (linked_lathe.diamond_amount-(being_built.materials[M]/coeff * amount)))
-							if("$clown")
+							if("$bananium")
 								linked_lathe.clown_amount = max(0, (linked_lathe.clown_amount-(being_built.materials[M]/coeff * amount)))
 							else
 								linked_lathe.reagents.remove_reagent(M, being_built.materials[M]/coeff * amount)
@@ -395,14 +404,14 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 					spawn(32*amount/coeff)
 						if(g2g) //And if we only fail the material requirements, we still spend time and power
 							for(var/i = 0, i<amount, i++)
-								var/obj/new_item = new P(src)
+								var/obj/item/new_item = new P(src)
 								if( new_item.type == /obj/item/weapon/storage/backpack/holding )
 									new_item.investigate_log("built by [key]","singulo")
 								new_item.reliability = R
 								new_item.m_amt /= coeff
 								new_item.g_amt /= coeff
 								if(linked_lathe.hacked)
-									R = max((reliability / 2), 0)
+									R = max((new_item.reliability/2), 0)
 								if(O)
 									var/obj/item/weapon/storage/lockbox/L = new/obj/item/weapon/storage/lockbox(linked_lathe.loc)
 									new_item.loc = L
@@ -458,7 +467,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 					var/R = being_built.reliability
 					spawn(16)
 						if(g2g)
-							var/obj/new_item = new P(src)
+							var/obj/item/new_item = new P(src)
 							new_item.reliability = R
 							new_item.loc = linked_imprinter.loc
 						linked_imprinter.busy = 0
@@ -503,7 +512,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 				type = /obj/item/stack/sheet/mineral/diamond
 				res_amount = "diamond_amount"
 			if("clown")
-				type = /obj/item/stack/sheet/mineral/clown
+				type = /obj/item/stack/sheet/mineral/bananium
 				res_amount = "clown_amount"
 		if(ispath(type) && hasvar(linked_lathe, res_amount))
 			var/obj/item/stack/sheet/sheet = new type(linked_lathe.loc)
@@ -576,7 +585,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 /obj/machinery/computer/rdconsole/interact(mob/user)
 
 	user.set_machine(src)
-	var/dat = ""
+	var/dat = "<script src=\"libraries.min.js\"></script>"
 	files.RefreshResearch()
 	switch(screen) //A quick check to make sure you get the right screen when a device is disconnected.
 		if(2 to 2.9)
@@ -613,6 +622,8 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			dat += "<div class='statusDisplay'>Imprinting Circuit. Please Wait...</div>"
 
 		if(1.0) //Main Menu
+			chosen_category = null
+
 			dat += "<div class='statusDisplay'>"
 			dat += "<h3>Main Menu:</h3><BR>"
 			dat += "<A href='?src=\ref[src];menu=1.1'>Current Research Levels</A><BR>"
@@ -775,10 +786,19 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			dat += "<h3>Protolathe Menu:</h3><BR>"
 			dat += "<B>Material Amount:</B> [linked_lathe.TotalMaterials()] / [linked_lathe.max_material_storage]<BR>"
 			dat += "<B>Chemical Volume:</B> [linked_lathe.reagents.total_volume] / [linked_lathe.reagents.maximum_volume]<HR>"
+
 			var/coeff = linked_lathe.efficiency_coeff
+
+			dat += {"<input type='text' id='search-field' value='Enter a search string' style='background-color: #333; width: 90%; padding: 2px; color: #eee; font-weight: bold; border: solid 1px #888; border-bottom: solid 3px #f90;' /><br /><div id='results'></div><hr /><script>"}
+
+			dat += "var designs = \["
+			var/designIndex = 0
 			for(var/datum/design/D in files.known_designs)
 				if(!(D.build_type & PROTOLATHE))
 					continue
+				designIndex++
+
+				var/item = ""
 				var/temp_dat = "[D.name]"
 				var/temp_material
 				var/c = 50
@@ -792,15 +812,96 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 					c = min(c,t)
 
 				if (c)
-					dat += "* <A href='?src=\ref[src];build=[D.id];amount=1'>[temp_dat]</A>"
+					item += "* <A href='?src=\ref[src];build=[D.id];amount=1'>[temp_dat]</A>"
 					if(c >= 5.0)
-						dat += "<A href='?src=\ref[src];build=[D.id];amount=5'>x5</A>"
+						item += "<A href='?src=\ref[src];build=[D.id];amount=5'>x5</A>"
 					if(c >= 10.0)
-						dat += "<A href='?src=\ref[src];build=[D.id];amount=10'>x10</A>"
-					dat += "[temp_material]"
+						item += "<A href='?src=\ref[src];build=[D.id];amount=10'>x10</A>"
+					item += "[temp_material]"
 				else
-					dat += "* <span class='linkOff'>[temp_dat]</span>[temp_material]"
-				dat += "<BR>"
+					item += "* <span class='linkOff'>[temp_dat]</span>[temp_material]"
+
+				item = url_encode(item)
+
+				dat += "[designIndex > 1 ? ", " : ""]{\"name\": \"[D.name]\", \"html\": \"[item]\"}"
+			dat += "\];"
+
+			dat += {"
+				$('#search-field').click(function() {
+					if($(this).val() == 'Enter a search string') {
+						$(this).val('');
+					}
+				});
+
+				function urldecode(str) {
+					return decodeURIComponent((str+'').replace(/\\+/g, '%20').replace(/%ff/g, ''));
+				}
+
+				$('#search-field').keyup(function() {
+					$('#results').html('');
+					var search = $(this).val();
+					if(search == "")
+						return;
+					for(var i = 0; i < designs.length; i++) {
+						if(designs\[i\].name.toLowerCase().indexOf(search.toLowerCase()) > -1) {
+							$('#results').append('<p style=\"padding: 0px; margin: 0px;\">'+urldecode(designs\[i\].html)+'</p>');
+						}
+					}
+				});
+			</script>"}
+
+			if(!chosen_category)
+				var/list/categories = list()
+				categories.Add("Show All")
+				for(var/datum/design/D in files.known_designs)
+					if(!(D.build_type & PROTOLATHE))
+						continue
+
+					if(!D.ui_category && (!(D.ui_category in categories)))
+						categories.Add("Unknown")
+
+					if(!(D.ui_category in categories))
+						categories.Add(D.ui_category)
+
+				dat += "<ol>"
+				for(var/cat in categories)
+					dat += "<li><a href='?src=\ref[src];menu=3.1;choose_category=[url_encode(cat)]'>[cat]</a></li>"
+				dat += "</ol>"
+			else
+				dat += "<a href='?src=\ref[src];menu=3.1;clear_category=1'>Show categories</a><HR>"
+				for(var/datum/design/D in files.known_designs)
+					if(!(D.build_type & PROTOLATHE))
+						continue
+
+					if(chosen_category != "Show All")
+						if(!D.ui_category && chosen_category == "Unknown")
+							// Unknown item category, and we have the Unknown category selected.
+							log_admin("R&D Organisation: \"[D.name]\" \"[D]\" is missing a ui_category. Please tell Kn0ss0s so he can assign a category.")
+						else if(D.ui_category != chosen_category)
+							continue
+
+					var/temp_dat = "[D.name]"
+					var/temp_material
+					var/c = 50
+					var/t
+					for(var/M in D.materials)
+						t = linked_lathe.check_mat(D, M)
+						if (!t)
+							temp_material += " <span style=\"color:red\">[D.materials[M]/coeff] [CallMaterialName(M)]</span>"
+						else
+							temp_material += " [D.materials[M]/coeff] [CallMaterialName(M)]"
+						c = min(c,t)
+
+					if (c)
+						dat += "* <A href='?src=\ref[src];build=[D.id];amount=1'>[temp_dat]</A>"
+						if(c >= 5.0)
+							dat += "<A href='?src=\ref[src];build=[D.id];amount=5'>x5</A>"
+						if(c >= 10.0)
+							dat += "<A href='?src=\ref[src];build=[D.id];amount=10'>x10</A>"
+						dat += "[temp_material]"
+					else
+						dat += "* <span class='linkOff'>[temp_dat]</span>[temp_material]"
+					dat += "<BR>"
 			dat += "</div>"
 
 		if(3.2) //Protolathe Material Storage Sub-menu
@@ -878,9 +979,17 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			dat += "Material Amount: [linked_imprinter.TotalMaterials()]<BR>"
 			dat += "Chemical Volume: [linked_imprinter.reagents.total_volume]<HR>"
 			var/coeff = linked_imprinter.efficiency_coeff
+
+			dat += {"<input type='text' id='search-field' value='Enter a search string' style='background-color: #333; width: 90%; padding: 2px; color: #eee; font-weight: bold; border: solid 1px #888; border-bottom: solid 3px #f90;' /><br /><div id='results'></div><hr /><script>"}
+
+			dat += "var designs = \["
+			var/designIndex = 0
 			for(var/datum/design/D in files.known_designs)
 				if(!(D.build_type & IMPRINTER))
 					continue
+				designIndex++
+
+				var/item = ""
 				var/temp_dat = "[D.name]"
 				var/temp_materials
 				var/check_materials = 1
@@ -891,9 +1000,76 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 					else
 						temp_materials += " [D.materials[M]/coeff] [CallMaterialName(M)]"
 				if (check_materials)
-					dat += "* <A href='?src=\ref[src];imprint=[D.id]'>[temp_dat]</A>[temp_materials]<BR>"
+					item += "* <A href='?src=\ref[src];imprint=[D.id]'>[temp_dat]</A>[temp_materials]<BR>"
 				else
-					dat += "* <span class='linkOff'>[temp_dat]</span>[temp_materials]<BR>"
+					item += "* <span class='linkOff'>[temp_dat]</span>[temp_materials]<BR>"
+
+				item = url_encode(item)
+
+				dat += "[designIndex > 1 ? ", " : ""]{\"name\": \"[D.name]\", \"html\": \"[item]\"}"
+			dat += "\];"
+
+			dat += {"
+				$('#search-field').click(function() {
+					if($(this).val() == 'Enter a search string') {
+						$(this).val('');
+					}
+				});
+
+				function urldecode(str) {
+					return decodeURIComponent((str+'').replace(/\\+/g, '%20').replace(/%ff/g, ''));
+				}
+
+				$('#search-field').keyup(function() {
+					$('#results').html('');
+					var search = $(this).val();
+					if(search == "")
+						return;
+					for(var i = 0; i < designs.length; i++) {
+						if(designs\[i\].name.toLowerCase().indexOf(search.toLowerCase()) > -1) {
+							$('#results').append('<p style=\"padding: 0px; margin: 0px;\">'+urldecode(designs\[i\].html)+'</p>');
+						}
+					}
+				});
+			</script>"}
+
+			if(!chosen_category)
+				var/list/categories = list()
+				categories.Add("Show All")
+				for(var/datum/design/D in files.known_designs)
+					if(!(D.build_type & IMPRINTER))
+						continue
+
+					if(!(D.ui_category in categories))
+						categories.Add(D.ui_category)
+
+				dat += "<ol>"
+				for(var/cat in categories)
+					dat += "<li><a href='?src=\ref[src];menu=4.1;choose_category=[url_encode(cat)]'>[cat]</a></li>"
+				dat += "</ol>"
+			else
+				dat += "<a href='?src=\ref[src];menu=4.1;clear_category=1'>Back to categories</a><HR>"
+				for(var/datum/design/D in files.known_designs)
+					if(!(D.build_type & IMPRINTER))
+						continue
+
+					if(chosen_category != "Show All")
+						if(D.ui_category != chosen_category)
+							continue
+
+					var/temp_dat = "[D.name]"
+					var/temp_materials
+					var/check_materials = 1
+					for(var/M in D.materials)
+						if (!linked_imprinter.check_mat(D, M))
+							check_materials = 0
+							temp_materials += " <span style=\"color:red\">[D.materials[M]/coeff] [CallMaterialName(M)]</span>"
+						else
+							temp_materials += " [D.materials[M]/coeff] [CallMaterialName(M)]"
+					if (check_materials)
+						dat += "* <A href='?src=\ref[src];imprint=[D.id]'>[temp_dat]</A>[temp_materials]<BR>"
+					else
+						dat += "* <span class='linkOff'>[temp_dat]</span>[temp_materials]<BR>"
 			dat += "</div>"
 
 		if(4.2)
@@ -928,17 +1104,20 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			if(linked_imprinter.diamond_amount >= 2000) dat += "<A href='?src=\ref[src];imprinter_ejectsheet=diamond;imprinter_ejectsheet_amt=50'>All</A>"
 			dat += "</div>"
 
-	var/datum/browser/popup = new(user, "rndconsole", name, 420, 450)
+	var/datum/browser/popup = new(user, "rndconsole", name, 620, 450)
+
 	popup.set_content(dat)
 	popup.open()
 	return
 
 /obj/machinery/computer/rdconsole/robotics
 	name = "Robotics R&D Console"
+	desc = "A console used to interface with R&D tools."
 	id = 2
 	req_access = null
 	req_access_txt = "29"
 
 /obj/machinery/computer/rdconsole/core
 	name = "Core R&D Console"
+	desc = "A console used to interface with R&D tools."
 	id = 1

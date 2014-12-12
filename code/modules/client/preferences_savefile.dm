@@ -2,7 +2,7 @@
 #define SAVEFILE_VERSION_MIN	8
 
 //This is the current version, anything below this will attempt to update (if it's not obsolete)
-#define SAVEFILE_VERSION_MAX	11
+#define SAVEFILE_VERSION_MAX	12
 /*
 SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Carn
 	This proc checks if the current directory of the savefile S needs updating
@@ -36,6 +36,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	if(current_version < 11)
 		mutant_color = "#FFF"
 		agree = 0
+	if(current_version < 12)
+		donor_hat = null
 	return
 
 //should this proc get fairly long (say 3 versions long),
@@ -118,7 +120,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	default_slot	= sanitize_integer(default_slot, 1, max_save_slots, initial(default_slot))
 	toggles			= sanitize_integer(toggles, 0, 65535, initial(toggles))
 	ghost_form		= sanitize_inlist(ghost_form, ghost_forms, initial(ghost_form))
-	agree			= sanitize_integer(agree, 0, 65535, 0)
+	agree			= sanitize_integer(agree, -1, 65535, 0)
 
 	return 1
 
@@ -159,8 +161,15 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	if(needs_update == -2)		//fatal, can't load any data
 		return 0
 
-	if(!S["species"] || !config.mutant_races)
-		S["species"]		<< new /datum/species/human()
+	//Species
+	var/species_name
+	S["species"]			>> species_name
+	if(config.mutant_races && species_name && (species_name in roundstart_species))
+		var/newtype = roundstart_species[species_name]
+		pref_species = new newtype()
+	else
+		pref_species = new /datum/species/human()
+
 	if(!S["mutant_color"] || S["mutant_color"] == "#000")
 		S["mutant_color"]	<< "#FFF"
 
@@ -168,6 +177,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	S["OOC_Notes"]			>> metadata
 	S["real_name"]			>> real_name
 	S["name_is_always_random"] >> be_random_name
+	S["body_is_always_random"] >> be_random_body
 	S["gender"]				>> gender
 	S["age"]				>> age
 	S["hair_color"]			>> hair_color
@@ -177,8 +187,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	S["hair_style_name"]	>> hair_style
 	S["facial_style_name"]	>> facial_hair_style
 	S["underwear"]			>> underwear
+	S["undershirt"]			>> undershirt
 	S["backbag"]			>> backbag
-	S["species"]			>> pref_species
 	S["mutant_color"]		>> mutant_color
 
 	//Jobs
@@ -193,6 +203,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	S["job_engsec_med"]		>> job_engsec_med
 	S["job_engsec_low"]		>> job_engsec_low
 
+	S["donor_hat"]			>> donor_hat
+
 	//try to fix any outdated data if necessary
 	if(needs_update >= 0)
 		update_character(needs_update)		//needs_update == savefile_version if we need an update (positive integer)
@@ -200,21 +212,23 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	//Sanitize
 	metadata		= sanitize_text(metadata, initial(metadata))
 	real_name		= reject_bad_name(real_name)
-	if(!(pref_species in species_list))
-		pref_species = new /datum/species/human()
 	if(!mutant_color || mutant_color == "#000")
 		mutant_color = "#FFF"
 	if(!real_name)	real_name = random_name(gender)
 	be_random_name	= sanitize_integer(be_random_name, 0, 1, initial(be_random_name))
+	be_random_body	= sanitize_integer(be_random_body, 0, 1, initial(be_random_body))
 	gender			= sanitize_gender(gender)
 	if(gender == MALE)
 		hair_style			= sanitize_inlist(hair_style, hair_styles_male_list)
 		facial_hair_style			= sanitize_inlist(facial_hair_style, facial_hair_styles_male_list)
 		underwear		= sanitize_inlist(underwear, underwear_m)
+		undershirt 		= sanitize_inlist(undershirt, undershirt_m)
 	else
 		hair_style			= sanitize_inlist(hair_style, hair_styles_female_list)
 		facial_hair_style			= sanitize_inlist(facial_hair_style, facial_hair_styles_female_list)
 		underwear		= sanitize_inlist(underwear, underwear_f)
+		undershirt		= sanitize_inlist(undershirt, undershirt_f)
+
 	age				= sanitize_integer(age, AGE_MIN, AGE_MAX, initial(age))
 	hair_color			= sanitize_hexcolor(hair_color, 3, 0)
 	facial_hair_color			= sanitize_hexcolor(facial_hair_color, 3, 0)
@@ -248,6 +262,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	S["OOC_Notes"]			<< metadata
 	S["real_name"]			<< real_name
 	S["name_is_always_random"] << be_random_name
+	S["body_is_always_random"] << be_random_body
 	S["gender"]				<< gender
 	S["age"]				<< age
 	S["hair_color"]			<< hair_color
@@ -257,8 +272,9 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	S["hair_style_name"]	<< hair_style
 	S["facial_style_name"]	<< facial_hair_style
 	S["underwear"]			<< underwear
+	S["undershirt"]			<< undershirt
 	S["backbag"]			<< backbag
-	S["species"]			<< pref_species
+	S["species"]			<< pref_species.name
 	S["mutant_color"]		<< mutant_color
 
 	//Jobs
@@ -272,6 +288,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	S["job_engsec_high"]	<< job_engsec_high
 	S["job_engsec_med"]		<< job_engsec_med
 	S["job_engsec_low"]		<< job_engsec_low
+
+	S["donor_hat"]			<< donor_hat
 
 	return 1
 

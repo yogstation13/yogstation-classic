@@ -46,7 +46,5 @@
 		else
 			D = new virus_type()
 		D.carrier = 1
-		D.holder = H
-		D.affected_mob = H
-		H.viruses += D
+		H.AddDisease(D, "Disease Outbreak random event")
 		break

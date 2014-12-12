@@ -283,6 +283,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 
 //Turns 1479 into 147.9
 /proc/format_frequency(var/f)
+	f = text2num(f)
 	return "[round(f / 10)].[f % 10]"
 
 
@@ -484,7 +485,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 //Orders mobs by type then by name
 /proc/sortmobs()
 	var/list/moblist = list()
-	var/list/sortmob = sortAtom(mob_list)
+	var/list/sortmob = sortNames(mob_list)
 	for(var/mob/living/silicon/ai/M in sortmob)
 		moblist.Add(M)
 	for(var/mob/camera/M in sortmob)
@@ -580,8 +581,140 @@ Turf and target are seperate in case you want to teleport some distance from a t
 
 	return .
 
+
+/proc/key_name_params(var/whom, var/include_link = null, var/include_name = 1, var/anchor_params = null, var/datum/admin_ticket/T = null)
+	var/mob/M
+	var/client/C
+	var/key
+	var/ckey
+
+	if(!whom)	return "*null*"
+	if(istype(whom, /client))
+		C = whom
+		M = C.mob
+		key = C.key
+		ckey = C.ckey
+	else if(ismob(whom))
+		M = whom
+		C = M.client
+		key = M.key
+		ckey = M.ckey
+	else if(istext(whom))
+		key = whom
+		ckey = ckey(whom)
+		C = directory[ckey]
+		if(C)
+			M = C.mob
+	else
+		return "*invalid*"
+
+	. = ""
+
+	if(!ckey)
+		include_link = 0
+
+	if(key)
+		if(include_link)
+			. += "<a href='?priv_msg=[T ? "ticket;ticket=\ref[T]" : ckey][anchor_params ? ";[anchor_params]" : ""]'>"
+
+		if(C && C.holder && C.holder.fakekey && !include_name)
+			. += "Administrator"
+		else
+			. += key
+		if(!C)
+			. += "\[DC\]"
+
+		if(include_link)
+			. += "</a>"
+	else
+		. += "*no key*"
+
+	if(include_name && M)
+		if(M.real_name)
+			. += "/([M.real_name])"
+		else if(M.name)
+			. += "/([M.name])"
+
+	return .
+
 /proc/key_name_admin(var/whom, var/include_name = 1)
 	return key_name(whom, 1, include_name)
+
+/proc/generate_admin_info(var/msg)
+	//explode the input msg into a list
+	var/list/msglist = text2list(msg, " ")
+
+	//generate keywords lookup
+	var/list/surnames = list()
+	var/list/forenames = list()
+	var/list/ckeys = list()
+	for(var/mob/M in mob_list)
+		if(!M.mind && !M.client)
+			continue
+
+		var/list/indexing = list(M.real_name, M.name)
+		if(M.mind)	indexing += M.mind.name
+
+		for(var/string in indexing)
+			var/list/L = text2list(string, " ")
+			var/surname_found = 0
+			//surnames
+			for(var/i=L.len, i>=1, i--)
+				var/word = ckey(L[i])
+				if(word)
+					surnames[word] = M
+					surname_found = i
+					break
+			//forenames
+			for(var/i=1, i<surname_found, i++)
+				var/word = ckey(L[i])
+				if(word)
+					forenames[word] = M
+			//ckeys
+			ckeys[M.ckey] = M
+
+	var/list/jobs = list()
+	var/list/job_count = list()
+	for(var/datum/mind/M in ticker.minds)
+		var/T = lowertext(M.assigned_role)
+		jobs[T] = M.current
+		job_count[T]++ //count how many of this job was found so we only show link for singular jobs
+
+	var/ai_found = 0
+	msg = ""
+	var/list/mobs_found = list()
+	for(var/original_word in msglist)
+		var/word = ckey(original_word)
+		if(word)
+			if(!(word in adminhelp_ignored_words))
+				if(word == "ai")
+					ai_found = 1
+				else
+					var/mob/found = ckeys[word]
+					if(!found)
+						found = surnames[word]
+						if(!found)
+							found = forenames[word]
+					if(!found)
+						var/T = lowertext(original_word)
+						if(T == "cap") T = "captain"
+						if(T == "hop") T = "head of personnel"
+						if(T == "cmo") T = "chief medical officer"
+						if(T == "ce")  T = "chief engineer"
+						if(T == "hos") T = "head of security"
+						if(T == "rd")  T = "research director"
+						if(T == "qm")  T = "quartermaster"
+						if(job_count[T] == 1) //skip jobs with multiple results
+							found = jobs[T]
+					if(found)
+						if(!(found in mobs_found))
+							mobs_found += found
+							if(!ai_found && isAI(found))
+								ai_found = 1
+							msg += "<b><font color='black'>[original_word] (<A HREF='?_src_=holder;adminmoreinfo=\ref[found]'>?</A>)</font></b> "
+							continue
+			msg += "[original_word] "
+	return msg
 
 /proc/get_mob_by_ckey(var/key)
 	if(!key)
@@ -763,17 +896,23 @@ Turf and target are seperate in case you want to teleport some distance from a t
 
 	else return get_step(ref, base_dir)
 
-/proc/do_mob(var/mob/user , var/mob/target, var/time = 30) //This is quite an ugly solution but i refuse to use the old request system.
-	if(!user || !target) return 0
+/proc/do_mob(var/mob/user , var/mob/target, var/time = 30, numticks = 5) //This is quite an ugly solution but i refuse to use the old request system.
+	if(!user || !target)
+		return 0
+	if(numticks == 0)
+		return 0
 	var/user_loc = user.loc
 	var/target_loc = target.loc
 	var/holding = user.get_active_hand()
-	sleep(time)
-	if(!user || !target) return 0
-	if ( user.loc == user_loc && target.loc == target_loc && user.get_active_hand() == holding && !( user.stat ) && ( !user.stunned && !user.weakened && !user.paralysis && !user.lying ) )
-		return 1
-	else
-		return 0
+	var/timefraction = round(time/numticks)
+	for(var/i = 0, i<numticks, i++)
+		sleep(timefraction)
+		if(!user || !target)
+			return 0
+		if ( user.loc != user_loc || target.loc != target_loc || user.get_active_hand() != holding || user.stat || ( user.stunned || user.weakened || user.paralysis || user.lying ) )
+			return 0
+
+	return 1
 
 /proc/do_after(mob/user, delay, numticks = 5, needhand = 1)
 	if(!user || isnull(user))
@@ -818,7 +957,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 
 //Returns: all the areas in the world, sorted.
 /proc/return_sorted_areas()
-	return sortAtom(return_areas())
+	return sortNames(return_areas())
 
 //Takes: Area type as text string or as typepath OR an instance of the area.
 //Returns: A list of all areas of that type in the world.
@@ -1203,7 +1342,11 @@ Turf and target are seperate in case you want to teleport some distance from a t
 
 /proc/get_turf(atom/movable/AM)
 	if(istype(AM))
-		return locate(/turf) in AM.locs
+		var/turf/T = locate(/turf) in AM.locs
+		if(!T)
+			if(istype(AM, /mob))
+				warning("mob with loc = null. Name:[AM.name]; Type:[AM.type]; In mob list:[(AM in mob_list) ? "YES" : "no"]")
+		return T
 	else if(isturf(AM))
 		return AM
 
@@ -1230,36 +1373,42 @@ var/global/list/common_tools = list(
 	return 0
 
 /proc/is_hot(obj/item/W as obj)
-	switch(W.type)
-		if(/obj/item/weapon/weldingtool)
-			var/obj/item/weapon/weldingtool/WT = W
-			if(WT.isOn())
-				return 3800
-			else
-				return 0
-		if(/obj/item/weapon/lighter)
-			if(W:lit)
-				return 1500
-			else
-				return 0
-		if(/obj/item/weapon/match)
-			if(W:lit)
-				return 1000
-			else
-				return 0
-		if(/obj/item/clothing/mask/cigarette)
-			if(W:lit)
-				return 1000
-			else
-				return 0
-		if(/obj/item/weapon/pickaxe/plasmacutter)
+	if(istype(W, /obj/item/weapon/weldingtool))
+		var/obj/item/weapon/weldingtool/O = W
+		if(O.isOn())
 			return 3800
-		if(/obj/item/weapon/melee/energy)
+		else
+			return 0
+	if(istype(W, /obj/item/weapon/lighter))
+		var/obj/item/weapon/lighter/O = W
+		if(O.lit)
+			return 1500
+		else
+			return 0
+	if(istype(W, /obj/item/weapon/match))
+		var/obj/item/weapon/match/O = W
+		if(O.lit)
+			return 1000
+		else
+			return 0
+	if(istype(W, /obj/item/clothing/mask/cigarette))
+		var/obj/item/clothing/mask/cigarette/O = W
+		if(O.lit)
+			return 1000
+		else
+			return 0
+	if(istype(W, /obj/item/weapon/pickaxe/plasmacutter))
+		return 3800
+	if(istype(W, /obj/item/weapon/melee/energy))
+		var/obj/item/weapon/melee/energy/O = W
+		if(O.active)
 			return 3500
 		else
 			return 0
-
-	return 0
+	if(istype(W, /obj/item/device/assembly/igniter))
+		return 1000
+	else
+		return 0
 
 //Is this even used for anything besides balloons? Yes I took out the W:lit stuff because : really shouldnt be used.
 /proc/is_sharp(obj/item/W as obj)		// For the record, WHAT THE HELL IS THIS METHOD OF DOING IT?

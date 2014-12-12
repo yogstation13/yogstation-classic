@@ -61,6 +61,11 @@
 	icon_state = "skeletonmeat"
 	desc = "There's a point where this needs to stop and clearly we have passed it"
 
+/obj/item/weapon/reagent_containers/food/snacks/meat/human/mutant/zombie
+	name = "-meat (rotten)"
+	icon_state = "lizardmeat" //Close enough.
+	desc = "Halfway to becoming fertilizer for your garden."
+
 /obj/item/weapon/reagent_containers/food/snacks/meat/monkey
 	//same as plain meat
 
@@ -71,3 +76,11 @@
 /obj/item/weapon/reagent_containers/food/snacks/meat/pug
 	name = "Pug meat"
 	desc = "Tastes like... well you know..."
+
+/obj/item/weapon/reagent_containers/food/snacks/meat/rainbow
+	name = "Rainbow Meat"
+	icon_state = "rainbowmeat"
+	desc = "Taste the rainbow!"
+	New()
+		..()
+		reagents.add_reagent("space_drugs", 10)

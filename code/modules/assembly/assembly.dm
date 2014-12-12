@@ -51,6 +51,15 @@
 /obj/item/device/assembly/proc/describe()									// Called by grenades to describe the state of the trigger (time left, etc)
 	return "The trigger assembly looks broken!"
 
+
+/obj/item/device/assembly/proc/is_secured(mob/user)
+	if(!secured)
+		user << "<span class='warning'>The [name] is unsecured!</span>"
+		return 0
+	return 1
+
+
+
 /obj/item/device/assembly/process_cooldown()
 	cooldown--
 	if(cooldown <= 0)	return 0
@@ -128,15 +137,12 @@
 	return
 
 
-/obj/item/device/assembly/examine()
-	set src in view()
+/obj/item/device/assembly/examine(mob/user)
 	..()
-	if((in_range(src, usr) || loc == usr))
-		if(secured)
-			usr << "\The [src] is ready!"
-		else
-			usr << "\The [src] can be attached!"
-	return
+	if(secured)
+		user << "\The [src] is secured and ready to be used."
+	else
+		user << "\The [src] can be attached to other things."
 
 
 /obj/item/device/assembly/attack_self(mob/user as mob)

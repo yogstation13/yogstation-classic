@@ -4,6 +4,7 @@
 	damage = 0
 	damage_type = BURN
 	flag = "energy"
+	color = "#FFFF00"
 
 
 /obj/item/projectile/energy/electrode
@@ -23,7 +24,7 @@
 		..()
 
 /obj/item/projectile/energy/declone
-	name = "declown"
+	name = "radiation beam"
 	icon_state = "declone"
 	nodamage = 1
 	damage_type = CLONE
@@ -62,7 +63,7 @@
 /obj/item/projectile/energy/disabler/Range()
 	range--
 	if(range <= 0)
-		delete()
+		qdel(src)
 
 
 

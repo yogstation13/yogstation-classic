@@ -14,7 +14,7 @@
 	desc = "You wear this on your back and put items into it."
 	icon_state = "backpack"
 	item_state = "backpack"
-	w_class = 4.0
+	w_class = 4
 	slot_flags = SLOT_BACK	//ERROOOOO
 	max_w_class = 3
 	max_combined_w_class = 21
@@ -35,14 +35,13 @@
 	max_w_class = 5
 	max_combined_w_class = 35
 
-/obj/item/weapon/storage/backpack/holding/New()
-	..()
-	return
-
-/obj/item/weapon/storage/backpack/holding/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/weapon/storage/backpack/holding/can_be_inserted(obj/item/W, stop_messages = 0, mob/user)
 	if(crit_fail)
 		user << "<span class='danger'>The Bluespace generator isn't working.</span>"
 		return
+	return ..()
+
+/obj/item/weapon/storage/backpack/holding/handle_item_insertion(obj/item/W, prevent_warning = 0, mob/user)
 	if(istype(W, /obj/item/weapon/storage/backpack/holding) && !W.crit_fail)
 		investigate_log("has become a singularity. Caused by [user.key]","singulo")
 		user << "<span class='danger'>The Bluespace interfaces of the two devices catastrophically malfunction!</span>"
@@ -66,6 +65,11 @@
 		crit_fail = 1
 		icon_state = "brokenpack"
 
+/obj/item/weapon/storage/backpack/holding/singularity_act(current_size)
+	var/dist = max((current_size - 2),1)
+	explosion(src.loc,(dist),(dist*2),(dist*4))
+	return
+
 
 /obj/item/weapon/storage/backpack/santabag
 	name = "Santa's Gift Bag"
@@ -73,9 +77,9 @@
 	icon_state = "giftbag0"
 	item_state = "giftbag"
 	w_class = 4.0
-	storage_slots = 20
+	storage_slots = 20 //Can store a lot.
 	max_w_class = 3
-	max_combined_w_class = 400 // can store a ton of shit!
+	max_combined_w_class = 60
 
 /obj/item/weapon/storage/backpack/cultpack
 	name = "trophy rack"
@@ -88,6 +92,12 @@
 	desc = "It's a backpack made by Honk! Co."
 	icon_state = "clownpack"
 	item_state = "clownpack"
+
+/obj/item/weapon/storage/backpack/mime
+	name = "Parcel Parceaux"
+	desc = "A silent backpack made for those silent workers. Silence Co."
+	icon_state = "mimepack"
+	item_state = "mimepack"
 
 /obj/item/weapon/storage/backpack/medic
 	name = "medical backpack"
@@ -122,10 +132,9 @@
 	desc = "It's a very fancy satchel made with fine leather."
 	icon_state = "satchel"
 
-/obj/item/weapon/storage/backpack/satchel/withwallet
-	New()
-		..()
-		new /obj/item/weapon/storage/wallet/random( src )
+/obj/item/weapon/storage/backpack/satchel/withwallet/New()
+	..()
+	new /obj/item/weapon/storage/wallet/random( src )
 
 /obj/item/weapon/storage/backpack/satchel_norm
 	name = "satchel"
@@ -181,8 +190,27 @@
 	icon_state = "satchel-cap"
 	item_state = "captainpack"
 
-/obj/item/weapon/storage/backpack/mime
-	name = "Parcel Parceaux"
-	desc = "A silent backpack made for those silent workers. Silence Co."
-	icon_state = "mimepack"
-	item_state = "mimepack"
+/obj/item/weapon/storage/backpack/satchel_flat
+	name = "smuggler's satchel"
+	desc = "A very slim satchel that can easily fit into tight spaces."
+	icon_state = "satchel-flat"
+	w_class = 3 //Can fit in backpacks itself.
+	storage_slots = 5
+	max_combined_w_class = 15
+	level = 1
+	cant_hold = list(/obj/item/weapon/storage/backpack/satchel_flat) //muh recursive backpacks
+
+/obj/item/weapon/storage/backpack/satchel_flat/hide(var/intact)
+	if(intact)
+		invisibility = 101
+		anchored = 1 //otherwise you can start pulling, cover it, and drag around an invisible backpack.
+		icon_state = "[initial(icon_state)]2"
+	else
+		invisibility = initial(invisibility)
+		anchored = 0
+		icon_state = initial(icon_state)
+
+/obj/item/weapon/storage/backpack/satchel_flat/New()
+	..()
+	new /obj/item/stack/tile/plasteel(src)
+	new /obj/item/weapon/crowbar(src)

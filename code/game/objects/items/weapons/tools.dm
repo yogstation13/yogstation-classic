@@ -115,9 +115,9 @@
 		item_state = "cutters_yellow"
 
 /obj/item/weapon/wirecutters/attack(mob/living/carbon/C, mob/user)
-	if(istype(C) && C.handcuffed && istype(C.handcuffed, /obj/item/weapon/handcuffs/cable))
+	if(istype(C) && C.handcuffed && istype(C.handcuffed, /obj/item/weapon/restraints/handcuffs/cable))
 		user.visible_message("<span class='notice'>[user] cuts [C]'s restraints with [src]!</span>")
-		C.handcuffed.loc = null	//garbage collector awaaaaay
+		qdel(C.handcuffed)
 		C.handcuffed = null
 		C.update_inv_handcuffed(0)
 		return
@@ -131,6 +131,7 @@
 	name = "welding tool"
 	icon = 'icons/obj/items.dmi'
 	icon_state = "welder"
+	item_state = "welder"
 	flags = CONDUCT
 	slot_flags = SLOT_BELT
 	force = 3
@@ -147,14 +148,31 @@
 	var/max_fuel = 20 	//The max amount of fuel the welder can hold
 
 /obj/item/weapon/weldingtool/New()
+	..()
 	create_reagents(max_fuel)
 	reagents.add_reagent("fuel", max_fuel)
+	update_icon()
+	return
 
+/obj/item/weapon/weldingtool/proc/update_torch()
+	if(welding)
+		src.overlays = 0
+		overlays += "["-won"]"
+		item_state = "welder1"
+	else
+		item_state = "welder"
 
-/obj/item/weapon/weldingtool/examine()
-	set src in usr
+/obj/item/weapon/weldingtool/update_icon()
+	src.overlays = 0
+	var/ratio = get_fuel() / max_fuel
+	ratio = Ceiling(ratio*4) * 25
+	icon_state = "[initial(icon_state)][ratio]"
+	update_torch()
+	return
+
+/obj/item/weapon/weldingtool/examine(mob/user)
 	..()
-	usr << "It contains [get_fuel()]/[max_fuel] units of fuel!"
+	user << "It contains [get_fuel()] unit\s of fuel out of [max_fuel]."
 
 
 /obj/item/weapon/weldingtool/attackby(obj/item/I, mob/user)
@@ -176,7 +194,6 @@
 			item_heal_robotic(H, user, 30, 0)
 			return
 		else
-			user << "<span class='warning'>Need more welding fuel!</span>"
 			return
 	else
 		return ..()
@@ -184,19 +201,16 @@
 /obj/item/weapon/weldingtool/process()
 	switch(welding)
 		if(0)
-			if(icon_state != "welder")	//Check that the sprite is correct, if it isnt, it means toggle() was not called
-				force = 3
-				damtype = "brute"
-				icon_state = "welder"
-				welding = 0
+			force = 3
+			damtype = "brute"
+			update_icon()
 			processing_objects.Remove(src)
 			return
 	//Welders left on now use up fuel, but lets not have them run out quite that fast
 		if(1)
-			if(icon_state != "welder1")	//Check that the sprite is correct, if it isnt, it means toggle() was not called
-				force = 15
-				damtype = "fire"
-				icon_state = "welder1"
+			force = 15
+			damtype = "fire"
+			update_icon()
 			if(prob(5))
 				remove_fuel(1)
 
@@ -217,6 +231,7 @@
 			O.reagents.trans_to(src, max_fuel)
 			user << "<span class='notice'>[src] refueled.</span>"
 			playsound(src.loc, 'sound/effects/refill.ogg', 50, 1, -6)
+			update_icon()
 			return
 		else
 			message_admins("[key_name_admin(user)] triggered a fueltank explosion.")
@@ -236,7 +251,7 @@
 
 /obj/item/weapon/weldingtool/attack_self(mob/user)
 	toggle(user)
-
+	update_icon()
 
 //Returns the amount of fuel in the welder
 /obj/item/weapon/weldingtool/proc/get_fuel()
@@ -419,16 +434,16 @@
  */
 
 /obj/item/weapon/crowbar
-	name = "crowbar"
-	desc = "Used to hit floors"
+	name = "pocket crowbar"
+	desc = "A small crowbar. This handy tool is useful for lots of things, such as prying floor tiles or opening unpowered doors."
 	icon = 'icons/obj/items.dmi'
 	icon_state = "crowbar"
 	flags = CONDUCT
 	slot_flags = SLOT_BELT
-	force = 5.0
-	throwforce = 7.0
+	force = 5
+	throwforce = 7
 	item_state = "crowbar"
-	w_class = 2.0
+	w_class = 2
 	m_amt = 50
 	origin_tech = "engineering=1"
 	attack_verb = list("attacked", "bashed", "battered", "bludgeoned", "whacked")
@@ -437,3 +452,13 @@
 	icon = 'icons/obj/items.dmi'
 	icon_state = "red_crowbar"
 	item_state = "crowbar_red"
+
+/obj/item/weapon/crowbar/large
+	name = "crowbar"
+	desc = "It's a big crowbar. It doesn't fit in your pockets, because it's big."
+	force = 12
+	w_class = 3
+	throw_speed = 3
+	throw_range = 3
+	m_amt = 66
+	icon_state = "crowbar_large"

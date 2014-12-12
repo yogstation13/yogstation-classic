@@ -71,6 +71,11 @@ proc/mutation_table(var/colour)
 			slime_mutation[3] = "black"
 			slime_mutation[4] = "black"
 		// Tier 5
+		if("pyrite")
+			slime_mutation[1] = "pyrite"
+			slime_mutation[2] = "pyrite"
+			slime_mutation[3] = "pyrite"
+			slime_mutation[4] = "rainbow"
 		else
 			slime_mutation[1] = colour
 			slime_mutation[2] = colour

@@ -36,13 +36,13 @@
 
 	..()
 
-/obj/item/weapon/tank/examine()
+/obj/item/weapon/tank/examine(mob/user)
 	var/obj/icon = src
 	..()
 	if (istype(src.loc, /obj/item/assembly))
 		icon = src.loc
-	if (!in_range(src, usr))
-		if (icon == src) usr << "<span class='notice'>If you want any more information you'll need to get closer.</span>"
+	if (!in_range(src, user))
+		if (icon == src) user << "<span class='notice'>If you want any more information you'll need to get closer.</span>"
 		return
 
 	var/celsius_temperature = src.air_contents.temperature-T0C
@@ -61,9 +61,7 @@
 	else
 		descriptive = "furiously hot"
 
-	usr << "<span class='notice'>It feels [descriptive]</span>"
-
-	return
+	user << "<span class='notice'>It feels [descriptive].</span>"
 
 /obj/item/weapon/tank/blob_act()
 	if(prob(50))
@@ -85,10 +83,6 @@
 
 	if ((istype(W, /obj/item/device/analyzer)) && get_dist(user, src) <= 1)
 		atmosanalyzer_scan(air_contents, user)
-	else if (istype(W,/obj/item/latexballon))
-		var/obj/item/latexballon/LB = W
-		LB.blow(src)
-		src.add_fingerprint(user)
 
 	if(istype(W, /obj/item/device/assembly_holder))
 		bomb_assemble(W,user)

@@ -29,7 +29,7 @@
 		/obj/item/weapon/reagent_containers/food/snacks/cheesewedge,
 		/obj/item/weapon/reagent_containers/food/snacks/cheesewedge,
 	)
-	result = /obj/item/weapon/reagent_containers/food/snacks/sliceable/store/xenomeatbread
+	result = /obj/item/weapon/reagent_containers/food/snacks/sliceable/store/meatbread/xeno
 
 /datum/recipe/bread/spidermeat
 	reagents = list("flour" = 15)
@@ -41,7 +41,7 @@
 		/obj/item/weapon/reagent_containers/food/snacks/cheesewedge,
 		/obj/item/weapon/reagent_containers/food/snacks/cheesewedge,
 	)
-	result = /obj/item/weapon/reagent_containers/food/snacks/sliceable/store/spidermeatbread
+	result = /obj/item/weapon/reagent_containers/food/snacks/sliceable/store/meatbread/spider
 
 /datum/recipe/bread/banana
 	reagents = list("milk" = 5, "flour" = 15)
@@ -76,3 +76,15 @@
 /datum/recipe/bread/baguette
 	reagents = list("sodiumchloride" = 1, "blackpepper" = 1, "flour" = 10)
 	result = /obj/item/weapon/reagent_containers/food/snacks/baguette
+
+/datum/recipe/bread/rainbow
+	reagents = list("flour" = 15)
+	items = list(
+		/obj/item/weapon/reagent_containers/food/snacks/meat/rainbow,
+		/obj/item/weapon/reagent_containers/food/snacks/meat/rainbow,
+		/obj/item/weapon/reagent_containers/food/snacks/meat/rainbow,
+		/obj/item/weapon/reagent_containers/food/snacks/cheesewedge,
+		/obj/item/weapon/reagent_containers/food/snacks/cheesewedge,
+		/obj/item/weapon/reagent_containers/food/snacks/cheesewedge,
+	)
+	result = /obj/item/weapon/reagent_containers/food/snacks/sliceable/store/meatbread/rainbow

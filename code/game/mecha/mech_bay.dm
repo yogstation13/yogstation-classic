@@ -3,6 +3,8 @@
 	icon = 'icons/turf/floors.dmi'                          //		  That are set in stone to check the west turf for recharge port
 	icon_state = "recharge_floor"                           //        Some people just want to watch the world burn i guess
 
+/turf/simulated/floor/mech_bay_recharge_floor/break_tile()
+	src.ChangeTurf(/turf/simulated/floor/plating)
 
 /turf/simulated/floor/mech_bay_recharge_floor/airless
 	icon_state = "recharge_floor_asteroid"
@@ -78,6 +80,7 @@
 
 /obj/machinery/computer/mech_bay_power_console
 	name = "mech bay power control console"
+	desc = "Used to control mechbay power ports."
 	density = 1
 	anchored = 1
 	icon = 'icons/obj/computer.dmi'
@@ -104,7 +107,10 @@
 			data += "<div class='statusDisplay'>No mech detected.</div>"
 		else
 			data += "<div class='statusDisplay'>Integrity: [recharge_port.recharging_mech.health]<BR>"
-			data += "Power: [recharge_port.recharging_mech.cell.charge]/[recharge_port.recharging_mech.cell.maxcharge]</div>"
+			if(recharge_port.recharging_mech.cell.crit_fail)
+				data += "<span class='bad'>WARNING : the mech cell seems faulty!</span></div>"
+			else
+				data += "Power: [recharge_port.recharging_mech.cell.charge]/[recharge_port.recharging_mech.cell.maxcharge]</div>"
 
 	var/datum/browser/popup = new(user, "mech recharger", name, 300, 300)
 	popup.set_content(data)

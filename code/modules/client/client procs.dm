@@ -47,7 +47,44 @@
 
 	//Admin PM
 	if(href_list["priv_msg"])
+		if(href_list["ticket"])
+			var/datum/admin_ticket/T = locate(href_list["ticket"])
+
+			if(holder && T.resolved)
+				var/found_ticket = 0
+				for(var/datum/admin_ticket/T2 in tickets_list)
+					if(!T.resolved && compare_ckey(T.owner_ckey, T2.owner_ckey))
+						found_ticket = 1
+
+				if(!found_ticket)
+					if(alert(usr, "No open ticket exists, would you like to make a new one?", "Tickets", "New ticket", "Cancel") == "Cancel")
+						return
+			else if(!holder && T.resolved)
+				usr << "<span class='boldnotice'>Your ticket was closed. Only admins can add finishing comments to it.</span>"
+				return
+
+			if(get_ckey(usr) == get_ckey(T.owner))
+				T.owner.cmd_admin_pm(get_ckey(T.handling_admin),null)
+			else if(get_ckey(usr) == get_ckey(T.handling_admin))
+				T.handling_admin.cmd_admin_pm(get_ckey(T.owner),null)
+			else
+				cmd_admin_pm(get_ckey(T.owner),null)
+			return
+
+		if(href_list["new"])
+			var/datum/admin_ticket/T = locate(href_list["ticket"])
+			if(T.handling_admin && !compare_ckey(T.handling_admin, usr))
+				usr << "Using this PM-link for this ticket would usually be the first response to a ticket. However, an admin has already responded to this ticket. This link is now disabled, to ensure that no additional tickets are created for the same problem. You can create a new ticket by PMing the user any other way."
+				return
+			else
+				T.pm_started_user = get_client(usr)
+
 		cmd_admin_pm(href_list["priv_msg"],null)
+
+		return
+
+	if(prefs.afreeze && !holder)
+		src << "<span class='userdanger'>You are frozen by an administrator.</span>"
 		return
 
 	//Logs all hrefs
@@ -114,6 +151,17 @@ var/next_external_rsc = 0
 	if(byond_version < MIN_CLIENT_VERSION)		//Out of date client.
 		return null
 
+	spawn(30)
+		for(var/datum/admin_ticket/T in tickets_list)
+			if(compare_ckey(T.owner_ckey, src) && !T.resolved)
+				T.owner = src
+				T.add_log(new /datum/ticket_log(T, src, "¤ Connected ¤", 1), src)
+				break
+			if(compare_ckey(T.handling_admin, src) && !T.resolved)
+				T.handling_admin = src
+				T.add_log(new /datum/ticket_log(T, src, "¤ Connected ¤", 1), src)
+				break
+
 #if (PRELOAD_RSC == 0)
 	if(external_rsc_urls && external_rsc_urls.len)
 		next_external_rsc = Wrap(next_external_rsc+1, 1, external_rsc_urls.len+1)
@@ -138,10 +186,22 @@ var/next_external_rsc = 0
 	prefs.last_id = computer_id			//these are gonna be used for banning
 	if(ckey in donators)
 		prefs.unlock_content |= 2
+		add_donor_verbs()
 	else
-		prefs.unlock_content &= 1
+		prefs.unlock_content &= ~2
+		if(prefs.be_special & QUIET_ROUND)
+			prefs.be_special &= ~QUIET_ROUND
+			prefs.save_preferences()
 
-	log_client_to_db()
+	set_client_age_from_db()
+
+	if (!ticker || ticker.current_state == GAME_STATE_PREGAME)
+		spawn (rand(10,150))
+			if (src)
+				sync_client_with_db()
+	else
+		sync_client_with_db()
+
 
 	. = ..()	//calls mob.Login()
 
@@ -156,93 +216,107 @@ var/next_external_rsc = 0
 			message_admins("Admin with +SERVER logged in. Restart vote disallowed.")
 			config.allow_vote_restart = 0
 		add_admin_verbs()
+		add_donor_verbs()
 		admin_memo_show()
 		if((global.comms_key == "default_pwd" || length(global.comms_key) <= 6) && global.comms_allowed) //It's the default value or less than 6 characters long, but it somehow didn't disable comms.
 			src << "<span class='danger'>The server's API key is either too short or is the default value! Consider changing it immediately!</span>"
 
-	send_resources()
+	spawn(0)
+		send_resources()
 
 	if(prefs.lastchangelog != changelog_hash) //bolds the changelog button on the interface so we know there are updates.
 		winset(src, "rpane.changelog", "background-color=#eaeaea;font-style=bold")
 
+	if(holder || !config.admin_who_blocked)
+		verbs += /client/proc/adminwho
 
 	//////////////
 	//DISCONNECT//
 	//////////////
 /client/Del()
+	for(var/datum/admin_ticket/T in tickets_list)
+		if(compare_ckey(T.owner_ckey, usr) && !T.resolved)
+			T.add_log(new /datum/ticket_log(T, src, "¤ Disconnected ¤", 1))
+
 	if(holder)
 		holder.owner = null
 		admins -= src
+	sync_logout_with_db(connection_number)
 	directory -= ckey
 	clients -= src
 	return ..()
 
 
-
-/client/proc/log_client_to_db()
-
-	if ( IsGuestKey(src.key) )
+/client/proc/set_client_age_from_db()
+	if (IsGuestKey(src.key))
 		return
 
 	establish_db_connection()
 	if(!dbcon.IsConnected())
 		return
 
-	var/sql_ckey = sql_sanitize_text(src.ckey)
+	var/sql_ckey = sanitizeSQL(src.ckey)
 
-	var/DBQuery/query = dbcon.NewQuery("SELECT id, datediff(Now(),firstseen) as age FROM erro_player WHERE ckey = '[sql_ckey]'")
+	var/DBQuery/query = dbcon.NewQuery("SELECT id, datediff(Now(),firstseen) as age FROM [format_table_name("player")] WHERE ckey = '[sql_ckey]'")
 	query.Execute()
-	var/sql_id = 0
-	while(query.NextRow())
-		sql_id = query.item[1]
+
+	while (query.NextRow())
 		player_age = text2num(query.item[2])
 		break
 
-	var/DBQuery/query_ip = dbcon.NewQuery("SELECT ckey FROM erro_player WHERE ip = '[address]'")
+
+/client/proc/sync_client_with_db()
+	if (IsGuestKey(src.key))
+		return
+
+	establish_db_connection()
+	if (!dbcon.IsConnected())
+		return
+
+	var/sql_ckey = sanitizeSQL(src.ckey)
+
+	var/DBQuery/query_ip = dbcon.NewQuery("SELECT ckey FROM [format_table_name("player")] WHERE ip = '[address]' AND ckey != '[sql_ckey]'")
 	query_ip.Execute()
 	related_accounts_ip = ""
 	while(query_ip.NextRow())
 		related_accounts_ip += "[query_ip.item[1]], "
-		break
 
-	var/DBQuery/query_cid = dbcon.NewQuery("SELECT ckey FROM erro_player WHERE computerid = '[computer_id]'")
+	var/DBQuery/query_cid = dbcon.NewQuery("SELECT ckey FROM [format_table_name("player")] WHERE computerid = '[computer_id]' AND ckey != '[sql_ckey]'")
 	query_cid.Execute()
 	related_accounts_cid = ""
-	while(query_cid.NextRow())
+	while (query_cid.NextRow())
 		related_accounts_cid += "[query_cid.item[1]], "
-		break
 
-	//Just the standard check to see if it's actually a number
-	if(sql_id)
-		if(istext(sql_id))
-			sql_id = text2num(sql_id)
-		if(!isnum(sql_id))
-			return
 
 	var/admin_rank = "Player"
-	if(src.holder && src.holder.rank)
+	if (src.holder && src.holder.rank)
 		admin_rank = src.holder.rank.name
 
-	var/sql_ip = sql_sanitize_text(src.address)
-	var/sql_computerid = sql_sanitize_text(src.computer_id)
-	var/sql_admin_rank = sql_sanitize_text(admin_rank)
+	var/sql_ip = sanitizeSQL(src.address)
+	var/sql_computerid = sanitizeSQL(src.computer_id)
+	var/sql_admin_rank = sanitizeSQL(admin_rank)
 
 
-	if(sql_id)
-		//Player already identified previously, we need to just update the 'lastseen', 'ip' and 'computer_id' variables
-		var/DBQuery/query_update = dbcon.NewQuery("UPDATE erro_player SET lastseen = Now(), ip = '[sql_ip]', computerid = '[sql_computerid]', lastadminrank = '[sql_admin_rank]' WHERE id = [sql_id]")
-		query_update.Execute()
-	else
-		//New player!! Need to insert all the stuff
-		var/DBQuery/query_insert = dbcon.NewQuery("INSERT INTO erro_player (id, ckey, firstseen, lastseen, ip, computerid, lastadminrank) VALUES (null, '[sql_ckey]', Now(), Now(), '[sql_ip]', '[sql_computerid]', '[sql_admin_rank]')")
-		query_insert.Execute()
+	var/DBQuery/query_insert = dbcon.NewQuery("INSERT INTO [format_table_name("player")] (id, ckey, firstseen, lastseen, ip, computerid, lastadminrank) VALUES (null, '[sql_ckey]', Now(), Now(), '[sql_ip]', '[sql_computerid]', '[sql_admin_rank]') ON DUPLICATE KEY UPDATE lastseen = VALUES(lastseen), ip = VALUES(ip), computerid = VALUES(computerid)")
+	query_insert.Execute()
 
 	//Logging player access
 	var/serverip = "[world.internet_address]:[world.port]"
-	var/DBQuery/query_accesslog = dbcon.NewQuery("INSERT INTO `erro_connection_log`(`id`,`datetime`,`serverip`,`ckey`,`ip`,`computerid`) VALUES(null,Now(),'[serverip]','[sql_ckey]','[sql_ip]','[sql_computerid]');")
+	var/DBQuery/query_accesslog = dbcon.NewQuery("INSERT INTO `[format_table_name("connection_log")]` (`id`,`datetime`,`serverip`,`ckey`,`ip`,`computerid`) VALUES(null,Now(),'[serverip]','[sql_ckey]','[sql_ip]','[sql_computerid]');")
 	query_accesslog.Execute()
+	var/DBQuery/query_getid = dbcon.NewQuery("SELECT `id` FROM `[format_table_name("connection_log")]` WHERE `serverip`='[serverip]' AND `ckey`='[sql_ckey]' AND `ip`='[sql_ip]' AND `computerid`='[sql_computerid]' ORDER BY datetime DESC LIMIT 1;")
+	query_getid.Execute()
+	while (query_getid.NextRow())
+		connection_number = text2num(query_getid.item[1])
 
-
+proc/sync_logout_with_db(number)
+	if(!number || !isnum(number))
+		return
+	establish_db_connection()
+	if (!dbcon.IsConnected())
+		return
+	var/DBQuery/query_logout = dbcon.NewQuery("UPDATE `[format_table_name("connection_log")]` SET `left`=Now() WHERE `id`=[number];")
+	query_logout.Execute()
 #undef TOPIC_SPAM_DELAY
 #undef UPLOAD_LIMIT
 #undef MIN_CLIENT_VERSION
@@ -284,6 +358,10 @@ var/next_external_rsc = 0
 		'icons/pda_icons/pda_blank.png',
 		'icons/pda_icons/pda_boom.png',
 		'icons/pda_icons/pda_bucket.png',
+		'icons/pda_icons/pda_chatroom.png',
+		'icons/pda_icons/pda_medbot.png',
+		'icons/pda_icons/pda_floorbot.png',
+		'icons/pda_icons/pda_cleanbot.png',
 		'icons/pda_icons/pda_crate.png',
 		'icons/pda_icons/pda_cuffs.png',
 		'icons/pda_icons/pda_eject.png',

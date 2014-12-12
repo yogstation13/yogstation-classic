@@ -41,9 +41,9 @@
 	..()
 
 
-/obj/machinery/syndicatebomb/examine()
+/obj/machinery/syndicatebomb/examine(mob/user)
 	..()
-	usr << "A digital display on it reads \"[timer]\"."
+	user << "A digital display on it reads \"[timer]\"."
 
 /obj/machinery/syndicatebomb/update_icon()
 	icon_state = "[initial(icon_state)][active ? "-active" : "-inactive"][open_panel ? "-wires" : ""]"
@@ -110,8 +110,9 @@
 		wires.Interact(user)
 	if(!open_panel)
 		if(!active)
-			settings(user)
-			return
+			spawn()
+				settings(user)
+				return
 		else if(anchored)
 			user << "<span class='notice'>The bomb is bolted to the floor!</span>"
 			return
@@ -179,7 +180,7 @@
 	origin_tech = "syndicate=6;combat=5"
 	var/adminlog = null
 
-/obj/item/weapon/bombcore/ex_act(severity) //Little boom can chain a big boom
+/obj/item/weapon/bombcore/ex_act(severity, target) //Little boom can chain a big boom
 	src.detonate()
 
 /obj/item/weapon/bombcore/proc/detonate()
@@ -205,10 +206,10 @@
 /obj/item/weapon/bombcore/training/proc/reset()
 	var/obj/machinery/syndicatebomb/holder = src.loc
 	if(istype(holder))
-		holder.open_panel = 0
 		if(holder.wires)
 			holder.wires.Shuffle()
 		holder.defused = 0
+		holder.open_panel = 0
 		holder.update_icon()
 		holder.updateDialog()
 
@@ -226,8 +227,10 @@
 	if(istype(holder))
 		attempts++
 		defusals++
-		holder.loc.visible_message("<span class='notice'>\icon[holder] Alert: Bomb has been defused. Your score is now [defusals] for [attempts]! Resetting wires...</span>")
-		reset()
+		holder.loc.visible_message("<span class='notice'>\icon[holder] Alert: Bomb has been defused. Your score is now [defusals] for [attempts]! Resetting wires in 5 seconds...</span>")
+		sleep(50)	//Just in case someone is trying to remove the bomb core this gives them a little window to crowbar it out
+		if(istype(holder))
+			reset()
 
 /obj/item/weapon/bombcore/badmin
 	name = "badmin payload"

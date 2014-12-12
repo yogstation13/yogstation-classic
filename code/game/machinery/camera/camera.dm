@@ -76,14 +76,15 @@
 			emped = emped+1  //Increase the number of consecutive EMP's
 			var/thisemp = emped //Take note of which EMP this proc is for
 			spawn(900)
-				if(emped == thisemp) //Only fix it if the camera hasn't been EMP'd again
-					network = previous_network
-					icon_state = initial(icon_state)
-					stat &= ~EMPED
-					cancelCameraAlarm()
-					if(can_use())
-						cameranet.addCamera(src)
-					emped = 0 //Resets the consecutive EMP count
+				if(loc) //qdel limbo
+					if(emped == thisemp) //Only fix it if the camera hasn't been EMP'd again
+						network = previous_network
+						icon_state = initial(icon_state)
+						stat &= ~EMPED
+						cancelCameraAlarm()
+						if(can_use())
+							cameranet.addCamera(src)
+						emped = 0 //Resets the consecutive EMP count
 			for(var/mob/O in mob_list)
 				if (O.client && O.client.eye == src)
 					O.unset_machine()
@@ -92,11 +93,11 @@
 			..()
 
 
-/obj/machinery/camera/ex_act(severity)
+/obj/machinery/camera/ex_act(severity, target)
 	if(src.invuln)
 		return
 	else
-		..(severity)
+		..()
 	return
 
 /obj/machinery/camera/blob_act()
@@ -115,6 +116,7 @@
 /obj/machinery/camera/attack_paw(mob/living/carbon/alien/humanoid/user as mob)
 	if(!istype(user))
 		return
+	user.do_attack_animation(src)
 	status = 0
 	visible_message("<span class='warning'>\The [user] slashes at [src]!</span>")
 	playsound(src.loc, 'sound/weapons/slash.ogg', 100, 1)
@@ -219,7 +221,7 @@
 		spark_system.start()
 		playsound(loc, 'sound/weapons/blade1.ogg', 50, 1)
 		playsound(loc, "sparks", 50, 1)
-		visible_message("<span class='notice'>The camera has been sliced apart by [] with an energy blade!</span>")
+		visible_message("<span class='notice'>[user] has sliced the camera apart with an energy blade!</span>")
 		qdel(src)
 	else if(istype(W, /obj/item/device/laser_pointer))
 		var/obj/item/device/laser_pointer/L = W
@@ -282,7 +284,7 @@
 	if(isXRay())
 		see = range(view_range, pos)
 	else
-		see = hear(view_range, pos)
+		see = get_hear(view_range, pos)
 	return see
 
 /atom/proc/auto_turn()

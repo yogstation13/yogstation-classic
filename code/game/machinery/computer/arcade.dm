@@ -23,8 +23,11 @@
 							/obj/item/toy/prize/mauler						= 1,
 							/obj/item/toy/prize/odysseus					= 1,
 							/obj/item/toy/prize/phazon						= 1,
+							/obj/item/toy/prize/reticence					= 1,
 							/obj/item/toy/cards/deck						= 2,
-							/obj/item/toy/nuke								= 2
+							/obj/item/toy/nuke								= 2,
+							/obj/item/toy/minimeteor						= 2,
+							/obj/item/toy/carpplushie						= 2
 							)
 
 /obj/machinery/computer/arcade/New()
@@ -348,6 +351,8 @@
 	gameover = 0
 
 /obj/machinery/computer/arcade/orion_trail/attack_hand(mob/user as mob)
+	if(..())
+		return
 	if(fuel <= 0 || food <=0 || settlers.len == 0)
 		gameover = 1
 		event = null

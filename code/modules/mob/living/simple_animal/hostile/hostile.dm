@@ -32,6 +32,8 @@
 	if(!.)
 		walk(src, 0)
 		return 0
+	if(ranged)
+		ranged_cooldown--
 	if(client)
 		return 0
 	if(!stat)
@@ -50,8 +52,6 @@
 				AttackTarget()
 				DestroySurroundings()
 
-		if(ranged)
-			ranged_cooldown--
 
 //////////////HOSTILE MOB TARGETTING AND AGGRESSION////////////
 
@@ -231,7 +231,7 @@
 /mob/living/simple_animal/hostile/proc/OpenFire(var/the_target)
 
 	var/target = the_target
-	visible_message("<span class='danger'><b>[src]</b> [ranged_message] at [target]!</span>", 1)
+	visible_message("<span class='danger'><b>[src]</b> [ranged_message] at [target]!</span>")
 
 	var/tturf = get_turf(target)
 	if(rapid)
@@ -266,10 +266,10 @@
 		qdel(A)
 		return
 	A.current = target
+	A.firer = src
 	A.yo = target:y - start:y
 	A.xo = target:x - start:x
-	spawn( 0 )
-		A.process()
+	A.fire()
 	return
 
 /mob/living/simple_animal/hostile/proc/DestroySurroundings()
@@ -302,3 +302,8 @@
 		if(A.Adjacent(src))
 			A.attack_animal(src)
 		return 1
+
+/mob/living/simple_animal/hostile/RangedAttack(var/atom/A, var/params) //Player firing
+	if(ranged && ranged_cooldown <= 0)
+		OpenFire(A)
+	..()

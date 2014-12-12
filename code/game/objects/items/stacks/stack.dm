@@ -29,27 +29,26 @@
 		return // Not supposed to be destroyed
 	if (usr && usr.machine==src)
 		usr << browse(null, "window=stack")
+	src.loc = null
 	..()
 
-/obj/item/stack/examine()
-	set src in view(1)
+/obj/item/stack/examine(mob/user)
 	..()
 	if (is_cyborg)
 		if(src.singular_name)
-			usr << "There is enough energy for [src.get_amount()] [src.singular_name]\s."
+			user << "There is enough energy for [src.get_amount()] [src.singular_name]\s."
 		else
-			usr << "There is enough energy for [src.get_amount()]."
+			user << "There is enough energy for [src.get_amount()]."
 		return
 	if(src.singular_name)
 		if(src.get_amount()>1)
-			usr << "There are [src.get_amount()] [src.singular_name]\s in the stack."
+			user << "There are [src.get_amount()] [src.singular_name]\s in the stack."
 		else
-			usr << "There is [src.get_amount()] [src.singular_name] in the stack."
+			user << "There is [src.get_amount()] [src.singular_name] in the stack."
 	else if(src.get_amount()>1)
-		usr << "There are [src.get_amount()] in the stack."
+		user << "There are [src.get_amount()] in the stack."
 	else
-		usr << "There is [src.get_amount()] in the stack."
-	return
+		user << "There is [src.get_amount()] in the stack."
 
 /obj/item/stack/proc/get_amount()
 	if (is_cyborg)
@@ -90,7 +89,7 @@
 			title+= "[R.title]"
 		title+= " ([R.req_amount] [src.singular_name]\s)"
 		if (can_build)
-			t1 += text("<A href='?src=\ref[];make=[]'>[]</A>  ", src, i, title)
+			t1 += text("<A href='?src=\ref[];make=[];multiplier=1'>[]</A>  ", src, i, title)
 		else
 			t1 += text("[]", title)
 			continue
@@ -118,7 +117,8 @@
 
 		var/datum/stack_recipe/R = recipes[text2num(href_list["make"])]
 		var/multiplier = text2num(href_list["multiplier"])
-		if (!multiplier) multiplier = 1
+		if (!multiplier ||(multiplier <= 0)) //href protection
+			return
 		if (src.get_amount() < R.req_amount*multiplier)
 			if (R.req_amount*multiplier>1)
 				usr << "<span class='danger'>You haven't got enough [src] to build \the [R.req_amount*multiplier] [R.title]\s!</span>"
@@ -135,23 +135,32 @@
 			usr << "<span class='notice'>Building [R.title] ...</span>"
 			if (!do_after(usr, R.time))
 				return
-		if (src.get_amount() < R.req_amount*multiplier)
-			return
+			if (src.get_amount() < R.req_amount*multiplier)
+				return
+
 		var/atom/O = new R.result_type( usr.loc )
 		O.dir = usr.dir
+		use(R.req_amount * multiplier)
+
+		//is it a stack ?
 		if (R.max_res_amount > 1)
 			var/obj/item/stack/new_item = O
 			new_item.amount = R.res_amount*multiplier
-			new_item.add_to_stacks(usr)
-		use(R.req_amount * multiplier)
+			new_item.add_to_stacks(usr) //try to merge with existing stacks on current tile
+
+			if(new_item.amount <= 0)//if the stack is empty, i.e it has been merged with an existing stack and has been garbage collected
+				return
+
 		if (istype(O,/obj/item))
 			usr.put_in_hands(O)
 		O.add_fingerprint(usr)
+
 		//BubbleWrap - so newly formed boxes are empty
 		if ( istype(O, /obj/item/weapon/storage) )
 			for (var/obj/item/I in O)
 				qdel(I)
 		//BubbleWrap END
+
 	if (src && usr.machine==src) //do not reopen closed window
 		spawn( 0 )
 			src.interact(usr)
@@ -188,7 +197,7 @@
 			continue
 		oldsrc.attackby(item, usr)
 		usr << "You add new [item.singular_name] to the stack. It now contains [item.amount] [item.singular_name]\s."
-		if(!oldsrc)
+		if(oldsrc.amount <= 0)
 			break
 
 /obj/item/stack/attack_hand(mob/user as mob)
@@ -206,7 +215,7 @@
 	return
 
 /obj/item/stack/attackby(obj/item/W as obj, mob/user as mob)
-	..()
+
 	if (istype(W, src.type))
 		var/obj/item/stack/S = W
 		if (S.is_cyborg)
@@ -219,7 +228,7 @@
 				spawn(0) src.interact(usr)
 		else
 			if (S.amount >= max_amount)
-				return 1
+				return
 			var/to_transfer as num
 			if (user.get_inactive_hand()==src)
 				to_transfer = 1
@@ -231,7 +240,9 @@
 			src.use(to_transfer)
 			if (src && usr.machine==src)
 				spawn(0) src.interact(usr)
-	else return ..()
+
+	else
+		..()
 
 /obj/item/stack/proc/copy_evidences(obj/item/stack/from as obj)
 	src.blood_DNA = from.blood_DNA

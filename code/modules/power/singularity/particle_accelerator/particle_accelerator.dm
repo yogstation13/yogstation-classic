@@ -93,7 +93,9 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 	set category = "Object"
 	set src in oview(1)
 
-	if (src.anchored || usr:stat)
+	if(usr.stat || !usr.canmove || usr.restrained())
+		return
+	if (src.anchored)
 		usr << "It is fastened to the floor!"
 		return 0
 	src.dir = turn(src.dir, 270)
@@ -104,13 +106,15 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 	set category = "Object"
 	set src in oview(1)
 
-	if (src.anchored || usr:stat)
+	if(usr.stat || !usr.canmove || usr.restrained())
+		return
+	if (src.anchored)
 		usr << "It is fastened to the floor!"
 		return 0
 	src.dir = turn(src.dir, 90)
 	return 1
 
-/obj/structure/particle_accelerator/examine()
+/obj/structure/particle_accelerator/examine(mob/user)
 	switch(src.construction_state)
 		if(0)
 			src.desc = text("A [name], looks like it's not attached to the flooring")
@@ -123,7 +127,6 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 			if(powered)
 				src.desc = src.desc_holder
 	..()
-	return
 
 
 /obj/structure/particle_accelerator/attackby(obj/item/W, mob/user)
@@ -139,23 +142,6 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 	if(master && master.active)
 		master.toggle_power()
 		investigate_log("was moved whilst active; it <font color='red'>powered down</font>.","singulo")
-
-/obj/structure/particle_accelerator/ex_act(severity)
-	switch(severity)
-		if(1.0)
-			qdel(src)
-			return
-		if(2.0)
-			if (prob(50))
-				qdel(src)
-				return
-		if(3.0)
-			if (prob(25))
-				qdel(src)
-				return
-		else
-	return
-
 
 /obj/structure/particle_accelerator/blob_act()
 	if(prob(50))
@@ -283,7 +269,9 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 	set category = "Object"
 	set src in oview(1)
 
-	if (src.anchored || usr:stat)
+	if(usr.stat || !usr.canmove || usr.restrained())
+		return
+	if (src.anchored)
 		usr << "It is fastened to the floor!"
 		return 0
 	src.dir = turn(src.dir, 270)
@@ -294,7 +282,9 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 	set category = "Object"
 	set src in oview(1)
 
-	if (src.anchored || usr:stat)
+	if(usr.stat || !usr.canmove || usr.restrained())
+		return
+	if (src.anchored)
 		usr << "It is fastened to the floor!"
 		return 0
 	src.dir = turn(src.dir, 90)
@@ -303,7 +293,7 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 /obj/machinery/particle_accelerator/update_icon()
 	return
 
-/obj/machinery/particle_accelerator/examine()
+/obj/machinery/particle_accelerator/examine(mob/user)
 	switch(src.construction_state)
 		if(0)
 			src.desc = text("A [name], looks like it's not attached to the flooring")
@@ -316,7 +306,6 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 			if(powered)
 				src.desc = src.desc_holder
 	..()
-	return
 
 
 /obj/machinery/particle_accelerator/attackby(obj/item/W, mob/user)
@@ -325,23 +314,6 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 			return
 	..()
 	return
-
-/obj/machinery/particle_accelerator/ex_act(severity)
-	switch(severity)
-		if(1.0)
-			qdel(src)
-			return
-		if(2.0)
-			if (prob(50))
-				qdel(src)
-				return
-		if(3.0)
-			if (prob(25))
-				qdel(src)
-				return
-		else
-	return
-
 
 /obj/machinery/particle_accelerator/blob_act()
 	if(prob(50))

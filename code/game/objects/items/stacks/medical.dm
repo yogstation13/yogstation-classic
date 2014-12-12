@@ -25,16 +25,14 @@
 		user << "<span class='danger'>\The [src] cannot be applied to [M]!</span>"
 		return 1
 
-	if ( ! (istype(user, /mob/living/carbon/human) || \
-			istype(user, /mob/living/silicon) || \
-			istype(user, /mob/living/carbon/monkey)) )
+	if(!user.IsAdvancedToolUser())
 		user << "<span class='danger'>You don't have the dexterity to do this!</span>"
 		return 1
 
 	if (user)
 		if (M != user)
 			user.visible_message( \
-				"<span class='notice'>[M] has been applied with [src] by [user].</span>", \
+				"<span class='notice'>[user] has applied [src] on [M].</span>", \
 				"<span class='notice'>You apply \the [src] to [M].</span>" \
 			)
 		else

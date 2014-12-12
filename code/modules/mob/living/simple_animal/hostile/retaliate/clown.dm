@@ -5,6 +5,8 @@
 	icon_living = "clown"
 	icon_dead = "clown_dead"
 	icon_gib = "clown_gib"
+	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/rainbow
+	meat_amount = 3
 	speak_chance = 0
 	turns_per_move = 5
 	response_help = "pokes"
@@ -37,4 +39,4 @@
 	maxbodytemp = 370
 	heat_damage_per_tick = 15	//amount of damage applied if animal's body temperature is higher than maxbodytemp
 	cold_damage_per_tick = 10	//same as heat_damage_per_tick, only if the bodytemperature it's lower than minbodytemp
-	unsuitable_atoms_damage = 10
+	unsuitable_atmos_damage = 10

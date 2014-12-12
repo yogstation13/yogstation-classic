@@ -1,9 +1,8 @@
 /obj/machinery/atmospherics/unary/outlet_injector
-	icon = 'icons/obj/atmospherics/outlet_injector.dmi'
-	icon_state = "off"
+	icon_state = "inje_map"
 	use_power = 1
 
-	name = "Air Injector"
+	name = "air injector"
 	desc = "Has a valve and pump attached to it"
 
 	var/on = 0
@@ -17,17 +16,20 @@
 
 	level = 1
 
-/obj/machinery/atmospherics/unary/outlet_injector/update_icon()
-	if(node)
-		if(on && !(stat & NOPOWER))
-			icon_state = "[level == 1 && istype(loc, /turf/simulated) ? "h" : "" ]on"
-		else
-			icon_state = "[level == 1 && istype(loc, /turf/simulated) ? "h" : "" ]off"
-	else
-		icon_state = "exposed"
-		on = 0
+/obj/machinery/atmospherics/unary/outlet_injector/Destroy()
+	if(radio_controller)
+		radio_controller.remove_object(src,frequency)
+	..()
 
-	return
+/obj/machinery/atmospherics/unary/outlet_injector/on
+	on = 1
+
+/obj/machinery/atmospherics/unary/outlet_injector/update_icon_nopipes()
+	if(!node || !on || stat & (NOPOWER|BROKEN))
+		icon_state = "inje_off"
+		return
+
+	icon_state = "inje_on"
 
 /obj/machinery/atmospherics/unary/outlet_injector/power_change()
 	var/old_stat = stat
@@ -51,8 +53,7 @@
 		loc.assume_air(removed)
 		air_update_turf()
 
-		if(network)
-			network.update = 1
+		parent.update = 1
 
 	return 1
 
@@ -69,10 +70,9 @@
 
 		loc.assume_air(removed)
 
-		if(network)
-			network.update = 1
+		parent.update = 1
 
-	flick("inject", src)
+	flick("inje_inject", src)
 
 /obj/machinery/atmospherics/unary/outlet_injector/proc/set_frequency(new_frequency)
 	radio_controller.remove_object(src, frequency)
@@ -136,14 +136,3 @@
 	spawn(2)
 		broadcast_status()
 	update_icon()
-
-/obj/machinery/atmospherics/unary/outlet_injector/hide(var/i) //to make the little pipe section invisible, the icon changes.
-	if(node)
-		if(on)
-			icon_state = "[i == 1 && istype(loc, /turf/simulated) ? "h" : "" ]on"
-		else
-			icon_state = "[i == 1 && istype(loc, /turf/simulated) ? "h" : "" ]off"
-	else
-		icon_state = "[i == 1 && istype(loc, /turf/simulated) ? "h" : "" ]exposed"
-		on = 0
-	return

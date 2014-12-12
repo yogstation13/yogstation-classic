@@ -46,7 +46,7 @@
 		add_fingerprint(user)
 		for(var/mob/O in viewers(user, 3))
 			if((O.client && !( O.blinded )))
-				O << "<span class='notice'>The locker has been [locked ? null : "un"]locked by [user].</span>"
+				O << "<span class='notice'>[user] has [locked ? null : "un"]locked the locker.</span>"
 		if(src.locked)
 			src.icon_state = src.icon_locked
 		else
@@ -77,11 +77,10 @@
 			spark_system.start()
 			playsound(src.loc, 'sound/weapons/blade1.ogg', 50, 1)
 			playsound(src.loc, "sparks", 50, 1)
-			for(var/mob/O in viewers(user, 3))
-				O.show_message("<span class='warning'>The locker has been sliced open by [user] with an energy blade!</span>", 1, "You hear metal being sliced and sparks flying.", 2)
+			visible_message("<span class='warning'>[user] has sliced the locker open with an energy blade!</span>", "You hear metal being sliced and sparks flying.")
 		else
 			for(var/mob/O in viewers(user, 3))
-				O.show_message("<span class='warning'>The locker has been broken by [user] with an electromagnetic card!</span>", 1, "You hear a faint electrical spark.", 2)
+				O.show_message("<span class='warning'>[user] has broken the locker with an electromagnetic card!</span>", 1, "You hear a faint electrical spark.", 2)
 	else
 		..(W, user)
 
@@ -95,8 +94,8 @@
 		user << "<span class='notice'>The locker is locked!</span>"
 		if(world.time > lastbang+5)
 			lastbang = world.time
-			for(var/mob/M in hearers(src, null))
-				M << "<FONT size=[max(0, 5 - get_dist(src, M))]>BANG, bang!</FONT>"
+			for(var/mob/M in get_hearers_in_view(src, null))
+				M.show_message("<FONT size=[max(0, 5 - get_dist(src, M))]>BANG, bang!</FONT>", 2)
 	return
 
 /obj/structure/closet/secure_closet/attack_hand(mob/user as mob)

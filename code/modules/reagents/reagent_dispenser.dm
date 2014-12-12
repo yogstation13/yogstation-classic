@@ -10,7 +10,7 @@
 	var/amount_per_transfer_from_this = 10
 	var/possible_transfer_amounts = list(10,25,50,100)
 
-/obj/structure/reagent_dispensers/ex_act(severity)
+/obj/structure/reagent_dispensers/ex_act(severity, target)
 	switch(severity)
 		if(1.0)
 			qdel(src)
@@ -39,21 +39,12 @@
 		src.verbs -= /obj/structure/reagent_dispensers/verb/set_APTFT
 	..()
 
-/obj/structure/reagent_dispensers/examine()
-	set src in view()
-	..()
-	if (!(usr in view(2)) && usr!=src.loc) return
-	usr << "<span class='notice'>It contains:</span>"
-	if(reagents && reagents.reagent_list.len)
-		for(var/datum/reagent/R in reagents.reagent_list)
-			usr << "<span class='notice'>[R.volume] units of [R.name]</span>"
-	else
-		usr << "<span class='danger'>Nothing.</span>"
-
 /obj/structure/reagent_dispensers/verb/set_APTFT() //set amount_per_transfer_from_this
 	set name = "Set transfer amount"
 	set category = "Object"
 	set src in view(1)
+	if(usr.stat || !usr.canmove || usr.restrained())
+		return
 	var/N = input("Amount per transfer from this:","[src]") as null|anything in possible_transfer_amounts
 	if (N)
 		amount_per_transfer_from_this = N
@@ -69,7 +60,7 @@
 		..()
 		reagents.add_reagent("water",1000)
 
-/obj/structure/reagent_dispensers/watertank/ex_act(severity)
+/obj/structure/reagent_dispensers/watertank/ex_act(severity, target)
 	switch(severity)
 		if(1.0)
 			qdel(src)

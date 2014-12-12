@@ -11,6 +11,9 @@
 		src << "<span class='notice'>You will no longer examine things you click on.</span>"
 
 /mob/dead/observer/DblClickOn(var/atom/A, var/params)
+	if(client.prefs.afreeze)
+		client << "<span class='userdanger'>You are frozen by an administrator.</span>"
+		return
 	if(client.buildmode)
 		build_click(src, client.buildmode, params, A)
 		return
@@ -28,6 +31,9 @@
 		loc = get_turf(A)
 
 /mob/dead/observer/ClickOn(var/atom/A, var/params)
+	if(client.prefs.afreeze)
+		client << "<span class='userdanger'>You are frozen by an administrator.</span>"
+		return
 	if(client.buildmode)
 		build_click(src, client.buildmode, params, A)
 		return
@@ -55,7 +61,7 @@
 // Oh by the way this didn't work with old click code which is why clicking shit didn't spam you
 /atom/proc/attack_ghost(mob/dead/observer/user as mob)
 	if(user.client && user.client.inquisitive_ghost)
-		examine()
+		user.examinate(src)
 	return
 
 // ---------------------------------------

@@ -134,24 +134,24 @@ Doesn't work on other aliens/AI.*/
 		A.current = U
 		A.yo = U.y - T.y
 		A.xo = U.x - T.x
-		A.process()
+		A.fire()
 	return
 
 /mob/living/carbon/alien/humanoid/proc/resin()
-	set name = "Secrete Resin (75)"
+	set name = "Secrete Resin (55)"
 	set desc = "Secrete tough malleable resin."
 	set category = "Alien"
 
-	if(powerc(75))
-		var/choice = input("Choose what you wish to shape.","Resin building") as null|anything in list("resin door","resin wall","resin membrane","resin nest") //would do it through typesof but then the player choice would have the type path and we don't want the internal workings to be exposed ICly - Urist
-		if(!choice || !powerc(75))	return
-		adjustToxLoss(-75)
-		src << "<span class='userdanger'>You shape a [choice].</span>"
-		for(var/mob/O in viewers(src, null))
-			O.show_message(text("<span class='userdanger'>[src] vomits up a thick purple substance and begins to shape it!</span>"), 1)
+	if(powerc(55,1))
+		if(locate(/obj/structure/alien/resin) in loc.contents)
+			src << "<span class='danger'>There is already a resin structure there.</span>"
+			return
+		var/choice = input("Choose what you wish to shape.","Resin building") as null|anything in list("resin wall","resin membrane","resin nest") //would do it through typesof but then the player choice would have the type path and we don't want the internal workings to be exposed ICly - Urist
+		if(!choice || !powerc(55))	return
+		adjustToxLoss(-55)
+		src << "<span class='notice'>You shape a [choice].</span>"
+		visible_message("<span class='notice'>[src] vomits up a thick purple substance and begins to shape it.</span>")
 		switch(choice)
-			if("resin door")
-				new /obj/structure/mineral_door/resin(loc)
 			if("resin wall")
 				new /obj/structure/alien/resin/wall(loc)
 			if("resin membrane")

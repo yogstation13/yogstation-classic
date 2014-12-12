@@ -115,8 +115,18 @@ proc/isobserver(A)
 		return 1
 	return 0
 
+proc/isnewplayer(A)
+	if(istype(A, /mob/new_player))
+		return 1
+	return 0
+
 proc/isovermind(A)
 	if(istype(A, /mob/camera/blob))
+		return 1
+	return 0
+
+proc/isdrone(A)
+	if(istype(A, /mob/living/simple_animal/drone))
 		return 1
 	return 0
 
@@ -177,7 +187,7 @@ proc/isorgan(A)
 		return 0
 
 /proc/stars(n, pr)
-	n = html_decode(n)
+	n = strip_html_properly(n)
 	if (pr == null)
 		pr = 25
 	if (pr <= 0)
@@ -450,8 +460,7 @@ proc/is_special_character(mob/M) // returns 1 for special characters and 2 for h
 			affecting.heal_damage(brute,burn,1)
 			H.update_damage_overlays(0)
 			H.updatehealth()
-			for(var/mob/O in viewers(user, null))
-				O.show_message(text("<span class='notice'>[user] has fixed some of the [dam ? "dents on" : "burnt wires in"] [H]'s [affecting.getDisplayName()]!</span>"), 1)
+			user.visible_message("<span class='notice'>[user] has fixed some of the [dam ? "dents on" : "burnt wires in"] [H]'s [affecting.getDisplayName()]!</span>")
 			return
 		else
 			user << "<span class='notice'>[H]'s [affecting.getDisplayName()] is already in good condition</span>"
@@ -459,9 +468,3 @@ proc/is_special_character(mob/M) // returns 1 for special characters and 2 for h
 	else
 		return
 
-/proc/broadcast_hud_message(var/message, var/broadcast_source)
-	var/turf/sourceturf = get_turf(broadcast_source)
-	for(var/mob/living/carbon/human/human in mob_list)
-		var/turf/humanturf = get_turf(human)
-		if((humanturf.z == sourceturf.z) && istype(human.glasses, /obj/item/clothing/glasses/hud/security))
-			human.show_message("<span class='info'>\icon[human.glasses] [message]</span>", 1)

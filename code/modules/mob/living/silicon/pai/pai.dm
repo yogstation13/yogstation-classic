@@ -1,10 +1,10 @@
 /mob/living/silicon/pai
 	name = "pAI"
 	icon = 'icons/obj/status_display.dmi' //invisibility!
-	mouse_opacity
+	mouse_opacity = 0
 	density = 0
-
-	robot_talk_understand = 0
+	mob_size = 0
+	invisibility = 101
 
 	var/network = "SS13"
 	var/obj/machinery/camera/current = null
@@ -13,7 +13,6 @@
 	var/list/software = list()
 	var/userDNA		// The DNA string of our assigned user
 	var/obj/item/device/paicard/card	// The card we inhabit
-	var/obj/item/device/radio/radio		// Our primary radio
 
 	var/speakStatement = "states"
 	var/speakExclamation = "declares"
@@ -69,7 +68,6 @@
 		pda.ownjob = "Personal Assistant"
 		pda.owner = text("[]", src)
 		pda.name = pda.owner + " (" + pda.ownjob + ")"
-		pda.toff = 1
 
 		follow_pai()
 	..()
@@ -142,7 +140,7 @@
 		if(3)
 			src << "<span class='notice'>You feel an electric surge run through your circuitry and become acutely aware at how lucky you are that you can still feel at all.</span>"
 
-/mob/living/silicon/pai/ex_act(severity)
+/mob/living/silicon/pai/ex_act(severity, target)
 	..()
 
 	switch(severity)

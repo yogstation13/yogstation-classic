@@ -10,20 +10,21 @@
 
 /obj/structure/closet/secure_closet/captains/New()
 	..()
-	sleep(2)
 	if(prob(50))
 		new /obj/item/weapon/storage/backpack/captain(src)
 	else
 		new /obj/item/weapon/storage/backpack/satchel_cap(src)
 	new /obj/item/clothing/suit/captunic(src)
 	new /obj/item/clothing/under/captainformal(src)
-	new /obj/item/clothing/head/helmet/cap(src)
+	new /obj/item/clothing/head/caphat/parade(src)
 	new /obj/item/clothing/under/rank/captain(src)
 	new /obj/item/clothing/suit/armor/vest/capcarapace(src)
 	new /obj/item/weapon/cartridge/captain(src)
 	new /obj/item/clothing/shoes/sneakers/brown(src)
 	new /obj/item/device/radio/headset/heads/captain/alt(src)
 	new /obj/item/clothing/gloves/captain(src)
+	new /obj/item/clothing/suit/toggle/wintercoat/captain(src)
+	new /obj/item/clothing/head/santa(src)
 	new /obj/item/weapon/gun/energy/gun(src)
 	new /obj/item/device/radio/security(src)
 	new /obj/item/weapon/card/id/captains_spare(src)
@@ -42,7 +43,6 @@
 
 /obj/structure/closet/secure_closet/hop/New()
 	..()
-	sleep(2)
 	new /obj/item/clothing/under/rank/head_of_personnel(src)
 	new /obj/item/clothing/head/hopcap(src)
 	new /obj/item/weapon/cartridge/hop(src)
@@ -52,9 +52,11 @@
 	new /obj/item/weapon/storage/box/ids(src)
 	new /obj/item/clothing/suit/armor/vest(src)
 	new /obj/item/weapon/gun/energy/gun(src)
-	new /obj/item/device/flash(src)
+	new /obj/item/device/flash/handheld(src)
 	new /obj/item/clothing/glasses/sunglasses(src)
 	new /obj/item/weapon/mining_voucher(src)
+	new /obj/item/clothing/suit/toggle/wintercoat/cargo(src)
+	new /obj/item/clothing/head/hardhat/reindeer()
 	return
 
 
@@ -71,21 +73,23 @@
 
 /obj/structure/closet/secure_closet/hos/New()
 	..()
-	sleep(2)
 	new /obj/item/clothing/suit/armor/vest(src)
-	new /obj/item/clothing/suit/armor/hos/jensen(src)
-	new /obj/item/clothing/head/helmet/HoS/dermal(src)
+	new /obj/item/clothing/under/hosformalfem(src)
+	new /obj/item/clothing/under/hosformalmale(src)
+	new /obj/item/clothing/suit/armor/hos/trenchcoat(src)
+	new /obj/item/clothing/head/HoS/beret(src)
 	new /obj/item/weapon/cartridge/hos(src)
-	new /obj/item/device/radio/headset/heads/hos/alt(src)
-	new /obj/item/clothing/glasses/hud/security/sunglasses(src)
-	new /obj/item/weapon/shield/riot(src)
-	new /obj/item/clothing/mask/gas/sechailer/hos(src)
+	new /obj/item/device/radio/headset/heads/hos(src)
+	new /obj/item/clothing/glasses/hud/security/eyepatch(src)
 	new /obj/item/weapon/storage/lockbox/loyalty(src)
+	new /obj/item/weapon/shield/riot/tele(src)
+	new /obj/item/clothing/mask/gas/sechailer/swat(src)
 	new /obj/item/weapon/storage/box/flashbangs(src)
-	new /obj/item/device/flash(src)
+	new /obj/item/device/flash/handheld(src)
 	new /obj/item/weapon/melee/baton/loaded(src)
 	new /obj/item/weapon/gun/energy/gun(src)
 	new /obj/item/weapon/storage/belt/security(src)
+	new /obj/item/clothing/suit/toggle/wintercoat/security(src)
 	new /obj/item/device/radio/security(src)
 	return
 
@@ -103,21 +107,22 @@
 
 /obj/structure/closet/secure_closet/warden/New()
 	..()
-	sleep(2)
 	new /obj/item/clothing/suit/armor/vest(src)
 	new /obj/item/clothing/under/rank/warden(src)
 	new /obj/item/clothing/suit/armor/vest/warden(src)
-	new /obj/item/clothing/head/helmet/warden(src)
-	new /obj/item/weapon/clipboard(src)
-	new /obj/item/device/radio/headset/headset_sec/alt(src)
+	new /obj/item/clothing/head/warden(src)
+	new /obj/item/clothing/head/warden/drill(src)
+	new /obj/item/device/radio/headset/headset_sec(src)
 	new /obj/item/clothing/glasses/hud/security/sunglasses(src)
-	new /obj/item/clothing/mask/gas/sechailer/warden(src)
+	new /obj/item/clothing/mask/gas/sechailer(src)
 	new /obj/item/weapon/storage/box/flashbangs(src)
 	new /obj/item/weapon/storage/box/flashes(src)
+	new /obj/item/weapon/storage/box/zipties(src)
 	new /obj/item/weapon/reagent_containers/spray/pepper(src)
 	new /obj/item/weapon/melee/baton/loaded(src)
 	new /obj/item/weapon/gun/energy/taser(src)
 	new /obj/item/weapon/storage/belt/security(src)
+	new /obj/item/clothing/suit/toggle/wintercoat/security(src)
 	new /obj/item/device/radio/security(src)
 	return
 
@@ -135,17 +140,17 @@
 
 /obj/structure/closet/secure_closet/security/New()
 	..()
-	sleep(2)
 	new /obj/item/clothing/suit/armor/vest(src)
 	new /obj/item/clothing/head/helmet(src)
 	new /obj/item/device/radio/headset/headset_sec/alt(src)
 	new /obj/item/clothing/mask/gas/sechailer(src)
-	new /obj/item/device/flash(src)
+	new /obj/item/device/flash/handheld(src)
 	new /obj/item/weapon/reagent_containers/spray/pepper(src)
 	new /obj/item/weapon/grenade/flashbang(src)
 	new /obj/item/weapon/gun/energy/taser(src)
 	new /obj/item/weapon/storage/belt/security(src)
 	new /obj/item/clothing/glasses/hud/security/sunglasses(src)
+	new /obj/item/clothing/suit/toggle/wintercoat/security(src)
 	new /obj/item/device/radio/security(src)
 	return
 
@@ -202,17 +207,20 @@
 
 /obj/structure/closet/secure_closet/detective/New()
 	..()
-	sleep(2)
 	new /obj/item/clothing/under/rank/det(src)
 	new /obj/item/clothing/suit/det_suit(src)
-	new /obj/item/clothing/gloves/black(src)
 	new /obj/item/clothing/head/det_hat(src)
-	new /obj/item/clothing/shoes/sneakers/brown(src)
+	new /obj/item/clothing/gloves/black(src)
+	new /obj/item/clothing/under/det/grey(src)
+	new /obj/item/clothing/suit/det_suit/grey(src)
+	new /obj/item/clothing/head/fedora(src)
+	new /obj/item/clothing/shoes/laceup(src)
 	new /obj/item/weapon/storage/box/evidence(src)
 	new /obj/item/weapon/clipboard(src)
-	new /obj/item/device/radio/headset/headset_sec(src)
+	new /obj/item/device/radio/headset/headset_sec/alt(src)
 	new /obj/item/device/detective_scanner(src)
 	new /obj/item/clothing/suit/armor/vest/det_suit(src)
+	new /obj/item/clothing/suit/toggle/wintercoat(src)
 	new /obj/item/ammo_box/c38(src)
 	new /obj/item/ammo_box/c38(src)
 	new /obj/item/weapon/gun/projectile/revolver/detective(src)
@@ -236,7 +244,6 @@
 
 /obj/structure/closet/secure_closet/injection/New()
 	..()
-	sleep(2)
 	new /obj/item/weapon/reagent_containers/syringe/lethal/choral(src)
 	new /obj/item/weapon/reagent_containers/syringe/lethal/choral(src)
 	new /obj/item/weapon/reagent_containers/syringe/lethal/choral(src)
@@ -251,7 +258,7 @@
 	var/id = null
 
 /obj/structure/closet/secure_closet/brig/New()
-	new /obj/item/clothing/under/color/orange( src )
+	new /obj/item/clothing/under/rank/prisoner( src )
 	new /obj/item/clothing/shoes/sneakers/orange( src )
 	return
 
@@ -263,7 +270,6 @@
 
 /obj/structure/closet/secure_closet/courtroom/New()
 	..()
-	sleep(2)
 	new /obj/item/clothing/shoes/sneakers/brown(src)
 	new /obj/item/weapon/paper/Court (src)
 	new /obj/item/weapon/paper/Court (src)
@@ -299,19 +305,4 @@
 				icon_state = icon_closed
 		else
 			icon_state = icon_opened
-
-
- /obj/structure/closet/secure_closet/ammunitionlocker
- 	name = "ammunition locker"
- 	req_access = list(access_armory)
-
-/obj/structure/closet/secure_closet/ammunitionlocker/New()
- 		new /obj/item/ammo_casing/shotgun/beanbag(src)
- 		new /obj/item/ammo_casing/shotgun/beanbag(src)
- 		new /obj/item/ammo_casing/shotgun/beanbag(src)
- 		new /obj/item/ammo_casing/shotgun/beanbag(src)
- 		new /obj/item/ammo_casing/shotgun/beanbag(src)
- 		new /obj/item/ammo_casing/shotgun/beanbag(src)
- 		new /obj/item/ammo_casing/shotgun/beanbag(src)
- 		new /obj/item/ammo_casing/shotgun/beanbag(src)
 

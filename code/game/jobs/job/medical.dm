@@ -20,20 +20,23 @@ Chief Medical Officer
 	default_backpack = /obj/item/weapon/storage/backpack/medic
 	default_satchel = /obj/item/weapon/storage/backpack/satchel_med
 
-	access = list(access_medical, access_morgue, access_genetics, access_heads, access_mineral_storeroom,
+	access = list(access_medical, access_morgue, access_genetics, access_paramedic, access_heads, access_mineral_storeroom,
 			access_chemistry, access_virology, access_cmo, access_surgery, access_RC_announce,
 			access_keycard_auth, access_sec_doors)
-	minimal_access = list(access_medical, access_morgue, access_genetics, access_heads, access_mineral_storeroom,
+	minimal_access = list(access_medical, access_morgue, access_genetics, access_paramedic, access_heads, access_mineral_storeroom,
 			access_chemistry, access_virology, access_cmo, access_surgery, access_RC_announce,
 			access_keycard_auth, access_sec_doors)
 
 /datum/job/cmo/equip_items(var/mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/chief_medical_officer(H), slot_w_uniform)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/brown(H), slot_shoes)
-	H.equip_to_slot_or_del(new /obj/item/clothing/suit/labcoat/cmo(H), slot_wear_suit)
+	H.equip_to_slot_or_del(new /obj/item/clothing/suit/toggle/labcoat/cmo(H), slot_wear_suit)
 	H.equip_to_slot_or_del(new /obj/item/weapon/storage/firstaid/regular(H), slot_l_hand)
 	H.equip_to_slot_or_del(new /obj/item/device/flashlight/pen(H), slot_s_store)
 
+	//Equip telebaton
+	if(H.backbag == 2 || H.backbag == 3)
+		H.equip_to_slot_or_del(new /obj/item/weapon/melee/telebaton(H), slot_in_backpack)
 
 /*
 Medical Doctor
@@ -60,7 +63,7 @@ Medical Doctor
 /datum/job/doctor/equip_items(var/mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/medical(H), slot_w_uniform)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/white(H), slot_shoes)
-	H.equip_to_slot_or_del(new /obj/item/clothing/suit/labcoat(H), slot_wear_suit)
+	H.equip_to_slot_or_del(new /obj/item/clothing/suit/toggle/labcoat(H), slot_wear_suit)
 	H.equip_to_slot_or_del(new /obj/item/weapon/storage/firstaid/regular(H), slot_l_hand)
 	H.equip_to_slot_or_del(new /obj/item/device/flashlight/pen(H), slot_s_store)
 
@@ -82,8 +85,8 @@ Mining Medic
 	default_backpack = /obj/item/weapon/storage/backpack/medic
 	default_satchel = /obj/item/weapon/storage/backpack/satchel_med
 
-	access = list(access_medical, access_morgue, access_surgery,access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mint, access_mining, access_mining_station, access_mineral_storeroom)
-	minimal_access = list(access_medical, access_morgue, access_surgery, access_mining, access_mint, access_mining_station, access_mailsorting, access_mineral_storeroom, access_maint_tunnels)
+	access = list(access_medical, access_morgue, access_surgery, access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mint, access_mining, access_mining_station, access_mineral_storeroom)
+	minimal_access = list(access_medical, access_mining, access_mint, access_mining_station, access_mailsorting, access_mineral_storeroom)
 
 /datum/job/miningmedic/equip_items(var/mob/living/carbon/human/H)
 
@@ -93,6 +96,64 @@ Mining Medic
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/mmedical(H), slot_w_uniform)
 	H.equip_to_slot_or_del(new /obj/item/weapon/storage/firstaid/regular(H), slot_l_hand)
 	H.equip_to_slot_or_del(new /obj/item/device/flashlight/pen(H), slot_s_store)
+
+/*
+Paramedic
+*/
+/datum/job/paramedic
+	title = "Paramedic"
+	flag = PARAMEDIC
+	department_flag = MEDSCI
+	faction = "Station"
+	total_positions = 3
+	spawn_positions = 2
+	supervisors = "the chief medical officer"
+	selection_color = "#ffeef0"
+
+	default_pda = /obj/item/device/pda/medical
+	default_headset = /obj/item/device/radio/headset/headset_med
+	default_backpack = /obj/item/weapon/storage/backpack/medic
+	default_satchel = /obj/item/weapon/storage/backpack/satchel_med
+
+	access = list(access_medical, access_morgue, access_maint_tunnels, access_external_airlocks, access_paramedic)
+	minimal_access = list(access_medical, access_morgue, access_maint_tunnels, access_external_airlocks, access_paramedic)
+
+/datum/job/paramedic/equip_items(var/mob/living/carbon/human/H)
+
+	H.equip_to_slot_or_del(new /obj/item/weapon/storage/firstaid/regular(H.back), slot_in_backpack)
+	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/white(H), slot_shoes)
+	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/medical/blue(H), slot_w_uniform)
+	H.equip_to_slot_or_del(new /obj/item/clothing/suit/toggle/labcoat/emt(H), slot_wear_suit)
+	H.equip_to_slot_or_del(new /obj/item/roller(H), slot_l_hand)
+	H.equip_to_slot_or_del(new /obj/item/device/flashlight(H), slot_l_store)
+	H.equip_to_slot_or_del(new /obj/item/device/gps(H), slot_r_store)
+/*
+Psychiatrist
+*/
+/datum/job/psych
+	title = "Psychiatrist"
+	flag = PSYCH
+	department_flag = MEDSCI
+	faction = "Station"
+	total_positions = 1
+	spawn_positions = 1
+	supervisors = "the chief medical officer"
+	selection_color = "#ffeef0"
+
+	default_pda = /obj/item/device/pda
+	default_headset = /obj/item/device/radio/headset/headset_med
+	default_backpack = /obj/item/weapon/storage/backpack
+	default_satchel = /obj/item/weapon/storage/backpack/satchel_norm
+
+	access = list(access_medical)
+	minimal_access = list(access_medical)
+
+/datum/job/psych/equip_items(var/mob/living/carbon/human/H)
+
+	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/brown(H), slot_shoes)
+	H.equip_to_slot_or_del(new /obj/item/clothing/under/suit_jacket/burgundy(H), slot_w_uniform)
+	H.equip_to_slot_or_del(new /obj/item/weapon/storage/briefcase(H), slot_l_hand)
+	H.equip_to_slot_or_del(new /obj/item/clothing/glasses/regular(H), slot_glasses)
 
 /*
 Chemist
@@ -117,7 +178,7 @@ Chemist
 /datum/job/chemist/equip_items(var/mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/chemist(H), slot_w_uniform)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/white(H), slot_shoes)
-	H.equip_to_slot_or_del(new /obj/item/clothing/suit/labcoat/chemist(H), slot_wear_suit)
+	H.equip_to_slot_or_del(new /obj/item/clothing/suit/toggle/labcoat/chemist(H), slot_wear_suit)
 
 /*
 Geneticist
@@ -142,7 +203,7 @@ Geneticist
 /datum/job/geneticist/equip_items(var/mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/geneticist(H), slot_w_uniform)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/white(H), slot_shoes)
-	H.equip_to_slot_or_del(new /obj/item/clothing/suit/labcoat/genetics(H), slot_wear_suit)
+	H.equip_to_slot_or_del(new /obj/item/clothing/suit/toggle/labcoat/genetics(H), slot_wear_suit)
 	H.equip_to_slot_or_del(new /obj/item/device/flashlight/pen(H), slot_s_store)
 
 /*
@@ -171,6 +232,6 @@ Virologist
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/virologist(H), slot_w_uniform)
 	H.equip_to_slot_or_del(new /obj/item/clothing/mask/surgical(H), slot_wear_mask)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/white(H), slot_shoes)
-	H.equip_to_slot_or_del(new /obj/item/clothing/suit/labcoat/virologist(H), slot_wear_suit)
+	H.equip_to_slot_or_del(new /obj/item/clothing/suit/toggle/labcoat/virologist(H), slot_wear_suit)
 	H.equip_to_slot_or_del(new /obj/item/device/flashlight/pen(H), slot_s_store)
 

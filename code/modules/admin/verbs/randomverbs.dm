@@ -13,7 +13,7 @@
 		M.unEquip(W)
 
 	log_admin("[key_name(usr)] made [key_name(M)] drop everything!")
-	message_admins("[key_name_admin(usr)] made [key_name_admin(M)] drop everything!", 1)
+	message_admins("[key_name_admin(usr)] made [key_name_admin(M)] drop everything!")
 	feedback_add_details("admin_verb","DEVR") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 
@@ -36,7 +36,7 @@
 				M << "\bold You hear a voice in your head... \italic [msg]"
 
 	log_admin("SubtlePM: [key_name(usr)] -> [key_name(M)] : [msg]")
-	message_admins("<span class='boldnotice'> SubtleMessage: [key_name_admin(usr)] -> [key_name_admin(M)] : [msg]</span>", 1)
+	message_admins("<span class='adminnotice'><b> SubtleMessage: [key_name_admin(usr)] -> [key_name_admin(M)] :</b> [msg]</span>")
 	feedback_add_details("admin_verb","SMS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_admin_world_narrate()
@@ -53,7 +53,7 @@
 		return
 	world << "[msg]"
 	log_admin("GlobalNarrate: [key_name(usr)] : [msg]")
-	message_admins("<span class='boldnotice'> GlobalNarrate: [key_name_admin(usr)] : [msg]<BR></span>", 1)
+	message_admins("<span class='adminnotice'><b> GlobalNarrate: [key_name_admin(usr)] :</b> [msg]<BR></span>")
 	feedback_add_details("admin_verb","GLN") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_admin_direct_narrate(var/mob/M)
@@ -77,7 +77,7 @@
 
 	M << msg
 	log_admin("DirectNarrate: [key_name(usr)] to ([M.name]/[M.key]): [msg]")
-	message_admins("<span class='boldnotice'> DirectNarrate: [key_name(usr)] to ([M.name]/[M.key]): [msg]<BR></span>", 1)
+	message_admins("<span class='adminnotice'><b> DirectNarrate: [key_name(usr)] to ([M.name]/[M.key]):</b> [msg]<BR></span>")
 	feedback_add_details("admin_verb","DIRN") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_admin_godmode(mob/M as mob in mob_list)
@@ -87,10 +87,10 @@
 		src << "Only administrators may use this command."
 		return
 	M.status_flags ^= GODMODE
-	usr << "<span class='notice'>Toggled [(M.status_flags & GODMODE) ? "ON" : "OFF"]</span>"
+	usr << "<span class='adminnotice'>Toggled [(M.status_flags & GODMODE) ? "ON" : "OFF"]</span>"
 
 	log_admin("[key_name(usr)] has toggled [key_name(M)]'s nodamage to [(M.status_flags & GODMODE) ? "On" : "Off"]")
-	message_admins("[key_name_admin(usr)] has toggled [key_name_admin(M)]'s nodamage to [(M.status_flags & GODMODE) ? "On" : "Off"]", 1)
+	message_admins("[key_name_admin(usr)] has toggled [key_name_admin(M)]'s nodamage to [(M.status_flags & GODMODE) ? "On" : "Off"]")
 	feedback_add_details("admin_verb","GOD") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 
@@ -132,7 +132,7 @@ proc/cmd_admin_mute(whom, mute_type, automute = 0)
 		muteunmute = "auto-muted"
 		P.muted |= mute_type
 		log_admin("SPAM AUTOMUTE: [muteunmute] [key_name(whom)] from [mute_string]")
-		message_admins("SPAM AUTOMUTE: [muteunmute] [key_name_admin(whom)] from [mute_string].", 1)
+		message_admins("SPAM AUTOMUTE: [muteunmute] [key_name_admin(whom)] from [mute_string].")
 		if(C)	C << "You have been [muteunmute] from [mute_string] by the SPAM AUTOMUTE system. Contact an admin."
 		feedback_add_details("admin_verb","AUTOMUTE") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 		return
@@ -145,7 +145,7 @@ proc/cmd_admin_mute(whom, mute_type, automute = 0)
 		P.muted |= mute_type
 
 	log_admin("[key_name(usr)] has [muteunmute] [key_name(whom)] from [mute_string]")
-	message_admins("[key_name_admin(usr)] has [muteunmute] [key_name_admin(whom)] from [mute_string].", 1)
+	message_admins("[key_name_admin(usr)] has [muteunmute] [key_name_admin(whom)] from [mute_string].")
 	if(C)	C << "You have been [muteunmute] from [mute_string]."
 	feedback_add_details("admin_verb","MUTE") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
@@ -159,7 +159,7 @@ proc/cmd_admin_mute(whom, mute_type, automute = 0)
 	var/confirm = alert(src, "You sure?", "Confirm", "Yes", "No")
 	if(confirm != "Yes") return
 	log_admin("[key_name(src)] has added a random AI law.")
-	message_admins("[key_name_admin(src)] has added a random AI law.", 1)
+	message_admins("[key_name_admin(src)] has added a random AI law.")
 
 	var/show_log = alert(src, "Show ion message?", "Message", "Yes", "No")
 	var/announce_ion_laws = (show_log == "Yes" ? 1 : -1)
@@ -196,7 +196,7 @@ proc/cmd_admin_mute(whom, mute_type, automute = 0)
 		else			return 0
 
 	new_xeno.ckey = ckey
-	message_admins("<span class='notice'>[key_name_admin(usr)] has spawned [ckey] as a filthy xeno [alien_caste].</span>", 1)
+	message_admins("<span class='notice'>[key_name_admin(usr)] has spawned [ckey] as a filthy xeno [alien_caste].</span>")
 	return 1
 
 /*
@@ -254,7 +254,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 				G_found.mind.transfer_to(new_xeno)	//be careful when doing stuff like this! I've already checked the mind isn't in use
 				new_xeno.key = G_found.key
 				new_xeno << "You have been fully respawned. Enjoy the game."
-				message_admins("<span class='notice'>[key_name_admin(usr)] has respawned [new_xeno.key] as a filthy xeno.</span>", 1)
+				message_admins("<span class='adminnotice'>[key_name_admin(usr)] has respawned [new_xeno.key] as a filthy xeno.</span>")
 				return	//all done. The ghost is auto-deleted
 
 		//check if they were a monkey
@@ -264,7 +264,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 				G_found.mind.transfer_to(new_monkey)	//be careful when doing stuff like this! I've already checked the mind isn't in use
 				new_monkey.key = G_found.key
 				new_monkey << "You have been fully respawned. Enjoy the game."
-				message_admins("<span class='notice'>[key_name_admin(usr)] has respawned [new_monkey.key] as a filthy monkey.</span>", 1)
+				message_admins("<span class='adminnotice'>[key_name_admin(usr)] has respawned [new_monkey.key] as a filthy monkey.</span>", 1)
 				return	//all done. The ghost is auto-deleted
 
 
@@ -317,6 +317,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 
 	//Two variables to properly announce later on.
 	var/admin = key_name_admin(src)
+	var/player_key = G_found.key
 
 	//Now for special roles and equipment.
 	switch(new_character.mind.special_role)
@@ -355,19 +356,18 @@ Traitors and the like can also be revived with the previous role mostly intact.
 		if("Death Commando")//Leaves them at late-join spawn.
 			new_character.equip_death_commando()
 			new_character.internal = new_character.s_store
-			new_character.internals.icon_state = "internal1"
-*/
+			new_character.internals.icon_state = "internal1"*/
+
 		else//They may also be a cyborg or AI.
 			switch(new_character.mind.assigned_role)
 				if("Cyborg")//More rigging to make em' work and check if they're traitor.
 					new_character = new_character.Robotize()
-					//if(new_character.mind.special_role=="traitor")
-					//	call(/datum/game_mode/proc/add_law_zero)(new_character)
+					if(new_character.mind.special_role=="traitor")
+						ticker.mode.add_law_zero(new_character)
 				if("AI")
 					new_character = new_character.AIize()
-					//if(new_character.mind.special_role=="traitor")
-					//	call(/datum/game_mode/proc/add_law_zero)(new_character)
-				//Add aliens.
+					if(new_character.mind.special_role=="traitor")
+						ticker.mode.add_law_zero(new_character)
 				else
 					job_master.EquipRank(new_character, new_character.mind.assigned_role, 1)//Or we simply equip them.
 
@@ -381,7 +381,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 			if(alert(new_character,"Would you like an active AI to announce this character?",,"No","Yes")=="Yes")
 				call(/mob/new_player/proc/AnnounceArrival)(new_character, new_character.mind.assigned_role)
 
-	message_admins("<span class='notice'>[admin] has respawned [ckey] as [new_character.real_name].</span>", 1)
+	message_admins("<span class='adminnotice'>[admin] has respawned [player_key] as [new_character.real_name].</span>")
 
 	new_character << "You have been fully respawned. Enjoy the game."
 
@@ -399,7 +399,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 		return
 
 	log_admin("Admin [key_name(usr)] has added a new AI law - [input]")
-	message_admins("Admin [key_name_admin(usr)] has added a new AI law - [input]", 1)
+	message_admins("Admin [key_name_admin(usr)] has added a new AI law - [input]")
 
 	var/show_log = alert(src, "Show ion message?", "Message", "Yes", "No")
 	var/announce_ion_laws = (show_log == "Yes" ? 1 : -1)
@@ -422,29 +422,80 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	M.revive()
 
 	log_admin("[key_name(usr)] healed / revived [key_name(M)]")
-	message_admins("<span class='danger'>Admin [key_name_admin(usr)] healed / revived [key_name_admin(M)]!</span>", 1)
+	message_admins("<span class='danger'>Admin [key_name_admin(usr)] healed / revived [key_name_admin(M)]!</span>")
 	feedback_add_details("admin_verb","REJU") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
-/client/proc/cmd_admin_create_centcom_report()
+/client/proc/cmd_admin_create_faction_announcements()
 	set category = "Special Verbs"
-	set name = "Create Command Report"
+	set name = "Create Announcement"
 	if(!holder)
 		src << "Only administrators may use this command."
 		return
-	var/input = input(usr, "Please enter anything you want. Anything. Serious.", "What?", "") as message|null
-	if(!input)
-		return
+	var/faction = alert(src, "Who's there?", "Knock knock", "Centcomm", "Other", "Custom")
+	if(faction == "Centcomm")
+		var/input = input(usr, "Please enter anything you want. Anything. Serious.", "What?", "") as message|null
+		if(!input)
+			return
 
-	var/confirm = alert(src, "Do you want to announce the contents of the report to the crew?", "Announce", "Yes", "No")
-	if(confirm == "Yes")
-		priority_announce(input, null, 'sound/AI/commandreport.ogg')
-	else
-		priority_announce("A report has been downloaded and printed out at all communications consoles.", "Incoming Classified Message", 'sound/AI/commandreport.ogg')
+		var/confirm = alert(src, "Do you want to announce the contents of the report to the crew?", "Announce", "Yes", "No")
+		if(confirm == "Yes")
+			priority_announce(input, null, 'sound/AI/commandreport.ogg')
+		else
+			priority_announce("A report has been downloaded and printed out at all communications consoles.", "Incoming Classified Message", 'sound/AI/commandreport.ogg')
 
-	print_command_report(input,"[confirm=="Yes" ? "" : "Classified"] [command_name()] Update")
+		print_command_report(input,"[confirm=="Yes" ? "" : "Classified "][command_name()] Update")
 
-	log_admin("[key_name(src)] has created a command report: [input]")
-	message_admins("[key_name_admin(src)] has created a command report", 1)
+		log_admin("[key_name(src)] has created a command report: [input]")
+		message_admins("[key_name_admin(src)] has created a command report")
+	else if(faction == "Other")
+
+		var/what
+
+		switch(input("Exactly who are you?") in list("Syndicate", "Wizard's Federation", "Static", "Clown Empire", "cult of Nar-sie"))
+			if("Syndicate")
+				what += "Syndicate"
+
+			if("Wizard's Federation")
+				what += "Wizards Federation"
+
+			if("Static")
+				what += "Unknown"
+
+			if("Clown Empire")
+				what += "Clown Empire"
+
+			if("Cult of Nar-sie")
+				what += "Cult of Narsie"
+
+		var/input = input(usr, "Please enter anything you want. Anything Serious.", "What?", "") as message|null
+		if(!input)
+			return
+		var/confirm = alert(src, "Do you want to announce the contents of the report to the crew?", "Announce", "Yes", "No")
+		if(confirm == "Yes")
+			priority_announce(input, null,'sound/AI/attention.ogg', what)
+		else
+			priority_announce("A report has been downloaded and printed out at all communications consoles.", "Incoming Classified Message", 'sound/AI/commandreport.ogg')
+
+		print_command_report(input,"[confirm=="Yes" ? "" : "Classified "][what] Message")
+
+		log_admin("[key_name(src)] has created a [what] announcement: [input]")
+		message_admins("[key_name_admin(src)] has created a [what] announcement")
+
+	else if(faction == "Custom")
+		var/who = input(usr, "Who are you?", "Hi", "") as text|null
+		var/input = input(usr, "Please enter anything you want. Anything Serious.", "What?", "") as message|null
+		if(!input)
+			return
+		var/confirm = alert(src, "Do you want to announce the contents of the report to the crew?", "Announce", "Yes", "No")
+		if(confirm == "Yes")
+			custom_priority_announce(input, null, 'sound/AI/attention.ogg', who)
+		else
+			priority_announce("A report has been downloaded and printed out at all communications consoles.", "Incoming Classified Message", 'sound/AI/commandreport.ogg')
+
+		print_command_report(input,"[confirm=="Yes" ? "" : "Classified "][who] Message")
+
+		log_admin("[key_name(src)] has created a custom announcement: [input]")
+		message_admins("[key_name_admin(src)] has created a custom announcement")
 	feedback_add_details("admin_verb","CCR") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_admin_delete(atom/O as obj|mob|turf in world)
@@ -457,19 +508,19 @@ Traitors and the like can also be revived with the previous role mostly intact.
 
 	if (alert(src, "Are you sure you want to delete:\n[O]\nat ([O.x], [O.y], [O.z])?", "Confirmation", "Yes", "No") == "Yes")
 		log_admin("[key_name(usr)] deleted [O] at ([O.x],[O.y],[O.z])")
-		message_admins("[key_name_admin(usr)] deleted [O] at ([O.x],[O.y],[O.z])", 1)
+		message_admins("[key_name_admin(usr)] deleted [O] at ([O.x],[O.y],[O.z])")
 		feedback_add_details("admin_verb","DEL") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 		qdel(O)
 
 /client/proc/cmd_admin_list_open_jobs()
 	set category = "Admin"
-	set name = "List free slots"
+	set name = "Manage Job Slots"
 
 	if (!holder)
 		src << "Only administrators may use this command."
 		return
-	holder.list_free_slots()
-	feedback_add_details("admin_verb","LFS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+	holder.manage_free_slots()
+	feedback_add_details("admin_verb","MFS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_admin_explosion(atom/O as obj|mob|turf in world)
 	set category = "Special Verbs"
@@ -497,7 +548,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 
 		explosion(O, devastation, heavy, light, flash, null, null,flames)
 		log_admin("[key_name(usr)] created an explosion ([devastation],[heavy],[light],[flames]) at ([O.x],[O.y],[O.z])")
-		message_admins("[key_name_admin(usr)] created an explosion ([devastation],[heavy],[light],[flames]) at ([O.x],[O.y],[O.z])", 1)
+		message_admins("[key_name_admin(usr)] created an explosion ([devastation],[heavy],[light],[flames]) at ([O.x],[O.y],[O.z])")
 		feedback_add_details("admin_verb","EXPL") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 		return
 	else
@@ -520,7 +571,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 
 		empulse(O, heavy, light)
 		log_admin("[key_name(usr)] created an EM Pulse ([heavy],[light]) at ([O.x],[O.y],[O.z])")
-		message_admins("[key_name_admin(usr)] created an EM PUlse ([heavy],[light]) at ([O.x],[O.y],[O.z])", 1)
+		message_admins("[key_name_admin(usr)] created an EM PUlse ([heavy],[light]) at ([O.x],[O.y],[O.z])")
 		feedback_add_details("admin_verb","EMP") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 		return
@@ -541,7 +592,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	if(!M)	return
 
 	log_admin("[key_name(usr)] has gibbed [key_name(M)]")
-	message_admins("[key_name_admin(usr)] has gibbed [key_name_admin(M)]", 1)
+	message_admins("[key_name_admin(usr)] has gibbed [key_name_admin(M)]")
 
 	if(istype(M, /mob/dead/observer))
 		gibs(M.loc, M.viruses)
@@ -562,7 +613,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 			mob.gib()
 
 		log_admin("[key_name(usr)] used gibself.")
-		message_admins("<span class='notice'>[key_name_admin(usr)] used gibself.</span>", 1)
+		message_admins("<span class='adminnotice'>[key_name_admin(usr)] used gibself.</span>")
 		feedback_add_details("admin_verb","GIBS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 /*
 /client/proc/cmd_manual_ban()
@@ -677,7 +728,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 		view = world.view
 
 	log_admin("[key_name(usr)] changed their view range to [view].")
-	//message_admins("\blue [key_name_admin(usr)] changed their view range to [view].", 1)	//why? removed by order of XSI
+	//message_admins("\blue [key_name_admin(usr)] changed their view range to [view].")	//why? removed by order of XSI
 
 	feedback_add_details("admin_verb","CVRA") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
@@ -704,10 +755,9 @@ Traitors and the like can also be revived with the previous role mostly intact.
 			return
 
 	emergency_shuttle.incall()
-	priority_announce("The emergency shuttle has been called. It will arrive in [round(emergency_shuttle.timeleft()/60)] minutes.", null, 'sound/AI/shuttlecalled.ogg', "Priority")
 	feedback_add_details("admin_verb","CSHUT") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 	log_admin("[key_name(usr)] admin-called the emergency shuttle.")
-	message_admins("<span class='notice'>[key_name_admin(usr)] admin-called the emergency shuttle.</span>", 1)
+	message_admins("<span class='adminnotice'>[key_name_admin(usr)] admin-called the emergency shuttle.</span>")
 	return
 
 /client/proc/admin_cancel_shuttle()
@@ -722,7 +772,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	emergency_shuttle.recall()
 	feedback_add_details("admin_verb","CCSHUT") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 	log_admin("[key_name(usr)] admin-recalled the emergency shuttle.")
-	message_admins("<span class='notice'>[key_name_admin(usr)] admin-recalled the emergency shuttle.</span>", 1)
+	message_admins("<span class='adminnotice'>[key_name_admin(usr)] admin-recalled the emergency shuttle.</span>")
 
 	return
 
@@ -747,7 +797,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 
 	if(config.force_random_names)
 		config.force_random_names = 0
-		message_admins("Admin [key_name_admin(usr)] has disabled \"Everyone is Special\" mode.", 1)
+		message_admins("Admin [key_name_admin(usr)] has disabled \"Everyone is Special\" mode.")
 		usr << "Disabled."
 		return
 
@@ -757,10 +807,10 @@ Traitors and the like can also be revived with the previous role mostly intact.
 		return
 
 	log_admin("Admin [key_name(src)] has forced the players to have random appearances.")
-	message_admins("Admin [key_name_admin(usr)] has forced the players to have random appearances.", 1)
+	message_admins("Admin [key_name_admin(usr)] has forced the players to have random appearances.")
 
 	if(notifyplayers == "Yes")
-		world << "<span class='boldnotice'>Admin [usr.key] has forced the players to have completely random identities!</span>"
+		world << "<span class='adminnotice'>Admin [usr.key] has forced the players to have completely random identities!</span>"
 
 	usr << "<i>Remember: you can always disable the randomness by using the verb again, assuming the round hasn't started yet</i>."
 
@@ -775,10 +825,28 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	if(!config.allow_random_events)
 		config.allow_random_events = 1
 		usr << "Random events enabled"
-		message_admins("Admin [key_name_admin(usr)] has enabled random events.", 1)
+		message_admins("Admin [key_name_admin(usr)] has enabled random events.")
 	else
 		config.allow_random_events = 0
 		usr << "Random events disabled"
-		message_admins("Admin [key_name_admin(usr)] has disabled random events.", 1)
+		message_admins("Admin [key_name_admin(usr)] has disabled random events.")
 	feedback_add_details("admin_verb","TRE") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+
+
+/client/proc/reset_all_tcs()
+	set category = "Admin"
+	set name = "Reset Telecomms Scripts"
+	set desc = "Blanks all telecomms scripts from all telecomms servers"
+	if(!holder)
+		usr << "Admin only."
+		return
+	for(var/obj/machinery/telecomms/server/S in telecomms_list)
+		var/datum/TCS_Compiler/C = S.Compiler
+		S.rawcode = ""
+		C.Compile("")
+	for(var/obj/machinery/computer/telecomms/traffic/T in machines)
+		T.storedcode = ""
+	log_admin("[key_name(usr)] blanked all telecomms scripts.")
+	message_admins("[key_name_admin(usr)] blanked all telecomms scripts.")
+	feedback_add_details("admin_verb","RAT") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 

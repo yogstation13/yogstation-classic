@@ -190,3 +190,8 @@
 	..()
 	reagents.add_reagent("nutriment", 40)
 	bitesize = 10
+
+/obj/item/weapon/reagent_containers/food/snacks/burger/rainbow
+	name = "rainbow burger"
+	desc = "The colours man.. the colours.."
+	icon_state = "rainbowmeatburger"

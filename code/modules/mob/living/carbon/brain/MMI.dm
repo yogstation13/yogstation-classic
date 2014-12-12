@@ -8,10 +8,6 @@
 	w_class = 3
 	origin_tech = "biotech=3"
 
-	var/list/construction_cost = list("metal"=1000,"glass"=500)
-	var/construction_time = 75
-	//these vars are so the mecha fabricator doesn't shit itself anymore. --NEO
-
 	req_access = list(access_robotics)
 
 	//Revised. Brainmob is now contained directly within object of transfer. MMI in this case.
@@ -117,21 +113,7 @@
 /obj/item/device/mmi/radio_enabled/New()
 	..()
 	radio = new(src) //Spawns a radio inside the MMI.
-	radio.broadcasting = 1 //So it's broadcasting from the start.
-
-//Verbs to allow radio-MMI's to toggle their radios.
-/obj/item/device/mmi/radio_enabled/verb/Toggle_Broadcasting()
-	set name = "Toggle Broadcasting"
-	set desc = "Toggle broadcasting channel on or off."
-	set category = "MMI"
-	set src = usr.loc //In user location, or in MMI in this case.
-	set popup_menu = 0 //Will not appear when right clicking.
-
-	if(brainmob.stat) //Only the brainmob will trigger these so no further check is necessary.
-		brainmob << "Can't do that while incapacitated or dead."
-
-	radio.broadcasting = radio.broadcasting==1 ? 0 : 1
-	brainmob << "<span class='notice'>Radio is [radio.broadcasting==1 ? "now" : "no longer"] broadcasting.</span>"
+	radio.broadcasting = 0 //researching radio mmis turned the robofabs into radios because this didnt start as 0.
 
 /obj/item/device/mmi/radio_enabled/verb/Toggle_Listening()
 	set name = "Toggle Listening"

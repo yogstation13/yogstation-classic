@@ -1,14 +1,10 @@
 /obj
+	languages = HUMAN
 	//var/datum/module/mod		//not used
-	var/m_amt = 0	// metal
-	var/g_amt = 0	// glass
-	var/origin_tech = null	//Used by R&D to determine what research bonuses it grants.
-	var/reliability = 100	//Used by SOME devices to determine how reliable they are.
 	var/crit_fail = 0
 	var/unacidable = 0 //universal "unacidabliness" var, here so you can use it in any obj.
 	animate_movement = 2
 	var/throwforce = 0
-	var/list/attack_verb = list() //Used in attackby() to say how something was attacked "[x] has been [z.attack_verb] by [y] with [z]"
 	var/in_use = 0 // If we have a user using us, this will be set on. We will check if the user has stopped using us, and thus stop updating and LAGGING EVERYTHING!
 
 	var/damtype = "brute"
@@ -70,13 +66,19 @@
 				if (usr.client && usr.machine==src) // && M.machine == src is omitted because if we triggered this by using the dialog, it doesn't matter if our machine changed in between triggering it and this - the dialog is probably still supposed to refresh.
 					is_in_use = 1
 					src.attack_ai(usr)
+		else if(istype(usr, /mob/living/silicon/pai))
+			var/mob/living/silicon/pai/pai = usr
+			if(pai.paired != null && pai.paired == src)
+				is_in_use = 1
+				src.attack_hand(usr)
 
 		// check for TK users
 
-		if (istype(usr, /mob/living/carbon/human))
-			if(istype(usr.l_hand, /obj/item/tk_grab) || istype(usr.r_hand, /obj/item/tk_grab/))
-				if(!(usr in nearby))
-					if(usr.client && usr.machine==src)
+		if(ishuman(usr))
+			var/mob/living/carbon/human/H = usr
+			if(!(usr in nearby))
+				if(usr.client && usr.machine==src)
+					if(TK in H.mutations)
 						is_in_use = 1
 						src.attack_hand(usr)
 		in_use = is_in_use
@@ -126,17 +128,14 @@
 /obj/proc/hide(h)
 	return
 
-
-/obj/proc/hear_talk(mob/M as mob, text)
-/*
-	var/mob/mo = locate(/mob) in src
-	if(mo)
-		var/rendered = "<span class='game say'><span class='name'>[M.name]: </span> <span class='message'>[text]</span></span>"
-		mo.show_message(rendered, 2)
-		*/
-	return
-
-
+/obj/ex_act(severity, target)
+	if(severity == 1 || target == src)
+		qdel(src)
+	else if(severity == 2)
+		if(prob(50))
+			qdel(src)
+	if(!gc_destroyed)
+		..()
 
 //If a mob logouts/logins in side of an object you can use this proc
 /obj/proc/on_log()
@@ -145,3 +144,18 @@
 		var/obj/Loc=loc
 		Loc.on_log()
 
+/obj/singularity_act()
+	ex_act(1.0)
+	if(src && isnull(gc_destroyed))
+		qdel(src)
+	return 2
+
+/obj/singularity_pull(S, current_size)
+	if(anchored)
+		if(current_size >= STAGE_FIVE)
+			anchored = 0
+			step_towards(src,S)
+	else step_towards(src,S)
+
+/obj/proc/Deconstruct()
+	qdel(src)

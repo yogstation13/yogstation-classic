@@ -17,10 +17,12 @@
 
 	var/fire_sound = "gunshot"
 	var/suppressed = 0
+	var/can_suppress = 0
 	var/recoil = 0
 	var/clumsy_check = 1
 	var/obj/item/ammo_casing/chambered = null
 	var/trigger_guard = 1
+	var/sawn_desc = null
 
 /obj/item/weapon/gun/proc/process_chamber()
 	return 0
@@ -29,7 +31,7 @@
 	return 1
 
 /obj/item/weapon/gun/proc/shoot_with_empty_chamber(mob/living/user as mob|obj)
-	user.visible_message("*click*", "<span class='danger'>*click*</span>")
+	user << "<span class='danger'>*click*</span>"
 	playsound(user, 'sound/weapons/empty.ogg', 100, 1)
 	return
 
@@ -87,12 +89,12 @@
 
 	add_fingerprint(user)
 
-	if(!special_check(user))
-		return
 	if(chambered)
 		if(!chambered.fire(target, user, params, , suppressed))
 			shoot_with_empty_chamber(user)
 		else
+			if(!special_check(user))
+				return
 			if(get_dist(user, target) <= 1) //Making sure whether the target is in vicinity for the pointblank shot
 				shoot_live_shot(user, 1, target)
 			else

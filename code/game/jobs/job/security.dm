@@ -22,7 +22,7 @@ Head of Security
 
 	default_id = /obj/item/weapon/card/id/silver
 	default_pda = /obj/item/device/pda/heads/hos
-	default_headset = /obj/item/device/radio/headset/heads/hos
+	default_headset = /obj/item/device/radio/headset/heads/hos/alt
 	default_backpack = /obj/item/weapon/storage/backpack/security
 	default_satchel = /obj/item/weapon/storage/backpack/satchel_sec
 
@@ -40,18 +40,20 @@ Head of Security
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/jackboots(H), slot_shoes)
 	H.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/hos(H), slot_wear_suit)
 	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/black(H), slot_gloves)
-	H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/HoS(H), slot_head)
+	H.equip_to_slot_or_del(new /obj/item/clothing/head/HoS(H), slot_head)
 	H.equip_to_slot_or_del(new /obj/item/clothing/glasses/hud/security/sunglasses(H), slot_glasses)
 	H.equip_to_slot_or_del(new /obj/item/weapon/gun/energy/gun(H), slot_s_store)
 
 	if(H.backbag == 1)
-		H.equip_to_slot_or_del(new /obj/item/weapon/handcuffs(H), slot_l_store)
+		H.equip_to_slot_or_del(new /obj/item/weapon/restraints/handcuffs(H), slot_l_store)
 	else
-		H.equip_to_slot_or_del(new /obj/item/weapon/handcuffs(H), slot_in_backpack)
+		H.equip_to_slot_or_del(new /obj/item/weapon/restraints/handcuffs(H), slot_in_backpack)
+		H.equip_to_slot_or_del(new /obj/item/weapon/melee/telebaton(H), slot_in_backpack)
 
 	var/obj/item/weapon/implant/loyalty/L = new/obj/item/weapon/implant/loyalty(H)
 	L.imp_in = H
 	L.implanted = 1
+	H.sec_hud_set_implants()
 
 /*
 Warden
@@ -69,7 +71,7 @@ Warden
 	minimal_player_age = 7
 
 	default_pda = /obj/item/device/pda/warden
-	default_headset = /obj/item/device/radio/headset/headset_sec
+	default_headset = /obj/item/device/radio/headset/headset_sec/alt
 	default_backpack = /obj/item/weapon/storage/backpack/security
 	default_satchel = /obj/item/weapon/storage/backpack/satchel_sec
 
@@ -80,19 +82,20 @@ Warden
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/warden(H), slot_w_uniform)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/jackboots(H), slot_shoes)
 	H.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/vest/warden(H), slot_wear_suit)
-	H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/warden(H), slot_head)
+	H.equip_to_slot_or_del(new /obj/item/clothing/head/warden(H), slot_head)
 	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/black(H), slot_gloves)
 	H.equip_to_slot_or_del(new /obj/item/clothing/glasses/hud/security/sunglasses(H), slot_glasses)
-	H.equip_to_slot_or_del(new /obj/item/device/flash(H), slot_l_store)
+	H.equip_to_slot_or_del(new /obj/item/device/flash/handheld(H), slot_l_store)
 
 	if(H.backbag == 1)
-		H.equip_to_slot_or_del(new /obj/item/weapon/handcuffs(H), slot_l_hand)
+		H.equip_to_slot_or_del(new /obj/item/weapon/restraints/handcuffs(H), slot_l_hand)
 	else
-		H.equip_to_slot_or_del(new /obj/item/weapon/handcuffs(H), slot_in_backpack)
+		H.equip_to_slot_or_del(new /obj/item/weapon/restraints/handcuffs(H), slot_in_backpack)
 
 	var/obj/item/weapon/implant/loyalty/L = new/obj/item/weapon/implant/loyalty(H)
 	L.imp_in = H
 	L.implanted = 1
+	H.sec_hud_set_implants()
 
 /datum/job/warden/get_access()
 	var/list/L = list()
@@ -142,6 +145,7 @@ Detective
 	var/obj/item/weapon/implant/loyalty/L = new/obj/item/weapon/implant/loyalty(H)
 	L.imp_in = H
 	L.implanted = 1
+	H.sec_hud_set_implants()
 
 /*
 Security Officer
@@ -173,19 +177,20 @@ Security Officer
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/jackboots(H), slot_shoes)
 	H.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/vest(H), slot_wear_suit)
 	H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet(H), slot_head)
-	H.equip_to_slot_or_del(new /obj/item/weapon/handcuffs(H), slot_s_store)
-	H.equip_to_slot_or_del(new /obj/item/device/flash(H), slot_l_store)
+	H.equip_to_slot_or_del(new /obj/item/weapon/restraints/handcuffs(H), slot_s_store)
+	H.equip_to_slot_or_del(new /obj/item/device/flash/handheld(H), slot_l_store)
 
 	if(H.backbag == 1)
-		H.equip_to_slot_or_del(new /obj/item/weapon/handcuffs(H), slot_r_store)
+		H.equip_to_slot_or_del(new /obj/item/weapon/restraints/handcuffs(H), slot_r_store)
 		H.equip_to_slot_or_del(new /obj/item/weapon/melee/baton/loaded(H), slot_l_hand)
 	else
-		H.equip_to_slot_or_del(new /obj/item/weapon/handcuffs(H), slot_in_backpack)
+		H.equip_to_slot_or_del(new /obj/item/weapon/restraints/handcuffs(H), slot_in_backpack)
 		H.equip_to_slot_or_del(new /obj/item/weapon/melee/baton/loaded(H), slot_in_backpack)
 
 	var/obj/item/weapon/implant/loyalty/L = new/obj/item/weapon/implant/loyalty(H)
 	L.imp_in = H
 	L.implanted = 1
+	H.sec_hud_set_implants()
 
 /datum/job/officer/get_access()
 	var/list/L = list()
@@ -204,27 +209,29 @@ var/list/sec_departments = list("engineering", "supply", "medical", "science")
 		var/department = pick(sec_departments)
 		sec_departments -= department
 		var/destination = null
+		var/obj/item/clothing/under/U = new /obj/item/clothing/under/rank/security(H)
 		switch(department)
 			if("supply")
-				H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/security/cargo(H), slot_w_uniform)
 				default_headset = /obj/item/device/radio/headset/headset_sec/department/supply
 				dep_access = list(access_mailsorting, access_mining)
 				destination = /area/security/checkpoint/supply
+				U.attachTie(new /obj/item/clothing/tie/armband/cargo())
 			if("engineering")
-				H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/security/engine(H), slot_w_uniform)
 				default_headset = /obj/item/device/radio/headset/headset_sec/department/engi
 				dep_access = list(access_construction, access_engine, access_atmospherics)
 				destination = /area/security/checkpoint/engineering
+				U.attachTie(new /obj/item/clothing/tie/armband/engine())
 			if("medical")
-				H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/security/med(H), slot_w_uniform)
 				default_headset = /obj/item/device/radio/headset/headset_sec/department/med
 				dep_access = list(access_medical)
 				destination = /area/security/checkpoint/medical
+				U.attachTie(new /obj/item/clothing/tie/armband/medblue())
 			if("science")
-				H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/security/science(H), slot_w_uniform)
 				default_headset = /obj/item/device/radio/headset/headset_sec/department/sci
 				dep_access = list(access_research)
 				destination = /area/security/checkpoint/science
+				U.attachTie(new /obj/item/clothing/tie/armband/science())
+		H.equip_to_slot_or_del(U, slot_w_uniform)
 		var/teleport = 0
 		if(!config.sec_start_brig)
 			if(destination)
@@ -247,34 +254,21 @@ var/list/sec_departments = list("engineering", "supply", "medical", "science")
 	wires = new(src)
 	secure_radio_connections = new
 
-	if(radio_controller)
-		initialize()
+	initialize()
 	recalculateChannels()
 
 /obj/item/device/radio/headset/headset_sec/department/engi
-	keyslot1 = new /obj/item/device/encryptionkey/headset_sec
+	keyslot = new /obj/item/device/encryptionkey/headset_sec
 	keyslot2 = new /obj/item/device/encryptionkey/headset_eng
 
 /obj/item/device/radio/headset/headset_sec/department/supply
-	keyslot1 = new /obj/item/device/encryptionkey/headset_sec
+	keyslot = new /obj/item/device/encryptionkey/headset_sec
 	keyslot2 = new /obj/item/device/encryptionkey/headset_cargo
 
 /obj/item/device/radio/headset/headset_sec/department/med
-	keyslot1 = new /obj/item/device/encryptionkey/headset_sec
+	keyslot = new /obj/item/device/encryptionkey/headset_sec
 	keyslot2 = new /obj/item/device/encryptionkey/headset_med
 
 /obj/item/device/radio/headset/headset_sec/department/sci
-	keyslot1 = new /obj/item/device/encryptionkey/headset_sec
+	keyslot = new /obj/item/device/encryptionkey/headset_sec
 	keyslot2 = new /obj/item/device/encryptionkey/headset_sci
-
-/obj/item/clothing/under/rank/security/cargo/New()
-	attachTie(new /obj/item/clothing/tie/armband/cargo)
-
-/obj/item/clothing/under/rank/security/engine/New()
-	attachTie(new /obj/item/clothing/tie/armband/engine)
-
-/obj/item/clothing/under/rank/security/science/New()
-	attachTie(new /obj/item/clothing/tie/armband/science)
-
-/obj/item/clothing/under/rank/security/med/New()
-	attachTie(new /obj/item/clothing/tie/armband/medblue)

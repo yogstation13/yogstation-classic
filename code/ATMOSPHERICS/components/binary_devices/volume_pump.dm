@@ -13,9 +13,7 @@ Thus, the two variables affect pump operation are set in New():
 */
 
 /obj/machinery/atmospherics/binary/volume_pump
-	icon = 'icons/obj/atmospherics/volume_pump.dmi'
-	icon_state = "intact_off"
-
+	icon_state = "volpump_map"
 	name = "volumetric gas pump"
 	desc = "A volumetric pump"
 
@@ -28,23 +26,20 @@ Thus, the two variables affect pump operation are set in New():
 	var/id = null
 	var/datum/radio_frequency/radio_connection
 
+/obj/machinery/atmospherics/binary/volume_pump/Destroy()
+	if(radio_controller)
+		radio_controller.remove_object(src,frequency)
+	..()
+
 /obj/machinery/atmospherics/binary/volume_pump/on
 	on = 1
-	icon_state = "intact_on"
 
-/obj/machinery/atmospherics/binary/volume_pump/update_icon()
+/obj/machinery/atmospherics/binary/volume_pump/update_icon_nopipes()
 	if(stat & NOPOWER)
-		icon_state = "intact_off"
-	else if(node1 && node2)
-		icon_state = "intact_[on?("on"):("off")]"
-	else
-		if(node1)
-			icon_state = "exposed_1_off"
-		else if(node2)
-			icon_state = "exposed_2_off"
-		else
-			icon_state = "exposed_3_off"
-	return
+		icon_state = "volpump_off"
+		return
+
+	icon_state = "volpump_[on?"on":"off"]"
 
 /obj/machinery/atmospherics/binary/volume_pump/process()
 //	..()
@@ -67,11 +62,9 @@ Thus, the two variables affect pump operation are set in New():
 
 	air2.merge(removed)
 
-	if(network1)
-		network1.update = 1
+	parent1.update = 1
 
-	if(network2)
-		network2.update = 1
+	parent2.update = 1
 
 	return 1
 
@@ -159,8 +152,7 @@ Thus, the two variables affect pump operation are set in New():
 	if(href_list["power"])
 		on = !on
 	if(href_list["set_transfer_rate"])
-		var/new_transfer_rate = input(usr,"Enter new output volume (0-200l/s)","Flow control",src.transfer_rate) as num
-		src.transfer_rate = max(0, min(200, new_transfer_rate))
+		transfer_rate = max(0, min(200, safe_input("Pressure control", "Enter new output pressure (0-4500kPa)", transfer_rate)))
 	usr.set_machine(src)
 	src.update_icon()
 	src.updateUsrDialog()

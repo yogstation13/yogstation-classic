@@ -8,43 +8,37 @@
 /obj/item/weapon/grenade/flashbang/prime()
 	update_mob()
 	var/flashbang_turf = get_turf(src)
-	for(var/obj/structure/closet/L in view(7, flashbang_turf))
-		for(var/mob/living/M in L)
-			bang(get_turf(M), M)
-
-	for(var/mob/living/M in view(7, flashbang_turf))
+	if(!flashbang_turf)
+		return
+	for(var/mob/living/M in get_hearers_in_view(7, flashbang_turf))
 		bang(get_turf(M), M)
 
-	for(var/obj/effect/blob/B in view(8,flashbang_turf))     		//Blob damage here
+	for(var/obj/effect/blob/B in get_hear(8,flashbang_turf))     		//Blob damage here
 		var/damage = round(30/(get_dist(B,get_turf(src))+1))
 		B.health -= damage
 		B.update_icon()
 	qdel(src)
 
 /obj/item/weapon/grenade/flashbang/proc/bang(var/turf/T , var/mob/living/M)
-	M << "<span class='warning'>BANG</span>"
+	M.show_message("<span class='warning'>BANG</span>", 2)
 	playsound(src.loc, 'sound/effects/bang.ogg', 25, 1)
 
 //Checking for protections
 	var/eye_safety = 0
-	var/ear_safety = 2
-	var/distance = max(1, get_dist(src, T))
+	var/ear_safety = 0
+	var/distance = max(1,get_dist(src,T))
 	var/takes_eye_damage = 0
 	if(iscarbon(M))
+		takes_eye_damage++
 		var/mob/living/carbon/C = M
 		eye_safety = C.eyecheck()
 		if(ishuman(C))
-			takes_eye_damage = 1
 			var/mob/living/carbon/human/H = C
-			ear_safety = 0
-			if(istype(H.ears, /obj/item/clothing/ears/earmuffs) || istype(H.head, /obj/item/clothing/head/helmet))
+			if((H.ears && (H.ears.flags & EARBANGPROTECT)) || (H.head && (H.head.flags & HEADBANGPROTECT)))
 				ear_safety++
-		if(ismonkey(C))
-			ear_safety = 0
-			takes_eye_damage = 1
 
 //Flash
-	if(eye_safety < 1)
+	if(!eye_safety)
 		flick("e_flash", M.flash)
 		M.eye_stat += rand(1, 3)
 		M.Stun(max(10/distance, 3))
@@ -56,6 +50,7 @@
 				if (prob(M.eye_stat - 20 + 1))
 					M << "<span class='warning'>You can't see anything!</span>"
 					M.sdisabilities |= BLIND
+
 //Bang
 	if((src.loc == M) || src.loc == M.loc)//Holding on person or being exactly where lies is significantly more dangerous and voids protection
 		M.Stun(10)

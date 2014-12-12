@@ -42,7 +42,7 @@
 		return
 
 /obj/item/weapon/dnainjector/attack(mob/target, mob/user)
-	if(!ishuman(user))
+	if(!user.IsAdvancedToolUser())
 		user << "<span class='notice'>You don't have the dexterity to do this!</span>"
 		return
 	add_logs(user, target, "attempted to inject", object="[name]")
@@ -58,9 +58,8 @@
 
 	add_logs(user, target, "injected", object="[name]")
 
-	user.drop_item()
 	inject(target, user)	//Now we actually do the heavy lifting.
-	loc = null				//garbage collect
+	qdel(src)
 
 
 /obj/item/weapon/dnainjector/antihulk

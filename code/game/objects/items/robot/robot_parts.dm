@@ -5,43 +5,31 @@
 	icon_state = "blank"
 	flags = CONDUCT
 	slot_flags = SLOT_BELT
-	var/construction_time = 100
-	var/list/construction_cost = list("metal"=20000,"glass"=5000)
 
 /obj/item/robot_parts/l_arm
 	name = "cyborg left arm"
 	desc = "A skeletal limb wrapped in pseudomuscles, with a low-conductivity case."
 	icon_state = "l_arm"
-	construction_time = 200
-	construction_cost = list("metal"=10000)
 
 /obj/item/robot_parts/r_arm
 	name = "cyborg right arm"
 	desc = "A skeletal limb wrapped in pseudomuscles, with a low-conductivity case."
 	icon_state = "r_arm"
-	construction_time = 200
-	construction_cost = list("metal"=10000)
 
 /obj/item/robot_parts/l_leg
 	name = "cyborg left leg"
 	desc = "A skeletal limb wrapped in pseudomuscles, with a low-conductivity case."
 	icon_state = "l_leg"
-	construction_time = 200
-	construction_cost = list("metal"=10000)
 
 /obj/item/robot_parts/r_leg
 	name = "cyborg right leg"
 	desc = "A skeletal limb wrapped in pseudomuscles, with a low-conductivity case."
 	icon_state = "r_leg"
-	construction_time = 200
-	construction_cost = list("metal"=10000)
 
 /obj/item/robot_parts/chest
 	name = "cyborg torso"
 	desc = "A heavily reinforced case containing cyborg logic boards, with space for a standard power cell."
 	icon_state = "chest"
-	construction_time = 350
-	construction_cost = list("metal"=40000)
 	var/wires = 0.0
 	var/obj/item/weapon/stock_parts/cell/cell = null
 
@@ -49,17 +37,13 @@
 	name = "cyborg head"
 	desc = "A standard reinforced braincase, with spine-plugged neural socket and sensor gimbals."
 	icon_state = "head"
-	construction_time = 350
-	construction_cost = list("metal"=5000)
-	var/obj/item/device/flash/flash1 = null
-	var/obj/item/device/flash/flash2 = null
+	var/obj/item/device/flash/handheld/flash1 = null
+	var/obj/item/device/flash/handheld/flash2 = null
 
 /obj/item/robot_parts/robot_suit
 	name = "cyborg endoskeleton"
 	desc = "A complex metal backbone with standard limb sockets and pseudomuscle anchors."
 	icon_state = "robo_suit"
-	construction_time = 500
-	construction_cost = list("metal"=15000)
 	var/obj/item/robot_parts/l_arm/l_arm = null
 	var/obj/item/robot_parts/r_arm/r_arm = null
 	var/obj/item/robot_parts/l_leg/l_leg = null
@@ -196,7 +180,7 @@
 				user << "<span class='danger'>Sticking a dead brain into the frame would sort of defeat the purpose.</span>"
 				return
 
-			if(M.brainmob.mind in ticker.mode.head_revolutionaries)
+			if((M.brainmob.mind in ticker.mode.head_revolutionaries) || (M.brainmob.mind in ticker.mode.A_bosses) || (M.brainmob.mind in ticker.mode.B_bosses))
 				user << "<span class='danger'>The frame's firmware lets out a shrill sound, and flashes 'Abnormal Memory Engram'. It refuses to accept the MMI.</span>"
 				return
 
@@ -252,6 +236,8 @@
 		else
 			user << "<span class='notice'>The MMI must go in after everything else!</span>"
 
+	if(istype(W,/obj/item/weapon/pen))
+		user << "<span class='warning'>You need to use a multitool to name [src].</span>"
 	return
 
 /obj/item/robot_parts/robot_suit/proc/Interact(mob/user)
@@ -328,8 +314,8 @@
 
 /obj/item/robot_parts/head/attackby(obj/item/W as obj, mob/user as mob)
 	..()
-	if(istype(W, /obj/item/device/flash))
-		var/obj/item/device/flash/F = W
+	if(istype(W, /obj/item/device/flash/handheld))
+		var/obj/item/device/flash/handheld/F = W
 		if(src.flash1 && src.flash2)
 			user << "<span class='notice'>You have already inserted the eyes!</span>"
 			return

@@ -7,6 +7,8 @@
 	var/totalPlayersReady = 0
 	var/joining_forbidden = 0
 
+	flags = NONE
+
 	invisibility = 101
 
 	density = 0
@@ -40,7 +42,7 @@
 			var/isadmin = 0
 			if(src.client && src.client.holder)
 				isadmin = 1
-			var/DBQuery/query = dbcon.NewQuery("SELECT id FROM erro_poll_question WHERE [(isadmin ? "" : "adminonly = false AND")] Now() BETWEEN starttime AND endtime AND id NOT IN (SELECT pollid FROM erro_poll_vote WHERE ckey = \"[ckey]\") AND id NOT IN (SELECT pollid FROM erro_poll_textreply WHERE ckey = \"[ckey]\")")
+			var/DBQuery/query = dbcon.NewQuery("SELECT id FROM [format_table_name("poll_question")] WHERE [(isadmin ? "" : "adminonly = false AND")] Now() BETWEEN starttime AND endtime AND id NOT IN (SELECT pollid FROM [format_table_name("poll_vote")] WHERE ckey = \"[ckey]\") AND id NOT IN (SELECT pollid FROM [format_table_name("poll_textreply")] WHERE ckey = \"[ckey]\")")
 			query.Execute()
 			var/newpoll = 0
 			while(query.NextRow())
@@ -72,10 +74,11 @@
 	var/output = ""
 	output += "Welcome [brandnew ? "" : "back "]to Yogstation!<br>"
 	if(brandnew)
-		output += "This appears to be your first time here. Please take a moment to read the server rules.<br>You will not be able to join this round. Take this time to acknowledge yourself with the map, rules, and playstyle.<br>Don't forget to set up your character preferences!"
+		output += "This appears to be your first time here. Please take a moment to read the server rules.<br>You will not be able to join this round. Take this time to acknowledge yourself with the map, rules, and playstyle.<br>Don't forget to set up your character preferences!<br>"
 	else if(current_agree == 0)
 		output += "Even though you've been here before, please take a moment to read the server rules.<br>"
-
+	else if(current_agree == -1)
+		output += "Please read the server rules carefully. To stop receiving this popup, contact an administrator using Adminhelp (F1).<br>"
 
 	if(current_agree > 0)
 		output += "There has been an update in the server rules:<br>"
@@ -115,11 +118,13 @@
 			stat("Time To Start:", "DELAYED")
 
 		if(ticker.current_state == GAME_STATE_PREGAME)
-			stat("Players: [totalPlayers]", "Players Ready: [totalPlayersReady]")
+			stat("Players:", "[totalPlayers]")
+			if(src.client in admins)
+				stat("Players Ready:", "[totalPlayersReady]")
 			totalPlayers = 0
 			totalPlayersReady = 0
 			for(var/mob/new_player/player in player_list)
-				stat("[player.key]", (player.ready)?("(Playing)"):(null))
+				stat("[player.key]", (player.ready && src.client in admins)?("(Playing)"):(null))
 				totalPlayers++
 				if(player.ready)totalPlayersReady++
 
@@ -156,6 +161,8 @@
 			observer.loc = O.loc
 			if(client.prefs.be_random_name)
 				client.prefs.real_name = random_name(gender)
+			if(client.prefs.be_random_body)
+				client.prefs.random_character(gender)
 			observer.real_name = client.prefs.real_name
 			observer.name = observer.real_name
 			observer.key = key
@@ -186,7 +193,7 @@
 		var/voted = 0
 
 		//First check if the person has not voted yet.
-		var/DBQuery/query = dbcon.NewQuery("SELECT * FROM erro_privacy WHERE ckey='[src.ckey]'")
+		var/DBQuery/query = dbcon.NewQuery("SELECT * FROM [format_table_name("privacy")] WHERE ckey='[src.ckey]'")
 		query.Execute()
 		while(query.NextRow())
 			voted = 1
@@ -211,7 +218,7 @@
 			return
 
 		if(!voted)
-			var/sql = "INSERT INTO erro_privacy VALUES (null, Now(), '[src.ckey]', '[option]')"
+			var/sql = "INSERT INTO [format_table_name("privacy")] VALUES (null, Now(), '[src.ckey]', '[option]')"
 			var/DBQuery/query_insert = dbcon.NewQuery(sql)
 			query_insert.Execute()
 			usr << "<b>Thank you for your vote!</b>"
@@ -270,6 +277,10 @@
 					usr << "The option ID difference is too big. Please contact administration or the database admin."
 					return
 
+				for(var/optionid = id_min; optionid <= id_max; optionid++)
+					if(!isnull(href_list["option_[optionid]"]))	//Test if this optionid was selected
+						vote_on_poll(pollid, optionid, 1)
+
 
 	if(href_list["drules"])
 		src << browse(file('html/rules.html'), "window=rules;size=480x320")
@@ -278,11 +289,17 @@
 	if(href_list["dtgwiki"])
 		src << link("http://tgstation13.org/wiki/Main_Page")
 		return
+
 	if(href_list["dismiss"])
 		var/eula = alert("I have read and understood the server rules and agree to abide by them.", "Security question", "Cancel", "Agree")
 		if(eula == "Agree")
-			client.prefs.agree = MAXAGREE;
-			client.prefs.save_preferences();
+			if(!client)
+				return
+			if(client.prefs.agree == MAXAGREE)
+				return
+			if(client.prefs.agree != -1)
+				client.prefs.agree = MAXAGREE;
+				client.prefs.save_preferences();
 			src << browse(null, "window=disclaimer");
 			if(joining_forbidden)
 				src << "Please spend this round observing the game to familiarise yourself with the map, rules, and general playstyle."
@@ -293,11 +310,18 @@
 
 /mob/new_player/proc/IsJobAvailable(rank)
 	var/datum/job/job = job_master.GetJob(rank)
-	if(!job)	return 0
-	if((job.current_positions >= job.total_positions) && job.total_positions != -1)	return 0
-	if(jobban_isbanned(src,rank))	return 0
-	if(!job.player_old_enough(src.client))	return 0
-	if(job.whitelisted && !(ckey in whitelist)) return 0
+	if(!job)
+		return 0
+	if((job.current_positions >= job.total_positions) && job.total_positions != -1)
+		return 0
+	if(jobban_isbanned(src,rank))
+		return 0
+	if(!job.player_old_enough(src.client))
+		return 0
+	if(config.enforce_human_authority && (rank in command_positions) && client.prefs.pref_species.id != "human")
+		return 0
+	if(job.whitelisted && !(ckey in whitelist))
+		return 0
 	return 1
 
 
@@ -309,6 +333,7 @@
 	job_master.AssignRole(src, rank, 1)
 
 	var/mob/living/carbon/human/character = create_character()	//creates the human and transfers vars and mind
+	character.mind.quiet_round = character.client.prefs.be_special & QUIET_ROUND
 	job_master.EquipRank(character, rank, 1)					//equips the human
 	character.loc = pick(latejoin)
 	character.lastarea = get_area(loc)
@@ -322,7 +347,7 @@
 
 	joined_player_list += character.ckey
 
-	if(config.allow_latejoin_antagonists && emergency_shuttle.timeleft() > 300) //Don't make them antags if the station is evacuating
+	if(config.allow_latejoin_antagonists && emergency_shuttle.timeleft() > 300 && !character.mind.quiet_round) //Don't make them antags if the station is evacuating
 		ticker.mode.make_antag_chance(character)
 	qdel(src)
 
@@ -335,7 +360,7 @@
 			var/mob/living/silicon/ai/announcer = pick(ailist)
 			if(character.mind)
 				if((character.mind.assigned_role != "Cyborg") && (character.mind.special_role != "MODE"))
-					announcer.say("[character.real_name] has signed up as [rank].")
+					announcer.say("[announcer.radiomod] [character.real_name] has signed up as [rank].")
 
 /mob/new_player/proc/LateChoices()
 	var/mills = world.time // 1/10 of a second, not real milliseconds but whatever
