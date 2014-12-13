@@ -89,6 +89,10 @@
 			message_admins("EXPLOIT \[admin_ticket\]: [M] attempted to administer a ticket, but the user is not an admin.")
 			return
 
+		if(!is_admin(T.owner))
+			for(var/client/X in admins)
+				X << "<span class='ticket-status'>-- [T.get_view_link(X)] has been claimed by [key_name_params(C, 1, 1)] [T.handling_admin ? "(was previously [key_name_params(T.handling_admin, 1, 1)])" : ""]</span>"
+
 		T.handling_admin = C
 		log_admin("[T.handling_admin] has been assigned to ticket #[T.ticket_id] as primary admin.")
 
@@ -111,13 +115,13 @@
 		if(T.resolved)
 			log_admin("Ticket #[T.ticket_id] marked as resolved by [get_fancy_key(usr)].")
 			T.owner << "<span class='ticket-text-received'>Your ticket has been marked as resolved.</span>"
-			for(var/O in T.monitors)
-				O << "<span class='ticket-text-received'>\"[T.title]\" was marked as resolved.</span>"
+			/*for(var/O in T.monitors)
+				O << "<span class='ticket-text-received'>\"[T.title]\" was marked as resolved.</span>"*/
 		else
 			log_admin("Ticket #[T.ticket_id] marked as unresolved by [get_fancy_key(usr)].")
 			T.owner << "<span class='ticket-text-received'>Your ticket has been marked as unresolved.</span>"
-			for(var/O in T.monitors)
-				O << "<span class='ticket-text-received'>\"[T.title]\" was marked as unresolved.</span>"
+			/*for(var/O in T.monitors)
+				O << "<span class='ticket-text-received'>\"[T.title]\" was marked as unresolved.</span>"*/
 		world << output("[T.resolved]", "ViewTicketLog[T.ticket_id].browser:set_resolved")
 
 		if(href_list["reloadlist"])

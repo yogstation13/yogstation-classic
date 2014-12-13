@@ -24,8 +24,14 @@
 /client/verb/view_my_ticket()
 	set category = "Admin"
 	set name = "View My Ticket"
+	// Firstly, check if we are the owner of a ticket. This should be our first priority.
 	for(var/datum/admin_ticket/T in tickets_list)
-		if((compare_ckey(T.owner_ckey, usr) || compare_ckey(T.handling_admin, usr)) && !T.resolved)
+		if(compare_ckey(T.owner_ckey, usr) && !T.resolved)
+			T.view_log()
+			return
+	// If we reach here, perhaps we have a ticket to handle. That should be shown.
+	for(var/datum/admin_ticket/T in tickets_list)
+		if(compare_ckey(T.handling_admin, usr) && !T.resolved)
 			T.view_log()
 			return
 
@@ -56,7 +62,7 @@
 			for(var/datum/admin_ticket/T in unresolved)
 				if(!T.owner)
 					content += {"<p class='ticket-bar'>
-						<b>[T.title]</b><br />
+						<b>[T.handling_admin ? "" : "<span class='unclaimed'>Unclaimed</span>!"] [T.title]</b><br />
 						<b>Owner:</b> <b>[T.owner_ckey] (DC)</b>
 						<a href='?src=\ref[T];user=\ref[src];action=view_admin_ticket;ticket=\ref[T]'><img width='16' height='16' class='uiIcon16 icon-search' /> View</a>
 						<a href='?src=\ref[T];user=\ref[src];action=monitor_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
@@ -65,7 +71,7 @@
 				else
 					var/ai_found = (T.owner && isAI(get_ckey(T.owner)))
 					content += {"<p class='ticket-bar'>
-						<b>[T.title]</b><br />
+						<b>[T.handling_admin ? "" : "<span class='unclaimed'>Unclaimed</span>"] [T.title]</b><br />
 						<b>Owner:</b> <b>[key_name(T.owner, 1)]</b><br />
 						[T.handling_admin ? " <b>Admin:</b> [T.handling_admin]<br />" : ""]
 						<a href='?src=\ref[T];user=\ref[src];action=view_admin_ticket;ticket=\ref[T]'><img width='16' height='16' class='uiIcon16 icon-search' /> View</a>
