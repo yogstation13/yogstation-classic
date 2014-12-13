@@ -47,9 +47,9 @@
 
 	//Admin PM
 	if(href_list["priv_msg"])
+/*
 		if(href_list["ticket"])
 			var/datum/admin_ticket/T = locate(href_list["ticket"])
-
 			if(holder && T.resolved)
 				var/found_ticket = 0
 				for(var/datum/admin_ticket/T2 in tickets_list)
@@ -78,7 +78,7 @@
 				return
 			else
 				T.pm_started_user = get_client(usr)
-
+*/
 		cmd_admin_pm(href_list["priv_msg"],null)
 
 		return
@@ -151,7 +151,7 @@ var/next_external_rsc = 0
 	if(byond_version < MIN_CLIENT_VERSION)		//Out of date client.
 		return null
 
-	spawn(30)
+	/*spawn(30)
 		for(var/datum/admin_ticket/T in tickets_list)
 			if(compare_ckey(T.owner_ckey, src) && !T.resolved)
 				T.owner = src
@@ -160,7 +160,7 @@ var/next_external_rsc = 0
 			if(compare_ckey(T.handling_admin, src) && !T.resolved)
 				T.handling_admin = src
 				T.add_log(new /datum/ticket_log(T, src, "¤ Connected ¤", 1), src)
-				break
+				break*/
 
 #if (PRELOAD_RSC == 0)
 	if(external_rsc_urls && external_rsc_urls.len)
@@ -234,9 +234,9 @@ var/next_external_rsc = 0
 	//DISCONNECT//
 	//////////////
 /client/Del()
-	for(var/datum/admin_ticket/T in tickets_list)
+	/*for(var/datum/admin_ticket/T in tickets_list)
 		if(compare_ckey(T.owner_ckey, usr) && !T.resolved)
-			T.add_log(new /datum/ticket_log(T, src, "¤ Disconnected ¤", 1))
+			T.add_log(new /datum/ticket_log(T, src, "¤ Disconnected ¤", 1))*/
 
 	if(holder)
 		holder.owner = null

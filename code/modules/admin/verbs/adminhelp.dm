@@ -6,8 +6,7 @@ var/list/adminhelp_ignored_words = list("unknown","the","a","an","of","monkey","
 // Adminhelp discontinued. Adminticket is now used, but it is now using the command "Adminhelp" for easy transitioning.
 /client/verb/adminhelp(msg as text)
 	set category = "Admin"
-	set name = "Adminhelpold"
-	set hidden = 1
+	set name = "Adminhelp"
 
 	if(say_disabled)	//This is here to try to identify lag problems
 		usr << "<span class='danger'>Speech is currently admin-disabled.</span>"
@@ -103,10 +102,10 @@ var/list/adminhelp_ignored_words = list("unknown","the","a","an","of","monkey","
 			msg += "[original_word] "
 
 	if(!mob)	return						//this doesn't happen
-	
+
 	var/ref_mob = "\ref[mob]"
 	msg = "<span class='adminnotice'><b><font color=red>HELP: </font>[key_name(src, 1)] (<A HREF='?_src_=holder;adminmoreinfo=[ref_mob]'>?</A>) (<A HREF='?_src_=holder;adminplayeropts=[ref_mob]'>PP</A>) (<A HREF='?_src_=vars;Vars=[ref_mob]'>VV</A>) (<A HREF='?_src_=holder;subtlemessage=[ref_mob]'>SM</A>) (<A HREF='?_src_=holder;adminplayerobservejump=[ref_mob]'>JMP</A>) (<A HREF='?_src_=holder;secretsadmin=check_antagonist'>CA</A>) [ai_found ? " (<A HREF='?_src_=holder;adminchecklaws=[ref_mob]'>CL</A>)" : ""]:</b> [msg]</span>"
-	
+
 	//send this msg to all admins
 	var/admin_number_total = 0		//Total number of admins
 	var/admin_number_afk = 0		//Holds the number of admins who are afk

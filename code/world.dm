@@ -192,8 +192,8 @@
 		if(config.server)	//if you set a server location in config.txt, it sends you there instead of trying to reconnect to the same world address. -- NeoFite
 			C << link("byond://[config.server]")
 
-	if(tickets_list)
-		tickets_list.Cut()
+	/*if(tickets_list)
+		tickets_list.Cut()*/
 
 	// Note: all clients automatically connect to the world after it restarts
 
