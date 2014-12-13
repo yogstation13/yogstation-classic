@@ -78,6 +78,6 @@
 /datum/recipe/pie/rainbow
 	reagents = list("flour" = 10)
 	items = list(
-		/obj/item/weapon/reagent_containers/food/snacks/meat/rainbow,
+		/obj/item/weapon/reagent_containers/food/snacks/rainbowmeat,
 	)
 	result=	/obj/item/weapon/reagent_containers/food/snacks/pie/rainbow
