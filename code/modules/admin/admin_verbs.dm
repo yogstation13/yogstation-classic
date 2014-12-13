@@ -16,6 +16,7 @@ var/list/admin_verbs_default = list(
 	/client/proc/reload_admins,
 	/client/proc/adminwhotoggle,
 	/client/proc/adminwho,
+	/client/proc/donor_ooc_admin,
 	/client/proc/reestablish_db_connection,/*reattempt a connection to the database*/
 	/client/proc/cmd_admin_pm_context,	/*right-click adminPM interface*/
 	/client/proc/cmd_admin_pm_panel,		/*admin-pm list*/

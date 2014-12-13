@@ -4,16 +4,21 @@ var/list/donor_verbs_list = list(
 	)
 
 /client/proc/add_donor_verbs()
-	if(is_admin(src) || is_donator(src))
+	if(is_donator(src))
 		verbs += donor_verbs_list
 
 /client/proc/remove_donor_verbs()
-	if(is_admin(src) || is_donator(src))
+	if(is_donator(src))
 		verbs.Remove(
 			donor_verbs_list,
 			)
 
 var/global/normal_donor_ooc_colour = "#333333"
+
+/client/proc/donor_ooc_admin(msg as text)
+	set name = "Donor OOC"
+	set category = "Admin"
+	donor_ooc(msg)
 
 /client/proc/donor_ooc(msg as text)
 	set name = "Donor OOC"
