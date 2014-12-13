@@ -289,6 +289,13 @@
 	reagents.add_reagent("nutriment", 8)
 	bitesize = 2
 
+/obj/item/weapon/reagent_containers/food/snacks/rainbowmeat
+	name = "Rainbow Meat"
+	icon_state = "rainbowmeat"
+	desc = "Taste the rainbow!"
+	New()
+		..()
+		reagents.add_reagent("space_drugs", 10)
 
 /* No more of this
 /obj/item/weapon/reagent_containers/food/snacks/telebacon
