@@ -4,11 +4,11 @@ var/list/donor_verbs_list = list(
 	)
 
 /client/proc/add_donor_verbs()
-	if(is_donator(src))
+	if(is_admin(src) || is_donator(src))
 		verbs += donor_verbs_list
 
 /client/proc/remove_donor_verbs()
-	if(is_donator(src))
+	if(is_admin(src) || is_donator(src))
 		verbs.Remove(
 			donor_verbs_list,
 			)
@@ -69,7 +69,7 @@ var/global/normal_donor_ooc_colour = "#333333"
 		keyname += "[key]</font>"
 
 	for(var/client/C in clients)
-		if(is_donator(C) && C.prefs.toggles & CHAT_OOC)
+		if((is_admin(C) || is_donator(C)) && C.prefs.toggles & CHAT_OOC)
 			if(holder)
 				if(!holder.fakekey || C.holder)
 					if(check_rights_for(src, R_ADMIN))
