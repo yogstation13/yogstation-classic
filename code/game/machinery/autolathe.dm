@@ -374,6 +374,8 @@ var/global/list/autolathe_category_list = list( \
 
 			if(category == "Show All")
 				for(var/cat in autolathe_category_list)
+					if(!src.hacked && cat == "Sh0#t~cIR$&It... Errä")
+						continue
 					dat += listCategory(cat)
 			else
 				dat += listCategory(category)
