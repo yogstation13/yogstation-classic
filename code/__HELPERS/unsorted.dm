@@ -582,7 +582,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 	return .
 
 
-/*/proc/key_name_params(var/whom, var/include_link = null, var/include_name = 1, var/anchor_params = null, var/datum/admin_ticket/T = null)
+/proc/key_name_params(var/whom, var/include_link = null, var/include_name = 1, var/anchor_params = null, var/datum/admin_ticket/T = null)
 	var/mob/M
 	var/client/C
 	var/key
@@ -635,7 +635,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 		else if(M.name)
 			. += "/([M.name])"
 
-	return .*/
+	return .
 
 /proc/key_name_admin(var/whom, var/include_name = 1)
 	return key_name(whom, 1, include_name)
