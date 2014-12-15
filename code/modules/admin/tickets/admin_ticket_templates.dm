@@ -39,6 +39,10 @@
 					background: #507aac;
 				}
 
+				img {
+					border: 0px;
+				}
+
 				p {
 					padding: 0px;
 					margin: 0px;
@@ -65,6 +69,10 @@
 
 				h4 {
 					font-size: 12px;
+				}
+
+				.unclaimed {
+					color: #f00;
 				}
 
 				.monitor {
