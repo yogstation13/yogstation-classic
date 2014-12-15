@@ -23,6 +23,9 @@
 		if(!compare_ckey(user, owner_ckey))
 			handling_admin = get_client(user)
 			world << output("[key_name_params(handling_admin, 1, 1, null, src)]", "ViewTicketLog[ticket_id].browser:handling_user")
+			if(!is_admin(owner))
+				for(var/client/X in admins)
+					X << "<span class='ticket-status'>-- [get_view_link(X)] has been claimed by [key_name_params(handling_admin, 1, 1)]</span>"
 
 	var/datum/ticket_log/log_item = null
 	if(istype(message, /datum/ticket_log))
@@ -97,7 +100,16 @@
 			if(get_ckey(X) in messageSentTo)
 				continue
 			messageSentTo += get_ckey(X)
-			X << "<span class='ticket-text-received'>-- [get_view_link(user)] [key_name_params(user, 1, 1)] -> [get_view_link(user)]: [log_item.text_admin]</span>"
+
+			var/target
+			if(compare_ckey(user, owner_ckey))
+				target = key_name_params(handling_admin, 1, 1)
+			else if(compare_ckey(user, handling_admin))
+				target = key_name_params(owner, 1, 1)
+			else
+				target = get_view_link(user)
+
+			X << "<span class='ticket-text-received'>-- [get_view_link(user)] [key_name_params(user, 1, 1)] -> [target]: [log_item.text_admin]</span>"
 
 	if(compare_ckey(log_item.user, owner_ckey))
 		log_admin("Ticket #[ticket_id]: [log_item.user] -> [handling_admin ? handling_admin : "Ticket"] - [log_item.text]")
@@ -129,12 +141,31 @@
 /datum/admin_ticket/proc/toggle_resolved()
 	resolved = !resolved
 
-	if(resolved && ticker.delay_end)
-		var/unresolvedCount = 0
-		for(var/datum/admin_ticket/T in tickets_list)
-			if(!T.resolved)
-				unresolvedCount++
+	//var/totalCount = 0
+	var/unresolvedCount = 0
+	for(var/datum/admin_ticket/T in tickets_list)
+		//totalCount++
+		if(!T.resolved)
+			unresolvedCount++
 
+	var/list/to_process = list()
+
+	//to_process += owner
+	to_process += handling_admin
+
+	for(var/client/X in admins)
+		if(has_pref(X, TICKET_ALL))
+			if(!(X in to_process))
+				to_process += X
+
+	for(var/M in monitors)
+		if(!(M in to_process))
+			to_process += M
+
+	for(var/client/C in to_process)
+		C << "<span class='ticket-status'>-- [get_view_link(C)] has been set '<b>[resolved ? "resolved" : "unresolved"]</b>' by [key_name_params(usr, is_admin(C), is_admin(C))]</span>"
+
+	if(resolved && ticker.delay_end)
 		if(unresolvedCount == 0)
 			if(alert(usr, "You have resolved the last ticket (the server restart is currently delayed!). Would you like to restart the server now?", "Restart Server", "Restart", "Cancel") == "Restart")
 				world << "<span class='userdanger'>Restarting world!</span> <span class='adminnotice'> Initiated by [usr.client.holder.fakekey ? "Admin" : usr.key]!</span>"
@@ -170,15 +201,15 @@
 		if(owner && owner.mob)
 			content += {"<p style='margin-top: 5px;'>
 					<a href='?_src_=holder;adminmoreinfo=\ref[owner.mob]'><img width='16' height='16' class='uiIcon16 icon-search' /> ?</a>
-					<a href='?pp=\ref[owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> PP</a>
-					<a href='?vv=\ref[owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> VV</a>
-					<a href='?sm=\ref[owner.mob]'><img width='16' height='16' class='uiIcon16 icon-mail-closed' /> SM</a>
-					<a href='?jmp=\ref[owner.mob]'><img width='16' height='16' class='uiIcon16 icon-arrowthick-1-e' /> JMP</a>
+					<a href='?_src_=holder;adminplayeropts=\ref[owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> PP</a>
+					<a href='?_src_=vars;Vars=\ref[owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> VV</a>
+					<a href='?_src_=holder;subtlemessage=\ref[owner.mob]'><img width='16' height='16' class='uiIcon16 icon-mail-closed' /> SM</a>
+					<a href='?_src_=holder;adminplayerobservejump=\ref[owner.mob]'><img width='16' height='16' class='uiIcon16 icon-arrowthick-1-e' /> JMP</a>
+					<a href='?_src_=holder;secretsadmin=check_antagonist'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> CA</a>
 					<a href='?src=\ref[src];user=\ref[usr];action=monitor_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
 					<a href='?src=\ref[src];user=\ref[usr];action=resolve_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
 					<a href='?src=\ref[src];user=\ref[usr];action=administer_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-flag' /> Administer</a>
 				</p>"}
-
 		if(owner && owner.mob)
 			if(owner.mob.mind && owner.mob.mind.assigned_role)
 				content += "<p class='user-info-bar'>Role: [owner.mob.mind.assigned_role]</p>"
@@ -201,13 +232,14 @@
 
 		content += "</div>"
 	else
-		content += "<div class='user-bar'>"
-		content += {"<p style='margin-top: 5px;'>
-				<a href='?src=\ref[src];user=\ref[usr];action=monitor_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
-				<a href='?src=\ref[src];user=\ref[usr];action=resolve_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
-				<a href='?src=\ref[src];user=\ref[usr];action=administer_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-flag' /> Administer</a>
-			</p>"}
-		content += "</div>"
+		if(usr.client.holder)
+			content += "<div class='user-bar'>"
+			content += {"<p style='margin-top: 5px;'>
+					<a href='?src=\ref[src];user=\ref[usr];action=monitor_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
+					<a href='?src=\ref[src];user=\ref[usr];action=resolve_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
+					<a href='?src=\ref[src];user=\ref[usr];action=administer_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-flag' /> Administer</a>
+				</p>"}
+			content += "</div>"
 
 	content += "<div id='messages'>"
 
