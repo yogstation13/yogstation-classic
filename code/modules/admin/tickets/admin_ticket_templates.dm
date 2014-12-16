@@ -175,6 +175,11 @@
 					margin: 3px;
 				}
 
+				.message-bar-centered {
+					margin: 3px;
+					text-align: center;
+				}
+
 				.resolved {
 					color: green;
 				}
@@ -205,10 +210,19 @@
 
 				<script src="libraries.min.js"></script>
 				<script type='text/javascript'>
+					var nearBottom = true;
+
 					function add_message(message) {
-						$('#messages').prepend('<p class=\"message-bar\" style=\"display: none;\">'+message+'</p>');
+						$('#messages').append('<p class=\"message-bar\" style=\"display: none;\">'+message+'</p>');
 
 						$('.message-bar').fadeIn();
+
+						if(nearBottom) {
+							$('html, body').animate({ scrollTop: $(document).height() }, 1000);
+						}
+
+						$(".message-bar:even").css("background-color", "#333333");
+						$(".message-bar:odd").css("background-color", "#444444");
 					}
 
 					function handling_user(user) {
@@ -245,6 +259,17 @@
 						$('.resolved-bar').fadeTo(1, 0.8);
 						$('.user-bar').fadeTo(1, 0.8);
 						$('.ticket-bar').fadeTo(1, 0.8);
+
+						$(".message-bar:even").css("background-color", "#333333");
+						$(".message-bar:odd").css("background-color", "#444444");
+					});
+
+					$(window).scroll(function() {
+						if($(window).scrollTop() + $(window).height() > $(document).height() - 20) {
+							nearBottom = true;
+						} else {
+							nearBottom = false;
+						}
 					});
 
 					[js]

@@ -5,19 +5,19 @@
 
 	var/datum/admin_ticket/found_ticket = null
 	for(var/datum/admin_ticket/T in tickets_list)
-		if(compare_ckey(T.owner_ckey, usr) && !T.resolved)
+		if(compare_ckey(T.owner_ckey, src) && !T.resolved)
 			found_ticket = T
 
 	if(!found_ticket)
-		var/datum/admin_ticket/T = new /datum/admin_ticket(usr, ticket_title)
+		var/datum/admin_ticket/T = new /datum/admin_ticket(src, ticket_title)
 
 		if(!T.error)
 			tickets_list.Add(T)
 		else
 			T = null
 	else
-		found_ticket.owner = usr
-		if(!compare_ckey(usr, found_ticket.owner))
+		found_ticket.owner = src
+		if(!compare_ckey(src, found_ticket.owner))
 			found_ticket.owner << output("[gameTimestamp()] - <b>[key_name(found_ticket.owner, 1)]</b> - [ticket_title]", "ViewTicketLog[found_ticket.ticket_id].browser:add_message")
 		found_ticket.add_log(ticket_title)
 
