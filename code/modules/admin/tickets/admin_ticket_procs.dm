@@ -1,5 +1,8 @@
 
 /datum/admin_ticket/proc/add_log(var/message, var/user_in)
+	if(!owner && istext(owner_ckey))
+		owner = directory[owner_ckey]
+
 	var/client/user
 	if(!user_in)
 		user = get_client(usr)
@@ -11,7 +14,7 @@
 			var/client/temp = user_in
 			user = temp
 		else
-			user = get_client(usr)
+			user = get_client(user_in)
 
 	if(!log)
 		return
@@ -127,16 +130,27 @@
 		if(compare_ckey(M, usr))
 			foundMonitor = 1
 
+	var/monitoring
 	if(!foundMonitor)
 		log_admin("[usr] is now monitoring ticket #[ticket_id]")
 		monitors += get_client(usr)
 		usr << "<span class='ticket-status'>You are now monitoring this ticket</span>"
-		return 1
+		monitoring = 1
 	else
 		log_admin("[usr] is no longer monitoring ticket #[ticket_id]")
 		monitors -= get_client(usr)
 		usr << "<span class='ticket-status'>You are no longer monitoring this ticket</span>"
-		return 0
+		monitoring = 0
+
+	var/monitors_text = ""
+	if(monitors.len > 0)
+		monitors_text += "Monitors:"
+		for(var/MO in monitors)
+			monitors_text += " <span class='monitor'>[get_fancy_key(MO)]</span>"
+
+	world << output("[monitors_text] ", "ViewTicketLog[ticket_id].browser:set_monitors")
+
+	return monitoring
 
 /datum/admin_ticket/proc/toggle_resolved()
 	resolved = !resolved
@@ -165,6 +179,14 @@
 	for(var/client/C in to_process)
 		C << "<span class='ticket-status'>-- [get_view_link(C)] has been set '<b>[resolved ? "resolved" : "unresolved"]</b>' by [key_name_params(usr, is_admin(C), is_admin(C))]</span>"
 
+	if(resolved)
+		log_admin("Ticket #[ticket_id] marked as resolved by [get_fancy_key(usr)].")
+		owner << "<span class='ticket-text-received'>Your ticket has been marked as resolved.</span>"
+	else
+		log_admin("Ticket #[ticket_id] marked as unresolved by [get_fancy_key(usr)].")
+		owner << "<span class='ticket-text-received'>Your ticket has been marked as unresolved.</span>"
+	world << output("[resolved]", "ViewTicketLog[ticket_id].browser:set_resolved")
+
 	if(resolved && ticker.delay_end)
 		if(unresolvedCount == 0)
 			if(alert(usr, "You have resolved the last ticket (the server restart is currently delayed!). Would you like to restart the server now?", "Restart Server", "Restart", "Cancel") == "Restart")
@@ -179,11 +201,14 @@
 				usr << "<span class='ticket-status'>You chose not to restart the server. If you do not have permissions to restart the server normally, you can still do so by making a new ticket and resolving it again.</span>"
 
 /datum/admin_ticket/proc/view_log()
+	if(!owner && istext(owner_ckey))
+		owner = directory[owner_ckey]
+
 	var/reply_link = "<a href='?src=\ref[src];user=\ref[usr];action=reply_to_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-comment' /> Reply</a>"
 	var/refresh_link = "<a href='?src=\ref[src];user=\ref[usr];action=refresh_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-refresh' /> Refresh</a>"
 
 	var/content = ""
-	content += "<p class='control-bar'>[reply_link] [refresh_link]</p>"
+	content += "<p class='control-bar'><a href='#bottom' name='top'>To Bottom</a> [reply_link] [refresh_link]</p>"
 	content += "<p class='title-bar'>[title]</p>"
 	content += "<p class='info-bar'>Primary Admin: <span id='primary-admin'>[handling_admin != null ? (usr.client.holder ? key_name_params(handling_admin, 1, 1, null, src) : "[key_name_params(handling_admin, 1, 0, null, src)]") : "Unassigned"]</span></p>"
 
@@ -243,15 +268,21 @@
 
 	content += "<div id='messages'>"
 
-
 	var/i = 0
-	for(i = log.len; i > 0; i--)
+	for(i = 1; i <= log.len; i++)
 		var/datum/ticket_log/item = log[i]
 		if((item.for_admins && usr.client.holder) || !item.for_admins)
 			content += "<p class='message-bar'>[item.toString()]</p>"
 
+	// New ticket logs added to top - If reverting this, do not forget to prepend in the template!
+	/*for(i = log.len; i > 0; i--)
+		var/datum/ticket_log/item = log[i]
+		if((item.for_admins && usr.client.holder) || !item.for_admins)
+			content += "<p class='message-bar'>[item.toString()]</p>"*/
+
 	content += "</div>"
-	content += "<p class='control-bar'>[reply_link] [refresh_link]</p>"
+
+	content += "<p class='control-bar'><a href='#top' name='bottom'>To Top</a> [reply_link] [refresh_link]</p>"
 	content += "<br /></div></body></html>"
 
 	var/html = get_html("Admin Ticket Interface", "", "", content)
