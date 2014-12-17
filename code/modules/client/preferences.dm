@@ -93,6 +93,7 @@ datum/preferences
 	var/agree = 0
 
 	var/donor_hat = null
+	var/quiet_round = 0
 
 /datum/preferences/New(client/C)
 	blood_type = random_blood_type()
@@ -266,13 +267,17 @@ datum/preferences
 					for (var/i in special_roles)
 						if(special_roles[i]) //if mode is available on the server
 							if(jobban_isbanned(user, i))
-								dat += "<b>Be [i]:</b> <font color=red><b>\[BANNED]</b></font><br>"
+								dat += "<b>Be [i]:</b> <font color=red><b>\[BANNED\]</b></font><br>"
 							else if(i == "pai candidate")
 								if(jobban_isbanned(user, "pAI"))
-									dat += "<b>Be [i]:</b> <font color=red><b>\[BANNED]</b></font><br>"
+									dat += "<b>Be [i]:</b> <font color=red><b>\[BANNED\]</b></font><br>"
+							else if(src.be_special & QUIET_ROUND)
+								dat += "<b>Be [i]:</b> <font color=blue><b>\[QUIET ROUND\]</b></font><br>"
 							else
 								dat += "<b>Be [i]:</b> <a href='?_src_=prefs;preference=be_special;num=[n]'>[src.be_special&(1<<n) ? "Yes" : "No"]</a><br>"
 						n++
+				if(is_donator(user.client))
+					dat += "<b>Quiet round:</b> <a href='?_src_=prefs;preference=donor;task=quiet_round'>[(src.be_special & QUIET_ROUND) ? "Yes" : "No"]</a><br>"
 				dat += "</td></tr></table>"
 
 		dat += "<hr><center>"
@@ -339,11 +344,14 @@ datum/preferences
 				var/available_in_days = job.available_in_days(user.client)
 				HTML += "<font color=red>[rank]</font></td><td><font color=red> \[IN [(available_in_days)] DAYS\]</font></td></tr>"
 				continue
-			if((job_civilian_low & ASSISTANT) && (rank != "Assistant"))
+			if((job_civilian_low & ASSISTANT) && (rank != "Assistant") && !jobban_isbanned(user, "Assistant"))
 				HTML += "<font color=orange>[rank]</font></td><td></td></tr>"
 				continue
 			if(config.enforce_human_authority && (rank in command_positions) && user.client.prefs.pref_species.id != "human")
 				HTML += "<font color=red>[rank]</font></td><td><font color=red><b> \[NON-HUMAN\]</b></font></td></tr>"
+				continue
+			if(((rank in command_positions) || (rank in nonhuman_positions)) && (src.be_special & QUIET_ROUND))
+				HTML += "<font color=blue>[rank]</font></td><td><font color=blue><b> \[QUIET ROUND\]</b></font></td></tr>"
 				continue
 			if((rank in command_positions) || (rank == "AI"))//Bold head jobs
 				HTML += "<b><span class='dark'>[rank]</span></b>"
@@ -604,6 +612,9 @@ datum/preferences
 							donor_hat = new item
 						else
 							donor_hat = null
+					if("quiet_round")
+						be_special ^= QUIET_ROUND
+
 			else
 				message_admins("EXPLOIT \[donor\]: [user] tried to access donor only functions (as a non-donor). Attempt made on \"[href_list["preference"]]\" -> \"[href_list["task"]]\".")
 

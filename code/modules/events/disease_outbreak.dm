@@ -46,16 +46,5 @@
 		else
 			D = new virus_type()
 		D.carrier = 1
-		D.holder = H
-		D.affected_mob = H
-		H.viruses += D
-		var/log = "has contracted [D.name]"
-		if(istype(D, /datum/disease/advance))
-			var/datum/disease/advance/DD = D
-			log += " \[ symptoms: "
-			for(var/datum/symptom/S in DD.symptoms)
-				log += "[S.name] "
-			log += "\]"
-		log += " as a carrier from a Disease Outbreak random event."
-		H.investigate_log(log, "viro")
+		H.AddDisease(D, "Disease Outbreak random event")
 		break

@@ -74,6 +74,9 @@ var/global/list/autolathe_category_list = list( \
 			new /obj/item/weapon/weldingtool/largetank(), \
 			new /obj/item/weapon/restraints/handcuffs(), \
 			new /obj/item/ammo_box/a357(), \
+			new /obj/item/ammo_box/c10mm(), \
+			new /obj/item/ammo_box/c45(), \
+			new /obj/item/ammo_box/c9mm(), \
 			new /obj/item/ammo_casing/shotgun(), \
 			new /obj/item/ammo_casing/shotgun/buckshot(), \
 			new /obj/item/ammo_casing/shotgun/dart(), \
@@ -125,10 +128,8 @@ var/global/list/autolathe_category_list = list( \
 	wires = new(src)
 
 /obj/machinery/autolathe/interact(mob/user)
-	if(..())
-		return
-	if (src.shocked)
-		src.shock(user,50)
+	if(shocked && !(stat & NOPOWER))
+		shock(user,50)
 	regular_win(user)
 	return
 
@@ -203,7 +204,7 @@ var/global/list/autolathe_category_list = list( \
 	return attack_hand(user)
 
 /obj/machinery/autolathe/attack_hand(mob/user)
-	if(..())
+	if(..(user, 0))
 		return
 	interact(user)
 
@@ -301,6 +302,8 @@ var/global/list/autolathe_category_list = list( \
 
 /obj/machinery/autolathe/proc/regular_win(mob/user)
 	if(!panel_open)
+		if(stat)
+			return
 		var/coeff = 2 ** prod_coeff
 
 		dat = "<script src=\"libraries.min.js\"></script>"
@@ -371,6 +374,8 @@ var/global/list/autolathe_category_list = list( \
 
 			if(category == "Show All")
 				for(var/cat in autolathe_category_list)
+					if(!src.hacked && cat == "Sh0#t~cIR$&It... Errä")
+						continue
 					dat += listCategory(cat)
 			else
 				dat += listCategory(category)

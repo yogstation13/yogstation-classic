@@ -425,26 +425,77 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	message_admins("<span class='danger'>Admin [key_name_admin(usr)] healed / revived [key_name_admin(M)]!</span>")
 	feedback_add_details("admin_verb","REJU") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
-/client/proc/cmd_admin_create_centcom_report()
+/client/proc/cmd_admin_create_faction_announcements()
 	set category = "Special Verbs"
-	set name = "Create Command Report"
+	set name = "Create Announcement"
 	if(!holder)
 		src << "Only administrators may use this command."
 		return
-	var/input = input(usr, "Please enter anything you want. Anything. Serious.", "What?", "") as message|null
-	if(!input)
-		return
+	var/faction = alert(src, "Who's there?", "Knock knock", "Centcomm", "Other", "Custom")
+	if(faction == "Centcomm")
+		var/input = input(usr, "Please enter anything you want. Anything. Serious.", "What?", "") as message|null
+		if(!input)
+			return
 
-	var/confirm = alert(src, "Do you want to announce the contents of the report to the crew?", "Announce", "Yes", "No")
-	if(confirm == "Yes")
-		priority_announce(input, null, 'sound/AI/commandreport.ogg')
-	else
-		priority_announce("A report has been downloaded and printed out at all communications consoles.", "Incoming Classified Message", 'sound/AI/commandreport.ogg')
+		var/confirm = alert(src, "Do you want to announce the contents of the report to the crew?", "Announce", "Yes", "No")
+		if(confirm == "Yes")
+			priority_announce(input, null, 'sound/AI/commandreport.ogg')
+		else
+			priority_announce("A report has been downloaded and printed out at all communications consoles.", "Incoming Classified Message", 'sound/AI/commandreport.ogg')
 
-	print_command_report(input,"[confirm=="Yes" ? "" : "Classified "][command_name()] Update")
+		print_command_report(input,"[confirm=="Yes" ? "" : "Classified "][command_name()] Update")
 
-	log_admin("[key_name(src)] has created a command report: [input]")
-	message_admins("[key_name_admin(src)] has created a command report")
+		log_admin("[key_name(src)] has created a command report: [input]")
+		message_admins("[key_name_admin(src)] has created a command report")
+	else if(faction == "Other")
+
+		var/what
+
+		switch(input("Exactly who are you?") in list("Syndicate", "Wizard's Federation", "Static", "Clown Empire", "cult of Nar-sie"))
+			if("Syndicate")
+				what += "Syndicate"
+
+			if("Wizard's Federation")
+				what += "Wizards Federation"
+
+			if("Static")
+				what += "Unknown"
+
+			if("Clown Empire")
+				what += "Clown Empire"
+
+			if("Cult of Nar-sie")
+				what += "Cult of Narsie"
+
+		var/input = input(usr, "Please enter anything you want. Anything Serious.", "What?", "") as message|null
+		if(!input)
+			return
+		var/confirm = alert(src, "Do you want to announce the contents of the report to the crew?", "Announce", "Yes", "No")
+		if(confirm == "Yes")
+			priority_announce(input, null,'sound/AI/attention.ogg', what)
+		else
+			priority_announce("A report has been downloaded and printed out at all communications consoles.", "Incoming Classified Message", 'sound/AI/commandreport.ogg')
+
+		print_command_report(input,"[confirm=="Yes" ? "" : "Classified "][what] Message")
+
+		log_admin("[key_name(src)] has created a [what] announcement: [input]")
+		message_admins("[key_name_admin(src)] has created a [what] announcement")
+
+	else if(faction == "Custom")
+		var/who = input(usr, "Who are you?", "Hi", "") as text|null
+		var/input = input(usr, "Please enter anything you want. Anything Serious.", "What?", "") as message|null
+		if(!input)
+			return
+		var/confirm = alert(src, "Do you want to announce the contents of the report to the crew?", "Announce", "Yes", "No")
+		if(confirm == "Yes")
+			custom_priority_announce(input, null, 'sound/AI/attention.ogg', who)
+		else
+			priority_announce("A report has been downloaded and printed out at all communications consoles.", "Incoming Classified Message", 'sound/AI/commandreport.ogg')
+
+		print_command_report(input,"[confirm=="Yes" ? "" : "Classified "][who] Message")
+
+		log_admin("[key_name(src)] has created a custom announcement: [input]")
+		message_admins("[key_name_admin(src)] has created a custom announcement")
 	feedback_add_details("admin_verb","CCR") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_admin_delete(atom/O as obj|mob|turf in world)
@@ -798,3 +849,4 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	log_admin("[key_name(usr)] blanked all telecomms scripts.")
 	message_admins("[key_name_admin(usr)] blanked all telecomms scripts.")
 	feedback_add_details("admin_verb","RAT") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+

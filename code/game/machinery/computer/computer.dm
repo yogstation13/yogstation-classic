@@ -10,8 +10,13 @@
 	var/processing = 0
 	paiallowed = 1
 
-/obj/machinery/computer/New()
-	..()
+/obj/machinery/computer/New(location, obj/item/weapon/circuitboard/C)
+	..(location)
+	if(C && istype(C))
+		circuit = C
+	else
+		if(circuit)
+			circuit = new circuit(null)
 	power_change()
 
 /obj/machinery/computer/initialize()
@@ -27,7 +32,10 @@
 	..()
 
 
-/obj/machinery/computer/ex_act(severity)
+/obj/machinery/computer/ex_act(severity, target)
+	if(target == src)
+		qdel(src)
+		return
 	switch(severity)
 		if(1.0)
 			qdel(src)
@@ -92,9 +100,9 @@
 		user << "<span class='notice'> You start to disconnect the monitor.</span>"
 		if(do_after(user, 20))
 			var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
-			var/obj/item/weapon/circuitboard/M = new circuit( A )
-			A.circuit = M
+			A.circuit = circuit
 			A.anchored = 1
+			circuit = null
 			for (var/obj/C in src)
 				C.loc = src.loc
 			if (src.stat & BROKEN)

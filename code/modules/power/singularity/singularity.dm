@@ -33,7 +33,7 @@
 
 	src.energy = starting_energy
 	..()
-	for(var/obj/machinery/singularity_beacon/singubeacon in world)
+	for(var/obj/machinery/power/singularity_beacon/singubeacon in world)
 		if(singubeacon.active)
 			target = singubeacon
 			break
@@ -59,7 +59,7 @@
 /obj/machinery/singularity/blob_act(severity)
 	return
 
-/obj/machinery/singularity/ex_act(severity)
+/obj/machinery/singularity/ex_act(severity, target)
 	switch(severity)
 		if(1.0)
 			if(current_size <= STAGE_TWO)

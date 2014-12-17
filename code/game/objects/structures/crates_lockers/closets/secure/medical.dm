@@ -67,13 +67,14 @@
 		new /obj/item/weapon/storage/backpack/satchel_med(src)
 	new /obj/item/clothing/under/rank/medical(src)
 	new /obj/item/clothing/suit/labcoat/old(src)
-	new /obj/item/clothing/suit/labcoat(src)
+	new /obj/item/clothing/suit/toggle/labcoat(src)
 	new /obj/item/clothing/shoes/sneakers/white(src)
 	new /obj/item/device/radio/headset/headset_med(src)
 	new /obj/item/clothing/gloves/latex(src)
 	new /obj/item/weapon/storage/belt/medical(src)
 	new /obj/item/weapon/gun/syringe(src)
 	new /obj/item/clothing/glasses/hud/health(src)
+	new /obj/item/clothing/suit/toggle/wintercoat/medical(src)
 	return
 
 /obj/structure/closet/secure_closet/mmedical
@@ -121,7 +122,7 @@
 	new /obj/item/clothing/suit/bio_suit/cmo(src)
 	new /obj/item/clothing/head/bio_hood/cmo(src)
 	new /obj/item/clothing/suit/labcoat/old/cmold(src)
-	new /obj/item/clothing/suit/labcoat/cmo(src)
+	new /obj/item/clothing/suit/toggle/labcoat/cmo(src)
 	new /obj/item/clothing/under/rank/chief_medical_officer(src)
 	new /obj/item/clothing/shoes/sneakers/brown	(src)
 	new /obj/item/weapon/cartridge/cmo(src)
@@ -130,6 +131,7 @@
 	new /obj/item/weapon/defibrillator/loaded(src)
 	new /obj/item/weapon/storage/belt/medical(src)
 	new /obj/item/device/flash/handheld(src)
+	new /obj/item/clothing/suit/toggle/wintercoat/medical(src)
 	new /obj/item/weapon/reagent_containers/hypospray/CMO(src)
 	return
 
@@ -205,7 +207,7 @@
 			if ("purple")
 				new /obj/item/clothing/under/rank/medical/purple(src)
 		new /obj/item/clothing/under/rank/medical(src)
-		new /obj/item/clothing/suit/labcoat/emt(src)
+		new /obj/item/clothing/suit/toggle/labcoat/emt(src)
 		new /obj/item/weapon/defibrillator/loaded(src)
 		new /obj/item/device/radio/headset/headset_med(src)
 		new /obj/item/weapon/storage/belt/medical(src)

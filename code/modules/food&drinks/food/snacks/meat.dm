@@ -76,3 +76,4 @@
 /obj/item/weapon/reagent_containers/food/snacks/meat/pug
 	name = "Pug meat"
 	desc = "Tastes like... well you know..."
+

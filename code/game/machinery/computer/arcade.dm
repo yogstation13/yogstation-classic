@@ -259,8 +259,8 @@
 	return
 
 
-/obj/machinery/computer/arcade/battle/attackby(I as obj, user as mob)
-	if(istype(I, /obj/item/weapon/card/emag) && !emagged)
+/obj/machinery/computer/arcade/battle/emag_act(mob/user as mob)
+	if(!emagged)
 		temp = "If you die in the game, you die for real!"
 		player_hp = 30
 		player_mp = 10
@@ -276,9 +276,6 @@
 
 
 		src.updateUsrDialog()
-	else
-		..()
-	return
 
 
 
