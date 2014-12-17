@@ -235,8 +235,7 @@
 	A.current = T
 	A.yo = U.y - T.y
 	A.xo = U.x - T.x
-	spawn( 0 )
-		A.process()
+	A.fire()
 	return
 
 
@@ -292,7 +291,7 @@
 			power_change()
 	..()
 
-/obj/machinery/turret/ex_act(severity)
+/obj/machinery/turret/ex_act(severity, target)
 	if(severity < 3)
 		src.die()
 
@@ -362,7 +361,7 @@
 	..()
 	take_damage(0) //check your health
 
-/obj/machinery/gun_turret/ex_act(severity)
+/obj/machinery/gun_turret/ex_act(severity, target)
 	switch(severity)
 		if(1)
 			die()
@@ -485,8 +484,7 @@
 	A.current = curloc
 	A.yo = targloc.y - curloc.y
 	A.xo = targloc.x - curloc.x
-	spawn(0)
-		A.process()
+	A.fire()
 	return
 
 
@@ -530,15 +528,6 @@
 	if (istype(user, /mob/living/silicon))
 		return src.attack_hand(user)
 
-	if (istype(W, /obj/item/weapon/card/emag) && !emagged)
-		user << "<span class='danger'>You short out the turret controls' access analysis module.</span>"
-		emagged = 1
-		locked = 0
-		if(user.machine==src)
-			src.attack_hand(user)
-
-		return
-
 	else if( get_dist(src, user) == 0 )		// trying to unlock the interface
 		if (src.allowed(usr))
 			if(emagged)
@@ -556,6 +545,14 @@
 					src.attack_hand(user)
 		else
 			user << "<span class='warning'>Access denied.</span>"
+
+/obj/machinery/areaturretid/emag_act(mob/user as mob)
+	if(!emagged)
+		user << "<span class='danger'>You short out the turret controls' access analysis module.</span>"
+		emagged = 1
+		locked = 0
+		if(user.machine==src)
+			src.attack_hand(user)
 
 /obj/machinery/areaturretid/attack_ai(mob/user as mob)
 	if(!ailock)

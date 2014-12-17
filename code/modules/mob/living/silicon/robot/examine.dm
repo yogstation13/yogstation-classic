@@ -31,7 +31,27 @@
 		if(CONSCIOUS)
 			if(!src.client)	msg += "It appears to be in stand-by mode.\n" //afk
 		if(UNCONSCIOUS)		msg += "<span class='warning'>It doesn't seem to be responding.</span>\n"
-		if(DEAD)			msg += "<span class='deadsay'>It looks like its system is corrupted and requires a reset.</span>\n"
+		if(DEAD)
+			var/braindead = 0
+			var/BDD
+			if(mind == null)
+				braindead = 1
+			if(!key)
+				var/foundghost = 0
+				if(mind)
+					for(var/mob/dead/observer/G in player_list)
+						if(G.mind == mind)
+							foundghost = 1
+							if (G.can_reenter_corpse == 0)
+								foundghost = 0
+							break
+				if(!foundghost)
+					braindead = 1
+			if(braindead == 1)
+				BDD += "you see a red still light on its interface"
+			else
+				BDD += "you see a green flashing light on its interface"
+			msg += "<span class='deadsay'>It looks like its system is corrupted, [BDD].</span>\n"
 	msg += "*---------*</span>"
 
 	user << msg

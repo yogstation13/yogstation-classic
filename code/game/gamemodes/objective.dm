@@ -25,7 +25,7 @@ datum/objective/proc/get_target()
 datum/objective/proc/find_target()
 	var/list/possible_targets = list()
 	for(var/datum/mind/possible_target in ticker.minds)
-		if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != 2) && is_unique_objective(possible_target))
+		if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != 2) && is_unique_objective(possible_target) && !(possible_target.quiet_round))
 			possible_targets += possible_target
 	if(possible_targets.len > 0)
 		target = pick(possible_targets)
@@ -285,7 +285,7 @@ datum/objective/escape/escape_with_identity/find_target()
 datum/objective/escape/escape_with_identity/update_explanation_text()
 	if(target && target.current)
 		target_real_name = target.current.real_name
-		explanation_text = "Escape on the shuttle or an escape pod with the identity of [target_real_name], the [target.assigned_role]."
+		explanation_text = "Escape on the shuttle or an escape pod with the identity of [target_real_name], the [target.assigned_role] while wearing their identification card."
 	else
 		explanation_text = "Free Objective."
 

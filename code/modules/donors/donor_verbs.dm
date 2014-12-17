@@ -15,6 +15,11 @@ var/list/donor_verbs_list = list(
 
 var/global/normal_donor_ooc_colour = "#333333"
 
+/client/proc/donor_ooc_admin(msg as text)
+	set name = "Donor OOC"
+	set category = "Admin"
+	donor_ooc(msg)
+
 /client/proc/donor_ooc(msg as text)
 	set name = "Donor OOC"
 	set category = "OOC"
@@ -69,7 +74,7 @@ var/global/normal_donor_ooc_colour = "#333333"
 		keyname += "[key]</font>"
 
 	for(var/client/C in clients)
-		if(is_donator(C) && C.prefs.toggles & CHAT_OOC)
+		if((is_admin(C) || is_donator(C)) && C.prefs.toggles & CHAT_OOC)
 			if(holder)
 				if(!holder.fakekey || C.holder)
 					if(check_rights_for(src, R_ADMIN))

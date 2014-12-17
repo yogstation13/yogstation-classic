@@ -5,27 +5,33 @@
 
 	var/datum/admin_ticket/found_ticket = null
 	for(var/datum/admin_ticket/T in tickets_list)
-		if(compare_ckey(T.owner_ckey, usr) && !T.resolved)
+		if(compare_ckey(T.owner_ckey, src) && !T.resolved)
 			found_ticket = T
 
 	if(!found_ticket)
-		var/datum/admin_ticket/T = new /datum/admin_ticket(usr, ticket_title)
+		var/datum/admin_ticket/T = new /datum/admin_ticket(src, ticket_title)
 
 		if(!T.error)
 			tickets_list.Add(T)
 		else
 			T = null
 	else
-		found_ticket.owner = usr
-		if(!compare_ckey(usr, found_ticket.owner))
+		found_ticket.owner = src
+		if(!compare_ckey(src, found_ticket.owner))
 			found_ticket.owner << output("[gameTimestamp()] - <b>[key_name(found_ticket.owner, 1)]</b> - [ticket_title]", "ViewTicketLog[found_ticket.ticket_id].browser:add_message")
 		found_ticket.add_log(ticket_title)
 
 /client/verb/view_my_ticket()
 	set category = "Admin"
 	set name = "View My Ticket"
+	// Firstly, check if we are the owner of a ticket. This should be our first priority.
 	for(var/datum/admin_ticket/T in tickets_list)
-		if((compare_ckey(T.owner_ckey, usr) || compare_ckey(T.handling_admin, usr)) && !T.resolved)
+		if(compare_ckey(T.owner_ckey, usr) && !T.resolved)
+			T.view_log()
+			return
+	// If we reach here, perhaps we have a ticket to handle. That should be shown.
+	for(var/datum/admin_ticket/T in tickets_list)
+		if(compare_ckey(T.handling_admin, usr) && !T.resolved)
 			T.view_log()
 			return
 
@@ -56,7 +62,7 @@
 			for(var/datum/admin_ticket/T in unresolved)
 				if(!T.owner)
 					content += {"<p class='ticket-bar'>
-						<b>[T.title]</b><br />
+						<b>[T.handling_admin ? "" : "<span class='unclaimed'>Unclaimed</span>!"] [T.title]</b><br />
 						<b>Owner:</b> <b>[T.owner_ckey] (DC)</b>
 						<a href='?src=\ref[T];user=\ref[src];action=view_admin_ticket;ticket=\ref[T]'><img width='16' height='16' class='uiIcon16 icon-search' /> View</a>
 						<a href='?src=\ref[T];user=\ref[src];action=monitor_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
@@ -65,7 +71,7 @@
 				else
 					var/ai_found = (T.owner && isAI(get_ckey(T.owner)))
 					content += {"<p class='ticket-bar'>
-						<b>[T.title]</b><br />
+						<b>[T.handling_admin ? "" : "<span class='unclaimed'>Unclaimed</span>"] [T.title]</b><br />
 						<b>Owner:</b> <b>[key_name(T.owner, 1)]</b><br />
 						[T.handling_admin ? " <b>Admin:</b> [T.handling_admin]<br />" : ""]
 						<a href='?src=\ref[T];user=\ref[src];action=view_admin_ticket;ticket=\ref[T]'><img width='16' height='16' class='uiIcon16 icon-search' /> View</a>

@@ -5,16 +5,15 @@
 /data/*
 /_maps/map_files/backup
 
-/data/mode.txt
-/data/logs
-/data/investigate
-
 #Ignore generated files in data
 /data/appearance_full.ban
 /data/banlist.bdb
 /data/job_full.ban
 /data/job_fullnew.bdb
 /data/memo.sav
+/data/mode.txt
+/data/logs
+/data/investigate
 
 #Do not store automatic map backups
 /_maps/map_files/backup
@@ -24,6 +23,3 @@
 *.rsc
 *.lk
 *.int
-/data/mode.txt
-/data/logs
-/data/investigate

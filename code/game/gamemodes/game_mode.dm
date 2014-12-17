@@ -232,6 +232,8 @@
 	for(var/mob/new_player/player in player_list)
 		if(player.client && player.ready)
 			players += player
+			if(player.client.prefs.be_special & QUIET_ROUND)
+				player.mind.quiet_round = 1
 
 	// Shuffling, the players list is now ping-independent!!!
 	// Goodbye antag dante
@@ -239,7 +241,7 @@
 
 	for(var/mob/new_player/player in players)
 		if(player.client && player.ready)
-			if(player.client.prefs.be_special & role)
+			if((player.client.prefs.be_special & role) && !(player.mind.quiet_round))
 				if(!jobban_isbanned(player, "Syndicate") && !jobban_isbanned(player, roletext)) //Nodrak/Carn: Antag Job-bans
 					candidates += player.mind				// Get a list of all the people who want to be the antagonist for this round
 
@@ -255,6 +257,10 @@
 				if(!(player.client.prefs.be_special & role)) // We don't have enough people who want to be antagonist, make a seperate list of people who don't want to be one
 					if(!jobban_isbanned(player, "Syndicate") && !jobban_isbanned(player, roletext)) //Nodrak/Carn: Antag Job-bans
 						drafted += player.mind
+						if(player.mind.quiet_round)
+							player << "<span class='userdanger'>There aren't enough antag volunteers, so your quiet round setting will not be considered!</span>"
+							player.mind.quiet_round = 0
+
 
 	if(restricted_jobs)
 		for(var/datum/mind/player in drafted)				// Remove people who can't be an antagonist

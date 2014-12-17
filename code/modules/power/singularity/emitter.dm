@@ -145,7 +145,7 @@
 			else // Any other
 				A.yo = -20
 				A.xo = 0
-		A.process()	//TODO: Carn: check this out
+		A.fire()
 
 
 /obj/machinery/power/emitter/attackby(obj/item/W, mob/user)
@@ -220,12 +220,11 @@
 			user << "<span class='danger'>Access denied.</span>"
 		return
 
+	..()
+	return
 
-	if(istype(W, /obj/item/weapon/card/emag) && !emagged)
+/obj/machinery/power/emitter/emag_act(mob/user as mob)
+	if(!emagged)
 		locked = 0
 		emagged = 1
 		user.visible_message("[user.name] emags the [src.name].","<span class='danger'>You short out the lock.</span>")
-		return
-
-	..()
-	return

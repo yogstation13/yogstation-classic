@@ -1,4 +1,3 @@
-
 /obj/item/weapon/reagent_containers/food/snacks/pie
 	name = "banana cream pie"
 	desc = "Just like back home, on clown planet! HONK!"
@@ -128,3 +127,12 @@
 	icon_state = "pumpkinpieslice"
 	trash = /obj/item/trash/plate
 	bitesize = 2
+
+/obj/item/weapon/reagent_containers/food/snacks/pie/rainbow
+	name = "rainbow pie"
+	desc = "After eating this, your life will be rainbows."
+	icon_state = "rainbowmeatpie"
+
+/obj/item/weapon/reagent_containers/food/snacks/pie/rainbow/throw_impact(atom/hit_atom)
+	..()
+	playsound(get_turf(hit_atom), 'sound/items/bikehorn.ogg', 100, 1)
