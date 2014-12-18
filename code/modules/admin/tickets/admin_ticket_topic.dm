@@ -98,12 +98,15 @@
 			message_admins("EXPLOIT \[admin_ticket\]: [M] attempted to resolve a ticket, the ref supplied was not a ticket.")
 			return
 
-		// This is limited to admins
-		if(!C.holder)
-			message_admins("EXPLOIT \[admin_ticket\]: [M] attempted to resolve a ticket, but the user is not an admin.")
+		// This is limited to admins or ticket owners
+		if(!C.holder && !compare_ckey(M, T.owner_ckey))
+			message_admins("EXPLOIT \[admin_ticket\]: [M] attempted to resolve a ticket, but the user is not an admin or the ticket owner.")
 			return
 
-		T.toggle_resolved()
+		if(C.holder || (compare_ckey(M, T.owner_ckey) && !T.resolved))
+			T.toggle_resolved()
+		else if(compare_ckey(M, T.owner_ckey) && T.resolved)
+			C << "<span class='ticket-status'>-- Your ticket is already closed. You cannot reopen it.</span>"
 
 		if(href_list["reloadlist"])
 			C.view_tickets()

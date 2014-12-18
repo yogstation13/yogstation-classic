@@ -265,6 +265,12 @@
 					<a href='?src=\ref[src];user=\ref[usr];action=administer_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-flag' /> Administer</a>
 				</p>"}
 			content += "</div>"
+		else
+			content += "<div class='user-bar'>"
+			content += {"<p style='margin-top: 5px;'>
+					<a href='?src=\ref[src];user=\ref[usr];action=resolve_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-check' /> Close ticket</a>
+				</p>"}
+			content += "</div>"
 
 	content += "<div id='messages'>"
 
