@@ -23,9 +23,17 @@
 	for(var/client/X in admins)
 		if(X.prefs.toggles & SOUND_ADMINHELP)
 			X << 'sound/effects/adminhelp.ogg'
-		X << "<span class='boldnotice'>[src] would like to <a href='?poster=\ref[src];admin=\ref[X];link=\ref[link];action=admin_link_approval;approved=1'>approve</a> | <a href='?poster=\ref[src];admin=\ref[X];link=\ref[link];action=admin_link_approval;approved=0'>deny</a> this link: [hyperlink]</span>"
+		X << "<span class='boldnotice'>[src] would like to <a href='?src=\ref[link];poster=\ref[src];admin=\ref[X];link=\ref[link];action=admin_link_approval;approved=1'>approve</a> | <a href='?src=\ref[link];poster=\ref[src];admin=\ref[X];link=\ref[link];action=admin_link_approval;approved=0'>deny</a> this link: [hyperlink]</span>"
 
-/client/Topic(href, href_list[])
+/var/global/list/link_approval_list = list()
+
+/datum/link_approval
+	var/mob/poster = null
+	var/link = null
+	var/approved = -1
+	var/mob/admin = null
+
+/datum/link_approval/Topic(href, href_list[])
 	..()
 
 	if(href_list["action"] == "admin_link_approval")
@@ -57,7 +65,7 @@
 		if(approved == "1")
 			link.approved = 1
 			link.admin = admin
-			bypass_ooc_approval = usr
+			poster.bypass_ooc_approval = 1
 			poster.ooc("Approved by [admin]: [link.link]")
 
 			log_admin("Link Approved: Poster=[poster] Admin=[admin] Link=[link.link]")
@@ -74,14 +82,6 @@
 			log_admin("Link Denied: Poster=[poster] Admin=[admin] Link=[link.link]")
 
 		link_approval_list -= link
-
-
-/var/global/list/link_approval_list = list()
-/datum/link_approval
-	var/mob/poster = null
-	var/link = null
-	var/approved = -1
-	var/mob/admin = null
 
 /datum/link_approval/New(var/hyperlink)
 	poster = usr
