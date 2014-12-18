@@ -140,3 +140,14 @@
 			if(!isobserver(usr))	C.admin_ghost()
 			sleep(2)
 			C.jumptomob(N)
+
+/client/Topic(href, href_list, hsrc)
+	..()
+
+	var/client/C = usr.client
+
+	if(href_list["action"] == "refresh_admin_ticket_list")
+		var/flag = href_list["flag"]
+		if(!flag)
+			flag = TICKET_FLAG_LIST_ALL
+		C.view_tickets_main(flag)
