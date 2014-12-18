@@ -7,12 +7,12 @@
 	slot_flags = SLOT_BELT
 	origin_tech = "programming=2"
 	var/obj/item/device/radio/radio
-	var/looking_for_personality = 0
+	var/looking_for_personality = 1
 	var/mob/living/silicon/pai/pai
 
 /obj/item/device/paicard/New()
 	..()
-	overlays += "pai-off"
+	setBaseOverlay()
 
 /obj/item/device/paicard/Destroy()
 	//Will stop people throwing friend pAIs into the singularity so they can respawn
@@ -112,6 +112,16 @@
 	src.overlays.Cut()
 	src.overlays += "pai-off"
 
+/obj/item/device/paicard/proc/setAlert()
+	src.overlays.Cut()
+	src.overlays += "pai-alert"
+
+/obj/item/device/paicard/proc/setBaseOverlay()
+	if (paiController != null && paiController.availableRecruitsCount() != 0)
+		src.alertUpdate()
+	else
+		src.overlays += "pai-off"
+
 /obj/item/device/paicard/proc/setEmotion(var/emotion)
 	if(pai)
 		src.overlays.Cut()
@@ -127,6 +137,7 @@
 			if(9) src.overlays += "pai-what"
 
 /obj/item/device/paicard/proc/alertUpdate()
+	src.setAlert()
 	visible_message("<span class ='info'>[src] flashes a message across its screen, \"Additional personalities available for download.\"", 3, "<span class='notice'>[src] bleeps electronically.</span>", 2)
 
 /obj/item/device/paicard/emp_act(severity)
