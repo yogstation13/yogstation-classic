@@ -112,7 +112,7 @@
 			else
 				target = get_view_link(user)
 
-			X << "<span class='ticket-text-received'>-- [get_view_link(user)] [key_name_params(user, 1, 1)] -> [target]: [log_item.text_admin]</span>"
+			X << "<span class='ticket-text-[(compare_ckey(X, user) || compare_ckey(X, handling_admin)) ? "received" : "sent"]'>-- [get_view_link(user)] [key_name_params(user, 1, 1)] -> [target]: [log_item.text_admin]</span>"
 
 	if(compare_ckey(log_item.user, owner_ckey))
 		log_admin("Ticket #[ticket_id]: [log_item.user] -> [handling_admin ? handling_admin : "Ticket"] - [log_item.text]")
