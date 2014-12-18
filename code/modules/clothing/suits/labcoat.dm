@@ -50,34 +50,34 @@
 	icon_state = "labcoat_tox"
 
 
-/obj/item/clothing/suit/labcoat/old
+/obj/item/clothing/suit/toggle/labcoat/old
 	name = "weathered labcoat"
 	desc = "A suit that protects against minor chemical spills. This one looks old."
 	icon = 'icons/obj/clothing/oldlabcoats.dmi'
 	icon_state = "labcoat"
 
-/obj/item/clothing/suit/labcoat/old/cmold
+/obj/item/clothing/suit/toggle/labcoat/old/cmold
 	name = "weathered chief medical officer's labcoat"
 	desc = "Bluer than the standard model. This one looks old"
 	icon_state = "labcoat_cmo"
 	item_state = "labcoat_cmo"
 
-/obj/item/clothing/suit/labcoat/old/genold
+/obj/item/clothing/suit/toggle/labcoat/old/genold
 	name = "weathered geneticist labcoat"
 	desc = "A suit that protects against minor chemical spills. Has blue stripes on the shoulder. This one looks old."
 	icon_state = "labcoat_gen"
 
-/obj/item/clothing/suit/labcoat/old/chemold
+/obj/item/clothing/suit/toggle/labcoat/old/chemold
 	name = "weathered chemist labcoat"
 	desc = "A suit that protects against minor chemical spills. Has orange stripes on the shoulder. This one looks old."
 	icon_state = "labcoat_chem"
 
-/obj/item/clothing/suit/labcoat/old/virold
+/obj/item/clothing/suit/toggle/labcoat/old/virold
 	name = "weathered virologist labcoat"
 	desc = "A suit that protects against minor chemical spills. Has a green stripe on the shoulder.  This one looks old."
 	icon_state = "labcoat_vir"
 
-/obj/item/clothing/suit/labcoat/old/sciold
+/obj/item/clothing/suit/toggle/labcoat/old/sciold
 	name = "weathered scientist labcoat"
 	desc = "A suit that protects against minor chemical spills. Has a purple stripe on the shoulder. This one looks old."
 	icon_state = "labcoat_tox"

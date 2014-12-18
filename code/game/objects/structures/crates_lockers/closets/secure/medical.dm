@@ -66,7 +66,7 @@
 	else
 		new /obj/item/weapon/storage/backpack/satchel_med(src)
 	new /obj/item/clothing/under/rank/medical(src)
-	new /obj/item/clothing/suit/labcoat/old(src)
+	new /obj/item/clothing/suit/toggle/labcoat/old(src)
 	new /obj/item/clothing/suit/toggle/labcoat(src)
 	new /obj/item/clothing/shoes/sneakers/white(src)
 	new /obj/item/device/radio/headset/headset_med(src)
@@ -121,7 +121,7 @@
 		new /obj/item/weapon/storage/backpack/satchel_med(src)
 	new /obj/item/clothing/suit/bio_suit/cmo(src)
 	new /obj/item/clothing/head/bio_hood/cmo(src)
-	new /obj/item/clothing/suit/labcoat/old/cmold(src)
+	new /obj/item/clothing/suit/toggle/labcoat/old/cmold(src)
 	new /obj/item/clothing/suit/toggle/labcoat/cmo(src)
 	new /obj/item/clothing/under/rank/chief_medical_officer(src)
 	new /obj/item/clothing/shoes/sneakers/brown	(src)
