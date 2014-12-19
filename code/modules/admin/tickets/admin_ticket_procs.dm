@@ -112,7 +112,7 @@
 			else
 				target = get_view_link(user)
 
-			X << "<span class='ticket-text-received'>-- [get_view_link(user)] [key_name_params(user, 1, 1)] -> [target]: [log_item.text_admin]</span>"
+			X << "<span class='ticket-text-[(compare_ckey(X, user) || compare_ckey(X, handling_admin)) ? "received" : "sent"]'>-- [get_view_link(user)] [key_name_params(user, 1, 1)] -> [target]: [log_item.text_admin]</span>"
 
 	if(compare_ckey(log_item.user, owner_ckey))
 		log_admin("Ticket #[ticket_id]: [log_item.user] -> [handling_admin ? handling_admin : "Ticket"] - [log_item.text]")
@@ -263,6 +263,12 @@
 					<a href='?src=\ref[src];user=\ref[usr];action=monitor_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
 					<a href='?src=\ref[src];user=\ref[usr];action=resolve_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
 					<a href='?src=\ref[src];user=\ref[usr];action=administer_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-flag' /> Administer</a>
+				</p>"}
+			content += "</div>"
+		else
+			content += "<div class='user-bar'>"
+			content += {"<p style='margin-top: 5px;'>
+					<a href='?src=\ref[src];user=\ref[usr];action=resolve_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-check' /> Close ticket</a>
 				</p>"}
 			content += "</div>"
 
