@@ -41,21 +41,43 @@
 	set name = "Adminlisttickets"
 	set category = "Admin"
 
+	view_tickets_main(TICKET_FLAG_LIST_ALL)
+
+/client/proc/view_tickets_main(var/flag)
+	flag = text2num(flag)
+	if(!flag)
+		flag = TICKET_FLAG_LIST_ALL
+
 	var/content = ""
 
 	if(holder)
+		content += {"<p class='info-bar'>
+			<a href='?user=\ref[src];action=refresh_admin_ticket_list;flag=[flag]'>Refresh List</a>
+			<a href='?user=\ref[src];action=refresh_admin_ticket_list;flag=[(flag | TICKET_FLAG_LIST_ALL) & ~TICKET_FLAG_LIST_MINE]'>All Tickets</a>
+			<a href='?user=\ref[src];action=refresh_admin_ticket_list;flag=[(flag | TICKET_FLAG_LIST_MINE) & ~TICKET_FLAG_LIST_ALL]'>My Tickets</a>
+		</p>"}
+
+		content += {"<p class='info-bar'>
+			Filtering:<b>
+			[(flag & TICKET_FLAG_LIST_ALL) ? " All" : ""]
+			[(flag & TICKET_FLAG_LIST_MINE) ? " Mine" : ""]
+		</b></p>"}
+
 		var/list/resolved = new /list()
 		var/list/unresolved = new /list()
 
 		for(var/datum/admin_ticket/T in tickets_list)
+			if(flag & TICKET_FLAG_LIST_MINE)
+				if(!compare_ckey(src, T.owner_ckey) && !compare_ckey(src, T.handling_admin))
+					continue
+
 			if(T.resolved)
 				resolved.Add(T)
 			else
 				unresolved.Add(T)
 
 		if(unresolved.len == 0 && resolved.len == 0)
-			usr << "<span class='ticket-status'>There are no tickets in the system</span>"
-			return
+			content += "<p class='info-bar emboldened'>There are no tickets matching your filter(s)</p>"
 
 		if(unresolved.len > 0)
 			content += "<p class='info-bar unresolved emboldened large-font'>Unresolved Tickets ([unresolved.len]/[tickets_list.len]):</p>"
@@ -128,9 +150,10 @@
 						<a href='?src=\ref[T];user=\ref[src];action=resolve_admin_ticket;ticket=\ref[T];reloadlist=1'><img width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
 						</p>"}
 	else
+		content += "<p class='info-bar'><a href='?user=\ref[src];action=refresh_admin_ticket_list;flag=[flag]'>Refresh List</a></p>"
+
 		if(tickets_list.len == 0)
-			usr << "<span class='ticket-status'>There are no tickets in the system</span>"
-			return
+			content += "<p class='info-bar emboldened'>There are no tickets in the system</p>"
 		else
 			content += "<p class='info-bar emboldened'>Your tickets:</p>"
 			for(var/datum/admin_ticket/T in tickets_list)
