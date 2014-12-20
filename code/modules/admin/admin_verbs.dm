@@ -16,6 +16,7 @@ var/list/admin_verbs_default = list(
 	/client/proc/reload_admins,
 	/client/proc/adminwhotoggle,
 	/client/proc/adminwho,
+	/client/proc/donor_ooc_admin,
 	/client/proc/reestablish_db_connection,/*reattempt a connection to the database*/
 	/client/proc/cmd_admin_pm_context,	/*right-click adminPM interface*/
 	/client/proc/cmd_admin_pm_panel,		/*admin-pm list*/
@@ -64,6 +65,9 @@ var/list/admin_verbs_admin = list(
 	/client/proc/cmd_admin_direct_narrate,	/*send text directly to a player with no padding. Useful for narratives and fluff-text*/
 	/client/proc/cmd_admin_world_narrate,	/*sends text to all players with no padding*/
 	/client/proc/cmd_admin_create_faction_announcements,
+	/client/proc/list_pretty_filters,
+	/client/proc/test_pretty_filters,
+	/client/proc/add_pretty_filter,
 	/client/proc/check_words,			/*displays cult-words*/
 	/client/proc/reset_all_tcs			/*resets all telecomms scripts*/
 	)
@@ -194,6 +198,9 @@ var/list/admin_verbs_hideable = list(
 	/client/proc/cmd_debug_mob_lists,
 	/client/proc/cmd_debug_del_all,
 	/client/proc/enable_debug_verbs,
+	/client/proc/list_pretty_filters,
+	/client/proc/test_pretty_filters,
+	/client/proc/add_pretty_filter,
 	/proc/possess,
 	/proc/release,
 	/client/proc/reload_admins,

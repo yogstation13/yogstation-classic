@@ -80,9 +80,9 @@
 /datum/recipe/bread/rainbow
 	reagents = list("flour" = 15)
 	items = list(
-		/obj/item/weapon/reagent_containers/food/snacks/meat/rainbow,
-		/obj/item/weapon/reagent_containers/food/snacks/meat/rainbow,
-		/obj/item/weapon/reagent_containers/food/snacks/meat/rainbow,
+		/obj/item/weapon/reagent_containers/food/snacks/rainbowmeat,
+		/obj/item/weapon/reagent_containers/food/snacks/rainbowmeat,
+		/obj/item/weapon/reagent_containers/food/snacks/rainbowmeat,
 		/obj/item/weapon/reagent_containers/food/snacks/cheesewedge,
 		/obj/item/weapon/reagent_containers/food/snacks/cheesewedge,
 		/obj/item/weapon/reagent_containers/food/snacks/cheesewedge,

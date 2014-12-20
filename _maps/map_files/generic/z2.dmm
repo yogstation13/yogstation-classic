@@ -896,7 +896,7 @@
 "rl" = (/obj/machinery/status_display{density = 0; layer = 4; pixel_x = 32; pixel_y = 0},/obj/structure/stool/bed/chair,/mob/living/simple_animal/hostile/honkbot,/turf/simulated/shuttle/floor,/area/centcom/evac{name = "\improper Centcom Pod Recovery Vessel"})
 "rm" = (/turf/space,/turf/simulated/shuttle/wall{icon_state = "swall_f5"; dir = 2},/area/centcom/evac{name = "\improper Centcom Pod Recovery Vessel"})
 "rn" = (/turf/space,/turf/simulated/shuttle/wall{icon_state = "swall_f9"; dir = 2},/area/centcom/evac{name = "\improper Centcom Pod Recovery Vessel"})
-"ro" = (/obj/structure/morgue,/turf/simulated/shuttle/floor,/area/centcom/evac{name = "\improper Centcom Pod Recovery Vessel"})
+"ro" = (/obj/structure/bodycontainer/morgue,/turf/simulated/shuttle/floor,/area/centcom/evac{name = "\improper Centcom Pod Recovery Vessel"})
 "rp" = (/obj/structure/table/reinforced,/obj/item/weapon/paper_bin,/turf/unsimulated/floor{dir = 1; icon_state = "green"},/area/centcom/control)
 "rq" = (/obj/structure/table/reinforced,/turf/unsimulated/floor{icon_state = "green"; dir = 5},/area/centcom/control)
 "rr" = (/obj/structure/table/reinforced,/obj/item/weapon/pen,/turf/unsimulated/floor{dir = 1; icon_state = "green"},/area/centcom/control)
