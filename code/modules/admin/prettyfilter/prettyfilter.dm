@@ -30,7 +30,11 @@
 	//replacement follows the first "="
 	var/replacement = ""
 	if(parts.len >= 2)
-		replacement = parts[2]
+		var/index = 2
+		for(index = 2; index <= parts.len; index++)
+			replacement += parts[index]
+			if(index < parts.len)
+				replacement += "="
 
 	if(!replacement)
 		return 0
@@ -47,7 +51,13 @@
 	for(var/line in pretty_filter_items)
 		var/list/parts = text2list(line, "=")
 		var/pattern = parts[1]
-		var/replacement = parts[2]
+		var/replacement = ""
+		if(parts.len >= 2)
+			var/index = 2
+			for(index = 2; index <= parts.len; index++)
+				replacement += parts[index]
+				if(index < parts.len)
+					replacement += "="
 
 		usr << "&nbsp;&nbsp;&nbsp;<font color='#994400'><b>[pattern]</b></font> -> <font color='#004499'><b>[replacement]</b></font>"
 	usr << "<font size='3'><b>End of list</b></font>"
@@ -74,12 +84,19 @@
 	for(var/line in pretty_filter_items)
 		var/list/parts = text2list(line, "=")
 		var/pattern = parts[1]
-		var/replacement = parts[2]
+		var/replacement = ""
+		if(parts.len >= 2)
+			var/index = 2
+			for(index = 2; index <= parts.len; index++)
+				replacement += parts[index]
+				if(index < parts.len)
+					replacement += "="
 
-		var/regex/R = new("/[pattern]/[replacement]/i")
+		var/regex/R = new("~[pattern]~[replacement]~i")
 		var/newtxt = R.Replace(text)
 		while(newtxt)
 			text = newtxt
 			newtxt = R.ReplaceNext(text)
 
 	return text
+

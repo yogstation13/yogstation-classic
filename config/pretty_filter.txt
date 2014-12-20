@@ -17,3 +17,5 @@
 #	This would make any word with combinations of "f" followed by "u" be replaced with fun you. So "ffffffffuuuuuuuuuuu" becomes "fun you".
 
 fuck=duck
+wiki:([a-zA-Z0-9-_#+]+)=<a href="http://wiki.yogstation.com/index.php?title=$1" title="Yogwiki article for: $1">$1</a>
+search:([a-zA-Z0-9-_#+]+)=<a href="http://wiki.yogstation.com/index.php?search=$1" title="Yogwiki search for: $1">$1</a>
