@@ -3,6 +3,10 @@
 	set category = "Admin"
 	set name = "Adminhelp"
 
+	if(!ticket_title)
+		usr << "<span class='ticket-status'>You did not supply a message for your ticket. Ignoring your request.</span>"
+		return
+
 	var/datum/admin_ticket/found_ticket = null
 	for(var/datum/admin_ticket/T in tickets_list)
 		if(compare_ckey(T.owner_ckey, src) && !T.resolved)
@@ -165,6 +169,6 @@
 
 	var/html = get_html("Admin Tickets", "", "", content)
 
-	usr << browse(null, "window=ViewTickets;size=700x500")
-	usr << browse(html, "window=ViewTickets;size=700x500")
+	usr << browse(null, "window=ViewTickets;size=700x700")
+	usr << browse(html, "window=ViewTickets;size=700x700")
 
