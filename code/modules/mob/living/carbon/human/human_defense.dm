@@ -119,7 +119,20 @@ emp_act
 			return 1
 	return 0
 
+//Corgibat starts here
+	if(istype(I,/obj/item/weapon/corgibat))
+		var/obj/item/weapon/corgibat/bat = I
+		if(health <= 90&&bat.enabled)
+			var/mob/C = new /mob/living/simple_animal/corgi/(loc)
+			switch(gender)
+				if(MALE)
 
+				if(FEMALE)
+					C.icon_state = "lisa"
+			C.ckey = ckey
+			C.name = name
+			gib()
+//Corgibat ends here
 /mob/living/carbon/human/attacked_by(var/obj/item/I, var/mob/living/user, var/def_zone)
 	if(!I || !user)	return 0
 

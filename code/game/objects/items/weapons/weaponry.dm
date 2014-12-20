@@ -127,3 +127,27 @@ obj/item/weapon/wirerod/attackby(var/obj/item/I, mob/user as mob)
 		user << "<span class='notice'>You fasten the wirecutters to the top of the rod with the cable, prongs outward.</span>"
 		qdel(I)
 		qdel(src)
+
+/obj/item/weapon/corgibat
+	name = "tele-scopic corgi baton"
+	desc = "Yap"
+	icon_state = "cbaton_0"
+	item_state = "cbaton_0"
+	w_class = 3.0
+	force = 15
+	throw_speed = 3
+	throw_range = 7
+	throwforce = 1
+	attack_verb = list("smashed", "beaten", "slammed", "smacked", "striked", "battered", "bonked")
+	hitsound = 'sound/weapons/genhit3.ogg'
+	var/enabled = 0
+
+/obj/item/weapon/corgibat/attack_self(mob/user as mob)
+	enabled = 1 - enabled
+	force = 15 * (1-enabled)
+	item_state = "cbaton_[enabled]"
+	icon_state = "cbaton_[enabled]"
+	if(enabled)
+		attack_verb = list("yapped", "corgified")
+	else
+		attack_verb = list("smashed", "beaten", "slammed", "smacked", "striked", "battered", "bonked")
