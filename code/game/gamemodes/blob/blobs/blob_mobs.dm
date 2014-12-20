@@ -130,7 +130,7 @@
 	minbodytemp = 0
 	maxbodytemp = 360
 	force_threshold = 10
-	environment_smash = 3
+	environment_smash = 2
 	mob_size = 2
 
 

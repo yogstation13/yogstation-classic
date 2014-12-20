@@ -1,3 +1,4 @@
+/client/var/bypass_ooc_approval = 0
 /client/verb/ooc(msg as text)
 	set name = "OOC" //Gave this shit a shorter name so you only have to time out "ooc" rather than "ooc message" to use it --NeoFite
 	set category = "OOC"
@@ -40,6 +41,8 @@
 			message_admins("[key_name_admin(src)] has attempted to advertise in OOC: [msg]")
 			return
 
+	msg = pretty_filter(msg)
+
 	log_ooc("[mob.name]/[key] : [msg]")
 
 	var/keyname = key
@@ -50,6 +53,18 @@
 		if(prefs.unlock_content & 2)
 			keyname += "<img style='width:9px;height:9px;' class=icon src=\ref['icons/member_content.dmi'] iconstate=yogdon>"
 		keyname += "[key]</font>"
+
+	if(!holder && !bypass_ooc_approval)
+		var/regex/R = new("/(((https?):\\/\\/)?\[^\\s/$.?#\].\[^\\s\]*)/iS")
+		var/count = 0
+		while(R.FindNext(msg))
+			if(count < 1)
+				var/hyperlink = copytext(msg,R.match,R.index)
+				admin_link_approval(hyperlink)
+				count++
+			msg = "[copytext(msg,1,R.match)]<b>(Link removed)</b>[copytext(msg,R.index)]"
+	else
+		bypass_ooc_approval = 0
 
 	for(var/client/C in clients)
 		if(C.prefs.toggles & CHAT_OOC)
