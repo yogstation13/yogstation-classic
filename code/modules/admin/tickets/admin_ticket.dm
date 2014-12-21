@@ -2,6 +2,9 @@
 /var/list/tickets_list = list()
 /var/ticket_count = 0;
 
+/client/var/ticket_list_view_width = 700
+/client/var/ticket_list_view_height = 700
+
 /datum/ticket_log
 	var/datum/admin_ticket/parent
 	var/gametime
