@@ -77,7 +77,7 @@
 
 	log += new /datum/ticket_log(src, usr, title, 0)
 
-	var/msg = "<span class='ticket-text-received'><b>[get_view_link(usr)] created: [key_name_params(owner, 1, 1, "new=1", src)]: [admin_title]</span>"
+	var/msg = "<span class='ticket-text-received'><b>[get_view_link(usr)] created: [key_name_params(owner, 1, 1, "new=1", src)]: [admin_title] (<a href='?_src_=holder;adminmoreinfo=\ref[owner.mob]'>?</a> | <a href='?_src_=holder;adminplayerobservejump=\ref[owner.mob]'>JMP</a>)</span>"
 
 	var/tellAdmins = 1
 	if(compare_ckey(owner, ntarget))
