@@ -549,7 +549,7 @@ var/list/ai_list = list()
 				cleared = 1
 				L -= I
 	if (cleared)
-		queueAlarm(text("--- [] alarm in [] has been cleared.", class, A ? A.name : "nowhere"), class, 0)
+		queueAlarm("--- [class] alarm in [A.name] has been cleared.", class, 0)
 		if (viewalerts) ai_alerts()
 	return !cleared
 
