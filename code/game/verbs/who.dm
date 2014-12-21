@@ -61,10 +61,8 @@
 			for(var/client/C in clients)
 				if(!C.holder)
 					if(!config.admin_who_blocked)
-						//if(!(/client/proc/adminwho in C.verbs))
 						C.verbs += /client/proc/adminwho
 					else
-						//if(/client/proc/adminwho in C.verbs)
 						C.verbs -= /client/proc/adminwho
 
 /client/proc/adminwho()
