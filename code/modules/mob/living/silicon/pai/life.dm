@@ -18,11 +18,3 @@
 		stat = CONSCIOUS
 		return
 	health = maxHealth - getBruteLoss() - getFireLoss()
-
-/mob/living/silicon/pai/proc/follow_pai()
-	while(card)
-		loc = get_turf(card)
-		if(paired && (loc.z != paired.z))
-			unpair(0) //Limit remote control to same z-level
-		sleep(5)
-	qdel(src) //if there's no pAI we shouldn't exist
