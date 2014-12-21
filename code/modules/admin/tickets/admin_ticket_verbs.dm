@@ -70,7 +70,10 @@
 		var/list/resolved = new /list()
 		var/list/unresolved = new /list()
 
-		for(var/datum/admin_ticket/T in tickets_list)
+		for(var/i = tickets_list.len, i >= 1, i--)
+		//for(var/datum/admin_ticket/T in tickets_list)
+			var/datum/admin_ticket/T = tickets_list[i]
+
 			if(flag & TICKET_FLAG_LIST_MINE)
 				if(!compare_ckey(src, T.owner_ckey) && !compare_ckey(src, T.handling_admin))
 					continue
