@@ -451,7 +451,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 
 		var/what
 
-		switch(input("Exactly who are you?") in list("Syndicate", "Wizard's Federation", "Static", "Clown Empire", "cult of Nar-sie"))
+		switch(input("Exactly who are you?") in list("Syndicate", "Wizard's Federation", "Static", "Clown Empire", "Cult of Nar-sie"))
 			if("Syndicate")
 				what += "Syndicate"
 
