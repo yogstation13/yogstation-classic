@@ -16,10 +16,14 @@ var/list/admin_verbs_default = list(
 	/client/proc/reload_admins,
 	/client/proc/adminwhotoggle,
 	/client/proc/adminwho,
+	/client/proc/donor_ooc_admin,
 	/client/proc/reestablish_db_connection,/*reattempt a connection to the database*/
 	/client/proc/cmd_admin_pm_context,	/*right-click adminPM interface*/
 	/client/proc/cmd_admin_pm_panel,		/*admin-pm list*/
-	/client/proc/reload_donators
+	/client/proc/view_tickets,
+	/client/proc/toggleticketlistenall,
+	/client/proc/reload_donators,
+	/client/proc/stop_sounds
 	)
 var/list/admin_verbs_admin = list(
 	/client/proc/player_panel,			/*shows an interface for all players, with links to various panels (old style)*/
@@ -60,8 +64,12 @@ var/list/admin_verbs_admin = list(
 	/client/proc/admin_cancel_shuttle,	/*allows us to cancel the emergency shuttle, sending it back to centcom*/
 	/client/proc/cmd_admin_direct_narrate,	/*send text directly to a player with no padding. Useful for narratives and fluff-text*/
 	/client/proc/cmd_admin_world_narrate,	/*sends text to all players with no padding*/
-	/client/proc/cmd_admin_create_centcom_report,
-	/client/proc/check_words			/*displays cult-words*/
+	/client/proc/cmd_admin_create_faction_announcements,
+	/client/proc/list_pretty_filters,
+	/client/proc/test_pretty_filters,
+	/client/proc/add_pretty_filter,
+	/client/proc/check_words,			/*displays cult-words*/
+	/client/proc/reset_all_tcs			/*resets all telecomms scripts*/
 	)
 var/list/admin_verbs_ban = list(
 	/client/proc/unban_panel,
@@ -72,7 +80,6 @@ var/list/admin_verbs_ban = list(
 var/list/admin_verbs_sounds = list(
 	/client/proc/play_local_sound,
 	/client/proc/play_sound,
-	/client/proc/stop_sounds
 	)
 var/list/admin_verbs_fun = list(
 	/client/proc/cmd_admin_dress,
@@ -166,7 +173,7 @@ var/list/admin_verbs_hideable = list(
 	/client/proc/send_space_ninja,
 	/client/proc/cmd_admin_add_freeform_ai_law,
 	/client/proc/cmd_admin_add_random_ai_law,
-	/client/proc/cmd_admin_create_centcom_report,
+	/client/proc/cmd_admin_create_faction_announcements,
 	/client/proc/object_say,
 	/client/proc/toggle_random_events,
 	/client/proc/cmd_admin_add_random_ai_law,
@@ -191,9 +198,13 @@ var/list/admin_verbs_hideable = list(
 	/client/proc/cmd_debug_mob_lists,
 	/client/proc/cmd_debug_del_all,
 	/client/proc/enable_debug_verbs,
+	/client/proc/list_pretty_filters,
+	/client/proc/test_pretty_filters,
+	/client/proc/add_pretty_filter,
 	/proc/possess,
 	/proc/release,
-	/client/proc/reload_admins
+	/client/proc/reload_admins,
+	/client/proc/reset_all_tcs
 	)
 
 /client/proc/add_admin_verbs()
@@ -250,7 +261,6 @@ var/list/admin_verbs_hideable = list(
 		/client/proc/startSinglo,
 		/client/proc/ticklag,
 		/client/proc/cmd_admin_grantfullaccess,
-		/client/proc/kaboom,
 		/client/proc/cmd_admin_areatest,
 		/mob/dead/observer/proc/toggleninjahud
 		)
@@ -423,10 +433,18 @@ var/list/admin_verbs_hideable = list(
 		if("Big Bomb")
 			explosion(epicenter, 3, 5, 7, 5)
 		if("Custom Bomb")
-			var/devastation_range = input("Devastation range (in tiles):") as num
-			var/heavy_impact_range = input("Heavy impact range (in tiles):") as num
-			var/light_impact_range = input("Light impact range (in tiles):") as num
-			var/flash_range = input("Flash range (in tiles):") as num
+			var/devastation_range = input("Devastation range (in tiles):") as null|num
+			if(devastation_range == null)
+				return
+			var/heavy_impact_range = input("Heavy impact range (in tiles):") as null|num
+			if(heavy_impact_range == null)
+				return
+			var/light_impact_range = input("Light impact range (in tiles):") as null|num
+			if(light_impact_range == null)
+				return
+			var/flash_range = input("Flash range (in tiles):") as null|num
+			if(flash_range == null)
+				return
 			explosion(epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range)
 	message_admins("<span class='adminnotice'>[ckey] creating an admin explosion at [epicenter.loc].</span>")
 	feedback_add_details("admin_verb","DB") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
@@ -455,7 +473,7 @@ var/list/admin_verbs_hideable = list(
 	set desc = "Gives a Disease to a mob."
 	var/datum/disease/D = input("Choose the disease to give to that guy", "ACHOO") as null|anything in diseases
 	if(!D) return
-	T.contract_disease(new D, 1)
+	T.ForceContractDisease(new D)
 	feedback_add_details("admin_verb","GD") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 	log_admin("[key_name(usr)] gave [key_name(T)] the disease [D].")
 	message_admins("<span class='adminnotice'>[key_name_admin(usr)] gave [key_name(T)] the disease [D].</span>")

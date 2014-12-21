@@ -47,7 +47,40 @@
 
 	//Admin PM
 	if(href_list["priv_msg"])
+		if(href_list["ticket"])
+			var/datum/admin_ticket/T = locate(href_list["ticket"])
+
+			if(holder && T.resolved)
+				var/found_ticket = 0
+				for(var/datum/admin_ticket/T2 in tickets_list)
+					if(!T.resolved && compare_ckey(T.owner_ckey, T2.owner_ckey))
+						found_ticket = 1
+
+				if(!found_ticket)
+					if(alert(usr, "No open ticket exists, would you like to make a new one?", "Tickets", "New ticket", "Cancel") == "Cancel")
+						return
+			else if(!holder && T.resolved)
+				usr << "<span class='boldnotice'>Your ticket was closed. Only admins can add finishing comments to it.</span>"
+				return
+
+			if(get_ckey(usr) == get_ckey(T.owner))
+				T.owner.cmd_admin_pm(get_ckey(T.handling_admin),null)
+			else if(get_ckey(usr) == get_ckey(T.handling_admin))
+				T.handling_admin.cmd_admin_pm(get_ckey(T.owner),null)
+			else
+				cmd_admin_pm(get_ckey(T.owner),null)
+			return
+
+		if(href_list["new"])
+			var/datum/admin_ticket/T = locate(href_list["ticket"])
+			if(T.handling_admin && !compare_ckey(T.handling_admin, usr))
+				usr << "Using this PM-link for this ticket would usually be the first response to a ticket. However, an admin has already responded to this ticket. This link is now disabled, to ensure that no additional tickets are created for the same problem. You can create a new ticket by PMing the user any other way."
+				return
+			else
+				T.pm_started_user = get_client(usr)
+
 		cmd_admin_pm(href_list["priv_msg"],null)
+
 		return
 
 	if(prefs.afreeze && !holder)
@@ -118,6 +151,17 @@ var/next_external_rsc = 0
 	if(byond_version < MIN_CLIENT_VERSION)		//Out of date client.
 		return null
 
+	spawn(30)
+		for(var/datum/admin_ticket/T in tickets_list)
+			if(compare_ckey(T.owner_ckey, src) && !T.resolved)
+				T.owner = src
+				T.add_log(new /datum/ticket_log(T, src, "¤ Connected ¤", 1), src)
+				break
+			if(compare_ckey(T.handling_admin, src) && !T.resolved)
+				T.handling_admin = src
+				T.add_log(new /datum/ticket_log(T, src, "¤ Connected ¤", 1), src)
+				break
+
 #if (PRELOAD_RSC == 0)
 	if(external_rsc_urls && external_rsc_urls.len)
 		next_external_rsc = Wrap(next_external_rsc+1, 1, external_rsc_urls.len+1)
@@ -142,8 +186,12 @@ var/next_external_rsc = 0
 	prefs.last_id = computer_id			//these are gonna be used for banning
 	if(ckey in donators)
 		prefs.unlock_content |= 2
+		add_donor_verbs()
 	else
-		prefs.unlock_content &= 1
+		prefs.unlock_content &= ~2
+		if(prefs.be_special & QUIET_ROUND)
+			prefs.be_special &= ~QUIET_ROUND
+			prefs.save_preferences()
 
 	set_client_age_from_db()
 
@@ -168,6 +216,7 @@ var/next_external_rsc = 0
 			message_admins("Admin with +SERVER logged in. Restart vote disallowed.")
 			config.allow_vote_restart = 0
 		add_admin_verbs()
+		add_donor_verbs()
 		admin_memo_show()
 		if((global.comms_key == "default_pwd" || length(global.comms_key) <= 6) && global.comms_allowed) //It's the default value or less than 6 characters long, but it somehow didn't disable comms.
 			src << "<span class='danger'>The server's API key is either too short or is the default value! Consider changing it immediately!</span>"
@@ -181,11 +230,14 @@ var/next_external_rsc = 0
 	if(holder || !config.admin_who_blocked)
 		verbs += /client/proc/adminwho
 
-
 	//////////////
 	//DISCONNECT//
 	//////////////
 /client/Del()
+	for(var/datum/admin_ticket/T in tickets_list)
+		if(compare_ckey(T.owner_ckey, usr) && !T.resolved)
+			T.add_log(new /datum/ticket_log(T, src, "¤ Disconnected ¤", 1))
+
 	if(holder)
 		holder.owner = null
 		admins -= src
@@ -306,6 +358,7 @@ proc/sync_logout_with_db(number)
 		'icons/pda_icons/pda_blank.png',
 		'icons/pda_icons/pda_boom.png',
 		'icons/pda_icons/pda_bucket.png',
+		'icons/pda_icons/pda_chatroom.png',
 		'icons/pda_icons/pda_medbot.png',
 		'icons/pda_icons/pda_floorbot.png',
 		'icons/pda_icons/pda_cleanbot.png',

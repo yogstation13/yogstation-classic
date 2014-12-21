@@ -187,8 +187,13 @@
 */
 /mob/proc/MiddleClickOn(var/atom/A)
 	return
+
 /mob/living/carbon/MiddleClickOn(var/atom/A)
-	swap_hand()
+	if(!src.stat && src.mind && src.mind.changeling && src.mind.changeling.chosen_sting && (istype(A, /mob/living/carbon)) && (A != src))
+		next_click = world.time + 5
+		mind.changeling.chosen_sting.try_to_sting(src, A)
+	else
+		swap_hand()
 
 // In case of use break glass
 /*
@@ -230,6 +235,13 @@
 /mob/proc/AltClickOn(var/atom/A)
 	A.AltClick(src)
 	return
+
+/mob/living/carbon/AltClickOn(var/atom/A)
+	if(!src.stat && src.mind && src.mind.changeling && src.mind.changeling.chosen_sting && (istype(A, /mob/living/carbon)) && (A != src))
+		next_click = world.time + 5
+		mind.changeling.chosen_sting.try_to_sting(src, A)
+	else
+		..()
 
 /atom/proc/AltClick(var/mob/user)
 	var/turf/T = get_turf(src)
@@ -280,8 +292,7 @@
 	LE.current = T
 	LE.yo = U.y - T.y
 	LE.xo = U.x - T.x
-	spawn( 1 )
-		LE.process()
+	LE.fire()
 
 /mob/living/carbon/human/LaserEyes()
 	if(nutrition>0)

@@ -3,7 +3,6 @@
 #Ignore everything in data subdirectories
 /data/**/*
 /data/*
-/data/*
 /_maps/map_files/backup
 
 #Ignore generated files in data
@@ -12,6 +11,9 @@
 /data/job_full.ban
 /data/job_fullnew.bdb
 /data/memo.sav
+/data/mode.txt
+/data/logs
+/data/investigate
 
 #Do not store automatic map backups
 /_maps/map_files/backup

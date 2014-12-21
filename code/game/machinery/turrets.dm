@@ -235,8 +235,7 @@
 	A.current = T
 	A.yo = U.y - T.y
 	A.xo = U.x - T.x
-	spawn( 0 )
-		A.process()
+	A.fire()
 	return
 
 
@@ -292,7 +291,7 @@
 			power_change()
 	..()
 
-/obj/machinery/turret/ex_act(severity)
+/obj/machinery/turret/ex_act(severity, target)
 	if(severity < 3)
 		src.die()
 
@@ -311,6 +310,7 @@
 
 /obj/machinery/turret/attack_animal(mob/living/simple_animal/M as mob)
 	M.changeNext_move(CLICK_CD_MELEE)
+	M.do_attack_animation(src)
 	if(M.melee_damage_upper == 0)	return
 	if(!(stat & BROKEN))
 		visible_message("<span class='userdanger'>[M] [M.attacktext] [src]!</span>")
@@ -328,9 +328,10 @@
 
 /obj/machinery/turret/attack_alien(mob/living/carbon/alien/humanoid/M as mob)
 	M.changeNext_move(CLICK_CD_MELEE)
+	M.do_attack_animation(src)
 	if(!(stat & BROKEN))
 		playsound(src.loc, 'sound/weapons/slash.ogg', 25, 1, -1)
-		visible_message("<span class='userdanger'>[] has slashed at []!</span>", M, src)
+		visible_message("<span class='danger'>[M] has slashed at [src]!</span>")
 		src.health -= 15
 		if (src.health <= 0)
 			src.die()
@@ -360,7 +361,7 @@
 	..()
 	take_damage(0) //check your health
 
-/obj/machinery/gun_turret/ex_act(severity)
+/obj/machinery/gun_turret/ex_act(severity, target)
 	switch(severity)
 		if(1)
 			die()
@@ -411,9 +412,10 @@
 	return attack_hand(user)
 
 
-/obj/machinery/gun_turret/attack_alien(mob/user as mob)
+/obj/machinery/gun_turret/attack_alien(mob/living/user as mob)
 	user.changeNext_move(CLICK_CD_MELEE)
-	user.visible_message("[user] slashes at [src]", "You slash at [src]")
+	user.do_attack_animation(src)
+	user.visible_message("<span class='danger'>[user] slashes at [src]</span>", "<span class='danger'>You slash at [src]</span>")
 	take_damage(15)
 	return
 
@@ -482,8 +484,7 @@
 	A.current = curloc
 	A.yo = targloc.y - curloc.y
 	A.xo = targloc.x - curloc.x
-	spawn(0)
-		A.process()
+	A.fire()
 	return
 
 
@@ -527,15 +528,6 @@
 	if (istype(user, /mob/living/silicon))
 		return src.attack_hand(user)
 
-	if (istype(W, /obj/item/weapon/card/emag) && !emagged)
-		user << "<span class='danger'>You short out the turret controls' access analysis module.</span>"
-		emagged = 1
-		locked = 0
-		if(user.machine==src)
-			src.attack_hand(user)
-
-		return
-
 	else if( get_dist(src, user) == 0 )		// trying to unlock the interface
 		if (src.allowed(usr))
 			if(emagged)
@@ -553,6 +545,14 @@
 					src.attack_hand(user)
 		else
 			user << "<span class='warning'>Access denied.</span>"
+
+/obj/machinery/areaturretid/emag_act(mob/user as mob)
+	if(!emagged)
+		user << "<span class='danger'>You short out the turret controls' access analysis module.</span>"
+		emagged = 1
+		locked = 0
+		if(user.machine==src)
+			src.attack_hand(user)
 
 /obj/machinery/areaturretid/attack_ai(mob/user as mob)
 	if(!ailock)

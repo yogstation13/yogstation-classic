@@ -74,6 +74,9 @@ var/global/list/autolathe_category_list = list( \
 			new /obj/item/weapon/weldingtool/largetank(), \
 			new /obj/item/weapon/restraints/handcuffs(), \
 			new /obj/item/ammo_box/a357(), \
+			new /obj/item/ammo_box/c10mm(), \
+			new /obj/item/ammo_box/c45(), \
+			new /obj/item/ammo_box/c9mm(), \
 			new /obj/item/ammo_casing/shotgun(), \
 			new /obj/item/ammo_casing/shotgun/buckshot(), \
 			new /obj/item/ammo_casing/shotgun/dart(), \
@@ -125,16 +128,12 @@ var/global/list/autolathe_category_list = list( \
 	wires = new(src)
 
 /obj/machinery/autolathe/interact(mob/user)
-	if(..())
-		return
-	if (src.shocked)
-		src.shock(user,50)
+	if(shocked && !(stat & NOPOWER))
+		shock(user,50)
 	regular_win(user)
 	return
 
 /obj/machinery/autolathe/attackby(obj/item/O, mob/user)
-	if (stat)
-		return 1
 	if (busy)
 		user << "<span class=\"alert\">The autolathe is busy. Please wait for completion of previous operation.</span>"
 		return 1
@@ -159,6 +158,8 @@ var/global/list/autolathe_category_list = list( \
 		else
 			attack_hand(user)
 			return 1
+	if (stat)
+		return 1
 
 	if (src.m_amount + O.m_amt > max_m_amount)
 		user << "<span class=\"alert\">The autolathe is full. Please remove metal from the autolathe in order to insert more.</span>"
@@ -203,7 +204,7 @@ var/global/list/autolathe_category_list = list( \
 	return attack_hand(user)
 
 /obj/machinery/autolathe/attack_hand(mob/user)
-	if(..())
+	if(..(user, 0))
 		return
 	interact(user)
 
@@ -269,13 +270,13 @@ var/global/list/autolathe_category_list = list( \
 					if(istype(template, /obj/item/stack))
 						src.m_amount -= template.m_amt*multiplier
 						src.g_amount -= template.g_amt*multiplier
-						var/obj/new_item = new template.type(T)
+						var/obj/item/new_item = new template.type(T)
 						var/obj/item/stack/S = new_item
 						S.amount = multiplier
 					else
 						src.m_amount -= template.m_amt/coeff
 						src.g_amount -= template.g_amt/coeff
-						var/obj/new_item = new template.type(T)
+						var/obj/item/new_item = new template.type(T)
 						new_item.m_amt /= coeff
 						new_item.g_amt /= coeff
 					if(src.m_amount < 0)
@@ -301,6 +302,8 @@ var/global/list/autolathe_category_list = list( \
 
 /obj/machinery/autolathe/proc/regular_win(mob/user)
 	if(!panel_open)
+		if(stat)
+			return
 		var/coeff = 2 ** prod_coeff
 
 		dat = "<script src=\"libraries.min.js\"></script>"
@@ -315,7 +318,7 @@ var/global/list/autolathe_category_list = list( \
 			if(!src.hacked && category == "Sh0#t~cIR$&It... Errä")
 				continue
 
-			for(var/obj/item in autolathe_category_list[category])
+			for(var/obj/item/item in autolathe_category_list[category])
 				designIndex++
 
 				var/itemLine = ""
@@ -371,6 +374,8 @@ var/global/list/autolathe_category_list = list( \
 
 			if(category == "Show All")
 				for(var/cat in autolathe_category_list)
+					if(!src.hacked && cat == "Sh0#t~cIR$&It... Errä")
+						continue
 					dat += listCategory(cat)
 			else
 				dat += listCategory(category)
@@ -392,7 +397,7 @@ var/global/list/autolathe_category_list = list( \
 /obj/machinery/autolathe/proc/listCategory(var/category)
 	var/coeff = 2 ** prod_coeff
 	var/data = ""
-	for(var/obj/item in autolathe_category_list[category])
+	for(var/obj/item/item in autolathe_category_list[category])
 		if(disabled || m_amount<item.m_amt || g_amount<item.g_amt)
 			data += replacetext("<li><span class='linkOff'>[item]</span> ", "The ", "")
 		else

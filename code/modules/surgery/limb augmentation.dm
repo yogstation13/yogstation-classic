@@ -64,6 +64,9 @@
 					var/datum/surgery_step/xenomorph_removal/xeno_removal = new
 					xeno_removal.remove_xeno(user, target) // remove an alien if there is one
 					H.organs += new /obj/item/organ/limb/robot/chest(src)
+					for(var/obj/item/organ/appendix/X in H.internal_organs)
+						H.internal_organs -= X
+						qdel(X)
 					for(var/datum/disease/appendicitis/A in H.viruses) //If they already have Appendicitis, Remove it
 						A.cure(1)
 			user.drop_item()

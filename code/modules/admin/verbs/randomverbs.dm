@@ -356,19 +356,18 @@ Traitors and the like can also be revived with the previous role mostly intact.
 		if("Death Commando")//Leaves them at late-join spawn.
 			new_character.equip_death_commando()
 			new_character.internal = new_character.s_store
-			new_character.internals.icon_state = "internal1"
-*/
+			new_character.internals.icon_state = "internal1"*/
+
 		else//They may also be a cyborg or AI.
 			switch(new_character.mind.assigned_role)
 				if("Cyborg")//More rigging to make em' work and check if they're traitor.
 					new_character = new_character.Robotize()
-					//if(new_character.mind.special_role=="traitor")
-					//	call(/datum/game_mode/proc/add_law_zero)(new_character)
+					if(new_character.mind.special_role=="traitor")
+						ticker.mode.add_law_zero(new_character)
 				if("AI")
 					new_character = new_character.AIize()
-					//if(new_character.mind.special_role=="traitor")
-					//	call(/datum/game_mode/proc/add_law_zero)(new_character)
-				//Add aliens.
+					if(new_character.mind.special_role=="traitor")
+						ticker.mode.add_law_zero(new_character)
 				else
 					job_master.EquipRank(new_character, new_character.mind.assigned_role, 1)//Or we simply equip them.
 
@@ -426,26 +425,77 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	message_admins("<span class='danger'>Admin [key_name_admin(usr)] healed / revived [key_name_admin(M)]!</span>")
 	feedback_add_details("admin_verb","REJU") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
-/client/proc/cmd_admin_create_centcom_report()
+/client/proc/cmd_admin_create_faction_announcements()
 	set category = "Special Verbs"
-	set name = "Create Command Report"
+	set name = "Create Announcement"
 	if(!holder)
 		src << "Only administrators may use this command."
 		return
-	var/input = input(usr, "Please enter anything you want. Anything. Serious.", "What?", "") as message|null
-	if(!input)
-		return
+	var/faction = alert(src, "Who's there?", "Knock knock", "Centcomm", "Other", "Custom")
+	if(faction == "Centcomm")
+		var/input = input(usr, "Please enter anything you want. Anything. Serious.", "What?", "") as message|null
+		if(!input)
+			return
 
-	var/confirm = alert(src, "Do you want to announce the contents of the report to the crew?", "Announce", "Yes", "No")
-	if(confirm == "Yes")
-		priority_announce(input, null, 'sound/AI/commandreport.ogg')
-	else
-		priority_announce("A report has been downloaded and printed out at all communications consoles.", "Incoming Classified Message", 'sound/AI/commandreport.ogg')
+		var/confirm = alert(src, "Do you want to announce the contents of the report to the crew?", "Announce", "Yes", "No")
+		if(confirm == "Yes")
+			priority_announce(input, null, 'sound/AI/commandreport.ogg')
+		else
+			priority_announce("A report has been downloaded and printed out at all communications consoles.", "Incoming Classified Message", 'sound/AI/commandreport.ogg')
 
-	print_command_report(input,"[confirm=="Yes" ? "" : "Classified "][command_name()] Update")
+		print_command_report(input,"[confirm=="Yes" ? "" : "Classified "][command_name()] Update")
 
-	log_admin("[key_name(src)] has created a command report: [input]")
-	message_admins("[key_name_admin(src)] has created a command report")
+		log_admin("[key_name(src)] has created a command report: [input]")
+		message_admins("[key_name_admin(src)] has created a command report")
+	else if(faction == "Other")
+
+		var/what
+
+		switch(input("Exactly who are you?") in list("Syndicate", "Wizard's Federation", "Static", "Clown Empire", "cult of Nar-sie"))
+			if("Syndicate")
+				what += "Syndicate"
+
+			if("Wizard's Federation")
+				what += "Wizards Federation"
+
+			if("Static")
+				what += "Unknown"
+
+			if("Clown Empire")
+				what += "Clown Empire"
+
+			if("Cult of Nar-sie")
+				what += "Cult of Narsie"
+
+		var/input = input(usr, "Please enter anything you want. Anything Serious.", "What?", "") as message|null
+		if(!input)
+			return
+		var/confirm = alert(src, "Do you want to announce the contents of the report to the crew?", "Announce", "Yes", "No")
+		if(confirm == "Yes")
+			priority_announce(input, null,'sound/AI/attention.ogg', what)
+		else
+			priority_announce("A report has been downloaded and printed out at all communications consoles.", "Incoming Classified Message", 'sound/AI/commandreport.ogg')
+
+		print_command_report(input,"[confirm=="Yes" ? "" : "Classified "][what] Message")
+
+		log_admin("[key_name(src)] has created a [what] announcement: [input]")
+		message_admins("[key_name_admin(src)] has created a [what] announcement")
+
+	else if(faction == "Custom")
+		var/who = input(usr, "Who are you?", "Hi", "") as text|null
+		var/input = input(usr, "Please enter anything you want. Anything Serious.", "What?", "") as message|null
+		if(!input)
+			return
+		var/confirm = alert(src, "Do you want to announce the contents of the report to the crew?", "Announce", "Yes", "No")
+		if(confirm == "Yes")
+			custom_priority_announce(input, null, 'sound/AI/attention.ogg', who)
+		else
+			priority_announce("A report has been downloaded and printed out at all communications consoles.", "Incoming Classified Message", 'sound/AI/commandreport.ogg')
+
+		print_command_report(input,"[confirm=="Yes" ? "" : "Classified "][who] Message")
+
+		log_admin("[key_name(src)] has created a custom announcement: [input]")
+		message_admins("[key_name_admin(src)] has created a custom announcement")
 	feedback_add_details("admin_verb","CCR") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_admin_delete(atom/O as obj|mob|turf in world)
@@ -781,4 +831,22 @@ Traitors and the like can also be revived with the previous role mostly intact.
 		usr << "Random events disabled"
 		message_admins("Admin [key_name_admin(usr)] has disabled random events.")
 	feedback_add_details("admin_verb","TRE") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+
+
+/client/proc/reset_all_tcs()
+	set category = "Admin"
+	set name = "Reset Telecomms Scripts"
+	set desc = "Blanks all telecomms scripts from all telecomms servers"
+	if(!holder)
+		usr << "Admin only."
+		return
+	for(var/obj/machinery/telecomms/server/S in telecomms_list)
+		var/datum/TCS_Compiler/C = S.Compiler
+		S.rawcode = ""
+		C.Compile("")
+	for(var/obj/machinery/computer/telecomms/traffic/T in machines)
+		T.storedcode = ""
+	log_admin("[key_name(usr)] blanked all telecomms scripts.")
+	message_admins("[key_name_admin(usr)] blanked all telecomms scripts.")
+	feedback_add_details("admin_verb","RAT") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 

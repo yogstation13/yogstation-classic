@@ -51,6 +51,9 @@
 	load_donators()
 	investigate_reset()
 
+	// Kn0ss0s: Uses regular expressions to filter unwanted words or phrases
+	setup_pretty_filter()
+
 	if(config && config.server_name != null && config.server_suffix && world.port > 0)
 		// dumb and hardcoded but I don't care~
 		config.server_name += " #[(world.port % 1000) / 100]"
@@ -85,7 +88,7 @@
 	master_controller = new /datum/controller/game_controller()
 	spawn(-1)
 		master_controller.setup()
-		lighting_controller.Initialize()
+		lighting_controller.initializeLighting()
 
 	src.update_status()
 
@@ -191,6 +194,9 @@
 	for(var/client/C in clients)
 		if(config.server)	//if you set a server location in config.txt, it sends you there instead of trying to reconnect to the same world address. -- NeoFite
 			C << link("byond://[config.server]")
+
+	if(tickets_list)
+		tickets_list.Cut()
 
 	// Note: all clients automatically connect to the world after it restarts
 

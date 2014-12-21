@@ -13,7 +13,6 @@
 /mob/proc/sac_act(var/obj/effect/rune/R, var/mob/victim as mob)
 	return
 
-
 var/next_mob_id = 0
 /mob/New()
 	tag = "mob_[next_mob_id++]"
@@ -22,7 +21,12 @@ var/next_mob_id = 0
 		dead_mob_list += src
 	else
 		living_mob_list += src
+	prepare_huds()
 	..()
+
+/mob/proc/prepare_huds()
+	for(var/hud in hud_possible)
+		hud_list[hud] = image('icons/mob/hud.dmi', src, "")
 
 /mob/proc/Cell()
 	set category = "Admin"
@@ -79,6 +83,8 @@ var/next_mob_id = 0
 
 /mob/visible_message(var/message, var/self_message, var/blind_message)
 	for(var/mob/M in viewers(src))
+		if(M.see_invisible < invisibility)
+			continue //can't view the invisible
 		var/msg = message
 		if(self_message && M==src)
 			msg = self_message
@@ -91,10 +97,6 @@ var/next_mob_id = 0
 /atom/proc/visible_message(var/message, var/blind_message)
 	for(var/mob/M in viewers(src))
 		M.show_message( message, 1, blind_message, 2)
-
-
-
-
 
 // Show a message to all mobs in earshot of this one
 // This would be for audible actions by the src mob
@@ -125,9 +127,6 @@ var/next_mob_id = 0
 		range = hearing_distance
 	for(var/mob/M in get_hearers_in_view(range, src))
 		M.show_message( message, 2, deaf_message, 1)
-
-
-
 
 /mob/proc/movement_delay()
 	return 0
@@ -299,32 +298,61 @@ var/list/slot_equipment_priority = list( \
 	A.examine(src)
 
 //same as above
+//note: ghosts can point, this is intended
+//visible_message will handle invisibility properly
+//overriden here and in /mob/dead/observer for different point span classes and sanity checks
 /mob/verb/pointed(atom/A as mob|obj|turf in view())
 	set name = "Point To"
 	set category = "Object"
 
-	if(!src || !isturf(src.loc))
-		return
-	if(src.stat || src.restrained())
-		return
-	if(src.status_flags & FAKEDEATH)
-		return
-	if(!(A in view(src.loc)))
-		return
+	if(!src || !isturf(src.loc) || !(A in view(src.loc)))
+		return 0
 	if(istype(A, /obj/effect/decal/point))
-		return
+		return 0
 
 	var/tile = get_turf(A)
 	if (!tile)
-		return
+		return 0
 
 	var/obj/P = new /obj/effect/decal/point(tile)
+	P.invisibility = invisibility
 	spawn (20)
 		if(P)
-			P.loc = null
+			qdel(P)
 
-	usr.visible_message("<b>[src]</b> points to [A]")
+	return 1
 
+//this and stop_pulling really ought to be /mob/living procs
+/mob/proc/start_pulling(var/atom/movable/AM)
+	if ( !AM || !src || src==AM || !isturf(src.loc) )	//if there's no person pulling OR the person is pulling themself OR the object being pulled is inside something: abort!
+		return
+	if (!( AM.anchored ))
+		AM.add_fingerprint(src)
+
+		// If we're pulling something then drop what we're currently pulling and pull this instead.
+		if(pulling)
+			// Are we trying to pull something we are already pulling? Then just stop here, no need to continue.
+			if(AM == pulling)
+				return
+			stop_pulling()
+
+		src.pulling = AM
+		AM.pulledby = src
+		if(ismob(AM))
+			var/mob/M = AM
+			if(!iscarbon(src))
+				M.LAssailant = null
+			else
+				M.LAssailant = usr
+
+/mob/verb/stop_pulling()
+
+	set name = "Stop Pulling"
+	set category = "IC"
+
+	if(pulling)
+		pulling.pulledby = null
+		pulling = null
 
 /mob/verb/mode()
 	set name = "Activate Held Object"
@@ -490,7 +518,7 @@ var/list/slot_equipment_priority = list( \
 				namecounts[name] = 1
 			creatures[name] = O
 
-		if(istype(O, /obj/machinery/singularity))
+		if(istype(O, /obj/singularity))
 			var/name = "Singularity"
 			if (names.Find(name))
 				namecounts[name]++
@@ -595,39 +623,6 @@ var/list/slot_equipment_priority = list( \
 	if(istype(M, /mob/living/silicon/ai))	return
 	show_inv(usr)
 
-
-/mob/verb/stop_pulling()
-
-	set name = "Stop Pulling"
-	set category = "IC"
-
-	if(pulling)
-		pulling.pulledby = null
-		pulling = null
-
-/mob/proc/start_pulling(var/atom/movable/AM)
-	if ( !AM || !usr || src==AM || !isturf(src.loc) )	//if there's no person pulling OR the person is pulling themself OR the object being pulled is inside something: abort!
-		return
-	if (!( AM.anchored ))
-		AM.add_fingerprint(src)
-
-		// If we're pulling something then drop what we're currently pulling and pull this instead.
-		if(pulling)
-			// Are we trying to pull something we are already pulling? Then just stop here, no need to continue.
-			if(AM == pulling)
-				return
-			stop_pulling()
-
-		src.pulling = AM
-		AM.pulledby = src
-		if(ismob(AM))
-			var/mob/M = AM
-			if(!iscarbon(src))
-				M.LAssailant = null
-			else
-				M.LAssailant = usr
-
-
 /mob/proc/can_use_hands()
 	return
 
@@ -657,6 +652,20 @@ var/list/slot_equipment_priority = list( \
 			stat(null,"CPU:\t[world.cpu]")
 			stat(null,"Instances:\t[world.contents.len]")
 
+			var/tickets_unclaimed = 0
+			var/tickets_unresolved = 0
+			var/tickets_resolved = 0
+			var/tickets_total = 0
+			for(var/datum/admin_ticket/T in tickets_list)
+				tickets_total++
+				if(T.resolved)
+					tickets_resolved++
+				else if(!T.handling_admin)
+					tickets_unclaimed++
+				else
+					tickets_unresolved++
+			stat(null,"Tickets([tickets_total]):\t[tickets_unclaimed > 0 ? "Unclaimed([tickets_unclaimed])\t" : ""][tickets_resolved > 0 ? "Resolved([tickets_resolved])\t" : ""][tickets_unresolved > 0 ? "Unresolved([tickets_unresolved])\t" : ""]")
+
 			if(master_controller)
 				stat(null,"MasterController-[last_tick_duration] ([master_controller.processing?"On":"Off"]-[controller_iteration])")
 				stat(null,"Air-[master_controller.air_cost]\t#[global_activeturfs]")
@@ -666,6 +675,7 @@ var/list/slot_equipment_priority = list( \
 				stat(null,"Mob-[master_controller.mobs_cost]\t#[mob_list.len]")
 				stat(null,"Dis-[master_controller.diseases_cost]\t#[active_diseases.len]")
 				stat(null,"Mch-[master_controller.machines_cost]\t#[machines.len]")
+				stat(null,"Bots-[master_controller.aibots_cost]\t#[aibots.len]")
 				stat(null,"Obj-[master_controller.objects_cost]\t#[processing_objects.len]")
 				stat(null,"Net-[master_controller.networks_cost]\tPnet-[master_controller.powernets_cost]")
 				stat(null,"NanoUI-[master_controller.nano_cost]\t#[nanomanager.processing_uis.len]")
@@ -886,7 +896,7 @@ var/list/slot_equipment_priority = list( \
 
 /mob/proc/get_ghost(even_if_they_cant_reenter = 0)
 	if(mind)
-		for(var/mob/dead/observer/G in player_list)
+		for(var/mob/dead/observer/G in dead_mob_list)
 			if(G.mind == mind)
 				if(G.can_reenter_corpse || even_if_they_cant_reenter)
 					return G

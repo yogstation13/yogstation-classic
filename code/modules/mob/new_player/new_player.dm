@@ -161,6 +161,8 @@
 			observer.loc = O.loc
 			if(client.prefs.be_random_name)
 				client.prefs.real_name = random_name(gender)
+			if(client.prefs.be_random_body)
+				client.prefs.random_character(gender)
 			observer.real_name = client.prefs.real_name
 			observer.name = observer.real_name
 			observer.key = key
@@ -331,6 +333,7 @@
 	job_master.AssignRole(src, rank, 1)
 
 	var/mob/living/carbon/human/character = create_character()	//creates the human and transfers vars and mind
+	character.mind.quiet_round = character.client.prefs.be_special & QUIET_ROUND
 	job_master.EquipRank(character, rank, 1)					//equips the human
 	character.loc = pick(latejoin)
 	character.lastarea = get_area(loc)
@@ -344,7 +347,7 @@
 
 	joined_player_list += character.ckey
 
-	if(config.allow_latejoin_antagonists && emergency_shuttle.timeleft() > 300) //Don't make them antags if the station is evacuating
+	if(config.allow_latejoin_antagonists && emergency_shuttle.timeleft() > 300 && !character.mind.quiet_round) //Don't make them antags if the station is evacuating
 		ticker.mode.make_antag_chance(character)
 	qdel(src)
 
@@ -357,7 +360,7 @@
 			var/mob/living/silicon/ai/announcer = pick(ailist)
 			if(character.mind)
 				if((character.mind.assigned_role != "Cyborg") && (character.mind.special_role != "MODE"))
-					announcer.say("[character.real_name] has signed up as [rank].")
+					announcer.say("[announcer.radiomod] [character.real_name] has signed up as [rank].")
 
 /mob/new_player/proc/LateChoices()
 	var/mills = world.time // 1/10 of a second, not real milliseconds but whatever

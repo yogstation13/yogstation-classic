@@ -18,7 +18,6 @@
 	var/temperature = T20C
 
 	var/blocks_air = 0
-	var/icon_old = null
 
 	var/PathNode/PNode = null //associated PathNode in the A* algorithm
 
@@ -42,9 +41,6 @@
 
 /turf/attack_hand(mob/user as mob)
 	user.Move_Pulled(src)
-
-/turf/ex_act(severity)
-	return 0
 
 /turf/Enter(atom/movable/mover as mob|obj, atom/forget as mob|obj|turf|area)
 	if (!mover)
@@ -303,7 +299,7 @@
 		var/mob/living/carbon/M = slipper
 		if (M.m_intent=="walk" && (lube&NO_SLIP_WHEN_WALKING))
 			return 0
-		if(!M.lying && (M.status_flags & CANWEAKEN)) // we slip those who are standing and can fall.
+		if(!M.lying && (M.status_flags & CANWEAKEN) && !(HULK in M.mutations)) // we slip those who are standing and can fall.
 			var/olddir = M.dir
 			M.Stun(s_amount)
 			M.Weaken(w_amount)

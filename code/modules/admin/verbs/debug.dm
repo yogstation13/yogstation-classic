@@ -614,6 +614,8 @@ var/global/list/g_fancy_list_of_types = null
 	if (dresscode == "as job...")
 		var/jobname = input("Select job", "Robust quick dress shop") as null|anything in get_all_jobs()
 		jobdatum = job_master.GetJob(jobname)
+		if(isnull(jobname))
+			return
 
 	feedback_add_details("admin_verb","SEQ") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 	for (var/obj/item/I in M)
@@ -745,10 +747,9 @@ var/global/list/g_fancy_list_of_types = null
 			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/clown_shoes(M), slot_shoes)
 			M.equip_to_slot_or_del(new /obj/item/clothing/gloves/black(M), slot_gloves)
 			M.equip_to_slot_or_del(new /obj/item/clothing/mask/gas/clown_hat(M), slot_wear_mask)
-			M.equip_to_slot_or_del(new /obj/item/clothing/head/chaplain_hood(M), slot_head)
 			M.equip_to_slot_or_del(new /obj/item/device/radio/headset(M), slot_ears)
 			M.equip_to_slot_or_del(new /obj/item/clothing/glasses/thermal/monocle(M), slot_glasses)
-			M.equip_to_slot_or_del(new /obj/item/clothing/suit/chaplain_hoodie(M), slot_wear_suit)
+			M.equip_to_slot_or_del(new /obj/item/clothing/suit/toggle/chaplain_hoodie(M), slot_wear_suit)
 			M.equip_to_slot_or_del(new /obj/item/weapon/reagent_containers/food/snacks/grown/banana(M), slot_l_store)
 			M.equip_to_slot_or_del(new /obj/item/weapon/bikehorn(M), slot_r_store)
 
@@ -825,7 +826,7 @@ var/global/list/g_fancy_list_of_types = null
 			M.equip_to_slot_or_del(R, slot_ears)
 
 			M.equip_to_slot_or_del(new /obj/item/clothing/under/color/green(M), slot_w_uniform)
-			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/swat(M), slot_shoes)
+			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/combat/swat(M), slot_shoes)
 
 			var/obj/item/clothing/suit/armor/heavy/X = new(M)
 			X.name = "chicken suit"
@@ -843,7 +844,7 @@ var/global/list/g_fancy_list_of_types = null
 			Y.item_state = "chickensuit"
 			M.equip_to_slot_or_del(Y, slot_head)
 
-			M.equip_to_slot_or_del(new /obj/item/clothing/mask/gas/swat(M), slot_wear_mask)
+			M.equip_to_slot_or_del(new /obj/item/clothing/mask/gas/sechailer/swat(M), slot_wear_mask)
 			M.equip_to_slot_or_del(new /obj/item/clothing/glasses/thermal(M), slot_glasses)
 
 			M.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/clown(M), slot_back)
@@ -906,8 +907,8 @@ var/global/list/g_fancy_list_of_types = null
 
 		if("centcom commander")
 			M.equip_to_slot_or_del(new /obj/item/clothing/under/rank/centcom_commander(M), slot_w_uniform)
-			M.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/bulletproof(M), slot_wear_suit)
-			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/swat(M), slot_shoes)
+			M.equip_to_slot_or_del(new /obj/item/clothing/suit/armor(M), slot_wear_suit)
+			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/combat/swat(M), slot_shoes)
 			M.equip_to_slot_or_del(new /obj/item/clothing/gloves/combat(M), slot_gloves)
 			M.equip_to_slot_or_del(new /obj/item/device/radio/headset/headset_cent(M), slot_ears)
 			M.equip_to_slot_or_del(new /obj/item/clothing/glasses/eyepatch(M), slot_glasses)
@@ -931,14 +932,14 @@ var/global/list/g_fancy_list_of_types = null
 			R.set_frequency(1441)
 			M.equip_to_slot_or_del(R, slot_ears)
 
-			M.equip_to_slot_or_del(new /obj/item/clothing/under/syndicate/combat(M), slot_w_uniform)
+			M.equip_to_slot_or_del(new /obj/item/clothing/under/syndicate(M), slot_w_uniform)
 			M.equip_to_slot_or_del(new /obj/item/clothing/suit/space/deathsquad/officer(M), slot_wear_suit)
-			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/swat/combat(M), slot_shoes)
+			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/combat/swat(M), slot_shoes)
 			M.equip_to_slot_or_del(new /obj/item/clothing/gloves/combat(M), slot_gloves)
 			M.equip_to_slot_or_del(new /obj/item/clothing/glasses/thermal/eyepatch(M), slot_glasses)
 			M.equip_to_slot_or_del(new /obj/item/clothing/mask/cigarette/cigar/havana(M), slot_wear_mask)
 			M.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/space/deathsquad/beret(M), slot_head)
-			M.equip_to_slot_or_del(new /obj/item/weapon/gun/energy/pulse_rifle/M1911(M), slot_belt)
+			M.equip_to_slot_or_del(new /obj/item/weapon/gun/energy/M1911P(M), slot_belt)
 			M.equip_to_slot_or_del(new /obj/item/weapon/lighter/zippo(M), slot_r_store)
 			M.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/satchel(M), slot_back)
 
@@ -989,7 +990,7 @@ var/global/list/g_fancy_list_of_types = null
 
 		if("soviet admiral")
 			M.equip_to_slot_or_del(new /obj/item/clothing/head/hgpiratecap(M), slot_head)
-			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/swat/combat(M), slot_shoes)
+			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/combat(M), slot_shoes)
 			M.equip_to_slot_or_del(new /obj/item/clothing/gloves/combat(M), slot_gloves)
 			M.equip_to_slot_or_del(new /obj/item/device/radio/headset/headset_cent(M), slot_ears)
 			M.equip_to_slot_or_del(new /obj/item/clothing/glasses/thermal/eyepatch(M), slot_glasses)
@@ -1048,7 +1049,7 @@ var/global/list/g_fancy_list_of_types = null
 	spawn(30)
 		for(var/obj/machinery/the_singularitygen/G in world)
 			if(G.anchored)
-				var/obj/machinery/singularity/S = new /obj/machinery/singularity(get_turf(G), 50)
+				var/obj/singularity/S = new /obj/singularity(get_turf(G), 50)
 //				qdel(G)
 				S.energy = 1750
 				S.current_size = 7
@@ -1128,9 +1129,9 @@ var/global/list/g_fancy_list_of_types = null
 
 	M.equip_to_slot_or_del(new /obj/item/clothing/suit/space/deathsquad(M), slot_wear_suit)
 	M.equip_to_slot_or_del(new /obj/item/clothing/under/color/green(M), slot_w_uniform)
-	M.equip_to_slot_or_del(new /obj/item/clothing/shoes/swat(M), slot_shoes)
+	M.equip_to_slot_or_del(new /obj/item/clothing/shoes/combat/swat(M), slot_shoes)
 	M.equip_to_slot_or_del(new /obj/item/clothing/gloves/combat(M), slot_gloves)
-	M.equip_to_slot_or_del(new /obj/item/clothing/mask/gas/swat(M), slot_wear_mask)
+	M.equip_to_slot_or_del(new /obj/item/clothing/mask/gas/sechailer/swat(M), slot_wear_mask)
 	M.equip_to_slot_or_del(new /obj/item/clothing/glasses/thermal(M), slot_glasses)
 
 	M.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/security(M), slot_back)

@@ -25,10 +25,17 @@
 
 
 
-/obj/item/weapon/gun/energy/pulse_rifle/M1911
+/obj/item/weapon/gun/energy/M1911P
 	name = "m1911-P"
 	desc = "A compact pulse core in a classic handgun frame for Nanotrasen officers. It's not the size of the gun, it's the size of the hole it puts through people."
 	icon_state = "m1911-p"
 	cell_type = "/obj/item/weapon/stock_parts/cell/infinite"
+	w_class = 4.0
+	force = 10
+	flags = CONDUCT
+	ammo_type = list(/obj/item/ammo_casing/energy/laser/pulse, /obj/item/ammo_casing/energy/electrode, /obj/item/ammo_casing/energy/laser)
+	cell_type = "/obj/item/weapon/stock_parts/cell/super"
 
+/obj/item/weapon/gun/energy/M1911P/attack_self(mob/living/user as mob)
+	select_fire(user)
 

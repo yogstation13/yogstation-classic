@@ -31,9 +31,10 @@ datum/design/mmi
 	req_tech = list("programming" = 2, "biotech" = 3)
 	build_type = PROTOLATHE | MECHFAB
 	materials = list("$metal" = 1000, "$glass" = 500)
+	construction_time = 75
 	reliability = 76
 	build_path = /obj/item/device/mmi
-	category = "Misc"
+	category = list("Misc")
 	ui_category = "Medical"
 
 datum/design/mmi_radio
@@ -43,9 +44,10 @@ datum/design/mmi_radio
 	req_tech = list("programming" = 2, "biotech" = 4)
 	build_type = PROTOLATHE | MECHFAB
 	materials = list("$metal" = 1200, "$glass" = 500)
+	construction_time = 75
 	reliability = 74
 	build_path = /obj/item/device/mmi/radio_enabled
-	category = "Misc"
+	category = list("Misc")
 	ui_category = "Medical"
 
 datum/design/synthetic_flash
@@ -55,9 +57,10 @@ datum/design/synthetic_flash
 	req_tech = list("magnets" = 3, "combat" = 2)
 	build_type = MECHFAB
 	materials = list("$metal" = 750, "$glass" = 750)
+	construction_time = 100
 	reliability = 76
 	build_path = /obj/item/device/flash/handheld
-	category = "Misc"
+	category = list("Misc")
 	ui_category = "Medical"
 
 datum/design/bluespacebeaker
@@ -69,7 +72,7 @@ datum/design/bluespacebeaker
 	materials = list("$metal" = 3000, "$plasma" = 3000, "$diamond" = 500)
 	reliability = 76
 	build_path = /obj/item/weapon/reagent_containers/glass/beaker/bluespace
-	category = "Misc"
+	category = list("Misc")
 	ui_category = "Medical"
 
 datum/design/noreactbeaker
@@ -81,7 +84,7 @@ datum/design/noreactbeaker
 	materials = list("$metal" = 3000)
 	reliability = 76
 	build_path = /obj/item/weapon/reagent_containers/glass/beaker/noreact
-	category = "Misc"
+	category = list("Misc")
 	ui_category = "Medical"
 
 datum/design/bluespacebodybag
@@ -93,5 +96,17 @@ datum/design/bluespacebodybag
 	materials = list("$metal" = 3000, "$plasma" = 2000, "$diamond" = 500)
 	reliability = 76
 	build_path = /obj/item/bodybag/bluespace
-	category = "Misc"
+	category = list("Misc")
+	ui_category = "Medical"
+
+datum/design/defib
+	name = "Defibrillator"
+	desc = "A device that delivers powerful shocks to detachable paddles that resuscitate incapacitated patients."
+	id = "defib"
+	req_tech = list("materials" = 7, "biotech" = 5, "powerstorage" = 5)
+	build_type = PROTOLATHE
+	materials = list("$metal" = 5000, "$glass" = 2000, "$silver" = 1000)
+	reliability = 76
+	build_path = /obj/item/weapon/defibrillator
+	category = list("Misc")
 	ui_category = "Medical"

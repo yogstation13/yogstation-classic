@@ -23,7 +23,7 @@
 
 /obj/item/clothing/under/roman
 	name = "roman armor"
-	desc = "An ancient Roman armor. Made of metallic strips and leather straps."
+	desc = "Ancient Roman armor. Made of metallic and leather straps."
 	icon_state = "roman"
 	item_color = "roman"
 	item_state = "armor"
@@ -115,7 +115,7 @@
 	icon_state = "syndicate"
 	item_state = "bl_suit"
 	item_color = "syndicate"
-	desc = "it's a cybernetically enhanced jumpsuit used for administrative duties."
+	desc = "A cybernetically enhanced jumpsuit used for administrative duties."
 	gas_transfer_coefficient = 0.01
 	permeability_coefficient = 0.01
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
@@ -296,7 +296,7 @@
 
 /obj/item/clothing/under/kilt
 	name = "kilt"
-	desc = "Includes shoes and plaid"
+	desc = "Includes shoes and plaid."
 	icon_state = "kilt"
 	item_state = "kilt"
 	item_color = "kilt"
@@ -334,28 +334,28 @@
 	fitted = 0
 	can_adjust = 0
 
-/obj/item/clothing/under/captainformal
-	name = "captain's formal uniform"
-	desc = "A captain's formal-wear, for special occasions."
-	icon_state = "captain_formal"
+/obj/item/clothing/under/captainparade
+	name = "captain's parade uniform"
+	desc = "A captain's luxury-wear, for special occasions."
+	icon_state = "captain_parade"
 	item_state = "by_suit"
-	item_color = "captain_formal"
+	item_color = "captain_parade"
 	can_adjust = 0
 
-/obj/item/clothing/under/hosformalmale
-	name = "head of security's formal uniform"
-	desc = "A male head of security's formal-wear, for special occasions."
-	icon_state = "hos_formal_male"
+/obj/item/clothing/under/hosparademale
+	name = "head of security's parade uniform"
+	desc = "A male head of security's luxury-wear, for special occasions."
+	icon_state = "hos_parade_male"
 	item_state = "r_suit"
-	item_color = "hos_formal_male"
+	item_color = "hos_parade_male"
 	can_adjust = 0
 
-/obj/item/clothing/under/hosformalfem
-	name = "head of security's formal uniform"
-	desc = "A female head of security's formal-wear, for special occasions."
-	icon_state = "hos_formal_fem"
+/obj/item/clothing/under/hosparadefem
+	name = "head of security's parade uniform"
+	desc = "A female head of security's luxury-wear, for special occasions."
+	icon_state = "hos_parade_fem"
 	item_state = "r_suit"
-	item_color = "hos_formal_fem"
+	item_color = "hos_parade_fem"
 	fitted = 0
 	can_adjust = 0
 
@@ -369,7 +369,7 @@
 
 /obj/item/clothing/under/blacktango
 	name = "black tango dress"
-	desc = "Filled with latin fire."
+	desc = "Filled with Latin fire."
 	icon_state = "black_tango"
 	item_state = "wcoat"
 	item_color = "black_tango"
@@ -382,4 +382,12 @@
 	icon_state = "tourist"
 	item_state = "gy_suit"
 	item_color = "tourist"
+	can_adjust = 0
+
+/obj/item/clothing/under/scratch
+	name = "white suit"
+	desc = "A white suit, suitable for an excellent host"
+	icon_state = "scratch"
+	item_state = "scratch"
+	item_color = "scratch"
 	can_adjust = 0

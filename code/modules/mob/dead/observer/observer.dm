@@ -172,6 +172,17 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		src << "\blue Antag icons toggled [ninjahud ? "on" : "off"]."
 	feedback_add_details("admin_verb","TNH")
 
+/mob/dead/observer/verb/register_pai_candidate()
+	set category = "Ghost"
+	set name = "pAI Setup"
+	set desc = "Upload a fragment of your personality to the global pAI databanks."
+
+	if (istype(usr, /mob/dead/observer))
+		paiController.recruitWindow(client.mob)
+	else
+		usr << "Can't become a pAI candidate while not dead!"
+		return
+
 /mob/dead/observer/proc/dead_tele()
 	set category = "Ghost"
 	set name = "Teleport"
@@ -353,3 +364,11 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	return 1
 
 
+//this is a mob verb instead of atom for performance reasons
+//see /mob/verb/examinate() in mob.dm for more info
+//overriden here and in /mob/living for different point span classes and sanity checks
+/mob/dead/observer/pointed(atom/A as mob|obj|turf in view())
+	if(!..())
+		return 0
+	usr.visible_message("<span class='deadsay'><b>[src]</b> points to [A]</span>")
+	return 1

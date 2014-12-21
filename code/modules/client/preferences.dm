@@ -45,7 +45,8 @@ datum/preferences
 
 	//character preferences
 	var/real_name						//our character's name
-	var/be_random_name = 0				//whether we are a random name every round
+	var/be_random_name = 0				//whether we'll have a random name every round
+	var/be_random_body = 0				//whether we'll have a random body every round
 	var/gender = MALE					//gender of character (well duh)
 	var/age = 30						//age of character
 	var/blood_type = "A+"				//blood type (not-chooseable)
@@ -90,6 +91,9 @@ datum/preferences
 	var/unlock_content = 0
 
 	var/agree = 0
+
+	var/donor_hat = null
+	var/quiet_round = 0
 
 /datum/preferences/New(client/C)
 	blood_type = random_blood_type()
@@ -147,6 +151,12 @@ datum/preferences
 
 				dat += "<center><h2>Occupation Choices</h2>"
 				dat += "<a href='?_src_=prefs;preference=job;task=menu'>Set Occupation Preferences</a><br></center>"
+
+				if(is_donator(user.client))
+					dat += "<h2>Donator</h2>"
+					dat += "<b>Fancy Hat:</b> "
+					dat += "<a href='?_src_=prefs;preference=donor;task=hat'>Pick</a> [donor_hat ? "\"[donor_hat]\"" : "None selected"]<BR>"
+
 				dat += "<h2>Identity</h2>"
 				dat += "<table width='100%'><tr><td width='75%' valign='top'>"
 				if(appearance_isbanned(user))
@@ -168,7 +178,8 @@ datum/preferences
 				dat += "</td></tr></table>"
 
 				dat += "<h2>Body</h2>"
-				dat += "<a href='?_src_=prefs;preference=all;task=random'>Random Body</A><br>"
+				dat += "<a href='?_src_=prefs;preference=all;task=random'>Random Body</A> "
+				dat += "<a href='?_src_=prefs;preference=all'>Always Random Body: [be_random_body ? "Yes" : "No"]</A><br>"
 
 				dat += "<table width='100%'><tr><td width='24%' valign='top'>"
 
@@ -256,13 +267,17 @@ datum/preferences
 					for (var/i in special_roles)
 						if(special_roles[i]) //if mode is available on the server
 							if(jobban_isbanned(user, i))
-								dat += "<b>Be [i]:</b> <font color=red><b>\[BANNED]</b></font><br>"
+								dat += "<b>Be [i]:</b> <font color=red><b>\[BANNED\]</b></font><br>"
 							else if(i == "pai candidate")
 								if(jobban_isbanned(user, "pAI"))
-									dat += "<b>Be [i]:</b> <font color=red><b>\[BANNED]</b></font><br>"
+									dat += "<b>Be [i]:</b> <font color=red><b>\[BANNED\]</b></font><br>"
+							else if(src.be_special & QUIET_ROUND)
+								dat += "<b>Be [i]:</b> <font color=blue><b>\[QUIET ROUND\]</b></font><br>"
 							else
 								dat += "<b>Be [i]:</b> <a href='?_src_=prefs;preference=be_special;num=[n]'>[src.be_special&(1<<n) ? "Yes" : "No"]</a><br>"
 						n++
+				if(is_donator(user.client))
+					dat += "<b>Quiet round:</b> <a href='?_src_=prefs;preference=donor;task=quiet_round'>[(src.be_special & QUIET_ROUND) ? "Yes" : "No"]</a><br>"
 				dat += "</td></tr></table>"
 
 		dat += "<hr><center>"
@@ -275,7 +290,7 @@ datum/preferences
 		dat += "</center>"
 
 		//user << browse(dat, "window=preferences;size=560x560")
-		var/datum/browser/popup = new(user, "preferences", "<div align='center'>Character Setup</div>", 580, 600)
+		var/datum/browser/popup = new(user, "preferences", "<div align='center'>Character Setup</div>", 580, 680)
 		popup.set_content(dat)
 		popup.open(0)
 
@@ -329,11 +344,14 @@ datum/preferences
 				var/available_in_days = job.available_in_days(user.client)
 				HTML += "<font color=red>[rank]</font></td><td><font color=red> \[IN [(available_in_days)] DAYS\]</font></td></tr>"
 				continue
-			if((job_civilian_low & ASSISTANT) && (rank != "Assistant"))
+			if((job_civilian_low & ASSISTANT) && (rank != "Assistant") && !jobban_isbanned(user, "Assistant"))
 				HTML += "<font color=orange>[rank]</font></td><td></td></tr>"
 				continue
 			if(config.enforce_human_authority && (rank in command_positions) && user.client.prefs.pref_species.id != "human")
 				HTML += "<font color=red>[rank]</font></td><td><font color=red><b> \[NON-HUMAN\]</b></font></td></tr>"
+				continue
+			if(((rank in command_positions) || (rank in nonhuman_positions)) && (src.be_special & QUIET_ROUND))
+				HTML += "<font color=blue>[rank]</font></td><td><font color=blue><b> \[QUIET ROUND\]</b></font></td></tr>"
 				continue
 			if((rank in command_positions) || (rank == "AI"))//Bold head jobs
 				HTML += "<b><span class='dark'>[rank]</span></b>"
@@ -534,6 +552,72 @@ datum/preferences
 	proc/process_link(mob/user, list/href_list)
 		if(!istype(user, /mob/new_player))	return
 
+		if(href_list["preference"] == "donor")
+			if(is_donator(user))
+				switch(href_list["task"])
+					if("hat")
+						var/list/items = list( \
+							/obj/item/clothing/head/collectable/petehat, \
+							/obj/item/clothing/head/collectable/slime, \
+							/obj/item/clothing/head/collectable/xenom, \
+							/obj/item/clothing/head/collectable/chef, \
+							/obj/item/clothing/head/collectable/paper, \
+							/obj/item/clothing/head/collectable/tophat, \
+							/obj/item/clothing/head/collectable/captain, \
+							/obj/item/clothing/head/collectable/police, \
+							/obj/item/clothing/head/collectable/welding, \
+							/obj/item/clothing/head/collectable/flatcap, \
+							/obj/item/clothing/head/collectable/pirate, \
+							/obj/item/clothing/head/collectable/kitty, \
+							/obj/item/clothing/head/collectable/rabbitears, \
+							/obj/item/clothing/head/collectable/wizard, \
+							/obj/item/clothing/head/collectable/hardhat, \
+							/obj/item/clothing/head/collectable/HoS, \
+							/obj/item/clothing/head/collectable/thunderdome, \
+							/obj/item/clothing/head/collectable/swat, \
+							/obj/item/clothing/head/cakehat, \
+							/obj/item/clothing/head/ushanka, \
+							/obj/item/clothing/head/hardhat/pumpkinhead, \
+							/obj/item/clothing/head/kitty, \
+							/obj/item/clothing/head/hardhat/reindeer, \
+							/obj/item/clothing/head/centhat, \
+							/obj/item/clothing/head/powdered_wig, \
+							/obj/item/clothing/head/that, \
+							/obj/item/clothing/head/redcoat, \
+							/obj/item/clothing/head/mailman, \
+							/obj/item/clothing/head/plaguedoctorhat, \
+							/obj/item/clothing/head/hasturhood, \
+							/obj/item/clothing/head/nursehat, \
+							/obj/item/clothing/head/syndicatefake, \
+							/obj/item/clothing/head/greenbandana, \
+							/obj/item/clothing/head/cardborg, \
+							/obj/item/clothing/head/justice, \
+							/obj/item/clothing/head/rabbitears, \
+							/obj/item/clothing/head/flatcap, \
+							/obj/item/clothing/head/pirate, \
+							/obj/item/clothing/head/hgpiratecap, \
+							/obj/item/clothing/head/bowler, \
+							/obj/item/clothing/head/witchwig, \
+							/obj/item/clothing/head/chicken, \
+							/obj/item/clothing/head/bearpelt, \
+							/obj/item/clothing/head/fedora, \
+							/obj/item/clothing/head/sombrero, \
+							/obj/item/clothing/head/sombrero/green, \
+							/obj/item/clothing/head/cone, \
+							/obj/item/clothing/head/collectable/beret \
+						)
+
+						var/obj/item/clothing/head/item = input(usr, "What would you like to start with?","Donator fun","Nothing") as null|anything in items
+						if(item)
+							donor_hat = new item
+						else
+							donor_hat = null
+					if("quiet_round")
+						be_special ^= QUIET_ROUND
+
+			else
+				message_admins("EXPLOIT \[donor\]: [user] tried to access donor only functions (as a non-donor). Attempt made on \"[href_list["preference"]]\" -> \"[href_list["task"]]\".")
+
 		if(href_list["preference"] == "job")
 			switch(href_list["task"])
 				if("close")
@@ -543,7 +627,10 @@ datum/preferences
 					ResetJobs()
 					SetChoices(user)
 				if("random")
-					userandomjob = !userandomjob
+					if(jobban_isbanned(user, "Assistant"))
+						userandomjob = 1
+					else
+						userandomjob = !userandomjob
 					SetChoices(user)
 				if("setJobLevel")
 					UpdateJobPreference(user, href_list["text"], text2num(href_list["level"]))
@@ -751,6 +838,9 @@ datum/preferences
 					if("name")
 						be_random_name = !be_random_name
 
+					if("all")
+						be_random_body = !be_random_body
+
 					if("hear_midis")
 						toggles ^= SOUND_MIDI
 
@@ -797,6 +887,9 @@ datum/preferences
 	proc/copy_to(mob/living/carbon/human/character)
 		if(be_random_name)
 			real_name = random_name(gender)
+
+		if(be_random_body)
+			random_character(gender)
 
 		if(config.humans_need_surnames)
 			var/firstspace = findtext(real_name, " ")
