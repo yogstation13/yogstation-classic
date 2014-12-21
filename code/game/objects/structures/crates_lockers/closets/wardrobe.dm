@@ -198,15 +198,12 @@
 	new /obj/item/clothing/under/rank/medical/blue(src)
 	new /obj/item/clothing/under/rank/medical/green(src)
 	new /obj/item/clothing/under/rank/medical/purple(src)
-	new /obj/item/clothing/suit/toggle/labcoat/emt(src)
-	new /obj/item/clothing/suit/toggle/labcoat/emt(src)
-	new /obj/item/clothing/suit/toggle/labcoat/emt(src)
-	new /obj/item/clothing/shoes/sneakers/black(src)
-	new /obj/item/clothing/shoes/sneakers/black(src)
-	new /obj/item/clothing/shoes/sneakers/black(src)
 	new /obj/item/clothing/head/soft/emt(src)
 	new /obj/item/clothing/head/soft/emt(src)
 	new /obj/item/clothing/head/soft/emt(src)
+	new /obj/item/clothing/shoes/sneakers/black(src)
+	new /obj/item/clothing/shoes/sneakers/black(src)
+	new /obj/item/clothing/shoes/sneakers/black(src)
 	return
 
 /obj/structure/closet/wardrobe/pjs

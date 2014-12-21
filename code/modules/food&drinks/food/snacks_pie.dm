@@ -142,5 +142,5 @@
 	icon_state = "rainbowmeatpie"
 
 /obj/item/weapon/reagent_containers/food/snacks/pie/rainbow/throw_impact(atom/hit_atom)
-	..()
 	playsound(get_turf(hit_atom), 'sound/items/bikehorn.ogg', 100, 1)
+	..()

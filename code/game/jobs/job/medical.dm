@@ -122,7 +122,7 @@ Paramedic
 
 	H.equip_to_slot_or_del(new /obj/item/weapon/storage/firstaid/regular(H.back), slot_in_backpack)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/white(H), slot_shoes)
-	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/medical/blue(H), slot_w_uniform)
+	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/medical(H), slot_w_uniform)
 	H.equip_to_slot_or_del(new /obj/item/clothing/suit/toggle/labcoat/emt(H), slot_wear_suit)
 	H.equip_to_slot_or_del(new /obj/item/roller(H), slot_l_hand)
 	H.equip_to_slot_or_del(new /obj/item/device/flashlight(H), slot_l_store)

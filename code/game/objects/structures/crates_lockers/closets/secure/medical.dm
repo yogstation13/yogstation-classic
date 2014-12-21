@@ -208,6 +208,7 @@
 				new /obj/item/clothing/under/rank/medical/purple(src)
 		new /obj/item/clothing/under/rank/medical(src)
 		new /obj/item/clothing/suit/toggle/labcoat/emt(src)
+		new /obj/item/clothing/head/soft/emt(src)
 		new /obj/item/weapon/defibrillator/loaded(src)
 		new /obj/item/device/radio/headset/headset_med(src)
 		new /obj/item/weapon/storage/belt/medical(src)
