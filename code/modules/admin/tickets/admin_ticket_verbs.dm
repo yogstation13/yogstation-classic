@@ -91,6 +91,7 @@
 			for(var/datum/admin_ticket/T in unresolved)
 				if(!T.owner)
 					content += {"<p class='ticket-bar'>
+						<span class='ticket-number'>#[T.ticket_id]</span>
 						<b>[T.handling_admin ? "" : "<span class='unclaimed'>Unclaimed</span>!"] [T.title]</b><br />
 						<b>Owner:</b> <b>[T.owner_ckey] (DC)</b>
 						<a href='?src=\ref[T];user=\ref[src];action=view_admin_ticket;ticket=\ref[T]'><img border='0' width='16' height='16' class='uiIcon16 icon-search' /> View</a>
@@ -100,6 +101,7 @@
 				else
 					var/ai_found = (T.owner && isAI(get_ckey(T.owner)))
 					content += {"<p class='ticket-bar'>
+						<span class='ticket-number'>#[T.ticket_id]</span>
 						<b>[T.handling_admin ? "" : "<span class='unclaimed'>Unclaimed</span>"] [T.title]</b><br />
 						<b>Owner:</b> <b>[key_name(T.owner, 1)]</b><br />
 						[T.handling_admin ? " <b>Admin:</b> [T.handling_admin]<br />" : ""]
@@ -128,6 +130,7 @@
 
 				if(!T.owner)
 					content += {"<p class='ticket-bar'>
+						<span class='ticket-number'>#[T.ticket_id]</span>
 						<b>[T.title]</b><br />
 						<b>Owner:</b> <b>[T.owner_ckey] (DC)</b>
 						<a href='?src=\ref[T];user=\ref[src];action=view_admin_ticket;ticket=\ref[T]'><img border='0' width='16' height='16' class='uiIcon16 icon-search' /> View</a>
@@ -137,6 +140,7 @@
 				else
 					var/ai_found = (T.owner && isAI(get_ckey(T.owner)))
 					content += {"<p class='ticket-bar'>
+						<span class='ticket-number'>#[T.ticket_id]</span>
 						<b>[T.title]</b><br />
 						<b>Owner:</b> <b>[key_name(T.owner, 1)]</b><br />
 						[T.handling_admin ? " <b>Admin:</b> [T.handling_admin]<br />" : ""]
