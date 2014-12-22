@@ -207,8 +207,8 @@
 	if(!owner && istext(owner_ckey))
 		owner = directory[owner_ckey]
 
-	var/reply_link = "<a href='?src=\ref[src];user=\ref[usr];action=reply_to_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-comment' /> Reply</a>"
-	var/refresh_link = "<a href='?src=\ref[src];user=\ref[usr];action=refresh_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-refresh' /> Refresh</a>"
+	var/reply_link = "<a href='?src=\ref[src];user=\ref[usr];action=reply_to_ticket;ticket=\ref[src]'><img border='0' width='16' height='16' class='uiIcon16 icon-comment' /> Reply</a>"
+	var/refresh_link = "<a href='?src=\ref[src];user=\ref[usr];action=refresh_admin_ticket;ticket=\ref[src]'><img border='0' width='16' height='16' class='uiIcon16 icon-refresh' /> Refresh</a>"
 
 	var/content = ""
 	content += "<p class='control-bar'><a href='#bottom' name='top'>To Bottom</a> [reply_link] [refresh_link]</p>"
@@ -228,15 +228,15 @@
 
 		if(owner && owner.mob)
 			content += {"<p style='margin-top: 5px;'>
-					<a href='?_src_=holder;adminmoreinfo=\ref[owner.mob]'><img width='16' height='16' class='uiIcon16 icon-search' /> ?</a>
-					<a href='?_src_=holder;adminplayeropts=\ref[owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> PP</a>
-					<a href='?_src_=vars;Vars=\ref[owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> VV</a>
-					<a href='?_src_=holder;subtlemessage=\ref[owner.mob]'><img width='16' height='16' class='uiIcon16 icon-mail-closed' /> SM</a>
-					<a href='?_src_=holder;adminplayerobservejump=\ref[owner.mob]'><img width='16' height='16' class='uiIcon16 icon-arrowthick-1-e' /> JMP</a>
-					<a href='?_src_=holder;secretsadmin=check_antagonist'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> CA</a>
-					<a href='?src=\ref[src];user=\ref[usr];action=monitor_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
-					<a href='?src=\ref[src];user=\ref[usr];action=resolve_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
-					<a href='?src=\ref[src];user=\ref[usr];action=administer_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-flag' /> Administer</a>
+					<a href='?_src_=holder;adminmoreinfo=\ref[owner.mob]'><img border='0' width='16' height='16' class='uiIcon16 icon-search' /> ?</a>
+					<a href='?_src_=holder;adminplayeropts=\ref[owner.mob]'><img border='0' width='16' height='16' class='uiIcon16 icon-clipboard' /> PP</a>
+					<a href='?_src_=vars;Vars=\ref[owner.mob]'><img border='0' width='16' height='16' class='uiIcon16 icon-clipboard' /> VV</a>
+					<a href='?_src_=holder;subtlemessage=\ref[owner.mob]'><img border='0' width='16' height='16' class='uiIcon16 icon-mail-closed' /> SM</a>
+					<a href='?_src_=holder;adminplayerobservejump=\ref[owner.mob]'><img border='0' width='16' height='16' class='uiIcon16 icon-arrowthick-1-e' /> JMP</a>
+					<a href='?_src_=holder;secretsadmin=check_antagonist'><img border='0' width='16' height='16' class='uiIcon16 icon-clipboard' /> CA</a>
+					<a href='?src=\ref[src];user=\ref[usr];action=monitor_admin_ticket;ticket=\ref[src]'><img border='0' width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
+					<a href='?src=\ref[src];user=\ref[usr];action=resolve_admin_ticket;ticket=\ref[src]'><img border='0' width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
+					<a href='?src=\ref[src];user=\ref[usr];action=administer_admin_ticket;ticket=\ref[src]'><img border='0' width='16' height='16' class='uiIcon16 icon-flag' /> Administer</a>
 				</p>"}
 		if(owner && owner.mob)
 			if(owner.mob.mind && owner.mob.mind.assigned_role)
@@ -263,15 +263,15 @@
 		if(usr.client.holder)
 			content += "<div class='user-bar'>"
 			content += {"<p style='margin-top: 5px;'>
-					<a href='?src=\ref[src];user=\ref[usr];action=monitor_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
-					<a href='?src=\ref[src];user=\ref[usr];action=resolve_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
-					<a href='?src=\ref[src];user=\ref[usr];action=administer_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-flag' /> Administer</a>
+					<a href='?src=\ref[src];user=\ref[usr];action=monitor_admin_ticket;ticket=\ref[src]'><img border='0' width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
+					<a href='?src=\ref[src];user=\ref[usr];action=resolve_admin_ticket;ticket=\ref[src]'><img border='0' width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
+					<a href='?src=\ref[src];user=\ref[usr];action=administer_admin_ticket;ticket=\ref[src]'><img border='0' width='16' height='16' class='uiIcon16 icon-flag' /> Administer</a>
 				</p>"}
 			content += "</div>"
 		else
 			content += "<div class='user-bar'>"
 			content += {"<p style='margin-top: 5px;'>
-					<a href='?src=\ref[src];user=\ref[usr];action=resolve_admin_ticket;ticket=\ref[src]'><img width='16' height='16' class='uiIcon16 icon-check' /> Close ticket</a>
+					<a href='?src=\ref[src];user=\ref[usr];action=resolve_admin_ticket;ticket=\ref[src]'><img border='0' width='16' height='16' class='uiIcon16 icon-check' /> Close ticket</a>
 				</p>"}
 			content += "</div>"
 
