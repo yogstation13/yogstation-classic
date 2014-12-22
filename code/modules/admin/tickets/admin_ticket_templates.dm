@@ -244,9 +244,11 @@
 						$('#resolved').removeClass('unresolved');
 
 						if(resolved == 1) {
+							$('.resolve-button span').html('Unresolve');
 							$('#resolved').addClass('resolved');
 							$('#resolved').html('Is resolved');
 						} else {
+							$('.resolve-button span').html('Resolve');
 							$('#resolved').addClass('unresolved');
 							$('#resolved').html('Is not resolved');
 						}

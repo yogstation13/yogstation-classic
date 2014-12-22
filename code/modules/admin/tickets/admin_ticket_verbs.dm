@@ -94,8 +94,8 @@
 						<b>[T.handling_admin ? "" : "<span class='unclaimed'>Unclaimed</span>!"] [T.title]</b><br />
 						<b>Owner:</b> <b>[T.owner_ckey] (DC)</b>
 						<a href='?src=\ref[T];user=\ref[src];action=view_admin_ticket;ticket=\ref[T]'><img border='0' width='16' height='16' class='uiIcon16 icon-search' /> View</a>
-						<a href='?src=\ref[T];user=\ref[src];action=monitor_admin_ticket;ticket=\ref[T];reloadlist=1'><img border='0' width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
-						<a href='?src=\ref[T];user=\ref[src];action=resolve_admin_ticket;ticket=\ref[T];reloadlist=1'><img border='0' width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
+						<a href='?src=\ref[T];user=\ref[src];action=monitor_admin_ticket;ticket=\ref[T];reloadlist=1' class='monitor-button'><img border='0' width='16' height='16' class='uiIcon16 icon-pin-s' /> <span>[!T.is_monitor(usr.client) ? "Un" : ""]Monitor</span></a>
+						<a href='?src=\ref[T];user=\ref[src];action=resolve_admin_ticket;ticket=\ref[T];reloadlist=1' class='resolve-button'><img border='0' width='16' height='16' class='uiIcon16 icon-check' /> <span>[T.resolved ? "Un" : ""]Resolve</span></a>
 						</p>"}
 				else
 					var/ai_found = (T.owner && isAI(get_ckey(T.owner)))
@@ -116,8 +116,8 @@
 							[ai_found ? " <a href='?_src_=holder;adminchecklaws=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> CL</a>" : ""]
 							"}
 					content += {"
-						<a href='?src=\ref[T];user=\ref[src];action=monitor_admin_ticket;ticket=\ref[T];reloadlist=1'><img border='0' width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
-						<a href='?src=\ref[T];user=\ref[src];action=resolve_admin_ticket;ticket=\ref[T];reloadlist=1'><img border='0' width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
+						<a href='?src=\ref[T];user=\ref[src];action=monitor_admin_ticket;ticket=\ref[T];reloadlist=1' class='monitor-button'><img border='0' width='16' height='16' class='uiIcon16 icon-pin-s' /> <span>[!T.is_monitor(usr.client) ? "Un" : ""]Monitor</span></a>
+						<a href='?src=\ref[T];user=\ref[src];action=resolve_admin_ticket;ticket=\ref[T];reloadlist=1' class='resolve-button'><img border='0' width='16' height='16' class='uiIcon16 icon-check' /> <span>[T.resolved ? "Un" : ""]Resolve</span></a>
 						</p>"}
 
 		if(resolved.len > 0)
@@ -131,8 +131,8 @@
 						<b>[T.title]</b><br />
 						<b>Owner:</b> <b>[T.owner_ckey] (DC)</b>
 						<a href='?src=\ref[T];user=\ref[src];action=view_admin_ticket;ticket=\ref[T]'><img border='0' width='16' height='16' class='uiIcon16 icon-search' /> View</a>
-						<a href='?src=\ref[T];user=\ref[src];action=monitor_admin_ticket;ticket=\ref[T];reloadlist=1'><img border='0' width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
-						<a href='?src=\ref[T];user=\ref[src];action=resolve_admin_ticket;ticket=\ref[T];reloadlist=1'><img border='0' width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
+						<a href='?src=\ref[T];user=\ref[src];action=monitor_admin_ticket;ticket=\ref[T];reloadlist=1' class='monitor-button'><img border='0' width='16' height='16' class='uiIcon16 icon-pin-s' /> <span>[!T.is_monitor(usr.client) ? "Un" : ""]Monitor</span></a>
+						<a href='?src=\ref[T];user=\ref[src];action=resolve_admin_ticket;ticket=\ref[T];reloadlist=1' class='resolve-button'><img border='0' width='16' height='16' class='uiIcon16 icon-check' /> <span>[T.resolved ? "Un" : ""]Resolve</span></a>
 						</p>"}
 				else
 					var/ai_found = (T.owner && isAI(get_ckey(T.owner)))
@@ -153,8 +153,8 @@
 							[ai_found ? " <a href='?_src_=holder;adminchecklaws=\ref[T.owner.mob]'><img border='0' width='16' height='16' class='uiIcon16 icon-clipboard' /> CL</a>" : ""]
 								"}
 					content += {"
-						<a href='?src=\ref[T];user=\ref[src];action=monitor_admin_ticket;ticket=\ref[T];reloadlist=1'><img border='0' width='16' height='16' class='uiIcon16 icon-pin-s' /> (Un)Monitor</a>
-						<a href='?src=\ref[T];user=\ref[src];action=resolve_admin_ticket;ticket=\ref[T];reloadlist=1'><img border='0' width='16' height='16' class='uiIcon16 icon-check' /> (Un)Resolve</a>
+						<a href='?src=\ref[T];user=\ref[src];action=monitor_admin_ticket;ticket=\ref[T];reloadlist=1' class='monitor-button'><img border='0' width='16' height='16' class='uiIcon16 icon-pin-s' /> <span>[!T.is_monitor(usr.client) ? "Un" : ""]Monitor</span></a>
+						<a href='?src=\ref[T];user=\ref[src];action=resolve_admin_ticket;ticket=\ref[T];reloadlist=1' class='resolve-button'><img border='0' width='16' height='16' class='uiIcon16 icon-check' /> <span>[T.resolved ? "Un" : ""]Resolve</span></a>
 						</p>"}
 	else
 		content += "<p class='info-bar'><a href='?user=\ref[src];action=refresh_admin_ticket_list;flag=[flag]'>Refresh List</a></p>"
