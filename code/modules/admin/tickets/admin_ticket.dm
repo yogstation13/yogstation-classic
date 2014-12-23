@@ -47,6 +47,7 @@
 	var/pm_started_flag = 0
 	var/error = 0
 	//var/log_file
+	var/admin_started_ticket = 0
 
 /datum/admin_ticket/New(nowner, ntitle, ntarget)
 	if(compare_ckey(nowner, ntarget))
@@ -61,6 +62,7 @@
 		handling_admin = get_client(owner)
 		owner = get_client(ntarget)
 		owner_ckey = get_ckey(ntarget)
+		admin_started_ticket = 1
 
 	for(var/datum/admin_ticket/T in tickets_list)
 		if(!T.resolved && (compare_ckey(owner_ckey, T.owner_ckey)))
