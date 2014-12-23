@@ -103,7 +103,7 @@
 			message_admins("EXPLOIT \[admin_ticket\]: [M] attempted to resolve a ticket, but the user is not an admin or the ticket owner.")
 			return
 
-		if(C.holder || (compare_ckey(M, T.owner_ckey) && !T.resolved))
+		if(C.holder || (compare_ckey(M, T.owner_ckey) && !T.resolved && !T.admin_started_ticket))
 			T.toggle_resolved()
 		else if(compare_ckey(M, T.owner_ckey) && T.resolved)
 			C << "<span class='ticket-status'>-- Your ticket is already closed. You cannot reopen it.</span>"

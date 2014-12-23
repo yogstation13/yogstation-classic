@@ -149,10 +149,20 @@
 				}
 
 				.ticket-bar {
+					position: relative;
 					background-color: #202020;
 					border: solid 1px #404040;
 					margin: 4px;
 					padding: 4px;
+				}
+
+				.ticket-number {
+					position: absolute;
+					top: 1px;
+					right: 1px;
+					padding: 1px;
+					background-color: #111;
+					border: solid 1px #222;
 				}
 
 				.large-font {
@@ -244,9 +254,11 @@
 						$('#resolved').removeClass('unresolved');
 
 						if(resolved == 1) {
+							$('.resolve-button span').html('Unresolve');
 							$('#resolved').addClass('resolved');
 							$('#resolved').html('Is resolved');
 						} else {
+							$('.resolve-button span').html('Resolve');
 							$('#resolved').addClass('unresolved');
 							$('#resolved').html('Is not resolved');
 						}
