@@ -25,11 +25,18 @@
 
 	var/output = "<center><p><a href='byond://?src=\ref[src];show_preferences=1'>Setup Character</A></p>"
 
-	if(!joining_forbidden)
-		if(!ticker || ticker.current_state <= GAME_STATE_PREGAME)
-			if(!ready)	output += "<p><a href='byond://?src=\ref[src];ready=1'>Declare Ready</A></p>"
-			else	output += "<p><b>You are ready</b> <a href='byond://?src=\ref[src];ready=0'>Cancel</A></p>"
+	if(!ticker || ticker.current_state <= GAME_STATE_PREGAME)
+		if(joining_forbidden)
+			output += "<p><span class='linkOff'>Ready</span> <span class='linkOff'>X</span></p>"
+		else if(ready)
+			output += "<p><span class='linkOn'><b>Ready</b></span> <a href='byond://?src=\ref[src];ready=0'>X</a></p>"
+		else
+			output += "<p><a href='byond://?src=\ref[src];ready=1'>Ready</a> <span class='linkOff'>X</span></p>"
 
+	else
+		output += "<a href='byond://?src=\ref[src];manifest=1'>View the Crew Manifest</A><br><br>"
+		if(joining_forbidden)
+			output += "<p><span class='linkOff'>Join Game!</span></p>"		
 		else
 			output += "<p><a href='byond://?src=\ref[src];late_join=1'>Join Game!</A></p>"
 
@@ -139,7 +146,10 @@
 		return 1
 
 	if(href_list["ready"])
-		ready = text2num(href_list["ready"])
+		if(!ticker || ticker.current_state <= GAME_STATE_PREGAME) // Make sure we don't ready up after the round has started
+			ready = !ready
+		else
+			ready = 0
 
 	if(href_list["refresh"])
 		src << browse(null, "window=playersetup") //closes the player setup window
@@ -176,6 +186,9 @@
 			usr << "<span class='danger'>The round is either not ready, or has already finished...</span>"
 			return
 		LateChoices()
+
+	if(href_list["manifest"])
+		ViewManifest()
 
 	if(href_list["SelectedJob"])
 
@@ -433,6 +446,12 @@
 
 	return new_character
 
+/mob/new_player/proc/ViewManifest()
+	var/dat = "<html><body>"
+	dat += "<h4>Crew Manifest</h4>"
+	dat += data_core.get_manifest(OOC = 1)
+
+	src << browse(dat, "window=manifest;size=370x420;can_close=1")
 
 /mob/new_player/Move()
 	return 0
