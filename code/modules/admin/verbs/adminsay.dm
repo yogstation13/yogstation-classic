@@ -9,11 +9,11 @@
 
 	log_admin("[key_name(src)] : [msg]")
 
-	var/regex/R = new("~#(\\d+)~<a href='?_src_=holder;adminticketview=$1'>#$1</a>~i")
+	/*var/regex/R = new("~#(\\d+)~<a href='?_src_=holder;adminticketview=$1'>#$1</a>~i")
 	var/newtxt = R.Replace(msg)
 	while(newtxt)
 		msg = newtxt
-		newtxt = R.ReplaceNext(msg)
+		newtxt = R.ReplaceNext(msg)*/
 
 	if(check_rights(R_ADMIN,0))
 		msg = "<span class='adminobserver'><span class='prefix'>ADMIN:</span> <EM>[key_name(usr, 1)]</EM> (<a href='?_src_=holder;adminplayerobservejump=\ref[mob]'>JMP</A>): <span class='message'>[msg]</span></span>"
