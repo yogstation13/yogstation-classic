@@ -196,6 +196,10 @@
 	paired.overlays -= image('icons/obj/computer.dmi', "paipaired")
 	paired.paired = null
 	paired = null
+
+	src << output(paired ? paired.name : "0", "pai.browser:onPairedChanged")
+	src << output(pairing ? "1" : "0", "pai.browser:onPairingChanged")
+
 	if(!silent)
 		src << "<span class='warning'><b>\[ERROR\]</b> Network timeout. Remote control connection severed.</span>"
 	return
@@ -217,6 +221,10 @@
 		P.paired.unpair(0)
 	P.paired = src
 	paired = P
+
+	src << output(paired ? paired.name : "0", "pai.browser:onPairedChanged")
+	src << output(pairing ? "1" : "0", "pai.browser:onPairingChanged")
+
 	paired.overlays += image('icons/obj/computer.dmi', "paipaired")
 	src << "<span class='info'>Handshake complete. Remote control connection established.</span>"
 	return
