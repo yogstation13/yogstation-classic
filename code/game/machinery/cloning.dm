@@ -171,6 +171,7 @@
 	clonemind.transfer_to(H)
 	H.ckey = ckey
 	H << "<span class='notice'><b>Consciousness slowly creeps over you as your body regenerates.</b><br><i>So this is what cloning feels like?</i></span>"
+	H << "<span class='notice'><i>Fragmented images of your life and the shift thus far churn within your newfound consciousness...</i>><br> Memories spooling to an abrupt halt, the <u>minutes before your death</u> race by in an <b>indecipherable</b> blur of confusion and disorientation, veiled by a wall of complete amnesia.</span>"
 
 	hardset_dna(H, ui, se, null, null, mrace, mcolor)
 

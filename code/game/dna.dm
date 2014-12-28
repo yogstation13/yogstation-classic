@@ -645,6 +645,7 @@
 	status += "<div class='line'><div class='statusLabel'>&nbsp;&nbsp;\> Accuracy:</div><div class='statusValue'>[chance_to_hit]</div></div>"
 	status += "</div>" // Close statusDisplay div
 	var/buttons = "<a href='?src=\ref[src];'>Scan</a> "
+	buttons += "<a href='?src=\ref[src];task=refresh'>Refresh</a>"
 	if(connected)
 		buttons += " <a href='?src=\ref[src];task=toggleopen;'>[connected.open ? "Close" : "Open"] Scanner</a> "
 		if (connected.open)
@@ -791,6 +792,8 @@
 	switch(href_list["task"])
 		if("togglelock")
 			if(connected)	connected.locked = !connected.locked
+		if("refresh")
+			src.updateUsrDialog()
 		if("toggleopen")
 			if(connected)	connected.toggle_open(usr)
 		if("setduration")
