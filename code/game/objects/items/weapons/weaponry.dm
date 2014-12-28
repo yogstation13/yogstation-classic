@@ -129,8 +129,9 @@ obj/item/weapon/wirerod/attackby(var/obj/item/I, mob/user as mob)
 		qdel(src)
 
 /obj/item/weapon/corgibat
-	name = "tele-scopic corgi baton"
+	name = "telescopic corgi baton"
 	desc = "Yap"
+	icon = 'icons/obj/corgibaton.dmi'
 	icon_state = "cbaton_0"
 	item_state = "cbaton_0"
 	w_class = 3.0
@@ -151,3 +152,17 @@ obj/item/weapon/wirerod/attackby(var/obj/item/I, mob/user as mob)
 		attack_verb = list("yapped", "corgified")
 	else
 		attack_verb = list("smashed", "beaten", "slammed", "smacked", "striked", "battered", "bonked")
+
+/obj/item/weapon/corgibat/afterattack(atom/A as mob|obj, mob/user as mob, proximity)
+	if(istype(user, /mob/living/carbon/human) && get_dist(src,A) <= 1)
+		var/mob/living/carbon/human/H = user
+		if(H.health <= 90&&src.enabled)
+			var/mob/C = new /mob/living/simple_animal/corgi/(loc)
+			switch(H.gender)
+				if(MALE)
+
+				if(FEMALE)
+					C.icon_state = "lisa"
+			C.ckey = H.ckey
+			C.name = H.name
+			H.gib()
