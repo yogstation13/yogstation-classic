@@ -95,18 +95,19 @@
 			<html>
 			<head>
 				<style type=\"text/css\">
-					body { background-image:url('html/paigrid.png'); }
+					html { background-color: #333; background-image:url('paigrid.png'); }
+					html, body { min-width: 600px; margin: 0px; padding: 5px; font-family: Helvetica, sans-serif; font-size: 12px; }
 
-					#header { text-align:center; color:white; font-size: 30px; height: 35px; width: 100%; letter-spacing: 2px; z-index: 5}
-					#content {position: relative; left: 10px; height: 400px; width: 100%; z-index: 0}
+					#header { text-align:center; color: #111; font-family: Impact, Charcoal, sans-serif; font-size: 3em; height: 35px; width: 100%; letter-spacing: 2px; margin-bottom: 15px; }
+					#content {border: solid 2px #000; min-width: 600px; min-height: 400px; width: 100%; overflow: hidden;}
 
-					#leftmenu {color: #AAAAAA; background-color:#333333; width: 400px; height: auto; min-height: 340px; position: absolute; z-index: 0}
+					#leftmenu {overflow: hidden; zoom: 1; margin-right: 240px; border-right: solid 2px #222; padding: 5px; font-size: 1.2em; color: #AAAAAA; background-color:#444; height: 100%; min-width: 300px; min-height: 400px; position: relative; }
 					#leftmenu a:link { color: #CCCCCC; }
 					#leftmenu a:hover { color: #CC3333; }
 					#leftmenu a:visited { color: #CCCCCC; }
 					#leftmenu a:active { color: #000000; }
 
-					#rightmenu {color: #CCCCCC; background-color:#555555; width: 200px ; height: auto; min-height: 340px; right: 10px; position: absolute; z-index: 1}
+					#rightmenu {float: right; padding: 5px; font-size: 1.2em; color: #CCCCCC; background-color:#555; width: 230px; height: 100%; min-height: 400px; position: relative; }
 					#rightmenu a:link { color: #CCCCCC; }
 					#rightmenu a:hover { color: #CC3333; }
 					#rightmenu a:visited { color: #CCCCCC; }
@@ -117,12 +118,18 @@
 					.yellow { color: #FFFF55; }
 					.shown { display: block; }
 					.hidden { display: none; }
-
+					.clear { clear: both; }
 				</style>
 				<script src="libraries.min.js"></script>
 				<script language='javascript' type='text/javascript'>
 				[js_byjax]
 				[additionalJS]
+
+					$(function() {
+						$('#content').fadeTo(1, 0.9);
+						$('#rightmenu').fadeTo(1, 0.9);
+						$('#leftmenu').fadeTo(1, 0.9);
+					});
 				</script>
 			</head>
 			<body scroll=yes>
@@ -130,8 +137,8 @@
 					pAI OS
 				</div>
 				<div id=\"content\">
-					<div id=\"leftmenu\">[left_part]</div>
-					<div id=\"rightmenu\">[right_part]</div>
+					<div id="rightmenu">[right_part]</div>
+					<div id="leftmenu">[left_part]</div>
 				</div>
 			</body>
 			</html>"}
