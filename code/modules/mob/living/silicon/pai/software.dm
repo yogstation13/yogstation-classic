@@ -126,9 +126,9 @@
 				[additionalJS]
 
 					$(function() {
-						$('#content').fadeTo(1, 0.9);
-						$('#rightmenu').fadeTo(1, 0.9);
-						$('#leftmenu').fadeTo(1, 0.9);
+						$('#content').fadeTo(1, 0.95);
+						$('#rightmenu').fadeTo(1, 0.95);
+						$('#leftmenu').fadeTo(1, 0.95);
 					});
 				</script>
 			</head>
