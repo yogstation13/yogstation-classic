@@ -62,7 +62,9 @@
 
 	if(href_list["request"])
 		src.looking_for_personality = 1
-		paiController.findPAI(src, usr)
+		if(paiController.findPAI(src, usr))
+			usr << browse(null, "window=paicard")
+			return
 
 	if(pai)
 		if(href_list["setdna"])
