@@ -98,7 +98,7 @@
 					html { background-color: #333; background-image:url('paigrid.png'); }
 					html, body { min-width: 600px; margin: 0px; padding: 5px; font-family: Helvetica, sans-serif; font-size: 12px; }
 
-					#header { text-align:center; color: #111; font-family: Impact, Charcoal, sans-serif; font-size: 3em; height: 35px; width: 100%; letter-spacing: 2px; margin-bottom: 15px; }
+					#header { text-align:center; color: #111; font-family: Impact, Charcoal, sans-serif; font-size: 3em; height: 35px; width: 100%; letter-spacing: 2px; margin-bottom: 15px; position: relative; }
 					#content {border: solid 2px #000; min-width: 600px; min-height: 400px; width: 100%; overflow: hidden;}
 
 					#leftmenu {overflow: hidden; zoom: 1; margin-right: 240px; border-right: solid 2px #222; padding: 5px; font-size: 1.2em; color: #AAAAAA; background-color:#444; height: 100%; min-width: 300px; min-height: 400px; position: relative; }
@@ -119,6 +119,9 @@
 					.shown { display: block; }
 					.hidden { display: none; }
 					.clear { clear: both; }
+
+					#header #icon-container { position: absolute; left: 0px; top: 0px; width: 48px; height: 48px; cursor: pointer;  }
+					#icon-container img { position: absolute; left: 0px; top: 0px; }
 				</style>
 				<script src="libraries.min.js"></script>
 				<script language='javascript' type='text/javascript'>
@@ -129,11 +132,21 @@
 						$('#content').fadeTo(1, 0.95);
 						$('#rightmenu').fadeTo(1, 0.95);
 						$('#leftmenu').fadeTo(1, 0.95);
+
+						$('#pai,#overlay').click(function() {
+							window.location = 'byond://?src=\ref[src];software=image';
+						});
 					});
+
+					function onDisplayChanged(status) {
+						$('#overlay').attr('src', 'pai.png');
+						$('#overlay').attr('src', status+'.png');
+					}
 				</script>
 			</head>
 			<body scroll=yes>
 				<div id=\"header\">
+					<div id='icon-container'><img src='pai.png' id='pai' width='100%' height='100%' /><img src='overlay.png' id='overlay' width='100%' height='100%' /></div>
 					pAI OS
 				</div>
 				<div id=\"content\">
@@ -147,7 +160,7 @@
 	temp = null
 	return
 
-
+// <div id='icon-container'><div id='pai'></div><div id='overlay'></div></div>
 
 /mob/living/silicon/pai/Topic(href, href_list)
 	..()
