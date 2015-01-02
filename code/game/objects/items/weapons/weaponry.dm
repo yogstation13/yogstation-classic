@@ -154,7 +154,7 @@ obj/item/weapon/wirerod/attackby(var/obj/item/I, mob/user as mob)
 		attack_verb = list("smashed", "beaten", "slammed", "smacked", "striked", "battered", "bonked")
 
 /obj/item/weapon/corgibat/afterattack(atom/A as mob|obj, mob/user as mob, proximity)
-	if(istype(user, /mob/living/carbon/human) && proximity <= 1)
+	if(istype(A, /mob/living/carbon/human) && proximity <= 1)
 		var/mob/living/carbon/human/H = A
 		if(H.health <= 30&&src.enabled)
 			var/mob/C = new /mob/living/simple_animal/corgi/(loc)
