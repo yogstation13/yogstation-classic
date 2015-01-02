@@ -154,15 +154,20 @@ obj/item/weapon/wirerod/attackby(var/obj/item/I, mob/user as mob)
 		attack_verb = list("smashed", "beaten", "slammed", "smacked", "striked", "battered", "bonked")
 
 /obj/item/weapon/corgibat/afterattack(atom/A as mob|obj, mob/user as mob, proximity)
-	if(istype(user, /mob/living/carbon/human) && get_dist(src,A) <= 1)
-		var/mob/living/carbon/human/H = user
-		if(H.health <= 90&&src.enabled)
+	if(istype(user, /mob/living/carbon/human) && proximity <= 1)
+		var/mob/living/carbon/human/H = A
+		if(H.health <= 30&&src.enabled)
 			var/mob/C = new /mob/living/simple_animal/corgi/(loc)
 			switch(H.gender)
 				if(MALE)
-
+					C.icon_state = "corgi"
 				if(FEMALE)
 					C.icon_state = "lisa"
-			C.ckey = H.ckey
+			//Move data over
 			C.name = H.name
+			C.real_name = H.real_name
+			C.loc = H.loc
+			for(var/obj/item/W in H)
+				unEquip(W)
+			H.mind.transfer_to(C)
 			H.gib()
