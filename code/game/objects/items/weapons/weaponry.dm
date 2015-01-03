@@ -130,3 +130,47 @@ obj/item/weapon/wirerod/attackby(var/obj/item/I, mob/user as mob)
 		user << "<span class='notice'>You fasten the wirecutters to the top of the rod with the cable, prongs outward.</span>"
 		qdel(I)
 		qdel(src)
+
+/obj/item/weapon/corgibat
+	name = "telescopic corgi baton"
+	desc = "Yap"
+	icon = 'icons/obj/corgibaton.dmi'
+	icon_state = "cbaton_0"
+	item_state = "cbaton_0"
+	w_class = 3.0
+	force = 15
+	throw_speed = 3
+	throw_range = 7
+	throwforce = 1
+	attack_verb = list("smashed", "beaten", "slammed", "smacked", "striked", "battered", "bonked")
+	hitsound = 'sound/weapons/genhit3.ogg'
+	var/enabled = 0
+
+/obj/item/weapon/corgibat/attack_self(mob/user as mob)
+	enabled = 1 - enabled
+	force = 15 * (1-enabled)
+	item_state = "cbaton_[enabled]"
+	icon_state = "cbaton_[enabled]"
+	if(enabled)
+		attack_verb = list("yapped", "corgified")
+	else
+		attack_verb = list("smashed", "beaten", "slammed", "smacked", "striked", "battered", "bonked")
+
+/obj/item/weapon/corgibat/afterattack(atom/A as mob|obj, mob/user as mob, proximity)
+	if(istype(A, /mob/living/carbon/human) && proximity == 1)
+		var/mob/living/carbon/human/H = A
+		if(H.health <= 30&&src.enabled)
+			var/mob/C = new /mob/living/simple_animal/corgi/(loc)
+			switch(H.gender)
+				if(MALE)
+					C.icon_state = "corgi"
+				if(FEMALE)
+					C.icon_state = "lisa"
+			//Move data over
+			C.name = H.name
+			C.real_name = H.real_name
+			C.loc = H.loc
+			for(var/obj/item/W in H)
+				unEquip(W)
+			H.mind.transfer_to(C)
+			H.gib()

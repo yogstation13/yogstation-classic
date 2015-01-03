@@ -119,7 +119,6 @@ emp_act
 			return 1
 	return 0
 
-
 /mob/living/carbon/human/attacked_by(var/obj/item/I, var/mob/living/user, var/def_zone)
 	if(!I || !user)	return 0
 
