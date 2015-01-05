@@ -168,6 +168,6 @@ obj/item/weapon/wirerod/attackby(var/obj/item/I, mob/user as mob)
 			C.real_name = H.real_name
 			C.loc = H.loc
 			for(var/obj/item/W in H)
-				unEquip(W)
+				H.unEquip(W)
 			H.mind.transfer_to(C)
 			H.gib()
