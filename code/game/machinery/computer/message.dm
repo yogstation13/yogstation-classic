@@ -508,13 +508,10 @@
 
 	return src.attack_hand(usr)
 
-/obj/machinery/computer/message_monitor/centcomm
-	auth = 1
-
 /obj/item/weapon/paper/monitorkey
 	//..()
 	name = "monitor decryption key"
-	var/obj/machinery/message_server/server = null*/
+	var/obj/machinery/message_server/server = null
 
 /obj/item/weapon/paper/monitorkey/New()
 	..()
@@ -527,4 +524,3 @@
 						info_links = info
 						overlays += "paper_words"
 						break
-
