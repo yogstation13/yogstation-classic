@@ -466,6 +466,7 @@
 									var/mob/living/carbon/human/H = customrecepient.loc
 									H << "\icon[customrecepient] <b>Message from [customsender] ([customjob]), </b>\"[custommessage]\" (<a href='byond://?src=\ref[src];choice=Message;skiprefresh=1;target=\ref[src]'>Reply</a>)"
 								log_pda("[usr]/([usr.ckey]) (PDA: [customsender]) sent \"[custommessage]\" to [customrecepient.owner]")
+								investigate_log("[usr]/([usr.ckey]) (PDA: [customsender]) sent \"[custommessage]\" to [customrecepient.owner]", "pda")
 								customrecepient.overlays.Cut()
 								customrecepient.overlays += image('icons/obj/pda.dmi', "pda-r")
 						//Sender is faking as someone who exists
@@ -479,6 +480,7 @@
 									var/mob/living/carbon/human/H = customrecepient.loc
 									H << "\icon[customrecepient] <b>Message from [PDARec.owner] ([customjob]), </b>\"[custommessage]\" (<a href='byond://?src=\ref[customrecepient];choice=Message;skiprefresh=1;target=\ref[PDARec]'>Reply</a>)"
 								log_pda("[usr]/([usr.ckey]) (PDA: [PDARec.owner]) sent \"[custommessage]\" to [customrecepient.owner]")
+								investigate_log("[usr]/([usr.ckey]) (PDA: [PDARec.owner]) sent \"[custommessage]\" to [customrecepient.owner]", "pda")
 								customrecepient.overlays.Cut()
 								customrecepient.overlays += image('icons/obj/pda.dmi', "pda-r")
 						//Finally..
@@ -506,11 +508,13 @@
 
 	return src.attack_hand(usr)
 
+/obj/machinery/computer/message_monitor/centcomm
+	auth = 1
 
 /obj/item/weapon/paper/monitorkey
 	//..()
 	name = "monitor decryption key"
-	var/obj/machinery/message_server/server = null
+	var/obj/machinery/message_server/server = null*/
 
 /obj/item/weapon/paper/monitorkey/New()
 	..()
@@ -523,3 +527,4 @@
 						info_links = info
 						overlays += "paper_words"
 						break
+

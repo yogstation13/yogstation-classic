@@ -821,7 +821,8 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		if(L)
 			L << "\icon[P] <b>Message from [src.owner] ([ownjob]), </b>\"[t]\" (<a href='byond://?src=\ref[P];choice=Message;skiprefresh=1;target=\ref[src]'>Reply</a>)"
 
-		log_pda("[usr] (PDA: [src.name]) sent \"[t]\" to [P.name]")
+		log_pda("[usr] ([usr.ckey]) (PDA: [src.name]) sent \"[t]\" to [P.name]")
+		investigate_log("[usr]([usr.ckey]) (PDA: [src.name]) sent \"[t]\" to [P.name]", "pda")
 		P.overlays.Cut()
 		P.overlays += image('icons/obj/pda.dmi', "pda-r")
 	else
