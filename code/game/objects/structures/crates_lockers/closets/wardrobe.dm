@@ -34,9 +34,6 @@
 	new /obj/item/clothing/head/soft/sec(src)
 	new /obj/item/clothing/head/soft/sec(src)
 	new /obj/item/clothing/head/soft/sec(src)
-	new /obj/item/clothing/head/santa(src)
-	new /obj/item/clothing/head/santa(src)
-	new /obj/item/clothing/head/santa(src)
 	return
 
 /obj/structure/closet/wardrobe/pink
@@ -344,7 +341,6 @@
 	if(prob(50))
 		new /obj/item/clothing/suit/toggle/wintercoat(src)
 		new /obj/item/clothing/shoes/winterboots(src)
-		new /obj/item/clothing/head/santa(src)
 	return
 
 
@@ -370,7 +366,6 @@
 	if(prob(50))
 		new /obj/item/clothing/suit/toggle/wintercoat(src)
 		new /obj/item/clothing/shoes/winterboots(src)
-		new /obj/item/clothing/head/santa(src)
 	return
 
 /*Clerk Locker*/
