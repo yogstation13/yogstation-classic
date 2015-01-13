@@ -62,7 +62,9 @@
 
 	if(href_list["request"])
 		src.looking_for_personality = 1
-		paiController.findPAI(src, usr)
+		if(paiController.findPAI(src, usr))
+			usr << browse(null, "window=paicard")
+			return
 
 	if(pai)
 		if(href_list["setdna"])
@@ -105,36 +107,39 @@
 
 /obj/item/device/paicard/proc/setPersonality(mob/living/silicon/pai/personality)
 	src.pai = personality
-	src.overlays += "pai-happy"
+	setEmotionOverlay("pai-happy")
 
 /obj/item/device/paicard/proc/removePersonality()
 	src.pai = null
-	src.overlays.Cut()
-	src.overlays += "pai-off"
+	setEmotionOverlay("pai-off")
 
 /obj/item/device/paicard/proc/setAlert()
-	src.overlays.Cut()
-	src.overlays += "pai-alert"
+	setEmotionOverlay("pai-alert")
 
 /obj/item/device/paicard/proc/setBaseOverlay()
 	if (paiController != null && paiController.availableRecruitsCount() != 0)
 		src.alertUpdate()
 	else
-		src.overlays += "pai-off"
+		setEmotionOverlay("pai-off")
 
 /obj/item/device/paicard/proc/setEmotion(var/emotion)
 	if(pai)
-		src.overlays.Cut()
 		switch(emotion)
-			if(1) src.overlays += "pai-happy"
-			if(2) src.overlays += "pai-cat"
-			if(3) src.overlays += "pai-extremely-happy"
-			if(4) src.overlays += "pai-face"
-			if(5) src.overlays += "pai-laugh"
-			if(6) src.overlays += "pai-off"
-			if(7) src.overlays += "pai-sad"
-			if(8) src.overlays += "pai-angry"
-			if(9) src.overlays += "pai-what"
+			if(1) setEmotionOverlay("pai-happy")
+			if(2) setEmotionOverlay("pai-cat")
+			if(3) setEmotionOverlay("pai-extremely-happy")
+			if(4) setEmotionOverlay("pai-face")
+			if(5) setEmotionOverlay("pai-laugh")
+			if(6) setEmotionOverlay("pai-off")
+			if(7) setEmotionOverlay("pai-sad")
+			if(8) setEmotionOverlay("pai-angry")
+			if(9) setEmotionOverlay("pai-what")
+
+/obj/item/device/paicard/proc/setEmotionOverlay(var/overlay)
+	src.overlays.Cut()
+	src.overlays += overlay
+
+	world << output("[overlay]", "pai.browser:onDisplayChanged")
 
 /obj/item/device/paicard/proc/alertUpdate()
 	src.setAlert()

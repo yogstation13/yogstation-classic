@@ -76,7 +76,19 @@
 
 /mob/living/silicon/pai/Login()
 	..()
-	usr << browse_rsc('html/paigrid.png')			// Go ahead and cache the interface resources as early as possible
+	// Go ahead and cache the interface resources as early as possible
+	usr << browse_rsc('html/paigrid.png')
+
+	usr << browse_rsc(icon("icons/obj/aicards.dmi", "pai"), "pai.png")
+	usr << browse_rsc(icon("icons/obj/aicards.dmi", "pai-happy"), "pai-happy.png")
+	usr << browse_rsc(icon("icons/obj/aicards.dmi", "pai-cat"), "pai-cat.png")
+	usr << browse_rsc(icon("icons/obj/aicards.dmi", "pai-extremely-happy"), "pai-extremely-happy.png")
+	usr << browse_rsc(icon("icons/obj/aicards.dmi", "pai-face"), "pai-face.png")
+	usr << browse_rsc(icon("icons/obj/aicards.dmi", "pai-laugh"), "pai-laugh.png")
+	usr << browse_rsc(icon("icons/obj/aicards.dmi", "pai-off"), "pai-off.png")
+	usr << browse_rsc(icon("icons/obj/aicards.dmi", "pai-sad"), "pai-sad.png")
+	usr << browse_rsc(icon("icons/obj/aicards.dmi", "pai-angry"), "pai-angry.png")
+	usr << browse_rsc(icon("icons/obj/aicards.dmi", "pai-what"), "pai-what.png")
 
 
 /mob/living/silicon/pai/Stat()
@@ -196,6 +208,10 @@
 	paired.overlays -= image('icons/obj/computer.dmi', "paipaired")
 	paired.paired = null
 	paired = null
+
+	src << output(paired ? paired.name : "0", "pai.browser:onPairedChanged")
+	src << output(pairing ? "1" : "0", "pai.browser:onPairingChanged")
+
 	if(!silent)
 		src << "<span class='warning'><b>\[ERROR\]</b> Network timeout. Remote control connection severed.</span>"
 	return
@@ -217,6 +233,10 @@
 		P.paired.unpair(0)
 	P.paired = src
 	paired = P
+
+	src << output(paired ? paired.name : "0", "pai.browser:onPairedChanged")
+	src << output(pairing ? "1" : "0", "pai.browser:onPairingChanged")
+
 	paired.overlays += image('icons/obj/computer.dmi', "paipaired")
 	src << "<span class='info'>Handshake complete. Remote control connection established.</span>"
 	return

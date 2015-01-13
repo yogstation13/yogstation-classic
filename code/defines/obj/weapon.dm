@@ -226,6 +226,7 @@
 	icon = 'icons/obj/power.dmi'
 	icon_state = "wire1"
 
+	var/obj/item/device/paicard/owner
 	var/obj/machinery/machine
 
 ///////////////////////////////////////Stock Parts /////////////////////////////////

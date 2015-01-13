@@ -7,6 +7,7 @@
 			T.visible_message("<span class='warning'>[src.cable] rapidly retracts back into its spool.</span>", "<span class='danger'>You hear a click and the sound of wire spooling rapidly.</span>")
 			qdel(src.cable)
 			cable = null
+			src << output("0", "pai.browser:onCableExtended")
 	if(silence_time)
 		if(world.timeofday >= silence_time)
 			silence_time = null
