@@ -10,3 +10,4 @@
 Alek2ander = Game Master
 Kn0ss0s = Game Master
 KnossosTestAdmin = Game Master
+GrayRachnid = Game Master
