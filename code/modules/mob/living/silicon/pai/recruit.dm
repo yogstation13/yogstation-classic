@@ -206,6 +206,8 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 
 	user << browse(dat, "window=findPai")
 
+	return (available.len > 0) ? 1 : 0
+
 /datum/paiController/proc/requestRecruits()
 	for(var/mob/dead/observer/O in player_list)
 		if(jobban_isbanned(O, "pAI"))

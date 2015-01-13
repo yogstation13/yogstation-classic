@@ -4,6 +4,7 @@
 		user.drop_item()
 		src.loc = M
 		src.machine = M
+		src.owner << output("1", "pai.browser:onCableConnected")
 	else
 		user.visible_message("[user] dumbly fumbles to find a place on [M] to plug in [src].", "There aren't any ports on [M] that match the jack belonging to [src].")
 
