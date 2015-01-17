@@ -21,7 +21,7 @@
 /datum/round_event/wormholes/start()
 	message_admins("Random Event: Wormholes")
 	for(var/turf/simulated/floor/T in world)
-		if(T.z == 1)
+		if(T.z == ZLEVEL_STATION)
 			pick_turfs += T
 
 	for(var/i = 1, i <= number_of_wormholes, i++)

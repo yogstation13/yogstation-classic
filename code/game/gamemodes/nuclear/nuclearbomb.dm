@@ -368,12 +368,12 @@ var/bomb_set
 #define NUKERANGE 80
 /obj/machinery/nuclearbomb/proc/is_off_station()
 	var/turf/bomb_location = get_turf(src)
-	if( bomb_location && (bomb_location.z == 1) )
+	if( bomb_location && (bomb_location.z == ZLEVEL_STATION) )
 		if( (bomb_location.x < (128-NUKERANGE)) || (bomb_location.x > (128+NUKERANGE)) || (bomb_location.y < (128-NUKERANGE)) || (bomb_location.y > (128+NUKERANGE)) )
 			return 1
 		else
 			return 0
-	else if (bomb_location && (bomb_location.z > 1))
+	else if (bomb_location && (bomb_location.z != ZLEVEL_STATION))
 		return bomb_location.z
 	else
 		return 1
@@ -442,7 +442,7 @@ var/bomb_set
 
 /obj/item/weapon/disk/nuclear/process()
 	var/turf/disk_loc = get_turf(src)
-	if(disk_loc.z > 2)
+	if(disk_loc.z > ZLEVEL_CENTCOM)
 		get(src, /mob) << "<span class='danger'>You can't help but feel that you just lost something back there...</span>"
 		Destroy()
 

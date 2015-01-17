@@ -86,7 +86,7 @@
 	new /obj/item/weapon/shield/riot/tele(src)
 	new /obj/item/weapon/melee/baton/loaded(src)
 	new /obj/item/weapon/gun/energy/gun/advtaser(src)
-	new /obj/item/weapon/storage/belt/security(src)
+	new /obj/item/weapon/storage/belt/security/full(src)
 	new /obj/item/clothing/suit/toggle/wintercoat/security(src)
 	new /obj/item/device/radio/security(src)
 	return
@@ -118,7 +118,7 @@
 	new /obj/item/weapon/reagent_containers/spray/pepper(src)
 	new /obj/item/weapon/melee/baton/loaded(src)
 	new /obj/item/weapon/gun/energy/gun/advtaser(src)
-	new /obj/item/weapon/storage/belt/security(src)
+	new /obj/item/weapon/storage/belt/security/full(src)
 	new /obj/item/clothing/suit/toggle/wintercoat/security(src)
 	new /obj/item/device/radio/security(src)
 	return
@@ -143,7 +143,7 @@
 	new /obj/item/weapon/reagent_containers/spray/pepper(src)
 	new /obj/item/device/flash/handheld(src)
 	new /obj/item/weapon/grenade/flashbang(src)
-	new /obj/item/weapon/storage/belt/security(src)
+	new /obj/item/weapon/storage/belt/security/full(src)
 	new /obj/item/clothing/glasses/hud/security/sunglasses(src)
 	new /obj/item/clothing/suit/toggle/wintercoat/security(src)
 	new /obj/item/device/radio/security(src)
