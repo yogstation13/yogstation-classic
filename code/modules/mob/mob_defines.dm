@@ -2,7 +2,7 @@
 	density = 1
 	layer = 4
 	animate_movement = 2
-	flags = NOREACT | HEAR
+	flags = HEAR
 	hud_possible = list(ANTAG_HUD)
 	var/datum/mind/mind
 
@@ -42,19 +42,17 @@
 	var/obj/machinery/machine = null
 	var/other_mobs = null
 	var/memory = ""
-	var/sdisabilities = 0	//Carbon
 	var/disabilities = 0	//Carbon
 	var/atom/movable/pulling = null
 	var/next_move = null
 	var/notransform = null	//Carbon
 	var/hand = null
-	var/eye_blind = null	//Carbon
-	var/eye_blurry = null	//Carbon
-	var/ear_deaf = null		//Carbon
-	var/ear_damage = null	//Carbon
+	var/eye_blind = 0		//Carbon
+	var/eye_blurry = 0		//Carbon
+	var/ear_deaf = 0		//Carbon
+	var/ear_damage = 0		//Carbon
 	var/stuttering = null	//Carbon
 	var/real_name = null
-	var/blinded = null
 	var/bhunger = 0			//Carbon
 	var/ajourn = 0
 	var/druggy = 0			//Carbon
@@ -113,10 +111,6 @@
 
 	var/job = null//Living
 
-	var/const/blindness = 1//Carbon
-	var/const/deafness = 2//Carbon
-	var/const/muteness = 4//Carbon
-
 	var/radiation = 0//Carbon
 
 	var/list/mutations = list() //Carbon -- Doohl
@@ -154,6 +148,8 @@
 	var/area/lastarea = null
 
 	var/digitalcamo = 0 // Can they be tracked by the AI?
+
+	var/has_unlimited_silicon_privilege = 0 // Can they interact with station electronics
 
 	var/list/radar_blips = list() // list of screen objects, radar blips
 	var/radar_open = 0 	// nonzero is radar is open

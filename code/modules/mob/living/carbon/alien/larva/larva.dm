@@ -26,7 +26,8 @@
 //This needs to be fixed
 /mob/living/carbon/alien/larva/Stat()
 	..()
-	stat(null, "Progress: [amount_grown]/[max_grown]")
+	if(statpanel("Status"))
+		stat(null, "Progress: [amount_grown]/[max_grown]")
 
 /mob/living/carbon/alien/larva/adjustToxLoss(amount)
 	if(stat != DEAD)
@@ -50,15 +51,13 @@
 
 			f_loss += 60
 
-			ear_damage += 30
-			ear_deaf += 120
+			adjustEarDamage(30,120)
 
 		if(3.0)
 			b_loss += 30
 			if (prob(50))
 				Paralyse(1)
-			ear_damage += 15
-			ear_deaf += 60
+			adjustEarDamage(15,60)
 
 	adjustBruteLoss(b_loss)
 	adjustFireLoss(f_loss)
@@ -104,17 +103,21 @@
 	updatehealth()
 	return
 
+/mob/living/carbon/alien/larva/attack_hulk(mob/living/carbon/human/user)
+	if(user.a_intent == "harm")
+		..(user, 1)
+		adjustBruteLoss(5 + rand(1,9))
+		Paralyse(1)
+		spawn()
+			step_away(src,user,15)
+			sleep(1)
+			step_away(src,user,15)
+		return 1
+
 /mob/living/carbon/alien/larva/attack_hand(mob/living/carbon/human/M as mob)
 	if(..())
 		var/damage = rand(1, 9)
 		if (prob(90))
-			if (HULK in M.mutations)
-				damage += 5
-				spawn(0)
-					Paralyse(1)
-					step_away(src,M,15)
-					sleep(3)
-					step_away(src,M,15)
 			playsound(loc, "punch", 25, 1, -1)
 			add_logs(M, src, "attacked", admin=0)
 			visible_message("<span class='danger'>[M] has kicked [src]!</span>", \

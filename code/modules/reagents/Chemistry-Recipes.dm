@@ -12,6 +12,10 @@
 
 	var/result_amount = 0
 	var/secondary = 0 // set to nonzero if secondary reaction
+	var/mob_react = 0 //Determines if a chemical reaction can occur inside a mob
+
+	var/required_temp = 0
+	var/mix_message = "The solution begins to bubble."
 
 /datum/chemical_reaction/proc/on_reaction(var/datum/reagents/holder, var/created_volume)
 	return
@@ -400,6 +404,7 @@ silicate
 	required_reagents = list("potassium" = 1, "sugar" = 1, "phosphorus" = 1)
 	result_amount = null
 	secondary = 1
+	mob_react = 1
 
 /datum/chemical_reaction/chemsmoke/on_reaction(var/datum/reagents/holder, var/created_volume)
 	var/turf/location = get_turf(holder.my_atom)
@@ -467,6 +472,7 @@ silicate
 	result = null
 	required_reagents = list("iron" = 5, "frostoil" = 5, "plasma" = 20)
 	result_amount = 1
+	mob_react = 1
 
 /datum/chemical_reaction/plasmasolidification/on_reaction(var/datum/reagents/holder, var/created_volume)
 	var/location = get_turf(holder.my_atom)
@@ -556,6 +562,7 @@ silicate
 	result = null
 	required_reagents = list("fluorosurfactant" = 1, "water" = 1)
 	result_amount = 2
+	mob_react = 1
 
 /datum/chemical_reaction/foam/on_reaction(var/datum/reagents/holder, var/created_volume)
 
@@ -585,6 +592,7 @@ silicate
 	result = null
 	required_reagents = list("aluminium" = 3, "foaming_agent" = 1, "pacid" = 1)
 	result_amount = 5
+	mob_react = 1
 
 /datum/chemical_reaction/metalfoam/on_reaction(var/datum/reagents/holder, var/created_volume)
 
@@ -605,6 +613,7 @@ silicate
 	result = null
 	required_reagents = list("iron" = 3, "foaming_agent" = 1, "pacid" = 1)
 	result_amount = 5
+	mob_react = 1
 
 /datum/chemical_reaction/ironfoam/on_reaction(var/datum/reagents/holder, var/created_volume)
 

@@ -43,7 +43,7 @@ var/next_mob_id = 0
 	t+= "<span class='notice'>Plasma : [environment.toxins] \n</span>"
 	t+= "<span class='notice'>Carbon Dioxide: [environment.carbon_dioxide] \n</span>"
 	for(var/datum/gas/trace_gas in environment.trace_gases)
-		usr << "<span class='notice'>[trace_gas.type]: [trace_gas.moles] \n</span>"
+		t+= "<span class='notice'>[trace_gas.type]: [trace_gas.moles] \n</span>"
 
 	usr.show_message(t, 1)
 
@@ -54,19 +54,19 @@ var/next_mob_id = 0
 	msg = copytext(msg, 1, MAX_MESSAGE_LEN)
 
 	if (type)
-		if(type & 1 && (sdisabilities & BLIND || blinded || paralysis) )//Vision related
+		if(type & 1 && (disabilities & BLIND || paralysis) )//Vision related
 			if (!( alt ))
 				return
 			else
 				msg = alt
 				type = alt_type
-		if (type & 2 && (sdisabilities & DEAF || ear_deaf))//Hearing related
+		if (type & 2 && ear_deaf)//Hearing related
 			if (!( alt ))
 				return
 			else
 				msg = alt
 				type = alt_type
-				if ((type & 1 && sdisabilities & BLIND))
+				if ((type & 1 && disabilities & BLIND))
 					return
 	// Added voice muffling for Issue 41.
 	if(stat == UNCONSCIOUS || sleeping > 0)
@@ -78,55 +78,75 @@ var/next_mob_id = 0
 // Show a message to all mobs who sees the src mob and the src mob itself
 // This would be for visible actions by the src mob
 // message is the message output to anyone who can see e.g. "[src] does something!"
-// self_message (optional) is what the src mob sees  e.g. "You do something!"
-// blind_message (optional) is what blinded people will hear e.g. "You hear something!"
+// self_message (optional) is what the src mob sees e.g. "You do something!"
+// blind_message (optional) is what blind people will hear e.g. "You hear something!"
 
 /mob/visible_message(var/message, var/self_message, var/blind_message)
 	var/list/mob_viewers = list()
-	for(var/mob/M in player_list)
-		var/turf/T = get_turf(M)
-		if( (src in view(T)) || M == src)
-			mob_viewers |= M
-	for(var/mob/O in mob_viewers)
-		if(O.see_invisible < invisibility)
+	var/list/possible_viewers = list()
+	mob_viewers |= src
+	mob_viewers |= viewers(src)
+	var/heard = get_hear(7, src)
+	for(var/atom/movable/A in heard)
+		possible_viewers |= recursive_hear_check(A)
+	for(var/mob/B in possible_viewers)
+		if(B in mob_viewers)
+			continue
+		if(isturf(B.loc))
+			continue
+		var/turf/T = get_turf(B)
+		if(src in view(T))
+			mob_viewers |= B
+
+	for(var/mob/M in mob_viewers)
+		if(M.see_invisible < invisibility)
 			continue //can't view the invisible
-		if(O == src && stat != UNCONSCIOUS && !sleeping)
-			var/msg = message
-			if(self_message)
-				msg = self_message
-			O << msg
-		else
-			O.show_message( message, 1, blind_message, 2)
+		var/msg = message
+		if(self_message && M==src)
+			msg = self_message
+		M.show_message(msg, 1)
+
 	if(blind_message)
 		var/list/mob_hearers = list()
-		for(var/mob/MOB in get_player_mob_hearers_in_view(7, src))
-			if(MOB in mob_viewers)
-				continue //if we get the normal message, we don't get the blind_message.
-			mob_hearers |= MOB
-		for(var/mob/A in mob_hearers)
-			A.show_message( blind_message, 2)
+		for(var/mob/C in get_hearers_in_view(7, src))
+			if(C in mob_viewers)
+				continue
+			mob_hearers |= C
+		for(var/mob/MOB in mob_hearers)
+			MOB.show_message(blind_message, 2)
 
 // Show a message to all mobs who sees this atom
 // Use for objects performing visible actions
 // message is output to anyone who can see, e.g. "The [src] does something!"
-// blind_message (optional) is what blinded people will hear e.g. "You hear something!"
+// blind_message (optional) is what blind people will hear e.g. "You hear something!"
 
 /atom/proc/visible_message(var/message, var/blind_message)
 	var/list/mob_viewers = list()
-	for(var/mob/M in player_list)
-		var/turf/T = get_turf(M)
+	var/list/possible_viewers = list()
+	mob_viewers |= viewers(src)
+	var/heard = get_hear(7, src)
+	for(var/atom/movable/A in heard)
+		possible_viewers |= recursive_hear_check(A)
+	for(var/mob/B in possible_viewers)
+		if(B in mob_viewers)
+			continue
+		if(isturf(B.loc))
+			continue
+		var/turf/T = get_turf(B)
 		if(src in view(T))
-			mob_viewers |= M
-	for(var/mob/O in mob_viewers)
-		O.show_message( message, 1, blind_message, 2)
+			mob_viewers |= B
+
+	for(var/mob/M in mob_viewers)
+		M.show_message(message, 1)
+
 	if(blind_message)
 		var/list/mob_hearers = list()
-		for(var/mob/MOB in get_player_mob_hearers_in_view(7, src))
-			if(MOB in mob_viewers)
+		for(var/mob/C in get_hearers_in_view(7, src))
+			if(C in mob_viewers)
 				continue
-			mob_hearers |= MOB
-		for(var/mob/A in mob_hearers)
-			A.show_message( blind_message, 2)
+			mob_hearers |= C
+		for(var/mob/MOB in mob_hearers)
+			MOB.show_message(blind_message, 2)
 
 // Show a message to all mobs in earshot of this one
 // This would be for audible actions by the src mob
@@ -140,7 +160,7 @@ var/next_mob_id = 0
 	if(hearing_distance)
 		range = hearing_distance
 	var/msg = message
-	for(var/mob/M in get_player_mob_hearers_in_view(range, src))
+	for(var/mob/M in get_hearers_in_view(range, src))
 		if(self_message && M==src)
 			msg = self_message
 		M.show_message( msg, 2, deaf_message, 1)
@@ -155,7 +175,7 @@ var/next_mob_id = 0
 	var/range = 7
 	if(hearing_distance)
 		range = hearing_distance
-	for(var/mob/M in get_player_mob_hearers_in_view(range, src))
+	for(var/mob/M in get_hearers_in_view(range, src))
 		M.show_message( message, 2, deaf_message, 1)
 
 /mob/proc/movement_delay()
@@ -319,7 +339,6 @@ var/list/slot_equipment_priority = list( \
 	set name = "Examine"
 	set category = "IC"
 
-//	if( (sdisabilities & BLIND || blinded || stat) && !istype(src,/mob/dead/observer) )
 	if(is_blind(src))
 		src << "<span class='notice'>Something is there but you can't see it.</span>"
 		return
@@ -675,12 +694,27 @@ var/list/slot_equipment_priority = list( \
 /mob/Stat()
 	..()
 
-	if(client && client.holder)
+	if(statpanel("Status"))
+		var/ETA
+		switch(SSshuttle.emergency.mode)
+			if(SHUTTLE_RECALL)
+				ETA = "RCL"
+			if(SHUTTLE_CALL)
+				ETA = "ETA"
+			if(SHUTTLE_DOCKED)
+				ETA = "ETD"
+			if(SHUTTLE_ESCAPE)
+				ETA = "ESC"
+		if(ETA)
+			var/timeleft = SSshuttle.emergency.timeLeft()
+			stat(null, "[ETA]-[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]")
 
-		if(statpanel("Status"))	//not looking at that panel
-			stat(null,"Location:\t([x], [y], [z])")
-			stat(null,"CPU:\t[world.cpu]")
-			stat(null,"Instances:\t[world.contents.len]")
+
+	if(client && client.holder)
+		if(statpanel("MC"))
+			stat("Location:","([x], [y], [z])")
+			stat("CPU:","[world.cpu]")
+			stat("Instances:","[world.contents.len]")
 
 			var/tickets_unclaimed = 0
 			var/tickets_unresolved = 0
@@ -697,22 +731,12 @@ var/list/slot_equipment_priority = list( \
 			stat(null,"Tickets([tickets_total]):\t[tickets_unclaimed > 0 ? "Unclaimed([tickets_unclaimed])\t" : ""][tickets_resolved > 0 ? "Resolved([tickets_resolved])\t" : ""][tickets_unresolved > 0 ? "Unresolved([tickets_unresolved])\t" : ""]")
 
 			if(master_controller)
-				stat(null,"MasterController-[last_tick_duration] ([master_controller.processing?"On":"Off"]-[controller_iteration])")
-				stat(null,"Air-[master_controller.air_cost]\t#[global_activeturfs]")
-				stat(null,"Turfs-[master_controller.air_turfs]\tGroups-[master_controller.air_groups]")
-				stat(null,"SC-[master_controller.air_superconductivity]\tHP-[master_controller.air_highpressure]\tH-[master_controller.air_hotspots]")
-				stat(null,"Sun-[master_controller.sun_cost]")
-				stat(null,"Mob-[master_controller.mobs_cost]\t#[mob_list.len]")
-				stat(null,"Dis-[master_controller.diseases_cost]\t#[active_diseases.len]")
-				stat(null,"Mch-[master_controller.machines_cost]\t#[machines.len]")
-				stat(null,"Bots-[master_controller.aibots_cost]\t#[aibots.len]")
-				stat(null,"Obj-[master_controller.objects_cost]\t#[processing_objects.len]")
-				stat(null,"Net-[master_controller.networks_cost]\tPnet-[master_controller.powernets_cost]")
-				stat(null,"NanoUI-[master_controller.nano_cost]\t#[nanomanager.processing_uis.len]")
-				stat(null,"GC-[master_controller.gc_cost]\t#[garbage.destroyed.len]-#dels[garbage.dels]")
-				stat(null,"Tick-[master_controller.ticker_cost]\tALL-[master_controller.total_cost]")
+				stat("MasterController:","[round(master_controller.cost,0.001)]ds (Interval:[master_controller.processing_interval] | Iteration:[master_controller.iteration])")
+				for(var/datum/subsystem/SS in master_controller.subsystems)
+					if(SS.can_fire)
+						SS.stat_entry()
 			else
-				stat(null,"MasterController-ERROR")
+				stat("MasterController:","ERROR")
 
 	if(listed_turf && client)
 		if(!TurfAdjacent(listed_turf))
@@ -931,6 +955,12 @@ var/list/slot_equipment_priority = list( \
 				if(G.can_reenter_corpse || even_if_they_cant_reenter)
 					return G
 				break
+
+/mob/proc/adjustEarDamage()
+	return
+
+/mob/proc/setEarDamage()
+	return
 
 /mob/proc/toggleafreeze(mob/admin)
 	if(client)

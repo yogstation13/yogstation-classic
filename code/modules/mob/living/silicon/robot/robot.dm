@@ -85,7 +85,6 @@
 		make_laws()
 		connect_ai(select_active_ai_with_fewest_borgs())
 		if(connected_ai)
-//			connected_ai.connected_robots += src --- connect_ai above should add the borg, perhaps don't add it again
 			lawsync()
 			lawupdate = 1
 		else
@@ -118,20 +117,17 @@
 	toner = 40
 
 //If there's an MMI in the robot, have it ejected when the mob goes away. --NEO
-//Improved /N
 /mob/living/silicon/robot/Destroy()
 	if(mmi && mind)//Safety for when a cyborg gets dust()ed. Or there is no MMI inside.
 		var/turf/T = get_turf(loc)//To hopefully prevent run time errors.
-		if(T)
-			mmi.loc = T
-			if(!mmi.brainmob)
-				mmi.brainmob = new(src)
-				mmi.brainmob.name = src.real_name
-				mmi.brainmob.real_name = src.real_name
-				mmi.brainmob.container = mmi
-				mmi.contents += mmi.brainmob
+		if(T)	mmi.loc = T
+		if(mmi.brainmob)
 			mind.transfer_to(mmi.brainmob)
-			mmi = null
+		else
+			src << "<span class='userdanger'>Oops! Something went very wrong, your MMI was unable to receive your mind. You have been ghosted. Please make a bug report so we can fix this bug.</span>"
+			ghostize()
+			ERROR("A borg has been destroyed, but its MMI lacked a brainmob, so the mind could not be transferred. Player: [ckey].")
+		mmi = null
 	..()
 
 /mob/living/silicon/robot/proc/connect_ai(var/mob/living/silicon/ai/ai = null)
@@ -304,15 +300,9 @@
 
 /mob/living/silicon/robot/Stat()
 	..()
-	statpanel("Status")
-	if (client.statpanel == "Status")
-		stat("[worldtime2text()] [time2text(world.realtime, "MMM DD")] [year_integer+540]")
-		if(emergency_shuttle.online && emergency_shuttle.location < 2)
-			var/timeleft = emergency_shuttle.timeleft()
-			if (timeleft)
-				stat(null, "ETA-[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]")
-
-		if(ticker && ticker.mode && ticker.mode.name == "AI malfunction")
+	if(statpanel("Status"))
+		stat("[worldtime2text()] [time2text(world.realtime, "MMM DD")] [year_integer+540]")	
+		if(ticker.mode.name == "AI malfunction")
 			var/datum/game_mode/malfunction/malf = ticker.mode
 			for (var/datum/mind/malfai in malf.malf_ai)
 				if(connected_ai)
@@ -861,6 +851,9 @@
 			var/turf/tile = loc
 			if(isturf(tile))
 				tile.clean_blood()
+				if (istype(tile, /turf/simulated/floor))
+					var/turf/simulated/floor/F = tile
+					F.dirt = 0
 				for(var/A in tile)
 					if(istype(A, /obj/effect))
 						if(istype(A, /obj/effect/rune) || istype(A, /obj/effect/decal/cleanable) || istype(A, /obj/effect/overlay))

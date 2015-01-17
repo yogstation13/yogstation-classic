@@ -10,8 +10,8 @@ datum/design/ripley_main
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/mecha/ripley/main
-	ui_category = "Mecha Modules"
-	
+	category = list("Exosuit Modules")
+
 datum/design/ripley_peri
 	name = "Exosuit Module (APLU \"Ripley\" Peripherals Control module)"
 	desc = "Allows for the construction of a  \"Ripley\" Peripheral Control module."
@@ -20,7 +20,7 @@ datum/design/ripley_peri
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/mecha/ripley/peripherals
-	ui_category = "Mecha Modules"
+	category = list("Exosuit Modules")
 
 datum/design/odysseus_main
 	name = "Exosuit Module (\"Odysseus\" Central Control module)"
@@ -30,7 +30,7 @@ datum/design/odysseus_main
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/mecha/odysseus/main
-	ui_category = "Mecha Modules"
+	category = list("Exosuit Modules")
 
 datum/design/odysseus_peri
 	name = "Exosuit Module (\"Odysseus\" Peripherals Control module)"
@@ -40,8 +40,8 @@ datum/design/odysseus_peri
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/mecha/odysseus/peripherals
-	ui_category = "Mecha Modules"
-	
+	category = list("Exosuit Modules")
+
 datum/design/gygax_main
 	name = "Exosuit Module (\"Gygax\" Central Control module)"
 	desc = "Allows for the construction of a \"Gygax\" Central Control module."
@@ -50,7 +50,7 @@ datum/design/gygax_main
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/mecha/gygax/main
-	ui_category = "Mecha Modules"
+	category = list("Exosuit Modules")
 
 datum/design/gygax_peri
 	name = "Exosuit Module (\"Gygax\" Peripherals Control module)"
@@ -60,7 +60,7 @@ datum/design/gygax_peri
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/mecha/gygax/peripherals
-	ui_category = "Mecha Modules"
+	category = list("Exosuit Modules")
 
 datum/design/gygax_targ
 	name = "Exosuit Module (\"Gygax\" Weapons & Targeting Control module)"
@@ -70,7 +70,7 @@ datum/design/gygax_targ
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/mecha/gygax/targeting
-	ui_category = "Mecha Modules"
+	category = list("Exosuit Modules")
 
 datum/design/durand_main
 	name = "Exosuit Module (\"Durand\" Central Control module)"
@@ -80,7 +80,7 @@ datum/design/durand_main
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/mecha/durand/main
-	ui_category = "Mecha Modules"
+	category = list("Exosuit Modules")
 
 datum/design/durand_peri
 	name = "Exosuit Module (\"Durand\" Peripherals Control module)"
@@ -90,7 +90,7 @@ datum/design/durand_peri
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/mecha/durand/peripherals
-	ui_category = "Mecha Modules"
+	category = list("Exosuit Modules")
 
 datum/design/durand_targ
 	name = "Exosuit Module (\"Durand\" Weapons & Targeting Control module)"
@@ -100,7 +100,7 @@ datum/design/durand_targ
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/mecha/durand/targeting
-	ui_category = "Mecha Modules"
+	category = list("Exosuit Modules")
 
 datum/design/honker_main
 	name = "Exosuit Module (\"H.O.N.K\" Central Control module)"
@@ -110,7 +110,7 @@ datum/design/honker_main
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/mecha/honker/main
-	ui_category = "Mecha Modules"
+	category = list("Exosuit Modules")
 
 datum/design/honker_peri
 	name = "Exosuit Module (\"H.O.N.K\" Peripherals Control module)"
@@ -120,7 +120,7 @@ datum/design/honker_peri
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/mecha/honker/peripherals
-	ui_category = "Mecha Modules"
+	category = list("Exosuit Modules")
 
 datum/design/honker_targ
 	name = "Exosuit Module (\"H.O.N.K\" Weapons & Targeting Control module)"
@@ -130,7 +130,7 @@ datum/design/honker_targ
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/mecha/honker/targeting
-	ui_category = "Mecha Modules"
+	category = list("Exosuit Modules")
 
 datum/design/phazon_main
 	name = "Exosuit Module (\"Phazon\" Central Control module)"
@@ -140,7 +140,7 @@ datum/design/phazon_main
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/mecha/phazon/main
-	ui_category = "Mecha Modules"
+	category = list("Exosuit Modules")
 
 datum/design/phazon_peri
 	name = "Exosuit Module (\"Phazon\" Peripherals Control module)"
@@ -150,7 +150,7 @@ datum/design/phazon_peri
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/mecha/phazon/peripherals
-	ui_category = "Mecha Modules"
+	category = list("Exosuit Modules")
 
 datum/design/phazon_targ
 	name = "Exosuit Module (\"Phazon\" Weapons & Targeting Control module)"
@@ -160,7 +160,7 @@ datum/design/phazon_targ
 	build_type = IMPRINTER
 	materials = list("$glass" = 1000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/mecha/phazon/targeting
-	ui_category = "Mecha Modules"
+	category = list("Exosuit Modules")
 
 ////////////////////////////////////////
 /////////// Mecha Equpment /////////////
@@ -176,7 +176,6 @@ datum/design/mech_scattershot
 	materials = list("$metal"=10000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
-	ui_category = "Mecha Equipment"
 
 datum/design/mech_carbine
 	name = "Exosuit Weapon (FNX-99 \"Hades\" Carbine)"
@@ -188,7 +187,6 @@ datum/design/mech_carbine
 	materials = list("$metal"=10000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
-	ui_category = "Mecha Equipment"
 
 datum/design/mech_ion
 	name = "Exosuit Weapon (MKIV Ion Heavy Cannon)"
@@ -200,7 +198,6 @@ datum/design/mech_ion
 	materials = list("$metal"=20000,"$silver"=6000,"$uranium"=2000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
-	ui_category = "Mecha Equipment"
 
 datum/design/mech_laser
 	name = "Exosuit Weapon (CH-PS \"Immolator\" Laser)"
@@ -212,7 +209,6 @@ datum/design/mech_laser
 	materials = list("$metal"=10000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
-	ui_category = "Mecha Equipment"
 
 datum/design/mech_laser_heavy
 	name = "Exosuit Weapon (CH-LC \"Solaris\" Laser Cannon)"
@@ -224,7 +220,6 @@ datum/design/mech_laser_heavy
 	materials = list("$metal"=10000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
-	ui_category = "Mecha Equipment"
 
 datum/design/mech_grenade_launcher
 	name = "Exosuit Weapon (SGL-6 Grenade Launcher)"
@@ -236,7 +231,6 @@ datum/design/mech_grenade_launcher
 	materials = list("$metal"=22000,"$gold"=6000,"$silver"=8000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
-	ui_category = "Mecha Equipment"
 
 datum/design/mech_missile_rack
 	name = "Exosuit Weapon (SRM-8 Missile Rack)"
@@ -248,7 +242,6 @@ datum/design/mech_missile_rack
 	materials = list("$metal"=22000,"$gold"=6000,"$silver"=8000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
-	ui_category = "Mecha Equipment"
 
 datum/design/clusterbang_launcher
 	name = "Exosuit Module (SOB-3 Clusterbang Launcher)"
@@ -260,7 +253,6 @@ datum/design/clusterbang_launcher
 	materials = list("$metal"=20000,"$gold"=10000,"$uranium"=10000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
-	ui_category = "Mecha Equipment"
 
 datum/design/mech_wormhole_gen
 	name = "Exosuit Module (Localized Wormhole Generator)"
@@ -272,7 +264,6 @@ datum/design/mech_wormhole_gen
 	materials = list("$metal"=10000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
-	ui_category = "Mecha Equipment"
 
 datum/design/mech_teleporter
 	name = "Exosuit Module (Teleporter Module)"
@@ -284,7 +275,6 @@ datum/design/mech_teleporter
 	materials = list("$metal"=10000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
-	ui_category = "Mecha Equipment"
 
 datum/design/mech_rcd
 	name = "Exosuit Module (RCD Module)"
@@ -296,7 +286,6 @@ datum/design/mech_rcd
 	materials = list("$metal"=30000,"$gold"=20000,"$plasma"=25000,"$silver"=20000)
 	construction_time = 1200
 	category = list("Exosuit Equipment")
-	ui_category = "Mecha Equipment"
 
 datum/design/mech_gravcatapult
 	name = "Exosuit Module (Gravitational Catapult Module)"
@@ -308,7 +297,6 @@ datum/design/mech_gravcatapult
 	materials = list("$metal"=10000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
-	ui_category = "Mecha Equipment"
 
 datum/design/mech_repair_droid
 	name = "Exosuit Module (Repair Droid Module)"
@@ -320,7 +308,6 @@ datum/design/mech_repair_droid
 	materials = list("$metal"=10000,"$glass"=5000,"$gold"=1000,"$silver"=2000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
-	ui_category = "Mecha Equipment"
 
 datum/design/mech_energy_relay
 	name = "Exosuit Module (Tesla Energy Relay)"
@@ -332,7 +319,6 @@ datum/design/mech_energy_relay
 	materials = list("$metal"=10000,"$glass"=2000,"$gold"=2000,"$silver"=3000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
-	ui_category = "Mecha Equipment"
 
 datum/design/mech_ccw_armor
 	name = "Exosuit Module (Reactive Armor Booster Module)"
@@ -344,7 +330,6 @@ datum/design/mech_ccw_armor
 	materials = list("$metal"=20000,"$silver"=5000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
-	ui_category = "Mecha Equipment"
 
 datum/design/mech_proj_armor
 	name = "Exosuit Module (Reflective Armor Booster Module)"
@@ -356,9 +341,8 @@ datum/design/mech_proj_armor
 	materials = list("$metal"=20000,"$gold"=5000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
-	ui_category = "Mecha Equipment"
 
-datum/design/mech_syringe_gun
+/datum/design/mech_syringe_gun
 	name = "Exosuit Module (Syringe Gun)"
 	desc = "Exosuit-mounted syringe gun and chemical synthesizer."
 	id = "mech_syringe_gun"
@@ -368,7 +352,6 @@ datum/design/mech_syringe_gun
 	materials = list("$metal"=2000,"$glass"=15000)
 	construction_time = 100
 	category = list("Exosuit Equipment")
-	ui_category = "Mecha Equipment"
 
 datum/design/mech_diamond_drill
 	name = "Exosuit Module (Diamond Mining Drill)"
@@ -380,7 +363,6 @@ datum/design/mech_diamond_drill
 	materials = list("$metal"=10000,"$diamond"=6500)
 	construction_time = 100
 	category = list("Exosuit Equipment")
-	ui_category = "Mecha Equipment"
 
 datum/design/mech_generator_nuclear
 	name = "Exosuit Module (ExoNuclear Reactor)"
@@ -392,4 +374,3 @@ datum/design/mech_generator_nuclear
 	materials = list("$metal"=10000,"$glass"=1000,"$silver"=500)
 	construction_time = 100
 	category = list("Exosuit Equipment")
-	ui_category = "Mecha Equipment"

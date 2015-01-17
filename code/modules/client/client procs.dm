@@ -193,6 +193,7 @@ var/next_external_rsc = 0
 			prefs.be_special &= ~QUIET_ROUND
 			prefs.save_preferences()
 
+	add_verbs_from_config()
 	set_client_age_from_db()
 
 	if (!ticker || ticker.current_state == GAME_STATE_PREGAME)
@@ -317,6 +318,11 @@ proc/sync_logout_with_db(number)
 		return
 	var/DBQuery/query_logout = dbcon.NewQuery("UPDATE `[format_table_name("connection_log")]` SET `left`=Now() WHERE `id`=[number];")
 	query_logout.Execute()
+
+/client/proc/add_verbs_from_config()
+	if(config.see_own_notes)
+		verbs += /client/proc/self_notes
+
 #undef TOPIC_SPAM_DELAY
 #undef UPLOAD_LIMIT
 #undef MIN_CLIENT_VERSION

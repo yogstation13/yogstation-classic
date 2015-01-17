@@ -92,6 +92,8 @@
 		msg = sanitize(copytext(msg,1,MAX_MESSAGE_LEN))
 		if(!msg)	return
 
+	msg = emoji_parse(msg)
+
 	var/has_resolved_ticket = 0
 
 	// Search current tickets, is this user the owner or primary admin of a ticket

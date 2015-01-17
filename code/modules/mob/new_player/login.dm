@@ -36,6 +36,8 @@
 		disclaimer()
 	else
 		new_player_panel()
+	if(ckey in deadmins)
+		verbs += /client/proc/readmin
 	spawn(40)
 		if(client)
 			handle_privacy_poll()

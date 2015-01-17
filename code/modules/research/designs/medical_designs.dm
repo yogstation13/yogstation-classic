@@ -11,8 +11,8 @@ datum/design/mass_spectrometer
 	materials = list("$metal" = 30, "$glass" = 20)
 	reliability = 76
 	build_path = /obj/item/device/mass_spectrometer
-	ui_category = "Medical"
-	
+	category = list("Medical Designs")
+
 datum/design/adv_mass_spectrometer
 	name = "Advanced Mass-Spectrometer"
 	desc = "A device for analyzing chemicals in the blood and their quantities."
@@ -22,7 +22,7 @@ datum/design/adv_mass_spectrometer
 	materials = list("$metal" = 30, "$glass" = 20)
 	reliability = 74
 	build_path = /obj/item/device/mass_spectrometer/adv
-	ui_category = "Medical"
+	category = list("Medical Designs")
 
 datum/design/mmi
 	name = "Man-Machine Interface"
@@ -34,8 +34,7 @@ datum/design/mmi
 	construction_time = 75
 	reliability = 76
 	build_path = /obj/item/device/mmi
-	category = list("Misc")
-	ui_category = "Medical"
+	category = list("Misc","Medical Designs")
 
 datum/design/mmi_radio
 	name = "Radio-enabled Man-Machine Interface"
@@ -47,8 +46,7 @@ datum/design/mmi_radio
 	construction_time = 75
 	reliability = 74
 	build_path = /obj/item/device/mmi/radio_enabled
-	category = list("Misc")
-	ui_category = "Medical"
+	category = list("Misc","Medical Designs")
 
 datum/design/synthetic_flash
 	name = "Flash"
@@ -61,7 +59,6 @@ datum/design/synthetic_flash
 	reliability = 76
 	build_path = /obj/item/device/flash/handheld
 	category = list("Misc")
-	ui_category = "Medical"
 
 datum/design/bluespacebeaker
 	name = "Bluespace Beaker"
@@ -72,8 +69,7 @@ datum/design/bluespacebeaker
 	materials = list("$metal" = 3000, "$plasma" = 3000, "$diamond" = 500)
 	reliability = 76
 	build_path = /obj/item/weapon/reagent_containers/glass/beaker/bluespace
-	category = list("Misc")
-	ui_category = "Medical"
+	category = list("Misc","Medical Designs")
 
 datum/design/noreactbeaker
 	name = "Cryostasis Beaker"
@@ -84,8 +80,7 @@ datum/design/noreactbeaker
 	materials = list("$metal" = 3000)
 	reliability = 76
 	build_path = /obj/item/weapon/reagent_containers/glass/beaker/noreact
-	category = list("Misc")
-	ui_category = "Medical"
+	category = list("Medical Designs")
 
 datum/design/bluespacebodybag
 	name = "Bluespace body bag"
@@ -96,8 +91,7 @@ datum/design/bluespacebodybag
 	materials = list("$metal" = 3000, "$plasma" = 2000, "$diamond" = 500)
 	reliability = 76
 	build_path = /obj/item/bodybag/bluespace
-	category = list("Misc")
-	ui_category = "Medical"
+	category = list("Medical Designs")
 
 datum/design/defib
 	name = "Defibrillator"
@@ -108,5 +102,4 @@ datum/design/defib
 	materials = list("$metal" = 5000, "$glass" = 2000, "$silver" = 1000)
 	reliability = 76
 	build_path = /obj/item/weapon/defibrillator
-	category = list("Misc")
-	ui_category = "Medical"
+	category = list("Medical Designs")

@@ -5,6 +5,8 @@
 	var/obj/item/l_store = null
 	var/caste = ""
 	var/leap_on_click = 0
+	var/pounce_cooldown = 0
+	var/pounce_cooldown_time = 30
 	update_icon = 1
 
 //This is fine right now, if we're adding organ specific damage this needs to be updated
@@ -44,15 +46,13 @@
 
 			f_loss += 60
 
-			ear_damage += 30
-			ear_deaf += 120
+			adjustEarDamage(30, 120)
 
 		if(3.0)
 			b_loss += 30
 			if (prob(50) && !shielded)
 				Paralyse(1)
-			ear_damage += 15
-			ear_deaf += 60
+			adjustEarDamage(15 , 60)
 
 	adjustBruteLoss(b_loss)
 	adjustFireLoss(f_loss)
@@ -85,19 +85,22 @@
 	updatehealth()
 	return
 
+/mob/living/carbon/alien/humanoid/attack_hulk(mob/living/carbon/human/user)
+	if(user.a_intent == "harm")
+		..(user, 1)
+		adjustBruteLoss(14 + rand(1,9))
+		Paralyse(1)
+		step_away(src,user,15)
+		sleep(1)
+		step_away(src,user,15)
+		return 1
+
 /mob/living/carbon/alien/humanoid/attack_hand(mob/living/carbon/human/M as mob)
 	if(..())
 		switch(M.a_intent)
 			if ("harm")
 				var/damage = rand(1, 9)
 				if (prob(90))
-					if (HULK in M.mutations)//HULK SMASH
-						damage += 14
-						spawn(0)
-							Paralyse(1)
-							step_away(src,M,15)
-							sleep(3)
-							step_away(src,M,15)
 					playsound(loc, "punch", 25, 1, -1)
 					visible_message("<span class='danger'>[M] has punched [src]!</span>", \
 							"<span class='userdanger'>[M] has punched [src]!</span>")

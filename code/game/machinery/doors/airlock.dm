@@ -569,7 +569,7 @@ About the new airlock wires panel:
 		"access_set" = access_set
 	)
 
-	ui = nanomanager.try_update_ui(user, src, ui_key, ui, data)
+	ui = SSnano.try_update_ui(user, src, ui_key, ui, data)
 	if (!ui)
 		ui = new(user, src, ui_key, "airlock.tmpl", name, 450, 400)
 		ui.set_initial_data(data)
@@ -915,7 +915,8 @@ About the new airlock wires panel:
 				if(do_after(user,80,5,1))
 					if(density && !operating)//Door must be closed to weld.
 						if( !istype(src, /obj/machinery/door/airlock) || !user || !W || !W.isOn() || !user.loc )
-							return					playsound(loc, 'sound/items/Welder2.ogg', 50, 1)
+							return
+						playsound(loc, 'sound/items/Welder2.ogg', 50, 1)
 						boltsCut = 0
 						user.visible_message("<span class='warning'>[src] bolts have been repaired by [user.name].</span>", \
 											"<span class='notice'>You've welded the bolts together.</span>")
@@ -928,7 +929,8 @@ About the new airlock wires panel:
 				if(do_after(user,40,5,1))
 					if(density && !operating)//Door must be closed to weld.
 						if( !istype(src, /obj/machinery/door/airlock) || !user || !W || !W.isOn() || !user.loc )
-							return					playsound(loc, 'sound/items/Welder2.ogg', 50, 1)
+							return
+						playsound(loc, 'sound/items/Welder2.ogg', 50, 1)
 						welded = !welded
 						user.visible_message("<span class='warning'>[src] has been [welded? "welded shut":"unwelded"] by [user.name].</span>", \
 											"<span class='notice'>You've [welded ? "welded the airlock shut":"unwelded the airlock"].</span>")
@@ -1144,6 +1146,7 @@ About the new airlock wires panel:
 				if(A.closeOtherId == src.closeOtherId && A != src)
 					src.closeOther = A
 					break
+
 
 /obj/machinery/door/airlock/proc/prison_open()
 	if(emagged)	return

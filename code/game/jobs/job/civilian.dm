@@ -118,21 +118,29 @@ Chef
 	department_flag = CIVILIAN
 	faction = "Station"
 	total_positions = 2
-	spawn_positions = 2
+	spawn_positions = 1
 	supervisors = "the head of personnel"
 	selection_color = "#dddddd"
+	var/global/cooks = 0 //Counts cooks amount
 
-	default_pda = /obj/item/device/pda/chef
+	default_pda = /obj/item/device/pda/cook
 	default_headset = /obj/item/device/radio/headset/headset_srv
 
 	access = list(access_hydroponics, access_bar, access_kitchen, access_counter, access_morgue)
 	minimal_access = list(access_kitchen, access_counter, access_morgue)
 
 /datum/job/chef/equip_items(var/mob/living/carbon/human/H)
+	cooks += 1
+
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/chef(H), slot_w_uniform)
-	H.equip_to_slot_or_del(new /obj/item/clothing/suit/chef(H), slot_wear_suit)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/black(H), slot_shoes)
-	H.equip_to_slot_or_del(new /obj/item/clothing/head/chefhat(H), slot_head)
+	switch(cooks)
+		if(1)
+			H.equip_to_slot_or_del(new /obj/item/clothing/suit/toggle/chef(H), slot_wear_suit)
+			H.equip_to_slot_or_del(new /obj/item/clothing/head/chefhat(H), slot_head)
+		else
+			H.equip_to_slot_or_del(new /obj/item/clothing/suit/apron/chef(H), slot_wear_suit)
+			H.equip_to_slot_or_del(new /obj/item/clothing/head/soft/mime(H), slot_head)
 
 /*
 Waiter
@@ -153,7 +161,7 @@ Waiter
 	default_headset = /obj/item/device/radio/headset/headset_srv
 
 /datum/job/waiter/equip_items(var/mob/living/carbon/human/H)
-	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/white(H), slot_gloves)
+	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/color/white(H), slot_gloves)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/black(H), slot_shoes)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/waiter(H), slot_w_uniform)
 	var/obj/item/clothing/under/U = new /obj/item/clothing/under/waiter(H)
@@ -186,93 +194,6 @@ Botanist
 	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/botanic_leather(H), slot_gloves)
 	H.equip_to_slot_or_del(new /obj/item/clothing/suit/apron(H), slot_wear_suit)
 	H.equip_to_slot_or_del(new /obj/item/device/analyzer/plant_analyzer(H), slot_s_store)
-
-/*
-Quartermaster
-*/
-/datum/job/qm
-	title = "Quartermaster"
-	flag = QUARTERMASTER
-	department_head = list("Head of Personnel")
-	department_flag = CIVILIAN
-	faction = "Station"
-	total_positions = 1
-	spawn_positions = 1
-	supervisors = "the head of personnel"
-	selection_color = "#dddddd"
-	minimal_player_age = 10
-
-	default_pda = /obj/item/device/pda/quartermaster
-	default_headset = /obj/item/device/radio/headset/headset_cargo
-
-	access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mint, access_mining, access_mining_station, access_mineral_storeroom)
-	minimal_access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mint, access_mining, access_mining_station)
-
-/datum/job/qm/equip_items(var/mob/living/carbon/human/H)
-	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/cargo(H), slot_w_uniform)
-	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/brown(H), slot_shoes)
-	H.equip_to_slot_or_del(new /obj/item/clothing/glasses/sunglasses(H), slot_glasses)
-	H.equip_to_slot_or_del(new /obj/item/weapon/clipboard(H), slot_l_hand)
-
-/*
-Cargo Technician
-*/
-/datum/job/cargo_tech
-	title = "Cargo Technician"
-	flag = CARGOTECH
-	department_head = list("Head of Personnel")
-	department_flag = CIVILIAN
-	faction = "Station"
-	total_positions = 4
-	spawn_positions = 2
-	supervisors = "the quartermaster and the head of personnel"
-	selection_color = "#dddddd"
-
-	default_pda = /obj/item/device/pda/cargo
-	default_headset = /obj/item/device/radio/headset/headset_cargo
-
-	access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mint, access_mining, access_mining_station)
-	minimal_access = list(access_maint_tunnels, access_cargo, access_cargo_bot, access_mailsorting)
-
-/datum/job/cargo_tech/equip_items(var/mob/living/carbon/human/H)
-	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/cargotech(H), slot_w_uniform)
-	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/black(H), slot_shoes)
-
-/*
-Shaft Miner
-*/
-/datum/job/mining
-	title = "Shaft Miner"
-	flag = MINER
-	department_head = list("Head of Personnel")
-	department_flag = CIVILIAN
-	faction = "Station"
-	total_positions = 5
-	spawn_positions = 5
-	supervisors = "the quartermaster and the head of personnel"
-	selection_color = "#dddddd"
-
-	default_pda = /obj/item/device/pda/shaftminer
-	default_headset = /obj/item/device/radio/headset/headset_cargo
-	default_backpack = /obj/item/weapon/storage/backpack/industrial
-	default_satchel = /obj/item/weapon/storage/backpack/satchel_eng
-	default_storagebox = /obj/item/weapon/storage/box/engineer
-
-	access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mint, access_mining, access_mining_station, access_mineral_storeroom)
-	minimal_access = list(access_mining, access_mint, access_mining_station, access_mailsorting, access_mineral_storeroom)
-
-/datum/job/mining/equip_items(var/mob/living/carbon/human/H)
-	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/miner(H), slot_w_uniform)
-	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/black(H), slot_shoes)
-
-	if(H.backbag == 1)
-		H.equip_to_slot_or_del(new /obj/item/weapon/crowbar(H), slot_l_hand)
-		H.equip_to_slot_or_del(new /obj/item/weapon/storage/bag/ore(H), slot_l_store)
-		H.equip_to_slot_or_del(new /obj/item/weapon/mining_voucher(H), slot_r_store)
-	else
-		H.equip_to_slot_or_del(new /obj/item/weapon/crowbar(H), slot_in_backpack)
-		H.equip_to_slot_or_del(new /obj/item/weapon/storage/bag/ore(H), slot_in_backpack)
-		H.equip_to_slot_or_del(new /obj/item/weapon/mining_voucher(H), slot_in_backpack)
 
 /*
 Clown
@@ -313,7 +234,7 @@ Clown
 	H.equip_to_slot_or_del(new /obj/item/weapon/bikehorn(H), slot_l_store)
 	H.equip_to_slot_or_del(new /obj/item/toy/crayon/rainbow(H), slot_r_store)
 
-	H.mutations.Add(CLUMSY)
+	H.dna.add_mutation(CLOWNMUT)
 	H.rename_self("clown")
 
 /*
@@ -348,7 +269,7 @@ Mime
 /datum/job/mime/equip_items(var/mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/mime(H), slot_w_uniform)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/black(H), slot_shoes)
-	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/white(H), slot_gloves)
+	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/color/white(H), slot_gloves)
 	H.equip_to_slot_or_del(new /obj/item/clothing/mask/gas/mime(H), slot_wear_mask)
 	H.equip_to_slot_or_del(new /obj/item/clothing/head/beret(H), slot_head)
 	H.equip_to_slot_or_del(new /obj/item/clothing/suit/suspenders(H), slot_wear_suit)
@@ -369,7 +290,7 @@ Janitor
 	department_head = list("Head of Personnel")
 	department_flag = CIVILIAN
 	faction = "Station"
-	total_positions = 1
+	total_positions = 2
 	spawn_positions = 1
 	supervisors = "the head of personnel"
 	selection_color = "#dddddd"
@@ -435,12 +356,13 @@ Lawyer
 /datum/job/lawyer/equip_items(var/mob/living/carbon/human/H)
 	lawyers += 1
 
-	if(lawyers%2 != 0)
-		H.equip_to_slot_or_del(new /obj/item/clothing/under/lawyer/bluesuit(H), slot_w_uniform)
-		H.equip_to_slot_or_del(new /obj/item/clothing/suit/toggle/lawyer(H), slot_wear_suit)
-	else
-		H.equip_to_slot_or_del(new /obj/item/clothing/under/lawyer/purpsuit(H), slot_w_uniform)
-		H.equip_to_slot_or_del(new /obj/item/clothing/suit/toggle/lawyer/purple(H), slot_wear_suit)
+	switch(lawyers)
+		if(1)
+			H.equip_to_slot_or_del(new /obj/item/clothing/under/lawyer/bluesuit(H), slot_w_uniform)
+			H.equip_to_slot_or_del(new /obj/item/clothing/suit/toggle/lawyer(H), slot_wear_suit)
+		else
+			H.equip_to_slot_or_del(new /obj/item/clothing/under/lawyer/purpsuit(H), slot_w_uniform)
+			H.equip_to_slot_or_del(new /obj/item/clothing/suit/toggle/lawyer/purple(H), slot_wear_suit)
 
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/laceup(H), slot_shoes)
 	H.equip_to_slot_or_del(new /obj/item/weapon/storage/briefcase(H), slot_l_hand)

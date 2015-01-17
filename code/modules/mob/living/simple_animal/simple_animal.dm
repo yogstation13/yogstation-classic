@@ -110,6 +110,8 @@
 	if(paralysis)
 		AdjustParalysis(-1)
 
+	adjustEarDamage((ear_damage < 25 ? -0.05 : 0), -1)
+
 	//Movement
 	if(!client && !stop_automated_movement && wander)
 		if(isturf(src.loc) && !resting && !buckled && canmove)		//This is so it only moves if it's not inside a closet, gentics machine, etc.
@@ -347,7 +349,7 @@
 			user << "<span class='notice'> [src] is dead, medical items won't bring it back to life.</span>"
 			return
 	if(meat_type && (stat == DEAD))	//if the animal has a meat, and if it is dead.
-		if(istype(O, /obj/item/weapon/kitchenknife) || istype(O, /obj/item/weapon/butch))
+		if(istype(O, /obj/item/weapon/kitchenknife))
 			harvest()
 
 	user.changeNext_move(CLICK_CD_MELEE)
@@ -379,8 +381,8 @@
 /mob/living/simple_animal/Stat()
 	..()
 
-	statpanel("Status")
-	stat(null, "Health: [round((health / maxHealth) * 100)]%")
+	if(statpanel("Status"))
+		stat(null, "Health: [round((health / maxHealth) * 100)]%")
 
 /mob/living/simple_animal/proc/Die()
 	health = 0 // so /mob/living/simple_animal/Life() doesn't magically revive them

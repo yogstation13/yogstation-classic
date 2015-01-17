@@ -74,7 +74,10 @@
 	H.hair_style = null
 	H.update_hair()
 	overlays = H.overlays
-	overlays += image('icons/mob/blob.dmi', icon_state = "blob_head")
+	var/image/I = image('icons/mob/blob.dmi', icon_state = "blob_head")
+	I.color = color
+	color = initial(color)//looks better.
+	overlays += I
 	H.loc = src
 	is_zombie = 1
 	loc.visible_message("<span class='warning'> The corpse of [H.name] suddenly rises!</span>")
@@ -114,8 +117,8 @@
 	pass_flags = PASSBLOB
 	health = 240
 	maxHealth = 240
-	melee_damage_lower = 20
-	melee_damage_upper = 20
+	melee_damage_lower = 10
+	melee_damage_upper = 10
 	attacktext = "hits"
 	attack_sound = 'sound/effects/blobattack.ogg'
 	faction = list("blob")
@@ -132,14 +135,14 @@
 	force_threshold = 10
 	environment_smash = 2
 	mob_size = 2
+	var/mob/camera/blob/overmind
 
 
 /mob/living/simple_animal/hostile/blobbernaut/AttackingTarget()
 	..()
 	if(isliving(target))
-		var/mob/living/L = target
-		L.adjust_fire_stacks(2)
-		L.IgniteMob()
+		if(overmind)
+			overmind.blob_reagent_datum.reaction_mob(target, TOUCH)
 
 
 /mob/living/simple_animal/hostile/blobbernaut/blob_act()

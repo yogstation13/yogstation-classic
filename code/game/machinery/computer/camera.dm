@@ -9,7 +9,7 @@
 	var/mapping = 0//For the overview file, interesting bit of code.
 
 /obj/machinery/computer/security/check_eye(var/mob/user as mob)
-	if ((get_dist(user, src) > 1 || user.blinded || !( current ) || !( current.status )) && (!istype(user, /mob/living/silicon)))
+	if ((get_dist(user, src) > 1 || user.eye_blind || !( current ) || !( current.status )) && (!istype(user, /mob/living/silicon)))
 		return null
 	var/list/viewing = viewers(src)
 	if((istype(user,/mob/living/silicon/robot)) && (!(viewing.Find(user))))
@@ -80,21 +80,24 @@
 		var/obj/machinery/camera/C = D[t]
 
 		if(C)
-			if(isAI(user))
-				var/mob/living/silicon/ai/A = user
-				A.eyeobj.setLoc(get_turf(t))
-				A.client.eye = A.eyeobj
-			if(ispAI(user))
-				var/mob/living/silicon/pai/A = user
-				A.switchCamera(C)
-			else if ((get_dist(user, src) > 1) || (user.machine != src)|| user.blinded || !( C.can_use() ))
-				src.current = null
+			if ((get_dist(user, src) > 1 || user.machine != src || user.eye_blind || !( C.can_use() )) && (!istype(user, /mob/living/silicon/ai)) && (!istype(user, /mob/living/silicon/pai)))
+				if(!C.can_use() && !isAI(user))
+					src.current = null
 				return 0
 			else
-				src.current = C
-				use_power(50)
-			spawn(5)
-				attack_hand(user)
+				if(isAI(user))
+					var/mob/living/silicon/ai/A = user
+					A.eyeobj.setLoc(get_turf(C))
+					A.client.eye = A.eyeobj
+				else if(ispAI(user))
+					var/mob/living/silicon/pai/A = user
+					A.switchCamera(C)
+				else
+					src.current = C
+					use_power(50)
+
+				spawn(5)
+					attack_hand(user)
 		return
 	else
 		if(!isAI(user))

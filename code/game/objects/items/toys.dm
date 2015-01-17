@@ -241,17 +241,17 @@
 			O.show_message(text("\red <B>[] fires the [src] at []!</B>", user, target), 1, "\red You hear a gunshot", 2)
 
 /obj/item/toy/ammo/gun
-	name = "ammo-caps"
+	name = "capgun ammo"
 	desc = "Make sure to recyle the box in an autolathe when it gets empty."
 	icon = 'icons/obj/ammo.dmi'
-	icon_state = "357-7"
+	icon_state = "357OLD-7"
 	w_class = 1.0
 	g_amt = 10
 	m_amt = 10
 	var/amount_left = 7.0
 
 /obj/item/toy/ammo/gun/update_icon()
-	src.icon_state = text("357-[]", src.amount_left)
+	src.icon_state = text("357OLD-[]", src.amount_left)
 
 /obj/item/toy/ammo/gun/examine(mob/user)
 	..()
@@ -490,7 +490,7 @@
 	attack_verb = list("attacked", "coloured")
 	var/colour = "#FF0000" //RGB
 	var/drawtype = "rune"
-	var/list/graffiti = list("amyjon","face","matt","revolution","engie","guy","end","dwarf","uboa")
+	var/list/graffiti = list("amyjon","face","matt","revolution","engie","guy","end","dwarf","uboa","body")
 	var/list/letters = list("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z")
 	var/uses = 30 //0 for unlimited uses
 	var/instant = 0

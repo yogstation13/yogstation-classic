@@ -28,5 +28,5 @@
 			//skip atmos tanks
 				continue
 			F.copy_air(GM)
-			F.overlays -= plmaster
-			F.overlays -= slmaster
+			F.overlays.Remove(SSair.plasma_overlay)
+			F.overlays.Remove(SSair.sleeptoxin_overlay)

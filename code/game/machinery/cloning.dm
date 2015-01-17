@@ -122,7 +122,7 @@
 //Clonepod
 
 //Start growing a human clone in the pod!
-/obj/machinery/clonepod/proc/growclone(var/ckey, var/clonename, var/ui, var/se, var/mindref, var/datum/species/mrace, var/mcolor)
+/obj/machinery/clonepod/proc/growclone(var/ckey, var/clonename, var/ui, var/se, var/mindref, var/datum/species/mrace, var/mcolor, var/factions)
 	if(panel_open)
 		return 0
 	if(mess || attempting)
@@ -152,6 +152,17 @@
 		src.eject_wait = 0
 
 	var/mob/living/carbon/human/H = new /mob/living/carbon/human(src)
+
+	if(efficiency > 2)
+		for(var/A in bad_se_blocks)
+			setblock(H.dna.struc_enzymes, A, construct_block(0,2))
+	if(efficiency > 5 && prob(20))
+		randmutg(H)
+	if(efficiency < 3 && prob(50))
+		var/mob/M = randmutb(H)
+		if(ismob(M))
+			H = M
+
 	H.silent = 20 //Prevents an extreme edge case where clones could speak if they said something at exactly the right moment.
 	occupant = H
 
@@ -174,14 +185,7 @@
 	H << "<span class='notice'><i>Fragmented images of your life and the shift thus far churn within your newfound consciousness...</i>><br> Memories spooling to an abrupt halt, the <u>minutes before your death</u> race by in an <b>indecipherable</b> blur of confusion and disorientation, veiled by a wall of complete amnesia.</span>"
 
 	hardset_dna(H, ui, se, null, null, mrace, mcolor)
-
-	if(efficiency > 2)
-		for(var/A in bad_se_blocks)
-			setblock(H.dna.struc_enzymes, A, construct_block(0,2))
-	if(efficiency > 5 && prob(20))
-		randmutg(H)
-	if(efficiency < 3 && prob(50))
-		randmutb(H)
+	H.faction |= factions
 
 	H.set_cloned_appearance()
 

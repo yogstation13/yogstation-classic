@@ -128,6 +128,7 @@ update_flag
 		playsound(src.loc, 'sound/effects/spray.ogg', 10, 1, -3)
 		src.density = 0
 		update_icon()
+		investigate_log("was destroyed by heat/gunfire.", "atmos")
 
 		if (src.holding)
 			src.holding.loc = src.loc
@@ -231,6 +232,7 @@ update_flag
 /obj/machinery/portable_atmospherics/canister/attackby(var/obj/item/weapon/W as obj, var/mob/user as mob)
 	if(!istype(W, /obj/item/weapon/wrench) && !istype(W, /obj/item/weapon/tank) && !istype(W, /obj/item/device/analyzer) && !istype(W, /obj/item/device/pda))
 		visible_message("<span class='danger'>[user] hits \the [src] with a [W]!</span>")
+		investigate_log("was smacked with \a [W] by [key_name(user)]", "atmos")
 		src.health -= W.force
 		src.add_fingerprint(user)
 		healthcheck()
@@ -319,17 +321,20 @@ Release Pressure: <A href='?src=\ref[src];pressure_adj=-1000'>-</A> <A href='?sr
 			else if(G.moles > 1)
 				contents += "<span class=\"danger\">[G.type] ([G.moles])</span> "
 		if(href_list["toggle"])
+			var/logmsg
 			if (valve_open)
 				if (holding)
-					release_log += "Valve was <b>closed</b> by [usr] ([usr.ckey]), stopping the transfer into the [holding]<br>"
+					logmsg = "Valve was <b>closed</b> by [key_name(usr)], stopping the transfer into the [holding]<br>"
 				else
-					release_log += "Valve was <b>closed</b> by [usr] ([usr.ckey]), stopping the transfer into the <font color='red'><b>air</b></font><br>"
+					logmsg = "Valve was <b>closed</b> by [key_name(usr)], stopping the transfer into the <span class='userdanger'>air</span><br>"
 			else
 				if (holding)
-					release_log += "Valve was <b>opened</b> by [usr] ([usr.ckey]), starting the transfer into the [holding]<br>"
+					logmsg = "Valve was <b>opened</b> by [key_name(usr)], starting the transfer into the [holding]<br>"
 				else
-					release_log += "Valve was <b>opened</b> by [usr] ([usr.ckey]), starting the transfer into the <font color='red'><b>air</b></font><br>"
+					logmsg = "Valve was <b>opened</b> by [key_name(usr)], starting the transfer into the <span class='userdanger'>air</span><br>"
 					message_admins("Canister opened by [contents]", 0, 1)
+			investigate_log(logmsg, "atmos")
+			release_log += logmsg
 			valve_open = !valve_open
 
 		if (href_list["remove_tank"])
@@ -338,7 +343,8 @@ Release Pressure: <A href='?src=\ref[src];pressure_adj=-1000'>-</A> <A href='?sr
 				holding = null
 				if(valve_open)
 					message_admins("Tank removed from canister with open valve by [contents]", 0, 1)
-
+					release_log += "Tank removed from canister with open valve by [key_name(usr)]<br>"
+					investigate_log("Tank removed from canister with open valve by [key_name(usr)]<br>", "atmos")
 		if (href_list["pressure_adj"])
 			var/diff = text2num(href_list["pressure_adj"])
 			if(diff > 0)

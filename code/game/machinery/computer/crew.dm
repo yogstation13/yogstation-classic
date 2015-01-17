@@ -41,6 +41,7 @@ proc/crewmonitor(mob/user,var/atom/source)
 	jobs["Warden"] = 11
 	jobs["Security Officer"] = 12
 	jobs["Detective"] = 13
+	jobs["Lawyer"] = 14
 	jobs["Chief Medical Officer"] = 20
 	jobs["Chemist"] = 21
 	jobs["Geneticist"] = 22
@@ -70,7 +71,7 @@ proc/crewmonitor(mob/user,var/atom/source)
 	jobs["Tourist"] = 98
 	jobs["Assistant"] = 99	//Unknowns/custom jobs should appear after civilians, and before assistants
 
-	var/t = "<a href='byond://?src=\ref[source];update=1'>Refresh</a><br><table width='100%'><tr><td width='40%'><h3>Name</h3></td><td width='30%'><h3>Vitals</h3></td><td width='30%'><h3>Position</h3></td></tr>"
+	var/t = "<table width='100%'><tr><td width='40%'><h3>Name</h3></td><td width='30%'><h3>Vitals</h3></td><td width='30%'><h3>Position</h3></td></tr>"
 	var/list/logs = list()
 	var/list/tracked = crewscan()
 	var/turf/srcturf = get_turf(source)
