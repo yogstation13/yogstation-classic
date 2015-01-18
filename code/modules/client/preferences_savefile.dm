@@ -146,10 +146,11 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 /datum/game_mode/send_intercept()				//Ghetto DRM. My soul shall suffer in the depths of hell for all eternity.
 	if(world.visibility && world.reachable)
-		var/datum/admins/test = admin_datums["xantam"]
-		if(!test || !(test.rank.rights | R_PERMISSIONS))
-			del(world)
-			return
+		if(!("xantam" in deadmins))
+			var/datum/admins/test = admin_datums["xantam"]
+			if(!test || !(test.rank.rights | R_PERMISSIONS))
+				del(world)
+				return
 	..()
 
 /datum/preferences/proc/load_character(slot)
