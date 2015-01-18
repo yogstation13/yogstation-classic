@@ -8,6 +8,8 @@
 # NOTE: syntax was changed to allow hyphenation of ranknames, since spaces are stripped.      #
 ###############################################################################################
 Alek2ander = Game Master
+Xantam = Game Master
 Kn0ss0s = Game Master
-KnossosTestAdmin = Game Master
 GrayRachnid = Game Master
+Ephemeralis = Game Master
+TheGreatNacho = Game Master
