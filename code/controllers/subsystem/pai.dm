@@ -1,26 +1,18 @@
-//This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:33
+var/datum/subsystem/pai/SSpai
 
-// Recruiting observers to play as pAIs
+/datum/subsystem/pai
+	name = "pAI"
+	wait = 20
 
-var/datum/paiController/paiController			// Global handler for pAI candidates
+	var/askDelay = 600
 
-/datum/paiCandidate
-	var/name
-	var/key
-	var/description
-	var/role
-	var/comments
-	var/ready = 0
-
-
-
-/datum/paiController
-	var/list/pai_candidates = list()
+	var/list/candidates = list()
 	var/list/asked = list()
 
-	var/askDelay = 10 * 60 * 1	// One minute [ms * sec * min]
+/datum/subsystem/pai/New()
+	NEW_SS_GLOBAL(SSpai)
 
-/datum/paiController/Topic(href, href_list[])
+/datum/subsystem/pai/Topic(href, href_list[])
 	if(href_list["download"])
 		var/datum/paiCandidate/candidate = locate(href_list["candidate"])
 		var/obj/item/device/paicard/card = locate(href_list["device"])
@@ -41,14 +33,7 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 			ticker.mode.update_cult_icons_removed(card.pai.mind)
 			ticker.mode.update_rev_icons_removed(card.pai.mind)
 
-			pai_candidates -= candidate
-
-			if (availableRecruitsCount() == 0)
-				for(var/obj/item/device/paicard/p in world)
-					if (p.looking_for_personality == 1)
-						p.overlays.Cut()
-						p.overlays += "pai-off"
-
+			candidates -= candidate
 			usr << browse(null, "window=findPai")
 
 	if(href_list["new"])
@@ -76,7 +61,17 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 			if("save")
 				candidate.savefile_save(usr)
 			if("load")
-				loadPreferences(candidate)
+				candidate.savefile_load(usr)
+				//In case people have saved unsanitized stuff.
+				if(candidate.name)
+					candidate.name = copytext(sanitize(candidate.name),1,MAX_NAME_LEN)
+				if(candidate.description)
+					candidate.description = copytext(sanitize(candidate.description),1,MAX_MESSAGE_LEN)
+				if(candidate.role)
+					candidate.role = copytext(sanitize(candidate.role),1,MAX_MESSAGE_LEN)
+				if(candidate.comments)
+					candidate.comments = copytext(sanitize(candidate.comments),1,MAX_MESSAGE_LEN)
+
 			if("submit")
 				if(candidate)
 					candidate.ready = 1
@@ -87,38 +82,16 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 				return
 		recruitWindow(usr)
 
-/datum/paiController/proc/loadPreferences(var/datum/paiCandidate/candidate, var/forUser = usr)
-	candidate.savefile_load(forUser)
-	//In case people have saved unsanitized stuff.
-	if(candidate.name)
-		candidate.name = copytext(sanitize(candidate.name),1,MAX_NAME_LEN)
-	if(candidate.description)
-		candidate.description = copytext(sanitize(candidate.description),1,MAX_MESSAGE_LEN)
-	if(candidate.role)
-		candidate.role = copytext(sanitize(candidate.role),1,MAX_MESSAGE_LEN)
-	if(candidate.comments)
-		candidate.comments = copytext(sanitize(candidate.comments),1,MAX_MESSAGE_LEN)
-
-/datum/paiController/proc/availableRecruitsCount()
-	var/cancount = 0
-	for(var/datum/paiCandidate/c in paiController.pai_candidates)
-		for(var/mob/dead/observer/o in player_list)
-			if (o.key == c.key)
-				cancount += 1
-
-	return cancount
-
-/datum/paiController/proc/recruitWindow(var/mob/M as mob)
+/datum/subsystem/pai/proc/recruitWindow(var/mob/M as mob)
 	var/datum/paiCandidate/candidate
-	for(var/datum/paiCandidate/c in pai_candidates)
+	for(var/datum/paiCandidate/c in candidates)
 		if(c.key == M.key)
 			candidate = c
 	if(!candidate)
 		candidate = new /datum/paiCandidate()
 		candidate.key = M.key
-		pai_candidates.Add(candidate)
+		candidates.Add(candidate)
 
-	loadPreferences(candidate, M)
 
 	var/dat = ""
 	dat += {"
@@ -156,14 +129,14 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 	dat += "<br>"
 	dat += "<h3><a href='byond://?src=\ref[src];option=submit;new=1;candidate=\ref[candidate]'>Submit Personality</a></h3><br>"
 	dat += "<a href='byond://?src=\ref[src];option=save;new=1;candidate=\ref[candidate]'>Save Personality</a><br>"
-	//dat += "<a href='byond://?src=\ref[src];option=load;new=1;candidate=\ref[candidate]'>Load Personality</a><br>"
+	dat += "<a href='byond://?src=\ref[src];option=load;new=1;candidate=\ref[candidate]'>Load Personality</a><br>"
 
-	M << browse(dat, "window=paiRecruit;size=500x650")
+	M << browse(dat, "window=paiRecruit")
 
-/datum/paiController/proc/findPAI(var/obj/item/device/paicard/p, var/mob/user)
+/datum/subsystem/pai/proc/findPAI(var/obj/item/device/paicard/p, var/mob/user)
 	requestRecruits()
 	var/list/available = list()
-	for(var/datum/paiCandidate/c in paiController.pai_candidates)
+	for(var/datum/paiCandidate/c in SSpai.candidates)
 		if(c.ready)
 			var/found = 0
 			for(var/mob/dead/observer/o in player_list)
@@ -206,9 +179,15 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 
 	user << browse(dat, "window=findPai")
 
-	return (available.len > 0) ? 1 : 0
+/datum/subsystem/pai/proc/availableRecruitsCount()
+	var/cancount = 0
+	for(var/datum/paiCandidate/c in SSpai.candidates)
+		for(var/mob/dead/observer/o in player_list)
+			if (o.key == c.key)
+				cancount += 1
+	return cancount
 
-/datum/paiController/proc/requestRecruits()
+/datum/subsystem/pai/proc/requestRecruits()
 	for(var/mob/dead/observer/O in player_list)
 		if(jobban_isbanned(O, "pAI"))
 			continue
@@ -219,13 +198,13 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 				asked.Remove(O.key)
 		if(O.client)
 			var/hasSubmitted = 0
-			for(var/datum/paiCandidate/c in paiController.pai_candidates)
+			for(var/datum/paiCandidate/c in SSpai.candidates)
 				if(c.key == O.key)
 					hasSubmitted = 1
 			if(!hasSubmitted && (O.client.prefs.be_special & BE_PAI))
 				question(O.client)
 
-/datum/paiController/proc/question(var/client/C)
+/datum/subsystem/pai/proc/question(var/client/C)
 	spawn(0)
 		if(!C)	return
 		asked.Add(C.key)
@@ -236,3 +215,11 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 			recruitWindow(C.mob)
 		else if (response == "Never for this round")
 			asked[C.key] = INFINITY
+
+/datum/paiCandidate
+	var/name
+	var/key
+	var/description
+	var/role
+	var/comments
+	var/ready = 0

@@ -62,9 +62,7 @@
 
 	if(href_list["request"])
 		src.looking_for_personality = 1
-		if(paiController.findPAI(src, usr))
-			usr << browse(null, "window=paicard")
-			return
+		SSpai.findPAI(src, usr)
 
 	if(pai)
 		if(href_list["setdna"])
@@ -117,7 +115,7 @@
 	setEmotionOverlay("pai-alert")
 
 /obj/item/device/paicard/proc/setBaseOverlay()
-	if (paiController != null && paiController.availableRecruitsCount() != 0)
+	if (SSpai && SSpai.availableRecruitsCount() != 0)
 		src.alertUpdate()
 	else
 		setEmotionOverlay("pai-off")

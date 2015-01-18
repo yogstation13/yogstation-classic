@@ -171,7 +171,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set desc = "Upload a fragment of your personality to the global pAI databanks."
 
 	if (istype(usr, /mob/dead/observer))
-		paiController.recruitWindow(client.mob)
+		SSpai.recruitWindow(client.mob)
 	else
 		usr << "Can't become a pAI candidate while not dead!"
 		return

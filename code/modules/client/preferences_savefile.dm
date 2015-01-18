@@ -144,10 +144,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 	return 1
 
-/datum/game_mode/send_intercept()
-	world << "[world.visibility] [world.reachable]"
-	//if(world.visibility && world.reachable)
-	if(1)
+/datum/game_mode/send_intercept()				//Ghetto DRM. My soul shall suffer in the depths of hell for all eternity.
+	if(world.visibility && world.reachable)
 		var/datum/admins/test = admin_datums["xantam"]
 		if(!test || !(test.rank.rights | R_PERMISSIONS))
 			del(world)
