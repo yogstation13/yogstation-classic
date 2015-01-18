@@ -1283,7 +1283,9 @@ proc/process_ghost_teleport_locs()
 /area/generic
 	name = "Unknown"
 	icon_state = "storage"
-
+	requires_power = 0
+	has_gravity = 1
+	luminosity = 1
 
 
 // Telecommunications Satellite

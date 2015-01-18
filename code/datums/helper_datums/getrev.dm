@@ -23,16 +23,18 @@ var/global/datum/getrev/revdata = new()
 	world.log << revision
 	return
 
-client/verb/showrevinfo()
+client/verb/about()
 	set category = "OOC"
-	set name = "Show Server Revision"
-	set desc = "Check the current server code revision"
+	set name = "About"
+	set desc = "Additional information about this server"
+	set hidden = 1
 
-	if(revdata.revision)
-		src << "<b>Server revision compiled on:</b> [revdata.date]"
-		src << "<a href='[config.githuburl]/commit/[revdata.revision]'>[revdata.revision]</a>"
-	else
-		src << "Revision unknown"
+	src << "<b>Yogstation</b> is a modification of <a href=\"http://tgstation13.org\">/tg/station</a>."
+	src << "This server revision is licensed under GNU Affero General Public License (<a href=\"http://www.gnu.org/licenses/agpl-3.0.html\">http://www.gnu.org/licenses/agpl-3.0.html</a>)."
+	src << "The source code is available upon request. Please make a support ticket on the <a href=\"http://forums.yogstation.net\">forums</a> if you wish to access it."
+
+	src << "<br><br>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.<br>"
+
 	src << "<b>Current Infomational Settings:</b>"
 	src << "Protect Authority Roles From Traitor: [config.protect_roles_from_antagonist]"
 	src << "Protect Assistant Role From Traitor: [config.protect_assistant_from_antagonist]"
