@@ -102,7 +102,6 @@
 /obj/structure/mecha_wreckage/reticence
 	name = "\improper Reticence wreckage"
 	icon_state = "reticence-broken"
-	color = "#87878715"
 
 /obj/structure/mecha_wreckage/ripley
 	name = "\improper Ripley wreckage"

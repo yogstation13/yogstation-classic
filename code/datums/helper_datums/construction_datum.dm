@@ -58,7 +58,7 @@
 
 /datum/construction/proc/spawn_result()
 	if(result)
-		new result(get_turf(holder))
+		new result(get_turf(holder), 1)
 		qdel(holder)
 	return
 
