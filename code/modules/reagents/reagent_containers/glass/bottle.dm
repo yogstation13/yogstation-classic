@@ -66,7 +66,7 @@
 	name = "charcoal bottle"
 	desc = "A small bottle of charcoal."
 	icon_state = "bottle17"
-	spawned_reagent = "salglu_solution"
+	spawned_reagent = "charcoal"
 
 /obj/item/weapon/reagent_containers/glass/bottle/mutagen
 	name = "unstable mutagen bottle"
