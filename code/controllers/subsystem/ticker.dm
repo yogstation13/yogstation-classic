@@ -109,6 +109,19 @@ var/datum/subsystem/ticker/ticker
 					if(blackbox)
 						blackbox.save_all_data_to_sql()
 
+					for(var/datum/admin_ticket/T in tickets_list)
+						if(!T.resolved)
+							var/count = 0
+							for(var/client/X in admins)
+								if(!check_rights_for(X, R_ADMIN))
+									continue
+								if(X.is_afk())
+									continue
+								count++
+
+							if(count)
+								delay_end = 1
+
 					if(delay_end)
 						world << "\blue <B>An admin has delayed the round end</B>"
 					else
@@ -201,8 +214,16 @@ var/datum/subsystem/ticker/ticker
 			if(S.name != "AI")
 				qdel(S)
 
-		if(!admins.len)
-			send2irc("Server", "Round just started with no admins online!")
+
+		if(!config.allow_vote_restart)
+			var/admins_number = 0
+			for(var/client/admin in admins)
+				if(check_rights_for(admin, R_SERVER))
+					admins_number++
+			if(admins_number == 0)
+				log_admin("No admins left with +SERVER. Restart vote allowed.")
+				message_admins("No admins left with +SERVER. Restart vote allowed.")
+				config.allow_vote_restart = 1
 
 	return 1
 
@@ -215,7 +236,7 @@ var/datum/subsystem/ticker/ticker
 	cinematic = new /obj/screen{icon='icons/effects/station_explosion.dmi';icon_state="station_intact";layer=20;mouse_opacity=0;screen_loc="1,0";}(src)
 
 	var/obj/structure/stool/bed/temp_buckle = new(src)
-	if(station_missed)
+	if(station_missed == 1)
 		for(var/mob/M in mob_list)
 			M.buckled = temp_buckle				//buckles the mob so it can't do anything
 			if(M.client)
@@ -227,7 +248,7 @@ var/datum/subsystem/ticker/ticker
 				M.client.screen += cinematic
 			if(M.stat != DEAD)
 				var/turf/T = get_turf(M)
-				if(T && T.z==1)
+				if(((station_missed == 0) && T && (T.z==1)) || ((station_missed > 1) && T && (T.z == station_missed)))
 					M.death(0) //no mercy
 
 	//Now animate the cinematic
@@ -308,7 +329,11 @@ var/datum/subsystem/ticker/ticker
 				player.create_character()
 				qdel(player)
 		else
-			player.new_player_panel()
+			if(player.client)
+				if(player.client.prefs.agree < MAXAGREE)
+					player.disclaimer()
+				else
+					player.new_player_panel()
 
 
 /datum/subsystem/ticker/proc/collect_minds()
