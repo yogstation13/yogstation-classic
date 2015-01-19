@@ -75,7 +75,7 @@
 	var/melee_can_hit = 1
 
 
-/obj/mecha/New()
+/obj/mecha/New(loc, var/constructed = 0)
 	..()
 	events = new
 	icon_state += "-open"
@@ -89,6 +89,8 @@
 	add_cell()
 	add_iterators()
 	removeVerb(/obj/mecha/verb/disconnect_from_port)
+	if(constructed)
+		new /obj/item/mecha_parts/mecha_tracking(src)
 	log_message("[src.name] created.")
 	mechas_list += src //global mech list
 	return
