@@ -131,7 +131,7 @@
 				W.afterattack(A,src,0,params) // 0: not Adjacent
 			else
 				RangedAttack(A, params)
-
+	last_movement=world.time
 	return
 
 /mob/proc/changeNext_move(num)

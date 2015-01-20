@@ -325,7 +325,7 @@
 "gm" = (/obj/machinery/door/poddoor{id = "ert_access"; name = "ERT staging area"},/turf/unsimulated/floor{icon_state = "delivery"},/area/centcom/ferry)
 "gn" = (/obj/machinery/door/poddoor{id = "ert_armory"; name = "Armory"},/turf/unsimulated/floor{icon_state = "delivery"},/area/centcom/ferry)
 "go" = (/obj/structure/mirror{pixel_y = 32},/turf/unsimulated/floor,/area/centcom/ferry)
-"gp" = (/obj/structure/rack,/obj/item/weapon/gun/energy/gun,/obj/item/weapon/gun/energy/gun,/obj/item/weapon/gun/energy,/obj/item/weapon/gun/energy,/obj/item/weapon/gun/energy,/obj/item/weapon/gun/energy,/turf/unsimulated/floor,/area/centcom/ferry)
+"gp" = (/obj/structure/rack,/obj/item/weapon/gun/energy/pulse_rifle/pulse_carbine,/obj/item/weapon/gun/energy/pulse_rifle/pulse_carbine,/obj/item/weapon/gun/energy/pulse_rifle/pulse_carbine,/obj/item/weapon/gun/energy/pulse_rifle/pulse_carbine,/obj/item/weapon/gun/energy/pulse_rifle/pulse_carbine,/obj/item/weapon/gun/energy/pulse_rifle/pulse_carbine,/turf/unsimulated/floor,/area/centcom/ferry)
 "gq" = (/obj/structure/table,/turf/unsimulated/floor{icon_state = "freezerfloor"; dir = 2},/area/centcom/holding)
 "gr" = (/turf/unsimulated/floor{icon_state = "freezerfloor"; dir = 2},/area/centcom/holding)
 "gs" = (/obj/structure/closet/secure_closet/bar{req_access_txt = "25"},/turf/unsimulated/floor{icon_state = "freezerfloor"; dir = 2},/area/centcom/holding)
@@ -805,7 +805,7 @@
 "py" = (/obj/effect/landmark{name = "Nuclear-Bomb"},/turf/simulated/shuttle/floor{icon_state = "floor4"},/area/space)
 "pz" = (/obj/structure/table,/obj/item/robot_parts/r_arm,/obj/item/weapon/storage/firstaid/regular{pixel_x = 0; pixel_y = 0},/turf/simulated/shuttle/floor{icon_state = "floor4"},/area/space)
 "pA" = (/obj/structure/closet/crate/internals,/obj/item/weapon/tank/oxygen/red,/obj/item/clothing/mask/gas,/obj/item/weapon/tank/oxygen/red,/obj/item/clothing/mask/gas,/obj/item/weapon/tank/oxygen/red,/obj/item/clothing/mask/gas,/obj/item/weapon/tank/oxygen/red,/obj/item/clothing/mask/gas,/obj/item/weapon/tank/oxygen/red,/obj/item/clothing/mask/gas,/turf/simulated/shuttle/floor{icon_state = "floor4"},/area/space)
-"pB" = (/obj/structure/closet/crate/medical,/obj/item/weapon/surgicaldrill,/obj/item/weapon/scalpel,/obj/item/weapon/reagent_containers/glass/bottle/stoxin,/turf/simulated/shuttle/floor{icon_state = "floor4"},/area/space)
+"pB" = (/obj/structure/closet/crate/medical,/obj/item/weapon/surgicaldrill,/obj/item/weapon/scalpel,/obj/item/weapon/reagent_containers/glass/bottle/morphine,/turf/simulated/shuttle/floor{icon_state = "floor4"},/area/space)
 "pC" = (/obj/structure/shuttle/engine/heater,/obj/structure/grille,/obj/structure/window/reinforced/fulltile,/turf/simulated/shuttle/plating,/area/space)
 "pD" = (/obj/machinery/teleport/station,/turf/simulated/shuttle/floor{icon_state = "floor4"},/area/space)
 "pE" = (/obj/machinery/teleport/hub/syndicate,/turf/simulated/shuttle/floor{icon_state = "floor4"},/area/space)
@@ -1219,3 +1219,4 @@ abababababababababababababababababababababababababababababababababababababababab
 ababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababab
 ababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababab
 "}
+

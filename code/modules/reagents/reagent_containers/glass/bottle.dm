@@ -42,11 +42,11 @@
 	icon_state = "bottle12"
 	spawned_reagent = "cyanide"
 
-/obj/item/weapon/reagent_containers/glass/bottle/stoxin
+/obj/item/weapon/reagent_containers/glass/bottle/morphine
 	name = "sleep-toxin bottle"
 	desc = "A small bottle of sleep toxins. Just the fumes make you sleepy."
 	icon_state = "bottle20"
-	spawned_reagent = "stoxin"
+	spawned_reagent = "morphine"
 
 /obj/item/weapon/reagent_containers/glass/bottle/morphine
 	name = "morphine bottle"
