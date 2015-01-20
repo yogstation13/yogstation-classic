@@ -673,17 +673,14 @@ datum/reagent/space_cleaner/reaction_obj(var/obj/O, var/volume)
 			O.clean_blood()
 
 datum/reagent/space_cleaner/reaction_turf(var/turf/T, var/volume)
-	if(volume >= 1)
-		T.clean_blood()
-		for(var/obj/effect/decal/cleanable/C in T)
-			qdel(C)
-
-		for(var/mob/living/carbon/slime/M in T)
-			M.adjustToxLoss(rand(5,10))
+	T.clean_blood()
+	for(var/obj/effect/decal/cleanable/C in T)
+		qdel(C)
+	for(var/mob/living/carbon/slime/M in T)
+		M.adjustToxLoss(rand(5,10))
 	if(istype(T, /turf/simulated/floor))
 		var/turf/simulated/floor/F = T
-		if(volume >= 1)
-			F.dirt = 0
+		F.dirt = 0
 
 datum/reagent/space_cleaner/reaction_mob(var/mob/M, var/method=TOUCH, var/volume)
 	if(iscarbon(M))

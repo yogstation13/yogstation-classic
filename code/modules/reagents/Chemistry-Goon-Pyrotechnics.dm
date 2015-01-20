@@ -35,6 +35,9 @@ datum/reagent/clf3/on_mob_life(var/mob/living/M as mob)
 	var/turf/simulated/T = get_turf(holder.my_atom)
 	for(var/turf/simulated/turf in range(1,T))
 		new /obj/effect/hotspot(turf)
+
+	holder.my_atom.report_reaction("chlorine trifluoride")
+
 	return
 
 /datum/reagent/clf3/reaction_turf(var/turf/simulated/T, var/volume)
@@ -90,6 +93,7 @@ datum/reagent/clf3/on_mob_life(var/mob/living/M as mob)
 /datum/chemical_reaction/sorium/on_reaction(var/datum/reagents/holder, var/created_volume)
 	var/turf/simulated/T = get_turf(holder.my_atom)
 	goonchem_vortex(T, 1, 5, 6)
+	holder.my_atom.report_reaction("sorium")
 
 /datum/reagent/liquid_dark_matter
 	name = "Liquid Dark Matter"
@@ -120,6 +124,7 @@ datum/reagent/clf3/on_mob_life(var/mob/living/M as mob)
 /datum/chemical_reaction/liquid_dark_matter/on_reaction(var/datum/reagents/holder, var/created_volume)
 	var/turf/simulated/T = get_turf(holder.my_atom)
 	goonchem_vortex(T, 0, 5, 6)
+	holder.my_atom.report_reaction("LDM")
 	return
 
 proc/goonchem_vortex(var/turf/simulated/T, var/setting_type, var/range, var/pull_times)

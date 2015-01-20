@@ -661,6 +661,7 @@ datum/reagent/life
 
 /datum/chemical_reaction/life/on_reaction(var/datum/reagents/holder, var/created_volume)
 	chemical_mob_spawn(holder, 1, "Life")
+	holder.my_atom.report_reaction("life (mob spawning)")
 
 proc/chemical_mob_spawn(var/datum/reagents/holder, var/amount_to_spawn, var/reaction_name)
 	if(holder && holder.my_atom)
