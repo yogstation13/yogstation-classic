@@ -3,9 +3,9 @@
 /obj/item/clothing/under/rank/bartender
 	desc = "It looks like it could use some more flair."
 	name = "bartender's uniform"
-	icon_state = "bar_suit"
-	item_state = "bar_suit"
-	item_color = "bar_suit"
+	icon_state = "barman"
+	item_state = "barman"
+	item_color = "ba_suit"
 
 /obj/item/clothing/under/rank/clerk
 	desc = "Oh, look it comes with its own vest."
