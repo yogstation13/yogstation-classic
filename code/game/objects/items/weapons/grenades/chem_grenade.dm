@@ -170,7 +170,7 @@
 		var/mob/last = get_mob_by_ckey(nadeassembly.fingerprintslast)
 		var/turf/T = get_turf(src)
 		var/area/A = get_area(T)
-		message_admins("grenade primed by an assembly, attached by [M.key]/[M]<A HREF='?_src_=holder;adminmoreinfo=\ref[M]'>(?)</A> and last touched by [last.key]/[last]<A HREF='?_src_=holder;adminmoreinfo=\ref[last]'>(?)</A> ([nadeassembly.a_left.name] and [nadeassembly.a_right.name]) at <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>[A.name] (JMP)</a>.")
+		message_admins("Grenade primed by an assembly, attached by [M.key]/[M]<A HREF='?_src_=holder;adminmoreinfo=\ref[M]'>(?)</A> and last touched by [last.key]/[last]<A HREF='?_src_=holder;adminmoreinfo=\ref[last]'>(?)</A> ([nadeassembly.a_left.name] and [nadeassembly.a_right.name]) at <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>[A.name] (JMP)</a>.")
 		log_game("grenade primed by an assembly, attached by [M.key]/[M] and last touched by [last.key]/[last] ([nadeassembly.a_left.name] and [nadeassembly.a_right.name]) at [A.name] ([T.x], [T.y], [T.z])")
 
 	playsound(loc, 'sound/effects/bamf.ogg', 50, 1)
@@ -185,14 +185,8 @@
 		steam.attach(src)
 		steam.start()
 
-		if(reagents.has_reagent("plasma"))
-			src.report_reaction("plasma")
+		src.report_reaction("grenade", 1)
 
-		if(reagents.has_reagent("lube"))
-			src.report_reaction("lube")
-
-		if(reagents.has_reagent("pacid"))
-			src.report_reaction("pacid")
 
 	var/list/viewable = view(affected_area, loc)
 	var/list/accessible = can_flood_from(loc, affected_area)

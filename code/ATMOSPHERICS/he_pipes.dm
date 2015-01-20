@@ -50,6 +50,7 @@
 
 /obj/machinery/atmospherics/pipe/simple/heat_exchanging/junction/New()
 	..()
+	SetInitDirections()
 
 /obj/machinery/atmospherics/pipe/simple/heat_exchanging/junction/SetInitDirections()
 	switch(dir)

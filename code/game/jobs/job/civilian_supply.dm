@@ -10,7 +10,7 @@ Quartermaster
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the head of personnel"
-	selection_color = "#dddddd"
+	selection_color = "#cdad7c"
 
 	default_pda = /obj/item/device/pda/quartermaster
 	default_headset = /obj/item/device/radio/headset/headset_cargo
@@ -36,7 +36,7 @@ Cargo Technician
 	total_positions = 3
 	spawn_positions = 2
 	supervisors = "the quartermaster and the head of personnel"
-	selection_color = "#dddddd"
+	selection_color = "#b18644"
 
 	default_pda = /obj/item/device/pda/cargo
 	default_headset = /obj/item/device/radio/headset/headset_cargo
@@ -60,7 +60,7 @@ Shaft Miner
 	total_positions = 3
 	spawn_positions = 3
 	supervisors = "the quartermaster and the head of personnel"
-	selection_color = "#dddddd"
+	selection_color = "#b18644"
 
 	default_pda = /obj/item/device/pda/shaftminer
 	default_headset = /obj/item/device/radio/headset/headset_cargo
