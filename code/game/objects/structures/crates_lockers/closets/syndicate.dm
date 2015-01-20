@@ -15,7 +15,7 @@
 /obj/structure/closet/syndicate/ertSec/New()
 	name = "security closet"
 	desc = "Emergency Response Team equipment locker"
-	new /obj/item/weapon/gun/energy/pulse_rifle/pulse_pistol(src)
+	new /obj/item/weapon/gun/energy/pulse_pistol(src)
 	new /obj/item/weapon/card/id/ertsSecurity(src)
 	new /obj/item/weapon/storage/backpack/security(src)
 	return
@@ -23,7 +23,7 @@
 /obj/structure/closet/syndicate/ertMed/New()
 	name = "medical closet"
 	desc = "Emergency Response Team equipment locker"
-	new /obj/item/weapon/gun/energy/pulse_rifle/pulse_pistol(src)
+	new /obj/item/weapon/gun/energy/pulse_pistol(src)
 	new /obj/item/weapon/card/id/ertsMedical(src)
 	new /obj/item/weapon/storage/backpack/medic(src)
 	return
@@ -31,7 +31,7 @@
 /obj/structure/closet/syndicate/ertEngi/New()
 	name = "engineer closet"
 	desc = "Emergency Response Team equipment locker"
-	new /obj/item/weapon/gun/energy/pulse_rifle/pulse_pistol(src)
+	new /obj/item/weapon/gun/energy/pulse_pistol(src)
 	new /obj/item/weapon/card/id/ertsEngineer(src)
 	new /obj/item/weapon/storage/backpack/industrial(src)
 	return

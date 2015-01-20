@@ -244,6 +244,15 @@ datum/reagent/water
 
 datum/reagent/water/reaction_turf(var/turf/simulated/T, var/volume)
 	if (!istype(T)) return
+
+	if(volume >= 10)
+		T.clean_blood()
+		for(var/obj/effect/decal/cleanable/C in T)
+			qdel(C)
+		if(istype(T, /turf/simulated/floor))
+			var/turf/simulated/floor/F = T
+			F.dirt = 0
+
 	var/CT = cooling_temperature
 	src = null
 	if(volume >= 10)

@@ -27,7 +27,7 @@
 	. = on_losing(owner)
 
 /datum/mutation/human/proc/set_se(se_string, on = 1)
-	if(!se_string || lentext(se_string) < DNA_STRUC_ENZYMES_BLOCKS * DNA_BLOCK_SIZE)	return
+	if(!se_string || length(se_string) < DNA_STRUC_ENZYMES_BLOCKS * DNA_BLOCK_SIZE)	return
 	var/before = copytext(se_string, 1, (dna_block * DNA_BLOCK_SIZE) + 1)
 	var/injection = num2hex(lowest_value + (rand(1, 256 * 6) * (on ? 1 : -1)))
 	var/after = copytext(se_string, (dna_block * DNA_BLOCK_SIZE) + DNA_BLOCK_SIZE + 1)

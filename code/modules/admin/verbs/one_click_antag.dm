@@ -322,11 +322,18 @@ client/proc/one_click_antag()
 	var/list/mob/dead/observer/candidates = list()
 	var/time_passed = world.time
 	var/mission = input("Assign a mission to the deathsquad", "Assign Mission", "Leave no witnesses.")
+	var/mob/dead/observer/adminleader = null
+	if(istype(usr, /mob/dead/observer))
+		switch(alert(usr,"Do you wish to lead the team?","Leader?","Yes","No"))
+			if("Yes")
+				adminleader = usr
 	var/timeTick = 1800
 	var/timeWord = "three minutes"
 
 	//Generates a list of commandos from active ghosts. Then the user picks which characters to respawn as the commandos.
 	for(var/mob/dead/observer/G in player_list)
+		if(G == adminleader)
+			continue
 		spawn(0)
 			switch(alert(G,"Do you wish to be considered for an elite Nanotrasen strike team being sent in?","Please answer in 30 seconds!","Yes","No"))
 				if("Yes")
@@ -357,8 +364,13 @@ client/proc/one_click_antag()
 		var/list/spawnpoints = deathsquadspawn
 		while(numagents && spawnpoints.len && candidates.len)
 			var/spawnloc = spawnpoints[1]
-			var/mob/dead/observer/chosen_candidate = pick(candidates)
-			candidates -= chosen_candidate
+			var/mob/dead/observer/chosen_candidate = null
+			if((numagents == 1) && adminleader && adminleader.client)
+				chosen_candidate = adminleader
+				adminleader = null
+			else
+				chosen_candidate = pick(candidates)
+				candidates -= chosen_candidate
 			if(!chosen_candidate.key)
 				continue
 
@@ -444,8 +456,16 @@ client/proc/one_click_antag()
 	var/time_passed = world.time
 	var/mission = input("Assign a mission to the Emergency Response Team", "Assign Mission", "Assist the station.")
 
+	var/mob/dead/observer/adminleader = null
+	if(istype(usr, /mob/dead/observer))
+		switch(alert(usr,"Do you wish to lead the team?","Leader?","Yes","No"))
+			if("Yes")
+				adminleader = usr
+
 	//Generates a list of officers from active ghosts. Then the user picks which characters to respawn as the officers.
 	for(var/mob/dead/observer/G in player_list)
+		if(G == adminleader)
+			continue
 		spawn(0)
 			switch(alert(G,"Do you wish to be considered for an elite Nanotrasen Emergency Response Team being sent in?","Please answer in 30 seconds!","Yes","No"))
 				if("Yes")
@@ -468,7 +488,13 @@ client/proc/one_click_antag()
 		var/list/spawnpoints = emergencyresponseteamspawn
 		while(numagents && spawnpoints.len && candidates.len)
 			var/spawnloc = spawnpoints[1]
-			var/mob/dead/observer/chosen_candidate = pick(candidates)
+			var/mob/dead/observer/chosen_candidate = null
+			if((numagents == 1) && adminleader && adminleader.client)
+				chosen_candidate = adminleader
+				adminleader = null
+			else
+				chosen_candidate = pick(candidates)
+				candidates -= chosen_candidate
 			candidates -= chosen_candidate
 			if(!chosen_candidate.key)
 				continue
