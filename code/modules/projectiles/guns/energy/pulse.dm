@@ -17,8 +17,9 @@
 /obj/item/weapon/gun/energy/pulse_carbine
 	name = "pulse carbine"
 	desc = "A ligther weight varient of the pulse rifle, a multifaceted energy carbine with three modes."
-	w_class = 4.0
+	w_class = 3.0
 	force = 10
+	slot_flags = SLOT_BACK
 	flags =  CONDUCT
 	icon_state = "pulse_carbine"
 	item_state = "pulse"
@@ -51,7 +52,7 @@
 	desc = "A compact pulse core in a classic handgun frame for Nanotrasen officers. It's not the size of the gun, it's the size of the hole it puts through people."
 	icon_state = "m1911-p"
 	cell_type = "/obj/item/weapon/stock_parts/cell/infinite"
-	w_class = 2.0
+	w_class = 3.0
 	force = 10
 	flags = CONDUCT
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/pulse, /obj/item/ammo_casing/energy/electrode, /obj/item/ammo_casing/energy/laser)
