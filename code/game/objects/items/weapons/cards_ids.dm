@@ -196,7 +196,7 @@ update_label("John Doe", "Clowny")
 	icon_state = "centcom"
 	registered_name = "Emergency Response Team Commander"
 	assignment = "Emergency Response Team Commander"
-	access = list(access_sec_doors, access_engine, access_medical)
+	access = list(access_sec_doors, access_engine, access_medical, access_cent_general, access_cent_storage)
 
 /obj/item/weapon/card/id/ertsSecurity
 	name = "\improper Centcom ID"
@@ -204,7 +204,7 @@ update_label("John Doe", "Clowny")
 	icon_state = "centcom"
 	registered_name = "Security Response Officer"
 	assignment = "Security Response Officer"
-	access = list(access_sec_doors)
+	access = list(access_sec_doors, access_cent_general)
 
 /obj/item/weapon/card/id/ertsEngineer
 	name = "\improper Centcom ID"
@@ -212,7 +212,7 @@ update_label("John Doe", "Clowny")
 	icon_state = "centcom"
 	registered_name = "Engineer Response Officer"
 	assignment = "Engineer Response Officer"
-	access = list(access_engine)
+	access = list(access_engine, access_cent_general)
 
 /obj/item/weapon/card/id/ertsMedical
 	name = "\improper Centcom ID"
@@ -220,7 +220,7 @@ update_label("John Doe", "Clowny")
 	icon_state = "centcom"
 	registered_name = "Medical Response Officer"
 	assignment = "Medical Response Officer"
-	access = list(access_medical)
+	access = list(access_medical, access_cent_general)
 
 /obj/item/weapon/card/id/prisoner
 	name = "prisoner ID card"

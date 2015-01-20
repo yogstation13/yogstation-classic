@@ -34,7 +34,8 @@ datum/reagent/clf3/on_mob_life(var/mob/living/M as mob)
 /datum/chemical_reaction/clf3/on_reaction(var/datum/reagents/holder, var/created_volume)
 	var/turf/simulated/T = get_turf(holder.my_atom)
 	for(var/turf/simulated/turf in range(1,T))
-		new /obj/effect/hotspot(turf)
+		if(istype(T) && istype(turf) && T.CanAtmosPass(turf))
+			new /obj/effect/hotspot(turf)
 
 	holder.my_atom.report_reaction("chlorine trifluoride")
 

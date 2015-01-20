@@ -78,8 +78,8 @@
 
 /obj/item/weapon/reagent_containers/spray/attack_self(var/mob/user)
 
-	amount_per_transfer_from_this = (amount_per_transfer_from_this == 10 ? 5 : 10)
-	spray_currentrange = (spray_currentrange == 1 ? spray_maxrange : 1)
+	amount_per_transfer_from_this = ((amount_per_transfer_from_this == 10) ? 5 : 10)
+	spray_currentrange = ((spray_currentrange == 1) ? spray_maxrange : 1)
 	user << "<span class='notice'>You [amount_per_transfer_from_this == 10 ? "remove" : "fix"] the nozzle. You'll now use [amount_per_transfer_from_this] units per spray.</span>"
 
 /obj/item/weapon/reagent_containers/spray/verb/empty()
