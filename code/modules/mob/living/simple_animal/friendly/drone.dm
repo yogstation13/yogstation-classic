@@ -426,7 +426,7 @@
 		if(!r_state)
 			r_state = r_hand.icon_state
 
-		hands_overlays += image("icon"='icons/mob/items_righthand.dmi', "icon_state"="[r_state]", "layer"=-HANDS_LAYER)
+		hands_overlays += image("icon" = r_hand.righthand_file, "icon_state"="[r_state]", "layer"=-HANDS_LAYER)
 
 		if(client && hud_used)
 			r_hand.layer = 20
@@ -438,7 +438,7 @@
 		if(!l_state)
 			l_state = l_hand.icon_state
 
-		hands_overlays += image("icon"='icons/mob/items_lefthand.dmi', "icon_state"="[l_state]", "layer"=-HANDS_LAYER)
+		hands_overlays += image("icon" = l_hand.lefthand_file, "icon_state"="[l_state]", "layer"=-HANDS_LAYER)
 
 		if(client && hud_used)
 			l_hand.layer = 20

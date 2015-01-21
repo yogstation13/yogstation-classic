@@ -18,7 +18,6 @@
 	new /obj/item/device/radio/headset/headset_sci(src)
 	new /obj/item/weapon/tank/air(src)
 	new /obj/item/clothing/mask/gas(src)
-	new /obj/item/clothing/suit/toggle/wintercoat/science(src)
 	return
 
 
@@ -35,6 +34,7 @@
 
 /obj/structure/closet/secure_closet/RD/New()
 	..()
+	new /obj/item/clothing/suit/toggle/wintercoat/science(src)
 	new /obj/item/clothing/suit/bio_suit/scientist(src)
 	new /obj/item/clothing/head/bio_hood/scientist(src)
 	new /obj/item/clothing/suit/toggle/labcoat/old(src)
@@ -51,5 +51,4 @@
 	new /obj/item/clothing/suit/armor/reactive(src)
 	new /obj/item/device/flash/handheld(src)
 	new /obj/item/device/laser_pointer(src)
-	new /obj/item/clothing/suit/toggle/wintercoat/science(src)
 	return
