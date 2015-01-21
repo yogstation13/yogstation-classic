@@ -100,10 +100,10 @@
 
 		dat += "<A href='byond://?src=\ref[src];spell_choice=summonitem'>Instant Summons</A> (10)<BR>"
 		dat += "<I>This spell can be used to bind a valuable item to you, bringing it to your hand at will. Using this spell while holding the bound item will allow you to unbind it. It does not require wizard garb.</I><BR>"
-		if(ticker.mode != "ragin' mages") // we totally need summon guns x100
+		/*if(ticker.mode != "ragin' mages") // we totally need summon guns x100
 			dat += "<A href='byond://?src=\ref[src];spell_choice=summonevents'>Summon Events</A> (One time use, persistent global spell)<BR>"
 			dat += "<I>Give Murphy's law a little push and replace all events with special wizard ones that will confound and confuse everyone. Multiple castings increase the rate of these events.</I><BR>"
-
+		*/
 		dat += "<HR>"
 
 		dat += "<A href='byond://?src=\ref[src];spell_choice=return'><B>Return</B></A><BR>"
@@ -324,11 +324,11 @@
 							uses = uses + 2 //refund plus a free point
 							active_challenges += "summon magic"
 							temp = "You have cast summon magic and gained an extra charge for your spellbook."
-						if("summonevents")
+						/*if("summonevents")
 							feedback_add_details("wizard_spell_learned","SE") //please do not change the abbreviation to keep data processing consistent. Add a unique id to any new spells
 							summonevents()
 							max_uses--
-							temp = "You have cast summon events."
+							temp = "You have cast summon events."*/
 						if("staffchange")
 							feedback_add_details("wizard_spell_learned","ST") //please do not change the abbreviation to keep data processing consistent. Add a unique id to any new spells
 							new /obj/item/weapon/gun/magic/staff/change(get_turf(H))
