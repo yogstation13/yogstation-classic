@@ -196,7 +196,7 @@
 				src << "<span class='warning'>Reprogramming machine behaviour...</span>"
 				spawn(50)
 					if(M && !M.gc_destroyed)
-						new /mob/living/simple_animal/hostile/mimic/copy/machine(get_turf(M), M, src, 1)
+						new /mob/living/simple_animal/hostile/mimic/machine(get_turf(M), M, src)
 			else src << "<span class='notice'>Out of uses.</span>"
 	else src << "<span class='notice'>That's not a machine.</span>"
 

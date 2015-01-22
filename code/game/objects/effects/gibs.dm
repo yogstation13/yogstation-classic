@@ -7,7 +7,7 @@
 /proc/xgibs(atom/location, var/list/viruses)
 	new /obj/effect/gibspawner/xeno(location,viruses)
 
-/proc/robogibs(atom/location, var/list/viruses)
+/proc/robogibs(atom/location, var/list/viruses = list())
 	new /obj/effect/gibspawner/robot(location,viruses)
 
 /obj/effect/gibspawner

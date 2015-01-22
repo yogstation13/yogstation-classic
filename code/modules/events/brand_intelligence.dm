@@ -53,10 +53,10 @@
 	if(!vendingMachines.len)	//if every machine is infected
 		for(var/obj/machinery/vending/upriser in infectedMachines)
 			if(prob(70) && !upriser.gc_destroyed)
-				var/mob/living/simple_animal/hostile/mimic/copy/M = new(upriser.loc, upriser, null, 1) // it will delete upriser on creation and override any machine checks
-				M.faction = list("profit")
-				M.speak = rampant_speeches.Copy()
-				M.speak_chance = 15
+				upriser.shut_up = 1
+				upriser.shoot_inventory = 0
+				new /mob/living/simple_animal/hostile/mimic/machine/vending(upriser.loc, upriser, null) // it will delete upriser on creation and override any machine checks
+
 			else
 				explosion(upriser.loc, -1, 1, 2, 4, 0)
 				qdel(upriser)
