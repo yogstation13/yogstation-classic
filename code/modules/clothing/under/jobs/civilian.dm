@@ -5,7 +5,7 @@
 	name = "bartender's uniform"
 	icon_state = "barman"
 	item_state = "barman"
-	item_color = "ba_suit"
+	item_color = "bar_suit"
 
 /obj/item/clothing/under/rank/clerk
 	desc = "Oh, look it comes with its own vest."
@@ -36,7 +36,7 @@
 	desc = "Shooooorts! They're comfy and easy to wear!"
 	icon_state = "cargotech"
 	item_state = "lb_suit"
-	item_color = "cargo"
+	item_color = "cargotech"
 
 
 /obj/item/clothing/under/rank/chaplain

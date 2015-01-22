@@ -105,7 +105,7 @@
 
 /obj/item/device/paicard/proc/setPersonality(mob/living/silicon/pai/personality)
 	src.pai = personality
-	setEmotionOverlay("pai-happy")
+	setEmotionOverlay("pai-null")
 
 /obj/item/device/paicard/proc/removePersonality()
 	src.pai = null
@@ -132,6 +132,7 @@
 			if(7) setEmotionOverlay("pai-sad")
 			if(8) setEmotionOverlay("pai-angry")
 			if(9) setEmotionOverlay("pai-what")
+			if(10) setEmotionOverlay("pai-null")
 
 /obj/item/device/paicard/proc/setEmotionOverlay(var/overlay)
 	src.overlays.Cut()

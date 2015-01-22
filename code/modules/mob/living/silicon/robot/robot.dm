@@ -128,6 +128,8 @@
 			ghostize()
 			ERROR("A borg has been destroyed, but its MMI lacked a brainmob, so the mind could not be transferred. Player: [ckey].")
 		mmi = null
+	if(connected_ai)
+		connected_ai.connected_robots -= src
 	..()
 
 /mob/living/silicon/robot/proc/connect_ai(var/mob/living/silicon/ai/ai = null)
@@ -316,6 +318,7 @@
 		else
 			stat(null, text("No Cell Inserted!"))
 
+		stat(null, "Station Time: [worldtime2text()]")
 		if(module)
 			internal = locate(/obj/item/weapon/tank/jetpack) in module.modules
 			if(internal)
@@ -323,6 +326,8 @@
 				stat("Tank Pressure", internal.air_contents.return_pressure())
 			for (var/datum/robot_energy_storage/st in module.storages)
 				stat("[st.name]: [st.energy]/[st.max_energy]")
+		if(connected_ai)
+			stat(null, text("Master AI: [connected_ai.name]"))
 
 /mob/living/silicon/robot/restrained()
 	return 0

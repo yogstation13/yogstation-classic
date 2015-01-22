@@ -213,6 +213,8 @@
 					pID = 8
 				if("What")
 					pID = 9
+				if("Null")
+					pID = 10
 			src.card.setEmotion(pID)
 			return
 

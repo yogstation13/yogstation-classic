@@ -22,7 +22,7 @@
 	module_name = "Core upgrade"
 	mod_pick_name = "coreup"
 	description = "An upgrade to improve core resistance, making it immune to fire and heat. This effect is permanent."
-	cost = 50
+	cost = 30
 	one_time = 1
 
 	power_type = /mob/living/silicon/ai/proc/fireproof_core
@@ -39,7 +39,7 @@
 	module_name = "AI Turret upgrade"
 	mod_pick_name = "turret"
 	description = "Improves the firing speed and health of all AI turrets. This effect is permanent."
-	cost = 50
+	cost = 30
 	one_time = 1
 
 	power_type = /mob/living/silicon/ai/proc/upgrade_turrets
@@ -57,7 +57,7 @@
 	module_name = "Hostile Station Lockdown"
 	mod_pick_name = "lockdown"
 	description = "Take control of the airlock, blast door and fire control networks, locking them down. Caution! This command also electrifies all airlocks."
-	cost = 20
+	cost = 70
 	one_time = 1
 
 	power_type = /mob/living/silicon/ai/proc/lockdown
@@ -133,7 +133,7 @@
 	module_name = "RCD disable"
 	mod_pick_name = "rcd"
 	description = "Send a specialised pulse to break all RCD devices on the station."
-	cost = 50
+	cost = 30
 
 	power_type = /mob/living/silicon/ai/proc/disable_rcd
 
@@ -196,7 +196,7 @@
 				src << "<span class='warning'>Reprogramming machine behaviour...</span>"
 				spawn(50)
 					if(M && !M.gc_destroyed)
-						new /mob/living/simple_animal/hostile/mimic/copy/machine(get_turf(M), M, src, 1)
+						new /mob/living/simple_animal/hostile/mimic/machine(get_turf(M), M, src)
 			else src << "<span class='notice'>Out of uses.</span>"
 	else src << "<span class='notice'>That's not a machine.</span>"
 
@@ -288,7 +288,7 @@
 	module_name = "Hack detection systems"
 	mod_pick_name = "interhack"
 	description = "Shuts down the Hostile Runtimes early detection system, and disables the automatic Time-To-Destruction announcements."
-	cost = 50
+	cost = 70
 	one_time = 1
 
 	power_type = /mob/living/silicon/ai/proc/interhack

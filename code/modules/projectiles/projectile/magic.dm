@@ -266,8 +266,8 @@ proc/wabbajack(mob/living/M)
 				return
 		else
 			var/obj/O = change
-			new /mob/living/simple_animal/hostile/mimic/copy(O.loc, O, firer)
-	else if(istype(change, /mob/living/simple_animal/hostile/mimic/copy))
+			new /mob/living/simple_animal/hostile/mimic/magic(O.loc, O, firer)
+	else if(istype(change, /mob/living/simple_animal/hostile/mimic/magic))
 		// Change our allegiance!
-		var/mob/living/simple_animal/hostile/mimic/copy/C = change
+		var/mob/living/simple_animal/hostile/mimic/magic/C = change
 		C.ChangeOwner(firer)

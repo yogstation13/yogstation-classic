@@ -1537,6 +1537,15 @@
 		var/mob/M = locate(href_list["sendmob"])
 		usr.client.sendmob(M)
 
+	else if(href_list["sendserver"])
+		if(!check_rights(R_BAN))	return
+
+		var/mob/M = locate(href_list["sendserver"])
+		if(!M) return
+		var/link = input(src.owner, "Which server to redirect to? (full link starting with byond://)", "GIT OUT") as text|null
+		if(link)
+			M.client << link(link)
+
 	else if(href_list["narrateto"])
 		if(!check_rights(R_ADMIN))	return
 

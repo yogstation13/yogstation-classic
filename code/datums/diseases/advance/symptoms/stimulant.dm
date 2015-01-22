@@ -10,7 +10,7 @@ Stimulant
 	Moderate Level.
 
 Bonus
-	The body generates ephedrine.
+	The body generates Ephedrine.
 
 //////////////////////////////////////
 */
