@@ -82,8 +82,8 @@
 	STORAGE_TYPE = /obj/item/weapon/tank/jetpack/oxygen/harness
 
 /obj/machinery/suit_storage_unit/ertCom
-	SUIT_TYPE = /obj/item/clothing/suit/space/ert
-	HELMET_TYPE = /obj/item/clothing/head/helmet/space/hardsuit/ert
+	SUIT_TYPE = /obj/item/clothing/suit/space/ert/com
+	HELMET_TYPE = /obj/item/clothing/head/helmet/space/hardsuit/ert/com
 	MASK_TYPE = /obj/item/clothing/mask/breath
 	STORAGE_TYPE = /obj/item/weapon/tank/emergency_oxygen/double
 
