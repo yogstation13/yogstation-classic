@@ -124,13 +124,6 @@ silicate
 	required_reagents = list("water" = 1, "silicon" = 1, "oxygen" = 1)
 	result_amount = 4
 
-/datum/chemical_reaction/pacid
-	name = "Polytrinic acid"
-	id = "pacid"
-	result = "pacid"
-	required_reagents = list("sacid" = 1, "chlorine" = 1, "potassium" = 1)
-	result_amount = 3
-
 /datum/chemical_reaction/synaptizine
 	name = "Synaptizine"
 	id = "synaptizine"
@@ -185,7 +178,7 @@ silicate
 	name = "Nitroglycerin"
 	id = "nitroglycerin"
 	result = "nitroglycerin"
-	required_reagents = list("glycerol" = 1, "pacid" = 1, "sacid" = 1)
+	required_reagents = list("glycerol" = 1, "facid" = 1, "sacid" = 1)
 	result_amount = 2
 /datum/chemical_reaction/nitroglycerin/on_reaction(var/datum/reagents/holder, var/created_volume)
 	var/turf/location = get_turf(holder.my_atom)
@@ -462,7 +455,7 @@ silicate
 	name = "Metal Foam"
 	id = "metalfoam"
 	result = null
-	required_reagents = list("aluminium" = 3, "foaming_agent" = 1, "pacid" = 1)
+	required_reagents = list("aluminium" = 3, "foaming_agent" = 1, "facid" = 1)
 	result_amount = 5
 	mob_react = 1
 
@@ -483,7 +476,7 @@ silicate
 	name = "Iron Foam"
 	id = "ironlfoam"
 	result = null
-	required_reagents = list("iron" = 3, "foaming_agent" = 1, "pacid" = 1)
+	required_reagents = list("iron" = 3, "foaming_agent" = 1, "facid" = 1)
 	result_amount = 5
 	mob_react = 1
 
