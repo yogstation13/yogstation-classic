@@ -192,35 +192,44 @@ update_label("John Doe", "Clowny")
 		..()
 /obj/item/weapon/card/id/ertsCommand
 	name = "\improper Centcom ID"
-	desc = "A ERT ID card"
+	desc = "An ERT ID card"
 	icon_state = "centcom"
 	registered_name = "Emergency Response Team Commander"
 	assignment = "Emergency Response Team Commander"
-	access = list(access_sec_doors, access_engine, access_medical, access_cent_general, access_cent_storage)
+	access = get_all_accesses()
+	access += list(access_sec_doors, access_engine, access_medical, access_cent_general, access_cent_storage)
 
 /obj/item/weapon/card/id/ertsSecurity
 	name = "\improper Centcom ID"
-	desc = "A ERT ID card"
+	desc = "An ERT ID card"
 	icon_state = "centcom"
 	registered_name = "Security Response Officer"
 	assignment = "Security Response Officer"
-	access = list(access_sec_doors, access_cent_general)
+	access = list(access_sec_doors, access_cent_general, access_security, access_brig, access_armory, access_court, access_weapons,
+	              access_forensics_lockers, access_morgue, access_maint_tunnels, access_all_personal_lockers,
+	              access_research, access_engine, access_mining, access_medical, access_construction, access_mailsorting,
+	              access_hos, access_RC_announce, access_keycard_auth, access_gateway)
 
 /obj/item/weapon/card/id/ertsEngineer
 	name = "\improper Centcom ID"
-	desc = "A ERT ID card"
+	desc = "An ERT ID card"
 	icon_state = "centcom"
 	registered_name = "Engineer Response Officer"
 	assignment = "Engineer Response Officer"
-	access = list(access_engine, access_cent_general)
+	access = list(access_engine, access_cent_general, access_engine_equip, access_tech_storage, access_maint_tunnels,
+	              access_external_airlocks, access_atmospherics, access_emergency_storage, access_eva,
+	              access_heads, access_construction, access_sec_doors, access_minisat,
+	              access_ce, access_RC_announce, access_keycard_auth, access_tcomsat, access_mineral_storeroom)
 
 /obj/item/weapon/card/id/ertsMedical
 	name = "\improper Centcom ID"
-	desc = "A ERT ID card"
+	desc = "An ERT ID card"
 	icon_state = "centcom"
 	registered_name = "Medical Response Officer"
 	assignment = "Medical Response Officer"
-	access = list(access_medical, access_cent_general)
+	access = list(access_medical, access_cent_general, access_morgue, access_genetics, access_paramedic, access_heads, access_mineral_storeroom,
+	              access_chemistry, access_virology, access_cmo, access_surgery, access_RC_announce,
+	              access_keycard_auth, access_sec_doors)
 
 /obj/item/weapon/card/id/prisoner
 	name = "prisoner ID card"
