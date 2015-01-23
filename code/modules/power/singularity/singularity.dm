@@ -380,5 +380,5 @@
 	qdel(src)
 	return(gain)
 
-/obj/machinery/singularity/Process_Spacemove()
+/obj/singularity/Process_Spacemove()
 	return 1
