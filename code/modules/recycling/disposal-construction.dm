@@ -18,10 +18,9 @@
 
 /obj/structure/disposalconstruct/New(var/loc, var/pipe_type, var/direction = 1)
 	..(loc)
-	if(pipe_type)
-		ptype = pipe_type
-		if(!is_pipe())    // bins/chutes/outlets are dense
-			density = 1
+	ptype = pipe_type
+	if(!is_pipe())    // bins/chutes/outlets are dense
+		density = 1
 	dir = direction
 
 // update iconstate and dpdir due to dir and type
