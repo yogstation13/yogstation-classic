@@ -9,7 +9,7 @@
 	apply_type = TOUCH
 	apply_method = "apply"
 
-obj/item/weapon/reagent_containers/pill/patch/New()
+/obj/item/weapon/reagent_containers/pill/patch/New()
 	..()
 	icon_state = "bandaid" // thanks inheritance
 
@@ -24,19 +24,13 @@ obj/item/weapon/reagent_containers/pill/patch/New()
 /obj/item/weapon/reagent_containers/pill/patch/styptic
 	name = "brute patch"
 	desc = "Helps with brute injuries."
-
-/obj/item/weapon/reagent_containers/pill/patch/styptic/New()
-	..()
-	reagents.add_reagent("styptic_powder", 50)
 	icon_state = "bandaidbrute"
 	item_state = "bandaidbrute"
+	list_reagents = list("styptic_powder" = 50)
 
 /obj/item/weapon/reagent_containers/pill/patch/silver_sulf
 	name = "burn patch"
 	desc = "Helps with burn injuries."
-
-/obj/item/weapon/reagent_containers/pill/patch/silver_sulf/New()
-	..()
-	reagents.add_reagent("silver_sulfadiazine", 50)
 	icon_state = "bandaidburn"
 	item_state = "bandaidburn"
+	list_reagents = list("silver_sulfadiazine" = 50)

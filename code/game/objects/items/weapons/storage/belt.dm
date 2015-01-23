@@ -89,7 +89,7 @@
 		/obj/item/clothing/glasses,
 		/obj/item/ammo_casing/shotgun,
 		/obj/item/ammo_box,
-		/obj/item/weapon/reagent_containers/food/snacks/donut/normal,
+		/obj/item/weapon/reagent_containers/food/snacks/donut,
 		/obj/item/weapon/reagent_containers/food/snacks/donut/jelly,
 		/obj/item/device/flashlight/seclite,
 		/obj/item/device/radio,
