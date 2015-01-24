@@ -226,4 +226,4 @@ proc/setup_map_transitions() //listamania
 		S.Assign_Destination()
 
 /turf/space/singularity_act()
-	return
+	return 0

@@ -56,9 +56,6 @@
 	consume(user)
 	return 1
 
-/obj/singularity/Process_Spacemove() //The singularity stops drifting for no man!
-	return 0
-
 /obj/singularity/blob_act(severity)
 	return
 
@@ -383,5 +380,5 @@
 	qdel(src)
 	return(gain)
 
-/obj/machinery/singularity/Process_Spacemove()
+/obj/singularity/Process_Spacemove()
 	return 1

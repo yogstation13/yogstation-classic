@@ -1,32 +1,29 @@
 
 //Defines copying names of mutations in all cases, make sure to change this if you change mutation's name
-#define HULK		"Hulk"						//POSITIVE
-#define XRAY		"X Ray Vision"				//POSITIVE
-#define COLDRES		"Cold Resistance"			//POSITIVE
-#define TK			"Telekinesis"				//POSITIVE
-#define NERVOUS		"Nervousness"				//MINOR NEGATIVE
-#define EPILEPSY	"Epilepsy"					//NEGATIVE
-#define MUTATE		"Unstable DNA"				//NEGATIVE
-#define COUGH		"Cough"						//MINOR NEGATIVE
-#define CLOWNMUT	"Clumsiness"				//MINOR NEGATIVE
-#define TOURETTES	"Tourettes Syndrome"		//NEGATIVE
-#define DEAFMUT		"Deafness"					//NEGATIVE
-#define BLINDMUT	"Blindness"					//NEGATIVE
-#define RACEMUT		"Monkified"					//NEGATIVE
-#define BADSIGHT	"Near Sightness"			//MINOR NEGATIVE
-#define LASEREYES	"Laser Eyes"				//NON-SCANNABLE
-#define STEALTH		"Cloak Of Darkness"			//POSITIVE
-#define CHAMELEON	"Chameleon"					//POSITIVE
-#define WACKY		"Wacky"						//MINOR NEGATIVE
-#define JOKE		"Joke"						//MINOR NEGATIVE
-#define VINETA		"Vineta"					//MINOR NEGATIVE
-#define PAPYRUS		"Papyrus"					//MINOR NEGATIVE
-#define MUT_MUTE	"Mute"						//NEGATIVE
-#define SMILE		"Smile"						//MINOR NEGATIVE
-#define UNINTELLIGABLE		"Unintelligable"	//NEGATIVE
-#define SWEDISH		"Swedish"					//MINOR NEGATIVE
-#define CHAV		"Chav"						//MINOR NEGATIVE
-#define ELVIS		"Elvis"						//MINOR NEGATIVE
+#define HULK		"Hulk"
+#define XRAY		"X Ray Vision"
+#define COLDRES		"Cold Resistance"
+#define TK			"Telekinesis"
+#define NERVOUS		"Nervousness"
+#define EPILEPSY	"Epilepsy"
+#define MUTATE		"Unstable DNA"
+#define COUGH		"Cough"
+#define CLOWNMUT	"Clumsiness"
+#define TOURETTES	"Tourettes Syndrome"
+#define DEAFMUT		"Deafness"
+#define BLINDMUT	"Blindness"
+#define RACEMUT		"Monkified"
+#define BADSIGHT	"Near Sightness"
+#define LASEREYES	"Laser Eyes"
+#define STEALTH		"Cloak Of Darkness"
+#define CHAMELEON	"Chameleon"
+#define WACKY		"Wacky"
+#define MUT_MUTE	"Mute"
+#define SMILE		"Smile"
+#define UNINTELLIGABLE		"Unintelligable"
+#define SWEDISH		"Swedish"
+#define CHAV		"Chav"
+#define ELVIS		"Elvis"
 
 // String identifiers for associative list lookup
 
@@ -64,7 +61,7 @@
 #define DNA_FACIAL_HAIR_STYLE_BLOCK	6
 #define DNA_HAIR_STYLE_BLOCK		7
 
-#define DNA_STRUC_ENZYMES_BLOCKS	26
+#define DNA_STRUC_ENZYMES_BLOCKS	23
 #define DNA_UNIQUE_ENZYMES_LEN		32
 
 //Transformation proc stuff

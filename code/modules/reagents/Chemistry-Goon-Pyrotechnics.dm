@@ -89,15 +89,15 @@
 	required_temp = 474
 
 /datum/reagent/sorium/reaction_turf(var/turf/simulated/T, var/volume)
-	if(istype(T, /turf/simulated/floor/))
+	if((volume >= 20) && istype(T, /turf/simulated/floor/))
 		goonchem_vortex(T, 1, 5, 3)
+
 /datum/reagent/sorium/reaction_mob(var/mob/living/M, var/method=TOUCH, var/volume)
 	if(!istype(M, /mob/living))
 		return
-	if(method == TOUCH)
+	if((volume >= 20) && method == TOUCH)
 		var/turf/simulated/T = get_turf(M)
 		goonchem_vortex(T, 1, 5, 3)
-
 
 /datum/chemical_reaction/sorium/on_reaction(var/datum/reagents/holder, var/created_volume)
 	var/turf/simulated/T = get_turf(holder.my_atom)
@@ -120,16 +120,18 @@
 	required_temp = 474
 
 /datum/reagent/liquid_dark_matter/reaction_turf(var/turf/simulated/T, var/volume)
-	if(istype(T, /turf/simulated/floor/))
+	if((volume >= 20) && istype(T, /turf/simulated/floor/))
 		goonchem_vortex(T, 0, 5, 3)
 		return
+
 /datum/reagent/liquid_dark_matter/reaction_mob(var/mob/living/M, var/method=TOUCH, var/volume)
 	if(!istype(M, /mob/living))
 		return
-	if(method == TOUCH)
+	if((volume >= 20) && method == TOUCH)
 		var/turf/simulated/T = get_turf(M)
 		goonchem_vortex(T, 0, 5, 3)
 		return
+
 /datum/chemical_reaction/liquid_dark_matter/on_reaction(var/datum/reagents/holder, var/created_volume)
 	var/turf/simulated/T = get_turf(holder.my_atom)
 	goonchem_vortex(T, 0, 5, 6)

@@ -60,7 +60,7 @@
 
 /mob/living/simple_animal/hostile/mimic/proc/AssignStats(var/obj/O)
 	if(istype(O, /obj/structure) || istype(O, /obj/machinery))
-		health = (anchored * 50) + 50
+		health = (O.anchored * 50) + 50
 		destroy_objects = 1
 		if(O.density && O.anchored)
 			knockdown_people = 1
