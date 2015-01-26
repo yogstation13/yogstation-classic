@@ -137,12 +137,16 @@
 	icon_state = "hardsuit0-ert_engineer"
 	item_state = "hardsuit0-ert_engineer"
 	item_color = "ert_engineer"
+	heat_protection = HEAD
 
 /obj/item/clothing/head/helmet/space/hardsuit/ert/med
 	desc = "Standard issue medical helmet for the ERT"
 	icon_state = "hardsuit0-ert_medical"
 	item_state = "hardsuit0-ert_medical"
 	item_color = "ert_medical"
+
+/obj/item/clothing/head/helmet/space/hardsuit/ert/com
+	heat_protection = HEAD
 
 /obj/item/clothing/suit/space/ert
 	name = "emergency response team suit"
@@ -163,8 +167,12 @@
 	desc = "Standard issue engineer suit for the ERT."
 	icon_state = "ert_engineer"
 	item_state = "ert_engineer"
+	heat_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 
 /obj/item/clothing/suit/space/ert/med
 	desc = "Standard issue medical suit for the ERT."
 	icon_state = "ert_medical"
 	item_state = "ert_medical"
+
+/obj/item/clothing/suit/space/ert/com
+	heat_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
