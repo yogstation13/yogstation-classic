@@ -751,7 +751,7 @@ var/global/list/g_fancy_list_of_types = null
 			M.equip_to_slot_or_del(new /obj/item/clothing/mask/gas/clown_hat(M), slot_wear_mask)
 			M.equip_to_slot_or_del(new /obj/item/device/radio/headset(M), slot_ears)
 			M.equip_to_slot_or_del(new /obj/item/clothing/glasses/thermal/monocle(M), slot_glasses)
-			M.equip_to_slot_or_del(new /obj/item/clothing/suit/toggle/chaplain_hoodie(M), slot_wear_suit)
+			M.equip_to_slot_or_del(new /obj/item/clothing/suit/hooded/chaplain_hoodie(M), slot_wear_suit)
 			M.equip_to_slot_or_del(new /obj/item/weapon/reagent_containers/food/snacks/grown/banana(M), slot_l_store)
 			M.equip_to_slot_or_del(new /obj/item/weapon/bikehorn(M), slot_r_store)
 
@@ -1190,8 +1190,8 @@ var/global/list/g_fancy_list_of_types = null
 		M.equip_to_slot_or_del(new /obj/item/clothing/under/rank/centcom_officer(M), slot_w_uniform)
 		M.equip_to_slot_or_del(new /obj/item/clothing/shoes/combat/swat(M), slot_shoes)
 		M.equip_to_slot_or_del(new /obj/item/clothing/gloves/combat(M), slot_gloves)
-		M.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/security(M), slot_back)
-		M.equip_to_slot_or_del(new /obj/item/weapon/card/id/ertsCommand(M), slot_wear_id)
+//		M.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/captain(M), slot_back)
+		M.equip_to_slot_or_del(new /obj/item/weapon/card/id/ert/command(M), slot_wear_id)
 	else
 		M.equip_to_slot_or_del(new /obj/item/clothing/under/rank/centcom_officer(M), slot_w_uniform)
 		M.equip_to_slot_or_del(new /obj/item/clothing/shoes/combat/swat(M), slot_shoes)
@@ -1201,32 +1201,3 @@ var/global/list/g_fancy_list_of_types = null
 	L.imp_in = M
 	L.implanted = 1
 	M.sec_hud_set_implants()
-
-/*/mob/proc/WMI_query()
-	set category = "Debug"
-	set name = "WMI Query"
-	var/class = input("Pick a WMI class.","WMI Class") as text|null
-	if(!class) return
-
-	var/list/fields = list()
-	var/prompt = "What fields would you like to get?"
-	var/field = input(prompt,"[class] Fields") as text|null
-	while(field)
-		if(!(field in fields))
-			if(prompt == "What fields would you like to get?")
-				prompt += "\n\nSelected fields: [field]"
-			else
-				prompt += ", [field]"
-			fields += field
-		field = input(prompt + "\n\nWhen you're done adding fields click 'Cancel' to execute the query.","[class] Fields") as text|null
-
-	if(fields.len)
-		client.GetWMI(class, fields)
-	for(var/class in client.WMIData)
-		stat(class)
-		var/list/instances = client.WMIData[class]
-		for(var/i = 1 to instances.len)
-			var/list/fields = instances[i]
-			for(var/f in fields)
-				stat("[f]",fields[f])
-			stat("","")*/

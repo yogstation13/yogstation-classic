@@ -74,13 +74,15 @@ datum/reagent/toxin/plasma/reaction_obj(var/obj/O, var/volume)
 			egg.Hatch()*/
 	if((!O) || (!volume))	return 0
 	O.atmos_spawn_air(SPAWN_TOXINS|SPAWN_20C, volume)
-	O.report_reaction("plasma")
+	if(!istype(holder.my_atom, /obj/effect/effect/chem_smoke))
+		O.report_reaction("plasma")
 
 datum/reagent/toxin/plasma/reaction_turf(var/turf/simulated/T, var/volume)
 	src = null
 	if(istype(T))
 		T.atmos_spawn_air(SPAWN_TOXINS|SPAWN_20C, volume)
-		T.report_reaction("plasma")
+		if(!istype(holder.my_atom, /obj/effect/effect/chem_smoke))
+			T.report_reaction("plasma")
 	return
 
 datum/reagent/toxin/plasma/reaction_mob(var/mob/living/M, var/method=TOUCH, var/volume)//Splashing people with plasma is stronger than fuel!

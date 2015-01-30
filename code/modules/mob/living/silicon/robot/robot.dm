@@ -1025,6 +1025,7 @@
 	modtype = "Synd"
 	faction = list("syndicate")
 	designation = "Syndicate"
+	req_access = list(access_syndicate)
 
 /mob/living/silicon/robot/syndicate/New(loc)
 	..()

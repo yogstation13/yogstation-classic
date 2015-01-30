@@ -34,7 +34,7 @@
 
 /obj/structure/closet/secure_closet/RD/New()
 	..()
-	new /obj/item/clothing/suit/toggle/wintercoat/science(src)
+	new /obj/item/clothing/suit/hooded/wintercoat/science(src)
 	new /obj/item/clothing/suit/bio_suit/scientist(src)
 	new /obj/item/clothing/head/bio_hood/scientist(src)
 	new /obj/item/clothing/suit/toggle/labcoat/old(src)

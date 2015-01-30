@@ -235,6 +235,14 @@
 	src << "<span class='info'>Handshake complete. Remote control connection established.</span>"
 	return
 
+/mob/living/silicon/pai/Move(var/atom/newloc)
+	if(card)
+		card.Move(newloc)
+	else //something went very wrong.
+		CRASH("pAI without card")
+	. = ..()
+	loc = card
+
 //Addition by Mord_Sith to define AI's network change ability
 /*
 /mob/living/silicon/pai/proc/pai_network_change()
