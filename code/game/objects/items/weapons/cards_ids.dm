@@ -72,6 +72,19 @@
 	if(!proximity) return
 	A.emag_act(user)
 
+/obj/item/weapon/card/emag/centcom
+	desc = "It's a special card that uses a backdoor built into every Nanotrasen machine and device to override access restrictions and activate special functions.<br><font color='red'>USE OF THIS DEVICE IS RESTRICTED TO NANOTRASEN EMERGENCY RESPONSE TEAMS.</font>"
+	name = "access override card"
+	icon_state = "data"
+	item_state = "card-id"
+	flags = NOBLUDGEON
+
+/obj/item/weapon/card/emag/centcom/afterattack(atom/target, mob/user, proximity)
+	var/atom/A = target
+	if(!proximity) return
+	if(istype(A, /obj/machinery) || istype(A, /obj/item))
+		A.emag_act(user)
+
 /obj/item/weapon/card/id
 	name = "identification card"
 	desc = "A card used to provide ID and determine access across the station."
@@ -190,37 +203,29 @@ update_label("John Doe", "Clowny")
 	New()
 		access = get_all_centcom_access()
 		..()
-/obj/item/weapon/card/id/ertsCommand
+
+/obj/item/weapon/card/id/ert/command
 	name = "\improper Centcom ID"
 	desc = "A ERT ID card"
 	icon_state = "centcom"
 	registered_name = "Emergency Response Team Commander"
 	assignment = "Emergency Response Team Commander"
-	access = list(access_sec_doors, access_engine, access_medical, access_cent_general, access_cent_storage)
+	access = list(access_cent_general, access_cent_storage)
 
-/obj/item/weapon/card/id/ertsSecurity
-	name = "\improper Centcom ID"
-	desc = "A ERT ID card"
-	icon_state = "centcom"
+/obj/item/weapon/card/id/ert/security
 	registered_name = "Security Response Officer"
 	assignment = "Security Response Officer"
-	access = list(access_sec_doors, access_cent_general)
+	access = list(access_cent_general)
 
-/obj/item/weapon/card/id/ertsEngineer
-	name = "\improper Centcom ID"
-	desc = "A ERT ID card"
-	icon_state = "centcom"
+/obj/item/weapon/card/id/ert/engineer
 	registered_name = "Engineer Response Officer"
 	assignment = "Engineer Response Officer"
-	access = list(access_engine, access_cent_general)
+	access = list(access_cent_general)
 
-/obj/item/weapon/card/id/ertsMedical
-	name = "\improper Centcom ID"
-	desc = "A ERT ID card"
-	icon_state = "centcom"
+/obj/item/weapon/card/id/ert/medical
 	registered_name = "Medical Response Officer"
 	assignment = "Medical Response Officer"
-	access = list(access_medical, access_cent_general)
+	access = list(access_cent_general)
 
 /obj/item/weapon/card/id/prisoner
 	name = "prisoner ID card"

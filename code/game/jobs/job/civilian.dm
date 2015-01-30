@@ -14,8 +14,8 @@ Tourist
 	spawn_positions = 0
 	supervisors = "the head of personnel"
 	selection_color = "#dddddd"
-	access = list()			//See /datum/job/assistant/get_access()
-	minimal_access = list()	//See /datum/job/assistant/get_access()
+	access = list()
+	minimal_access = list()
 
 /datum/job/tourist/equip_items(var/mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/tourist(H), slot_w_uniform)
@@ -47,8 +47,8 @@ Clerk
 	spawn_positions = 1
 	supervisors = "the head of personnel"
 	selection_color = "#dddddd"
-	access = list(access_manufacturing)			//See /datum/job/assistant/get_access()
-	minimal_access = list(access_manufacturing)	//See /datum/job/assistant/get_access()
+	access = list(access_manufacturing)
+	minimal_access = list(access_manufacturing)
 
 	default_headset = /obj/item/device/radio/headset/headset_srv
 
@@ -154,7 +154,7 @@ Waiter
 	spawn_positions = 1
 	supervisors = "the head of personnel"
 	selection_color = "#dddddd"
-	access = list(access_counter, access_hydroponics, access_bar, access_kitchen, access_morgue)
+	access = list(access_counter, access_hydroponics, access_mailsorting, access_bar, access_kitchen, access_morgue)
 	minimal_access = list (access_counter, access_mailsorting)
 
 	default_pda = /obj/item/device/pda/bar
@@ -185,7 +185,7 @@ Botanist
 	default_pda = /obj/item/device/pda/botanist
 	default_headset = /obj/item/device/radio/headset/headset_srv
 
-	access = list(access_hydroponics, access_bar, access_kitchen, access_morgue) // Removed tox and chem access because STOP PISSING OFF THE CHEMIST GUYS // //Removed medical access because WHAT THE FUCK YOU AREN'T A DOCTOR YOU GROW WHEAT //Given Morgue access because they have a viable means of cloning.
+	access = list(access_hydroponics, access_counter, access_bar, access_kitchen, access_morgue) // Removed tox and chem access because STOP PISSING OFF THE CHEMIST GUYS // //Removed medical access because WHAT THE FUCK YOU AREN'T A DOCTOR YOU GROW WHEAT //Given Morgue access because they have a viable means of cloning.
 	minimal_access = list(access_hydroponics, access_morgue) // Removed tox and chem access because STOP PISSING OFF THE CHEMIST GUYS // //Removed medical access because WHAT THE FUCK YOU AREN'T A DOCTOR YOU GROW WHEAT //Given Morgue access because they have a viable means of cloning.
 
 /datum/job/hydro/equip_items(var/mob/living/carbon/human/H)
@@ -212,7 +212,7 @@ Clown
 	default_pda = /obj/item/device/pda/clown
 	default_backpack = /obj/item/weapon/storage/backpack/clown
 
-	access = list(access_theatre, access_maint_tunnels)
+	access = list(access_theatre)
 	minimal_access = list(access_theatre)
 
 /datum/job/clown/equip_backpack(var/mob/living/carbon/human/H)
@@ -254,7 +254,7 @@ Mime
 	default_pda = /obj/item/device/pda/mime
 	default_backpack = /obj/item/weapon/storage/backpack/mime
 
-	access = list(access_theatre, access_maint_tunnels)
+	access = list(access_theatre)
 	minimal_access = list(access_theatre)
 
 /datum/job/mime/equip_backpack(var/mob/living/carbon/human/H)
@@ -294,6 +294,7 @@ Janitor
 	spawn_positions = 1
 	supervisors = "the head of personnel"
 	selection_color = "#dddddd"
+	var/global/janitors = 1
 
 	default_pda = /obj/item/device/pda/janitor
 	default_headset = /obj/item/device/radio/headset/headset_srv
@@ -302,6 +303,14 @@ Janitor
 	minimal_access = list(access_janitor, access_maint_tunnels)
 
 /datum/job/janitor/equip_items(var/mob/living/carbon/human/H)
+	janitors += 1
+
+	if(H.backbag != 1)
+		switch(janitors)
+			if(1)
+				H.equip_to_slot_or_del(new /obj/item/key/janitor(H), slot_in_backpack)
+			else
+				H.equip_to_slot_or_del(new /obj/item/weapon/soap/deluxe(H), slot_in_backpack)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/janitor(H), slot_w_uniform)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/black(H), slot_shoes)
 
@@ -322,7 +331,7 @@ Librarian
 
 	default_pda = /obj/item/device/pda/librarian
 
-	access = list(access_library, access_maint_tunnels)
+	access = list(access_library)
 	minimal_access = list(access_library)
 
 /datum/job/librarian/equip_items(var/mob/living/carbon/human/H)
@@ -350,7 +359,7 @@ Lawyer
 	default_pda = /obj/item/device/pda/lawyer
 	default_headset = /obj/item/device/radio/headset/headset_sec
 
-	access = list(access_lawyer, access_court, access_sec_doors, access_maint_tunnels)
+	access = list(access_lawyer, access_court, access_sec_doors)
 	minimal_access = list(access_lawyer, access_court, access_sec_doors)
 
 /datum/job/lawyer/equip_items(var/mob/living/carbon/human/H)

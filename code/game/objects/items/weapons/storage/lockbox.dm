@@ -93,7 +93,7 @@
 
 /obj/item/weapon/storage/lockbox/clusterbang/New()
 	..()
-	new /obj/item/weapon/grenade/flashbang/clusterbang(src)
+	new /obj/item/weapon/grenade/clusterbuster(src)
 
 /obj/item/weapon/storage/lockbox/pinpointer
 	name = "pinpointer lockbox"
@@ -104,9 +104,9 @@
 	icon_closed = "ntlockbox"
 	icon_broken = "ntlockbox+b"
 
-	New()
+/obj/item/weapon/storage/lockbox/pinpointer/New()
 		..()
-		new /obj/item/weapon/pinpointer
+		new /obj/item/weapon/pinpointer(src)
 
 /obj/item/weapon/storage/lockbox/medal
 	name = "medal box"

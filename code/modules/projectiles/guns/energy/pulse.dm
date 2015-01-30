@@ -24,7 +24,10 @@
 	icon_state = "pulse_carbine"
 	item_state = "pulse"
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/pulse/carbine, /obj/item/ammo_casing/energy/electrode/carbine, /obj/item/ammo_casing/energy/laser/carbine)
-	cell_type = "/obj/item/weapon/stock_parts/cell/super"
+	cell_type = "/obj/item/weapon/stock_parts/cell"
+
+/obj/item/weapon/gun/energy/pulse_carbine/loyalpin
+	pin = /obj/item/device/firing_pin/implant/loyalty
 
 /obj/item/weapon/gun/energy/pulse_carbine/attack_self(mob/living/user as mob)
 	select_fire(user)
@@ -37,10 +40,13 @@
 	flags =  CONDUCT
 	icon_state = "pulse_pistol"
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/pulse/pistol, /obj/item/ammo_casing/energy/electrode/pistol, /obj/item/ammo_casing/energy/laser/pistol)
-	cell_type = "/obj/item/weapon/stock_parts/cell/super"
+	cell_type = "/obj/item/weapon/stock_parts/cell"
 
 /obj/item/weapon/gun/energy/pulse_pistol/attack_self(mob/living/user as mob)
 	select_fire(user)
+
+/obj/item/weapon/gun/energy/pulse_pistol/loyalpin
+	pin = /obj/item/device/firing_pin/implant/loyalty
 
 /obj/item/weapon/gun/energy/pulse_rifle/destroyer
 	name = "pulse destroyer"

@@ -10,11 +10,12 @@
 
 /obj/structure/closet/secure_closet/captains/New()
 	..()
-	new /obj/item/clothing/suit/toggle/wintercoat/captain(src)
+	new /obj/item/clothing/suit/hooded/wintercoat/captain(src)
 	if(prob(50))
 		new /obj/item/weapon/storage/backpack/captain(src)
 	else
 		new /obj/item/weapon/storage/backpack/satchel_cap(src)
+	new /obj/item/weapon/storage/backpack/dufflebag/captain(src)
 	new /obj/item/clothing/suit/captunic(src)
 	new /obj/item/clothing/under/captainparade(src)
 	new /obj/item/clothing/head/caphat/parade(src)
@@ -42,7 +43,7 @@
 
 /obj/structure/closet/secure_closet/hop/New()
 	..()
-	new /obj/item/clothing/suit/toggle/wintercoat/cargo(src)
+	new /obj/item/clothing/suit/hooded/wintercoat/cargo(src)
 	new /obj/item/clothing/under/rank/head_of_personnel(src)
 	new /obj/item/clothing/head/hopcap(src)
 	new /obj/item/weapon/cartridge/hop(src)
@@ -71,7 +72,7 @@
 
 /obj/structure/closet/secure_closet/hos/New()
 	..()
-	new /obj/item/clothing/suit/toggle/wintercoat/security(src)
+	new /obj/item/clothing/suit/hooded/wintercoat/security(src)
 	new /obj/item/weapon/cartridge/hos(src)
 	new /obj/item/device/radio/headset/heads/hos(src)
 	new /obj/item/clothing/under/hosparadefem(src)
@@ -136,6 +137,7 @@
 	..()
 	new /obj/item/clothing/suit/armor/vest(src)
 	new /obj/item/device/radio/headset/headset_sec/alt(src)
+	new /obj/item/clothing/head/beret/sec(src)
 	new /obj/item/clothing/head/soft/sec(src)
 	new /obj/item/weapon/reagent_containers/spray/pepper(src)
 	new /obj/item/device/flash/handheld(src)

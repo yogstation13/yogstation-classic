@@ -65,7 +65,7 @@ var/global/floorIsLava = 0
 	body += "<br><br>"
 	body += "<A href='?_src_=holder;jumpto=\ref[M]'><b>Jump to</b></A> | "
 	body += "<A href='?_src_=holder;getmob=\ref[M]'>Get</A> | "
-	body += "<A href='?_src_=holder;sendmob=\ref[M]'>Send To</A> |"
+	body += "<A href='?_src_=holder;sendmob=\ref[M]'>Send To</A> | "
 	body += "<A href='?_src_=holder;sendserver=\ref[M]'>Redirect</A>"
 
 	body += "<br><br>"
