@@ -36,7 +36,7 @@
 	desc = "Shooooorts! They're comfy and easy to wear!"
 	icon_state = "cargotech"
 	item_state = "lb_suit"
-	item_color = "cargotech"
+	item_color = "cargo"
 
 
 /obj/item/clothing/under/rank/chaplain
