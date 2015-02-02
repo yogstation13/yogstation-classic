@@ -114,9 +114,9 @@
 
 /obj/item/mecha_parts/mecha_tracking/proc/eject()
 	var/obj/mecha/M = in_mecha()
-	if(M)
+	if(M && M.occupant)
 		M.occupant_message("<span class='userdanger'>CODE NT-09-THETA. Forcing ejection due to external command.</span>")
-		M.log_message("Forcefully ejecting [mob_container].")
+		M.log_message("Forcefully ejecting [M.occupant].")
 		M.go_out()
 
 /obj/item/mecha_parts/mecha_tracking/proc/reset()

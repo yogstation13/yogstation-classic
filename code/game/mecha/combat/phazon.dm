@@ -78,11 +78,11 @@
 		src.switch_damtype()
 	if (href_list["phasing"])
 		if(phasing)
-			turf/T = get_turf(src)
+			var/turf/T = get_turf(src)
 			if(T && T.density)
 				src.occupant_message("Cannot stop phasing while inside a solid object")
 				return
-			for(obj/O in T)
+			for(var/obj/O in T)
 				if(O && (O != src) && O.density)
 					src.occupant_message("Cannot stop phasing while inside a solid object")
 					return
