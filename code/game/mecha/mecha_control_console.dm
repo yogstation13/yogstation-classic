@@ -21,7 +21,7 @@
 			if(answer)
 				dat += {"<hr>[answer]<br/>
 						  <a href='?src=\ref[src];send_message=\ref[TR]'>Send message</a><br/>
-						  <a href='?src=\ref[src];get_log=\ref[TR]'>Show exosuit log</a> | <a style='color: #f00;' href='?src=\ref[src];shock=\ref[TR]'>(EMP pulse)</a><br>"}
+						  <a href='?src=\ref[src];get_log=\ref[TR]'>Show exosuit log</a> | <a style='color: #00f;' href='?src=\ref[src];reset=\ref[TR]'>(Reset access)</a> |<a style='color: #ff0;' href='?src=\ref[src];eject=\ref[TR]'>(Force eject)</a> | <a style='color: #f00;' href='?src=\ref[src];shock=\ref[TR]'>(SHUTDOWN)</a><br>"}
 
 	if(screen==1)
 		dat += "<h3>Log contents</h3>"
@@ -46,6 +46,12 @@
 		if(trim(message) && M)
 			M.occupant_message(message)
 		return
+	if(href_list["reset"])
+		var/obj/item/mecha_parts/mecha_tracking/MT = filter.getObj("reset")
+		MT.reset()
+	if(href_list["eject"])
+		var/obj/item/mecha_parts/mecha_tracking/MT = filter.getObj("eject")
+		MT.eject()
 	if(href_list["shock"])
 		var/obj/item/mecha_parts/mecha_tracking/MT = filter.getObj("shock")
 		MT.shock()
@@ -106,10 +112,28 @@
 		return src.loc
 	return 0
 
+/obj/item/mecha_parts/mecha_tracking/proc/eject()
+	var/obj/mecha/M = in_mecha()
+	if(M)
+		M.occupant_message("<span class='userdanger'>CODE NT-09-THETA. Forcing ejection due to external command.</span>")
+		M.log_message("Forcefully ejecting [mob_container].")
+		M.go_out()
+
+/obj/item/mecha_parts/mecha_tracking/proc/reset()
+	var/obj/mecha/M = in_mecha()
+	if(M)
+		M.occupant_message("<span class='userdanger'>CODE NT-26-PSI. Access restrictions reset due to external command.</span>")
+		M.log_message("Access restrictions reset.")
+		M.dna = null
+		M.operation_req_access = list()
+
 /obj/item/mecha_parts/mecha_tracking/proc/shock()
 	var/obj/mecha/M = in_mecha()
 	if(M)
-		M.emp_act(2)
+		M.occupant_message("<span class='userdanger'>CODE NT-51-EPSILON. Shutting down all power systems due to external command.</span>")
+		M.log_message("Shutdown command received.")
+		M.use_power(M.get_charge())
+		M.setInternalDamage(MECHA_INT_SHORT_CIRCUIT)
 	qdel(src)
 
 /obj/item/mecha_parts/mecha_tracking/proc/get_mecha_log()

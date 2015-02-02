@@ -82,6 +82,7 @@
 /obj/item/weapon/card/emag/centcom/afterattack(atom/target, mob/user, proximity)
 	var/atom/A = target
 	if(!proximity) return
+	if(istype(A, /obj/machinery/door/airlock/centcom) return
 	if(istype(A, /obj/machinery) || istype(A, /obj/item))
 		A.emag_act(user)
 

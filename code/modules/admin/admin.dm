@@ -50,7 +50,8 @@ var/global/floorIsLava = 0
 	body += "<A href='?_src_=holder;notes=show;ckey=[M.ckey]'>Notes</A> "
 
 	if(M.client)
-		body += "| <A HREF='?_src_=holder;sendtoprison=\ref[M]'>Prison</A> | "
+		body += "| <A href='?_src_=holder;sendtoprison=\ref[M]'>Prison</A> | "
+		body += "\ <A href='?_src_=holder;sendbacktolobby=\ref[M]'>Send back to Lobby</A> | "
 		var/muted = M.client.prefs.muted
 		var/frozen = M.client.prefs.afreeze
 		body += "<br><b>Mute: </b> "
