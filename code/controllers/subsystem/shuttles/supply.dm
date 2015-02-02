@@ -69,7 +69,7 @@
 
 
 /obj/docking_port/mobile/supply/proc/sell()
-	if(z != ZLEVEL_CENTCOM)		//we only sell when we are -at- centcomm
+	if(src.getDockedId() != "supply_away")		//we only sell when we are -at- centcomm
 		return 1
 
 	var/plasma_count = 0

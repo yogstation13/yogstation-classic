@@ -15,7 +15,7 @@
 	internal_damage_threshold = 25
 	force = 15
 	var/phasing = 0
-	var/phasing_energy_drain = 200
+	var/phasing_energy_drain = 500
 	max_equip = 3
 
 /obj/mecha/combat/phazon/Bump(var/atom/obstacle)
@@ -77,7 +77,23 @@
 	if (href_list["switch_damtype"])
 		src.switch_damtype()
 	if (href_list["phasing"])
+		if(phasing)
+			var/turf/T = get_turf(src)
+			if(T && T.density)
+				src.occupant_message("Cannot stop phasing while inside a solid object")
+				return
+			for(var/obj/O in T)
+				if(O && (O != src) && O.density)
+					src.occupant_message("Cannot stop phasing while inside a solid object")
+					return
 		phasing = !phasing
 		send_byjax(src.occupant,"exosuit.browser","phasing_command","[phasing?"Dis":"En"]able phasing")
 		src.occupant_message("<font color=\"[phasing?"#00f\">En":"#f00\">Dis"]abled phasing.</font>")
 	return
+
+/obj/mecha/combat/phazon/go_out()
+	if(phasing)
+		src.occupant_message("Unable to eject while phasing.")
+		return
+	else
+		..()
