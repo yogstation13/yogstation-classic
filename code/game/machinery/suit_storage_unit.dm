@@ -65,6 +65,10 @@
 	SUIT_TYPE = /obj/item/clothing/suit/space/hardsuit/mining
 	MASK_TYPE = /obj/item/clothing/mask/breath
 
+/obj/machinery/suit_storage_unit/mmedic
+	SUIT_TYPE = /obj/item/clothing/suit/space/hardsuit/mining/mmedic
+	MASK_TYPE = /obj/item/clothing/mask/breath
+
 /obj/machinery/suit_storage_unit/cmo
 	SUIT_TYPE = /obj/item/clothing/suit/space/hardsuit/medical
 	MASK_TYPE = /obj/item/clothing/mask/breath
