@@ -3,7 +3,7 @@
 	desc = "It's a g-g-g-g-ghooooost!" //jinkies!
 	icon = 'icons/mob/mob.dmi'
 	icon_state = "ghost"
-	layer = 4
+	layer = MOB_LAYER + 1
 	stat = DEAD
 	density = 0
 	canmove = 0
@@ -53,6 +53,8 @@
 	if(!fun_verbs)
 		verbs -= /mob/dead/observer/verb/boo
 		verbs -= /mob/dead/observer/verb/possess
+
+	animate(src, pixel_y = 2, time = 10, loop = -1)
 
 	..()
 

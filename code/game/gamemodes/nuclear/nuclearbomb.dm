@@ -2,7 +2,7 @@ var/bomb_set
 
 /obj/machinery/nuclearbomb
 	name = "nuclear fission explosive"
-	desc = "Uh oh. RUN!!!!"
+	desc = "You probably shouldn't stick around to see if this is armed."
 	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "nuclearbomb0"
 	density = 1
@@ -24,6 +24,15 @@ var/bomb_set
 	var/datum/wires/nuke/wires = null
 	var/obj/item/device/pda/hacker = null
 	var/hacktime = 330
+	var/immobile = 0 //Not all nukes should be moved
+
+/obj/machinery/nuclearbomb/selfdestruct
+	name = "station self-destruct terminal"
+	desc = "For when it all gets too much to bear. Do not taunt."
+	icon = 'icons/obj/machines/bignuke.dmi'
+	anchored = 1 //stops it being moved
+	immobile = 1 //prevents it from ever being moved
+	layer = 4
 
 /obj/machinery/nuclearbomb/New()
 	..()
@@ -62,7 +71,7 @@ var/bomb_set
 			set_security_level("[previous_level]")
 	return
 
-/obj/machinery/nuclearbomb/attackby(obj/item/I as obj, mob/user as mob)
+/obj/machinery/nuclearbomb/attackby(obj/item/I as obj, mob/user as mob, params)
 	src.add_fingerprint(user)
 	if (istype(I, /obj/item/weapon/disk/nuclear))
 		usr.drop_item()
@@ -301,8 +310,10 @@ var/bomb_set
 			if (href_list["anchor"])
 				if(wires.IsIndexCut(NUKE_WIRE_BOLTS))
 					return
-				if((!isinspace()) && (removal_stage < 5))
+				if((!isinspace()) && (removal_stage < 5) && (!immobile))
 					src.anchored = !( src.anchored )
+				else if(immobile)
+					usr << "<span class='warning'>This device is immovable!</span>"
 				else
 					usr << "<span class='warning'>There is nothing to anchor to!</span>"
 	src.add_fingerprint(usr)
@@ -310,6 +321,7 @@ var/bomb_set
 	for(var/mob/M in viewers(1, src))
 		if ((M.client && M.machine == src))
 			src.attack_hand(M)
+
 
 /obj/machinery/nuclearbomb/ex_act(severity, target)
 	return
@@ -427,6 +439,21 @@ var/bomb_set
 			return
 	return
 
+/*
+This is here to make the tiles around the station mininuke change when it's armed.
+*/
+
+/obj/machinery/nuclearbomb/selfdestruct/proc/SetTurfs()
+	if(loc == initial(loc))
+		var/text_icon_state = "[timing ? "rcircuitanim" : "gcircuit"]"
+		for(var/turf/simulated/floor/bluegrid/T in orange(src, 1))
+			T.icon_state = text_icon_state
+
+/obj/machinery/nuclearbomb/selfdestruct/Topic()
+        ..()
+        SetTurfs()
+
+
 
 //==========DAT FUKKEN DISK===============
 /obj/item/weapon/disk/nuclear
@@ -438,7 +465,7 @@ var/bomb_set
 
 /obj/item/weapon/disk/nuclear/New()
 	..()
-	SSobj.processing.Add(src)
+	SSobj.processing |= src
 
 /obj/item/weapon/disk/nuclear/process()
 	var/turf/disk_loc = get_turf(src)

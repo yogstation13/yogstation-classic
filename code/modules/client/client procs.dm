@@ -263,7 +263,10 @@ var/next_external_rsc = 0
 
 	while (query.NextRow())
 		player_age = text2num(query.item[2])
-		break
+		return
+	//player not found.
+	player_age = -1
+	message_admins("[key_name_admin(src)] is connecting here for the first time.")
 
 
 /client/proc/sync_client_with_db()
@@ -348,6 +351,7 @@ proc/sync_logout_with_db(number)
 		'nano/templates/apc.tmpl',
 		'nano/templates/cryo.tmpl',
 		'nano/templates/airlock.tmpl',
+		'nano/templates/solar_control.tmpl',
 		'nano/images/uiBackground.png',
 		'nano/images/uiIcons16.png',
 		'nano/images/uiIcons24.png',
