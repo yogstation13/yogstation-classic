@@ -1443,7 +1443,7 @@ var/global/list/common_tools = list(
 			return 0
 	if(istype(W, /obj/item/weapon/match))
 		var/obj/item/weapon/match/O = W
-		if(O.lit)
+		if(O.lit == 1)
 			return 1000
 		else
 			return 0
