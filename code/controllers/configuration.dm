@@ -156,6 +156,8 @@
 	var/starlight = 0
 	var/grey_assistants = 0
 
+	var/aggressive_changelog = 0
+
 /datum/configuration/New()
 	var/list/L = typesof(/datum/game_mode) - /datum/game_mode
 	for(var/T in L)
@@ -333,6 +335,8 @@
 					config.notify_new_player_age = text2num(value)
 				if("irc_first_connection_alert")
 					config.irc_first_connection_alert = 1
+				if("aggressive_changelog")
+					config.aggressive_changelog = 1
 				else
 					diary << "Unknown setting in configuration: '[name]'"
 
