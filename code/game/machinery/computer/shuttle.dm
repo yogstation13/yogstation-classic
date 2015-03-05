@@ -7,7 +7,7 @@
 	paiallowed = 0
 
 
-/obj/machinery/computer/emergency_shuttle/attackby(var/obj/item/weapon/card/W as obj, var/mob/user as mob)
+/obj/machinery/computer/emergency_shuttle/attackby(var/obj/item/weapon/card/W as obj, var/mob/user as mob, params)
 	if(stat & (BROKEN|NOPOWER))	return
 	if(!istype(W, /obj/item/weapon/card))
 		return

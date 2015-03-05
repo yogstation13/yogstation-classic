@@ -61,7 +61,7 @@
 	icon_state = "clown"
 	item_state = "clown"
 	item_color = "clown"
-	fitted = 0
+	fitted = FEMALE_UNIFORM_TOP
 	can_adjust = 0
 
 
@@ -135,7 +135,7 @@
 	icon_state = "lawyer_purp"
 	item_state = "lawyer_purp"
 	item_color = "lawyer_purp"
-	fitted = 0
+	fitted = NO_FEMALE_UNIFORM
 	can_adjust = 1
 
 
