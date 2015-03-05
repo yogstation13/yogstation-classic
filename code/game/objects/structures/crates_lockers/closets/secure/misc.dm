@@ -16,6 +16,7 @@
 	new /obj/item/device/aicard(src)
 	new /obj/item/weapon/melee/baton/loaded(src)
 	new /obj/item/device/flash/handheld(src)
+	new /obj/item/weapon/card/emag/centcom(src)
 	if(prob(50))
 		new /obj/item/ammo_box/magazine/m50(src)
 		new /obj/item/ammo_box/magazine/m50(src)

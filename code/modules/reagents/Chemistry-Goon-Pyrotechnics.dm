@@ -4,7 +4,7 @@
 
 #define REM REAGENTS_EFFECT_MULTIPLIER
 
-/datum/reagent/clf3
+/*/datum/reagent/clf3
 	name = "Chlorine Trifluoride"
 	id = "clf3"
 	description = "Makes a temporary 3x3 fireball when it comes into existence, so be careful when mixing. ClF3 applied to a surface burns things that wouldn't otherwise burn, sometimes through the very floors of the station and exposing it to the vacuum of space."
@@ -61,7 +61,7 @@
 		M.IgniteMob()
 		new /obj/effect/hotspot(M.loc)
 		return
-
+*/
 /datum/reagent/sorium
 	name = "Sorium"
 	id = "sorium"
@@ -139,7 +139,7 @@
 					for(var/i = 0, i < pull_times, i++)
 						step_towards(X,T)
 
-/datum/reagent/blackpowder
+/*/datum/reagent/blackpowder
 	name = "Black Powder"
 	id = "blackpowder"
 	description = "Explodes. Violently."
@@ -173,3 +173,4 @@
 	holder.my_atom.report_reaction("black powder explosive")
 	explosion(T,ex_severe,ex_heavy,ex_light,ex_flash, 1)
 	return
+*/

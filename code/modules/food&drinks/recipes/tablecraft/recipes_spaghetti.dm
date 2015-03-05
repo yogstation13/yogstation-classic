@@ -22,7 +22,7 @@
 	name = "Spaghetti meatball"
 	reqs = list(
 		/obj/item/weapon/reagent_containers/food/snacks/boiledspaghetti = 1,
-		/obj/item/weapon/reagent_containers/food/snacks/faggot = 2
+		/obj/item/weapon/reagent_containers/food/snacks/meatball = 2
 	)
 	result = /obj/item/weapon/reagent_containers/food/snacks/meatballspaghetti
 
@@ -30,7 +30,7 @@
 	name = "Spesslaw"
 	reqs = list(
 		/obj/item/weapon/reagent_containers/food/snacks/boiledspaghetti = 1,
-		/obj/item/weapon/reagent_containers/food/snacks/faggot = 4
+		/obj/item/weapon/reagent_containers/food/snacks/meatball = 4
 	)
 	result = /obj/item/weapon/reagent_containers/food/snacks/spesslaw
 

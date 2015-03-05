@@ -57,7 +57,7 @@ Shaft Miner
 	department_head = list("Head of Personnel")
 	department_flag = CIVILIAN
 	faction = "Station"
-	total_positions = 3
+	total_positions = 5
 	spawn_positions = 3
 	supervisors = "the quartermaster and the head of personnel"
 	selection_color = "#dcba97"
@@ -140,9 +140,9 @@ Bartender
 /*
 Cook
 */
-/datum/job/cook
-	title = "Cook"
-	flag = COOK
+/datum/job/chef
+	title = "Chef"
+	flag = CHEF
 	department_head = list("Head of Personnel")
 	department_flag = CIVILIAN
 	faction = "Station"
@@ -158,7 +158,7 @@ Cook
 	access = list(access_hydroponics, access_bar, access_kitchen, access_morgue)
 	minimal_access = list(access_kitchen, access_morgue)
 
-/datum/job/cook/equip_items(var/mob/living/carbon/human/H)
+/datum/job/chef/equip_items(var/mob/living/carbon/human/H)
 	cooks += 1
 
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/chef(H), slot_w_uniform)

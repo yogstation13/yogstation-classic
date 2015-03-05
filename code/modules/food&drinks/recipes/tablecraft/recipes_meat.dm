@@ -116,7 +116,7 @@
 /datum/table_recipe/sausage
 	name = "Sausage"
 	reqs = list(
-		/obj/item/weapon/reagent_containers/food/snacks/faggot = 1,
+		/obj/item/weapon/reagent_containers/food/snacks/meatball = 1,
 		/obj/item/weapon/reagent_containers/food/snacks/cutlet = 2
 	)
 	result = /obj/item/weapon/reagent_containers/food/snacks/sausage
