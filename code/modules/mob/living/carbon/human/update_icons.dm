@@ -268,11 +268,11 @@ Please contact me on #coderbus IRC. ~Carnie x
 
 		overlays_standing[UNIFORM_LAYER]	= standing
 
-		if(dna && dna.species.sexes)
+		/*if(dna && dna.species.sexes)
 			var/G = (gender == FEMALE) ? "f" : "m"
 			if(G == "f" && U.fitted != NO_FEMALE_UNIFORM)
 				standing	= wear_female_version(t_color, 'icons/mob/uniform.dmi', UNIFORM_LAYER, U.fitted)
-				overlays_standing[UNIFORM_LAYER]	= standing
+				overlays_standing[UNIFORM_LAYER]	= standing*/
 
 		if(w_uniform.blood_DNA)
 			standing.overlays	+= image("icon"='icons/effects/blood.dmi', "icon_state"="uniformblood")
