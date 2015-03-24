@@ -209,7 +209,7 @@ var/next_external_rsc = 0
 		if (config.notify_new_player_age >= 0)
 			message_admins("New user: [key_name_admin(src)] is connecting here for the first time.")
 			if (config.irc_first_connection_alert)
-				send2irc_adminless_only("New user", "[key_name(src)] is connecting for the first time!")
+				send2irc_adminless_only("New-user", "[key_name(src)] is connecting for the first time!")
 
 	else if (isnum(player_age) && player_age < config.notify_new_player_age)
 		message_admins("New user: [key_name_admin(src)] just connected with an age of [player_age] day[(player_age==1?"":"s")]")
