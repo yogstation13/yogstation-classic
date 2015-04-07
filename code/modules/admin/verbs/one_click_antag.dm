@@ -418,10 +418,12 @@ client/proc/one_click_antag()
 			if(numagents == 1)
 				message_admins("The deathsquad has spawned with the mission: [mission].")
 			log_game("[key_name(Commando)] has been selected as a Death Commando")
-			spawnpoints -= spawnloc
 			numagents--
 
-		return 1
+		if (numagents == candidates.len)
+			return 0 // No one got spawned!
+		else
+			return 1
 
 	return
 
@@ -516,13 +518,22 @@ client/proc/one_click_antag()
 				if(1)
 					ERTOperative.real_name = "Commander [pick(lastname)]"
 					equip_emergencyresponsesquad(ERTOperative, "commander")
-				if(2 || 5)
+				if(2)
 					ERTOperative.real_name = "Security Officer [pick(lastname)]"
 					equip_emergencyresponsesquad(ERTOperative, "sec")
-				if(3 || 6)
+				if(3)
 					ERTOperative.real_name = "Medical Officer [pick(lastname)]"
 					equip_emergencyresponsesquad(ERTOperative, "med")
-				if(4 || 7)
+				if(4)
+					ERTOperative.real_name = "Engineer [pick(lastname)]"
+					equip_emergencyresponsesquad(ERTOperative, "eng")
+				if(5)
+					ERTOperative.real_name = "Security Officer [pick(lastname)]"
+					equip_emergencyresponsesquad(ERTOperative, "sec")
+				if(6)
+					ERTOperative.real_name = "Medical Officer [pick(lastname)]"
+					equip_emergencyresponsesquad(ERTOperative, "med")
+				if(7)
 					ERTOperative.real_name = "Engineer [pick(lastname)]"
 					equip_emergencyresponsesquad(ERTOperative, "eng")
 			ERTOperative.key = chosen_candidate.key
@@ -551,10 +562,12 @@ client/proc/one_click_antag()
 			if(numagents == 1)
 				message_admins("The emergency response team has spawned with the mission: [mission].")
 			log_game("[key_name(ERTOperative)] has been selected as an Emergency Response Officer")
-			spawnpoints -= spawnloc
 			numagents--
 
-		return 1
+		if (numagents == candidates.len)
+			return 0 // No one got spawned!
+		else
+			return 1
 
 	return
 
@@ -569,109 +582,3 @@ client/proc/one_click_antag()
 	new_character.key = G_found.key
 
 	return new_character
-
-//modified from equip_space_ninja
-// !! these can probably go somewhere other than one_click_antag
-/mob/living/carbon/human/proc/equip_death_commando(safety=0)//Safety in case you need to unequip stuff for existing characters.
-	if(safety)
-		qdel(w_uniform)
-		qdel(wear_suit)
-		qdel(wear_mask)
-		qdel(head)
-		qdel(shoes)
-		qdel(gloves)
-
-	var/obj/item/device/radio/R = new /obj/item/device/radio/headset(src)
-	R.set_frequency(1441)
-	equip_to_slot_or_del(R, slot_ears)
-
-	equip_to_slot_or_del(new /obj/item/clothing/under/color/green(src), slot_w_uniform)
-	equip_to_slot_or_del(new /obj/item/clothing/shoes/combat/swat(src), slot_shoes)
-	equip_to_slot_or_del(new /obj/item/clothing/suit/armor/heavy(src), slot_wear_suit)
-	equip_to_slot_or_del(new /obj/item/clothing/gloves/combat(src), slot_gloves)
-	equip_to_slot_or_del(new /obj/item/clothing/head/helmet/space/deathsquad(src), slot_head)
-	equip_to_slot_or_del(new /obj/item/clothing/mask/gas/sechailer/swat(src), slot_wear_mask)
-	equip_to_slot_or_del(new /obj/item/clothing/glasses/thermal(src), slot_glasses)
-
-	equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/security(src), slot_back)
-	equip_to_slot_or_del(new /obj/item/weapon/storage/box(src), slot_in_backpack)
-
-	equip_to_slot_or_del(new /obj/item/ammo_box/a357(src), slot_in_backpack)
-	equip_to_slot_or_del(new /obj/item/weapon/storage/firstaid/regular(src), slot_in_backpack)
-	equip_to_slot_or_del(new /obj/item/weapon/storage/box/flashbangs(src), slot_in_backpack)
-	equip_to_slot_or_del(new /obj/item/device/flashlight(src), slot_in_backpack)
-
-	equip_to_slot_or_del(new /obj/item/weapon/c4(src), slot_in_backpack)
-
-	equip_to_slot_or_del(new /obj/item/weapon/melee/energy/sword(src), slot_l_store)
-	equip_to_slot_or_del(new /obj/item/weapon/grenade/flashbang(src), slot_r_store)
-	equip_to_slot_or_del(new /obj/item/weapon/tank/internals/emergency_oxygen(src), slot_s_store)
-	equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/revolver/mateba(src), slot_belt)
-
-	equip_to_slot_or_del(new /obj/item/weapon/gun/energy/pulse(src), slot_r_hand)
-
-
-	var/obj/item/weapon/implant/loyalty/L = new/obj/item/weapon/implant/loyalty(src)//Here you go Deuryn
-	L.imp_in = src
-	L.implanted = 1
-
-	var/obj/item/weapon/card/id/W = new(src)
-	W.icon_state = "centcom"
-	W.access = get_all_accesses()//They get full station access.
-	W.access += get_centcom_access("Death Commando")//Let's add their alloted Centcom access.
-	W.assignment = "Death Commando"
-	W.registered_name = real_name
-	W.update_label(real_name)
-	equip_to_slot_or_del(W, slot_wear_id)
-
-/mob/living/carbon/human/proc/equip_death_officer(safety=0)//Safety in case you need to unequip stuff for existing characters.
-	if(safety)
-		qdel(w_uniform)
-		qdel(wear_suit)
-		qdel(wear_mask)
-		qdel(head)
-		qdel(shoes)
-		qdel(gloves)
-
-	var/obj/item/device/radio/R = new /obj/item/device/radio/headset(src)
-	R.set_frequency(1441)
-	equip_to_slot_or_del(R, slot_ears)
-
-	equip_to_slot_or_del(new /obj/item/clothing/under/color/green(src), slot_w_uniform)
-	equip_to_slot_or_del(new /obj/item/clothing/shoes/combat/swat(src), slot_shoes)
-	equip_to_slot_or_del(new /obj/item/clothing/suit/armor/heavy(src), slot_wear_suit)
-	equip_to_slot_or_del(new /obj/item/clothing/gloves/combat(src), slot_gloves)
-	equip_to_slot_or_del(new /obj/item/clothing/head/helmet/space/deathsquad/beret(src), slot_head)
-	equip_to_slot_or_del(new /obj/item/clothing/mask/gas/sechailer/swat(src), slot_wear_mask)
-	equip_to_slot_or_del(new /obj/item/clothing/glasses/thermal(src), slot_glasses)
-
-	equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/security(src), slot_back)
-	equip_to_slot_or_del(new /obj/item/weapon/storage/box(src), slot_in_backpack)
-
-	equip_to_slot_or_del(new /obj/item/ammo_box/a357(src), slot_in_backpack)
-	equip_to_slot_or_del(new /obj/item/weapon/storage/firstaid/regular(src), slot_in_backpack)
-	equip_to_slot_or_del(new /obj/item/weapon/storage/box/flashbangs(src), slot_in_backpack)
-	equip_to_slot_or_del(new /obj/item/device/flashlight(src), slot_in_backpack)
-
-	equip_to_slot_or_del(new /obj/item/weapon/c4(src), slot_in_backpack)
-
-	equip_to_slot_or_del(new /obj/item/weapon/melee/energy/sword(src), slot_l_store)
-	equip_to_slot_or_del(new /obj/item/weapon/grenade/flashbang(src), slot_r_store)
-	equip_to_slot_or_del(new /obj/item/weapon/tank/internals/emergency_oxygen(src), slot_s_store)
-	equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/revolver/mateba(src), slot_belt)
-
-	equip_to_slot_or_del(new /obj/item/weapon/gun/energy/pulse(src), slot_r_hand)
-
-
-	var/obj/item/weapon/implant/loyalty/L = new/obj/item/weapon/implant/loyalty(src)//Here you go Deuryn
-	L.imp_in = src
-	L.implanted = 1
-
-	var/obj/item/weapon/card/id/W = new(src)
-	W.icon_state = "centcom"
-	W.access = get_all_accesses()//They get full station access.
-	W.access += get_centcom_access("Death Commando")//Let's add their alloted Centcom access.
-	W.assignment = "Death Commando"
-	W.registered_name = real_name
-	W.update_label(real_name)
-	equip_to_slot_or_del(W, slot_wear_id)

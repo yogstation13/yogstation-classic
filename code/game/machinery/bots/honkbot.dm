@@ -35,14 +35,7 @@
 	mouse_opacity = 1
 	faction = list("honkbot")
 	a_intent = "harm"
-	min_oxy = 0
-	max_oxy = 0
-	min_tox = 0
-	max_tox = 0
-	min_co2 = 0
-	max_co2 = 0
-	min_n2 = 0
-	max_n2 = 0
+	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0) //Leaving something at 0 means it's off - has no maximum
 	minbodytemp = 0
 	wander = 1
 	idle_vision_range = 9
@@ -161,9 +154,8 @@
 		if(last_banana <= 0)
 			new /obj/item/weapon/grown/bananapeel(src.loc,65)
 			last_banana = banana_rate
-/mob/living/simple_animal/hostile/honkbot/Die()
- 	..()
+
+/mob/living/simple_animal/hostile/honkbot/death(gibbed)
  	visible_message("<span class='danger'>[src] is destroyed!</span>")
  	new /obj/effect/decal/cleanable/robot_debris(src.loc)
- 	qdel(src)
- 	return
+ 	..()

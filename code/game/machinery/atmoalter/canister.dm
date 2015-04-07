@@ -326,12 +326,12 @@ Release Pressure: <A href='?src=\ref[src];pressure_adj=-1000'>-</A> <A href='?sr
 				if (holding)
 					logmsg = "Valve was <b>closed</b> by [key_name(usr)], stopping the transfer into the [holding]<br>"
 				else
-					logmsg = "Valve was <b>closed</b> by [key_name(usr)], stopping the transfer into the <span class='userdanger'>air</span><br>"
+					logmsg = "Valve was <b>closed</b> by [key_name(usr)], stopping the transfer into the <span class='boldannounce'>air</span><br>"
 			else
 				if (holding)
 					logmsg = "Valve was <b>opened</b> by [key_name(usr)], starting the transfer into the [holding]<br>"
 				else
-					logmsg = "Valve was <b>opened</b> by [key_name(usr)], starting the transfer into the <span class='userdanger'>air</span><br>"
+					logmsg = "Valve was <b>opened</b> by [key_name(usr)], starting the transfer into the <span class='boldannounce'>air</span><br>"
 					message_admins("Canister opened by [contents]", 0, 1)
 			investigate_log(logmsg, "atmos")
 			release_log += logmsg
