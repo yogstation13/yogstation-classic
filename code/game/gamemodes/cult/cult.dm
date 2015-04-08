@@ -7,6 +7,8 @@
 	var/list/cult_objectives = list()
 
 
+
+
 /proc/iscultist(mob/living/M as mob)
 	return istype(M) && M.mind && ticker && ticker.mode && (M.mind in ticker.mode.cult)
 
@@ -42,6 +44,8 @@
 	var/acolytes_needed = 10 //for the survive objective
 	var/acolytes_survived = 0
 
+	var/global/list/tomestates = list("book, book1, book2, book3, book4, book5, book6, book7, bookHacking, bookNuclear, borgbook, bookfireball, booksmoke, bookblind, bookmindswap, bookforcewall, bookknock, bookhorses, bookcharge, booksummons, scrapbook, creeper, tome, kingyellow, ithaqua, necronomicon, honk1, honk2, culttome")
+	var/tomeicon = "culttome"
 
 /datum/game_mode/cult/announce()
 	world << "<B>The current game mode is - Cult!</B>"
@@ -85,6 +89,7 @@
 
 /datum/game_mode/cult/post_setup()
 	modePlayer += cult
+	tomeicon = pick(tomestates)
 	if("sacrifice" in cult_objectives)
 		var/list/possible_targets = get_unconvertables()
 

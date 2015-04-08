@@ -8,12 +8,6 @@
 	anchored = 1
 	var/shattered = 0
 
-/obj/structure/mirror/magic
-	name = "magic mirror"
-	icon = 'icons/obj/wizardmirror.dmi'
-	icon_state = "mirror"
-	desc = "The Polyjuice 3000 Magic Mirror is the best choice for any wizard who wants a long, white beard."
-
 /obj/structure/mirror/attack_hand(mob/user as mob)
 	if(shattered)	return
 
@@ -41,35 +35,6 @@
 			H.hair_style = new_style
 
 		H.update_hair()
-
-/obj/structure/mirror/magic/attack_hand(mob/user as mob)
-	if(shattered)	return
-
-	if(ishuman(user))
-		var/mob/living/carbon/human/H = user
-		var/userloc = H.loc
-		var/new_hair = input(user, "Select a hair color", "Polyjuice 3000 Magic Mirror") as null|color
-		if(userloc != H.loc) return
-		if(new_hair)
-			H.hair_color = sanitize_hexcolor(new_hair)
-
-		var/new_facial = input(user, "Select a facial hair color", "Polyjuice 3000 Magic Mirror") as null|color
-		if(userloc != H.loc) return
-		if(new_facial)
-			H.facial_hair_color = sanitize_hexcolor(new_facial)
-
-		var/new_eyes = input(user, "Select an eye color", "Polyjuice 3000 Magic Mirror") as color|null
-		if(userloc != H.loc) return
-		if(new_eyes)
-			H.eye_color = sanitize_hexcolor(new_eyes)
-
-		var/new_s_tone = input(user, "Select a skin tone", "Polyjuice 3000 Magic Mirror")  as null|anything in skin_tones
-		if(userloc != H.loc) return
-		if(new_s_tone)
-			H.skin_tone = new_s_tone
-
-		..()
-		H.update_body()
 
 
 /obj/structure/mirror/proc/shatter()
@@ -226,3 +191,10 @@
 			if(new_eye_color)
 				H.eye_color = sanitize_hexcolor(new_eye_color)
 				H.update_body()
+
+
+/obj/structure/mirror/magic/large
+	name = "magic mirror"
+	icon = 'icons/obj/wizardmirror.dmi'
+	icon_state = "mirror"
+	desc = "The Polyjuice 3000 Magic Mirror is the best choice for any wizard who wants a long, white beard."

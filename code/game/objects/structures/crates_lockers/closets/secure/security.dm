@@ -282,6 +282,8 @@
 	new /obj/item/clothing/suit/judgerobe (src)
 	new /obj/item/clothing/head/powdered_wig (src)
 	new /obj/item/weapon/storage/briefcase(src)
+	new /obj/item/weapon/gavelblock(src)
+	new /obj/item/weapon/gavelhammer(src)
 	return
 
 /obj/structure/closet/secure_closet/wall

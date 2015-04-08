@@ -137,7 +137,7 @@ Chaplain
 
 		var/i
 		for(i = 1, i < biblestates.len, i++)
-			var/icon/bibleicon = icon('icons/obj/storage.dmi', biblestates[i])
+			var/icon/bibleicon = icon('icons/obj/library.dmi', biblestates[i])
 
 			var/nicename = biblenames[i]
 			H << browse_rsc(bibleicon, nicename)

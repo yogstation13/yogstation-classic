@@ -334,7 +334,8 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 /obj/item/weapon/tome
 	name = "arcane tome"
 	desc = "An old, dusty tome with frayed edges and a sinister looking cover."
-	icon_state ="tome"
+	icon = 'icons/obj/library.dmi'
+	icon_state ="culttome"
 	throw_speed = 2
 	throw_range = 5
 	w_class = 2.0
@@ -439,6 +440,11 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 				</html>
 				"}
 
+/obj/item/weapon/tome/New()
+	..()
+	if(ticker.mode.name == "cult")
+		var/datum/game_mode/cult/cultmode = ticker.mode
+		icon_state = cultmode.tomeicon
 
 /obj/item/weapon/tome/Topic(href,href_list[])
 	if (src.loc == usr)
