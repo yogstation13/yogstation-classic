@@ -510,10 +510,16 @@
 		H.see_in_dark = 8
 		if(!H.druggy)		H.see_invisible = SEE_INVISIBLE_LEVEL_TWO
 	else
-		H.sight &= ~(SEE_TURFS|SEE_MOBS|SEE_OBJS)
+		if(!(SEE_TURFS & H.permanent_sight_flags))
+			H.sight &= ~SEE_TURFS
+		if(!(SEE_MOBS & H.permanent_sight_flags))
+			H.sight &= ~SEE_MOBS
+		if(!(SEE_OBJS & H.permanent_sight_flags))
+			H.sight &= ~SEE_OBJS
+
+		H.see_in_dark = (H.sight == SEE_TURFS|SEE_MOBS|SEE_OBJS) ? 8 : darksight
 		var/see_temp = H.see_invisible
 		H.see_invisible = invis_sight
-		H.see_in_dark = darksight
 
 		if(H.seer)
 			H.see_invisible = SEE_INVISIBLE_OBSERVER
@@ -608,14 +614,6 @@
 		else
 			H.throw_alert("nutrition","starving")
 
-	if(H.pullin)
-		if(H.pulling)								H.pullin.icon_state = "pull"
-		else									H.pullin.icon_state = "pull0"
-//			if(rest)	//Not used with new UI
-//				if(resting || lying || sleeping)		rest.icon_state = "rest1"
-//				else									rest.icon_state = "rest0"
-
-
 	return 1
 
 /datum/species/proc/handle_mutations_and_radiation(var/mob/living/carbon/human/H)
@@ -657,47 +655,56 @@
 /datum/species/proc/movement_delay(var/mob/living/carbon/human/H)
 	var/mspeed = 0
 
-	var/hasjetpack = 0
-	if(istype(H.back, /obj/item/weapon/tank/jetpack))
-		var/obj/item/weapon/tank/jetpack/J = H.back
-		if(J.allow_thrust(0.01, H))
-			hasjetpack = 1
-	var/grav = has_gravity(H)
+	if(!(H.status_flags & IGNORESLOWDOWN))
 
-	if(!grav && !hasjetpack)
-		mspeed += 1 //Slower space without jetpack
+		var/grav = has_gravity(H)
+		var/hasjetpack = 0
+		if(!grav)
+			var/obj/item/weapon/tank/jetpack/J
+			var/obj/item/weapon/tank/jetpack/P
 
-	var/health_deficiency = (100 - H.health + H.staminaloss)
-	if(health_deficiency >= 40)
-		mspeed += (health_deficiency / 25)
+			if(istype(H.back, /obj/item/weapon/tank/jetpack))
+				J = H.back
+			if(istype(H.wear_suit,/obj/item/clothing/suit/space/hardsuit)) //copypasta but faster implementation currently
+				var/obj/item/clothing/suit/space/hardsuit/engine/C = H.wear_suit
+				P = C.jetpack
+			if(J)
+				if(J.allow_thrust(0.01, H))
+					hasjetpack = 1
+			else if(P)
+				if(P.allow_thrust(0.01, H))
+					hasjetpack = 1
 
-	var/hungry = (500 - H.nutrition) / 5	//So overeat would be 100 and default level would be 80
-	if(hungry >= 70)
-		mspeed += hungry / 50
+			mspeed = 1 - hasjetpack
 
-	if(H.wear_suit && grav)
-		mspeed += H.wear_suit.slowdown
-	if(H.shoes && grav)
-		mspeed += H.shoes.slowdown
-	if(H.back && grav)
-		mspeed += H.back.slowdown
+		if(grav || !hasjetpack)
+			var/health_deficiency = (100 - H.health + H.staminaloss)
+			if(health_deficiency >= 40)
+				mspeed += (health_deficiency / 25)
 
-	if((H.disabilities & FAT) && grav)
-		mspeed += 1.5
-	if(H.bodytemperature < 283.222)
-		mspeed += (283.222 - H.bodytemperature) / 10 * (grav+0.5)
+			var/hungry = (500 - H.nutrition) / 5	//So overeat would be 100 and default level would be 80
+			if(hungry >= 70)
+				mspeed += hungry / 50
 
-	mspeed += speedmod
+			if(H.wear_suit)
+				mspeed += H.wear_suit.slowdown
+			if(H.shoes)
+				mspeed += H.shoes.slowdown
+			if(H.back)
+				mspeed += H.back.slowdown
 
-	if(H.status_flags & IGNORESLOWDOWN)
-		mspeed = 0
+			if((H.disabilities & FAT))
+				mspeed += 1.5
+			if(H.bodytemperature < 283.222)
+				mspeed += (283.222 - H.bodytemperature) / 10 * (grav+0.5)
+
+			mspeed += speedmod
 
 	if(H.status_flags & GOTTAGOFAST)
 		mspeed -= 1
 
 	if(H.status_flags & GOTTAGOREALLYFAST)
 		mspeed -= 2
-
 
 	return mspeed
 
@@ -760,7 +767,8 @@
 				atk_verb = M.dna.species.attack_verb
 
 			var/damage = rand(0, 9)
-			damage += punchmod
+			if(M.dna)
+				damage += M.dna.species.punchmod
 
 			if(!damage)
 				if(M.dna)
@@ -896,13 +904,14 @@
 
 		switch(hit_area)
 			if("head")	//Harder to score a stun but if you do it lasts a bit longer
-				if(H.stat == CONSCIOUS && prob(I.force) && armor < 50)
-					H.visible_message("<span class='danger'>[H] has been knocked unconscious!</span>", \
-									"<span class='userdanger'>[H] has been knocked unconscious!</span>")
-					H.apply_effect(20, PARALYZE, armor)
-					if(H != user && I.damtype == BRUTE)
+				if(H.stat == CONSCIOUS && armor < 50)
+					if(prob(I.force))
+						H.visible_message("<span class='danger'>[H] has been knocked unconscious!</span>", \
+										"<span class='userdanger'>[H] has been knocked unconscious!</span>")
+						H.apply_effect(20, PARALYZE, armor)
+					if(prob(I.force + ((100 - H.health)/2)) && H != user && I.damtype == BRUTE)
 						ticker.mode.remove_revolutionary(H.mind)
-						ticker.mode.remove_gangster(H.mind)
+						ticker.mode.remove_gangster(H.mind, exclude_bosses=1)
 
 				if(bloody)	//Apply blood
 					if(H.wear_mask)
@@ -1009,10 +1018,8 @@
 
 	var/datum/gas_mixture/environment = H.loc.return_air()
 	var/datum/gas_mixture/breath
-	// HACK NEED CHANGING LATER
 	if(H.health <= config.health_threshold_crit)
 		H.losebreath++
-
 	if(H.losebreath>0) //Suffocating so do not take a breath
 		H.losebreath--
 		if (prob(10)) //Gasp per 10 ticks? Sounds about right.

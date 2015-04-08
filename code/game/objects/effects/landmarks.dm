@@ -241,3 +241,6 @@
 	var/PICK = options[rand(1,options.len)]
 	new PICK(src.loc)
 	qdel(src)
+
+/obj/effect/landmark/shuttledock/New()
+	qdel(src)

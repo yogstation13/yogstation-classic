@@ -26,9 +26,9 @@ Tourist
 	H.equip_to_slot_or_del(new /obj/item/device/camera_film(H), slot_l_store)
 	if(H.backbag != 1)
 		H.equip_to_slot_or_del(new /obj/item/device/camera_film(H.back), slot_in_backpack)
-		H.equip_to_slot_or_del(new /obj/item/weapon/spacecash/c20(H.back), slot_in_backpack)
-		H.equip_to_slot_or_del(new /obj/item/weapon/spacecash/c20(H.back), slot_in_backpack)
-		H.equip_to_slot_or_del(new /obj/item/weapon/spacecash/c20(H.back), slot_in_backpack)
+		H.equip_to_slot_or_del(new /obj/item/stack/spacecash/c20(H.back), slot_in_backpack)
+		H.equip_to_slot_or_del(new /obj/item/stack/spacecash/c20(H.back), slot_in_backpack)
+		H.equip_to_slot_or_del(new /obj/item/stack/spacecash/c20(H.back), slot_in_backpack)
 	else
 		H.equip_to_slot_or_del(new /obj/item/device/camera_film(H.back), slot_r_store)
 /*

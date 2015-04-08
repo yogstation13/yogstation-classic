@@ -1,4 +1,4 @@
-/mob/living/simple_animal/gshepherd
+/mob/living/simple_animal/pet/gshepherd
 	name = "german shepherd"
 	real_name = "german shepherd"
 	icon_state = "g_shepherd"
@@ -18,7 +18,7 @@
 	response_harm   = "kicks"
 	see_in_dark = 5
 
-/mob/living/simple_animal/gshepherd/roxie
+/mob/living/simple_animal/pet/gshepherd/roxie
 	name = "Roxie"
 	real_name = "Roxie"
 	desc = "Loyal companion to the Head of Security."

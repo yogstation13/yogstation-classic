@@ -15,7 +15,7 @@
 	msg = copytext(sanitize(msg), 1, MAX_MESSAGE_LEN)
 	if(!msg)	return
 
-	if(!(prefs.toggles & CHAT_OOC))
+	if(!(prefs.chat_toggles & CHAT_OOC))
 		src << "<span class='danger'>You have OOC muted.</span>"
 		return
 
@@ -69,7 +69,7 @@
 	msg = emoji_parse(msg)
 
 	for(var/client/C in clients)
-		if(C.prefs.toggles & CHAT_OOC)
+		if(C.prefs.chat_toggles & CHAT_OOC)
 			if(holder)
 				if(!holder.fakekey || C.holder)
 					if(check_rights_for(src, R_ADMIN))

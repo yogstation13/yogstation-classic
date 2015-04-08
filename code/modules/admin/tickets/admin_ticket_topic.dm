@@ -38,26 +38,25 @@
 			usr << "<span class='ticket-status'>You are not the owner or primary admin of this ticket. You may not reply to it.</span>"
 			return
 
-		var/logtext = input("Please enter your [(!compare_ckey(usr, T.handling_admin) && !compare_ckey(usr, T.owner_ckey) ? "supplimentary comment" : "reply")]:")
+		var/logtext = input("Please enter your [(!compare_ckey(usr, T.handling_admin) && !compare_ckey(usr, T.owner_ckey) ? "supplimentary comment" : "reply")]:") as text|null
 
-		if(!check_rights(R_SERVER|R_DEBUG,0))
-			logtext = sanitize(copytext(logtext,1,MAX_MESSAGE_LEN))
+		logtext = sanitize(copytext(logtext,1,MAX_MESSAGE_LEN))
 
 		if(logtext)
 			T.add_log(new /datum/ticket_log(src, C, logtext, (!compare_ckey(usr, T.handling_admin) && !compare_ckey(usr, T.owner_ckey)) ? 1 : 0), M)
 
 		//AdminPM popup for ApocStation and anybody else who wants to use it. Set it with POPUP_ADMIN_PM in config.txt ~Carn
-		if(C.holder && T.owner && !T.owner.holder && compare_ckey(usr, T.handling_admin) && config.popup_admin_pm)
-			spawn()	//so we don't hold the caller proc up
-				var/sender = C
-				var/sendername = C.key
-				var/reply = input(T.owner, logtext,"Admin PM from-[sendername]", "") as text|null		//show message and await a reply
-				if(reply)
-					if(sender)
-						T.owner.cmd_admin_pm(sender,reply)										//sender is still about, let's reply to them
-					else
-						C.adminhelp(reply)													//sender has left, adminhelp instead
-				return
+			if(C.holder && T.owner && !T.owner.holder && compare_ckey(usr, T.handling_admin) && config.popup_admin_pm)
+				spawn()	//so we don't hold the caller proc up
+					var/sender = C
+					var/sendername = C.key
+					var/reply = input(T.owner, logtext,"Admin PM from-[sendername]", "") as text		//show message and await a reply
+					if(reply)
+						if(sender)
+							T.owner.cmd_admin_pm(sender,reply)										//sender is still about, let's reply to them
+						else
+							C.adminhelp(reply)													//sender has left, adminhelp instead
+					return
 	else if(href_list["action"] == "monitor_admin_ticket")
 		// Limited to admins
 		if(!C.holder)

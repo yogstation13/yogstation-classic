@@ -63,7 +63,7 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 	usr.say("[input]")
 	for(var/mob/M in mob_list)
 		if((M.mind && (M.mind in ticker.mode.cult)) || (M in dead_mob_list))
-			M << "<span class='userdanger'>[input]</span>"
+			M << "<span class='boldannounce'>[input]</span>"
 	return
 
 
@@ -334,7 +334,8 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 /obj/item/weapon/tome
 	name = "arcane tome"
 	desc = "An old, dusty tome with frayed edges and a sinister looking cover."
-	icon_state ="tome"
+	icon = 'icons/obj/library.dmi'
+	icon_state ="culttome"
 	throw_speed = 2
 	throw_range = 5
 	w_class = 2.0
@@ -439,6 +440,11 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 				</html>
 				"}
 
+/obj/item/weapon/tome/New()
+	..()
+	if(ticker.mode.name == "cult")
+		var/datum/game_mode/cult/cultmode = ticker.mode
+		icon_state = cultmode.tomeicon
 
 /obj/item/weapon/tome/Topic(href,href_list[])
 	if (src.loc == usr)
@@ -517,9 +523,8 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 			M.reagents.add_reagent("unholywater",holy2unholy)
 		return
 	M.take_organ_damage(0,rand(5,20)) //really lucky - 5 hits for a crit
-	for(var/mob/O in viewers(M, null))
-		O.show_message(text("<span class='userdanger'>[] beats [] with the arcane tome!</span>", user, M), 1)
-	M << "<span class='danger'>You feel searing heat inside!</span>"
+	M.visible_message("<span class='danger'>[user] beats [M] with the arcane tome!</span>", \
+					"<span class='userdanger'>You feel searing heat inside!</span>")
 
 
 /obj/item/weapon/tome/attack_self(mob/living/user as mob)
@@ -549,7 +554,7 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 				usr.whisper("[input]")
 				for(var/datum/mind/H in ticker.mode.cult)
 					if (H.current)
-						H.current << "<span class='userdanger'>[input]</span>"
+						H.current << "<span class='boldannounce'>[input]</span>"
 				return
 			if("Notes")
 				if(usr.get_active_hand() != src)

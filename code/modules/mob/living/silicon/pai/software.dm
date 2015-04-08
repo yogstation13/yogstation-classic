@@ -90,6 +90,7 @@
 
 	//usr << browse_rsc('windowbak.png')		// This has been moved to the mob's Login() proc
 
+
 												// Declaring a doctype is necessary to enable BYOND's crappy browser's more advanced CSS functionality
 	dat = {"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">
 			<html>
@@ -154,13 +155,13 @@
 					<div id="leftmenu">[left_part]</div>
 				</div>
 			</body>
-			</html>"}
+			</html>"} //"
 	usr << browse(dat, "window=pai;size=640x480;border=0;can_close=1;can_resize=1;can_minimize=1;titlebar=1")
 	onclose(usr, "pai")
 	temp = null
 	return
 
-// <div id='icon-container'><div id='pai'></div><div id='overlay'></div></div>
+
 
 /mob/living/silicon/pai/Topic(href, href_list)
 	..()
@@ -188,7 +189,6 @@
 		// Configuring onboard radio
 		if("radio")
 			src.card.radio.attack_self(src)
-			return
 
 		if("image")
 			var/newImage = input("Select your new display image.", "Display Image", "Happy") in list("Happy", "Cat", "Extremely Happy", "Face", "Laugh", "Off", "Sad", "Angry", "What")
@@ -216,7 +216,6 @@
 				if("Null")
 					pID = 10
 			src.card.setEmotion(pID)
-			return
 
 		if("signaller")
 
@@ -232,7 +231,6 @@
 					new_frequency = sanitize_frequency(new_frequency)
 				sradio.set_frequency(new_frequency)
 				src << output(format_frequency(src.sradio.frequency), "pai.browser:onFrequencyChanged")
-				return
 
 			if(href_list["code"])
 
@@ -241,7 +239,6 @@
 				sradio.code = min(100, sradio.code)
 				sradio.code = max(1, sradio.code)
 				src << output(sradio.code, "pai.browser:onCodeChanged")
-				return
 
 
 
@@ -307,7 +304,7 @@
 					add_med_hud()
 		if("translator")
 			if(href_list["toggle"])
-				languages = languages == ALL ? HUMAN & ROBOT : ALL
+				languages = (languages == ALL) ? (HUMAN | ROBOT) : ALL
 		if("remote")
 			if(href_list["pair"])
 				if(!paired)
@@ -327,7 +324,6 @@
 				unpair(1)
 				pairing = 0
 				src << output(pairing ? "1" : "0", "pai.browser:onPairingChanged")
-				return
 		if("doorjack")
 			if(href_list["jack"])
 				if(src.cable && src.cable.machine)
@@ -824,29 +820,6 @@
 		<p id='doorjack-cancel' [!src.cable || !src.cable.machine || !src.hackdoor ? " class='hidden'" : ""]><a href='byond://?src=\ref[src];software=doorjack;cancel=1;sub=0'>Cancel Airlock Jack</a></p>
 	"}
 
-	//dat += "Cable status : "
-	//if(!src.cable)
-	//	dat += "<span id='doorjack-cable-status' class='red'>Retracted</span> <br>"
-	//	dat += "<a href='byond://?src=\ref[src];software=doorjack;cable=1;sub=0'>Extend Cable</a> <br>"
-	//	return dat
-	//if(!src.cable.machine)
-	//	dat += "<span id='doorjack-cable-status' class='yellow'>Extended</span> <br>"
-	//	return dat
-
-	//var/obj/machinery/machine = src.cable.machine
-	//dat += "<span id='doorjack-cable-status' class='green'>Connected</span> <br>"
-	//if(!istype(machine, /obj/machinery/door))
-	//	dat += "Connected device's firmware does not appear to be compatible with Airlock Jack protocols.<br>"
-	//	return dat
-////	var/obj/machinery/airlock/door = machine
-
-	//if(!src.hackdoor)
-	//	dat += "<a href='byond://?src=\ref[src];software=doorjack;jack=1;sub=0'>Begin Airlock Jacking</a> <br>"
-	//else
-	//	dat += "Jack in progress... [src.hackprogress]% complete.<br>"
-	//	dat += "<a href='byond://?src=\ref[src];software=doorjack;cancel=1;sub=0'>Cancel Airlock Jack</a> <br>"
-	////src.hackdoor = machine
-	////src.hackloop()
 	return dat
 
 /mob/living/silicon/pai/proc/softwareDoorJS()
@@ -938,8 +911,6 @@
 
 		src << output("[hackprogress]", "pai.browser:onJackProgress")
 
-		//if(src.screen == "doorjack" && src.subscreen == 0) // Update our view, if appropriate
-		//	src.paiInterface()
 		if(hackprogress >= 100)
 			src.hackprogress = 0
 			src.cable.machine:open()

@@ -93,7 +93,7 @@
 
 	else if(istype(A, /mob/living)) // You Shall Not Pass!
 		var/mob/living/M = A
-		if(!M.lying && !istype(M, /mob/living/carbon/monkey) && !istype(M, /mob/living/carbon/slime))	//If your not laying down, or a small creature, no pass.
+		if(!M.lying && !ismonkey(M) && !isslime(M))	//If your not laying down, or a small creature, no pass.
 			return 0
 	return ..()
 
@@ -133,6 +133,9 @@
 	icon_state = "supply"
 	req_access = list(access_cargo)
 	circuit = /obj/item/weapon/circuitboard/supplycomp
+	verb_say = "flashes"
+	verb_ask = "flashes"
+	verb_exclaim = "flashes"
 	var/temp = null
 	var/reqtime = 0 //Cooldown for requisitions - Quarxink
 	var/hacked = 0
@@ -151,6 +154,9 @@
 	icon = 'icons/obj/computer.dmi'
 	icon_state = "request"
 	circuit = /obj/item/weapon/circuitboard/ordercomp
+	verb_say = "flashes"
+	verb_ask = "flashes"
+	verb_exclaim = "flashes"
 	var/temp = null
 	var/reqtime = 0 //Cooldown for requisitions - Quarxink
 	var/last_viewed_group = "categories"
