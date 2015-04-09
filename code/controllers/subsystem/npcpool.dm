@@ -92,25 +92,27 @@ var/datum/subsystem/npcpool/SSbp
 		for(var/mob/living/carbon/human/interactive/check in needsAssistant)
 			if(canBeUsed.len)
 				var/mob/living/carbon/human/interactive/candidate = pick(canBeUsed)
-				var/facCount = 0
-				var/helpProb = 0
-				for(var/C in check.faction)
-					for(var/D in candidate.faction)
-						if(D == C)
-							helpProb = min(100,helpProb + 25)
-						facCount++
-				if(facCount == 1 && helpProb > 0)
-					helpProb = 100
-				if(prob(helpProb))
-					if(candidate.takeDelegate(check,FALSE))
-						needsAssistant -= check
-						canBeUsed -= candidate
-						candidate.eye_color = "yellow"
+				if(istype(candidate))
+					var/facCount = 0
+					var/helpProb = 0
+					for(var/C in check.faction)
+						for(var/D in candidate.faction)
+							if(D == C)
+								helpProb = min(100,helpProb + 25)
+							facCount++
+					if(facCount == 1 && helpProb > 0)
+						helpProb = 100
+					if(prob(helpProb))
+						if(candidate.takeDelegate(check,FALSE))
+							needsAssistant -= check
+							canBeUsed -= candidate
+							candidate.eye_color = "yellow"
 
 	if(needsHelp_non.len)
 		for(var/obj/machinery/bot/B in needsHelp_non)
 			if(canBeUsed_non.len)
-				var/obj/machinery/bot/candidate = pick(canBeUsed_non.len)
-				candidate.call_bot(B,get_turf(B),FALSE)
-				canBeUsed_non -= B
-				needsHelp_non -= candidate
+				var/obj/machinery/bot/candidate = pick(canBeUsed_non)
+				if(istype(candidate))
+					candidate.call_bot(B,get_turf(B),FALSE)
+					canBeUsed_non -= candidate
+					needsHelp_non -= B

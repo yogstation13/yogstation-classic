@@ -44,7 +44,10 @@
 	var/acolytes_needed = 10 //for the survive objective
 	var/acolytes_survived = 0
 
-	var/global/list/tomestates = list("book, book1, book2, book3, book4, book5, book6, book7, bookHacking, bookNuclear, borgbook, bookfireball, booksmoke, bookblind, bookmindswap, bookforcewall, bookknock, bookhorses, bookcharge, booksummons, scrapbook, creeper, tome, kingyellow, ithaqua, necronomicon, honk1, honk2, culttome")
+	var/global/list/tomestates = list("book", "book1", "book2", "book3", "book4", "book5", "book6", "book7", "bookHacking",
+		"bookNuclear", "borgbook", "bookfireball", "booksmoke", "bookblind", "bookmindswap", "bookforcewall", "bookknock",
+		"bookhorses", "bookcharge", "booksummons", "scrapbook", "creeper", "tome", "kingyellow", "ithaqua", "necronomicon",
+		"honk1", "honk2", "culttome")
 	var/tomeicon = "culttome"
 
 /datum/game_mode/cult/announce()

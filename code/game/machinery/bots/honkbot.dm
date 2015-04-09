@@ -158,4 +158,5 @@
 /mob/living/simple_animal/hostile/honkbot/death(gibbed)
  	visible_message("<span class='danger'>[src] is destroyed!</span>")
  	new /obj/effect/decal/cleanable/robot_debris(src.loc)
+ 	qdel(src)
  	..()
