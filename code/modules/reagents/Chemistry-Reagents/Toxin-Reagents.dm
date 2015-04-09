@@ -325,10 +325,32 @@ datum/reagent/toxin/staminatoxin
 	color = "#6E2828"
 	data = 13
 	toxpwr = 0
+	metabolization_rate = 1.25 * REAGENTS_METABOLISM
 
 datum/reagent/toxin/staminatoxin/on_mob_life(mob/living/carbon/M)
 	M.adjustStaminaLoss(REM * data)
-	data = max(data - 1, 3)
+	data = max(data - 1, 3) //for future reference, this scales up all stamina damage taken by the target but is ineffective by itself
+
+	switch(current_cycle)
+		if (1 to 3)
+			M.adjustStaminaLoss(8)
+		if (4 to 7)
+			M.adjustStaminaLoss(16)
+		if (8 to 12)
+			M.adjustStaminaLoss(24)
+		if (13 to 15)
+			M.adjustStaminaLoss(16)
+		if (16 to INFINITY)
+			M.adjustStaminaLoss(8)
+
+	switch(M.getStaminaLoss())
+		if (36 to 65)
+			M.sleeping += 1.25
+		if (66 to INFINITY)
+			M.sleeping += 2
+
+	if (prob(10))
+		M << "<span class='danger'>A terrible ache settles over your limbs, worsening with the slightest movement!</span>"
 	..()
 
 
