@@ -12,5 +12,5 @@
 		if(src in meatbag.internal_organs)
 			meatbag.ex_act(1)
 	update_mob()
-	explosion(src.loc,1,2,4,flame_range = 2)
+	explosion(src.loc,0,3,5,flame_range = 4)
 	qdel(src)

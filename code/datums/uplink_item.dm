@@ -167,9 +167,9 @@ var/list/uplink_items = list()
 
 /datum/uplink_item/dangerous/syndicate_minibomb
 	name = "Syndicate Minibomb"
-	desc = "The Minibomb is a grenade with a five-second fuse."
+	desc = "The Minibomb is a shaped demolitions grenade with a five-second fuse. Deals immense damage for its size to structures, and will inflict horrendous wounding on any unlucky enough to be caught in its blast."
 	item = /obj/item/weapon/grenade/syndieminibomb
-	cost = 6
+	cost = 4
 
 /datum/uplink_item/dangerous/foamsmg
 	name = "Toy Submachine Gun"
