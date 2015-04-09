@@ -308,7 +308,7 @@ datum/reagent/toxin/teapowder
 	toxpwr = 0.5
 
 datum/reagent/toxin/mutetoxin //the new zombie powder.
-	name = "Mute Toxin"
+	name = "Nulvocisine"
 	id = "mutetoxin"
 	description = "A toxin that temporarily paralyzes the vocal cords."
 	color = "#F0F8FF" // rgb: 240, 248, 255

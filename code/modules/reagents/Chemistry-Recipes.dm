@@ -201,7 +201,7 @@ silicate
 	result_amount = 1
 
 /datum/chemical_reaction/mutetoxin //i'll just fit this in here snugly between other unfun chemicals :v
-	name = "Mute toxin"
+	name = "Nulvocisine"
 	id = "mutetoxin"
 	result = "mutetoxin"
 	required_reagents = list("uranium" = 2, "water" = 1, "carbon" = 1)
