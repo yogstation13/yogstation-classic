@@ -109,8 +109,14 @@ datum/reagent/consumable/nothing
 	description = "Absolutely nothing."
 
 datum/reagent/consumable/nothing/on_mob_life(var/mob/living/M as mob)
-	if(istype(M, /mob/living/carbon/human) && M.job in list("Mime"))
-		M.heal_organ_damage(1,1)
+	if(istype(M, /mob/living/carbon/human))
+		if (M.job in list("Mime"))
+			M.heal_organ_damage(1,1)
+		else
+			if (current_cycle > 6 && prob(20))
+				M.reagents.add_reagent("mutetoxin", 1)
+				M << "A profound silence washes over you."
+
 	..()
 
 datum/reagent/consumable/potato_juice
