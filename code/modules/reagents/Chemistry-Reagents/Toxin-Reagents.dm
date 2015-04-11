@@ -344,10 +344,13 @@ datum/reagent/toxin/staminatoxin/on_mob_life(mob/living/carbon/M)
 			M.adjustStaminaLoss(8)
 
 	switch(M.getStaminaLoss())
-		if (36 to 65)
+		if (32 to 65)
 			M.sleeping += 1.25
 		if (66 to INFINITY)
 			M.sleeping += 2
+
+	if (M.sleeping > 15)
+		M.sleeping = 15 //cap maximum sleeping duration for sanity's sake
 
 	if (prob(10))
 		M << "<span class='danger'>A terrible ache settles over your limbs, worsening with the slightest movement!</span>"
