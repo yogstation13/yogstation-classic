@@ -44,6 +44,7 @@
 
 /obj/item/projectile/bullet/reusable/foam_dart/riot
 	name = "riot foam dart"
+	desc = "An unassuming foam dart with a surprising amount of weight to it."
 	icon_state = "foamdart_riot"
 	ammo_type = /obj/item/ammo_casing/caseless/foam_dart/riot
-	stamina = 25
+	stamina = 45

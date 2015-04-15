@@ -167,9 +167,9 @@ var/list/uplink_items = list()
 
 /datum/uplink_item/dangerous/syndicate_minibomb
 	name = "Syndicate Minibomb"
-	desc = "The Minibomb is a grenade with a five-second fuse."
+	desc = "The Minibomb is a shaped demolitions grenade with a five-second fuse. Deals immense damage for its size to structures, and will inflict horrendous wounding on any unlucky enough to be caught in its blast."
 	item = /obj/item/weapon/grenade/syndieminibomb
-	cost = 6
+	cost = 4
 
 /datum/uplink_item/dangerous/foamsmg
 	name = "Toy Submachine Gun"
@@ -333,8 +333,7 @@ var/list/uplink_items = list()
 
 /datum/uplink_item/stealthy_weapons/sleepy_pen
 	name = "Sleepy Pen"
-	desc = "A syringe disguised as a functional pen, filled with a potent mix of drugs, including a strong anaesthetic and a chemical that is capable of blocking the movement of the vocal chords. \
-	The pen holds one dose of the mixture, and cannot be refilled."
+	desc = "A syringe disguised as a functional pen, containing a potent exhausting toxin and a chemical designed to paralyse the vocal chords. Afflicted victims will find themselves unconscious upon exertion during the peak of the drug's effects, as well as being unable to speak for a longer duration."
 	item = /obj/item/weapon/pen/sleepy
 	cost = 4
 	excludefrom = list(/datum/game_mode/nuclear)
