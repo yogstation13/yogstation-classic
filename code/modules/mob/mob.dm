@@ -694,6 +694,22 @@ var/list/slot_equipment_priority = list( \
 
 	if(statpanel("Status"))
 		stat(null, "Server Time: [time2text(world.realtime, "YYYY-MM-DD hh:mm")]")
+
+		var/tickets_unclaimed = 0
+		var/tickets_unresolved = 0
+		var/tickets_resolved = 0
+		var/tickets_total = 0
+		for(var/datum/admin_ticket/T in tickets_list)
+			tickets_total++
+			if(T.resolved)
+				tickets_resolved++
+			else if(!T.handling_admin)
+				tickets_unclaimed++
+			else
+				tickets_unresolved++
+		stat(null,"Tickets([tickets_total]):\t[tickets_unclaimed > 0 ? "Unclaimed([tickets_unclaimed])\t" : ""][tickets_resolved > 0 ? "Resolved([tickets_resolved])\t" : ""][tickets_unresolved > 0 ? "Unresolved([tickets_unresolved])\t" : ""]")
+
+
 		var/ETA
 		switch(SSshuttle.emergency.mode)
 			if(SHUTTLE_RECALL)
@@ -717,20 +733,6 @@ var/list/slot_equipment_priority = list( \
 			stat("CPU:","[world.cpu]")
 			stat("Instances:","[world.contents.len]")
 
-			var/tickets_unclaimed = 0
-			var/tickets_unresolved = 0
-			var/tickets_resolved = 0
-			var/tickets_total = 0
-			for(var/datum/admin_ticket/T in tickets_list)
-				tickets_total++
-				if(T.resolved)
-					tickets_resolved++
-				else if(!T.handling_admin)
-					tickets_unclaimed++
-				else
-					tickets_unresolved++
-			stat(null,"Tickets([tickets_total]):\t[tickets_unclaimed > 0 ? "Unclaimed([tickets_unclaimed])\t" : ""][tickets_resolved > 0 ? "Resolved([tickets_resolved])\t" : ""][tickets_unresolved > 0 ? "Unresolved([tickets_unresolved])\t" : ""]")
-
 			if(master_controller)
 				stat("MasterController:","[round(master_controller.cost,0.001)]ds (Interval:[master_controller.processing_interval] | Iteration:[master_controller.iteration])")
 				for(var/datum/subsystem/SS in master_controller.subsystems)
@@ -745,6 +747,8 @@ var/list/slot_equipment_priority = list( \
 		else
 			statpanel(listed_turf.name, null, listed_turf)
 			for(var/atom/A in listed_turf)
+				if(!A.mouse_opacity)
+					continue
 				if(A.invisibility > see_invisible)
 					continue
 				statpanel(listed_turf.name, null, A)
@@ -774,6 +778,7 @@ var/list/slot_equipment_priority = list( \
 
 // facing verbs
 /mob/proc/canface()
+	if(client.prefs.afreeze)			return 0
 	if(!canmove)						return 0
 	if(client.moving)					return 0
 	if(world.time < client.move_delay)	return 0
@@ -851,9 +856,6 @@ var/list/slot_equipment_priority = list( \
 
 /mob/proc/activate_hand(var/selhand)
 	return
-
-/mob/proc/SpeciesCanConsume()
-	return 0
 
 /mob/proc/Jitter(amount)
 	jitteriness = max(jitteriness,amount,0)
@@ -960,6 +962,19 @@ var/list/slot_equipment_priority = list( \
 	return
 
 /mob/proc/setEarDamage()
+	return
+
+/mob/proc/AddSpell(var/obj/effect/proc_holder/spell/spell)
+	mob_spell_list += spell
+	if(!spell.action)
+		spell.action = new/datum/action/spell_action
+		spell.action.target = spell
+		spell.action.name = spell.name
+		spell.action.button_icon = spell.action_icon
+		spell.action.button_icon_state = spell.action_icon_state
+		spell.action.background_icon_state = spell.action_background_icon_state
+	if(isliving(src))
+		spell.action.Grant(src)
 	return
 
 /mob/proc/toggleafreeze(mob/admin)

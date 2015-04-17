@@ -74,8 +74,14 @@
 				log_admin("[key_name(usr)] created a emergency response team.")
 				if(!src.makeEmergencyresponseteam())
 					usr << "<span class='danger'>Unfortunatly there were not enough candidates available.</span>"
+			if("14")
+				message_admins("[key_name(usr)] created abductor team.")
+				log_admin("[key_name(usr)] created abductor team.")
+				if(!src.makeAbductorTeam())
+					usr << "<span class='danger'>Unfortunatly there were not enough candidates available.</span>"
 
 	else if(href_list["forceevent"])
+		if(!check_rights(R_FUN))	return
 		var/datum/round_event_control/E = locate(href_list["forceevent"]) in SSevent.control
 		if(E)
 			var/datum/round_event/event = E.runEvent()
@@ -220,6 +226,28 @@
 		minor_announce("The emergency shuttle will reach its destination in [round(SSshuttle.emergency.timeLeft(600))] minutes.")
 		message_admins("<span class='adminnotice'>[key_name_admin(usr)] edited the Emergency Shuttle's timeleft to [timer] seconds</span>")
 		href_list["secretsadmin"] = "check_antagonist"
+
+	else if(href_list["toggle_continuous"])
+		if(!check_rights(R_ADMIN))	return
+
+		if(!config.continuous[ticker.mode.config_tag])
+			config.continuous[ticker.mode.config_tag] = 1
+		else
+			config.continuous[ticker.mode.config_tag] = 0
+
+		message_admins("<span class='adminnotice'>[key_name_admin(usr)] toggled the round to [config.continuous[ticker.mode.config_tag] ? "continue if all antagonists die" : "end with the antagonists"].</span>")
+		check_antagonists()
+
+	else if(href_list["toggle_midround_antag"])
+		if(!check_rights(R_ADMIN))	return
+
+		if(!config.midround_antag[ticker.mode.config_tag])
+			config.midround_antag[ticker.mode.config_tag] = 1
+		else
+			config.midround_antag[ticker.mode.config_tag] = 0
+
+		message_admins("<span class='adminnotice'>[key_name_admin(usr)] toggled the round to [config.midround_antag[ticker.mode.config_tag] ? "use" : "skip"] the midround antag system.</span>")
+		check_antagonists()
 
 	else if(href_list["delay_round_end"])
 		if(!check_rights(R_SERVER))	return

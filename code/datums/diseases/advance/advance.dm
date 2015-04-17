@@ -13,7 +13,7 @@ var/list/archive_diseases = list()
 var/list/advance_cures = 	list(
 									"nutriment", "sugar", "orangejuice",
 									"spaceacillin", "salglu_solution", "ethanol",
-									"leporazine", "synaptizine", "lipozine",
+									"leporazine", "synaptizine", "lipolicide",
 									"silver", "gold"
 								)
 
@@ -222,12 +222,12 @@ var/list/advance_cures = 	list(
 			spread_text = "None"
 		if(SPECIAL)
 			spread_text = "None"
+		if(BLOOD)
+			spread_text = "Blood"
 		if(CONTACT_GENERAL, CONTACT_HANDS, CONTACT_FEET)
 			spread_text = "On contact"
 		if(AIRBORNE)
 			spread_text = "Airborne"
-		if(BLOOD)
-			spread_text = "Blood"
 
 	spread_flags = spread_id
 

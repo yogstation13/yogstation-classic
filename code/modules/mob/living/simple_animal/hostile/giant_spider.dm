@@ -33,7 +33,7 @@
 	speak_chance = 5
 	turns_per_move = 5
 	see_in_dark = 10
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/spider
+	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/spider
 	meat_amount = 2
 	response_help  = "pets"
 	response_disarm = "gently pushes aside"
@@ -97,7 +97,7 @@
 
 // Chops off each leg with a 50/50 chance of harvesting one, until finally calling
 // default harvest action
-/mob/living/simple_animal/hostile/poison/giant_spider/harvest()
+/mob/living/simple_animal/hostile/poison/giant_spider/harvest(mob/living/user, sharpness = 1)
 	if(butcher_state > 0)
 		butcher_state--
 		icon_state = icon_dead + "[butcher_state]"

@@ -13,15 +13,15 @@
 	see_in_dark = 6
 	maxHealth = 5
 	health = 5
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat
+	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/slab
 	meat_amount = 1
 	response_help  = "pets"
 	response_disarm = "gently pushes aside"
 	response_harm   = "splats"
 	density = 0
 	ventcrawler = 2
-	pass_flags = PASSTABLE | PASSGRILLE
-	mob_size = MOB_SIZE_SMALL
+	pass_flags = PASSTABLE | PASSGRILLE | PASSMOB
+	mob_size = MOB_SIZE_TINY
 	var/body_color //brown, gray and white, leave blank for random
 
 /mob/living/simple_animal/mouse/New()
