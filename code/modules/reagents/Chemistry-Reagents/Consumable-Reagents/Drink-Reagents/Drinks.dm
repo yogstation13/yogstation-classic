@@ -109,8 +109,14 @@ datum/reagent/consumable/nothing
 	description = "Absolutely nothing."
 
 datum/reagent/consumable/nothing/on_mob_life(var/mob/living/M as mob)
-	if(istype(M, /mob/living/carbon/human) && M.job in list("Mime"))
-		M.heal_organ_damage(1,1)
+	if(istype(M, /mob/living/carbon/human))
+		if (M.job in list("Mime"))
+			M.heal_organ_damage(1,1)
+		else
+			if (current_cycle > 6 && prob(20))
+				M.reagents.add_reagent("mutetoxin", 1)
+				M << "A profound silence washes over you."
+
 	..()
 
 datum/reagent/consumable/potato_juice
@@ -399,6 +405,60 @@ datum/reagent/consumable/doctor_delight
 	id = "doctorsdelight"
 	description = "A gulp a day keeps the MediBot away. That's probably for the best."
 	color = "#FF8CFF" // rgb: 255, 140, 255
+
+datum/reagent/consumable/chocolatepudding
+	name = "Chocolate Pudding"
+	id = "chocolatepudding"
+	description = "A great dessert for chocolate lovers."
+	color = "#800000"
+	nutriment_factor = 4 * REAGENTS_METABOLISM
+
+datum/reagent/consumable/vanillapudding
+	name = "Vanilla Pudding"
+	id = "vanillapudding"
+	description = "A great dessert for vanilla lovers."
+	color = "#FAFAD2"
+	nutriment_factor = 4 * REAGENTS_METABOLISM
+
+datum/reagent/consumable/cherryshake
+	name = "Cherry Shake"
+	id = "cherryshake"
+	description = "A cherry flavored milkshake."
+	color = "#FFB6C1"
+	nutriment_factor = 4 * REAGENTS_METABOLISM
+
+datum/reagent/consumable/bluecherryshake
+	name = "Blue Cherry Shake"
+	id = "bluecherryshake"
+	description = "An exotic milkshake."
+	color = "#00F1FF"
+	nutriment_factor = 4 * REAGENTS_METABOLISM
+
+datum/reagent/consumable/pumpkin_latte
+	name = "Pumpkin Latte"
+	id = "pumpkin_latte"
+	description = "A mix of pumpkin juice and coffee."
+	color = "#F4A460"
+	nutriment_factor = 3 * REAGENTS_METABOLISM
+
+datum/reagent/consumable/gibbfloats
+	name = "Gibb Floats"
+	id = "gibbfloats"
+	description = "Icecream on top of a Dr. Gibb glass."
+	color = "#B22222"
+	nutriment_factor = 3 * REAGENTS_METABOLISM
+
+datum/reagent/consumable/pumpkinjuice
+	name = "Pumpkin Juice"
+	id = "pumpkinjuice"
+	description = "Juiced from real pumpkin."
+	color = "#FFA500"
+
+datum/reagent/consumable/blumpkinjuice
+	name = "Blumpkin Juice"
+	id = "blumpkinjuice"
+	description = "Juiced from real blumpkin."
+	color = "#00BFFF"
 
 
 //////////////////////////////////////////////The ten friggen million reagents that get you drunk//////////////////////////////////////////////

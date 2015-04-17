@@ -8,6 +8,8 @@
 	var/leap_on_click = 0
 	var/pounce_cooldown = 0
 	var/pounce_cooldown_time = 30
+	var/custom_pixel_x_offset = 0 //for admin fuckery.
+	var/custom_pixel_y_offset = 0
 
 //This is fine right now, if we're adding organ specific damage this needs to be updated
 /mob/living/carbon/alien/humanoid/New()
@@ -15,6 +17,12 @@
 	if(name == "alien")
 		name = text("alien ([rand(1, 1000)])")
 	real_name = name
+
+	AddAbility(new/obj/effect/proc_holder/alien/plant(null))
+	AddAbility(new/obj/effect/proc_holder/alien/whisper(null))
+	AddAbility(new/obj/effect/proc_holder/alien/transfer(null))
+	AddAbility(new/obj/effect/proc_holder/alien/regurgitate(null))
+
 	..()
 
 /mob/living/carbon/alien/humanoid/movement_delay()
@@ -118,3 +126,7 @@
 
 /mob/living/carbon/alien/humanoid/reagent_check(var/datum/reagent/R)
 	return 0
+
+/mob/living/carbon/alien/humanoid/cuff_resist(obj/item/I)
+	playsound(src, 'sound/voice/hiss5.ogg', 40, 1, 1)  //Alien roars when starting to break free
+	..(I, cuff_break = 1)

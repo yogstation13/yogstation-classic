@@ -201,7 +201,7 @@ silicate
 	result_amount = 1
 
 /datum/chemical_reaction/mutetoxin //i'll just fit this in here snugly between other unfun chemicals :v
-	name = "Mute toxin"
+	name = "Nulvocisine"
 	id = "mutetoxin"
 	result = "mutetoxin"
 	required_reagents = list("uranium" = 2, "water" = 1, "carbon" = 1)
@@ -486,6 +486,19 @@ datum/chemical_reaction/pestkiller
 /datum/chemical_reaction/slimemutate/on_reaction(var/datum/reagents/holder)
 	feedback_add_details("slime_cores_used","[replacetext(name," ","_")]")
 
+//Mutated Green
+/datum/chemical_reaction/slimemutate_unstable
+	name = "Unstable Mutation Toxin"
+	id = "unstablemutationtoxin"
+	result = "unstablemutationtoxin"
+	required_reagents = list("radium" = 1)
+	result_amount = 1
+	required_other = 1
+	required_container = /obj/item/slime_extract/green
+	mix_message = "<span class='info'>The mixture rapidly expands and contracts, its appearance shifting into a sickening green.</span>"
+/datum/chemical_reaction/slimemutate_unstable/on_reaction(var/datum/reagents/holder)
+	feedback_add_details("slime_cores_used","[replacetext(name," ","_")]")
+
 //Metal
 /datum/chemical_reaction/slimemetal
 	name = "Slime Metal"
@@ -549,8 +562,25 @@ datum/chemical_reaction/pestkiller
 /datum/chemical_reaction/slimebork/on_reaction(var/datum/reagents/holder)
 
 	feedback_add_details("slime_cores_used","[replacetext(name," ","_")]")
+	var/list/blocked = list(/obj/item/weapon/reagent_containers/food/snacks,
+		/obj/item/weapon/reagent_containers/food/snacks/store/bread,
+		/obj/item/weapon/reagent_containers/food/snacks/breadslice,
+		/obj/item/weapon/reagent_containers/food/snacks/store/cake,
+		/obj/item/weapon/reagent_containers/food/snacks/cakeslice,
+		/obj/item/weapon/reagent_containers/food/snacks/store,
+		/obj/item/weapon/reagent_containers/food/snacks/pie,
+		/obj/item/weapon/reagent_containers/food/snacks/kebab,
+		/obj/item/weapon/reagent_containers/food/snacks/pizza,
+		/obj/item/weapon/reagent_containers/food/snacks/pizzaslice,
+		/obj/item/weapon/reagent_containers/food/snacks/salad,
+		/obj/item/weapon/reagent_containers/food/snacks/meat,
+		/obj/item/weapon/reagent_containers/food/snacks/soup,
+		/obj/item/weapon/reagent_containers/food/snacks/grown,
+		/obj/item/weapon/reagent_containers/food/snacks/grown/mushroom
+		)
+	blocked |= typesof(/obj/item/weapon/reagent_containers/food/snacks/customizable)
 
-	var/list/borks = typesof(/obj/item/weapon/reagent_containers/food/snacks) - /obj/item/weapon/reagent_containers/food/snacks
+	var/list/borks = typesof(/obj/item/weapon/reagent_containers/food/snacks) - blocked
 	// BORK BORK BORK
 
 	playsound(get_turf(holder.my_atom), 'sound/effects/phasein.ogg', 100, 1)
@@ -970,7 +1000,7 @@ datum/chemical_reaction/pestkiller
 				for(var/j = 1, j <= rand(1, 3), j++)
 					step(C, pick(NORTH,SOUTH,EAST,WEST))
 
-/datum/chemical_reaction/rainbowmeat
+/*/datum/chemical_reaction/rainbowmeat
 	name = "Clown Bork"
 	id = "c_bork"
 	result = null
@@ -978,6 +1008,7 @@ datum/chemical_reaction/pestkiller
 	result_amount = 1
 	required_container = /obj/item/slime_extract/rainbow
 	required_other = 1
+
 /datum/chemical_reaction/rainbowmeat/on_reaction(var/datum/reagents/holder)
 
 	feedback_add_details("slime_cores_used","[replacetext(name," ","_")]")
@@ -998,4 +1029,4 @@ datum/chemical_reaction/pestkiller
 			B.loc = get_turf(holder.my_atom)
 			if(prob(50))
 				for(var/j = 1, j <= rand(1, 3), j++)
-					step(B, pick(NORTH,SOUTH,EAST,WEST))
+					step(B, pick(NORTH,SOUTH,EAST,WEST))*/

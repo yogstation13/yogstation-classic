@@ -48,6 +48,7 @@
 		log += " as a carrier"
 	log += " from [ismob(source) ? key_name(source) : source]."
 	investigate_log(log, "viro")
+	DD.strain_data = D.strain_data.Copy()
 	DD.affected_mob.med_hud_set_status()
 
 

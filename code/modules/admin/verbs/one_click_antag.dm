@@ -22,6 +22,7 @@ client/proc/one_click_antag()
 		<a href='?src=\ref[src];makeAntag=7'>Make Nuke Team (Requires Ghosts)</a><br>
 		<a href='?src=\ref[src];makeAntag=10'>Make Deathsquad (Requires Ghosts)</a><br>
 		<a href='?src=\ref[src];makeAntag=13'>Make Emergency Response Team (Requires Ghosts)</a><br>
+		<a href='?src=\ref[src];makeAntag=14'>Make Abductor Team (Requires Ghosts)</a><br>
 		"}
 /* These dont work just yet
 	Ninja, aliens and deathsquad I have not looked into yet
@@ -370,8 +371,11 @@ client/proc/one_click_antag()
 				set_security_level("charlie foxtrot")
 		var/numagents = min(5,candidates.len) //How many commandos to spawn
 		var/list/spawnpoints = deathsquadspawn
-		while(numagents && spawnpoints.len && candidates.len)
-			var/spawnloc = spawnpoints[1]
+		while(numagents && candidates.len)
+			if (numagents > spawnpoints.len)
+				numagents--
+				continue // This guy's unlucky, not enough spawn points, we skip him.
+			var/spawnloc = spawnpoints[numagents]
 			var/mob/dead/observer/chosen_candidate = null
 			if((numagents == 1) && adminleader && adminleader.client)
 				chosen_candidate = adminleader
@@ -496,8 +500,11 @@ client/proc/one_click_antag()
 		//Pick the (un)lucky players
 		var/numagents = min(7,candidates.len) //How many officers to spawn
 		var/list/spawnpoints = emergencyresponseteamspawn
-		while(numagents && spawnpoints.len && candidates.len)
-			var/spawnloc = spawnpoints[1]
+		while(numagents && candidates.len)
+			if (numagents > spawnpoints.len)
+				numagents--
+				continue // This guy's unlucky, not enough spawn points, we skip him.
+			var/spawnloc = spawnpoints[numagents]
 			var/mob/dead/observer/chosen_candidate = null
 			if((numagents == 1) && adminleader && adminleader.client)
 				chosen_candidate = adminleader
@@ -570,6 +577,71 @@ client/proc/one_click_antag()
 			return 1
 
 	return
+
+//Abductors
+/datum/admins/proc/makeAbductorTeam()
+	var/list/mob/dead/observer/candidates = list()
+	var/time_passed = world.time
+
+	for(var/mob/dead/observer/G in player_list)
+		spawn(0)
+			switch(alert(G,"Do you wish to be considered for Abductor Team?","Please answer in 30 seconds!","Yes","No"))
+				if("Yes")
+					if((world.time-time_passed)>300)//If more than 30 game seconds passed.
+						return
+					candidates += G
+				if("No")
+					return
+				else
+					return
+	sleep(300)
+
+	for(var/mob/dead/observer/G in candidates)
+		if(!G.key)
+			candidates.Remove(G)
+
+	if(candidates.len >= 2)
+		//Oh god why we can't have static functions
+		var/teams_finished = 0
+		if(ticker.mode.config_tag == "abductor")
+			var/datum/game_mode/abduction/A = ticker.mode
+			teams_finished = A.teams
+		else
+			teams_finished = round(ticker.mode.abductors.len / 2)
+		var/number =  teams_finished + 1
+
+		var/datum/game_mode/abduction/temp = new
+
+		var/agent_mind = pick(candidates)
+		candidates -= agent_mind
+		var/scientist_mind = pick(candidates)
+
+		var/mob/living/carbon/human/agent=makeBody(agent_mind)
+		var/mob/living/carbon/human/scientist=makeBody(scientist_mind)
+
+		agent_mind = agent.mind
+		scientist_mind = scientist.mind
+
+		temp.scientists.len = number
+		temp.agents.len = number
+		temp.abductors.len = 2*number
+		temp.team_objectives.len = number
+		temp.team_names.len = number
+		temp.scientists[number] = scientist_mind
+		temp.agents[number] = agent_mind
+		temp.abductors = list(agent_mind,scientist_mind)
+		temp.make_abductor_team(number)
+		temp.post_setup_team(number)
+		ticker.mode.abductors += temp.abductors
+		if(ticker.mode.config_tag == "abductor")
+			var/datum/game_mode/abduction/A = ticker.mode
+			A.teams += 1
+
+		return 1
+	else
+		return
+
+
 
 /datum/admins/proc/makeBody(var/mob/dead/observer/G_found) // Uses stripped down and bastardized code from respawn character
 	if(!G_found || !G_found.key)	return

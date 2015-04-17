@@ -44,7 +44,10 @@
 	var/acolytes_needed = 10 //for the survive objective
 	var/acolytes_survived = 0
 
-	var/global/list/tomestates = list("book, book1, book2, book3, book4, book5, book6, book7, bookHacking, bookNuclear, borgbook, bookfireball, booksmoke, bookblind, bookmindswap, bookforcewall, bookknock, bookhorses, bookcharge, booksummons, scrapbook, creeper, tome, kingyellow, ithaqua, necronomicon, honk1, honk2, culttome")
+	var/global/list/tomestates = list("book", "book1", "book2", "book3", "book4", "book5", "book6", "book7", "bookHacking",
+		"bookNuclear", "borgbook", "bookfireball", "booksmoke", "bookblind", "bookmindswap", "bookforcewall", "bookknock",
+		"bookhorses", "bookcharge", "booksummons", "scrapbook", "creeper", "tome", "kingyellow", "ithaqua", "necronomicon",
+		"honk1", "honk2", "culttome")
 	var/tomeicon = "culttome"
 
 /datum/game_mode/cult/announce()
@@ -221,6 +224,7 @@
 	if (!istype(cult_mind))
 		return 0
 	if(!(cult_mind in cult) && is_convertable_to_cult(cult_mind))
+		cult_mind.current.Paralyse(5)
 		cult += cult_mind
 		cult_mind.current.cult_add_comm()
 		cult_mind.special_role = "Cultist"
@@ -239,6 +243,7 @@
 	if(cult_mind in cult)
 		cult -= cult_mind
 		cult_mind.current.verbs -= /mob/living/proc/cult_innate_comm
+		cult_mind.current.Paralyse(5)
 		cult_mind.current << "<span class='userdanger'>An unfamiliar white light flashes through your mind, cleansing the taint of the dark-one and the memories of your time as his servant with it.</span>"
 		cult_mind.memory = ""
 		cult_mind.cult_words = initial(cult_mind.cult_words)

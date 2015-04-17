@@ -98,14 +98,6 @@
 	..()
 	eatverb = pick("bite","chew","nibble","deep throat","gobble","chomp")
 
-/obj/item/weapon/reagent_containers/food/snacks/wingfangchu
-	name = "wing fang chu"
-	desc = "A savory dish of alien wing wang in soy."
-	icon_state = "wingfangchu"
-	trash = /obj/item/weapon/reagent_containers/glass/bowl
-	bonus_reagents = list("nutriment" = 1, "vitamin" = 2)
-	list_reagents = list("nutriment" = 6, "vitamin" = 2)
-
 /obj/item/weapon/reagent_containers/food/snacks/kebab
 	trash = /obj/item/stack/rods
 	icon_state = "kebab"
@@ -187,13 +179,6 @@
 	..()
 	eatverb = pick("slurp","sip","suck","inhale","drink")
 
-/obj/item/weapon/reagent_containers/food/snacks/rainbowmeat
-	name = "Rainbow Meat"
-	icon_state = "rainbowmeat"
-	desc = "Taste the rainbow!"
-	list_reagents = list("nutriment" = 8, "space_drugs" = 10)
-	filling_color = "#FA8072"
-
 /obj/item/weapon/reagent_containers/food/snacks/boiledspiderleg
 	name = "boiled spider leg"
 	desc = "A giant spider's leg that's still twitching after being cooked. Gross!"
@@ -220,3 +205,10 @@
 	bonus_reagents = list("nutriment" = 1, "capsaicin" = 4, "vitamin" = 4)
 	list_reagents = list("nutriment" = 6, "capsaicin" = 5)
 	filling_color = "#FA8072"
+
+/*/obj/item/weapon/reagent_containers/food/snacks/rainbowmeat
+	name = "Rainbow Meat"
+	icon_state = "rainbowmeat"
+	desc = "Taste the rainbow!"
+	list_reagents = list("nutriment" = 8, "space_drugs" = 10)
+	filling_color = "#FA8072"*/

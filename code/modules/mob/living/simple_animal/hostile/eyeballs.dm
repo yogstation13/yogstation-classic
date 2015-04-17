@@ -13,12 +13,14 @@
 	response_harm = "hits"
 	maxHealth = 45
 	health = 45
+	speak_emote = list("telepathically cries")
 
 	harm_intent_damage = 15
 	melee_damage_lower = 20
 	melee_damage_upper = 25
 	attacktext = "blinks at"
 	attack_sound = 'sound/weapons/pierce.ogg'
+	flying = 1
 
 	faction = list("spooky")
 
