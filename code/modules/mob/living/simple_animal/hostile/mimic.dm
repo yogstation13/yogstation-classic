@@ -52,6 +52,7 @@
 	icon = O.icon
 	icon_state = O.icon_state
 	icon_living = icon_state
+	overlays = O.overlays
 	original = O
 
 /mob/living/simple_animal/hostile/mimic/proc/AssignStats(var/obj/O)

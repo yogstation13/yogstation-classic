@@ -695,19 +695,20 @@ var/list/slot_equipment_priority = list( \
 	if(statpanel("Status"))
 		stat(null, "Server Time: [time2text(world.realtime, "YYYY-MM-DD hh:mm")]")
 
-		var/tickets_unclaimed = 0
-		var/tickets_unresolved = 0
-		var/tickets_resolved = 0
-		var/tickets_total = 0
-		for(var/datum/admin_ticket/T in tickets_list)
-			tickets_total++
-			if(T.resolved)
-				tickets_resolved++
-			else if(!T.handling_admin)
-				tickets_unclaimed++
-			else
-				tickets_unresolved++
-		stat(null,"Tickets([tickets_total]):\t[tickets_unclaimed > 0 ? "Unclaimed([tickets_unclaimed])\t" : ""][tickets_resolved > 0 ? "Resolved([tickets_resolved])\t" : ""][tickets_unresolved > 0 ? "Unresolved([tickets_unresolved])\t" : ""]")
+		if(client && client.holder)
+			var/tickets_unclaimed = 0
+			var/tickets_unresolved = 0
+			var/tickets_resolved = 0
+			var/tickets_total = 0
+			for(var/datum/admin_ticket/T in tickets_list)
+				tickets_total++
+				if(T.resolved)
+					tickets_resolved++
+				else if(!T.handling_admin)
+					tickets_unclaimed++
+				else
+					tickets_unresolved++
+			stat(null,"Tickets([tickets_total]):\t[tickets_unclaimed > 0 ? "Unclaimed([tickets_unclaimed])\t" : ""][tickets_resolved > 0 ? "Resolved([tickets_resolved])\t" : ""][tickets_unresolved > 0 ? "Unresolved([tickets_unresolved])\t" : ""]")
 
 
 		var/ETA

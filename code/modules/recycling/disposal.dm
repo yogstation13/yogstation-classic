@@ -731,9 +731,10 @@
 
 	if(istype(T, /turf/simulated/floor)) //intact floor, pop the tile
 		var/turf/simulated/floor/myturf = T
-		if(myturf.floor_tile)
-			new myturf.floor_tile(T)
-			myturf.make_plating()
+		if(myturf.builtin_tile)
+			myturf.builtin_tile.loc = T
+			myturf.builtin_tile = null
+		myturf.make_plating()
 
 	if(direction)		// direction is specified
 		if(istype(T, /turf/space)) // if ended in space, then range is unlimited
