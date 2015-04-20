@@ -328,6 +328,7 @@ datum/reagent/toxin/staminatoxin
 	metabolization_rate = 1.25 * REAGENTS_METABOLISM
 
 datum/reagent/toxin/staminatoxin/on_mob_life(mob/living/carbon/M)
+	current_cycle++
 	M.adjustStaminaLoss(REM * data)
 	data = max(data - 1, 3) //for future reference, this scales up all stamina damage taken by the target but is ineffective by itself
 
