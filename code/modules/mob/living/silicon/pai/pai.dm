@@ -228,22 +228,22 @@
 	return
 
 /mob/living/silicon/pai/attackby(obj/item/weapon/W as obj, mob/user as mob, params)
-	if(W.force)
-		visible_message("<span class='danger'>[user.name] attacks [src] with [W]!</span>")
-		src.adjustBruteLoss(W.force)
-		src.updatehealth()
-	else
+	if (!canmove || W.force) return ..()
+	if(!W.force)
 		visible_message("<span class='warning'>[user.name] strikes [src] harmlessly with [W], passing clean through its holographic projection.</span>")
-	spawn(1)
-		if(stat != 2)
-			close_up()
-	return
+	if (proc(33)
+		src << "<span class='boldwarning'>The holographic containment field surrounding you is failing!</span>"
+		spawn(5)
+			if(stat != 2)
+				close_up()
+	return ..()
 
 /mob/living/silicon/pai/attack_hand(mob/user as mob)
 	if(stat == 2) return
 	visible_message("<span class='danger'>[user.name] boops [src] on the head.</span>")
 	spawn(1)
 		close_up()
+	return ..()
 
 // See software.dm for Topic()
 
@@ -400,6 +400,8 @@ Credit for conceptualization and implementation goes squarely to the original au
 	last_special = world.time + 200
 
 	canmove = 1
+	mouse_opacity = 1
+	density = 1
 
 	//I'm not sure how much of this is necessary, but I would rather avoid issues.
 	if(istype(card.loc,/mob))
@@ -431,9 +433,10 @@ Credit for conceptualization and implementation goes squarely to the original au
 	var/turf/T = get_turf(src)
 	if(istype(T)) T.visible_message("<b>[src]</b>'s holographic field distorts and collapses, leaving the central card-unit core behind.")
 
-	src.stop_pulling()
-	src.client.perspective = EYE_PERSPECTIVE
-	src.client.eye = card
+	if (src.client) //god damnit this is going to be irritating to handle for dc'd pais that stay in holoform
+		src.stop_pulling()
+		src.client.perspective = EYE_PERSPECTIVE
+		src.client.eye = card
 
 	//This seems redundant but not including the forced loc setting messes the behavior up.
 	src.loc = card
@@ -441,6 +444,8 @@ Credit for conceptualization and implementation goes squarely to the original au
 	src.forceMove(card)
 	card.forceMove(card.loc)
 	canmove = 0
+	density = 0
+	mouse_opacity = 0
 	icon_state = "[chassis]"
 
 /mob/living/silicon/pai/verb/fold_up()
