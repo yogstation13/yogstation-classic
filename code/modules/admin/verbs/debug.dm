@@ -866,7 +866,7 @@ var/global/list/g_fancy_list_of_types = null
 			M.equip_to_slot_or_del(new /obj/item/clothing/under/color/green(M), slot_w_uniform)
 			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/combat/swat(M), slot_shoes)
 
-			var/obj/item/clothing/suit/space/deathsquad/X = new(M)
+			var/obj/item/clothing/suit/space/hardsuit/deathsquad/X = new(M)
 			X.name = "chicken suit"
 			X.desc = "A suit made long ago by the ancient empire KFC."
 			X.icon_state = "chickensuit"
@@ -875,12 +875,11 @@ var/global/list/g_fancy_list_of_types = null
 
 			M.equip_to_slot_or_del(new /obj/item/clothing/gloves/combat(M), slot_gloves)
 
-			var/obj/item/clothing/head/helmet/space/deathsquad/Y = new(M)
+			var/obj/item/clothing/head/helmet/space/hardsuit/deathsquad/Y = X.helmet
 			Y.name = "chicken suit head"
 			Y.desc = "Bkaw!"
 			Y.icon_state = "chickenhead"
 			Y.item_state = "chickensuit"
-			M.equip_to_slot_or_del(Y, slot_head)
 
 			var/obj/item/clothing/mask/gas/sechailer/swat/Z = new(M)
 			Z.name = "clown mask"
@@ -923,14 +922,14 @@ var/global/list/g_fancy_list_of_types = null
 			M.equip_to_slot_or_del(W, slot_wear_id)
 
 		if("emergency response officer")
-			switch(input("Which class?") in list("Commander","Security","Engineer","Medical"))
+			switch(input("Which class?") in list("Commander","Security","Engineer","Medic"))
 				if("Commander")
 					equip_emergencyresponsesquad(M, "commander")
 				if("Security")
 					equip_emergencyresponsesquad(M, "sec")
 				if("Engineer")
 					equip_emergencyresponsesquad(M, "eng")
-				if("Medical")
+				if("Medic")
 					equip_emergencyresponsesquad(M, "med")
 
 		if("centcom official")
@@ -1009,16 +1008,17 @@ var/global/list/g_fancy_list_of_types = null
 
 		if("special ops officer")
 			var/obj/item/device/radio/headset/R = new /obj/item/device/radio/headset/headset_cent/commander(M)
-			R.set_frequency(1441)
+			R.set_frequency(CENTCOM_FREQ)
+			R.freqlock = 1
 			M.equip_to_slot_or_del(R, slot_ears)
 
 			M.equip_to_slot_or_del(new /obj/item/clothing/under/syndicate(M), slot_w_uniform)
-			M.equip_to_slot_or_del(new /obj/item/clothing/suit/space/deathsquad/officer(M), slot_wear_suit)
+			M.equip_to_slot_or_del(new /obj/item/clothing/suit/space/officer(M), slot_wear_suit)
 			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/combat/swat(M), slot_shoes)
 			M.equip_to_slot_or_del(new /obj/item/clothing/gloves/combat(M), slot_gloves)
 			M.equip_to_slot_or_del(new /obj/item/clothing/glasses/thermal/eyepatch(M), slot_glasses)
 			M.equip_to_slot_or_del(new /obj/item/clothing/mask/cigarette/cigar/havana(M), slot_wear_mask)
-			M.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/space/deathsquad/beret(M), slot_head)
+			M.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/space/beret(M), slot_head)
 			M.equip_to_slot_or_del(new /obj/item/weapon/gun/energy/pulse/pistol/m1911(M), slot_belt)
 			M.equip_to_slot_or_del(new /obj/item/weapon/lighter/zippo(M), slot_r_store)
 			M.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/satchel(M), slot_back)
@@ -1200,26 +1200,27 @@ var/global/list/g_fancy_list_of_types = null
 //Deathsquad
 /proc/equip_deathsquad(var/mob/living/carbon/human/M, var/officer)
 	var/obj/item/device/radio/R = new /obj/item/device/radio/headset/headset_cent/alt(M)
-	R.set_frequency(1441)
+	R.set_frequency(CENTCOM_FREQ)
+	R.freqlock = 1
 	M.equip_to_slot_or_del(R, slot_ears)
 
 	if(officer)
-		M.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/space/deathsquad/beret(M), slot_head)
-	else
-		M.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/space/deathsquad(M), slot_head)
+		M.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/space/beret(M), slot_head)
+	//else
+	//	M.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/space/deathsquad(M), slot_head)
 
-	M.equip_to_slot_or_del(new /obj/item/clothing/suit/space/deathsquad(M), slot_wear_suit)
+	M.equip_to_slot_or_del(new /obj/item/clothing/suit/space/hardsuit/deathsquad(M), slot_wear_suit)
 	M.equip_to_slot_or_del(new /obj/item/clothing/under/color/green(M), slot_w_uniform)
 	M.equip_to_slot_or_del(new /obj/item/clothing/shoes/combat/swat(M), slot_shoes)
 	M.equip_to_slot_or_del(new /obj/item/clothing/gloves/combat(M), slot_gloves)
 	M.equip_to_slot_or_del(new /obj/item/clothing/mask/gas/sechailer/swat(M), slot_wear_mask)
-	M.equip_to_slot_or_del(new /obj/item/clothing/glasses/thermal(M), slot_glasses)
+	M.equip_to_slot_or_del(new /obj/item/clothing/glasses/hud/toggle/thermal(M), slot_glasses)
 
 	M.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/security(M), slot_back)
 	M.equip_to_slot_or_del(new /obj/item/weapon/storage/box(M), slot_in_backpack)
 
 	M.equip_to_slot_or_del(new /obj/item/ammo_box/a357(M), slot_in_backpack)
-	M.equip_to_slot_or_del(new /obj/item/weapon/storage/firstaid/regular(M), slot_in_backpack)
+	M.equip_to_slot_or_del(new /obj/item/weapon/reagent_containers/hypospray/combat/nanites(M), slot_in_backpack)
 	M.equip_to_slot_or_del(new /obj/item/weapon/storage/box/flashbangs(M), slot_in_backpack)
 	M.equip_to_slot_or_del(new /obj/item/device/flashlight(M), slot_in_backpack)
 
@@ -1251,7 +1252,8 @@ var/global/list/g_fancy_list_of_types = null
 /proc/equip_emergencyresponsesquad(var/mob/living/carbon/human/M, var/ertrole)
 	var/obj/item/weapon/card/id/W = null
 	var/obj/item/device/radio/R = new /obj/item/device/radio/headset/headset_cent/alt(M)
-	R.set_frequency(1441)
+	R.set_frequency(CENTCOM_FREQ)
+	R.freqlock = 1
 	M.equip_to_slot_or_del(R, slot_ears)
 
 	switch(ertrole)
