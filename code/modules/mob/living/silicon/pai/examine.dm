@@ -16,7 +16,7 @@
 
 	switch(src.stat)
 		if(CONSCIOUS)
-			if(!src.client)	msg += "\nThe personality-core indicator flashes with a strong, steady rhythm." //afk
+			if(!src.client)	msg += "\nThe personality-core activity monitor pulses with a slow, absent rhythm." //afk
 		if(UNCONSCIOUS)		msg += "\n<span class='warning'>A blue diagnostics screen with hundreds of lines of scrolling text covers its screen.</span>"
 		if(DEAD)			msg += "\n<span class='deadsay'>An ominous red ring glowers out from its shattered display screen.</span>"
 	msg += "\n*---------*</span>"

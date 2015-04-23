@@ -20,6 +20,13 @@
 		pai.death(0)
 	..()
 
+/obj/item/device/paicard/examine()
+	if (pai)
+		pai.examine()
+		return
+	else
+		return ..()
+
 /obj/item/device/paicard/attack_self(mob/user)
 	if (!in_range(src, user))
 		return

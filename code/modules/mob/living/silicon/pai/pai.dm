@@ -1,11 +1,13 @@
 /mob/living/silicon/pai
 	name = "pAI"
 	icon = 'icons/mob/pai.dmi'
-	mouse_opacity = 0
+	mouse_opacity = 1
 	density = 0
 	health = 100
 	maxHealth = 100
 	ventcrawler = 0
+	mob_size = MOB_SIZE_SMALL
+	pass_flags = PASSTABLE | PASSMOB
 
 	var/network = "SS13"
 	var/obj/machinery/camera/current = null
@@ -62,6 +64,9 @@
 	var/obj/machinery/paired
 	var/pairing = 0
 
+/* Much of this was taken and adapted from ParadiseSS13's excellent pAI mobility code (https://github.com/ParadiseSS13).
+Credit for conceptualization and implementation goes squarely to the original author/s, whoever they may be.
+Getting it to work properly in /tg/ however, is another thing entirely. */
 
 /mob/living/silicon/pai/New(var/obj/item/device/paicard)
 	make_laws()
@@ -127,6 +132,8 @@
 	if (src.stat != 2)
 		src.adjustBruteLoss(34)
 		src.updatehealth()
+		if (prob(65))
+			flicker_fade()
 		return 1
 	return 0
 
@@ -185,12 +192,27 @@
 				adjustBruteLoss(15)
 
 
-	if (prob((100/severity)) && src.loc != card)
-		src << "<span class='danger'><b>A warning chime fires at the back of your consciousness, heralding the unexpected shutdown of your holographic emitter. You're defenseless!</b></span>"
+	if (prob((120/severity+1)) && src.loc != card)
+		src << "<span class='danger'><b>A warning chime fires at the back of your consciousness process, heralding the unexpected shutdown of your holographic emitter. You're defenseless!</b></span>"
 		close_up()
-
 	return
 
+/mob/living/silicon/pai/attack_animal(mob/living/simple_animal/M as mob)
+	if(M.melee_damage_upper == 0)
+		M.emote("[M.friendly] [src]")
+	else
+		M.do_attack_animation(src)
+		if(M.attack_sound)
+			playsound(loc, M.attack_sound, 50, 1, 1)
+		for(var/mob/O in viewers(src, null))
+			O.show_message("\red <B>[M]</B> [M.attacktext] [src]!", 1)
+		M.attack_log += text("\[[time_stamp()]\] <font color='red'>attacked [src.name] ([src.ckey])</font>")
+		src.attack_log += text("\[[time_stamp()]\] <font color='orange'>was attacked by [M.name] ([M.ckey])</font>")
+		var/damage = rand(M.melee_damage_lower, M.melee_damage_upper)
+		adjustBruteLoss(damage)
+		if (prob(min(35, damage)))
+			flicker_fade()
+		updatehealth()
 
 /mob/living/silicon/pai/attack_alien(mob/living/carbon/alien/humanoid/M as mob)
 	if (!ticker)
@@ -231,19 +253,59 @@
 	if (!canmove || W.force) return ..()
 	if(!W.force)
 		visible_message("<span class='warning'>[user.name] strikes [src] harmlessly with [W], passing clean through its holographic projection.</span>")
-	if (proc(33)
-		src << "<span class='boldwarning'>The holographic containment field surrounding you is failing!</span>"
-		spawn(5)
+	if (prob(33))
+		spawn(rand(5, 8))
 			if(stat != 2)
-				close_up()
+				flicker_fade()
 	return ..()
 
 /mob/living/silicon/pai/attack_hand(mob/user as mob)
 	if(stat == 2) return
-	visible_message("<span class='danger'>[user.name] boops [src] on the head.</span>")
-	spawn(1)
-		close_up()
+	visible_message("<span class='danger'>[user.name] thwaps [src] on the head.</span>")
+
+	if (user.name == master)
+		visible_message("<span class='info'>Responding to its master's touch, [src] disengages its holographic emitter, rapidly losing coherence..</span>")
+		spawn(1)
+			close_up()
+
 	return ..()
+
+/mob/living/silicon/pai/hitby(AM as mob|obj)
+	visible_message("<span class='info'>[AM] flies clean through [src]'s holographic field, causing it to stutter and warp wildly!")
+	//ugh fuk u byond types
+	if (istype(AM, /obj/item))
+		var/obj/item/AMI = AM
+		if (prob(min(65, AMI.throwforce*5)))
+			flicker_fade()
+	else
+		if (prob(35))
+			flicker_fade()
+	return
+
+/mob/living/silicon/pai/bullet_act(var/obj/item/projectile/Proj)
+	visible_message("<span class='info'>[Proj] flies clean through [src]'s holographic field, causing it to stutter and warp wildly!")
+	if (Proj.damage >= 25)
+		flicker_fade()
+	else
+		if (prob(85))
+			flicker_fade()
+	return
+
+/mob/living/silicon/pai/proc/flicker_fade(var/dur = 4)
+	visible_message("<span class='danger'>[src]'s holographic field flickers out of existence!</span>")
+	src << "<span class='boldwarning'>The holographic containment field surrounding you is failing!</span>"
+	spawn(dur)
+		close_up()
+
+
+/mob/living/silicon/pai/Bump(atom/movable/AM as mob|obj, yes)
+	return
+
+/mob/living/silicon/pai/Bumped(AM as mob|obj)
+	return
+
+/mob/living/silicon/pai/start_pulling(var/atom/movable/AM)
+	return
 
 // See software.dm for Topic()
 
@@ -344,21 +406,13 @@
 */
 
 
-
+//debug shit, comment out when deploying
+/*
 /mob/verb/makePAI(var/turf/t in view())
 	var/obj/item/device/paicard/card = new(t)
 	var/mob/living/silicon/pai/pai = new(card)
 	pai.key = src.key
-	card.setPersonality(pai)
-
-/* Taken and adapted from ParadiseSS13's excellent pAI mobility code (https://github.com/ParadiseSS13).
-Credit for conceptualization and implementation goes squarely to the original author/s, whoever they may be. . */
-
-/mob/living/silicon/pai/Bump(atom/movable/AM as mob|obj, yes)
-	return
-
-/mob/living/silicon/pai/Bumped(AM as mob|obj)
-	return
+	card.setPersonality(pai)*/
 
 /mob/living/silicon/pai/on_forcemove(var/atom/newloc)
 	if(card)
@@ -367,24 +421,9 @@ Credit for conceptualization and implementation goes squarely to the original au
 		CRASH("pAI without card")
 	loc = card
 
-/mob/living/silicon/pai/attack_animal(mob/living/simple_animal/M as mob)
-	if(M.melee_damage_upper == 0)
-		M.emote("[M.friendly] [src]")
-	else
-		M.do_attack_animation(src)
-		if(M.attack_sound)
-			playsound(loc, M.attack_sound, 50, 1, 1)
-		for(var/mob/O in viewers(src, null))
-			O.show_message("\red <B>[M]</B> [M.attacktext] [src]!", 1)
-		M.attack_log += text("\[[time_stamp()]\] <font color='red'>attacked [src.name] ([src.ckey])</font>")
-		src.attack_log += text("\[[time_stamp()]\] <font color='orange'>was attacked by [M.name] ([M.ckey])</font>")
-		var/damage = rand(M.melee_damage_lower, M.melee_damage_upper)
-		adjustBruteLoss(damage)
-		updatehealth()
-
 /mob/living/silicon/pai/verb/fold_out()
 	set category = "pAI Commands"
-	set name = "Assume holographic form"
+	set name = "Assume Holographic Form"
 
 	if(stat || sleeping || paralysis || weakened)
 		return
@@ -400,7 +439,6 @@ Credit for conceptualization and implementation goes squarely to the original au
 	last_special = world.time + 200
 
 	canmove = 1
-	mouse_opacity = 1
 	density = 1
 
 	//I'm not sure how much of this is necessary, but I would rather avoid issues.
@@ -410,7 +448,6 @@ Credit for conceptualization and implementation goes squarely to the original au
 	else if(istype(card.loc,/obj/item/device/pda))
 		var/obj/item/device/pda/holder = card.loc
 		holder.pai = null
-
 
 	src.client.perspective = EYE_PERSPECTIVE
 	src.client.eye = src
@@ -445,12 +482,11 @@ Credit for conceptualization and implementation goes squarely to the original au
 	card.forceMove(card.loc)
 	canmove = 0
 	density = 0
-	mouse_opacity = 0
 	icon_state = "[chassis]"
 
 /mob/living/silicon/pai/verb/fold_up()
 	set category = "pAI Commands"
-	set name = "Return to card form"
+	set name = "Return to Card Form"
 
 	if(stat || sleeping || paralysis || weakened)
 		return
