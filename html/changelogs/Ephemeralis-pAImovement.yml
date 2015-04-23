@@ -1,0 +1,9 @@
+author: Ephemeralis
+delete-after: true
+
+
+changes: 
+	rscadd: "Nanotrasen R&D has discovered a new smallscale holographic emitter capable of running from a pAI unit's standard powersupply unit. Accordingly, they have updated all designs for the cards to include this emitter, and included a standard software package which allows personality cores to utilize the emitters to move themselves around independently of their masters."
+	rscdel: "Unfortunately, the emitters are not strong enough allow the pAI to interact with the world in any great depth, and are easily disrupted by EM activity and physical objects entering the field."
+	rscdel: "Additionally, pAI units that sustain significant damage to their core with the emitter active have been known to spotaneously combust from the resulting overload, utterly destroying the unit and preventing any recovery of the personality core."
+	tweak: "pAI units now have their own examine description in both card and holographic form, including AFK, critical and death status."
