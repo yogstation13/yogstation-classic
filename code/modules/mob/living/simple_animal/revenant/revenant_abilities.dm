@@ -106,7 +106,7 @@
 		spawn(0)
 			var/msg = stripped_input(usr, "What do you wish to tell [M]?", null, "")
 			usr << "<span class='info'><b>You transmit to [M]:</b> [msg]</span>"
-			M << "<span class='deadsay'><b>Suddenly a strange voice resonates in your head...</b></span><i> [msg]</I>"
+			M << "<span class='deadsay'><b>Suddenly, a strange voice resonates in your head...</b></span><i> [msg]</I>"
 
 
 //Overload Light: Breaks a light that's online and sends out lightning bolts to all nearby people.
@@ -137,6 +137,7 @@
 	if(!essence_check(25))
 		charge_counter = charge_max
 		return
+	user << "<span class='info'><b>With a cold gaze, you cast a web of energy over any nearby light fixtures, causing them to flicker ominously as you exit the veil between realms.</span>"
 	for(var/turf/T in targets)
 		spawn(0)
 			for(var/obj/machinery/light/L in T.contents)
@@ -149,11 +150,12 @@
 						if(M == user)
 							return
 						M.Beam(L,icon_state="lightning",icon='icons/effects/effects.dmi',time=5)
-						M.electrocute_act(25, "[L.name]")
+						M.electrocute_act(15, "[L.name]")
 						playsound(M, 'sound/machines/defib_zap.ogg', 50, 1, -1)
 	user.revealed = 1
 	user.invisibility = 0
 	spawn(30)
+		user << "<span class='info'><i>Eldritch energies infuse your form as you reattune to the underrealm, now invisible to mortal life once more.</i></span>"
 		user.revealed = 0
 		user.invisibility = INVISIBILITY_OBSERVER
 
@@ -231,14 +233,14 @@
 		if(target.stat == DEAD)
 			user << "<span class='warning'>[target] is dead and will not yield essence.</span>"
 			charge_counter = charge_max
-		user << "<span class='info'>You plant a draining seed on [target].</span>"
+		user << "<span class='info'>You plant a draining seed on [target] with malevolent intent, remaining unseen.</span>"
 		planted = 1
 		for(var/i = 0, i < 120, i++)
 			sleep(10)
 			if(!target)
 				break
 			user.essence += rand(0.3, 0.5) //Not a huge amount of essence; at the least it's 36 and at the most it's 60
-			target.adjustStaminaLoss(1)
+			target.adjustStaminaLoss(18)
 			if(prob(3))
 				target << "<span class='warning'>You feel sapped.</span>" //Letting the target know that they're not bugged and losing stamina 4nr
 		planted = 0
@@ -276,7 +278,7 @@
 		charge_counter = charge_max
 		return
 	for(var/mob/living/carbon/human/M in targets)
-		user << "<span class='info'>You drive a spike of energy into [M]'s mind!</span>"
+		user << "<span class='info'>You drive a spike of energy into [M]'s mind, briefly emerging from the veil between worlds!</span>"
 		M << "<span class='boldannounce'>You feel a spike of pain in your head!</span>"
 		M.apply_damage(12, BRUTE, "head")
 		M.adjustBrainLoss(3)
@@ -287,6 +289,7 @@
 		user.revealed = 1
 		user.invisibility = 0
 		spawn(10)
+			user << "<span class='info'><i>Eldritch energies infuse your form as you reattune to the underrealm, now invisible to mortal life once more.</i></span>"
 			user.revealed = 0
 			user.invisibility = INVISIBILITY_OBSERVER
 
@@ -294,9 +297,9 @@
 //Mind Blast: A big-hitting damage ability.
 /obj/effect/proc_holder/spell/targeted/revenant_mindblast
 	name = "Unlock: Mind Blast (25E)"
-	desc = "Blasts the target's mind with dark energy, doing a hefty amount of damage."
+	desc = "Blasts the target's mind with dark energy, doing a hefty amount of damage. Be warned, the sheer volume of energy expended to produce such a blast can anchor you to the mortal realm for a time, leaving you very vulnerable!"
 	panel = "Revenant Abilities (Locked)"
-	charge_max = 250
+	charge_max = 350
 	clothes_req = 0
 	range = 3
 	include_user = 1
@@ -322,18 +325,26 @@
 		charge_counter = charge_max
 		return
 	for(var/mob/living/carbon/human/M in targets)
-		user << "<span class='info'>You blast [M]'s mind with energy!</span>"
-		M << "<span class='boldannounce'><i>You feel a sudden explosion of agony in your head!</i></span>"
-		M.apply_damage(40, BRUTE, "head")
-		M.adjustBrainLoss(20)
+		user << "<span class='info'>You blast [M]'s mind with energy, sliding into phase with the corporeal world!</span>"
+		M << "<span class'boldannounce'><i>You feel a sudden explosion of agony in your head!</i></span>"
+		M.apply_damage(35, BRUTE, "head")
+		M.adjustBrainLoss(5)
 		M.emote("scream")
 		M.Weaken(4)
 		//M << 'sound/effects/mind_blast.ogg'
 		user.revealed = 1
 		user.invisibility = 0
+
+		if(user.essence < 65)
+			if(prob(35))
+				user << "<span class'boldannounce'><i>Your blast weakens the veil between your realm and the realm of the living, anchoring you to the corporeal plane for a short time!</i></span>"
+				user.incorporeal_move = 0
+
 		spawn(30)
+			user << "<span class='info'><i>Eldritch energies infuse your form as you reattune to the underrealm now invisible to mortal life once more.</i></span>"
 			user.revealed = 0
 			user.invisibility = INVISIBILITY_OBSERVER
+			user.incorporeal_move = 1
 
 
 //Hypnotize: Makes the target fall asleep, make them vulnerable to draining.
