@@ -582,6 +582,7 @@ proc/process_ghost_teleport_locs()
 	icon_state = "Holodeck"
 	luminosity = 1
 	lighting_use_dynamic = 0
+	valid_territory = 0
 
 /area/holodeck/alphadeck
 	name = "\improper Holodeck Alpha"
@@ -658,6 +659,7 @@ proc/process_ghost_teleport_locs()
 	requires_power = 0
 	luminosity = 1
 	lighting_use_dynamic = 0
+	valid_territory = 0
 
 	auxport
 		name = "\improper Fore Port Solar Array"
