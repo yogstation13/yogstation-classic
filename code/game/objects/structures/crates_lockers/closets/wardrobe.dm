@@ -442,6 +442,8 @@
 	icon_door = "mixed"
 
 /obj/structure/closet/wardrobe/clerk/New()
+	..()
+	contents = list()
 	new /obj/item/device/radio/headset/headset_srv(src)
 	new /obj/item/clothing/under/rank/clerk(src)
 	new /obj/item/clothing/shoes/sneakers/black(src)

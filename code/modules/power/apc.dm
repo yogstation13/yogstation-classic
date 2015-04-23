@@ -306,7 +306,7 @@
 			update_state |= UPSTATE_OPENED1
 		if(opened==2)
 			update_state |= UPSTATE_OPENED2
-	else if(emagged || malfai)
+	else if(emagged || malfhack)
 		update_state |= UPSTATE_BLUESCREEN
 	else if(wiresexposed)
 		update_state |= UPSTATE_WIREEXP
@@ -644,6 +644,7 @@
 
 	if(wiresexposed /*&& (!istype(user, /mob/living/silicon))*/) //Commented out the typecheck to allow engiborgs to repair damaged apcs.
 		wires.Interact(user)
+		return
 
 	return ui_interact(user)
 
@@ -855,6 +856,7 @@
 						src.malfai = usr:parent
 					else
 						src.malfai = usr
+					malfhack = 1
 					malfai << "Hack complete. The APC is now under your exclusive control."
 					update_icon()
 
