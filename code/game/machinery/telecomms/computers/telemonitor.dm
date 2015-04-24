@@ -1,5 +1,3 @@
-//This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:32
-
 
 /*
 	Telecomms monitor tracks the overall trafficing of a telecommunications network
@@ -96,7 +94,7 @@
 					temp = "<font color = #D70B00>- FAILED: CANNOT PROBE WHEN BUFFER FULL -</font color>"
 
 				else
-					for(var/obj/machinery/telecomms/T in range(50, src))
+					for(var/obj/machinery/telecomms/T in range(25, src))
 						if(T.network == network)
 							machinelist.Add(T)
 

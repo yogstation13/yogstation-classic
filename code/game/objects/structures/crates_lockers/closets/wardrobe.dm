@@ -20,6 +20,7 @@
 
 /obj/structure/closet/wardrobe/red/New()
 	..()
+	contents = list()
 	new /obj/item/weapon/storage/backpack/security(src)
 	new /obj/item/weapon/storage/backpack/satchel_sec(src)
 	new /obj/item/weapon/storage/backpack/dufflebag/sec(src)
@@ -46,6 +47,7 @@
 
 /obj/structure/closet/wardrobe/pink/New()
 	..()
+	contents = list()
 	new /obj/item/clothing/under/color/pink(src)
 	new /obj/item/clothing/under/color/pink(src)
 	new /obj/item/clothing/under/color/pink(src)
@@ -60,6 +62,7 @@
 
 /obj/structure/closet/wardrobe/black/New()
 	..()
+	contents = list()
 	new /obj/item/clothing/under/color/black(src)
 	new /obj/item/clothing/under/color/black(src)
 	new /obj/item/clothing/under/color/black(src)
@@ -88,6 +91,7 @@
 
 /obj/structure/closet/wardrobe/chaplain_black/New()
 	..()
+	contents = list()
 	new /obj/item/clothing/under/rank/chaplain(src)
 	new /obj/item/clothing/shoes/sneakers/black(src)
 	new /obj/item/clothing/suit/nun(src)
@@ -106,6 +110,7 @@
 
 /obj/structure/closet/wardrobe/green/New()
 	..()
+	contents = list()
 	new /obj/item/clothing/under/color/green(src)
 	new /obj/item/clothing/under/color/green(src)
 	new /obj/item/clothing/under/color/green(src)
@@ -124,6 +129,7 @@
 
 /obj/structure/closet/wardrobe/orange/New()
 	..()
+	contents = list()
 	new /obj/item/clothing/under/rank/prisoner(src)
 	new /obj/item/clothing/under/rank/prisoner(src)
 	new /obj/item/clothing/under/rank/prisoner(src)
@@ -139,6 +145,7 @@
 
 /obj/structure/closet/wardrobe/yellow/New()
 	..()
+	contents = list()
 	new /obj/item/clothing/under/color/yellow(src)
 	new /obj/item/clothing/under/color/yellow(src)
 	new /obj/item/clothing/under/color/yellow(src)
@@ -156,6 +163,7 @@
 
 /obj/structure/closet/wardrobe/atmospherics_yellow/New()
 	..()
+	contents = list()
 	new /obj/item/clothing/under/rank/atmospheric_technician(src)
 	new /obj/item/clothing/under/rank/atmospheric_technician(src)
 	new /obj/item/clothing/under/rank/atmospheric_technician(src)
@@ -175,6 +183,7 @@
 
 /obj/structure/closet/wardrobe/engineering_yellow/New()
 	..()
+	contents = list()
 	new /obj/item/clothing/under/rank/engineer(src)
 	new /obj/item/clothing/under/rank/engineer(src)
 	new /obj/item/clothing/under/rank/engineer(src)
@@ -190,6 +199,7 @@
 
 /obj/structure/closet/wardrobe/white/New()
 	..()
+	contents = list()
 	new /obj/item/clothing/under/color/white(src)
 	new /obj/item/clothing/under/color/white(src)
 	new /obj/item/clothing/under/color/white(src)
@@ -206,6 +216,7 @@
 
 /obj/structure/closet/wardrobe/white/medical/New()
 	..()
+	contents = list()
 	new /obj/item/clothing/under/rank/nursesuit (src)
 	new /obj/item/clothing/head/nursehat (src)
 	new /obj/item/clothing/under/rank/medical/blue(src)
@@ -225,6 +236,7 @@
 
 /obj/structure/closet/wardrobe/pjs/New()
 	..()
+	contents = list()
 	new /obj/item/clothing/under/pj/red(src)
 	new /obj/item/clothing/under/pj/red(src)
 	new /obj/item/clothing/under/pj/blue(src)
@@ -242,6 +254,7 @@
 
 /obj/structure/closet/wardrobe/toxins_white/New()
 	..()
+	contents = list()
 	new /obj/item/clothing/under/rank/scientist(src)
 	new /obj/item/clothing/under/rank/scientist(src)
 	new /obj/item/clothing/under/rank/scientist(src)
@@ -263,6 +276,7 @@
 
 /obj/structure/closet/wardrobe/robotics_black/New()
 	..()
+	contents = list()
 	new /obj/item/clothing/under/rank/roboticist(src)
 	new /obj/item/clothing/under/rank/roboticist(src)
 	new /obj/item/clothing/suit/toggle/labcoat/old(src)
@@ -288,6 +302,7 @@
 
 /obj/structure/closet/wardrobe/chemistry_white/New()
 	..()
+	contents = list()
 	new /obj/item/clothing/under/rank/chemist(src)
 	new /obj/item/clothing/under/rank/chemist(src)
 	new /obj/item/clothing/shoes/sneakers/white(src)
@@ -309,6 +324,7 @@
 
 /obj/structure/closet/wardrobe/genetics_white/New()
 	..()
+	contents = list()
 	new /obj/item/clothing/under/rank/geneticist(src)
 	new /obj/item/clothing/under/rank/geneticist(src)
 	new /obj/item/clothing/shoes/sneakers/white(src)
@@ -330,6 +346,7 @@
 
 /obj/structure/closet/wardrobe/virology_white/New()
 	..()
+	contents = list()
 	new /obj/item/clothing/under/rank/virologist(src)
 	new /obj/item/clothing/under/rank/virologist(src)
 	new /obj/item/clothing/shoes/sneakers/white(src)
@@ -353,6 +370,7 @@
 
 /obj/structure/closet/wardrobe/grey/New()
 	..()
+	contents = list()
 	new /obj/item/clothing/under/color/grey(src)
 	new /obj/item/clothing/under/color/grey(src)
 	new /obj/item/clothing/under/color/grey(src)
@@ -383,6 +401,7 @@
 
 /obj/structure/closet/wardrobe/mixed/New()
 	..()
+	contents = list()
 	if(prob(40))
 		new /obj/item/clothing/suit/jacket(src)
 	if(prob(40))
@@ -423,6 +442,8 @@
 	icon_door = "mixed"
 
 /obj/structure/closet/wardrobe/clerk/New()
+	..()
+	contents = list()
 	new /obj/item/device/radio/headset/headset_srv(src)
 	new /obj/item/clothing/under/rank/clerk(src)
 	new /obj/item/clothing/shoes/sneakers/black(src)

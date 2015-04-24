@@ -1,7 +1,3 @@
-//This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:32
-
-
-
 
 
 /obj/machinery/computer/telecomms/traffic
@@ -142,10 +138,8 @@
 
 /obj/machinery/computer/telecomms/traffic/proc/create_log(var/entry, var/mob/user)
 	var/id = null
-	if(isaiorborg(user))
+	if(issilicon(user))
 		id = "System Administrator"
-	else if(ispAI(user))
-		id = "[user.name] (pAI)"
 	else
 		if(auth)
 			id = "[auth.registered_name] ([auth.assignment])"

@@ -21,6 +21,10 @@
 								   list("morphine", "salbutamol", "salglu_solution", "oculine", "charcoal", "mutadone", "mannitol", "pen_acid"))
 /obj/machinery/sleeper/New()
 	..()
+	GenerateParts()
+	RefreshParts()
+
+/obj/machinery/sleeper/proc/GenerateParts()
 	component_parts = list()
 	component_parts += new /obj/item/weapon/circuitboard/sleeper(null)
 
@@ -33,7 +37,6 @@
 	component_parts += new /obj/item/weapon/stock_parts/console_screen(null)
 	component_parts += new /obj/item/weapon/stock_parts/console_screen(null)
 	component_parts += new /obj/item/stack/cable_coil(null, 1)
-	RefreshParts()
 
 /obj/machinery/sleeper/RefreshParts()
 	var/E
@@ -228,3 +231,14 @@
 		icon_state = "sleeper-open"
 	else
 		icon_state = "sleeper"
+
+/obj/machinery/sleeper/super/GenerateParts()
+	component_parts = list()
+	component_parts += new /obj/item/weapon/circuitboard/sleeper(null)
+
+	// Customizable bin rating, used by the labor camp to stop people filling themselves with chemicals and escaping.
+	component_parts += new /obj/item/weapon/stock_parts/matter_bin/super(null)
+	component_parts += new /obj/item/weapon/stock_parts/manipulator/pico(null)
+	component_parts += new /obj/item/weapon/stock_parts/console_screen(null)
+	component_parts += new /obj/item/weapon/stock_parts/console_screen(null)
+	component_parts += new /obj/item/stack/cable_coil(null, 1)

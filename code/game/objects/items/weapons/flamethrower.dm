@@ -66,6 +66,7 @@
 		if(target_turf)
 			var/turflist = getline(user, target_turf)
 			flame_turf(turflist)
+			add_logs(user, target_turf, what_done = "fired a flamethrower at", addition = "in [get_area(target_turf)]([target_turf.x], [target_turf.y], [target_turf.z])")
 
 /obj/item/weapon/flamethrower/attackby(obj/item/W as obj, mob/user as mob, params)
 	if(user.stat || user.restrained() || user.lying)	return
