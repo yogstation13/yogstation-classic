@@ -1,12 +1,26 @@
 /mob/living/silicon/pai
 	name = "pAI"
-	icon = 'icons/obj/status_display.dmi' //invisibility!
-	mouse_opacity = 0
+	icon = 'icons/mob/pai.dmi'
+	mouse_opacity = 1
 	density = 0
-	mob_size = MOB_SIZE_TINY
+	health = 100
+	maxHealth = 100
+	ventcrawler = 0
+	mob_size = MOB_SIZE_SMALL
+	pass_flags = PASSTABLE | PASSMOB
 
 	var/network = "SS13"
 	var/obj/machinery/camera/current = null
+
+	/*MOBILITY VARS*/
+	var/chassis = "mouse"
+	var/global/list/possible_chassis = list(
+		"Cat" = "cat",
+		"Mouse" = "mouse",
+		"Monkey" = "monkey",
+		"Corgi" = "corgi",
+		"Fox" = "fox"
+		)
 
 	var/ram = 100	// Used as currency to purchase different abilities
 	var/list/software = list()
@@ -50,6 +64,9 @@
 	var/obj/machinery/paired
 	var/pairing = 0
 
+/* Much of this was taken and adapted from ParadiseSS13's excellent pAI mobility code (https://github.com/ParadiseSS13).
+Credit for conceptualization and implementation goes squarely to the original author/s, whoever they may be.
+Getting it to work properly in /tg/ however, is another thing entirely. */
 
 /mob/living/silicon/pai/New(var/obj/item/device/paicard)
 	make_laws()
@@ -61,6 +78,8 @@
 		if(!card.radio)
 			card.radio = new /obj/item/device/radio(src.card)
 		radio = card.radio
+
+	verbs += /mob/living/silicon/pai/proc/choose_chassis
 
 	//PDA
 	pda = new(src)
@@ -110,6 +129,12 @@
 	return 1
 
 /mob/living/silicon/pai/blob_act()
+	if (src.stat != 2)
+		src.adjustBruteLoss(34)
+		src.updatehealth()
+		if (prob(65))
+			flicker_fade()
+		return 1
 	return 0
 
 /mob/living/silicon/pai/restrained()
@@ -133,7 +158,7 @@
 		if(1)
 			src.master = null
 			src.master_dna = null
-			src << "<span class='notice'>You feel unbound.</span>"
+			src << "<span class='notice'>A terrible shudder racks your circuitry, scrambling your binding directive. You are now bound to no master.</span>"
 		if(2)
 			var/command
 			if(severity  == 1)
@@ -145,6 +170,11 @@
 		if(3)
 			src << "<span class='notice'>You feel an electric surge run through your circuitry and become acutely aware at how lucky you are that you can still feel at all.</span>"
 
+	if (prob(50) && src.loc != card)
+		src << "<span class='danger'><b>A warning chime fires at the back of your consciousness, heralding the unexpected shutdown of your holographic emitter. You're defenseless!</b></span>"
+		close_up()
+
+
 /mob/living/silicon/pai/ex_act(severity, target)
 	..()
 
@@ -155,14 +185,127 @@
 				adjustFireLoss(100)
 		if(2.0)
 			if (src.stat != 2)
-				adjustBruteLoss(60)
-				adjustFireLoss(60)
+				adjustBruteLoss(30)
+				adjustFireLoss(30)
 		if(3.0)
 			if (src.stat != 2)
-				adjustBruteLoss(30)
+				adjustBruteLoss(15)
 
+
+	if (prob((120/severity+1)) && src.loc != card)
+		src << "<span class='danger'><b>A warning chime fires at the back of your consciousness process, heralding the unexpected shutdown of your holographic emitter. You're defenseless!</b></span>"
+		close_up()
 	return
 
+/mob/living/silicon/pai/attack_animal(mob/living/simple_animal/M as mob)
+	if(M.melee_damage_upper == 0)
+		M.emote("[M.friendly] [src]")
+	else
+		M.do_attack_animation(src)
+		if(M.attack_sound)
+			playsound(loc, M.attack_sound, 50, 1, 1)
+		for(var/mob/O in viewers(src, null))
+			O.show_message("\red <B>[M]</B> [M.attacktext] [src]!", 1)
+		M.attack_log += text("\[[time_stamp()]\] <font color='red'>attacked [src.name] ([src.ckey])</font>")
+		src.attack_log += text("\[[time_stamp()]\] <font color='orange'>was attacked by [M.name] ([M.ckey])</font>")
+		var/damage = rand(M.melee_damage_lower, M.melee_damage_upper)
+		adjustBruteLoss(damage)
+		if (prob(min(35, damage)))
+			flicker_fade()
+		updatehealth()
+
+/mob/living/silicon/pai/attack_alien(mob/living/carbon/alien/humanoid/M as mob)
+	if (!ticker)
+		M << "You cannot attack people before the game has started."
+		return
+
+	if (istype(src.loc, /turf) && istype(src.loc.loc, /area/start))
+		M << "You cannot attack someone in the spawn area."
+		return
+
+	switch(M.a_intent)
+
+		if ("help")
+			for(var/mob/O in viewers(src, null))
+				if ((O.client && !( O.stat )))
+					O.show_message(text("\blue [M] caresses [src]'s casing with its scythe like arm."), 1)
+
+		else //harm
+			M.do_attack_animation(src)
+			var/damage = rand(10, 20)
+			if (prob(90))
+				playsound(src.loc, 'sound/weapons/slash.ogg', 25, 1, -1)
+				for(var/mob/O in viewers(src, null))
+					if ((O.client && !( O.stat )))
+						O.show_message(text("\red <B>[] has slashed at []!</B>", M, src), 1)
+				if(prob(8))
+					flick("noise", src.flash)
+				src.adjustBruteLoss(damage)
+				src.updatehealth()
+			else
+				playsound(src.loc, 'sound/weapons/slashmiss.ogg', 25, 1, -1)
+				for(var/mob/O in viewers(src, null))
+					if ((O.client && !( O.stat )))
+						O.show_message(text("\red <B>[] took a swipe at []!</B>", M, src), 1)
+	return
+
+/mob/living/silicon/pai/attackby(obj/item/weapon/W as obj, mob/user as mob, params)
+	if (!canmove || W.force) return ..()
+	if(!W.force)
+		visible_message("<span class='warning'>[user.name] strikes [src] harmlessly with [W], passing clean through its holographic projection.</span>")
+	if (prob(33))
+		spawn(rand(5, 8))
+			if(stat != 2)
+				flicker_fade()
+	return ..()
+
+/mob/living/silicon/pai/attack_hand(mob/user as mob)
+	if(stat == 2) return
+	visible_message("<span class='danger'>[user.name] thwaps [src] on the head.</span>")
+
+	if (user.name == master)
+		visible_message("<span class='info'>Responding to its master's touch, [src] disengages its holographic emitter, rapidly losing coherence..</span>")
+		spawn(1)
+			close_up()
+
+	return ..()
+
+/mob/living/silicon/pai/hitby(AM as mob|obj)
+	visible_message("<span class='info'>[AM] flies clean through [src]'s holographic field, causing it to stutter and warp wildly!")
+	//ugh fuk u byond types
+	if (istype(AM, /obj/item))
+		var/obj/item/AMI = AM
+		if (prob(min(65, AMI.throwforce*5)))
+			flicker_fade()
+	else
+		if (prob(35))
+			flicker_fade()
+	return
+
+/mob/living/silicon/pai/bullet_act(var/obj/item/projectile/Proj)
+	visible_message("<span class='info'>[Proj] flies clean through [src]'s holographic field, causing it to stutter and warp wildly!")
+	if (Proj.damage >= 25)
+		flicker_fade()
+	else
+		if (prob(85))
+			flicker_fade()
+	return
+
+/mob/living/silicon/pai/proc/flicker_fade(var/dur = 4)
+	visible_message("<span class='danger'>[src]'s holographic field flickers out of existence!</span>")
+	src << "<span class='boldwarning'>The holographic containment field surrounding you is failing!</span>"
+	spawn(dur)
+		close_up()
+
+
+/mob/living/silicon/pai/Bump(atom/movable/AM as mob|obj, yes)
+	return
+
+/mob/living/silicon/pai/Bumped(AM as mob|obj)
+	return
+
+/mob/living/silicon/pai/start_pulling(var/atom/movable/AM)
+	return
 
 // See software.dm for Topic()
 
@@ -236,13 +379,6 @@
 	src << "<span class='info'>Handshake complete. Remote control connection established.</span>"
 	return
 
-/mob/living/silicon/pai/on_forcemove(var/atom/newloc)
-	if(card)
-		card.loc = newloc
-	else //something went very wrong.
-		CRASH("pAI without card")
-	loc = card
-
 //Addition by Mord_Sith to define AI's network change ability
 /*
 /mob/living/silicon/pai/proc/pai_network_change()
@@ -270,12 +406,129 @@
 */
 
 
+//debug shit, comment out when deploying
 /*
-// Debug command - Maybe should be added to admin verbs later
 /mob/verb/makePAI(var/turf/t in view())
 	var/obj/item/device/paicard/card = new(t)
 	var/mob/living/silicon/pai/pai = new(card)
 	pai.key = src.key
-	card.setPersonality(pai)
+	card.setPersonality(pai)*/
 
-*/
+/mob/living/silicon/pai/on_forcemove(var/atom/newloc)
+	if(card)
+		card.loc = newloc
+	else //something went very wrong.
+		CRASH("pAI without card")
+	loc = card
+
+/mob/living/silicon/pai/verb/fold_out()
+	set category = "pAI Commands"
+	set name = "Assume Holographic Form"
+
+	if(stat || sleeping || paralysis || weakened)
+		return
+
+	if(src.loc != card)
+		src << "\red You are already in your holographic form!"
+		return
+
+	if(world.time <= last_special)
+		src << "\red You must wait before altering your holographic emitters again!"
+		return
+
+	last_special = world.time + 200
+
+	canmove = 1
+	density = 1
+
+	//I'm not sure how much of this is necessary, but I would rather avoid issues.
+	if(istype(card.loc,/mob))
+		var/mob/holder = card.loc
+		holder.unEquip(card)
+	else if(istype(card.loc,/obj/item/device/pda))
+		var/obj/item/device/pda/holder = card.loc
+		holder.pai = null
+
+	src.client.perspective = EYE_PERSPECTIVE
+	src.client.eye = src
+	src.forceMove(get_turf(card))
+
+	card.forceMove(src)
+	card.screen_loc = null
+
+	var/turf/T = get_turf(src)
+	icon_state = "[chassis]"
+	if(istype(T)) T.visible_message("With a faint hum, <b>[src]</b> levitates briefly on the spot before adopting its holographic form in a flash of green light.")
+
+/mob/living/silicon/pai/proc/close_up()
+
+	last_special = world.time + 200
+	resting = 0
+	if(src.loc == card)
+		return
+
+	var/turf/T = get_turf(src)
+	if(istype(T)) T.visible_message("<b>[src]</b>'s holographic field distorts and collapses, leaving the central card-unit core behind.")
+
+	if (src.client) //god damnit this is going to be irritating to handle for dc'd pais that stay in holoform
+		src.stop_pulling()
+		src.client.perspective = EYE_PERSPECTIVE
+		src.client.eye = card
+
+	//This seems redundant but not including the forced loc setting messes the behavior up.
+	src.loc = card
+	card.loc = get_turf(card)
+	src.forceMove(card)
+	card.forceMove(card.loc)
+	canmove = 0
+	density = 0
+	icon_state = "[chassis]"
+
+/mob/living/silicon/pai/verb/fold_up()
+	set category = "pAI Commands"
+	set name = "Return to Card Form"
+
+	if(stat || sleeping || paralysis || weakened)
+		return
+
+	if(src.loc == card)
+		src << "\red You are already in your card form!"
+		return
+
+	if(world.time <= last_special)
+		src << "\red You must wait before returning to your card form!"
+		return
+
+	close_up()
+
+/mob/living/silicon/pai/proc/choose_chassis()
+	set category = "pAI Commands"
+	set name = "Choose Holographic Projection"
+
+	var/choice
+	var/finalized = "No"
+	while(finalized == "No" && src.client)
+
+		choice = input(usr,"What would you like to use for your holographic mobility icon? This decision can only be made once.") as null|anything in possible_chassis
+		if(!choice) return
+
+		icon_state = possible_chassis[choice]
+		finalized = alert("Look at your sprite. Is this what you wish to use?",,"No","Yes")
+
+	chassis = possible_chassis[choice]
+	verbs -= /mob/living/silicon/pai/proc/choose_chassis
+
+
+/mob/living/silicon/pai/lay_down()
+	set name = "Rest"
+	set category = "IC"
+
+	if(istype(src.loc,/obj/item/device/paicard))
+		resting = 0
+	else
+		resting = !resting
+		icon_state = resting ? "[chassis]_rest" : "[chassis]"
+		src << "\blue You are now [resting ? "resting" : "getting up"]"
+
+	canmove = !resting
+
