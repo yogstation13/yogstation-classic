@@ -298,10 +298,6 @@
 			else
 				text += "."
 
-			if (objectives.len==0)
-				text += "<br>Objectives are empty! <a href='?src=\ref[src];gang=autoobjective'>Set to kill all rival gang leaders</a>."
-
-
 		else if (src in ticker.mode.B_bosses)
 			text += "loyal|<a href='?src=\ref[src];gang=clear'>none</a>|(A) <a href='?src=\ref[src];gang=agang'>gangster</a> <a href='?src=\ref[src];gang=aboss'>boss</a>|<B>(B)</B> <a href='?src=\ref[src];gang=bgang'>gangster</a> <b>BOSS</b>"
 			text += "<br>Equipment: <a href='?src=\ref[src];gang=equip'>give</a>"
@@ -309,12 +305,9 @@
 			var/list/L = current.get_contents()
 			var/obj/item/device/gangtool/gangtool = locate() in L
 			if (gangtool)
-				text += "<br><a href='?src=\ref[src];gang=takeequip'>take</a>."
+				text += "|<a href='?src=\ref[src];gang=takeequip'>take</a>."
 			else
 				text += "."
-
-			if (objectives.len==0)
-				text += "<br>Objectives are empty! <a href='?src=\ref[src];gang=autoobjective'>Set to kill all rival gang leaders</a>."
 
 		else if (src in ticker.mode.A_gang)
 			text += "loyal|<a href='?src=\ref[src];gang=clear'>none</a>|<B>(A) GANGSTER</B> <a href='?src=\ref[src];gang=aboss'>boss</a>|(B) <a href='?src=\ref[src];gang=bgang'>gangster</a> <a href='?src=\ref[src];gang=bboss'>boss</a>"
@@ -838,6 +831,8 @@
 				current << "<FONT size=3 color=red><B>You are a [gang_name("A")] Gang Boss!</B></FONT>"
 				message_admins("[key_name_admin(usr)] has added [current] to the [gang_name("A")] Gang (A) leadership.")
 				log_admin("[key_name(usr)] has added [current] to the [gang_name("A")] Gang (A) leadership.")
+				ticker.mode.forge_gang_objectives(src)
+				ticker.mode.greet_gang(src,0)
 
 			if("bgang")
 				if(src in ticker.mode.B_gang)
@@ -857,11 +852,8 @@
 				current << "<FONT size=3 color=red><B>You are a [gang_name("B")] Gang Boss!</B></FONT>"
 				message_admins("[key_name_admin(usr)] has added [current] to the [gang_name("B")] Gang (B) leadership.")
 				log_admin("[key_name(usr)] has added [current] to the [gang_name("B")] Gang (B) leadership.")
-
-			if("autoobjective")
 				ticker.mode.forge_gang_objectives(src)
 				ticker.mode.greet_gang(src,0)
-				usr << "<span class='info>The objectives for gang war have been generated and shown to [key]</span>"
 
 			if("equip")
 				switch(ticker.mode.equip_gang(current))

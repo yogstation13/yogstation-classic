@@ -50,6 +50,13 @@
 				if(5 to INFINITY)
 					user << "<span class='info'>Such a feast! [target] will yield much essence to you.</span>"
 			sleep(30)
+			if(!in_range(user, target))
+				user << "<span class='warning'>You are not close enough to siphon [target]'s soul. The link has been broken.</span>"
+				draining = 0
+				return
+			if(!target.stat)
+				user << "<span class='warning'>They are now powerful enough to fight off your draining.</span>"
+				target << "<span class='boldannounce'>You feel something tugging across your body before subsiding.</span>"
 			user << "<span class='danger'>You begin siphoning essence from [target]'s soul. You can not move while this is happening.</span>"
 			if(target.stat != DEAD)
 				target << "<span class='warning'>You feel a horribly unpleasant draining sensation as your grip on life weakens...</span>"
@@ -58,7 +65,7 @@
 			user.revealed = 1
 			user.invisibility = 0
 			target.visible_message("<span class='warning'>[target] suddenly rises slightly into the air, their skin turning an ashy gray.</span>")
-			target.Beam(user,icon_state="drain_life",icon='icons/effects/effects.dmi',time=50)
+			target.Beam(user,icon_state="drain_life",icon='icons/effects/effects.dmi',time=80)
 			target.death(0)
 			target.visible_message("<span class='warning'>[target] gently slumps back onto the ground.</span>")
 			user.icon_state = "revenant_idle"
@@ -116,7 +123,7 @@
 	panel = "Revenant Abilities (Locked)"
 	charge_max = 300
 	clothes_req = 0
-	range = 5
+	range = -1
 	var/locked = 1
 
 /obj/effect/proc_holder/spell/aoe_turf/revenant_light/cast(list/targets, var/mob/living/simple_animal/revenant/user = usr)
@@ -129,6 +136,7 @@
 		name = "Overload Light (25E)"
 		panel = "Revenant Abilities"
 		locked = 0
+		range = 5
 		charge_counter = charge_max
 		return
 	if(locked)
@@ -201,7 +209,7 @@
 	panel = "Revenant Abilities (Locked)"
 	charge_max = 1200
 	clothes_req = 0
-	range = 1 //Adjacent
+	range = -1
 	include_user = 1
 	var/locked = 1
 	var/planted = 0
@@ -217,6 +225,7 @@
 		name = "Seed of Draining (20E)"
 		locked = 0
 		panel = "Revenant Abilities"
+		range = 1
 		include_user = 0
 		return
 	if(locked)
@@ -252,9 +261,9 @@
 	name = "Unlock: Mind Spike (5E)"
 	desc = "Drives a spike of dark energy into the target's mind. Cheap but effective and doesn't take long to cool down."
 	panel = "Revenant Abilities (Locked)"
-	charge_max = 15
+	charge_max = 40
 	clothes_req = 0
-	range = 3
+	range = -1
 	include_user = 1
 	var/locked = 1
 
@@ -269,6 +278,7 @@
 		name = "Mind Spike (5E)"
 		locked = 0
 		panel = "Revenant Abilities"
+		range = 3
 		include_user = 0
 		return
 	if(locked)
@@ -294,59 +304,6 @@
 			user.invisibility = INVISIBILITY_OBSERVER
 
 
-//Mind Blast: A big-hitting damage ability.
-/obj/effect/proc_holder/spell/targeted/revenant_mindblast
-	name = "Unlock: Mind Blast (25E)"
-	desc = "Blasts the target's mind with dark energy, doing a hefty amount of damage. Be warned, the sheer volume of energy expended to produce such a blast can anchor you to the mortal realm for a time, leaving you very vulnerable!"
-	panel = "Revenant Abilities (Locked)"
-	charge_max = 350
-	clothes_req = 0
-	range = 3
-	include_user = 1
-	var/locked = 1
-
-/obj/effect/proc_holder/spell/targeted/revenant_mindblast/cast(list/targets, var/mob/living/simple_animal/revenant/user = usr)
-	if(user.inhibited)
-		user << "<span class='warning'>Something is blocking the use of [src]!</span>"
-		charge_counter = charge_max
-		return
-	if(locked && essence_check(25, 1))
-		user << "<span class='info'>You have unlocked Mind Blast!</span>"
-		charge_counter = charge_max
-		name = "Mind Blast (25E)"
-		locked = 0
-		panel = "Revenant Abilities"
-		include_user = 0
-		return
-	if(locked)
-		charge_counter = charge_max
-		return
-	if(!essence_check(25))
-		charge_counter = charge_max
-		return
-	for(var/mob/living/carbon/human/M in targets)
-		user << "<span class='info'>You blast [M]'s mind with energy, sliding into phase with the corporeal world!</span>"
-		M << "<span class'boldannounce'><i>You feel a sudden explosion of agony in your head!</i></span>"
-		M.apply_damage(35, BRUTE, "head")
-		M.adjustBrainLoss(5)
-		M.emote("scream")
-		M.Weaken(4)
-		//M << 'sound/effects/mind_blast.ogg'
-		user.revealed = 1
-		user.invisibility = 0
-
-		if(user.essence < 65)
-			if(prob(35))
-				user << "<span class'boldannounce'><i>Your blast weakens the veil between your realm and the realm of the living, anchoring you to the corporeal plane for a short time!</i></span>"
-				user.incorporeal_move = 0
-
-		spawn(30)
-			user << "<span class='info'><i>Eldritch energies infuse your form as you reattune to the underrealm now invisible to mortal life once more.</i></span>"
-			user.revealed = 0
-			user.invisibility = INVISIBILITY_OBSERVER
-			user.incorporeal_move = 1
-
-
 //Hypnotize: Makes the target fall asleep, make them vulnerable to draining.
 /obj/effect/proc_holder/spell/targeted/revenant_hypnotize
 	name = "Unlock: Hypnotize (15E)"
@@ -354,7 +311,7 @@
 	panel = "Revenant Abilities (Locked)"
 	charge_max = 900
 	clothes_req = 0
-	range = 3
+	range = -1
 	include_user = 1
 	var/locked = 1
 
@@ -368,6 +325,7 @@
 		charge_counter = charge_max
 		name = "Hypnotize (15E)"
 		locked = 0
+		range = 3
 		panel = "Revenant Abilities"
 		include_user = 0
 		return
@@ -382,4 +340,12 @@
 		M << "<span class='boldannounce'>Tired... <font size=1.5> so tired...</font></span>"
 		M.drowsyness += 7
 		spawn(70)
-			M.sleeping += 12
+			M.sleeping += 30
+
+
+/* (WIP)
+Strangulate: Chokes the target with crushing force.
+/obj/effect/proc_holder/spell/targeted/revenant_strangulate
+	name = "Unlock: Strangulate (30E)"
+	desc = "Strangles a target with an asphyxiating hand, dealing decent oxygen damage to them."
+*/

@@ -138,6 +138,7 @@
 
 	var/obj/structure/closet/crate/C = new(get_turf(src))
 	// Put loot in crate
+	visible_message("[src] stops moving!")	
 	for(var/obj/O in src)
 		O.loc = C
 	..()
