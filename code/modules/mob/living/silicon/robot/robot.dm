@@ -150,7 +150,16 @@
 		if("Standard")
 			module = new /obj/item/weapon/robot_module/standard(src)
 			hands.icon_state = "standard"
-			icon_state = "robot"
+			var/icontype = input("Select an icon!", "Robot", null, null) in list("Standard", "Robot", "Centbot", "Research Director", )
+			switch(icontype)
+				if("Standard")
+					icon_state = "robot"
+				if("Robot")
+					icon_state = "robot_old"
+				if("Research Director")
+					icon_state = "rdborg"
+				else
+					icon_state = "robot"
 			modtype = "Stand"
 			feedback_inc("cyborg_standard",1)
 
@@ -179,16 +188,34 @@
 		if("Miner")
 			module = new /obj/item/weapon/robot_module/miner(src)
 			hands.icon_state = "miner"
-			icon_state = "minerborg"
-			animation_length = 30
+			var/icontype = input("Select an icon!", "Robot", null, null) in list("Tread Miner", "Miner")
+			switch(icontype)
+				if("Tread Miner")
+					icon_state = "minerborg"
+					animation_length=30
+				if("Miner")
+					icon_state = "Miner_old"
+				else
+					icon_state = "minerborg"
+					animation_length=30
 			modtype = "Miner"
 			feedback_inc("cyborg_miner",1)
 
 		if("Medical")
 			module = new /obj/item/weapon/robot_module/medical(src)
 			hands.icon_state = "medical"
-			icon_state = "mediborg"
-			animation_length = 35
+			var/icontype = input("Select an icon!", "Robot", null, null) in list("Mediborg", "Chief Medical Borg", "Medbot")
+			switch(icontype)
+				if("Mediborg")
+					icon_state = "mediborg"
+					animation_length=45
+				if("Chief Medical Borg")
+					icon_state = "cmoborg"
+				if("Medbot")
+					icon_state = "medbot"
+				else
+					icon_state = "mediborg"
+					animation_length = 35
 			modtype = "Med"
 			status_flags &= ~CANPUSH
 			feedback_inc("cyborg_medical",1)
@@ -196,8 +223,24 @@
 		if("Security")
 			module = new /obj/item/weapon/robot_module/security(src)
 			hands.icon_state = "security"
-			icon_state = "secborg"
-			animation_length = 28
+			var/icontype = input("Select an icon!", "Robot", null, null) in list("Secborg", "Riot Borg", "Armored Borg", "Head of Sec", "Captain Borg", "Treaded Secborg")
+			switch(icontype)
+				if("Secborg")
+					icon_state = "secborg"
+					animation_length = 28
+				if("Riot Borg")
+					icon_state = "ninjaborg"
+				if("Armored Borg")
+					icon_state = "Security"
+				if("Head of Security")
+					icon_state = "hosborg"
+				if("Captain")
+					icon_state = "captainborg"
+				if("Treaded Secborg")
+					icon_state = "secborg+tread"
+				else
+					icon_state = "secborg"
+					animation_length = 28
 			modtype = "Sec"
 			//speed = -1 Secborgs have nerfed tasers now, so the speed boost is not necessary
 			status_flags &= ~CANPUSH
@@ -206,16 +249,36 @@
 		if("Engineering")
 			module = new /obj/item/weapon/robot_module/engineering(src)
 			hands.icon_state = "engineer"
-			icon_state = "engiborg"
-			animation_length = 45
+			var/icontype = input("Select an icon!", "Robot", null, null) in list("Engiborg", "Treaded Engiborg", "Chief Borgineer","Engineering")
+			switch(icontype)
+				if("Engiborg")
+					icon_state = "engiborg"
+					animation_length = 45
+				if("Treaded Engiborg")
+					icon_state = "enigborg+tread"
+				if("Chief Borgineer")
+					icon_state = "ceborg"
+				if("Engineering")
+					icon_state = "Engineering"
+				else
+					icon_state = "engiborg"
+					animation_length = 45
 			modtype = "Eng"
 			feedback_inc("cyborg_engineering",1)
 
 		if("Janitor")
 			module = new /obj/item/weapon/robot_module/janitor(src)
 			hands.icon_state = "janitor"
-			icon_state = "janiborg"
-			animation_length = 22
+			var/icontype = input("Select an icon!", "Robot", null, null) in list("Janiborg", "Janibot")
+			switch(icontype)
+				if("Janiborg")
+					icon_state = "janiborg"
+					animation_length = 22
+				if("Janibot")
+					icon_state = "JanBot2"
+				else
+					icon_state = "janiborg"
+					animation_length = 22
 			modtype = "Jan"
 			feedback_inc("cyborg_janitor",1)
 
@@ -301,7 +364,7 @@
 /mob/living/silicon/robot/Stat()
 	..()
 	if(statpanel("Status"))
-		stat("[worldtime2text()] [time2text(world.realtime, "MMM DD")] [year_integer+540]")	
+		stat("[worldtime2text()] [time2text(world.realtime, "MMM DD")] [year_integer+540]")
 		if(ticker.mode.name == "AI malfunction")
 			var/datum/game_mode/malfunction/malf = ticker.mode
 			for (var/datum/mind/malfai in malf.malf_ai)
