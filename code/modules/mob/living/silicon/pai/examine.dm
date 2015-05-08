@@ -14,6 +14,11 @@
 	else
 		msg += "\nA sleek card-shaped unit of carboncoat plastic, this unit is a container for an enigmatic personal AI unit. Who knows what being calls this humble shell its home?"
 
+	if (description)
+		msg += "\nA tag upon the unit's core reads: <i>[description]</i>."
+	else
+		msg += "\nA plain, unmarked tag upon the unit's core is clearly visible, though it contains no text."
+
 	switch(src.stat)
 		if(CONSCIOUS)
 			if(!src.client)	msg += "\nThe personality-core activity monitor pulses with a slow, absent rhythm." //afk

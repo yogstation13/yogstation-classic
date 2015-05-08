@@ -10,6 +10,8 @@
 	mob_size = MOB_SIZE_SMALL
 	pass_flags = PASSTABLE | PASSMOB
 
+	var/description = null
+
 	var/network = "SS13"
 	var/obj/machinery/camera/current = null
 
