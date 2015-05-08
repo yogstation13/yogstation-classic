@@ -6,7 +6,6 @@
 	health = 100
 	maxHealth = 100
 	ventcrawler = 0
-	has_unlimited_silicon_privilege = 0
 	mob_size = MOB_SIZE_SMALL
 	pass_flags = PASSTABLE | PASSMOB
 
