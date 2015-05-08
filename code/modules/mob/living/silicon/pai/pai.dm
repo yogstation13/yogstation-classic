@@ -262,7 +262,7 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 		spawn(rand(5, 8))
 			if(stat != 2)
 				flicker_fade()
-	return ..()
+	return
 
 /mob/living/silicon/pai/attack_hand(mob/user as mob)
 	if(stat == 2) return
@@ -273,7 +273,7 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 		spawn(1)
 			close_up()
 
-	return ..()
+	return
 
 /mob/living/silicon/pai/hitby(AM as mob|obj)
 	visible_message("<span class='info'>[AM] flies clean through [src]'s holographic field, causing it to stutter and warp wildly!")
