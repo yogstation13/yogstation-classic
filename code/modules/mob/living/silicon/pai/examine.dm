@@ -7,7 +7,7 @@
 		usr << "<span class='notice'>Something is there but you can't see it.</span>"
 		return
 
-	var/msg = "<span class='info'>*---------*\nThis is \icon[src][name], a personal AI unit!"
+	var/msg = "<span class='info'>*---------*\nThis is \icon<b>[src][name], <i>a personal AI unit</i>!</b>"
 
 	if (canmove || resting)
 		msg += "\nA holographic projection resembling a [chassis] flickers about the unit, almost obscuring its card-shaped core suspended in its center."
@@ -21,7 +21,7 @@
 
 	switch(src.stat)
 		if(CONSCIOUS)
-			if(!src.client)	msg += "\nThe personality-core activity monitor pulses with a slow, absent rhythm." //afk
+			if(!src.client)	msg += "\nThe unit is unnaturally still, completely frozen in time.." //afk
 		if(UNCONSCIOUS)		msg += "\n<span class='warning'>A blue diagnostics screen with hundreds of lines of scrolling text covers its screen.</span>"
 		if(DEAD)			msg += "\n<span class='deadsay'>An ominous red ring glowers out from its shattered display screen.</span>"
 	msg += "\n*---------*</span>"
