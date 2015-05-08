@@ -6,11 +6,14 @@
 	health = 100
 	maxHealth = 100
 	ventcrawler = 0
+	has_unlimited_silicon_privilege = 0
 	mob_size = MOB_SIZE_SMALL
 	pass_flags = PASSTABLE | PASSMOB
 
 	var/network = "SS13"
 	var/obj/machinery/camera/current = null
+
+	var/obj/item/weapon/card/id/access_card = null //yes pai require one of these now
 
 	/*MOBILITY VARS*/
 	var/chassis = "mouse"
@@ -296,10 +299,6 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 	src << "<span class='boldwarning'>The holographic containment field surrounding you is failing!</span>"
 	spawn(dur)
 		close_up()
-
-
-/mob/living/silicon/pai/Bump(atom/movable/AM as mob|obj, yes)
-	return
 
 /mob/living/silicon/pai/Bumped(AM as mob|obj)
 	return
