@@ -202,7 +202,7 @@
 			switch(icontype)
 				if("Mediborg")
 					icon_state = "mediborg"
-					animation_length=45
+					animation_length=35
 				else
 					icon_state = "mediborg"
 					animation_length = 35
@@ -219,11 +219,13 @@
 					icon_state = "secborg"
 					animation_length = 28
 				if("Armored Borg")
-					icon_state = "Security"
+					icon_state = "RedBorg"
 				if("Treaded Secborg")
 					icon_state = "secborg+tread"
+					animation_length = 28
 				if("Interceptor")
 					icon_state = "wisewill-Combat"
+					animation_length = 10
 				else
 					icon_state = "secborg"
 					animation_length = 28
@@ -235,17 +237,20 @@
 		if("Engineering")
 			module = new /obj/item/weapon/robot_module/engineering(src)
 			hands.icon_state = "engineer"
-			var/icontype = input("Select an icon!", "Robot", null, null) in list("Engiborg", "Treaded Engiborg", "Bear", "Floating Eye" )
+			var/icontype = input("Select an icon!", "Robot", null, null) in list("Engiborg", "Treaded Engiborg","Floating Eye" )
 			switch(icontype)
 				if("Engiborg")
 					icon_state = "engiborg"
 					animation_length = 45
 				if("Treaded Engiborg")
-					icon_state = "enigborg+tread"
+					icon_state = "engiborg+tread"
+					animation_length = 45
 				if("Floating Eye")
-					icon_state = "engi"
-				if("Bear")
-					icon_state = "engiborg+bear"
+					icon_state = "engieye"
+					animation_length = 18
+				//if("Bear")
+				//	icon_state = "engiborg+bear"
+				  //animation_length = 45
 				else
 					icon_state = "engiborg"
 					animation_length = 45
@@ -261,7 +266,8 @@
 					icon_state = "janiborg"
 					animation_length = 22
 				if("Disposal")
-					icon_state = "dispoalbot"
+					icon_state = "disposalbot"
+					animation_length = 6
 				else
 					icon_state = "janiborg"
 					animation_length = 22
