@@ -150,14 +150,10 @@
 		if("Standard")
 			module = new /obj/item/weapon/robot_module/standard(src)
 			hands.icon_state = "standard"
-			var/icontype = input("Select an icon!", "Robot", null, null) in list("Standard", "Robot", "Centbot", "Research Director", )
+			var/icontype = input("Select an icon!", "Robot", null, null) in list("Standard", )
 			switch(icontype)
 				if("Standard")
 					icon_state = "robot"
-				if("Robot")
-					icon_state = "robot_old"
-				if("Research Director")
-					icon_state = "rdborg"
 				else
 					icon_state = "robot"
 			modtype = "Stand"
@@ -193,8 +189,6 @@
 				if("Tread Miner")
 					icon_state = "minerborg"
 					animation_length=30
-				if("Miner")
-					icon_state = "Miner_old"
 				else
 					icon_state = "minerborg"
 					animation_length=30
@@ -204,15 +198,11 @@
 		if("Medical")
 			module = new /obj/item/weapon/robot_module/medical(src)
 			hands.icon_state = "medical"
-			var/icontype = input("Select an icon!", "Robot", null, null) in list("Mediborg", "Chief Medical Borg", "Medbot")
+			var/icontype = input("Select an icon!", "Robot", null, null) in list("Mediborg",)
 			switch(icontype)
 				if("Mediborg")
 					icon_state = "mediborg"
 					animation_length=45
-				if("Chief Medical Borg")
-					icon_state = "cmoborg"
-				if("Medbot")
-					icon_state = "medbot"
 				else
 					icon_state = "mediborg"
 					animation_length = 35
@@ -223,21 +213,17 @@
 		if("Security")
 			module = new /obj/item/weapon/robot_module/security(src)
 			hands.icon_state = "security"
-			var/icontype = input("Select an icon!", "Robot", null, null) in list("Secborg", "Riot Borg", "Armored Borg", "Head of Sec", "Captain Borg", "Treaded Secborg")
+			var/icontype = input("Select an icon!", "Robot", null, null) in list("Secborg", "Armored Borg","Treaded Secborg", "Interceptor")
 			switch(icontype)
 				if("Secborg")
 					icon_state = "secborg"
 					animation_length = 28
-				if("Riot Borg")
-					icon_state = "ninjaborg"
 				if("Armored Borg")
 					icon_state = "Security"
-				if("Head of Security")
-					icon_state = "hosborg"
-				if("Captain")
-					icon_state = "captainborg"
 				if("Treaded Secborg")
 					icon_state = "secborg+tread"
+				if("Interceptor")
+					icon_state = "wisewill-Combat"
 				else
 					icon_state = "secborg"
 					animation_length = 28
@@ -249,17 +235,17 @@
 		if("Engineering")
 			module = new /obj/item/weapon/robot_module/engineering(src)
 			hands.icon_state = "engineer"
-			var/icontype = input("Select an icon!", "Robot", null, null) in list("Engiborg", "Treaded Engiborg", "Chief Borgineer","Engineering")
+			var/icontype = input("Select an icon!", "Robot", null, null) in list("Engiborg", "Treaded Engiborg", "Bear", "Floating Eye" )
 			switch(icontype)
 				if("Engiborg")
 					icon_state = "engiborg"
 					animation_length = 45
 				if("Treaded Engiborg")
 					icon_state = "enigborg+tread"
-				if("Chief Borgineer")
-					icon_state = "ceborg"
-				if("Engineering")
-					icon_state = "Engineering"
+				if("Floating Eye")
+					icon_state = "engi"
+				if("Bear")
+					icon_state = "engiborg+bear"
 				else
 					icon_state = "engiborg"
 					animation_length = 45
@@ -269,13 +255,13 @@
 		if("Janitor")
 			module = new /obj/item/weapon/robot_module/janitor(src)
 			hands.icon_state = "janitor"
-			var/icontype = input("Select an icon!", "Robot", null, null) in list("Janiborg", "Janibot")
+			var/icontype = input("Select an icon!", "Robot", null, null) in list("Janiborg", "Disposal")
 			switch(icontype)
 				if("Janiborg")
 					icon_state = "janiborg"
 					animation_length = 22
-				if("Janibot")
-					icon_state = "JanBot2"
+				if("Disposal")
+					icon_state = "dispoalbot"
 				else
 					icon_state = "janiborg"
 					animation_length = 22
