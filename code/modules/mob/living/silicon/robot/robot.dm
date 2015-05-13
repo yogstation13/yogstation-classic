@@ -237,7 +237,7 @@
 		if("Engineering")
 			module = new /obj/item/weapon/robot_module/engineering(src)
 			hands.icon_state = "engineer"
-			var/icontype = input("Select an icon!", "Robot", null, null) in list("Engiborg", "Treaded Engiborg","Floating Eye" )
+			var/icontype = input("Select an icon!", "Robot", null, null) in list("Engiborg", "Treaded Engiborg","Hover Engiborg" )
 			switch(icontype)
 				if("Engiborg")
 					icon_state = "engiborg"
@@ -245,8 +245,8 @@
 				if("Treaded Engiborg")
 					icon_state = "engiborg+tread"
 					animation_length = 45
-				if("Floating Eye")
-					icon_state = "engieye"
+				if("Hover Engiborg")
+					icon_state = "engiborg+hover"
 					animation_length = 18
 				//if("Bear")
 				//	icon_state = "engiborg+bear"
@@ -788,7 +788,17 @@
 				overlays += "eyes-toiletbot"
 			if("secborg")
 				overlays += "eyes-secborg"
+			if("secborg+tread")
+				overlays += "eyes-secborg"
+			if("wisewill-Combat")
+				overlays += "eyes-wwcombat"
+			if ("engiborg+hover")
+				overlays += "eyes-hoverengi"
 			if("engiborg")
+				overlays += "eyes-engiborg"
+			if("engiborg+tread")
+				overlays += "eyes-treadengi"
+			if("engiborg+bear")
 				overlays += "eyes-engiborg"
 			if("janiborg")
 				overlays += "eyes-janiborg"
