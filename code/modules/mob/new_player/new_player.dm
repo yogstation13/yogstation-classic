@@ -116,7 +116,7 @@
 	output += "<p><center><a href='byond://?src=\ref[src];drules=1'>Server Rules</A>&nbsp\
 		<a href='byond://?src=\ref[src];dtgwiki=1'>/tg/ wiki</A>&nbsp<a href='byond://?src=\ref[src];dismiss=1'>Dismiss</A></center></p>"
 
-	var/datum/browser/popup = new(src, "disclaimer", "<div align='center'>IMPORTANT</div>", 500, 600)
+	var/datum/browser/popup = new(src, "disclaimer", "<div align='center'>IMPORTANT</div>", 700, 600)
 	popup.set_window_options("can_close=0")
 	popup.set_content(output)
 	popup.open(0)
@@ -366,7 +366,7 @@
 	SSjob.AssignRole(src, rank, 1)
 
 	var/mob/living/carbon/human/character = create_character()	//creates the human and transfers vars and mind
-	character.mind.quiet_round = character.client.prefs.be_special & QUIET_ROUND
+	character.mind.quiet_round = character.client.prefs.toggles & QUIET_ROUND
 	SSjob.EquipRank(character, rank, 1)					//equips the human
 	character.loc = pick(latejoin)
 	character.lastarea = get_area(loc)
