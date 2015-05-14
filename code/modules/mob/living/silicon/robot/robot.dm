@@ -148,9 +148,10 @@
 	updatename()
 	switch(designation)
 		if("Standard")
+			var/icontype = input("Select an icon!", "Robot", "Standard") in list("Standard")
+			if(!icontype) return
 			module = new /obj/item/weapon/robot_module/standard(src)
 			hands.icon_state = "standard"
-			var/icontype = input("Select an icon!", "Robot", null, null) in list("Standard", )
 			switch(icontype)
 				if("Standard")
 					icon_state = "robot"
@@ -160,15 +161,16 @@
 			feedback_inc("cyborg_standard",1)
 
 		if("Service")
+			var/icontype = input("Select an icon!", "Robot", "Butler") in list("Waitress", "Bro", "Butler", /*"Kent",*/ "Rich")
+			if(!icontype) return
 			module = new /obj/item/weapon/robot_module/butler(src)
 			hands.icon_state = "service"
-			var/icontype = input("Select an icon!", "Robot", null, null) in list("Waitress", "Bro", "Butler", "Kent", "Rich")
 			switch(icontype)
 				if("Waitress")
 					icon_state = "service_female"
 					animation_length=45
-				if("Kent")
-					icon_state = "toiletbot"
+				//if("Kent")
+				//	icon_state = "toiletbot"
 				if("Bro")
 					icon_state = "brobot"
 					animation_length=54
@@ -182,9 +184,10 @@
 			feedback_inc("cyborg_service",1)
 
 		if("Miner")
+			var/icontype = input("Select an icon!", "Robot", "Tread Miner") in list("Tread Miner")
+			if(!icontype) return
 			module = new /obj/item/weapon/robot_module/miner(src)
 			hands.icon_state = "miner"
-			var/icontype = input("Select an icon!", "Robot", null, null) in list("Tread Miner", "Miner")
 			switch(icontype)
 				if("Tread Miner")
 					icon_state = "minerborg"
@@ -196,9 +199,10 @@
 			feedback_inc("cyborg_miner",1)
 
 		if("Medical")
+			var/icontype = input("Select an icon!", "Robot", "Mediborg") in list("Mediborg")
+			if(!icontype) return
 			module = new /obj/item/weapon/robot_module/medical(src)
 			hands.icon_state = "medical"
-			var/icontype = input("Select an icon!", "Robot", null, null) in list("Mediborg",)
 			switch(icontype)
 				if("Mediborg")
 					icon_state = "mediborg"
@@ -211,9 +215,10 @@
 			feedback_inc("cyborg_medical",1)
 
 		if("Security")
+			var/icontype = input("Select an icon!", "Robot", "Secborg") in list("Secborg", "Armored Borg", "Treaded Secborg", "Interceptor")
+			if(!icontype) return
 			module = new /obj/item/weapon/robot_module/security(src)
 			hands.icon_state = "security"
-			var/icontype = input("Select an icon!", "Robot", null, null) in list("Secborg", "Armored Borg","Treaded Secborg", "Interceptor")
 			switch(icontype)
 				if("Secborg")
 					icon_state = "secborg"
@@ -235,9 +240,10 @@
 			feedback_inc("cyborg_security",1)
 
 		if("Engineering")
+			var/icontype = input("Select an icon!", "Robot", "Engiborg") in list("Engiborg", "Treaded Engiborg", "Hover Engiborg")
+			if(!icontype) return
 			module = new /obj/item/weapon/robot_module/engineering(src)
 			hands.icon_state = "engineer"
-			var/icontype = input("Select an icon!", "Robot", null, null) in list("Engiborg", "Treaded Engiborg","Hover Engiborg" )
 			switch(icontype)
 				if("Engiborg")
 					icon_state = "engiborg"
@@ -250,7 +256,7 @@
 					animation_length = 18
 				//if("Bear")
 				//	icon_state = "engiborg+bear"
-				  //animation_length = 45
+				//  animation_length = 45
 				else
 					icon_state = "engiborg"
 					animation_length = 45
@@ -258,9 +264,10 @@
 			feedback_inc("cyborg_engineering",1)
 
 		if("Janitor")
+			var/icontype = input("Select an icon!", "Robot", "Janiborg") in list("Janiborg", "Disposal")
+			if(!icontype) return
 			module = new /obj/item/weapon/robot_module/janitor(src)
 			hands.icon_state = "janitor"
-			var/icontype = input("Select an icon!", "Robot", null, null) in list("Janiborg", "Disposal")
 			switch(icontype)
 				if("Janiborg")
 					icon_state = "janiborg"
@@ -789,10 +796,10 @@
 			if("secborg")
 				overlays += "eyes-secborg"
 			if("secborg+tread")
-				overlays += "eyes-secborg"
+				overlays += "eyes-sectread"
 			if("wisewill-Combat")
 				overlays += "eyes-wwcombat"
-			if ("engiborg+hover")
+			if("engiborg+hover")
 				overlays += "eyes-hoverengi"
 			if("engiborg")
 				overlays += "eyes-engiborg"
