@@ -115,7 +115,7 @@
 	var/turf/T = get_turf(holder.my_atom)
 	for(var/turf/simulated/turf in range(1,T))
 		if(istype(T) && istype(turf) && T.CanAtmosPass(turf))
-			new /obj/effect/hotspot(turf)
+			PoolOrNew(/obj/effect/hotspot, turf)
 
 	holder.my_atom.report_reaction("chlorine trifluoride")
 	holder.chem_temp = 1000 // hot as shit

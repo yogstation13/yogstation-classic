@@ -828,6 +828,10 @@ About the new airlock wires panel:
 					//electrify door for 30 seconds
 					if(src.isWireCut(AIRLOCK_WIRE_ELECTRIFY))
 						usr << text("The electrification wire has been cut.<br>\n")
+					else if(src.secondsElectrified==-1)
+						usr << text("The door is already indefinitely electrified. You'd have to un-electrify it before you can re-electrify it with a non-forever duration.<br>\n")
+					else if(src.secondsElectrified!=0)
+						usr << text("The door is already electrified. You can't re-electrify it while it's already electrified.<br>\n")
 					else
 						shockedby += text("\[[time_stamp()]\][usr](ckey:[usr.ckey])")
 						add_logs(usr, src, "electrified", admin=0, addition="at [x],[y],[z]")
@@ -842,6 +846,10 @@ About the new airlock wires panel:
 					//electrify door indefinitely
 					if(src.isWireCut(AIRLOCK_WIRE_ELECTRIFY))
 						usr << text("The electrification wire has been cut.<br>\n")
+					else if(src.secondsElectrified==-1)
+						usr << text("The door is already indefinitely electrified.<br>\n")
+					else if(src.secondsElectrified!=0)
+						usr << text("The door is already electrified. You can't re-electrify it while it's already electrified.<br>\n")
 					else
 						shockedby += text("\[[time_stamp()]\][usr](ckey:[usr.ckey])")
 						add_logs(usr, src, "electrified", admin=0, addition="at [x],[y],[z]")
@@ -891,6 +899,7 @@ About the new airlock wires panel:
 						emergency = 1
 					else
 						usr << text("Emergency access is already enabled!")
+
 	add_fingerprint(usr)
 	update_icon()
 	return

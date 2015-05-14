@@ -25,8 +25,6 @@
 	return
 
 /obj/item/stack/Destroy()
-	if (is_cyborg)
-		return // Not supposed to be destroyed
 	if (usr && usr.machine==src)
 		usr << browse(null, "window=stack")
 	src.loc = null
@@ -185,6 +183,8 @@
 	return 1
 
 /obj/item/stack/proc/zero_amount()
+	if(is_cyborg)
+		return source.energy < cost
 	if (amount < 1)
 		if(usr)
 			usr.unEquip(src, 1)

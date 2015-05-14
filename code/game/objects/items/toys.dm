@@ -15,6 +15,7 @@
  *		Carp plushie
  *		Foam armblade
  *		Toy big red button
+ 		Beach ball
  */
 
 
@@ -502,20 +503,21 @@
 
 			//Check area validity. Reject space, player-created areas, and non-station z-levels.
 			if (gangID)
-				var/area/user_area = get_area(user.loc)
 				territory = get_area(target)
 				if(territory && (territory.z == ZLEVEL_STATION) && territory.valid_territory)
 					//Check if this area is already tagged by a gang
 					if(!(locate(/obj/effect/decal/cleanable/crayon/gang) in target)) //Ignore the check if the tile being sprayed has a gang tag
 						if(territory_claimed(territory, user))
 							return
+					/*
 					//Prevent people spraying from outside of the territory (ie. Maint walls)
-					if(istype(user_area) && (user_area.type == territory.type))
-						if(locate(/obj/machinery/power/apc) in (user.loc.contents | target.contents))
-							user << "<span class='warning'>You cannot tag here.</span>"
-							return
-					else
+					var/area/user_area = get_area(user.loc)
+					if(istype(user_area) && (user_area.type != territory.type))
 						user << "<span class='warning'>You cannot tag [territory] from the outside.</span>"
+						return
+					*/
+					if(locate(/obj/machinery/power/apc) in (user.loc.contents | target.contents))
+						user << "<span class='warning'>You cannot tag here.</span>"
 						return
 				else
 					user << "<span class='warning'>[territory] is unsuitable for tagging.</span>"
@@ -556,6 +558,8 @@
 			user << "<span class='notice'>You finish [instant ? "spraying" : "drawing"] [temp].</span>"
 			if(instant<0)
 				playsound(user.loc, 'sound/effects/spray.ogg', 5, 1, 5)
+			if(uses < 0)
+				return
 			uses = max(0,uses-1)
 			if(!uses)
 				user << "<span class='warning'>There is no more of [src.name] left!</span>"
@@ -567,6 +571,8 @@
 	if(edible && (M == user))
 		user << "You take a bite of the [src.name]. Delicious!"
 		user.nutrition += 5
+		if(uses < 0)
+			return
 		uses = max(0,uses-5)
 		if(!uses)
 			user << "<span class='warning'>There is no more of [src.name] left!</span>"
@@ -877,6 +883,8 @@ obj/item/toy/cards/deck/New()
 
 
 obj/item/toy/cards/deck/attack_hand(mob/user as mob)
+	if(user.lying)
+		return
 	var/choice = null
 	if(cards.len == 0)
 		src.icon_state = "deck_[deckstyle]_empty"
@@ -947,7 +955,7 @@ obj/item/toy/cards/deck/attackby(obj/item/toy/cards/cardhand/C, mob/living/user,
 
 /obj/item/toy/cards/deck/MouseDrop(atom/over_object)
 	var/mob/M = usr
-	if(usr.stat || !ishuman(usr) || !usr.canmove || usr.restrained())
+	if(!ishuman(usr) || usr.incapacitated() || usr.lying)
 		return
 	if(Adjacent(usr))
 		if(over_object == M && loc != M)
@@ -1266,3 +1274,17 @@ obj/item/toy/cards/deck/syndicate
 
 	else
 		user << "<span class='alert'>Nothing happens.</span>"
+
+/*
+ * Beach ball
+ */
+/obj/item/toy/beach_ball
+	icon = 'icons/misc/beach.dmi'
+	icon_state = "ball"
+	name = "beach ball"
+	item_state = "beachball"
+	w_class = 4 //Stops people from hiding it in their bags/pockets
+
+/obj/item/toy/beach_ball/afterattack(atom/target as mob|obj|turf|area, mob/user as mob)
+	user.drop_item()
+	src.throw_at(target, throw_range, throw_speed)

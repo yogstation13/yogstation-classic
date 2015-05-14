@@ -205,7 +205,7 @@ update_label("John Doe", "Clowny")
 		access = get_all_centcom_access()
 		..()
 
-/obj/item/weapon/card/id/ert/command
+/obj/item/weapon/card/id/ert
 	name = "\improper Centcom ID"
 	desc = "A ERT ID card"
 	icon_state = "centcom"
