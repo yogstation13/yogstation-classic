@@ -6,7 +6,6 @@
 	earliest_start = 6000
 
 /datum/round_event/spontaneous_appendicitis/start()
-	message_admins("Random Event: Spontaneous Appendicitis")
 	for(var/mob/living/carbon/human/H in shuffle(living_mob_list))
 		var/foundAlready = 0	//don't infect someone that already has the virus
 		var/has_appendix = 0

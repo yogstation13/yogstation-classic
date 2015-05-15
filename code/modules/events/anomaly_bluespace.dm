@@ -15,7 +15,6 @@
 
 
 /datum/round_event/anomaly/anomaly_bluespace/start()
-	message_admins("Random Event: Bluespace Anomaly")
 	var/turf/T = pick(get_area_turfs(impact_area))
 	if(T)
 		newAnomaly = new /obj/effect/anomaly/bluespace(T.loc)

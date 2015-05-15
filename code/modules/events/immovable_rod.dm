@@ -19,7 +19,6 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 	priority_announce("What the fuck was that?!", "General Alert")
 
 /datum/round_event/immovable_rod/start()
-	message_admins("Random Event: Immovable Rod")
 	var/startside = pick(cardinal)
 	var/turf/startT = spaceDebrisStartLoc(startside, 1)
 	var/turf/endT = spaceDebrisFinishLoc(startside, 1)

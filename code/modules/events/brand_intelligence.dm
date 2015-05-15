@@ -25,7 +25,6 @@
 
 
 /datum/round_event/brand_intelligence/start()
-	message_admins("Random Event: Brand Intelligence")
 	for(var/obj/machinery/vending/V in machines)
 		if(V.z != 1)	continue
 		vendingMachines.Add(V)

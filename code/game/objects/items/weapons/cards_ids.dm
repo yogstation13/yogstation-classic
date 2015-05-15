@@ -211,22 +211,22 @@ update_label("John Doe", "Clowny")
 	icon_state = "centcom"
 	registered_name = "Emergency Response Team Commander"
 	assignment = "Emergency Response Team Commander"
-	access = list(access_cent_general, access_cent_storage)
+	New() access = get_all_accesses()+get_ert_access("commander")-access_change_ids
 
-/obj/item/weapon/card/id/ert/security
+/obj/item/weapon/card/id/ert/Security
 	registered_name = "Security Response Officer"
 	assignment = "Security Response Officer"
-	access = list(access_cent_general)
+	New() access = get_all_accesses()+get_ert_access("sec")-access_change_ids
 
-/obj/item/weapon/card/id/ert/engineer
+/obj/item/weapon/card/id/ert/Engineer
 	registered_name = "Engineer Response Officer"
 	assignment = "Engineer Response Officer"
-	access = list(access_cent_general)
+	New() access = get_all_accesses()+get_ert_access("eng")-access_change_ids
 
-/obj/item/weapon/card/id/ert/medical
+/obj/item/weapon/card/id/ert/Medical
 	registered_name = "Medical Response Officer"
 	assignment = "Medical Response Officer"
-	access = list(access_cent_general)
+	New() access = get_all_accesses()+get_ert_access("med")-access_change_ids
 
 /obj/item/weapon/card/id/prisoner
 	name = "prisoner ID card"

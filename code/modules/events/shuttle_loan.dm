@@ -18,7 +18,6 @@
 	announceWhen	= 1
 
 /datum/round_event/shuttle_loan/start()
-	message_admins("Random Event: Shuttle Loan")
 	dispatch_type = pick(HIJACK_SYNDIE, RUSKY_PARTY, SPIDER_GIFT, DEPARTMENT_RESUPPLY)
 
 /datum/round_event/shuttle_loan/announce()

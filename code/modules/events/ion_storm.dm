@@ -28,7 +28,6 @@
 
 
 /datum/round_event/ion_storm/start()
-	message_admins("Random Event: Ion Storm")
 	//AI laws
 	for(var/mob/living/silicon/ai/M in living_mob_list)
 		if(M.stat != 2 && M.see_in_dark != 0)

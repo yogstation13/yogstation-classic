@@ -19,7 +19,6 @@
 
 
 /datum/round_event/spider_infestation/start()
-	message_admins("Random Event: Spider Infestation")
 	var/list/vents = list()
 	for(var/obj/machinery/atmospherics/unary/vent_pump/temp_vent in world)
 		if(temp_vent.loc.z == ZLEVEL_STATION && !temp_vent.welded)

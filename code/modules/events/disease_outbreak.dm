@@ -17,7 +17,6 @@
 	announceWhen = rand(15, 30)
 
 /datum/round_event/disease_outbreak/start()
-	message_admins("Random Event: Disease Outbreak")
 	if(!virus_type)
 		virus_type = pick(/datum/disease/dnaspread, /datum/disease/advance/flu, /datum/disease/advance/cold, /datum/disease/brainrot, /datum/disease/magnitis)
 

@@ -19,7 +19,6 @@
 	endWhen = rand(40, 80)
 
 /datum/round_event/wormholes/start()
-	message_admins("Random Event: Wormholes")
 	for(var/turf/simulated/floor/T in world)
 		if(T.z == ZLEVEL_STATION)
 			pick_turfs += T

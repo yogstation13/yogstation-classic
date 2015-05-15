@@ -27,9 +27,6 @@
 /datum/round_event/meteor_wave/announce()
 	priority_announce("Meteors have been detected on collision course with the station.", "Meteor Alert", 'sound/AI/meteors.ogg')
 
-/datum/round_event/meteor_wave/start()
-	message_admins("Random Event: Meteor Wave")
-
 /datum/round_event/meteor_wave/tick()
 	if(IsMultiple(activeFor, 3))
 		spawn_meteors(5, wave_type) //meteor list types defined in gamemode/meteor/meteors.dm

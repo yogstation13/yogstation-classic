@@ -15,7 +15,6 @@
 
 
 /datum/round_event/electrical_storm/start()
-	message_admins("Random Event: Electrical Storm")
 	var/list/epicentreList = list()
 
 	for(var/i=1, i <= lightsoutAmount, i++)

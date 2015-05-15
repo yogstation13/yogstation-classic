@@ -58,7 +58,6 @@
 //Allows you to start before announcing or vice versa.
 //Only called once.
 /datum/round_event/proc/start()
-	message_admins("Random Event: Placeholder")
 	return
 
 //Called when the tick is equal to the announceWhen variable.

@@ -5,7 +5,6 @@
 	max_occurrences = 3
 
 /datum/round_event/spacevine/start()
-	message_admins("Random Event: Spacevine")
 	var/list/turfs = list() //list of all the empty floor turfs in the hallway areas
 
 	for(var/area/hallway/A in world)

@@ -27,7 +27,6 @@
 
 
 /datum/round_event/prison_break/start()
-	message_admins("Random Event: Prison Break")
 	for(var/area/A in prisonAreas)
 		for(var/obj/machinery/light/L in A)
 			L.flicker(10)

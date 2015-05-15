@@ -11,8 +11,7 @@
 	emote_see = list("shakes its head", "shivers")
 	speak_chance = 1
 	turns_per_move = 8
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat
-	meat_amount = 4
+	butcher_results = list(/obj/item/weapon/reagent_containers/food/snacks/meat/slab = 4)
 	response_help  = "pets"
 	response_disarm = "bops"
 	response_harm   = "kicks"

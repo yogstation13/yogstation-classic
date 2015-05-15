@@ -1,7 +1,7 @@
 /datum/round_event_control/alien_infestation
 	name = "Alien Infestation"
 	typepath = /datum/round_event/alien_infestation
-	weight = -1
+	weight = 0
 	max_occurrences = 0
 
 /datum/round_event/alien_infestation
@@ -26,8 +26,7 @@
 
 
 /datum/round_event/alien_infestation/start()
-	message_admins("Random Event: Alien Infestation - \red DENIED")
-	/*var/list/vents = list()
+	var/list/vents = list()
 	for(var/obj/machinery/atmospherics/unary/vent_pump/temp_vent in world)
 		if(temp_vent.loc.z == ZLEVEL_STATION && !temp_vent.welded)
 			if(temp_vent.parent.other_atmosmch.len > 20)	//Stops Aliens getting stuck in small networks. See: Security, Virology
@@ -43,4 +42,4 @@
 		new_xeno.key = C.key
 
 		spawncount--
-		successSpawn = 1*/
+		successSpawn = 1

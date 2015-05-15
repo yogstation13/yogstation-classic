@@ -15,7 +15,6 @@
 
 
 /datum/round_event/anomaly/anomaly_flux/start()
-	message_admins("Random Event: Energectic Flux")
 	var/turf/T = pick(get_area_turfs(impact_area))
 	if(T)
 		newAnomaly = new /obj/effect/anomaly/flux(T.loc)

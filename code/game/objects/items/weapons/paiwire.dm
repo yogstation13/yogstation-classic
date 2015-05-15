@@ -5,6 +5,7 @@
 	icon_state = "wire1"
 
 	var/obj/machinery/machine
+	var/mob/living/silicon/pai/owner
 
 /obj/item/weapon/pai_cable/proc/plugin(obj/machinery/M as obj, mob/user as mob)
 	if(istype(M, /obj/machinery/door) || istype(M, /obj/machinery/camera))
