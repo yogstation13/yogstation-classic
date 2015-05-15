@@ -17,7 +17,6 @@
 
 
 /datum/round_event/carp_migration/start()
-	message_admins("Random Event: Carp Migration")
 	for(var/obj/effect/landmark/C in landmarks_list)
 		if(C.name == "carpspawn")
 			if(prob(95))

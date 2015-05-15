@@ -22,7 +22,6 @@
 
 
 /datum/round_event/blob/start()
-	message_admins("Random Event: Blob")
 	var/turf/T = pick(blobstart)
 	if(!T)
 		return kill()

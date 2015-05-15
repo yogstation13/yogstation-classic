@@ -20,6 +20,13 @@
 		pai.death(0)
 	..()
 
+/obj/item/device/paicard/examine()
+	if (pai)
+		pai.examine()
+		return
+	else
+		return ..()
+
 /obj/item/device/paicard/attack_self(mob/user)
 	if (!in_range(src, user))
 		return
@@ -69,7 +76,7 @@
 			if(pai.master_dna)
 				return
 			if(!istype(usr, /mob/living/carbon))
-				usr << "<span class='notice'>You don't have any DNA, or your DNA is incompatible with this device.</span>"
+				usr << "<span class='warning'>You don't have any DNA, or your DNA is incompatible with this device!</span>"
 			else
 				var/mob/living/carbon/M = usr
 				pai.master = M.real_name
@@ -105,6 +112,7 @@
 
 /obj/item/device/paicard/proc/setPersonality(mob/living/silicon/pai/personality)
 	src.pai = personality
+	src.pai.description = personality.description
 	setEmotionOverlay("pai-null")
 
 /obj/item/device/paicard/proc/removePersonality()

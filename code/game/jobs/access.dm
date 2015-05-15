@@ -93,8 +93,13 @@
 	if(src.check_access(null))
 		return 1
 	if(istype(M, /mob/living/silicon))
-		//AI can do whatever he wants
-		return 1
+		//AI can do whatever he wants UNLESS THEY'RE SUBSILICON PAI SCUM THEN THEY HAVE TO GO BY THE LIST FUCKERS
+		if (istype(M, /mob/living/silicon/pai))
+			var/mob/living/silicon/pai/P = M
+			if (check_access(P.access_card))
+				return 1
+		else
+			return 1
 	else if(istype(M, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M
 		//if they are holding or wearing a card that has access, that works

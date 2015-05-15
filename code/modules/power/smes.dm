@@ -11,10 +11,10 @@
 	anchored = 1
 	use_power = 0
 	var/capacity = 5e6 // maximum charge
-	var/charge = 1e6 // actual charge
+	var/charge = 0 // actual charge
 
-	var/input_attempt = 0 // 1 = attempting to charge, 0 = not attempting to charge
-	var/inputting = 0 // 1 = actually inputting, 0 = not inputting
+	var/input_attempt = 1 // 1 = attempting to charge, 0 = not attempting to charge
+	var/inputting = 1 // 1 = actually inputting, 0 = not inputting
 	var/input_level = 50000 // amount of power the SMES attempts to charge by
 	var/input_level_max = 200000 // cap on input_level
 	var/input_available = 0 // amount of charge available from input last tick
@@ -101,25 +101,25 @@
 			return
 
 		if(terminal) //is there already a terminal ?
-			user << "<span class='alert'>This SMES already have a power terminal!</span>"
+			user << "<span class='warning'>This SMES already have a power terminal!</span>"
 			return
 
 		if(!panel_open) //is the panel open ?
-			user << "<span class='alert'>You must open the maintenance panel first!</span>"
+			user << "<span class='warning'>You must open the maintenance panel first!</span>"
 			return
 
 		var/turf/T = get_turf(user)
 		if (T.intact) //is the floor plating removed ?
-			user << "<span class='alert'>You must first remove the floor plating!</span>"
+			user << "<span class='warning'>You must first remove the floor plating!</span>"
 			return
 
 
 		var/obj/item/stack/cable_coil/C = I
 		if(C.amount < 10)
-			user << "<span class='alert'>You need more wires.</span>"
+			user << "<span class='warning'>You need more wires!</span>"
 			return
 
-		user << "You start building the power terminal..."
+		user << "<span class='notice'>You start building the power terminal...</span>"
 		playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
 
 		if(do_after(user, 20) && C.amount >= 10)
@@ -132,8 +132,8 @@
 
 			C.use(10)
 			user.visible_message(\
-				"<span class='alert'>[user.name] has build a power terminal!</span>",\
-				"You build the power terminal.")
+				"[user.name] has built a power terminal.",\
+				"<span class='notice'>You build the power terminal.</span>")
 
 			//build the terminal and link it to the network
 			make_terminal(T)
@@ -408,7 +408,8 @@
 	log_smes("an emp")
 	..()
 
-
+/obj/machinery/power/smes/engineering
+	charge = 1.5e6 // Engineering starts with some charge for singulo
 
 /obj/machinery/power/smes/magical
 	name = "magical power storage unit"

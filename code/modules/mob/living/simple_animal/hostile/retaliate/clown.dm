@@ -5,8 +5,7 @@
 	icon_living = "clown"
 	icon_dead = "clown_dead"
 	icon_gib = "clown_gib"
-	meat_type = null
-	meat_amount = 3
+	butcher_results = list(/obj/item/weapon/reagent_containers/food/snacks/grown/banana = 1)
 	speak_chance = 0
 	turns_per_move = 5
 	response_help = "pokes"

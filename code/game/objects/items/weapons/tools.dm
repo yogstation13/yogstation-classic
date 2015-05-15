@@ -174,9 +174,9 @@
 	overlays.Cut()
 	if(welding)
 		overlays += "[initial(icon_state)]-on"
-		item_state = "welder1"
+		item_state = "[initial(item_state)]1"
 	else
-		item_state = "welder"
+		item_state = "[initial(item_state)]"
 
 /obj/item/weapon/weldingtool/update_icon()
 	if(change_icons)
@@ -289,7 +289,7 @@
 		return 1
 	else
 		if(M)
-			M << "<span class='notice'>You need more welding fuel to complete this task.</span>"
+			M << "<span class='warning'>You need more welding fuel to complete this task!</span>"
 		return 0
 
 
@@ -316,7 +316,7 @@
 //Toggles the welder off and on
 /obj/item/weapon/weldingtool/proc/toggle(mob/user, message = 0)
 	if(!status)
-		user << "<span class='notice'>[src] can't be turned on while unsecured.</span>"
+		user << "<span class='warning'>[src] can't be turned on while unsecured!</span>"
 		return
 	welding = !welding
 	if(welding)
@@ -328,13 +328,13 @@
 			update_icon()
 			SSobj.processing |= src
 		else
-			user << "<span class='notice'>You need more fuel.</span>"
+			user << "<span class='warning'>You need more fuel!</span>"
 			welding = 0
 	else
 		if(!message)
 			user << "<span class='notice'>You switch [src] off.</span>"
 		else
-			user << "<span class='notice'>[src] shuts off!</span>"
+			user << "<span class='warning'>[src] shuts off!</span>"
 		force = 3
 		damtype = "brute"
 		hitsound = "swing_hit"
@@ -342,7 +342,7 @@
 
 /obj/item/weapon/weldingtool/proc/flamethrower_screwdriver(obj/item/I, mob/user)
 	if(welding)
-		user << "<span class='notice'>Turn it off first.</span>"
+		user << "<span class='warning'>Turn it off first!</span>"
 		return
 	status = !status
 	if(status)
@@ -363,7 +363,7 @@
 			user << "<span class='notice'>You add a rod to a welder, starting to build a flamethrower.</span>"
 			user.put_in_hands(F)
 		else
-			user << "<span class='warning'>You need one rod to start building a flamethrower.</span>"
+			user << "<span class='warning'>You need one rod to start building a flamethrower!</span>"
 			return
 
 /obj/item/weapon/weldingtool/largetank
@@ -392,7 +392,9 @@
 
 
 /obj/item/weapon/weldingtool/hugetank
-	name = "upgraded welding tool"
+	name = "upgraded industrial welding tool"
+	icon_state = "upindwelder"
+	item_state = "upindwelder"
 	max_fuel = 80
 	w_class = 3.0
 	m_amt = 70
@@ -401,6 +403,8 @@
 
 /obj/item/weapon/weldingtool/experimental
 	name = "experimental welding tool"
+	icon_state = "exwelder"
+	item_state = "exwelder"
 	max_fuel = 40
 	w_class = 3.0
 	m_amt = 70
@@ -412,10 +416,17 @@
 //Proc to make the experimental welder generate fuel, optimized as fuck -Sieve
 //i don't think this is actually used, yaaaaay -Pete
 /obj/item/weapon/weldingtool/experimental/proc/fuel_gen()
-	var/gen_amount = (world.time - last_gen) / 25
-	reagents += gen_amount
-	if(reagents > max_fuel)
-		reagents = max_fuel
+	if(!last_gen)
+		last_gen = 1
+		reagents.add_reagent("fuel",1)
+		spawn(10)
+			last_gen = 0
+
+/obj/item/weapon/weldingtool/experimental/process()
+	..()
+	if(reagents.total_volume < max_fuel)
+		fuel_gen()
+
 
 
 /*

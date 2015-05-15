@@ -138,13 +138,13 @@ datum/reagent/water/reaction_turf(var/turf/simulated/T, var/volume)
 	for(var/mob/living/simple_animal/slime/M in T)
 		M.apply_water()
 
-	var/hotspot = (locate(/obj/effect/hotspot) in T)
+	var/obj/effect/hotspot/hotspot = (locate(/obj/effect/hotspot) in T)
 	if(hotspot && !istype(T, /turf/space))
 		if(T.air)
 			var/datum/gas_mixture/G = T.air
 			G.temperature = max(min(G.temperature-(CT*1000),G.temperature/CT),0)
 			G.react()
-			qdel(hotspot)
+			hotspot.Kill()
 	T.color = initial(T.color)
 	return
 
@@ -286,7 +286,7 @@ datum/reagent/unstableslimetoxin/on_mob_life(var/mob/living/carbon/human/H as mo
 	var/datum/species/mutation = pick(possible_morphs)
 	if(prob(90) && mutation && H.dna.species != /datum/species/golem && H.dna.species != /datum/species/golem/adamantine)
 		H << "<span class='danger'>The pain subsides. You feel... different.</span>"
-		H.dna.species = new mutation()
+		hardset_dna(H, null, null, null, null, mutation)
 		H.regenerate_icons()
 		if(mutation == /datum/species/slime)
 			H.faction |= "slime"

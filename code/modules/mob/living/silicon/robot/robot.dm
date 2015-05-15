@@ -59,6 +59,7 @@
 	var/toner = 0
 	var/tonermax = 40
 	var/jetpackoverlay = 0
+	var/braintype = "Cyborg"
 
 /mob/living/silicon/robot/New(loc)
 	spark_system = new /datum/effect/effect/system/spark_spread()
@@ -72,7 +73,6 @@
 	robot_modules_background.layer = 19	//Objects that appear on screen are on layer 20, UI should be just below it.
 
 	ident = rand(1, 999)
-	updatename()
 	update_icons()
 
 	if(!cell)
@@ -99,17 +99,20 @@
 	..()
 
 	//MMI stuff. Held togheter by magic. ~Miauw
-	mmi = new(src)
-	mmi.brain = new /obj/item/organ/brain(mmi)
-	mmi.brain.name = "[real_name]'s brain"
-	mmi.locked = 1
-	mmi.icon_state = "mmi_full"
-	mmi.name = "Man-Machine Interface: [real_name]"
-	mmi.brainmob = new(src)
-	mmi.brainmob.name = src.real_name
-	mmi.brainmob.real_name = src.real_name
-	mmi.brainmob.container = mmi
-	mmi.contents += mmi.brainmob
+	if(!mmi || !mmi.brainmob)
+		mmi = new(src)
+		mmi.brain = new /obj/item/organ/brain(mmi)
+		mmi.brain.name = "[real_name]'s brain"
+		mmi.locked = 1
+		mmi.icon_state = "mmi_full"
+		mmi.name = "Man-Machine Interface: [real_name]"
+		mmi.brainmob = new(src)
+		mmi.brainmob.name = src.real_name
+		mmi.brainmob.real_name = src.real_name
+		mmi.brainmob.container = mmi
+		mmi.contents += mmi.brainmob
+
+	updatename()
 
 	playsound(loc, 'sound/voice/liveagain.ogg', 75, 1)
 	aicamera = new/obj/item/device/camera/siliconcam/robot_camera(src)
@@ -122,6 +125,7 @@
 		if(T)	mmi.loc = T
 		if(mmi.brainmob)
 			mind.transfer_to(mmi.brainmob)
+			mmi.update_icon()
 		else
 			src << "<span class='boldannounce'>Oops! Something went very wrong, your MMI was unable to receive your mind. You have been ghosted. Please make a bug report so we can fix this bug.</span>"
 			ghostize()
@@ -149,22 +153,29 @@
 	updatename()
 	switch(designation)
 		if("Standard")
+			var/icontype = input("Select an icon!", "Robot", "Standard") in list("Standard")
+			if(!icontype) return
 			module = new /obj/item/weapon/robot_module/standard(src)
 			hands.icon_state = "standard"
-			icon_state = "robot"
+			switch(icontype)
+				if("Standard")
+					icon_state = "robot"
+				else
+					icon_state = "robot"
 			modtype = "Stand"
 			feedback_inc("cyborg_standard",1)
 
 		if("Service")
+			var/icontype = input("Select an icon!", "Robot", "Butler") in list("Waitress", "Bro", "Butler", /*"Kent",*/ "Rich")
+			if(!icontype) return
 			module = new /obj/item/weapon/robot_module/butler(src)
 			hands.icon_state = "service"
-			var/icontype = input("Select an icon!", "Robot", null, null) in list("Waitress", "Bro", "Butler", "Kent", "Rich")
 			switch(icontype)
 				if("Waitress")
 					icon_state = "service_female"
 					animation_length=45
-				if("Kent")
-					icon_state = "toiletbot"
+				//if("Kent")
+				//	icon_state = "toiletbot"
 				if("Bro")
 					icon_state = "brobot"
 					animation_length=54
@@ -178,45 +189,100 @@
 			feedback_inc("cyborg_service",1)
 
 		if("Miner")
+			var/icontype = input("Select an icon!", "Robot", "Tread Miner") in list("Tread Miner")
+			if(!icontype) return
 			module = new /obj/item/weapon/robot_module/miner(src)
 			hands.icon_state = "miner"
-			icon_state = "minerborg"
-			animation_length = 30
+			switch(icontype)
+				if("Tread Miner")
+					icon_state = "minerborg"
+					animation_length=30
+				else
+					icon_state = "minerborg"
+					animation_length=30
 			modtype = "Miner"
 			feedback_inc("cyborg_miner",1)
 
 		if("Medical")
+			var/icontype = input("Select an icon!", "Robot", "Mediborg") in list("Mediborg")
+			if(!icontype) return
 			module = new /obj/item/weapon/robot_module/medical(src)
 			hands.icon_state = "medical"
-			icon_state = "mediborg"
-			animation_length = 35
+			switch(icontype)
+				if("Mediborg")
+					icon_state = "mediborg"
+					animation_length=35
+				else
+					icon_state = "mediborg"
+					animation_length = 35
 			modtype = "Med"
 			status_flags &= ~CANPUSH
 			feedback_inc("cyborg_medical",1)
 
 		if("Security")
+			var/icontype = input("Select an icon!", "Robot", "Secborg") in list("Secborg", "Armored Borg", "Treaded Secborg", "Interceptor")
+			if(!icontype) return
 			module = new /obj/item/weapon/robot_module/security(src)
 			hands.icon_state = "security"
-			icon_state = "secborg"
-			animation_length = 28
+			switch(icontype)
+				if("Secborg")
+					icon_state = "secborg"
+					animation_length = 28
+				if("Armored Borg")
+					icon_state = "RedBorg"
+				if("Treaded Secborg")
+					icon_state = "secborg+tread"
+					animation_length = 28
+				if("Interceptor")
+					icon_state = "wisewill-Combat"
+					animation_length = 10
+				else
+					icon_state = "secborg"
+					animation_length = 28
 			modtype = "Sec"
 			//speed = -1 Secborgs have nerfed tasers now, so the speed boost is not necessary
 			status_flags &= ~CANPUSH
 			feedback_inc("cyborg_security",1)
 
 		if("Engineering")
+			var/icontype = input("Select an icon!", "Robot", "Engiborg") in list("Engiborg", "Treaded Engiborg", "Hover Engiborg")
+			if(!icontype) return
 			module = new /obj/item/weapon/robot_module/engineering(src)
 			hands.icon_state = "engineer"
-			icon_state = "engiborg"
-			animation_length = 45
+			switch(icontype)
+				if("Engiborg")
+					icon_state = "engiborg"
+					animation_length = 45
+				if("Treaded Engiborg")
+					icon_state = "engiborg+tread"
+					animation_length = 45
+				if("Hover Engiborg")
+					icon_state = "engiborg+hover"
+					animation_length = 18
+				//if("Bear")
+				//	icon_state = "engiborg+bear"
+				//  animation_length = 45
+				else
+					icon_state = "engiborg"
+					animation_length = 45
 			modtype = "Eng"
 			feedback_inc("cyborg_engineering",1)
 
 		if("Janitor")
+			var/icontype = input("Select an icon!", "Robot", "Janiborg") in list("Janiborg", "Disposal")
+			if(!icontype) return
 			module = new /obj/item/weapon/robot_module/janitor(src)
 			hands.icon_state = "janitor"
-			icon_state = "janiborg"
-			animation_length = 22
+			switch(icontype)
+				if("Janiborg")
+					icon_state = "janiborg"
+					animation_length = 22
+				if("Disposal")
+					icon_state = "disposalbot"
+					animation_length = 6
+				else
+					icon_state = "janiborg"
+					animation_length = 22
 			modtype = "Jan"
 			feedback_inc("cyborg_janitor",1)
 
@@ -242,7 +308,7 @@
 	if(custom_name)
 		changed_name = custom_name
 	else
-		changed_name = "[(designation ? "[designation] " : "")]Cyborg-[num2text(ident)]"
+		changed_name = "[(designation ? "[designation] " : "")][mmi.braintype]-[num2text(ident)]"
 	real_name = changed_name
 	name = real_name
 	if(camera)
@@ -302,7 +368,7 @@
 /mob/living/silicon/robot/Stat()
 	..()
 	if(statpanel("Status"))
-		stat("[worldtime2text()] [time2text(world.realtime, "MMM DD")] [year_integer+540]")	
+		stat("[worldtime2text()] [time2text(world.realtime, "MMM DD")] [year_integer+540]")
 		if(ticker.mode.name == "AI malfunction")
 			var/datum/game_mode/malfunction/malf = ticker.mode
 			for (var/datum/mind/malfai in malf.malf_ai)
@@ -407,61 +473,63 @@
 		user.changeNext_move(CLICK_CD_MELEE)
 		var/obj/item/weapon/weldingtool/WT = W
 		if (src == user)
-			user << "<span class='warning'>You lack the reach to be able to repair yourself.</span>"
-			return 1
+			user << "<span class='warning'>You lack the reach to be able to repair yourself!</span>"
+			return
 		if (src.health >= src.maxHealth)
-			user << "<span class='warning'>[src] is already in good condition.</span>"
-			return 1
-		if (WT.remove_fuel(0, user))
+			user << "<span class='warning'>[src] is already in good condition!</span>"
+			return
+		if (WT.remove_fuel(0, user)) //The welder has 1u of fuel consumed by it's afterattack, so we don't need to worry about taking any away.
 			adjustBruteLoss(-30)
 			updatehealth()
 			add_fingerprint(user)
-			visible_message("<span class='notice'>[user] has fixed some of the dents on [src].</span>")
-			return 0
+			visible_message("[user] has fixed some of the dents on [src].")
+			return
 		else
-			user << "<span class='warning'>The welder must be on for this task.</span>"
-			return 1
+			user << "<span class='warning'>The welder must be on for this task!</span>"
+			return
 
 	else if(istype(W, /obj/item/stack/cable_coil) && wiresexposed)
 		var/obj/item/stack/cable_coil/coil = W
-		if (coil.use(1))
-			adjustFireLoss(-30)
-			updatehealth()
-			visible_message("<span class='notice'>[user] has fixed some of the burnt wires on [src].</span>")
+		if (fireloss > 0)
+			if (coil.use(1))
+				adjustFireLoss(-30)
+				updatehealth()
+				user.visible_message("[user] has fixed some of the burnt wires on [src].", "<span class='notice'>You fix some of the burnt wires on [src].</span>")
+			else
+				user << "<span class='warning'>You need more cable to repair [src]!</span>"
 		else
-			user << "<span class='warning'>You need one length of cable to repair [src].</span>"
+			user << "The wires seem fine, there's no need to fix them."
 
 	else if (istype(W, /obj/item/weapon/crowbar))	// crowbar means open or close the cover
 		if(opened)
-			user << "You close the cover."
+			user << "<span class='notice'>You close the cover.</span>"
 			opened = 0
 			update_icons()
 		else
 			if(locked)
-				user << "The cover is locked and cannot be opened."
+				user << "<span class='warning'>The cover is locked and cannot be opened!</span>"
 			else
-				user << "You open the cover."
+				user << "<span class='notice'>You open the cover.</span>"
 				opened = 1
 				update_icons()
 
 	else if (istype(W, /obj/item/weapon/stock_parts/cell) && opened)	// trying to put a cell inside
 		if(wiresexposed)
-			user << "Close the cover first."
+			user << "<span class='warning'>Close the cover first!</span>"
 		else if(cell)
-			user << "There is a power cell already installed."
+			user << "<span class='warning'>There is a power cell already installed!</span>"
 		else
 			user.drop_item()
 			W.loc = src
 			cell = W
-			user << "You insert the power cell."
-//			chargecount = 0
+			user << "<span class='notice'>You insert the power cell.</span>"
 		update_icons()
 
 	else if (istype(W, /obj/item/weapon/wirecutters) || istype(W, /obj/item/device/multitool) || istype(W, /obj/item/device/assembly/signaler))
 		if (wiresexposed)
 			wires.Interact(user)
 		else
-			user << "You can't reach the wiring."
+			user << "<span class='warning'>You can't reach the wiring!</span>"
 
 	else if(istype(W, /obj/item/weapon/screwdriver) && opened && !cell)	// haxing
 		wiresexposed = !wiresexposed
@@ -472,7 +540,7 @@
 		if(radio)
 			radio.attackby(W,user)//Push it to the radio to let it handle everything
 		else
-			user << "Unable to locate a radio."
+			user << "<span class='warning'>Unable to locate a radio!</span>"
 		update_icons()
 
 	else if(istype(W, /obj/item/weapon/wrench) && opened && !cell) //Deconstruction. The flashes break from the fall, to prevent this from being a ghetto reset module.
@@ -482,20 +550,21 @@
 			return
 		else
 			playsound(src, 'sound/items/Ratchet.ogg', 50, 1)
+			user << "<span class='notice'>You start to unfasten [src]'s securing bolts...</span>"
 			if(do_after(user, 50) && !cell)
-				user.visible_message("<span class='danger'>[user] deconstructs [src]!</span>", "<span class='notice'>You unfasten the securing bolts, and [src] falls to pieces!</span>")
+				user.visible_message("[user] deconstructs [src]!", "<span class='notice'>You unfasten the securing bolts, and [src] falls to pieces!</span>")
 				deconstruct()
 
 	else if(istype(W, /obj/item/weapon/aiModule))
 		var/obj/item/weapon/aiModule/MOD = W
 		if(!opened)
-			user << "You need access to the robot's insides to do that."
+			user << "<span class='warning'>You need access to the robot's insides to do that!</span>"
 			return
 		if(wiresexposed)
-			user << "You need to close the wire panel to do that."
+			user << "<span class='warning'>You need to close the wire panel to do that!</span>"
 			return
 		if(!cell)
-			user << "You need to install a power cell to do that."
+			user << "<span class='warning'>You need to install a power cell to do that!</span>"
 			return
 		if(emagged || (connected_ai && lawupdate)) //Can't be sure which, metagamers
 			emote("buzz-[user.name]")
@@ -507,17 +576,17 @@
 		if(radio)//sanityyyyyy
 			radio.attackby(W,user)//GTFO, you have your own procs
 		else
-			user << "Unable to locate a radio."
+			user << "<span class='warning'>Unable to locate a radio!</span>"
 
 	else if (istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))			// trying to unlock the interface with an ID card
 		if(emagged)//still allow them to open the cover
-			user << "The interface seems slightly damaged"
+			user << "<span class='notice'>The interface seems slightly damaged.</span>"
 		if(opened)
-			user << "You must close the cover to swipe an ID card."
+			user << "<span class='warning'>You must close the cover to swipe an ID card!</span>"
 		else
 			if(allowed(usr))
 				locked = !locked
-				user << "You [ locked ? "lock" : "unlock"] [src]'s cover."
+				user << "<span class='notice'>You [ locked ? "lock" : "unlock"] [src]'s cover.</span>"
 				update_icons()
 			else
 				user << "<span class='danger'>Access denied.</span>"
@@ -525,27 +594,27 @@
 	else if(istype(W, /obj/item/borg/upgrade/))
 		var/obj/item/borg/upgrade/U = W
 		if(!opened)
-			usr << "You must access the borgs internals!"
+			usr << "<span class='warning'>You must access the borgs internals!</span>"
 		else if(!src.module && U.require_module)
-			usr << "The borg must choose a module before it can be upgraded!"
+			usr << "<span class='warning'>The borg must choose a module before it can be upgraded!</span>"
 		else if(U.locked)
-			usr << "The upgrade is locked and cannot be used yet!"
+			usr << "<span class='warning'>The upgrade is locked and cannot be used yet!</span>"
 		else
 			if(U.action(src))
-				usr << "You apply the upgrade to [src]!"
+				usr << "<span class='notice'>You apply the upgrade to [src].</span>"
 				usr.drop_item()
 				U.loc = src
 			else
-				usr << "Upgrade error!"
+				usr << "<span class='danger'>Upgrade error.</span>"
 
 	else if(istype(W, /obj/item/device/toner))
 		if(toner >= tonermax)
-			usr << "The toner level of [src] is at it's highest level possible"
+			usr << "<span class='warning'>The toner level of [src] is at it's highest level possible!</span>"
 		else
 			toner = 40
 			usr.drop_item()
 			qdel(W)
-			usr << "You fill the toner level of [src] to it's max capacity"
+			usr << "<span class='notice'>You fill the toner level of [src] to its max capacity.</span>"
 
 	else
 		if(W.force && W.damtype != STAMINA) //only sparks if real damage is dealt.
@@ -557,19 +626,19 @@
 		if(!opened)//Cover is closed
 			if(locked)
 				if(prob(90))
-					user << "You emag the cover lock."
+					user << "<span class='notice'>You emag the cover lock.</span>"
 					locked = 0
 				else
-					user << "You fail to emag the cover lock."
+					user << "<span class='warning'>You fail to emag the cover lock!</span>"
 					if(prob(25))
-						src << "Hack attempt detected."
+						src << "<span class='userdanger'>Hack attempt detected.</span>"
 			else
-				user << "The cover is already unlocked."
+				user << "<span class='warning'>The cover is already unlocked!</span>"
 			return
 		if(opened)//Cover is open
 			if(emagged)	return//Prevents the X has hit Y with Z message also you cant emag them twice
 			if(wiresexposed)
-				user << "You must close the cover first"
+				user << "<span class='warning'>You must close the cover first!</span>"
 				return
 			else
 				sleep(6)
@@ -578,7 +647,7 @@
 					SetLockdown(1) //Borgs were getting into trouble because they would attack the emagger before the new laws were shown
 					lawupdate = 0
 					connect_ai(null)
-					user << "You emag [src]'s interface."
+					user << "<span class='notice'>You emag [src]'s interface.</span>"
 					message_admins("[key_name_admin(user)] emagged cyborg [key_name_admin(src)].  Laws overridden.")
 					log_game("[key_name(user)] emagged cyborg [key_name(src)].  Laws overridden.")
 					clear_supplied_laws()
@@ -606,9 +675,9 @@
 					SetLockdown(0)
 					update_icons()
 				else
-					user << "You fail to [ locked ? "unlock" : "lock"] [src]'s interface."
+					user << "<span class='warning'>You fail to [ locked ? "unlock" : "lock"] [src]'s interface!</span>"
 					if(prob(25))
-						src << "Hack attempt detected."
+						src << "<span class='danger'>ALERT: Hack attempt detected.</span>"
 
 /mob/living/silicon/robot/verb/unlock_own_cover()
 	set category = "Robot Commands"
@@ -619,7 +688,7 @@
 			if("Yes")
 				locked = 0
 				update_icons()
-				usr << "You unlock your cover."
+				usr << "<span class='notice'>You unlock your cover.</span>"
 
 /mob/living/silicon/robot/attack_alien(mob/living/carbon/alien/humanoid/M as mob)
 	if (M.a_intent =="disarm")
@@ -673,7 +742,7 @@
 			cell.updateicon()
 			cell.add_fingerprint(user)
 			user.put_in_active_hand(cell)
-			user << "You remove \the [cell]."
+			user << "<span class='notice'>You remove \the [cell].</span>"
 			cell = null
 			update_icons()
 
@@ -726,7 +795,7 @@
 /mob/living/silicon/robot/update_icons()
 
 	overlays.Cut()
-	if(stat == 0)
+	if(stat == CONSCIOUS)
 		switch(icon_state)
 			if("robot")
 				overlays += "eyes-standard"
@@ -734,10 +803,22 @@
 				overlays += "eyes-toiletbot"
 			if("secborg")
 				overlays += "eyes-secborg"
+			if("secborg+tread")
+				overlays += "eyes-sectread"
+			if("wisewill-Combat")
+				overlays += "eyes-wwcombat"
+			if("engiborg+hover")
+				overlays += "eyes-hoverengi"
 			if("engiborg")
+				overlays += "eyes-engiborg"
+			if("engiborg+tread")
+				overlays += "eyes-treadengi"
+			if("engiborg+bear")
 				overlays += "eyes-engiborg"
 			if("janiborg")
 				overlays += "eyes-janiborg"
+			if("disposalbot")
+				overlays += "eyes-disposalbot"
 			if("minerborg")
 				overlays += "eyes-minerborg"
 			if("syndie_bloodhound")
@@ -862,7 +943,7 @@
 					F.dirt = 0
 				for(var/A in tile)
 					if(istype(A, /obj/effect))
-						if(istype(A, /obj/effect/rune) || istype(A, /obj/effect/decal/cleanable) || istype(A, /obj/effect/overlay))
+						if(is_cleanable(A))
 							qdel(A)
 					else if(istype(A, /obj/item))
 						var/obj/item/cleaned_item = A

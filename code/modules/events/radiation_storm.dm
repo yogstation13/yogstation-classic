@@ -18,7 +18,6 @@
 
 
 /datum/round_event/radiation_storm/start()
-	message_admins("Random Event: Radiation Storm")
 	for(var/mob/living/carbon/C in living_mob_list)
 		var/turf/T = get_turf(C)
 		if(!T)			continue

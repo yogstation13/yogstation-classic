@@ -50,17 +50,13 @@
 			head_check = 1
 			break
 
-	for(var/datum/mind/player in antag_candidates)
-		for(var/job in restricted_jobs)//Removing heads and such from the list
-			if(player.assigned_role == job)
-				antag_candidates -= player
-
 	for (var/i=1 to max_headrevs)
 		if (antag_candidates.len==0)
 			break
 		var/datum/mind/lenin = pick(antag_candidates)
 		antag_candidates -= lenin
 		head_revolutionaries += lenin
+		lenin.restricted_roles = restricted_jobs
 
 	if((head_revolutionaries.len < required_enemies)||(!head_check))
 		return 0
@@ -187,14 +183,19 @@
 ///////////////////////////////
 /datum/game_mode/revolution/proc/latejoin_headrev()
 	if(revolutionaries) //Head Revs are not in this list
-		var/datum/mind/stalin = pick(revolutionaries)
-		revolutionaries -= stalin
-		head_revolutionaries += stalin
-		log_game("[stalin.key] (ckey) has been promoted to a head rev")
-		equip_revolutionary(stalin.current)
-		forge_revolutionary_objectives(stalin)
-		greet_revolutionary(stalin)
-		++max_headrevs
+		var/list/promotable_revs = list()
+		for(var/datum/mind/khrushchev in revolutionaries)
+			if(khrushchev.current && khrushchev.current.client && khrushchev.current.stat != DEAD)
+				if(khrushchev.current.client.prefs.be_special & BE_REV)
+					promotable_revs += khrushchev
+		if(promotable_revs)
+			var/datum/mind/stalin = pick(promotable_revs)
+			revolutionaries -= stalin
+			head_revolutionaries += stalin
+			log_game("[stalin.key] (ckey) has been promoted to a head rev")
+			equip_revolutionary(stalin.current)
+			forge_revolutionary_objectives(stalin)
+			greet_revolutionary(stalin)
 
 //////////////////////////////////////
 //Checks if the revs have won or not//
@@ -213,11 +214,15 @@
 	if(config.continuous["revolution"])
 		if(finished != 0)
 			SSshuttle.emergencyNoEscape = 0
+			if(SSshuttle.emergency.mode == SHUTTLE_STRANDED)
+				SSshuttle.emergency.mode = SHUTTLE_DOCKED
+				SSshuttle.emergency.timer = world.time
+				priority_announce("Hostile enviroment resolved. You have 3 minutes to board the Emergency Shuttle.", null, 'sound/AI/shuttledock.ogg', "Priority")
 		return ..()
 	if(finished != 0)
 		return 1
 	else
-		return 0
+		return ..()
 
 ///////////////////////////////////////////////////
 //Deals with converting players to the revolution//

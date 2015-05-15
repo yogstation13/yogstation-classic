@@ -9,7 +9,6 @@
 	new /obj/item/weapon/storage/firstaid/regular(src)
 	new /obj/item/weapon/storage/box/handcuffs(src)
 	new /obj/item/device/aicard(src)
-	new /obj/item/weapon/melee/baton/loaded(src)
 	new /obj/item/device/flash/handheld(src)
 	new /obj/item/weapon/card/emag/centcom(src)
 	if(prob(50))
@@ -33,7 +32,6 @@
 	new /obj/item/weapon/storage/box/teargas(src)
 	new /obj/item/weapon/storage/box/flashes(src)
 	new /obj/item/weapon/storage/box/handcuffs(src)
-	new /obj/item/weapon/melee/baton/loaded(src)
 	new /obj/item/weapon/shield/riot/tele(src)
 
 /obj/structure/closet/secure_closet/ertMed
@@ -49,7 +47,6 @@
 	new /obj/item/weapon/storage/firstaid/fire(src)
 	new /obj/item/weapon/storage/firstaid/brute(src)
 	new /obj/item/weapon/storage/firstaid/regular(src)
-	new /obj/item/weapon/melee/baton/loaded(src)
 	new /obj/item/weapon/defibrillator/compact/combat/loaded(src)
 	new /obj/machinery/bot/medbot(src)
 
@@ -66,7 +63,6 @@
 	new /obj/item/stack/sheet/glass(src, 50)
 	new /obj/item/clothing/shoes/magboots(src)
 	new /obj/item/weapon/storage/box/metalfoam(src)
-	new /obj/item/weapon/melee/baton/loaded(src)
 	new /obj/item/weapon/rcd_ammo/large(src)
 	new /obj/item/weapon/rcd_ammo/large(src)
 	new /obj/item/weapon/rcd_ammo/large(src)

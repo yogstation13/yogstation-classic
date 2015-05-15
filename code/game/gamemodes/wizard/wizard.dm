@@ -8,8 +8,8 @@
 	required_players = 20
 	required_enemies = 1
 	recommended_enemies = 1
-	pre_setup_before_jobs = 1
 	enemy_minimum_age = 14
+	round_ends_with_antag_death = 1
 	var/use_huds = 0
 	var/finished = 0
 
@@ -171,36 +171,13 @@
 
 /datum/game_mode/wizard/check_finished()
 
-	if(replacementmode && round_converted == 2)
-		return replacementmode.check_finished()
-
-	if(round_converted == 1 || !wizards) //No reason to waste resources
-		return ..() //Check for evacuation/nuke
-
 	for(var/datum/mind/wizard in wizards)
-		if(!wizard.current)
-			continue
-		if(wizard.current.stat != DEAD)
+		if(isliving(wizard.current) && wizard.current.stat!=DEAD)
 			return ..()
-
-	for(var/datum/mind/traitor in traitors)
-		if(!traitor.current)
-			continue
-		if(traitor.current.stat != DEAD)
-			return ..()
-
-	if(!config.continuous["wizard"])
-		return 1
 
 	if(SSevent.wizardmode) //If summon events was active, turn it off
 		SSevent.toggleWizardmode()
 		SSevent.resetFrequency()
-
-	if(config.midround_antag["wizard"])
-		round_converted = convert_roundtype()
-		if(!round_converted)
-			finished = 1
-			return 1
 
 	return ..()
 
