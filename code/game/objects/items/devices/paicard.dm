@@ -112,6 +112,7 @@
 
 /obj/item/device/paicard/proc/setPersonality(mob/living/silicon/pai/personality)
 	src.pai = personality
+	src.pai.description = personality.description
 	setEmotionOverlay("pai-null")
 
 /obj/item/device/paicard/proc/removePersonality()

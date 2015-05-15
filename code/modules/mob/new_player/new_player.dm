@@ -34,7 +34,7 @@
 	else
 		output += "<p><a href='byond://?src=\ref[src];manifest=1'>View the Crew Manifest</A></p>"
 		if(joining_forbidden)
-			output += "<p><span class='linkOff'>Join Game!</span></p>"		
+			output += "<p><span class='linkOff'>Join Game!</span></p>"
 		else
 			output += "<p><a href='byond://?src=\ref[src];late_join=1'>Join Game!</A></p>"
 
@@ -87,19 +87,36 @@
 		output += "Please read the server rules carefully. To stop receiving this popup, contact an administrator using Adminhelp (F1).<br>"
 
 	if(current_agree > 0)
-		output += "There has been an update in the server rules:<br>"
+		output += "<br>There has been an update in the server rules:<br><br>"
 		if(current_agree < 2)
-			output += "Wizard added to murderboning exception list.<br>Added rule 0.6 (Use proper IC language).<br>"
+			output += "Wizard added to murderboning exception list.<br>\
+			Added rule 0.6 (Use proper IC language).<br>"
 		if(current_agree < 3)
-			output += "Added rule 0.8 (Use common sense).<br>Added rule 1.3 (Do not act as antagonist when not).<br>Expanded rule 0.7 (Listen to admins).<br>Griefing and powergaming rules now mention critting as well as killing.<br>"
+			output += "Added rule 0.8 (Use common sense).<br>\
+			Added rule 1.3 (Do not act as antagonist when not).<br>\
+			Expanded rule 0.7 (Listen to admins).<br>\
+			Griefing and powergaming rules now mention critting as well as killing.<br>"
+		if(current_agree < 4)
+			output += "Expanded rule 0.7 (Listen to admins).<br>\
+			Slightly expanded rules 1.3 (Do not act as antagonist when not), 1.4 (Do not powergame), and 1.5 (Do not metagame).<br>\
+			Added specific metagaming rules related to various antagonists:<br>\
+				1.5.1 (Nanotrasen standard procedure related to unknown alien organisms),<br>\
+				1.5.2 (Nanotrasen standard procedure related to unauthorized religious activity),<br>\
+				1.5.3 (Nanotrasen standard procedure related to widespread disregard for the chain of command).<br>\
+			This section will be expanded in the future.<br>\
+			Expanded rule 1.7 (Demonstrate clone memory disorder).<br>\
+			Noticeably relaxed rule 2.1.1 (Do not murderbone).<br>\
+			Updated rules 2.1.2 (Be active when playing a round defining antagonist) and 2.1.3 (Be a true revolutionary or gangster) to cover new gamemodes.<br>\
+			Expanded rule 2.3.2 (Know who is human).<br>\
+			Expanded rules 3.5.2 (Do not carry around harmful chemicals) and 3.5.3 (Do not misrepresent chemicals being given to people).<br>"
 
-	output += "Violation of server rules can lead to a ban from certain roles, a temporary ban, or a permanent ban.<br>"
+	output += "<br>Violation of server rules can lead to a ban from certain roles, a temporary ban, or a permanent ban.<br>"
 	output += "If you have trouble understanding some of the game mechanics, check out the wiki.<br>"
 	output += "Any remaining questions can be resolved by using Adminhelp (F1).<br>"
 	output += "<p><center><a href='byond://?src=\ref[src];drules=1'>Server Rules</A>&nbsp\
 		<a href='byond://?src=\ref[src];dtgwiki=1'>/tg/ wiki</A>&nbsp<a href='byond://?src=\ref[src];dismiss=1'>Dismiss</A></center></p>"
 
-	var/datum/browser/popup = new(src, "disclaimer", "<div align='center'>IMPORTANT</div>", 500, 600)
+	var/datum/browser/popup = new(src, "disclaimer", "<div align='center'>IMPORTANT</div>", 700, 600)
 	popup.set_window_options("can_close=0")
 	popup.set_content(output)
 	popup.open(0)
@@ -349,7 +366,7 @@
 	SSjob.AssignRole(src, rank, 1)
 
 	var/mob/living/carbon/human/character = create_character()	//creates the human and transfers vars and mind
-	character.mind.quiet_round = character.client.prefs.be_special & QUIET_ROUND
+	character.mind.quiet_round = character.client.prefs.toggles & QUIET_ROUND
 	SSjob.EquipRank(character, rank, 1)					//equips the human
 	character.loc = pick(latejoin)
 	character.lastarea = get_area(loc)

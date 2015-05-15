@@ -314,7 +314,7 @@
 	for(var/mob/new_player/player in player_list)
 		if(player.client && player.ready)
 			players += player
-			if(player.client.prefs.be_special & QUIET_ROUND)
+			if(player.client.prefs.toggles & QUIET_ROUND)
 				player.mind.quiet_round = 1
 
 	// Shuffling, the players list is now ping-independent!!!

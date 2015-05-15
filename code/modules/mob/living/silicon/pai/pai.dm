@@ -9,8 +9,12 @@
 	mob_size = MOB_SIZE_SMALL
 	pass_flags = PASSTABLE | PASSMOB
 
+	var/description = null
+
 	var/network = "SS13"
 	var/obj/machinery/camera/current = null
+
+	var/obj/item/weapon/card/id/access_card = null //yes pai require one of these now
 
 	/*MOBILITY VARS*/
 	var/chassis = "mouse"
@@ -80,6 +84,7 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 		radio = card.radio
 
 	verbs += /mob/living/silicon/pai/proc/choose_chassis
+	verbs += /mob/living/silicon/pai/proc/rest_protocol
 
 	//PDA
 	pda = new(src)
@@ -257,7 +262,7 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 		spawn(rand(5, 8))
 			if(stat != 2)
 				flicker_fade()
-	return ..()
+	return
 
 /mob/living/silicon/pai/attack_hand(mob/user as mob)
 	if(stat == 2) return
@@ -268,7 +273,7 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 		spawn(1)
 			close_up()
 
-	return ..()
+	return
 
 /mob/living/silicon/pai/hitby(AM as mob|obj)
 	visible_message("<span class='info'>[AM] flies clean through [src]'s holographic field, causing it to stutter and warp wildly!")
@@ -291,15 +296,11 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 			flicker_fade()
 	return
 
-/mob/living/silicon/pai/proc/flicker_fade(var/dur = 4)
+/mob/living/silicon/pai/proc/flicker_fade(var/dur = 40)
 	visible_message("<span class='danger'>[src]'s holographic field flickers out of existence!</span>")
 	src << "<span class='boldwarning'>The holographic containment field surrounding you is failing!</span>"
 	spawn(dur)
 		close_up()
-
-
-/mob/living/silicon/pai/Bump(atom/movable/AM as mob|obj, yes)
-	return
 
 /mob/living/silicon/pai/Bumped(AM as mob|obj)
 	return
@@ -307,9 +308,10 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 /mob/living/silicon/pai/start_pulling(var/atom/movable/AM)
 	return
 
-// See software.dm for Topic()
+/mob/living/silicon/pai/show_inv(mob/user)
+	return
 
-///mob/living/silicon/pai/attack_hand(mob/living/carbon/M as mob)
+// See software.dm for Topic()
 
 /mob/living/silicon/pai/proc/switchCamera(var/obj/machinery/camera/C)
 	usr:cameraFollow = null
@@ -407,8 +409,8 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 
 
 //debug shit, comment out when deploying
-/*
-/mob/verb/makePAI(var/turf/t in view())
+
+/*/mob/verb/makePAI(var/turf/t in view())
 	var/obj/item/device/paicard/card = new(t)
 	var/mob/living/silicon/pai/pai = new(card)
 	pai.key = src.key
@@ -519,11 +521,11 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 	verbs -= /mob/living/silicon/pai/proc/choose_chassis
 
 
-/mob/living/silicon/pai/lay_down()
-	set name = "Rest"
-	set category = "IC"
+/mob/living/silicon/pai/proc/rest_protocol()
+	set name = "Activate R.E.S.T Protocol"
+	set category = "pAI Commands"
 
-	if(istype(src.loc,/obj/item/device/paicard))
+	if(src && istype(src.loc,/obj/item/device/paicard))
 		resting = 0
 	else
 		resting = !resting

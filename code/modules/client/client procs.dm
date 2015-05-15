@@ -191,8 +191,8 @@ var/next_external_rsc = 0
 		add_donor_verbs()
 	else
 		prefs.unlock_content &= ~2
-		if(prefs.be_special & QUIET_ROUND)
-			prefs.be_special &= ~QUIET_ROUND
+		if(prefs.toggles & QUIET_ROUND)
+			prefs.toggles &= ~QUIET_ROUND
 			prefs.save_preferences()
 
 	add_verbs_from_config()

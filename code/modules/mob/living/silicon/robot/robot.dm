@@ -153,22 +153,29 @@
 	updatename()
 	switch(designation)
 		if("Standard")
+			var/icontype = input("Select an icon!", "Robot", "Standard") in list("Standard")
+			if(!icontype) return
 			module = new /obj/item/weapon/robot_module/standard(src)
 			hands.icon_state = "standard"
-			icon_state = "robot"
+			switch(icontype)
+				if("Standard")
+					icon_state = "robot"
+				else
+					icon_state = "robot"
 			modtype = "Stand"
 			feedback_inc("cyborg_standard",1)
 
 		if("Service")
+			var/icontype = input("Select an icon!", "Robot", "Butler") in list("Waitress", "Bro", "Butler", /*"Kent",*/ "Rich")
+			if(!icontype) return
 			module = new /obj/item/weapon/robot_module/butler(src)
 			hands.icon_state = "service"
-			var/icontype = input("Select an icon!", "Robot", null, null) in list("Waitress", "Bro", "Butler", "Kent", "Rich")
 			switch(icontype)
 				if("Waitress")
 					icon_state = "service_female"
 					animation_length=45
-				if("Kent")
-					icon_state = "toiletbot"
+				//if("Kent")
+				//	icon_state = "toiletbot"
 				if("Bro")
 					icon_state = "brobot"
 					animation_length=54
@@ -182,45 +189,100 @@
 			feedback_inc("cyborg_service",1)
 
 		if("Miner")
+			var/icontype = input("Select an icon!", "Robot", "Tread Miner") in list("Tread Miner")
+			if(!icontype) return
 			module = new /obj/item/weapon/robot_module/miner(src)
 			hands.icon_state = "miner"
-			icon_state = "minerborg"
-			animation_length = 30
+			switch(icontype)
+				if("Tread Miner")
+					icon_state = "minerborg"
+					animation_length=30
+				else
+					icon_state = "minerborg"
+					animation_length=30
 			modtype = "Miner"
 			feedback_inc("cyborg_miner",1)
 
 		if("Medical")
+			var/icontype = input("Select an icon!", "Robot", "Mediborg") in list("Mediborg")
+			if(!icontype) return
 			module = new /obj/item/weapon/robot_module/medical(src)
 			hands.icon_state = "medical"
-			icon_state = "mediborg"
-			animation_length = 35
+			switch(icontype)
+				if("Mediborg")
+					icon_state = "mediborg"
+					animation_length=35
+				else
+					icon_state = "mediborg"
+					animation_length = 35
 			modtype = "Med"
 			status_flags &= ~CANPUSH
 			feedback_inc("cyborg_medical",1)
 
 		if("Security")
+			var/icontype = input("Select an icon!", "Robot", "Secborg") in list("Secborg", "Armored Borg", "Treaded Secborg", "Interceptor")
+			if(!icontype) return
 			module = new /obj/item/weapon/robot_module/security(src)
 			hands.icon_state = "security"
-			icon_state = "secborg"
-			animation_length = 28
+			switch(icontype)
+				if("Secborg")
+					icon_state = "secborg"
+					animation_length = 28
+				if("Armored Borg")
+					icon_state = "RedBorg"
+				if("Treaded Secborg")
+					icon_state = "secborg+tread"
+					animation_length = 28
+				if("Interceptor")
+					icon_state = "wisewill-Combat"
+					animation_length = 10
+				else
+					icon_state = "secborg"
+					animation_length = 28
 			modtype = "Sec"
 			//speed = -1 Secborgs have nerfed tasers now, so the speed boost is not necessary
 			status_flags &= ~CANPUSH
 			feedback_inc("cyborg_security",1)
 
 		if("Engineering")
+			var/icontype = input("Select an icon!", "Robot", "Engiborg") in list("Engiborg", "Treaded Engiborg", "Hover Engiborg")
+			if(!icontype) return
 			module = new /obj/item/weapon/robot_module/engineering(src)
 			hands.icon_state = "engineer"
-			icon_state = "engiborg"
-			animation_length = 45
+			switch(icontype)
+				if("Engiborg")
+					icon_state = "engiborg"
+					animation_length = 45
+				if("Treaded Engiborg")
+					icon_state = "engiborg+tread"
+					animation_length = 45
+				if("Hover Engiborg")
+					icon_state = "engiborg+hover"
+					animation_length = 18
+				//if("Bear")
+				//	icon_state = "engiborg+bear"
+				//  animation_length = 45
+				else
+					icon_state = "engiborg"
+					animation_length = 45
 			modtype = "Eng"
 			feedback_inc("cyborg_engineering",1)
 
 		if("Janitor")
+			var/icontype = input("Select an icon!", "Robot", "Janiborg") in list("Janiborg", "Disposal")
+			if(!icontype) return
 			module = new /obj/item/weapon/robot_module/janitor(src)
 			hands.icon_state = "janitor"
-			icon_state = "janiborg"
-			animation_length = 22
+			switch(icontype)
+				if("Janiborg")
+					icon_state = "janiborg"
+					animation_length = 22
+				if("Disposal")
+					icon_state = "disposalbot"
+					animation_length = 6
+				else
+					icon_state = "janiborg"
+					animation_length = 22
 			modtype = "Jan"
 			feedback_inc("cyborg_janitor",1)
 
@@ -306,7 +368,7 @@
 /mob/living/silicon/robot/Stat()
 	..()
 	if(statpanel("Status"))
-		stat("[worldtime2text()] [time2text(world.realtime, "MMM DD")] [year_integer+540]")	
+		stat("[worldtime2text()] [time2text(world.realtime, "MMM DD")] [year_integer+540]")
 		if(ticker.mode.name == "AI malfunction")
 			var/datum/game_mode/malfunction/malf = ticker.mode
 			for (var/datum/mind/malfai in malf.malf_ai)
@@ -741,10 +803,22 @@
 				overlays += "eyes-toiletbot"
 			if("secborg")
 				overlays += "eyes-secborg"
+			if("secborg+tread")
+				overlays += "eyes-sectread"
+			if("wisewill-Combat")
+				overlays += "eyes-wwcombat"
+			if("engiborg+hover")
+				overlays += "eyes-hoverengi"
 			if("engiborg")
+				overlays += "eyes-engiborg"
+			if("engiborg+tread")
+				overlays += "eyes-treadengi"
+			if("engiborg+bear")
 				overlays += "eyes-engiborg"
 			if("janiborg")
 				overlays += "eyes-janiborg"
+			if("disposalbot")
+				overlays += "eyes-disposalbot"
 			if("minerborg")
 				overlays += "eyes-minerborg"
 			if("syndie_bloodhound")
