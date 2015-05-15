@@ -220,7 +220,7 @@
 			feedback_inc("cyborg_medical",1)
 
 		if("Security")
-			var/icontype = input("Select an icon!", "Robot", "Secborg") in list("Secborg", "Armored Borg", "Treaded Secborg", "Interceptor")
+			var/icontype = input("Select an icon!", "Robot", "Secborg") in list("Secborg", "Treaded Secborg", "Interceptor")
 			if(!icontype) return
 			module = new /obj/item/weapon/robot_module/security(src)
 			hands.icon_state = "security"
@@ -228,8 +228,6 @@
 				if("Secborg")
 					icon_state = "secborg"
 					animation_length = 28
-				if("Armored Borg")
-					icon_state = "RedBorg"
 				if("Treaded Secborg")
 					icon_state = "secborg+tread"
 					animation_length = 28
