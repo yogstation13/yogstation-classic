@@ -56,7 +56,7 @@
 "bd" = (/obj/structure/table,/obj/item/weapon/gun/energy/laser/retro,/obj/effect/landmark/shuttledock{name = "whiteship"},/turf/simulated/shuttle/floor{icon_state = "floor3"},/area/space)
 "be" = (/obj/structure/table,/obj/effect/landmark/shuttledock{name = "whiteship"},/turf/simulated/shuttle/floor{icon_state = "floor3"},/area/space)
 "bf" = (/obj/machinery/door/airlock/glass,/obj/effect/landmark/shuttledock{name = "whiteship"},/turf/simulated/shuttle/floor{icon_state = "floor3"},/area/space)
-"bg" = (/obj/machinery/computer/shuttle/syndicate/whiteship,/obj/effect/landmark/shuttledock{name = "whiteship"},/turf/simulated/shuttle/floor{icon_state = "floor3"},/area/space)
+"bg" = (/obj/machinery/computer/shuttle/white_ship,/obj/effect/landmark/shuttledock{name = "whiteship"},/turf/simulated/shuttle/floor{icon_state = "floor3"},/area/space)
 "bh" = (/obj/structure/stool/bed/chair{dir = 4},/obj/effect/decal/remains/human,/obj/effect/landmark/shuttledock{name = "whiteship"},/turf/simulated/shuttle/floor{icon_state = "floor3"},/area/space)
 "bi" = (/turf/simulated/shuttle/wall{icon_state = "swall_s9"; dir = 2},/area/derelict/ship)
 "bj" = (/turf/simulated/shuttle/wall{icon_state = "swall_s5"; dir = 2},/area/derelict/ship)
