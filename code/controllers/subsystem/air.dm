@@ -4,9 +4,9 @@ var/datum/subsystem/air/SSair
 	name = "Air"
 	priority = 20
 	cost = 5
-	wait = 5
+	wait = 10
 	dynamic_wait = 1
-	dwait_lower = 5
+	dwait_lower = 10
 	dwait_upper = 50
 
 	var/cost_turfs = 0
