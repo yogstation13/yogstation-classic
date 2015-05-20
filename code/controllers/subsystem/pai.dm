@@ -27,7 +27,9 @@ var/datum/subsystem/pai/SSpai
 			pai.real_name = pai.name
 			pai.key = candidate.key
 
+
 			card.setPersonality(pai)
+			card.pai.description = candidate.description
 			card.looking_for_personality = 0
 
 			ticker.mode.update_cult_icons_removed(card.pai.mind)
