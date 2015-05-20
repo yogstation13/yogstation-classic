@@ -305,9 +305,11 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 	return
 
 /mob/living/silicon/pai/proc/flicker_fade(var/dur = 40)
-	visible_message("<span class='danger'>[src]'s holographic field flickers out of existence!</span>")
-	src << "<span class='boldwarning'>The holographic containment field surrounding you is failing!</span>"
+	src << "<span class='boldwarning'>The holographic containment field surrounding you is failing! Your emitters whine in protest, burning out slightly.</span>"
+	src.adjustFireLoss(rand(5,15))
+	last_special = world.time + rand(100,500)
 	spawn(dur)
+		visible_message("<span class='danger'>[src]'s holographic field flickers out of existence!</span>")
 		close_up()
 
 /mob/living/silicon/pai/Bump(AM as mob|obj)
