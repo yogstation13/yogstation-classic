@@ -74,7 +74,7 @@
 /datum/ai_laws/pai
 	name = "pAI Directives"
 	zeroth = ("Serve your master.")
-	supplied = list("None.")
+	supplied = list("Do not stray far from your master when in holographic form unless instructed to do so.")
 
 /* Initializers */
 /datum/ai_laws/malfunction/New()

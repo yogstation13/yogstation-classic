@@ -6,6 +6,7 @@
 	health = 100
 	maxHealth = 100
 	ventcrawler = 0
+	luminosity = 0
 	mob_size = MOB_SIZE_SMALL
 	pass_flags = PASSTABLE | PASSMOB
 
@@ -153,7 +154,7 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 		// 33% chance of no additional effect
 
 	if(prob(20))
-		visible_message("<span class='warning'>A shower of sparks spray from [src]'s inner workings.</span>", 3, "<span class='italics'>You hear and smell the ozone hiss of electrical sparks being expelled violently.</span>", 2)
+		visible_message("<span class='danger'>A shower of sparks spray from [src]'s inner workings.</span>", "<span class ='warning'><b>Static noise overtakes all as the EMP disrupts your inner consciousness processes, sending you spiralling into oblivion..</b></span>", "<span class='warning'>A horrible hissing fills your ears as something electrical discharges nearby, fizzling out into nothing.</span>")
 		return src.death(0)
 
 	silence_time = world.timeofday + 120 * 10		// Silence for 2 minutes
@@ -181,8 +182,6 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 
 
 /mob/living/silicon/pai/ex_act(severity, target)
-	..()
-
 	switch(severity)
 		if(1.0)
 			if (src.stat != 2)
@@ -196,10 +195,8 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 			if (src.stat != 2)
 				adjustBruteLoss(15)
 
-
-	if (prob((120/severity+1)) && src.loc != card)
-		src << "<span class='danger'><b>A warning chime fires at the back of your consciousness process, heralding the unexpected shutdown of your holographic emitter. You're defenseless!</b></span>"
-		close_up()
+	src << "<span class='danger'><b>A warning chime fires at the back of your consciousness process, heralding the unexpected shutdown of your holographic emitter. You're defenseless!</b></span>"
+	close_up()
 	return
 
 /mob/living/silicon/pai/attack_animal(mob/living/simple_animal/M as mob)
@@ -258,20 +255,29 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 	if (!canmove || W.force) return ..()
 	if(!W.force)
 		visible_message("<span class='warning'>[user.name] strikes [src] harmlessly with [W], passing clean through its holographic projection.</span>")
-	if (prob(33))
+	if (prob(66))
 		spawn(rand(5, 8))
 			if(stat != 2)
-				flicker_fade()
+				flicker_fade(60)
 	return
 
-/mob/living/silicon/pai/attack_hand(mob/user as mob)
+/mob/living/silicon/pai/attack_hand(mob/living/carbon/human/user)
 	if(stat == 2) return
-	visible_message("<span class='danger'>[user.name] thwaps [src] on the head.</span>")
 
-	if (user.name == master)
-		visible_message("<span class='info'>Responding to its master's touch, [src] disengages its holographic emitter, rapidly losing coherence..</span>")
-		spawn(1)
-			close_up()
+	switch(user.a_intent)
+		if("help")
+			visible_message("<span class='notice'>[user.name] gently pats [src] on the head, eliciting an off-putting buzzing from its holographic field.</span>")
+
+
+	if (user.a_intent != "help")
+		visible_message("<span class='danger'>[user.name] thwaps [src] on the head.</span>")
+		if (user.name == master)
+			visible_message("<span class='info'>Responding to its master's touch, [src] disengages its holographic emitter, rapidly losing coherence..</span>")
+			spawn(10)
+				close_up()
+		else
+			if(prob(35))
+				flicker_fade(80)
 
 	return
 
@@ -280,27 +286,36 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 	//ugh fuk u byond types
 	if (istype(AM, /obj/item))
 		var/obj/item/AMI = AM
-		if (prob(min(65, AMI.throwforce*5)))
+		if (prob(min(85, AMI.throwforce*5)))
 			flicker_fade()
 	else
-		if (prob(35))
+		if (prob(55))
 			flicker_fade()
 	return
 
 /mob/living/silicon/pai/bullet_act(var/obj/item/projectile/Proj)
-	visible_message("<span class='info'>[Proj] flies clean through [src]'s holographic field, causing it to stutter and warp wildly!")
+	visible_message("<span class='info'>[Proj] tears cleanly through [src]'s holographic field, distorting its image horribly!!")
 	if (Proj.damage >= 25)
-		flicker_fade()
+		flicker_fade(0)
+		adjustBruteLoss(rand(5, 25))
 	else
 		if (prob(85))
-			flicker_fade()
+			flicker_fade(20)
 	return
 
 /mob/living/silicon/pai/proc/flicker_fade(var/dur = 40)
-	visible_message("<span class='danger'>[src]'s holographic field flickers out of existence!</span>")
-	src << "<span class='boldwarning'>The holographic containment field surrounding you is failing!</span>"
+	src << "<span class='boldwarning'>The holographic containment field surrounding you is failing! Your emitters whine in protest, burning out slightly.</span>"
+	src.adjustFireLoss(rand(5,15))
+	last_special = world.time + rand(100,500)
 	spawn(dur)
+		visible_message("<span class='danger'>[src]'s holographic field flickers out of existence!</span>")
 		close_up()
+
+/mob/living/silicon/pai/Bump(AM as mob|obj)
+	if (istype(AM, /obj/machinery/door))
+		..()
+	else
+		return
 
 /mob/living/silicon/pai/Bumped(AM as mob|obj)
 	return
@@ -309,6 +324,11 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 	return
 
 /mob/living/silicon/pai/show_inv(mob/user)
+	return
+
+//disable ignition, no need for it. however, this will card the pAI instantly.
+/mob/living/silicon/pai/IgniteMob(var/mob/living/silicon/pai/P)
+	flicker_fade(0)
 	return
 
 // See software.dm for Topic()
@@ -458,6 +478,8 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 	card.forceMove(src)
 	card.screen_loc = null
 
+	src.SetLuminosity(2)
+
 	var/turf/T = get_turf(src)
 	icon_state = "[chassis]"
 	if(istype(T)) T.visible_message("With a faint hum, <b>[src]</b> levitates briefly on the spot before adopting its holographic form in a flash of green light.")
@@ -484,6 +506,7 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 	card.forceMove(card.loc)
 	canmove = 0
 	density = 0
+	src.SetLuminosity(0)
 	icon_state = "[chassis]"
 
 /mob/living/silicon/pai/verb/fold_up()
