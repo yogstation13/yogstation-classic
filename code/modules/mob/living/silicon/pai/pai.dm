@@ -262,14 +262,23 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 				flicker_fade(60)
 	return
 
-/mob/living/silicon/pai/attack_hand(mob/user as mob)
+/mob/living/silicon/pai/attack_hand(mob/living/carbon/human/user)
 	if(stat == 2) return
-	visible_message("<span class='danger'>[user.name] thwaps [src] on the head.</span>")
 
-	if (user.name == master)
-		visible_message("<span class='info'>Responding to its master's touch, [src] disengages its holographic emitter, rapidly losing coherence..</span>")
-		spawn(1)
-			close_up()
+	switch(user.a_intent)
+		if("help")
+			visible_message("<span class='notice'>[user.name] gently pats [src] on the head, eliciting an off-putting buzzing from its holographic field.</span>")
+
+
+	if (user.a_intent != "help")
+		visible_message("<span class='danger'>[user.name] thwaps [src] on the head.</span>")
+		if (user.name == master)
+			visible_message("<span class='info'>Responding to its master's touch, [src] disengages its holographic emitter, rapidly losing coherence..</span>")
+			spawn(10)
+				close_up()
+		else
+			if(prob(35))
+				flicker_fade(80)
 
 	return
 
