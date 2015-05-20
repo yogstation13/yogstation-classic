@@ -310,6 +310,12 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 	spawn(dur)
 		close_up()
 
+/mob/living/silicon/pai/Bump(AM as mob|obj)
+	if (istype(AM, /obj/machinery/door))
+		..()
+	else
+		return
+
 /mob/living/silicon/pai/Bumped(AM as mob|obj)
 	return
 
