@@ -154,8 +154,7 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 		// 33% chance of no additional effect
 
 	if(prob(20))
-		visible_message("<span class='danger'>A shower of sparks spray from [src]'s inner workings.</span>", 3, "<span class='danger'>You hear and smell the ozone hiss of electrical sparks being expelled violently.</span>", 2)
-		src << "<span class ='warning'><b>Static noise overtakes all as the EMP disrupts your inner consciousness processes, sending you spiralling into oblivion..</b></span>"
+		visible_message("<span class='danger'>A shower of sparks spray from [src]'s inner workings.</span>", "<span class ='warning'><b>Static noise overtakes all as the EMP disrupts your inner consciousness processes, sending you spiralling into oblivion..</b></span>", "<span class='warning'>A horrible hissing fills your ears as something electrical discharges nearby, fizzling out into nothing.</span>")
 		return src.death(0)
 
 	silence_time = world.timeofday + 120 * 10		// Silence for 2 minutes
