@@ -6,6 +6,7 @@
 	health = 100
 	maxHealth = 100
 	ventcrawler = 0
+	luminosity = 0
 	mob_size = MOB_SIZE_SMALL
 	pass_flags = PASSTABLE | PASSMOB
 
@@ -458,6 +459,8 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 	card.forceMove(src)
 	card.screen_loc = null
 
+	src.SetLuminosity(2)
+
 	var/turf/T = get_turf(src)
 	icon_state = "[chassis]"
 	if(istype(T)) T.visible_message("With a faint hum, <b>[src]</b> levitates briefly on the spot before adopting its holographic form in a flash of green light.")
@@ -484,6 +487,7 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 	card.forceMove(card.loc)
 	canmove = 0
 	density = 0
+	src.SetLuminosity(0)
 	icon_state = "[chassis]"
 
 /mob/living/silicon/pai/verb/fold_up()
