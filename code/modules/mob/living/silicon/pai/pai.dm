@@ -327,6 +327,11 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 /mob/living/silicon/pai/show_inv(mob/user)
 	return
 
+//disable ignition, no need for it. however, this will card the pAI instantly.
+/mob/living/silicon/pai/IgniteMob(var/mob/living/silicon/pai/P)
+	flicker_fade(0)
+	return
+
 // See software.dm for Topic()
 
 /mob/living/silicon/pai/proc/switchCamera(var/obj/machinery/camera/C)
