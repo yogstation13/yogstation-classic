@@ -183,8 +183,6 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 
 
 /mob/living/silicon/pai/ex_act(severity, target)
-	..()
-
 	switch(severity)
 		if(1.0)
 			if (src.stat != 2)
@@ -198,10 +196,8 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 			if (src.stat != 2)
 				adjustBruteLoss(15)
 
-
-	if (prob((120/severity+1)) && src.loc != card)
-		src << "<span class='danger'><b>A warning chime fires at the back of your consciousness process, heralding the unexpected shutdown of your holographic emitter. You're defenseless!</b></span>"
-		close_up()
+	src << "<span class='danger'><b>A warning chime fires at the back of your consciousness process, heralding the unexpected shutdown of your holographic emitter. You're defenseless!</b></span>"
+	close_up()
 	return
 
 /mob/living/silicon/pai/attack_animal(mob/living/simple_animal/M as mob)
@@ -260,10 +256,10 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 	if (!canmove || W.force) return ..()
 	if(!W.force)
 		visible_message("<span class='warning'>[user.name] strikes [src] harmlessly with [W], passing clean through its holographic projection.</span>")
-	if (prob(33))
+	if (prob(66))
 		spawn(rand(5, 8))
 			if(stat != 2)
-				flicker_fade()
+				flicker_fade(60)
 	return
 
 /mob/living/silicon/pai/attack_hand(mob/user as mob)
@@ -282,20 +278,21 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 	//ugh fuk u byond types
 	if (istype(AM, /obj/item))
 		var/obj/item/AMI = AM
-		if (prob(min(65, AMI.throwforce*5)))
+		if (prob(min(85, AMI.throwforce*5)))
 			flicker_fade()
 	else
-		if (prob(35))
+		if (prob(55))
 			flicker_fade()
 	return
 
 /mob/living/silicon/pai/bullet_act(var/obj/item/projectile/Proj)
-	visible_message("<span class='info'>[Proj] flies clean through [src]'s holographic field, causing it to stutter and warp wildly!")
+	visible_message("<span class='info'>[Proj] tears cleanly through [src]'s holographic field, distorting its image horribly!!")
 	if (Proj.damage >= 25)
-		flicker_fade()
+		flicker_fade(0)
+		adjustBruteLoss(rand(5, 25))
 	else
 		if (prob(85))
-			flicker_fade()
+			flicker_fade(20)
 	return
 
 /mob/living/silicon/pai/proc/flicker_fade(var/dur = 40)
