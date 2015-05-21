@@ -324,6 +324,16 @@
 				unpair(1)
 				pairing = 0
 				src << output(pairing ? "1" : "0", "pai.browser:onPairingChanged")
+		if("ventcrawler")
+			//enabled once upon purchase and that's it
+			if(ventcrawler != 1 && updating != 1)
+				updating = 1
+				src << "<span class='warning'>INITIALIZING OVERLOAD DIRECTIVE: /mnt/emitter01-09.. SUSTAINING DAMAGE..</span>"
+				adjustFireLoss(rand(5, 50))
+				spawn(80)
+					src << "<span class='info'><b>OVERLOAD DIRECTIVE COMPLETE. /mnt/emitter01-09 running at 250% field efficency. Corporeal interaction possible.</b></span>"
+					ventcrawler = 1
+					updating = 0
 		if("selfrepair")
 			//enabled once upon purchase and that's it
 			if(selfrepair != 1 && updating != 1)
@@ -410,6 +420,10 @@
 			dat += "<a href='byond://?src=\ref[src];software=remote;sub=0'>Remote Control</a> <br>"
 		if(s == "door jack")
 			dat += "<a href='byond://?src=\ref[src];software=doorjack;sub=0'>Door Jack</a> <br>"
+		if(s == "holofield overload" && ventcrawler == 0)
+			dat += "<a href='byond://?src=\ref[src];software=ventcrawler;sub=0'>Engage Holographic Field Overload</a> <br>"
+		if(s == "holofield overload" && ventcrawler == 1)
+			dat += "<i>Holographic emitters overloaded. Ventcrawling possible.</i><br>"
 		if (s == "self-repairing shell" && selfrepair == 0)
 			dat += "<a href='byond://?src=\ref[src];software=selfrepair;sub=0'>Initialize Self-repair Protocols</a> <br>"
 		if (s == "self-repairing shell" && selfrepair == 1)

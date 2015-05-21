@@ -5,8 +5,6 @@
 	density = 0
 	health = 100
 	maxHealth = 100
-	ventcrawler = 0
-	luminosity = 0
 	mob_size = MOB_SIZE_SMALL
 	pass_flags = PASSTABLE | PASSMOB
 
@@ -50,6 +48,8 @@
 	var/screen				// Which screen our main window displays
 	var/subscreen			// Which specific function of the main screen is being displayed
 
+	ventcrawler = 0 //activated by software package
+	luminosity = 0
 	var/selfrepair = 0 //toggles whether self-repairing is enabled and active
 	var/updating = 0
 	var/obj/item/device/pda/ai/pai/pda = null
