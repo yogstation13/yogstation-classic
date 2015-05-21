@@ -324,6 +324,16 @@
 				unpair(1)
 				pairing = 0
 				src << output(pairing ? "1" : "0", "pai.browser:onPairingChanged")
+		if("selfrepair")
+			//enabled once upon purchase and that's it
+			if(selfrepair != 1 && updating != 1)
+				updating = 1
+				src << "<span class='warning'>INITIALIZING OVERLOAD DIRECTIVE: /mnt/casefield.. SUSTAINING DAMAGE..</span>"
+				adjustFireLoss(rand(5, 95))
+				spawn(80)
+					src << "<span class='info'><b>OVERLOAD DIRECTIVE COMPLETE. Auxilary circuits rerouted. Directing emitter currents into /mnt/casefield..</b></span>"
+					selfrepair = 1
+					updating = 0
 		if("doorjack")
 			if(href_list["jack"])
 				if(src.cable && src.cable.machine)
@@ -400,6 +410,10 @@
 			dat += "<a href='byond://?src=\ref[src];software=remote;sub=0'>Remote Control</a> <br>"
 		if(s == "door jack")
 			dat += "<a href='byond://?src=\ref[src];software=doorjack;sub=0'>Door Jack</a> <br>"
+		if (s == "self-repairing shell" && selfrepair == 0)
+			dat += "<a href='byond://?src=\ref[src];software=selfrepair;sub=0'>Initialize Self-repair Protocols</a> <br>"
+		if (s == "self-repairing shell" && selfrepair == 1)
+			dat += "<i>Casing integrity field overloaded. Slowly repairing structural damage.</i><br>"
 	dat += "<br>"
 	dat += "<br>"
 	dat += "<a href='byond://?src=\ref[src];software=buy;sub=0'>Download additional software</a>"

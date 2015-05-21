@@ -1,6 +1,11 @@
 /mob/living/silicon/pai/Life()
 	if (src.stat == DEAD)
 		return
+	if (src.selfrepair == 1 && src.health < 100)
+		if(prob(8))
+			adjustBruteLoss(rand(-1, -8))
+			adjustFireLoss(-4)
+
 	if (src.health < -50)
 		death()
 	if(src.cable)

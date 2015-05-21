@@ -50,6 +50,8 @@
 	var/screen				// Which screen our main window displays
 	var/subscreen			// Which specific function of the main screen is being displayed
 
+	var/selfrepair = 0 //toggles whether self-repairing is enabled and active
+	var/updating = 0
 	var/obj/item/device/pda/ai/pai/pda = null
 
 	var/secHUD = 0			// Toggles whether the Security HUD is active or not
