@@ -5,8 +5,6 @@
 	density = 0
 	health = 100
 	maxHealth = 100
-	ventcrawler = 0
-	luminosity = 0
 	mob_size = MOB_SIZE_SMALL
 	pass_flags = PASSTABLE | PASSMOB
 
@@ -50,6 +48,10 @@
 	var/screen				// Which screen our main window displays
 	var/subscreen			// Which specific function of the main screen is being displayed
 
+	ventcrawler = 0 //activated by software package
+	luminosity = 0
+	var/selfrepair = 0 //toggles whether self-repairing is enabled and active
+	var/updating = 0
 	var/obj/item/device/pda/ai/pai/pda = null
 
 	var/secHUD = 0			// Toggles whether the Security HUD is active or not
@@ -252,13 +254,14 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 	return
 
 /mob/living/silicon/pai/attackby(obj/item/weapon/W as obj, mob/user as mob, params)
-	if (!canmove || W.force) return ..()
+	if (!canmove) return ..() //not in card form, so just handle shit like usual
 	if(!W.force)
 		visible_message("<span class='warning'>[user.name] strikes [src] harmlessly with [W], passing clean through its holographic projection.</span>")
-	if (prob(66))
-		spawn(rand(5, 8))
+	else
+		visible_message("<span class='warning'>[user.name] strikes [src] with [W], eliciting a dire ripple throughout its holographic projection!</span>")
+		if (prob(66))
 			if(stat != 2)
-				flicker_fade(60)
+				flicker_fade(rand(50, 80))
 	return
 
 /mob/living/silicon/pai/attack_hand(mob/living/carbon/human/user)
@@ -307,6 +310,10 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 	src << "<span class='boldwarning'>The holographic containment field surrounding you is failing! Your emitters whine in protest, burning out slightly.</span>"
 	src.adjustFireLoss(rand(5,15))
 	last_special = world.time + rand(100,500)
+
+	if (health < 5)
+		src << "<span class='boldwarning'>HARDWARE ERROR: EMITTERS OFFLINE</span>"
+
 	spawn(dur)
 		visible_message("<span class='danger'>[src]'s holographic field flickers out of existence!</span>")
 		close_up()
@@ -485,6 +492,10 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 	if(istype(T)) T.visible_message("With a faint hum, <b>[src]</b> levitates briefly on the spot before adopting its holographic form in a flash of green light.")
 
 /mob/living/silicon/pai/proc/close_up()
+
+	if (health < 5)
+		src << "<span class='warning'><b>Your holographic emitters are too damaged to function!</b></span>"
+		return
 
 	last_special = world.time + 200
 	resting = 0
