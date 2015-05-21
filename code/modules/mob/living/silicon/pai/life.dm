@@ -1,6 +1,8 @@
 /mob/living/silicon/pai/Life()
 	if (src.stat == DEAD)
 		return
+	if (src.health < -50)
+		death()
 	if(src.cable)
 		if(get_dist(src, src.cable) > 1)
 			var/turf/T = get_turf(src.loc)
