@@ -20,7 +20,8 @@
 															"security HUD" = 20,
 															"medical HUD" = 20,
 															"universal translator" = 35,
-															//"projection array" = 15
+															"holofield overload" = 95,
+															"self-repairing shell" = 60,
 															"remote signaller" = 5,
 															)
 
