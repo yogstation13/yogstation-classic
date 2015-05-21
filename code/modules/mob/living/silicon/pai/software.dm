@@ -20,7 +20,8 @@
 															"security HUD" = 20,
 															"medical HUD" = 20,
 															"universal translator" = 35,
-															//"projection array" = 15
+															"holofield overload" = 95,
+															"self-repairing shell" = 60,
 															"remote signaller" = 5,
 															)
 
@@ -324,6 +325,26 @@
 				unpair(1)
 				pairing = 0
 				src << output(pairing ? "1" : "0", "pai.browser:onPairingChanged")
+		if("ventcrawler")
+			//enabled once upon purchase and that's it
+			if(ventcrawler != 1 && updating != 1)
+				updating = 1
+				src << "<span class='warning'>INITIALIZING OVERLOAD DIRECTIVE: /mnt/emitter01-09.. SUSTAINING DAMAGE..</span>"
+				adjustFireLoss(rand(5, 50))
+				spawn(80)
+					src << "<span class='info'><b>OVERLOAD DIRECTIVE COMPLETE. /mnt/emitter01-09 running at 250% field efficency. Corporeal interaction possible.</b></span>"
+					ventcrawler = 1
+					updating = 0
+		if("selfrepair")
+			//enabled once upon purchase and that's it
+			if(selfrepair != 1 && updating != 1)
+				updating = 1
+				src << "<span class='warning'>INITIALIZING OVERLOAD DIRECTIVE: /mnt/casefield.. SUSTAINING DAMAGE..</span>"
+				adjustFireLoss(rand(5, 95))
+				spawn(80)
+					src << "<span class='info'><b>OVERLOAD DIRECTIVE COMPLETE. Auxilary circuits rerouted. Directing emitter currents into /mnt/casefield..</b></span>"
+					selfrepair = 1
+					updating = 0
 		if("doorjack")
 			if(href_list["jack"])
 				if(src.cable && src.cable.machine)
@@ -400,6 +421,14 @@
 			dat += "<a href='byond://?src=\ref[src];software=remote;sub=0'>Remote Control</a> <br>"
 		if(s == "door jack")
 			dat += "<a href='byond://?src=\ref[src];software=doorjack;sub=0'>Door Jack</a> <br>"
+		if(s == "holofield overload" && ventcrawler == 0)
+			dat += "<a href='byond://?src=\ref[src];software=ventcrawler;sub=0'>Engage Holographic Field Overload</a> <br>"
+		if(s == "holofield overload" && ventcrawler == 1)
+			dat += "<i>Holographic emitters overloaded. Ventcrawling possible.</i><br>"
+		if (s == "self-repairing shell" && selfrepair == 0)
+			dat += "<a href='byond://?src=\ref[src];software=selfrepair;sub=0'>Initialize Self-repair Protocols</a> <br>"
+		if (s == "self-repairing shell" && selfrepair == 1)
+			dat += "<i>Casing integrity field overloaded. Slowly repairing structural damage.</i><br>"
 	dat += "<br>"
 	dat += "<br>"
 	dat += "<a href='byond://?src=\ref[src];software=buy;sub=0'>Download additional software</a>"

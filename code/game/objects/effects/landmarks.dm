@@ -235,6 +235,27 @@
 	new /obj/item/clothing/under/sexymime(src.loc)
 	qdel(src)
 
+//Department Security spawns
+
+/obj/effect/landmark/start/depsec
+	name = "department_sec"
+
+/obj/effect/landmark/start/depsec/New()
+	..()
+	department_security_spawns |= src
+
+/obj/effect/landmark/start/depsec/supply
+	name = "supply_sec"
+
+/obj/effect/landmark/start/depsec/medical
+	name = "medical_sec"
+
+/obj/effect/landmark/start/depsec/engineering
+	name = "engineering_sec"
+
+/obj/effect/landmark/start/depsec/science
+	name = "science_sec"
+
 /obj/effect/landmark/collectible/New()
 	var/list/options = typesof(/obj/item/toy/prize) - /obj/item/toy/prize
 	var/PICK = options[rand(1,options.len)]
