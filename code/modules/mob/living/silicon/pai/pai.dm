@@ -308,6 +308,10 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 	src << "<span class='boldwarning'>The holographic containment field surrounding you is failing! Your emitters whine in protest, burning out slightly.</span>"
 	src.adjustFireLoss(rand(5,15))
 	last_special = world.time + rand(100,500)
+
+	if (health < 5)
+		src << "<span class='boldwarning'>HARDWARE ERROR: EMITTERS OFFLINE</span>"
+
 	spawn(dur)
 		visible_message("<span class='danger'>[src]'s holographic field flickers out of existence!</span>")
 		close_up()
@@ -486,6 +490,10 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 	if(istype(T)) T.visible_message("With a faint hum, <b>[src]</b> levitates briefly on the spot before adopting its holographic form in a flash of green light.")
 
 /mob/living/silicon/pai/proc/close_up()
+
+	if (health < 5)
+		src << "<span class='warning'><b>Your holographic emitters are too damaged to function!</b></span>"
+		return
 
 	last_special = world.time + 200
 	resting = 0
