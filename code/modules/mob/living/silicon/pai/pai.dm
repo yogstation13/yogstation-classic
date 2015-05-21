@@ -252,13 +252,14 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 	return
 
 /mob/living/silicon/pai/attackby(obj/item/weapon/W as obj, mob/user as mob, params)
-	if (!canmove || W.force) return ..()
+	if (!canmove) return
 	if(!W.force)
 		visible_message("<span class='warning'>[user.name] strikes [src] harmlessly with [W], passing clean through its holographic projection.</span>")
-	if (prob(66))
-		spawn(rand(5, 8))
+	else
+		visible_message("<span class='warning'>[user.name] strikes [src] with [W], eliciting a dire ripple throughout its holographic projection!</span>")
+		if (prob(66))
 			if(stat != 2)
-				flicker_fade(60)
+				flicker_fade(rand(50, 80))
 	return
 
 /mob/living/silicon/pai/attack_hand(mob/living/carbon/human/user)
