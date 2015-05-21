@@ -1,0 +1,11 @@
+author: Ephemeralis
+delete-after: True
+
+changes: 
+  - tweak: "pAI robustness in holographic form has been substantially reduced. They are now easier to card, and take damage whenever their holographic field fails."
+  - tweak: "All pAI units are shipped with a directive to remain within range of their master unless otherwise told to do so."
+  - tweak: "A number of annoying pAI bugs have been fixed. They also now possess an innate weakness to fire damage."
+  - rscadd: "Two new overclocking pAI software packages have been added to the databanks. Be warned - using either of these expensive upgrades may damage your pAI unit severely!"
+  - rscadd: "Holographic pAI now cast a nominal amount of light under all circumstances. This is a blessing and a curse."
+  - rscadd: "pAI personality description is now displayed on a cute metal tag when the unit is in hologram form."
+  - tweak: "People attempting to pet pAI units will no longer be inexplicably drawn to molesting them with a smack to the head."
