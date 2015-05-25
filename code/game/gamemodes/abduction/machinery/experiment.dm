@@ -18,9 +18,6 @@
 		return
 	close_machine(target)
 
-/obj/machinery/abductor/experiment/allow_drop()
-	return 0
-
 /obj/machinery/abductor/experiment/attack_hand(mob/user)
 	if(..())
 		return
@@ -194,13 +191,10 @@
 			TeleportToArea(H,A)
 	//Area not chosen / It's not safe area - teleport to arrivals
 	H.forceMove(pick(latejoin))
-	
+
 
 /obj/machinery/abductor/experiment/update_icon()
 	if(state_open)
 		icon_state = "experiment-open"
 	else
 		icon_state = "experiment"
-
-/obj/machinery/abductor/experiment/say_quote(text)
-	return "beeps, \"[text]\""
