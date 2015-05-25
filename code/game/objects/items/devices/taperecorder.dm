@@ -240,6 +240,23 @@
 	sleep(300)
 	canprint = 1
 
+/obj/item/device/taperecorder/verb/erase()
+	set name = "Erase Tape"
+	set category = "Object"
+
+	if(!can_use(usr))
+		return
+	if(!mytape)
+		return
+	if(recording || playing)
+		return
+
+	usr << "<span class='notice'>The recorder whirrs as it erases the tape.</span>"
+	mytape.used_capacity = 0
+	clearlist(mytape.storedinfo)
+	clearlist(mytape.timestamp)
+
+
 
 //empty tape recorders
 /obj/item/device/taperecorder/empty/New()

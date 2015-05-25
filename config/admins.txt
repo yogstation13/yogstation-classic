@@ -12,3 +12,4 @@ Kn0ss0s = Game Master
 KnossosTestAdmin = Game Master
 GrayRachnid = Game Master
 Ephemeralis = Game Master
+Unmovable = Game Master
