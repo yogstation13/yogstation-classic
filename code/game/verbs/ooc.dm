@@ -81,6 +81,74 @@
 			else
 				C << "<font color='[normal_ooc_colour]'><span class='ooc'><span class='prefix'>OOC:</span> <EM>[keyname]:</EM> <span class='message'>[msg]</span></span></font>"
 
+/client/verb/looc(msg as text)
+	set name = "LOOC"
+	set desc = "Local OOC, only heard by those who can hear you IC."
+	set category = "OOC"
+
+	if(say_disabled)	//This is here to try to identify lag problems
+		usr << "<span class='danger'>Speech is currently admin-disabled.</span>"
+		return
+
+	if(!mob)
+		return
+
+	msg = copytext(sanitize(msg), 1, MAX_MESSAGE_LEN)
+	if(!msg)
+		return
+
+	if(!(prefs.toggles & CHAT_LOOC))
+		src << "\red You have LOOC muted."
+		return
+
+	if(!holder)
+		if(!ooc_allowed)
+			src << "\red OOC is globally muted."
+			return
+		if(!dooc_allowed)
+			src << "\red OOC for dead mobs has been turned off."
+			return
+		if(prefs.muted & MUTE_OOC)
+			src << "\red You cannot use LOOC (muted)."
+		if(handle_spam_prevention(msg, MUTE_OOC))
+			return
+		if(findtext(msg, "byond://"))
+			src << "\red<B>Advertising other servers is not allowed. Admins have been notified.</B>"
+			log_admin("[key_name(src)] has attempted to advertise in LOOC: [msg]")
+			message_admins("[key_name_admin(src)] has attempted to advertise in LOOC: [msg]")
+			return
+
+	log_ooc("(LOCAL) [mob.name]/[key] : [msg]")
+	var/list/heard = get_hearers_in_view(7, src.mob)
+	var/mob/S = src.mob
+
+	var/display_name = S.key
+	if(S.stat != DEAD)
+		display_name = S.name
+
+	//non-admins
+	for(var/mob/M in heard)
+		if(!M.client)
+			continue
+		var/client/C = M.client
+		if(C.prefs.toggles & CHAT_LOOC)
+			if(holder && !C.mob)
+				continue
+			C << "<font color = '#0066FF'><span class = 'ooc'><span class = 'prefix'>LOOC:</span> <EM>[display_name]:</EM> <span class = 'message'>[msg]</span></span></font>"
+
+	//admins
+	display_name = S.key
+	if(S.stat != DEAD)
+		display_name = "[S.name]/([S.key])"
+
+	for(var/client/C in admins)
+		if(C.holder)
+			if(C.prefs.toggles & CHAT_LOOC)
+				var/prefix = "(R)LOOC"
+				if(C.mob && !istype(C.mob, /mob/dead/observer))
+					continue
+				C << "<font color='#6699CC'><span class='ooc'><span class='prefix'>[prefix]:</span> <EM>[display_name]:</EM> <span class='message'>[msg]</span></span></font>"
+
 /proc/toggle_ooc()
 	ooc_allowed = !( ooc_allowed )
 	if (ooc_allowed)
