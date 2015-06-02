@@ -1000,7 +1000,7 @@
 					else
 						current.real_name = "[syndicate_name()] Operative #[ticker.mode.syndicates.len-1]"
 					special_role = "Syndicate"
-					assigned_role = "MODE"
+					assigned_role = "Syndicate"
 					current << "<span class='notice'>You are a [syndicate_name()] agent!</span>"
 					ticker.mode.forge_syndicate_objectives(src)
 					ticker.mode.greet_syndicate(src)
@@ -1321,7 +1321,7 @@
 	if(!(src in ticker.mode.wizards))
 		ticker.mode.wizards += src
 		special_role = "Wizard"
-		assigned_role = "MODE"
+		assigned_role = "Wizard"
 		//ticker.mode.learn_basic_spells(current)
 		if(!wizardstart.len)
 			current.loc = pick(latejoin)
