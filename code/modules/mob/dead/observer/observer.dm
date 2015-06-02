@@ -255,11 +255,11 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		for(var/mob/living/target in oview(src))
 			if(target.mind)//They need to have a mind.
 				if(iscarbon(target))
-					if(target.mind.special_role == "[gang_name("A")] Gang (A) Boss")
+					if(target.mind.special_role == "[gang_name("A")] Gang (A) Boss" || target.mind.special_role == "[gang_name("A")] Gang (A) Lieutenant")
 						client.images += image(tempHud,target,"hudbossa")
 					else if(target.mind.special_role == "[gang_name("A")] Gang (A)")
 						client.images += image(tempHud,target,"hudganga")
-					else if(target.mind.special_role == "[gang_name("B")] Gang (B) Boss")
+					else if(target.mind.special_role == "[gang_name("B")] Gang (B) Boss" || target.mind.special_role == "[gang_name("B")] Gang (B) Lieutenant")
 						client.images += image(tempHud,target,"hudbossb")
 					else if(target.mind.special_role == "[gang_name("B")] Gang (B)")
 						client.images += image(tempHud,target,"hudgangb")
