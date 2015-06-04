@@ -97,19 +97,21 @@
 	if(!msg)
 		return
 
-	if(!(prefs.toggles & CHAT_LOOC))
+	if(!(prefs.chat_toggles & CHAT_LOOC))
 		src << "\red You have LOOC muted."
 		return
+
 
 	if(!holder)
 		if(!ooc_allowed)
 			src << "\red OOC is globally muted."
 			return
-		if(!dooc_allowed)
+		if(!dooc_allowed && istype(src.mob, /mob/dead/observer) || src.mob.stat == DEAD)
 			src << "\red OOC for dead mobs has been turned off."
 			return
 		if(prefs.muted & MUTE_OOC)
 			src << "\red You cannot use LOOC (muted)."
+			return
 		if(handle_spam_prevention(msg, MUTE_OOC))
 			return
 		if(findtext(msg, "byond://"))
@@ -117,6 +119,8 @@
 			log_admin("[key_name(src)] has attempted to advertise in LOOC: [msg]")
 			message_admins("[key_name_admin(src)] has attempted to advertise in LOOC: [msg]")
 			return
+
+	msg = pretty_filter(msg)
 
 	log_ooc("(LOCAL) [mob.name]/[key] : [msg]")
 	var/list/heard = get_hearers_in_view(7, src.mob)
@@ -131,8 +135,10 @@
 		if(!M.client)
 			continue
 		var/client/C = M.client
-		if(C.prefs.toggles & CHAT_LOOC)
+		if(C.prefs.chat_toggles & CHAT_LOOC)
 			if(holder && !C.mob)
+				continue
+			else if (holder && istype(C.mob, /mob/dead/observer))
 				continue
 			C << "<font color = '#0066FF'><span class = 'ooc'><span class = 'prefix'>LOOC:</span> <EM>[display_name]:</EM> <span class = 'message'>[msg]</span></span></font>"
 
@@ -143,7 +149,7 @@
 
 	for(var/client/C in admins)
 		if(C.holder)
-			if(C.prefs.toggles & CHAT_LOOC)
+			if(C.prefs.chat_toggles & CHAT_LOOC)
 				var/prefix = "(R)LOOC"
 				if(C.mob && !istype(C.mob, /mob/dead/observer))
 					continue
