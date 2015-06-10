@@ -106,7 +106,7 @@
 		if(!ooc_allowed)
 			src << "\red OOC is globally muted."
 			return
-		if(!dooc_allowed && istype(src.mob, /mob/dead/observer) || src.mob.stat == DEAD)
+		if(!dooc_allowed && (istype(src.mob, /mob/dead/observer) || src.mob.stat == DEAD))
 			src << "\red OOC for dead mobs has been turned off."
 			return
 		if(prefs.muted & MUTE_OOC)
