@@ -604,7 +604,7 @@ Sorry Giacom. Please don't be mad :(
 	set name = "Resist"
 	set category = "IC"
 
-	if(!isliving(src) || next_move > world.time)
+	if(!isliving(src) || next_move > world.time || stat == DEAD)
 		return
 	changeNext_move(CLICK_CD_RESIST)
 
