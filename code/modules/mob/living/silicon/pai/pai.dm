@@ -350,9 +350,9 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 
 	// ok, we're alive, camera is good and in our network...
 
-	src.set_machine(src)
-	src:current = C
-	src.reset_view(C)
+	set_machine(src)
+	current = C
+	reset_view(C)
 	return 1
 
 
@@ -372,9 +372,10 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 	if(!(paired.paired == src))
 		return
 	src.unset_machine()
-	paired.overlays -= image('icons/obj/computer.dmi', "paipaired")
+	var/obj/machinery/psave = paired
 	paired.paired = null
 	paired = null
+	psave.update_icon()
 
 	src << output(paired ? paired.name : "0", "pai.browser:onPairedChanged")
 	src << output(pairing ? "1" : "0", "pai.browser:onPairingChanged")
@@ -404,7 +405,7 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 	src << output(paired ? paired.name : "0", "pai.browser:onPairedChanged")
 	src << output(pairing ? "1" : "0", "pai.browser:onPairingChanged")
 
-	paired.overlays += image('icons/obj/computer.dmi', "paipaired")
+	paired.update_icon()
 	src << "<span class='info'>Handshake complete. Remote control connection established.</span>"
 	return
 

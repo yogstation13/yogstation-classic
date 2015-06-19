@@ -263,7 +263,7 @@
 		for(var/team_number=1,team_number<=teams,team_number++)
 			var/obj/machinery/abductor/console/con = get_team_console(team_number)
 			var/datum/objective/objective = team_objectives[team_number]
-			if (con.experiment.points > objective.target_amount)
+			if (con.experiment.points >= objective.target_amount)
 				SSshuttle.emergency.request(null, 0.5)
 				finished = 1
 				return ..()
@@ -279,7 +279,7 @@
 		var/datum/mind/smind = scientists[team_number]
 		var/mob/living/carbon/human/agent = amind.current
 		var/mob/living/carbon/human/scientist = smind.current
-		if (console.experiment.points > objective.target_amount)
+		if (console.experiment.points >= objective.target_amount)
 			world << "<font size = 3 color='green'><b>[team_name] team fullfilled its mission! </b></font>"
 			world << "<b>Team Members : [agent.name]([agent.ckey]),[scientist.name]([scientist.ckey])</b>"
 		else
@@ -336,15 +336,15 @@
 
 
 // OBJECTIVES
-datum/objective/experiment
+/datum/objective/experiment
 	dangerrating = 10
 	target_amount = 6
 	var/team
 
-datum/objective/experiment/New()
+/datum/objective/experiment/New()
 	explanation_text = "Experiment on [target_amount] humans"
 
-datum/objective/experiment/check_completion()
+/datum/objective/experiment/check_completion()
 	if(!owner.current || !ishuman(owner.current))
 		return 0
 	var/mob/living/carbon/human/H = owner.current
@@ -360,21 +360,21 @@ datum/objective/experiment/check_completion()
 				return 0
 	return 0
 
-datum/objective/abductee
+/datum/objective/abductee
 	dangerrating = 5
 	completed = 1
 
-datum/objective/abductee/steal
+/datum/objective/abductee/steal
 	explanation_text = "Steal all"
 
-datum/objective/abductee/steal/New()
+/datum/objective/abductee/steal/New()
 	var/target = pick(list("Pets","Lights","Monkeys","Fruits","Shoes","Soap Bars"))
 	explanation_text+=" [target]"
 
-datum/objective/abductee/capture
+/datum/objective/abductee/capture
 	explanation_text = "Capture"
 
-datum/objective/abductee/capture/New()
+/datum/objective/abductee/capture/New()
 	var/list/jobs = SSjob.occupations
 	for(var/datum/job/J in jobs)
 		if(J.current_positions < 1)
@@ -385,8 +385,8 @@ datum/objective/abductee/capture/New()
 	else
 		explanation_text += " someone."
 
-datum/objective/abductee/shuttle
+/datum/objective/abductee/shuttle
 	explanation_text = "You must escape the station! Get the shuttle called!"
 
-datum/objective/abductee/noclone
+/datum/objective/abductee/noclone
 	explanation_text = "Don't allow anyone to be cloned."

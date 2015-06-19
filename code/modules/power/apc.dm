@@ -580,14 +580,10 @@
 			user << "<span class='warning'>Nothing happens!</span>"
 		else
 			flick("apc-spark", src)
-			if (do_after(user,6))
-				if(prob(50))
-					emagged = 1
-					locked = 0
-					user << "<span class='notice'>You emag the APC interface.</span>"
-					update_icon()
-				else
-					user << "<span class='warning'>You fail to [ locked ? "unlock" : "lock"] the APC interface!</span>"
+			emagged = 1
+			locked = 0
+			user << "<span class='notice'>You emag the APC interface.</span>"
+			update_icon()
 
 // attack with hand - remove cell (if cover open) or interact with the APC
 
@@ -1138,7 +1134,7 @@
 // val 0=off, 1=off(auto) 2=on 3=on(auto)
 // on 0=off, 1=on, 2=autooff
 
-obj/machinery/power/apc/proc/autoset(var/val, var/on)
+/obj/machinery/power/apc/proc/autoset(var/val, var/on)
 	if(on==0)
 		if(val==2)			// if on, return off
 			return 0

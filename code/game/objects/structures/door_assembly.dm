@@ -1,4 +1,4 @@
-obj/structure/door_assembly
+/obj/structure/door_assembly
 	icon = 'icons/obj/doors/door_assembly.dmi'
 
 	name = "airlock assembly"
@@ -17,7 +17,7 @@ obj/structure/door_assembly
 	var/created_name = null
 	var/heat_proof_finished = 0 //whether to heat-proof the finished airlock
 
-obj/structure/door_assembly/New()
+/obj/structure/door_assembly/New()
 	base_icon_state = copytext(icon_state,1,lentext(icon_state))
 
 /obj/structure/door_assembly/door_assembly_0
@@ -436,7 +436,7 @@ obj/structure/door_assembly/New()
 
 			if(mineral && mineral != "glass")
 				mineral = null //I know this is stupid, but until we change glass to a boolean it's how this code works.
-			user << "<span class='notice'> You change the paintjob on the airlock assembly.</span>"
+			user << "<span class='notice'>You change the paintjob on the airlock assembly.</span>"
 
 	else if(istype(W, /obj/item/weapon/weldingtool) && !anchored )
 		var/obj/item/weapon/weldingtool/WT = W
@@ -448,7 +448,7 @@ obj/structure/door_assembly/New()
 			if(do_after(user, 40))
 				if( !WT.isOn() )
 					return
-				user << "<span class='notice'> You disassemble the airlock assembly.</span>"
+				user << "<span class='notice'>You disassemble the airlock assembly.</span>"
 				new /obj/item/stack/sheet/metal(get_turf(src), 4)
 				if (mineral)
 					if (mineral == "glass")
@@ -480,7 +480,7 @@ obj/structure/door_assembly/New()
 			if(do_after(user, 40))
 				if( src.anchored )
 					return
-				user << "<span class='notice'> You secure the airlock assembly.</span>"
+				user << "<span class='notice'>You secure the airlock assembly.</span>"
 				src.name = "secured airlock assembly"
 				src.anchored = 1
 		else
@@ -494,7 +494,7 @@ obj/structure/door_assembly/New()
 		if(do_after(user, 40))
 			if( !src.anchored )
 				return
-			user << "<span class='notice'> You unsecure the airlock assembly.</span>"
+			user << "<span class='notice'>You unsecure the airlock assembly.</span>"
 			src.name = "airlock assembly"
 			src.anchored = 0
 
@@ -520,7 +520,7 @@ obj/structure/door_assembly/New()
 		if(do_after(user, 40))
 			if( src.state != 1 )
 				return
-			user << "<span class='notice'> You cut the wires from the airlock assembly.</span>"
+			user << "<span class='notice'>You cut the wires from the airlock assembly.</span>"
 			new/obj/item/stack/cable_coil(get_turf(user), 1)
 			src.state = 0
 			src.name = "secured airlock assembly"
@@ -535,7 +535,7 @@ obj/structure/door_assembly/New()
 
 			user.drop_item()
 			W.loc = src
-			user << "<span class='notice'> You install the airlock electronics.</span>"
+			user << "<span class='notice'>You install the airlock electronics.</span>"
 			src.state = 2
 			src.name = "near finished airlock assembly"
 			src.electronics = W
@@ -549,7 +549,7 @@ obj/structure/door_assembly/New()
 		if(do_after(user, 40))
 			if( src.state != 2 )
 				return
-			user << "<span class='notice'> You remove the airlock electronics.</span>"
+			user << "<span class='notice'>You remove the airlock electronics.</span>"
 			src.state = 1
 			src.name = "wired airlock assembly"
 			var/obj/item/weapon/airlock_electronics/ae
@@ -563,7 +563,7 @@ obj/structure/door_assembly/New()
 		var/obj/item/stack/sheet/G = W
 		if(G)
 			if(G.get_amount() >= 1)
-				if(istype(G, /obj/item/stack/sheet/rglass) || istype(G, /obj/item/stack/sheet/glass)) 
+				if(istype(G, /obj/item/stack/sheet/rglass) || istype(G, /obj/item/stack/sheet/glass))
 					playsound(src.loc, 'sound/items/Crowbar.ogg', 100, 1)
 					user.visible_message("[user] adds [G.name] to the airlock assembly.", \
 										"<span class='notice'>You start to install [G.name] into the airlock assembly...</span>")
@@ -614,7 +614,7 @@ obj/structure/door_assembly/New()
 
 		if(do_after(user, 40))
 			if(src.loc && state == 2)
-				user << "<span class='notice'> You finish the airlock.</span>"
+				user << "<span class='notice'>You finish the airlock.</span>"
 				var/obj/machinery/door/airlock/door
 				if(mineral == "glass")
 					door = new src.glass_type( src.loc )

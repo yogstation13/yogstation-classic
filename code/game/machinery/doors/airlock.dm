@@ -51,6 +51,8 @@
 	var/securewires = 0
 	var/boltsCut = 0
 
+	explosion_block = 1
+
 /obj/machinery/door/airlock/command
 	icon = 'icons/obj/doors/Doorcom.dmi'
 	doortype = /obj/structure/door_assembly/door_assembly_com
@@ -94,6 +96,7 @@
 	icon = 'icons/obj/doors/vault.dmi'
 	opacity = 1
 	doortype = /obj/structure/door_assembly/door_assembly_vault
+	explosion_block = 2
 
 /obj/machinery/door/airlock/glass_large
 	name = "glass airlock"
@@ -273,6 +276,7 @@
 	name = "high tech security airlock"
 	icon = 'icons/obj/doors/hightechsecurity.dmi'
 	doortype = /obj/structure/door_assembly/door_assembly_highsecurity
+	explosion_block = 2
 
 /obj/machinery/door/airlock/shuttle
 	name = "shuttle airlock"
@@ -933,7 +937,7 @@ About the new airlock wires panel:
 		var/obj/item/weapon/weldingtool/W = C
 		if(W.remove_fuel(0,user))
 			if(boltsCut)
-				user.visible_message("<span class='warning'>[user] is repairing the airlocks bolts with their [C].</span>", \
+				user.visible_message("<span class='warning'>[user] is repairing the airlock's bolts with their [C].</span>", \
 								"You begin repairing the airlocks bolts with your [C]...", \
 								"You hear welding.")
 				playsound(loc, 'sound/items/Welder.ogg', 40, 1)
@@ -943,7 +947,7 @@ About the new airlock wires panel:
 							return
 						playsound(loc, 'sound/items/Welder2.ogg', 50, 1)
 						boltsCut = 0
-						user.visible_message("<span class='warning'>[src] bolts have been repaired by [user.name].</span>", \
+						user.visible_message("<span class='warning'>The bolts on [src] have been repaired by [user.name].</span>", \
 											"<span class='notice'>You've welded the bolts together.</span>")
 						update_icon()
 			else
@@ -1042,9 +1046,9 @@ About the new airlock wires panel:
 					qdel(src)
 					return
 		else if(hasPower())
-			user << "<span class='warning'> The airlock's motors resist your efforts to force it!</span>"
+			user << "<span class='warning'>The airlock's motors resist your efforts to force it!</span>"
 		else if(locked && !boltsCut)
-			user << "<span class='warning'> The airlock's bolts prevent it from being forced!</span>"
+			user << "<span class='warning'>The airlock's bolts prevent it from being forced!</span>"
 		else if( !welded && !operating)
 			if(density)
 				if(beingcrowbarred == 0) //being fireaxe'd

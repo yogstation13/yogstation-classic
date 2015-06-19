@@ -540,14 +540,14 @@
 	construction_time = 100
 	category = list("Exosuit Equipment")
 
-/datum/design/mech_syringe_gun
+/*/datum/design/mech_syringe_gun
 	name = "Exosuit Medical Equipment (Syringe Gun)"
 	id = "mech_syringe_gun"
 	build_type = MECHFAB
 	build_path = /obj/item/mecha_parts/mecha_equipment/tool/syringe_gun
 	materials = list("$metal"=3000,"$glass"=2000)
 	construction_time = 200
-	category = list("Exosuit Equipment")
+	category = list("Exosuit Equipment")*/
 
 /datum/design/mech_generator
 	name = "Exosuit Equipment (Plasma Generator)"

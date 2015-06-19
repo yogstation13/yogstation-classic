@@ -23,7 +23,7 @@ var/global/datum/getrev/revdata = new()
 	world.log << revision
 	return
 
-client/verb/about()
+/client/verb/about()
 	set category = "OOC"
 	set name = "About"
 	set desc = "Additional information about this server"
@@ -40,7 +40,15 @@ client/verb/about()
 	src << "Protect Assistant Role From Traitor: [config.protect_assistant_from_antagonist]"
 	src << "Enforce Human Authority: [config.enforce_human_authority]"
 	src << "Allow Latejoin Antagonists: [config.allow_latejoin_antagonists]"
-	src << "Protect Assistant From Antagonist: [config.protect_assistant_from_antagonist]"
 	src << "Enforce Continuous Rounds: [config.continuous.len] of [config.modes.len] roundtypes"
 	src << "Allow Midround Antagonists: [config.midround_antag.len] of [config.modes.len] roundtypes"
+	if(config.show_game_type_odds)
+		src <<"<b>Game Mode Odds:</b>"
+		var/sum = 0
+		for(var/i=1,i<=config.probabilities.len,i++)
+			sum += config.probabilities[config.probabilities[i]]
+		for(var/i=1,i<=config.probabilities.len,i++)
+			if(config.probabilities[config.probabilities[i]] > 0)
+				var/percentage = round(config.probabilities[config.probabilities[i]] / sum * 100, 0.1)
+				src << "[config.probabilities[i]] [percentage]%"
 	return

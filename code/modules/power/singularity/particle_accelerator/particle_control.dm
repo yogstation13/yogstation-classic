@@ -67,6 +67,7 @@
 	return
 
 /obj/machinery/particle_accelerator/control_box/update_icon()
+	overlays.Cut()
 	if(active)
 		icon_state = "[reference]p1"
 	else
@@ -85,6 +86,8 @@
 					icon_state = "[reference]w"
 				else
 					icon_state = "[reference]c"
+	if(paired)
+		overlays |= image('icons/obj/computer.dmi', "paipaired")
 	return
 
 /obj/machinery/particle_accelerator/control_box/Topic(href, href_list)
