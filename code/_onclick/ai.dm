@@ -44,7 +44,8 @@
 		CtrlShiftClickOn(A)
 		return
 	if(modifiers["middle"])
-		MiddleClickOn(A)
+		if(controlled_mech) //Are we piloting a mech? Placed here so the modifiers are not overridden.
+			controlled_mech.click_action(A, src) //Override AI normal click behavior.
 		return
 	if(modifiers["shift"])
 		ShiftClickOn(A)
@@ -121,7 +122,7 @@
 	return
 /atom/proc/AICtrlShiftClick()
 	return
-	
+
 /* Airlocks */
 /obj/machinery/door/airlock/AICtrlClick() // Bolts doors
 	if(emagged)
@@ -157,7 +158,7 @@
 	else
 		Topic("aiDisable=11", list("aiDisable"="11"), 1)
 	return
-	
+
 /* APC */
 /obj/machinery/power/apc/AICtrlClick() // turns off/on APCs.
 	toggle_breaker()

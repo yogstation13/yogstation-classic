@@ -609,7 +609,8 @@
 			return
 
 		if(!keyslot)
-			user.drop_item()
+			if(!user.unEquip(W))
+				return
 			W.loc = src
 			keyslot = W
 

@@ -65,6 +65,7 @@
 		var/turf/target_turf = get_turf(target)
 		if(target_turf)
 			var/turflist = getline(user, target_turf)
+			add_logs(user, target, "flamethrowered", admin=0, addition="at [target.x],[target.y],[target.z]")
 			flame_turf(turflist)
 			add_logs(user, target_turf, what_done = "fired a flamethrower at", addition = "in [get_area(target_turf)]([target_turf.x], [target_turf.y], [target_turf.z])")
 
@@ -95,7 +96,8 @@
 		var/obj/item/device/assembly/igniter/I = W
 		if(I.secured)	return
 		if(igniter)		return
-		user.drop_item()
+		if(!user.unEquip(W))
+			return
 		I.loc = src
 		igniter = I
 		update_icon()
@@ -105,7 +107,8 @@
 		if(ptank)
 			user << "<span class='notice'>There appears to already be a plasma tank loaded in [src]!</span>"
 			return
-		user.drop_item()
+		if(!user.unEquip(W))
+			return
 		ptank = W
 		W.loc = src
 		update_icon()

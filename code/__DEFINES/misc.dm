@@ -56,7 +56,6 @@
 #define SEC_LEVEL_BLUE	1
 #define SEC_LEVEL_RED	2
 #define SEC_LEVEL_DELTA	3
-#define SEC_LEVEL_CF	4
 
 //some arbitrary defines to be used by self-pruning global lists. (see master_controller)
 #define PROCESS_KILL 26	//Used to trigger removal from a processing list
@@ -162,3 +161,8 @@
 #define CHANCE_TALK 15
 #define MAXCOIL 30
 #define RESIZE_DEFAULT_SIZE 1
+
+//transfer_ai() defines. Main proc in ai_core.dm
+#define AI_TRANS_TO_CARD	1 //Downloading AI to InteliCard.
+#define AI_TRANS_FROM_CARD	2 //Uploading AI from InteliCard
+#define AI_MECH_HACK		3 //Malfunctioning AI hijacking mecha

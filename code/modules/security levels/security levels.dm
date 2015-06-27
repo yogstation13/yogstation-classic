@@ -3,15 +3,6 @@
 //1 = code blue
 //2 = code red
 //3 = code delta
-//4 = code charlie foxtrot
-
-//previous code was sloppy.  global vars to keep track of overlays.
-/var
-	alertOverlayGreen	= image('icons/obj/monitors.dmi', "overlay_green")
-	alertOverlayBlue	= image('icons/obj/monitors.dmi', "overlay_blue")
-	alertOverlayRed		= image('icons/obj/monitors.dmi', "overlay_red")
-	alertOverlayDelta	= image('icons/obj/monitors.dmi', "overlay_delta")
-	alertOverlayCF		= image('icons/obj/monitors.dmi', "overlay_cf")
 
 //config.alert_desc_blue_downto
 
@@ -25,23 +16,9 @@
 			level = SEC_LEVEL_RED
 		if("delta")
 			level = SEC_LEVEL_DELTA
-		if("charlie foxtrot")
-			level = SEC_LEVEL_CF
 
 	//Will not be announced if you try to set to the same level as it already is
-	if(level >= SEC_LEVEL_GREEN && level <= SEC_LEVEL_CF && level != security_level)
-		var/toStrip = null
-		switch(security_level)
-			if(SEC_LEVEL_GREEN)
-				toStrip = alertOverlayGreen
-			if(SEC_LEVEL_BLUE)
-				toStrip = alertOverlayBlue
-			if(SEC_LEVEL_RED)
-				toStrip = alertOverlayRed
-			if(SEC_LEVEL_DELTA)
-				toStrip = alertOverlayDelta
-			if(SEC_LEVEL_CF)
-				toStrip = alertOverlayCF
+	if(level >= SEC_LEVEL_GREEN && level <= SEC_LEVEL_DELTA && level != security_level)
 		switch(level)
 			if(SEC_LEVEL_GREEN)
 				minor_announce(config.alert_desc_green, "Attention! Security level lowered to green:")
@@ -79,17 +56,6 @@
 				for(var/obj/machinery/firealarm/FA in world)
 					if(FA.z == ZLEVEL_STATION)
 						FA.update_icon()
-			if(SEC_LEVEL_CF)
-				world << "<font size=4 color='red'>Attention! Code Charlie Foxtrot has been declared!</font>"
-				// !! comment out the following 1 line of code when config.alert_desc_cf exists
-				world << "<font color='red'>All contracts have been burned!</font>"
-				// !! uncomment the following 1 line of code when config.alert_desc_cf exists
-				// world << "<font color='red'>[config.alert_desc_cf]</font>
-				security_level = SEC_LEVEL_CF
-				for(var/obj/machinery/firealarm/FA in world)
-					if(FA.z == 1)
-						FA.overlays.Remove(toStrip)
-						FA.overlays += alertOverlayCF
 	else
 		return
 
