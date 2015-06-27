@@ -1,4 +1,4 @@
 author: Unmovable
 delete-after: True
 changes:
-  -rscadd: "Default AI laws changed to basic Asimov. Rules have been updated to define what in-game species are to be treated as 'human beings'. See Rule 2.3.1"
+  -rscadd: "Default AI laws changed to basic Asimov. Rules have been updated to define what in-game species are to be treated as 'human beings'. See Rule 2.3.2"
