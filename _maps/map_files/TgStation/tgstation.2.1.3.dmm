@@ -3569,7 +3569,7 @@
 "bqG" = (/obj/machinery/atmospherics/pipe/simple/supply/hidden{dir = 10},/turf/simulated/floor/plasteel{icon_state = "bot"},/area/quartermaster/office)
 "bqH" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/plasteel,/area/hallway/primary/central)
 "bqI" = (/obj/docking_port/stationary{dir = 8; dwidth = 2; height = 12; id = "ferry_home"; name = "port bay 2"; turf_type = /turf/space; width = 5},/obj/effect/landmark/shuttledock{name = "ferry"},/turf/space,/area/space)
-"bqJ" = (/obj/machinery/atmospherics/pipe/simple/scrubbers/hidden,/obj/structure/closet/critter/corgi{anchored = 1; desc = "A kennel for Ian to sleep in."; name = "Ian's house"},/turf/simulated/floor/plasteel,/area/crew_quarters/heads)
+"bqJ" = (/obj/machinery/atmospherics/pipe/simple/scrubbers/hidden,/obj/structure/closet/critter/corgi{amount = 0; anchored = 1; content_mob = null; desc = "A kennel for Ian to sleep in."; name = "Ian's house"},/turf/simulated/floor/plasteel,/area/crew_quarters/heads)
 "bqK" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"; pixel_x = 0},/obj/machinery/atmospherics/pipe/simple/scrubbers/hidden{dir = 6},/turf/simulated/floor/plasteel,/area/crew_quarters/heads)
 "bqL" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"; pixel_x = 0},/obj/machinery/atmospherics/pipe/simple/scrubbers/hidden{dir = 4},/turf/simulated/floor/fancy/carpet,/area/crew_quarters/heads)
 "bqM" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"; pixel_x = 0},/obj/machinery/atmospherics/pipe/manifold/scrubbers/hidden{tag = "icon-manifold-r-f (EAST)"; dir = 4},/turf/simulated/floor/fancy/carpet,/area/crew_quarters/heads)
