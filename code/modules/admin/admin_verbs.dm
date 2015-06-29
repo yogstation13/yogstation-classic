@@ -68,6 +68,7 @@ var/list/admin_verbs_admin = list(
 	/client/proc/list_pretty_filters,
 	/client/proc/test_pretty_filters,
 	/client/proc/add_pretty_filter,
+	/client/proc/reset_pretty_filter,
 	/client/proc/check_words,			/*displays cult-words*/
 	/client/proc/reset_all_tcs			/*resets all telecomms scripts*/
 	)

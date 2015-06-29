@@ -1,0 +1,6 @@
+author: Unmovable
+delete-after: True
+changes:
+  -rscadd: "Default AI laws changed to basic Asimov. Rules have been updated to define what in-game species are to be treated as 'human beings'. See Rule 2.3.2"
+  -rscadd: "Implemented a LOOC command. It displays an OOC message with your IC name to people you can see within 7 tiles."
+  -rscadd: "No more double bracket ((business))"

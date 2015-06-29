@@ -1,4 +1,3 @@
-
 /var/list/pretty_filter_items = list()
 
 // Append pretty filter items from file to a list
@@ -27,6 +26,14 @@
 
 		if(!add_pretty_filter_line(line))
 			continue
+
+// reset the pretty filters to whatever is in the config file
+/client/proc/reset_pretty_filter()
+	set category = "Special Verbs"
+	set name = "Pretty Filters - Reset"
+	clearlist(pretty_filter_items)
+	setup_pretty_filter()
+	usr << "Pretty filters reset."
 
 // Add a filter pair
 /proc/add_pretty_filter_line(var/line)
@@ -145,4 +152,3 @@
 				break
 
 	return text
-
