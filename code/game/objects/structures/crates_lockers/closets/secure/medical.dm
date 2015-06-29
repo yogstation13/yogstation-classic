@@ -44,20 +44,12 @@
 
 /obj/structure/closet/secure_closet/medical3/New()
 	..()
-	if(prob(50))
-		new /obj/item/weapon/storage/backpack/medic(src)
-	else
-		new /obj/item/weapon/storage/backpack/satchel_med(src)
-	new /obj/item/weapon/storage/backpack/dufflebag/med(src)
-	new /obj/item/clothing/under/rank/medical(src)
-	new /obj/item/clothing/suit/toggle/labcoat/old(src)
-	new /obj/item/clothing/suit/toggle/labcoat(src)
-	new /obj/item/clothing/shoes/sneakers/white(src)
 	new /obj/item/device/radio/headset/headset_med(src)
 	new /obj/item/clothing/gloves/color/latex/nitrile(src)
 	new /obj/item/weapon/storage/belt/medical(src)
 	new /obj/item/weapon/gun/syringe(src)
 	new /obj/item/clothing/glasses/hud/health(src)
+	return
 
 /obj/structure/closet/secure_closet/mmedical
 	name = "mining medic's locker"
@@ -78,6 +70,7 @@
 	new /obj/item/weapon/storage/firstaid/regular(src)
 	new /obj/item/weapon/storage/firstaid/o2(src)
 	new /obj/item/weapon/reagent_containers/hypospray/mini(src)
+	return
 
 /obj/structure/closet/secure_closet/CMO
 	name = "\proper chief medical officer's locker"
@@ -86,11 +79,6 @@
 
 /obj/structure/closet/secure_closet/CMO/New()
 	..()
-	new /obj/item/clothing/suit/hooded/wintercoat/medical(src)
-	if(prob(50))
-		new /obj/item/weapon/storage/backpack/medic(src)
-	else
-		new /obj/item/weapon/storage/backpack/satchel_med(src)
 	new /obj/item/clothing/cloak/cmo(src)
 	new /obj/item/weapon/storage/backpack/dufflebag/med(src)
 	new /obj/item/clothing/suit/bio_suit/cmo(src)
