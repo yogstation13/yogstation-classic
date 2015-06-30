@@ -34,11 +34,8 @@ var/const/SAFETY_COOLDOWN = 100
 	for(var/obj/item/weapon/stock_parts/matter_bin/B in component_parts)
 		amt_made = 1 * B.rating
 	for(var/obj/item/weapon/stock_parts/manipulator/M in component_parts)
-		if(M.rating > 1)
-			prob_mod = 2 * M.rating
-		else
-			prob_mod = 1 * M.rating
-		if(M.rating >= 3)
+		prob_mod = M.rating * M.rating
+		if(M.rating >= 4)
 			extra_materials = 1
 		else
 			extra_materials = 0
@@ -138,19 +135,19 @@ var/const/SAFETY_COOLDOWN = 100
 		var/obj/item/stack/sheet/rglass/R = new /obj/item/stack/sheet/rglass(loc)
 		R.amount = amount_produced
 	if(extra_materials)
-		if(prob(4 + probability_mod))
+		if(prob(16))
 			var/obj/item/stack/sheet/mineral/plasma/PS = new /obj/item/stack/sheet/mineral/plasma(loc)
 			PS.amount = amount_produced
-		if(prob(3 + probability_mod))
+		if(prob(4))
 			var/obj/item/stack/sheet/mineral/gold/GS = new /obj/item/stack/sheet/mineral/gold(loc)
 			GS.amount = amount_produced
-		if(prob(2 + probability_mod))
+		if(prob(8))
 			var/obj/item/stack/sheet/mineral/silver/S = new /obj/item/stack/sheet/mineral/silver(loc)
 			S.amount = amount_produced
-		if(prob(1 + probability_mod))
+		if(prob(1))
 			var/obj/item/stack/sheet/mineral/bananium/B = new /obj/item/stack/sheet/mineral/bananium(loc)
 			B.amount = amount_produced
-		if(prob(1 + probability_mod))
+		if(prob(2))
 			var/obj/item/stack/sheet/mineral/diamond/D = new /obj/item/stack/sheet/mineral/diamond(loc)
 			D.amount = amount_produced
 	if(sound)
