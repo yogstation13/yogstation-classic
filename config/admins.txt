@@ -43,7 +43,6 @@ Johncena1469 = Administrator
 Seiko Yamada = Administrator
 
 Universum = Moderator V1
-Jarek56 = Moderator V1
 Dzlan = Moderator V2
 George99 = Moderator V2
 Wolfieman = Moderator V2
