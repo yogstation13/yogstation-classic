@@ -368,7 +368,21 @@
 	var/mob/living/carbon/human/character = create_character()	//creates the human and transfers vars and mind
 	character.mind.quiet_round = character.client.prefs.toggles & QUIET_ROUND
 	SSjob.EquipRank(character, rank, 1)					//equips the human
-	character.loc = pick(latejoin)
+
+	var/D = pick(latejoin)
+	if(!D)
+		for(var/turf/T in get_area_turfs(/area/shuttle/arrival))
+			if(!T.density)
+				var/clear = 1
+				for(var/obj/O in T)
+					if(O.density)
+						clear = 0
+						break
+				if(clear)
+					D = T
+					continue
+
+	character.loc = D
 	character.lastarea = get_area(loc)
 
 	if(character.mind.assigned_role != "Cyborg")
@@ -397,7 +411,7 @@
 		if (ailist.len)
 			var/mob/living/silicon/ai/announcer = pick(ailist)
 			if(character.mind)
-				if((character.mind.assigned_role != "Cyborg") && (character.mind.special_role != "MODE"))
+				if((character.mind.assigned_role != "Cyborg") && (character.mind.assigned_role != character.mind.special_role))
 					announcer.say("[announcer.radiomod] [character.real_name] has signed up as [rank].")
 
 /mob/new_player/proc/LateChoices()
@@ -494,4 +508,4 @@
 	src << browse(null, "window=preferences") //closes job selection
 	src << browse(null, "window=mob_occupation")
 	src << browse(null, "window=latechoices") //closes late job selection
-	src << browse(null, "window=disclaimer") //closes late job selection
+	src << browse(null, "window=disclaimer") //closes rules popups

@@ -196,13 +196,8 @@
 	if(resolved && ticker.delay_end)
 		if(unresolvedCount == 0)
 			if(alert(usr, "You have resolved the last ticket (the server restart is currently delayed!). Would you like to restart the server now?", "Restart Server", "Restart", "Cancel") == "Restart")
-				world << "<span class='userdanger'>Restarting world!</span> <span class='adminnotice'> Initiated by [usr.client.holder.fakekey ? "Admin" : usr.key]!</span>"
-				log_admin("[key_name(usr)] initiated a reboot.")
-
-				sleep(ticker.restart_timeout)
-
-				kick_clients_in_lobby("\red The round came to an end with you in the lobby.", 1) //second parameter ensures only afk clients are kicked
-				world.Reboot()
+				ticker.delay_end = 0
+				world.Reboot("Initiated by [usr.client.holder.fakekey ? "Admin" : usr.key].", "end_proper", "proper completion", 10)
 			else
 				usr << "<span class='ticket-status'>You chose not to restart the server. If you do not have permissions to restart the server normally, you can still do so by making a new ticket and resolving it again.</span>"
 

@@ -143,7 +143,6 @@
 
 /datum/chemical_reaction/foam/on_reaction(var/datum/reagents/holder, var/created_volume)
 	var/location = get_turf(holder.my_atom)
-
 	for(var/mob/M in viewers(5, location))
 		M << "<span class='danger'>The solution spews out foam!</span>"
 	holder.my_atom.report_reaction("foam", 1)
@@ -228,14 +227,14 @@
 	required_reagents = list("toxin" = 1, "water" = 4)
 	result_amount = 5
 
-datum/chemical_reaction/weedkiller
+/datum/chemical_reaction/weedkiller
 	name = "Weed Killer"
 	id = "weedkiller"
 	result = "weedkiller"
 	required_reagents = list("toxin" = 1, "ammonia" = 4)
 	result_amount = 5
 
-datum/chemical_reaction/pestkiller
+/datum/chemical_reaction/pestkiller
 	name = "Pest Killer"
 	id = "pestkiller"
 	result = "pestkiller"

@@ -26,6 +26,10 @@ var/bomb_set
 	var/hacktime = 330
 	var/immobile = 0 //Not all nukes should be moved
 
+/obj/machinery/nuclearbomb/New()
+	..()
+	nuke_list += src
+
 /obj/machinery/nuclearbomb/selfdestruct
 	name = "station self-destruct terminal"
 	desc = "For when it all gets too much to bear. Do not taunt."
@@ -267,7 +271,7 @@ var/bomb_set
 					lastentered = text("[]", href_list["type"])
 					if (text2num(lastentered) == null)
 						var/turf/LOC = get_turf(usr)
-						message_admins("[key_name_admin(usr)] tried to exploit a nuclear bomb by entering non-numerical codes: <a href='?_src_=vars;Vars=\ref[src]'>[lastentered]</a> ! ([LOC ? "<a href='?_src_=holder;adminplayerobservecoodjump=1;X=[LOC.x];Y=[LOC.y];Z=[LOC.z]'>JMP</a>" : "null"])", 0)
+						message_admins("[key_name_admin(usr)] (<A HREF='?_src_=holder;adminplayerobservefollow=\ref[usr]'>FLW</A>) tried to exploit a nuclear bomb by entering non-numerical codes: <a href='?_src_=vars;Vars=\ref[src]'>[lastentered]</a> ! ([LOC ? "<a href='?_src_=holder;adminplayerobservecoodjump=1;X=[LOC.x];Y=[LOC.y];Z=[LOC.z]'>JMP</a>" : "null"])", 0)
 						log_admin("EXPLOIT : [key_name(usr)] tried to exploit a nuclear bomb by entering non-numerical codes: [lastentered] !")
 					else
 						src.code += lastentered
@@ -421,21 +425,10 @@ var/bomb_set
 			ticker.mode:nukes_left --
 		else
 			world << "<B>The station was destoyed by the nuclear blast!</B>"
-
 		ticker.mode.station_was_nuked = (off_station<2)	//offstation==1 is a draw. the station becomes irradiated and needs to be evacuated.
 														//kinda shit but I couldn't  get permission to do what I wanted to do.
-
 		if(!ticker.mode.check_finished())//If the mode does not deal with the nuke going off so just reboot because everyone is stuck as is
-			world << "<B>Resetting in 30 seconds!</B>"
-
-			feedback_set_details("end_error","nuke - unhandled ending")
-
-			if(blackbox)
-				blackbox.save_all_data_to_sql()
-			sleep(300)
-			log_game("Rebooting due to nuclear detonation")
-			kick_clients_in_lobby("<span class='danger'>The round came to an end with you in the lobby.</span>", 1) //second parameter ensures only afk clients are kicked
-			world.Reboot()
+			world.Reboot("Station destroyed by Nuclear Device.", "end_error", "nuke - unhandled ending")
 			return
 	return
 

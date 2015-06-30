@@ -44,6 +44,8 @@
 	for(var/obj/item/weapon/stock_parts/manipulator/P in component_parts)
 		speed_coeff += P.rating
 	heal_level = (efficiency * 15) + 10
+	if(heal_level > 100)
+		heal_level = 100
 
 //The return of data disks?? Just for transferring between genetics machine/cloning machine.
 //TO-DO: Make the genetics machine accept them.
@@ -122,7 +124,7 @@
 //Clonepod
 
 //Start growing a human clone in the pod!
-/obj/machinery/clonepod/proc/growclone(var/ckey, var/clonename, var/ui, var/se, var/mindref, var/datum/species/mrace, var/mcolor, var/factions)
+/obj/machinery/clonepod/proc/growclone(var/ckey, var/clonename, var/ui, var/se, var/mindref, var/datum/species/mrace, var/list/features, var/factions)
 	if(panel_open)
 		return 0
 	if(mess || attempting)
@@ -184,7 +186,7 @@
 	H << "<span class='notice'><b>Consciousness slowly creeps over you as your body regenerates.</b><br><i>So this is what cloning feels like?</i></span>"
 	H << "<span class='notice'><i>Fragmented images of your life and the shift thus far churn within your newfound consciousness...</i>><br> Memories spooling to an abrupt halt, the <u>minutes before your death</u> race by in an <b>indecipherable</b> blur of confusion and disorientation, veiled by a wall of complete amnesia.</span>"
 
-	hardset_dna(H, ui, se, null, null, mrace, mcolor)
+	hardset_dna(H, ui, se, null, null, mrace, features)
 	H.faction |= factions
 
 	H.set_cloned_appearance()

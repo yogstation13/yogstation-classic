@@ -103,38 +103,9 @@ var/datum/subsystem/ticker/ticker
 				declare_completion()
 				spawn(50)
 					if(mode.station_was_nuked)
-						feedback_set_details("end_proper","nuke")
-						if(!delay_end)
-							world << "\blue <B>Rebooting due to destruction of station in [restart_timeout/10] seconds</B>"
+						world.Reboot("Station destroyed by Nuclear Device.", "end_proper", "nuke")
 					else
-						feedback_set_details("end_proper","proper completion")
-						if(!delay_end)
-							world << "\blue <B>Restarting in [restart_timeout/10] seconds</B>"
-
-
-					if(blackbox)
-						blackbox.save_all_data_to_sql()
-
-					for(var/datum/admin_ticket/T in tickets_list)
-						if(!T.resolved)
-							var/count = 0
-							for(var/client/X in admins)
-								if(!check_rights_for(X, R_ADMIN))
-									continue
-								if(X.is_afk())
-									continue
-								count++
-
-							if(count)
-								delay_end = 1
-
-					if(delay_end)
-						world << "\blue <B>An admin has delayed the round end</B>"
-					else
-						sleep(restart_timeout)
-						kick_clients_in_lobby("\red The round came to an end with you in the lobby.", 1) //second parameter ensures only afk clients are kicked
-						world.Reboot()
-
+						world.Reboot("Round ended.", "end_proper", "proper completion")
 
 /datum/subsystem/ticker/proc/setup()
 		//Create and announce mode
@@ -353,7 +324,7 @@ var/datum/subsystem/ticker/ticker
 		if(player && player.mind && player.mind.assigned_role)
 			if(player.mind.assigned_role == "Captain")
 				captainless=0
-			if(player.mind.assigned_role != "MODE")
+			if(player.mind.assigned_role != player.mind.special_role)
 				SSjob.EquipRank(player, player.mind.assigned_role, 0)
 	if(captainless)
 		for(var/mob/M in player_list)
@@ -377,7 +348,7 @@ var/datum/subsystem/ticker/ticker
 			if(Player.stat != DEAD && !isbrain(Player))
 				num_survivors++
 				if(station_evacuated) //If the shuttle has already left the station
-					if(!Player.onCentcom())
+					if(!Player.onCentcom() && !Player.onSyndieBase())
 						Player << "<font color='blue'><b>You managed to survive, but were marooned on [station_name()]...</b></FONT>"
 					else
 						num_escapees++
@@ -457,5 +428,5 @@ var/datum/subsystem/ticker/ticker
 /datum/subsystem/ticker/proc/send_random_tip()
 	var/list/randomtips = file2list("config/tips.txt")
 	if(randomtips.len)
-		world << "<font color='purple'><b>Tip of the round: </b>[strip_html_properly(pick(randomtips))]</font>"
+		world << "<font color='purple'><b>Tip of the round: </b>[html_encode(pick(randomtips))]</font>"
 

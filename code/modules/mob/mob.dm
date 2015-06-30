@@ -159,8 +159,8 @@ var/next_mob_id = 0
 	var/range = 7
 	if(hearing_distance)
 		range = hearing_distance
-	var/msg = message
 	for(var/mob/M in get_hearers_in_view(range, src))
+		var/msg = message
 		if(self_message && M==src)
 			msg = self_message
 		M.show_message( msg, 2, deaf_message, 1)
@@ -622,9 +622,6 @@ var/list/slot_equipment_priority = list( \
 	set category = "OOC"
 	reset_view(null)
 	unset_machine()
-	if(istype(src, /mob/living))
-		if(src:cameraFollow)
-			src:cameraFollow = null
 
 /mob/Topic(href, href_list)
 	if(href_list["mach_close"])
@@ -736,6 +733,7 @@ var/list/slot_equipment_priority = list( \
 
 			if(master_controller)
 				stat("MasterController:","[round(master_controller.cost,0.001)]ds (Interval:[master_controller.processing_interval] | Iteration:[master_controller.iteration])")
+				stat("Subsystem cost per second:","[round(master_controller.SSCostPerSecond,0.001)]ds")
 				for(var/datum/subsystem/SS in master_controller.subsystems)
 					if(SS.can_fire)
 						SS.stat_entry()

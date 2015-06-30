@@ -37,6 +37,7 @@
 	item_state = "armor"
 	can_adjust = 0
 	strip_delay = 100
+	burn_state = -1 //Won't burn in fires
 
 /obj/item/clothing/under/waiter
 	name = "waiter's outfit"
@@ -115,6 +116,7 @@
 	heat_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 	max_heat_protection_temperature = SPACE_SUIT_MAX_TEMP_PROTECT
 	can_adjust = 0
+	burn_state = -1 //Won't burn in fires
 
 /obj/item/clothing/under/acj
 	name = "administrative cybernetic jumpsuit"
@@ -131,6 +133,7 @@
 	heat_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 	max_heat_protection_temperature = SPACE_SUIT_MAX_TEMP_PROTECT
 	can_adjust = 0
+	burn_state = -1 //Won't burn in fires
 
 /obj/item/clothing/under/owl
 	name = "owl uniform"
@@ -235,7 +238,7 @@
 
 /obj/item/clothing/under/suit_jacket/white
 	name = "white suit"
-	desc = "A white suit and jacket with a black shirt. You wanna play rough? OKAY!."
+	desc = "A white suit and jacket with a blue shirt. You wanna play rough? OKAY!."
 	icon_state = "white_suit"
 	item_state = "white_suit"
 	item_color = "white_suit"
@@ -338,6 +341,7 @@
 	body_parts_covered = CHEST|GROIN|ARMS
 	fitted = NO_FEMALE_UNIFORM
 	can_adjust = 0
+	burn_state = -1 //Won't burn in fires
 
 /obj/item/clothing/under/sundress
 	name = "sundress"

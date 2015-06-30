@@ -2,11 +2,13 @@
 	name = "medical pack"
 	singular_name = "medical pack"
 	icon = 'icons/obj/items.dmi'
-	amount = 5
-	max_amount = 5
+	amount = 6
+	max_amount = 6
 	w_class = 1
 	throw_speed = 3
 	throw_range = 7
+	burn_state = 0 //Burnable
+	burntime = 5
 	var/heal_brute = 0
 	var/heal_burn = 0
 	var/stop_bleeding = 0

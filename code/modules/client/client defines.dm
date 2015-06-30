@@ -44,3 +44,6 @@
 	var/WMIQueries = 0
 
 	preload_rsc = PRELOAD_RSC
+
+	// Used by html_interface module.
+	var/hi_last_pos

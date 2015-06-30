@@ -72,12 +72,6 @@
 			user << "<span class='notice'>[target] is full.</span>"
 			return
 
-		if(istype(target, /obj/item/weapon/reagent_containers))
-			var/obj/item/weapon/reagent_containers/RC = target
-			for(var/bad_reg in RC.banned_reagents)
-				if(reagents.has_reagent(bad_reg, 1)) //Message is a bit "Game-y" but I can't think up a better one.
-					user << "<span class='warning'>A chemical in [src] is far too dangerous to transfer to [RC]!</span>"
-					return
 
 		var/trans = reagents.trans_to(target, amount_per_transfer_from_this)
 		user << "<span class='notice'>You transfer [trans] unit\s of the solution to [target].</span>"
@@ -237,12 +231,19 @@
 	volume = 70
 	flags = OPENCONTAINER
 
-/obj/item/weapon/reagent_containers/glass/bucket/attackby(var/obj/D, mob/user as mob, params)
-	if(isprox(D))
-		user << "<span class='notice'>You add [D] to [src].</span>"
-		qdel(D)
-		user.put_in_hands(new /obj/item/weapon/bucket_sensor)
+/obj/item/weapon/reagent_containers/glass/bucket/attackby(var/obj/O, mob/user as mob, params)
+	if(istype(O, /obj/item/weapon/mop))
+		if(reagents.total_volume < 1)
+			user << "<span class='warning'>[src] is out of water!</span>"
+		else
+			reagents.trans_to(O, 5)
+			user << "<span class='notice'>You wet [O] in [src].</span>"
+			playsound(loc, 'sound/effects/slosh.ogg', 25, 1)
+	else if(isprox(O))
+		user << "<span class='notice'>You add [O] to [src].</span>"
+		qdel(O)
 		user.unEquip(src)
 		qdel(src)
+		user.put_in_hands(new /obj/item/weapon/bucket_sensor)
 	else
 		..()
