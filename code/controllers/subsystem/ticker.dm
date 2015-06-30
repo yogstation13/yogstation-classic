@@ -102,6 +102,13 @@ var/datum/subsystem/ticker/ticker
 				auto_toggle_ooc(1) // Turn it on
 				declare_completion()
 				spawn(50)
+					var/unresolved_tickets = 0
+					for(var/datum/admin_ticket/T in tickets_list)
+						if(!T.resolved)
+							unresolved_tickets++
+					if(unresolved_tickets)
+						ticker.delay_end = 1
+						message_admins("Not all tickets have been resolved. Server restart delayed.")
 					if(mode.station_was_nuked)
 						world.Reboot("Station destroyed by Nuclear Device.", "end_proper", "nuke")
 					else

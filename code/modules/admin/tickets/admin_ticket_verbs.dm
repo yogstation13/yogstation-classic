@@ -115,7 +115,7 @@
 							<a href='?_src_=holder;adminplayeropts=\ref[T.owner.mob]'><img border='0' width='16' height='16' class='uiIcon16 icon-clipboard' /> PP</a>
 							<a href='?_src_=vars;Vars=\ref[T.owner.mob]'><img border='0' width='16' height='16' class='uiIcon16 icon-clipboard' /> VV</a>
 							<a href='?_src_=holder;subtlemessage=\ref[T.owner.mob]'><img border='0' width='16' height='16' class='uiIcon16 icon-mail-closed' /> SM</a>
-							<a href='?_src_=holder;adminplayerobservejump=\ref[T.owner.mob]'><img border='0' width='16' height='16' class='uiIcon16 icon-arrowthick-1-e' /> JMP</a>
+							<a href='?_src_=holder;adminplayerobservefollow=\ref[T.owner.mob]'><img border='0' width='16' height='16' class='uiIcon16 icon-arrowthick-1-e' /> FLW</a>
 							<a href='?_src_=holder;secretsadmin=check_antagonist'><img border='0' width='16' height='16' class='uiIcon16 icon-clipboard' /> CA</a>
 							[ai_found ? " <a href='?_src_=holder;adminchecklaws=\ref[T.owner.mob]'><img width='16' height='16' class='uiIcon16 icon-clipboard' /> CL</a>" : ""]
 							"}
@@ -154,7 +154,7 @@
 							<a href='?_src_=holder;adminplayeropts=\ref[T.owner.mob]'><img border='0' width='16' height='16' class='uiIcon16 icon-clipboard' /> PP</a>
 							<a href='?_src_=vars;Vars=\ref[T.owner.mob]'><img border='0' width='16' height='16' class='uiIcon16 icon-clipboard' /> VV</a>
 							<a href='?_src_=holder;subtlemessage=\ref[T.owner.mob]'><img border='0' width='16' height='16' class='uiIcon16 icon-mail-closed' /> SM</a>
-							<a href='?_src_=holder;adminplayerobservejump=\ref[T.owner.mob]'><img border='0' width='16' height='16' class='uiIcon16 icon-arrowthick-1-e' /> JMP</a>
+							<a href='?_src_=holder;adminplayerobservefollow=\ref[T.owner.mob]'><img border='0' width='16' height='16' class='uiIcon16 icon-arrowthick-1-e' /> FLW</a>
 							<a href='?_src_=holder;secretsadmin=check_antagonist'><img border='0' width='16' height='16' class='uiIcon16 icon-clipboard' /> CA</a>
 							[ai_found ? " <a href='?_src_=holder;adminchecklaws=\ref[T.owner.mob]'><img border='0' width='16' height='16' class='uiIcon16 icon-clipboard' /> CL</a>" : ""]
 								"}
