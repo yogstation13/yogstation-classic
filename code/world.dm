@@ -140,12 +140,17 @@
 						C << "<span class='announce'>PR: [input["announce"]]</span>"
 #undef CHAT_PULLR
 
+var/feedback_set = 0
+
 /world/Reboot(var/reason, var/feedback_c, var/feedback_r, var/time)
 	var/delay
 	if(time)
 		delay = time
 	else
 		delay = ticker.restart_timeout
+	if(!feedback_set)
+		feedback_set_details("[feedback_c]","[feedback_r]")
+		feedback_set = 1
 	if(ticker.delay_end)
 		world << "<span class='boldannounce'>An admin has delayed the round end.</span>"
 		return
@@ -156,7 +161,6 @@
 	if(ticker.delay_end)
 		world << "<span class='boldannounce'>Reboot was cancelled by an admin.</span>"
 		return
-	feedback_set_details("[feedback_c]","[feedback_r]")
 	log_game("<span class='boldannounce'>Rebooting World. [reason]</span>")
 	kick_clients_in_lobby("<span class='boldannounce'>The round came to an end with you in the lobby.</span>", 1) //second parameter ensures only afk clients are kicked
 	#ifdef dellogging
