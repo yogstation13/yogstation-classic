@@ -64,6 +64,8 @@
 			var/obj/item/weapon/implanter/S = new /obj/item/weapon/implanter(src)
 			S.imp = new /obj/item/weapon/implant/explosive(S)
 			S.name += " (explosive)"
+			var/obj/item/weapon/implanter/Z = new /obj/item/weapon/implanter(src)
+			Z.imp = new /obj/item/weapon/implant/zombie(Z)
 			return
 
 		if("hacker")
@@ -100,6 +102,16 @@
 	..()
 	var/obj/item/weapon/implanter/O = new(src)
 	O.imp = new /obj/item/weapon/implant/freedom(O)
+	O.update_icon()
+	return
+
+/obj/item/weapon/storage/box/syndie_kit/imp_zombie
+	name = "boxed zombie implant (with injector)"
+
+/obj/item/weapon/storage/box/syndie_kit/imp_zombie/New()
+	..()
+	var/obj/item/weapon/implanter/O = new(src)
+	O.imp = new /obj/item/weapon/implant/zombie(O)
 	O.update_icon()
 	return
 
