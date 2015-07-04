@@ -669,6 +669,13 @@ var/list/uplink_items = list()
 	cost = 2
 	gamemodes = list(/datum/game_mode/nuclear)
 
+/datum/uplink_item/implants/zombie
+	name = "Zombie Implant"
+	desc = "An implant injected into the body, and later activated using a bodily gesture to inject a specially formulated sedative along with an anti-toxin solution to counteract some negative effects. \
+	You will appear dead to most casual observers, and will eventually wake up of your own accord. Can also be purged by medical chemistry."
+	item = /obj/item/weapon/storage/box/syndie_kit/imp_zombie
+	cost = 12
+
 
 //CYBERNETIC IMPLANTS
 
