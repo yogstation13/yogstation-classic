@@ -248,6 +248,7 @@
 		revolutionaries -= rev_mind
 		rev_mind.special_role = null
 		rev_mind.current.attack_log += "\[[time_stamp()]\] <font color='red'>Has renounced the revolution!</font>"
+		log_attack("[rev_mind.current]([rev_mind.key]) renounced the revolution.")
 
 		if(beingborged)
 			rev_mind.current << "<span class='danger'><FONT size = 3>The frame's firmware detects and deletes your neural reprogramming!  You remember nothing but the name of the one who flashed you.</FONT></span>"

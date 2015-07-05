@@ -267,6 +267,7 @@
 		cult_mind.current.Paralyse(5)
 		cult_mind.current << "<span class='userdanger'>An unfamiliar white light flashes through your mind, cleansing the taint of the dark-one and the memories of your time as his servant with it.</span>"
 		cult_mind.memory = ""
+		log_attack("[cult_mind.current]([cult_mind.key]) has renounced the cult.")
 		cult_mind.cult_words = initial(cult_mind.cult_words)
 		cult_mind.special_role = null
 		update_cult_icons_removed(cult_mind)

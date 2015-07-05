@@ -341,6 +341,7 @@
 	gangster_mind.special_role = null
 	if(silent < 2)
 		gangster_mind.current.attack_log += "\[[time_stamp()]\] <font color='red'>Has reformed and defected from the [gang=="A" ? "[gang_name("A")] Gang (A)" : "[gang_name("B")] Gang (B)"]!</font>"
+		log_attack("[gangster_mind.current]([gangster_mind.key]) has been deconverted from the [gang=="A" ? "[gang_name("A")] Gang (A)" : "[gang_name("B")] Gang (B)"].")
 
 		if(beingborged)
 			if(!silent)
