@@ -249,6 +249,7 @@
 		cult += cult_mind
 		cult_mind.current.cult_add_comm()
 		cult_mind.special_role = "Cultist"
+		log_attack("[cult_mind.current]([cult_mind.key]) has been converted to the cult.")
 		update_cult_icons_added(cult_mind)
 		cult_mind.current.attack_log += "\[[time_stamp()]\] <span class='danger'>Has been converted to the cult!</span>"
 		return 1

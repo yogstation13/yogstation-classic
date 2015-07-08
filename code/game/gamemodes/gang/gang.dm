@@ -309,6 +309,7 @@
 	gangster_mind.current << "<font color='red'>Help your bosses take over the station by claiming territory with <b>special spraycans</b> only they can provide. Simply spray on any unclaimed area of the station.</font>"
 	gangster_mind.current << "<font color='red'>You can identify your bosses by their <b>red \[G\] icon</b>.</font>"
 	gangster_mind.current.attack_log += "\[[time_stamp()]\] <font color='red'>Has been converted to the [gang=="A" ? "[gang_name("A")] Gang (A)" : "[gang_name("B")] Gang (B)"]!</font>"
+	log_attack("[gangster_mind.current]([gangster_mind.key]) has been recruited into the [gang=="A" ? "[gang_name("A")] Gang (A)" : "[gang_name("B")] Gang (B)"].")
 	gangster_mind.special_role = "[gang=="A" ? "[gang_name("A")] Gang (A)" : "[gang_name("B")] Gang (B)"]"
 	update_gang_icons_added(gangster_mind,gang)
 	return 2

@@ -391,24 +391,30 @@ var/datum/subsystem/ticker/ticker
 	for (var/mob/living/silicon/ai/aiPlayer in mob_list)
 		if (aiPlayer.stat != 2 && aiPlayer.mind)
 			world << "<b>[aiPlayer.name] (Played by: [aiPlayer.mind.key])'s laws at the end of the round were:</b>"
+			log_game("<b>[aiPlayer.name] (Played by: [aiPlayer.mind.key])'s laws at the end of the round were:</b>")
 			aiPlayer.show_laws(1)
 		else if (aiPlayer.mind) //if the dead ai has a mind, use its key instead
 			world << "<b>[aiPlayer.name] (Played by: [aiPlayer.mind.key])'s laws when it was deactivated were:</b>"
+			log_game("<b>[aiPlayer.name] (Played by: [aiPlayer.mind.key])'s laws when it was deactivated were:</b>")
 			aiPlayer.show_laws(1)
 
 		world << "<b>Total law changes: [aiPlayer.law_change_counter]</b>"
+		log_game("<b>Total law changes: [aiPlayer.law_change_counter]</b>")
 
 		if (aiPlayer.connected_robots.len)
 			var/robolist = "<b>[aiPlayer.real_name]'s minions were:</b> "
 			for(var/mob/living/silicon/robot/robo in aiPlayer.connected_robots)
 				robolist += "[robo.name][robo.stat?" (Deactivated) (Played by: [robo.mind.key]), ":" (Played by: [robo.mind.key]), "]"
 			world << "[robolist]"
+			log_game("[robolist]")
 	for (var/mob/living/silicon/robot/robo in mob_list)
 		if (!robo.connected_ai && robo.mind)
 			if (robo.stat != 2)
 				world << "<b>[robo.name] (Played by: [robo.mind.key]) survived as an AI-less borg! Its laws were:</b>"
+				log_game("<b>[robo.name] (Played by: [robo.mind.key]) survived as an AI-less borg! Its laws were:</b>")
 			else
 				world << "<b>[robo.name] (Played by: [robo.mind.key]) was unable to survive the rigors of being a cyborg without an AI. Its laws were:</b>"
+				log_game("<b>[robo.name] (Played by: [robo.mind.key]) was unable to survive the rigors of being a cyborg without an AI. Its laws were:</b>")
 
 			if(robo) //How the hell do we lose robo between here and the world messages directly above this?
 				robo.laws.show_laws(world)
