@@ -1900,7 +1900,7 @@
 "aKB" = (/turf/simulated/floor/plasteel{icon_state = "L1"},/area/hallway/primary/central)
 "aKC" = (/turf/simulated/floor/plasteel{icon_state = "L3"},/area/hallway/primary/central)
 "aKD" = (/turf/simulated/floor/plasteel{icon_state = "L5"},/area/hallway/primary/central)
-"aKE" = (/turf/simulated/floor/plasteel{icon_state = "L7"},/area/hallway/primary/central)
+"aKE" = (/obj/structure/safe/floor,/obj/item/weapon/sord,/obj/item/weapon/soap/nanotrasen,/obj/item/weapon/gun/magic/wand,/obj/item/weapon/reagent_containers/food/drinks/bottle/vodka/badminka,/turf/simulated/floor/plasteel{icon_state = "L7"},/area/hallway/primary/central)
 "aKF" = (/turf/simulated/floor/plasteel{icon_state = "L9"},/area/hallway/primary/central)
 "aKG" = (/turf/simulated/floor/plasteel{icon_state = "L11"},/area/hallway/primary/central)
 "aKH" = (/turf/simulated/floor/plasteel{desc = ""; icon_state = "L13"; name = "floor"},/area/hallway/primary/central)
