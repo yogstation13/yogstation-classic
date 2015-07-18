@@ -128,7 +128,7 @@
 	else
 		setEmotionOverlay("pai-off")
 
-/obj/item/device/paicard/proc/setEmotion(var/emotion)
+/obj/item/device/paicard/proc/setEmotion(emotion)
 	if(pai)
 		switch(emotion)
 			if(1) setEmotionOverlay("pai-happy")

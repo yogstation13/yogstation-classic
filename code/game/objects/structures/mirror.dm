@@ -8,7 +8,7 @@
 	anchored = 1
 	var/shattered = 0
 
-/obj/structure/mirror/attack_hand(mob/user as mob)
+/obj/structure/mirror/attack_hand(mob/user)
 	if(shattered)	return
 
 	if(ishuman(user))
@@ -44,7 +44,7 @@
 	playsound(src, "shatter", 70, 1)
 	desc = "Oh no, seven years of bad luck!"
 
-/obj/structure/mirror/bullet_act(var/obj/item/projectile/Proj)
+/obj/structure/mirror/bullet_act(obj/item/projectile/Proj)
 	if(prob(Proj.damage * 2))
 		if((Proj.damage_type == BRUTE || Proj.damage_type == BURN))
 			if(!shattered)
@@ -54,7 +54,7 @@
 	..()
 
 
-/obj/structure/mirror/attackby(obj/item/I as obj, mob/living/user as mob, params)
+/obj/structure/mirror/attackby(obj/item/I, mob/living/user, params)
 	user.do_attack_animation(src)
 	if(I.damtype == STAMINA)
 		return
@@ -70,7 +70,7 @@
 		playsound(src.loc, 'sound/effects/Glasshit.ogg', 70, 1)
 
 
-/obj/structure/mirror/attack_alien(mob/living/user as mob)
+/obj/structure/mirror/attack_alien(mob/living/user)
 	user.do_attack_animation(src)
 	if(islarva(user)) return
 	if(shattered)
@@ -80,7 +80,7 @@
 	shatter()
 
 
-/obj/structure/mirror/attack_animal(mob/living/user as mob)
+/obj/structure/mirror/attack_animal(mob/living/user)
 	if(!isanimal(user)) return
 	var/mob/living/simple_animal/M = user
 	if(M.melee_damage_upper <= 0) return
@@ -92,7 +92,7 @@
 	shatter()
 
 
-/obj/structure/mirror/attack_slime(mob/living/user as mob)
+/obj/structure/mirror/attack_slime(mob/living/user)
 	user.do_attack_animation(src)
 	if(shattered)
 		playsound(src.loc, 'sound/effects/hit_on_shattered_glass.ogg', 70, 1)
@@ -121,7 +121,7 @@
 		choosable_races += S.id
 	..()
 
-/obj/structure/mirror/magic/attack_hand(mob/user as mob)
+/obj/structure/mirror/magic/attack_hand(mob/user)
 	if(!ishuman(user))
 		return
 

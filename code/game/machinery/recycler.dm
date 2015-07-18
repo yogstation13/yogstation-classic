@@ -1,7 +1,7 @@
 var/const/SAFETY_COOLDOWN = 100
 
 /obj/machinery/recycler
-	name = "crusher"
+	name = "recycler"
 	desc = "A large crushing machine which is used to recycle small items ineffeciently; there are lights on the side of it."
 	icon = 'icons/obj/recycling.dmi'
 	icon_state = "grinder-o0"
@@ -53,7 +53,7 @@ var/const/SAFETY_COOLDOWN = 100
 	update_icon()
 
 
-/obj/machinery/recycler/attackby(var/obj/item/I, var/mob/user, params)
+/obj/machinery/recycler/attackby(obj/item/I, mob/user, params)
 	if(default_deconstruction_screwdriver(user, "grinder-oOpen", "grinder-o0", I))
 		return
 
@@ -71,7 +71,7 @@ var/const/SAFETY_COOLDOWN = 100
 	add_fingerprint(user)
 	return
 
-/obj/machinery/recycler/emag_act(user as mob)
+/obj/machinery/recycler/emag_act(mob/user)
 	if(!emagged)
 		emagged = 1
 		if(safety_mode)
@@ -88,13 +88,13 @@ var/const/SAFETY_COOLDOWN = 100
 	icon_state = icon_name + "[is_powered]" + "[(blood ? "bld" : "")]" // add the blood tag at the end
 
 // This is purely for admin possession !FUN!.
-/obj/machinery/recycler/Bump(var/atom/movable/AM)
+/obj/machinery/recycler/Bump(atom/movable/AM)
 	..()
 	if(AM)
 		Bumped(AM)
 
 
-/obj/machinery/recycler/Bumped(var/atom/movable/AM)
+/obj/machinery/recycler/Bumped(atom/movable/AM)
 
 	if(stat & (BROKEN|NOPOWER))
 		return
@@ -114,7 +114,7 @@ var/const/SAFETY_COOLDOWN = 100
 			playsound(src.loc, 'sound/machines/buzz-sigh.ogg', 50, 0)
 			AM.loc = src.loc
 
-/obj/machinery/recycler/proc/recycle(var/obj/item/I, var/sound = 1)
+/obj/machinery/recycler/proc/recycle(obj/item/I, sound = 1)
 	I.loc = src.loc
 	if(is_type_in_list(I, blacklist))
 		qdel(I)
@@ -154,7 +154,7 @@ var/const/SAFETY_COOLDOWN = 100
 		playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
 
 
-/obj/machinery/recycler/proc/stop(var/mob/living/L)
+/obj/machinery/recycler/proc/stop(mob/living/L)
 	playsound(src.loc, 'sound/machines/buzz-sigh.ogg', 50, 0)
 	safety_mode = 1
 	update_icon()
@@ -165,7 +165,7 @@ var/const/SAFETY_COOLDOWN = 100
 		safety_mode = 0
 		update_icon()
 
-/obj/machinery/recycler/proc/eat(var/mob/living/L)
+/obj/machinery/recycler/proc/eat(mob/living/L)
 
 	L.loc = src.loc
 

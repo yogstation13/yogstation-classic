@@ -21,8 +21,9 @@
 	melee_damage_upper = 12
 	attacktext = "attacks"
 	attack_sound = 'sound/weapons/punch1.ogg'
-	var/Attackemote = "growls at"
+	emote_taunt = list("growls")
 	speak_emote = list("creaks")
+	taunt_chance = 30
 
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 	minbodytemp = 0
@@ -34,11 +35,6 @@
 	var/mob/living/creator = null // the creator
 	var/destroy_objects = 0
 	var/knockdown_people = 0
-
-/mob/living/simple_animal/hostile/mimic/FindTarget()
-	. = ..()
-	if(.)
-		emote("me", 1, "[Attackemote] [.].")
 
 /mob/living/simple_animal/hostile/mimic/death()
 	..(1)
@@ -122,15 +118,11 @@
 		visible_message("<b>[src]</b> starts to move!")
 		attempt_open = 1
 
-/mob/living/simple_animal/hostile/mimic/crate/adjustBruteLoss(var/damage)
+/mob/living/simple_animal/hostile/mimic/crate/adjustBruteLoss(damage)
 	trigger()
 	..(damage)
 
 /mob/living/simple_animal/hostile/mimic/crate/LoseTarget()
-	..()
-	icon_state = initial(icon_state)
-
-/mob/living/simple_animal/hostile/mimic/crate/LostTarget()
 	..()
 	icon_state = initial(icon_state)
 
@@ -244,7 +236,7 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 	projectiletype = /obj/item/projectile/magic/
 	projectilesound = 'sound/items/bikehorn.ogg'
 	casingtype = null
-	Attackemote = "aims menacingly at"
+	emote_see = list("aims menacingly")
 	var/obj/item/weapon/gun/TrueGun = null
 	var/obj/item/weapon/gun/magic/Zapstick = list()
 	var/obj/item/weapon/gun/projectile/Pewgun = list()

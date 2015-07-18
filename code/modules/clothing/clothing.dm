@@ -11,7 +11,7 @@
 	var/alt_desc = null
 	var/toggle_message = null
 	var/alt_toggle_message = null
-	var/activation_sound = null
+	var/active_sound = null
 	var/toggle_cooldown = null
 	var/cooldown = 0
 	var/obj/item/device/flashlight/F = null
@@ -77,7 +77,7 @@ BLIND     // can't see anything
 	put_on_delay = 40
 
 // Called just before an attack_hand(), in mob/UnarmedAttack()
-/obj/item/clothing/gloves/proc/Touch(var/atom/A, var/proximity)
+/obj/item/clothing/gloves/proc/Touch(atom/A, proximity)
 	return 0 // return 1 to cancel attack_hand()
 
 //Head
@@ -106,7 +106,7 @@ BLIND     // can't see anything
 	return message
 
 //Proc that moves gas/breath masks out of the way, disabling them and allowing pill/food consumption
-/obj/item/clothing/mask/proc/adjustmask(var/mob/user)
+/obj/item/clothing/mask/proc/adjustmask(mob/user)
 	if(!ignore_maskadjust)
 		if(user.incapacitated())
 			return
@@ -116,6 +116,7 @@ BLIND     // can't see anything
 			permeability_coefficient = initial(permeability_coefficient)
 			flags |= visor_flags
 			flags_inv |= visor_flags_inv
+			flags_cover = initial(flags_cover)
 			user << "<span class='notice'>You push \the [src] back into place.</span>"
 			src.mask_adjusted = 0
 			slot_flags = initial(slot_flags)
@@ -126,6 +127,7 @@ BLIND     // can't see anything
 			permeability_coefficient = null
 			flags &= ~visor_flags
 			flags_inv &= ~visor_flags_inv
+			flags_cover &= 0
 			src.mask_adjusted = 1
 			if(adjusted_flags)
 				slot_flags = adjusted_flags
@@ -216,17 +218,19 @@ BLIND     // can't see anything
 	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
 	var/fitted = FEMALE_UNIFORM_FULL // For use in alternate clothing styles for women
 	var/has_sensor = 1//For the crew computer 2 = unable to change mode
-	var/sensor_mode = 0
+	var/random_sensor = 1
+	var/sensor_mode = 0	/* 1 = Report living/dead, 2 = Report detailed damages, 3 = Report location */
 	var/can_adjust = 1
 	var/adjusted = 0
 	var/suit_color = null
-
-		/*
-		1 = Report living/dead
-		2 = Report detailed damages
-		3 = Report location
-		*/
 	var/obj/item/clothing/tie/hastie = null
+
+/obj/item/clothing/under/New()
+	if(random_sensor)
+		sensor_mode = pick(0,1,2,3)
+	adjusted = 0
+	suit_color = item_color
+	..()
 
 /obj/item/clothing/under/attackby(obj/item/I, mob/user, params)
 	attachTie(I, user)
@@ -322,7 +326,7 @@ atom/proc/generate_female_clothing(index,t_color,icon,type)
 
 	..()
 
-/obj/item/clothing/under/AltClick(var/mob/user)
+/obj/item/clothing/under/AltClick(mob/user)
 	..()
 	if(!user.canUseTopic(user))
 		user << "<span class='warning'>You can't do that right now!</span>"
@@ -388,18 +392,13 @@ atom/proc/generate_female_clothing(index,t_color,icon,type)
 			var/mob/living/carbon/human/H = loc
 			H.update_inv_w_uniform(0)
 
-/obj/item/clothing/under/New()
-	sensor_mode = pick(0,1,2,3)
-	adjusted = 0
-	suit_color = item_color
-	..()
-
 /obj/item/clothing/proc/weldingvisortoggle()			//Malk: proc to toggle welding visors on helmets, masks, goggles, etc.
 	if(can_use(usr))
 		if(up)
 			up = !up
 			flags |= (visor_flags)
 			flags_inv |= (visor_flags_inv)
+			flags_cover = initial(flags_cover)
 			icon_state = initial(icon_state)
 			usr << "<span class='notice'>You pull \the [src] down.</span>"
 			flash_protect = initial(flash_protect)
@@ -408,6 +407,7 @@ atom/proc/generate_female_clothing(index,t_color,icon,type)
 			up = !up
 			flags &= ~(visor_flags)
 			flags_inv &= ~(visor_flags_inv)
+			flags_cover &= 0
 			icon_state = "[initial(icon_state)]up"
 			usr << "<span class='notice'>You push \the [src] up.</span>"
 			flash_protect = 0

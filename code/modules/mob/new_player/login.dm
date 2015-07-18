@@ -43,5 +43,4 @@
 		verbs += /client/proc/readmin
 	spawn(40)
 		if(client)
-			handle_privacy_poll()
 			client.playtitlemusic()

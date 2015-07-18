@@ -145,5 +145,5 @@ var/list/yog_positions = list(
 	"Psychiatrist"
 )
 
-/proc/guest_jobbans(var/job)
+/proc/guest_jobbans(job)
 	return ((job in command_positions) || (job in nonhuman_positions) || (job in security_positions))

@@ -510,7 +510,7 @@
 "jP" = (/obj/machinery/door/poddoor/shutters/preopen,/turf/simulated/floor/plasteel/shuttle{icon_state = "floor3"},/area/centcom/evac{name = "\improper Centcom Pod Recovery Vessel"})
 "jQ" = (/turf/simulated/floor/plasteel{icon_state = "engine"},/area/centcom/control)
 "jR" = (/obj/machinery/door/airlock/glass,/turf/simulated/floor/plasteel{icon_state = "engine"},/area/centcom/control)
-"jS" = (/turf/simulated/floor/fancy/grass,/area/centcom/control)
+"jS" = (/turf/simulated/floor/grass,/area/centcom/control)
 "jT" = (/obj/machinery/conveyor/auto{dir = 1},/turf/simulated/floor/plasteel{icon_state = "green"; dir = 8},/area/centcom/control)
 "jU" = (/obj/structure/lattice,/obj/item/weapon/shard{color = "#008000"; icon_state = "medium"},/turf/space/transit,/area/wizard_station)
 "jV" = (/turf/indestructible/fakeglass,/area/centcom/control)
