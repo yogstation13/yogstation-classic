@@ -130,7 +130,7 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 		else
 			stat(null, text("Systems nonfunctional"))
 
-/mob/living/silicon/pai/check_eye(mob/user)
+/mob/living/silicon/pai/check_eye(var/mob/user as mob)
 	if (!src.current)
 		return null
 	user.reset_view(src.current)
@@ -340,7 +340,7 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 
 // See software.dm for Topic()
 
-/mob/living/silicon/pai/proc/switchCamera(obj/machinery/camera/C)
+/mob/living/silicon/pai/proc/switchCamera(var/obj/machinery/camera/C)
 	usr:cameraFollow = null
 	if (!C)
 		src.unset_machine()
@@ -363,7 +363,7 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 	src.unset_machine()
 	src:cameraFollow = null
 
-/mob/living/silicon/pai/UnarmedAttack(atom/A)//Stops runtimes due to attack_animal being the default
+/mob/living/silicon/pai/UnarmedAttack(var/atom/A)//Stops runtimes due to attack_animal being the default
 	return
 
 /mob/living/silicon/pai/proc/unpair(var/silent = 0)
