@@ -18,6 +18,9 @@
 #Do not store automatic map backups
 /_maps/map_files/backup
 
+#Ignore configs
+/config/*
+
 #Ignore compiled files and other files generated during compilation.
 *.dmb
 *.rsc
