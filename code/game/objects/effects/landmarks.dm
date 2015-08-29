@@ -264,3 +264,6 @@
 
 /obj/effect/landmark/shuttledock/New()
 	qdel(src)
+
+/obj/effect/landmark/latejoin
+	name = "JoinLate"

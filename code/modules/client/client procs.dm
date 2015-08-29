@@ -207,6 +207,8 @@ var/next_external_rsc = 0
 			if (config.irc_first_connection_alert)
 				send2irc_adminless_only("New-user", "[key_name(src)] is connecting for the first time!")
 
+		player_age = 0 // set it from -1 to 0 so the job selection code doesn't have a panic attack
+
 	else if (isnum(player_age) && player_age < config.notify_new_player_age)
 		message_admins("New user: [key_name_admin(src)] just connected with an age of [player_age] day[(player_age==1?"":"s")]")
 
@@ -233,12 +235,11 @@ var/next_external_rsc = 0
 			config.allow_vote_restart = 0
 		add_admin_verbs()
 		add_donor_verbs()
-		admin_memo_show()
+		admin_memo_output("Show")
 		if((global.comms_key == "default_pwd" || length(global.comms_key) <= 6) && global.comms_allowed) //It's the default value or less than 6 characters long, but it somehow didn't disable comms.
 			src << "<span class='danger'>The server's API key is either too short or is the default value! Consider changing it immediately!</span>"
 
-	spawn(0)
-		send_resources()
+	send_resources()
 
 	if(!void)
 		void = new()
@@ -254,6 +255,9 @@ var/next_external_rsc = 0
 
 	if(holder || !config.admin_who_blocked)
 		verbs += /client/proc/adminwho
+
+	if (config && config.autoconvert_notes)
+		convert_notes_sql(ckey)
 
 	//////////////
 	//DISCONNECT//

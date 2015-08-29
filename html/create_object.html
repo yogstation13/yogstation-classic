@@ -39,7 +39,7 @@
 		Where: 
 			<select name='object_where' style="width:320px">
 				<option value='onfloor'>On floor below own mob</option>
-				<!-- <option value='inhand'>In own mob's hand</option> -->
+				<option value='inhand'>In own mob's hand</option>
 				<option value='inmarked'>In marked object</option>
 			</select>
 		<br><br>
@@ -73,33 +73,22 @@
 		
 		function updateSearch()
 		{
-			if(timeoutId > -1) {
-				window.clearTimeout(timeoutId);
+			old_search = document.spawner.filter.value;
+			
+			
+			var filtered = new Array();
+			var i;
+			for (i in objects)
+			{
+				if(objects[i].search(old_search) < 0)
+				{
+					continue;
+				}
+				
+				filtered.push(objects[i]);
 			}
 			
-			window.setTimeout(function() {
-				if (old_search == document.spawner.filter.value)
-				{
-					return;
-				}
-				
-				old_search = document.spawner.filter.value;
-				
-				
-				var filtered = new Array();
-				var i;
-				for (i in objects)
-				{
-					if(objects[i].search(old_search) < 0)
-					{
-						continue;
-					}
-					
-					filtered.push(objects[i]);
-				}
-				
-				populateList(filtered);
-			}, 1000);
+			populateList(filtered);
 		}
 		
 		function submitFirst(event)

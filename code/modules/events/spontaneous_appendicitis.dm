@@ -12,12 +12,12 @@
 		for(var/datum/disease/D in H.viruses)
 			foundAlready = 1
 			break
-		for(var/obj/item/organ/appendix/appendix in H.internal_organs)
+		for(var/obj/item/organ/internal/appendix/appendix in H.internal_organs)
 			has_appendix = 1
 			break
 		if(H.stat == 2 || foundAlready || has_appendix == 0)
 			continue
 
 		var/datum/disease/D = new /datum/disease/appendicitis
-		H.AddDisease(D)
+		H.ForceContractDisease(D)
 		break

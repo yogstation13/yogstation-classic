@@ -54,7 +54,7 @@
 			if(prob(70) && !upriser.gc_destroyed)
 				upriser.shut_up = 1
 				upriser.shoot_inventory = 0
-				new /mob/living/simple_animal/hostile/mimic/machine/vending(upriser.loc, upriser, null) // it will delete upriser on creation and override any machine checks
+				new /mob/living/simple_animal/hostile/mimic/copy/machine(upriser.loc, upriser, null) // it will delete upriser on creation and override any machine checks
 
 			else
 				explosion(upriser.loc, -1, 1, 2, 4, 0)

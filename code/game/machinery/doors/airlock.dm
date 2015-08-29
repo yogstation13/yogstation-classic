@@ -91,7 +91,7 @@
 /obj/machinery/door/airlock/centcom
 	icon = 'icons/obj/doors/Doorele.dmi'
 	opacity = 1
-	doortype = null //(centcom) there's no door assembly sprites for this one.
+	doortype = /obj/structure/door_assembly/door_assembly_centcom
 
 /obj/machinery/door/airlock/vault
 	name = "vault door"
@@ -1052,6 +1052,9 @@ About the new airlock wires panel:
 					if(src.doortype)
 						var/obj/structure/door_assembly/A = new src.doortype(src.loc)
 						A.heat_proof_finished = src.heat_proof //tracks whether there's rglass in
+					else
+						new /obj/structure/door_assembly/door_assembly_0(src.loc)
+						//If you come across a null doortype, it will produce the default assembly instead of disintegrating.
 
 					if(emagged)
 						user << "<span class='warning'>You discard the damaged electronics.</span>"
@@ -1168,7 +1171,7 @@ About the new airlock wires panel:
 		spawn(150)
 			autoclose()
 	else if(autoclose && !normalspeed)
-		spawn(5)
+		spawn(11)
 			autoclose()
 
 	return ..()
@@ -1220,8 +1223,9 @@ About the new airlock wires panel:
 	operating = 0
 	air_update_turf(1)
 	update_freelook_sight()
-	if(locate(/mob/living) in get_turf(src))
-		open()
+	if(safe)
+		if(locate(/mob/living) in get_turf(src))
+			open()
 	return 1
 
 /obj/machinery/door/airlock/New()

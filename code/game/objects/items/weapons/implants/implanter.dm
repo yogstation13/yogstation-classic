@@ -1,19 +1,24 @@
 /obj/item/weapon/implanter
 	name = "implanter"
+	desc = "A sterile automatic implant injector."
 	icon = 'icons/obj/items.dmi'
 	icon_state = "implanter0"
 	item_state = "syringe_0"
 	throw_speed = 3
 	throw_range = 5
 	w_class = 2.0
+	origin_tech = "materials=1;biotech=3;programming=2"
+	materials = list(MAT_METAL=600, MAT_GLASS=200)
 	var/obj/item/weapon/implant/imp = null
 
 
 /obj/item/weapon/implanter/update_icon()
 	if(imp)
 		icon_state = "implanter1"
+		origin_tech = imp.origin_tech
 	else
 		icon_state = "implanter0"
+		origin_tech = initial(origin_tech)
 
 
 /obj/item/weapon/implanter/attack(mob/living/carbon/M, mob/user)
@@ -26,25 +31,33 @@
 		M.visible_message("<span class='warning'>[user] is attemping to implant [M].</span>")
 
 		var/turf/T = get_turf(M)
-		if(T && (M == user || do_after(user, 50, target = M)))
+		if(T && (M == user || do_after(user, 50)))
 			if(user && M && (get_turf(M) == T) && src && imp)
 				if(M.head && (M.head.flags & THICKMATERIAL))
 					return
-				M.visible_message("[user] has implanted [M].", "<span class='notice'>[user] implants you with the implant.</span>")
-				add_logs(user, M, "implanted", src)
-				user << "<span class='notice'>You implant the implant into [M].</span>"
-				if(imp.implanted(M))
-					imp.loc = M
-					imp.imp_in = M
-					imp.implanted = 1
+				if(imp.implant(M, user))
+					user << "<span class='notice'>You implant the implant into [M].</span>"
+					M.visible_message("[user] has implanted [M].", "<span class='notice'>[user] implants you with the implant.</span>")
+					imp = null
+					update_icon()
 
-				imp = null
-				update_icon()
-				if(istype(M, /mob/living/carbon/human))
-					var/mob/living/carbon/human/H = M
-					H.sec_hud_set_implants()
+/obj/item/weapon/implanter/attackby(obj/item/weapon/W, mob/user, params)
+	..()
+	if(istype(W, /obj/item/weapon/pen))
+		var/t = stripped_input(user, "What would you like the label to be?", name, null)
+		if(user.get_active_hand() != W)
+			return
+		if(!in_range(src, user) && loc != user)
+			return
+		if(t)
+			name = "implanter ([t])"
+		else
+			name = "implanter"
 
-
+/obj/item/weapon/implanter/New()
+	..()
+	spawn(1)
+		update_icon()
 
 /obj/item/weapon/implanter/loyalty
 	name = "implanter-loyalty"
@@ -65,21 +78,19 @@
 
 
 /obj/item/weapon/implanter/adrenalin
-	name = "implanter-adrenalin"
+	name = "implanter (adrenalin)"
 
 /obj/item/weapon/implanter/adrenalin/New()
 	imp = new /obj/item/weapon/implant/adrenalin(src)
 	..()
-	update_icon()
 
 
 /obj/item/weapon/implanter/emp
-	name = "implanter-EMP"
+	name = "implanter (EMP)"
 
 /obj/item/weapon/implanter/emp/New()
 	imp = new /obj/item/weapon/implant/emp(src)
 	..()
-	update_icon()
 
 /obj/item/weapon/implanter/chemminer
 	name = "implanter-Stimulant"

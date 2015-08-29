@@ -31,4 +31,4 @@
 /obj/machinery/atmospherics/components/unary/portables_connector/portableConnectorReturnAir()
 	return connected_device.portableConnectorReturnAir()
 
-/obj/proc/portableConnectorReturnAir()
+// /obj/proc/portableConnectorReturnAir()

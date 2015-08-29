@@ -15,6 +15,9 @@
 	mag_type = /obj/item/ammo_box/magazine/smgm9mm
 	pin = null
 
+/obj/item/weapon/gun/projectile/automatic/proto/unrestricted
+	pin = /obj/item/device/firing_pin
+
 /obj/item/weapon/gun/projectile/automatic/update_icon()
 	..()
 	overlays.Cut()
@@ -130,6 +133,10 @@
 	fire_delay = 3
 	pin = /obj/item/device/firing_pin/implant/pindicate
 
+/obj/item/weapon/gun/projectile/automatic/l6_saw/unrestricted
+	pin = /obj/item/device/firing_pin
+
+
 /obj/item/weapon/gun/projectile/automatic/l6_saw/attack_self(mob/user)
 	cover_open = !cover_open
 	user << "<span class='notice'>You [cover_open ? "open" : "close"] [src]'s cover.</span>"
@@ -183,13 +190,22 @@
 	burst_size = 3
 	fire_delay = 2
 	pin = /obj/item/device/firing_pin/implant/pindicate
-/obj/item/weapon/gun/projectile/automatic/m90/unrestricted
-	pin = /obj/item/device/firing_pin
+
 /obj/item/weapon/gun/projectile/automatic/m90/New()
 	..()
 	underbarrel = new /obj/item/weapon/gun/projectile/revolver/grenadelauncher(src)
 	update_icon()
 	return
+
+/obj/item/weapon/gun/projectile/automatic/m90/unrestricted
+	pin = /obj/item/device/firing_pin
+
+/obj/item/weapon/gun/projectile/automatic/m90/unrestricted/New()
+	..()
+	underbarrel = new /obj/item/weapon/gun/projectile/revolver/grenadelauncher/unrestricted(src)
+	update_icon()
+	return
+
 /obj/item/weapon/gun/projectile/automatic/m90/afterattack(atom/target, mob/living/user, flag, params)
 	if(select == 2)
 		underbarrel.afterattack(target, user, flag, params)

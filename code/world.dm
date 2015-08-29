@@ -5,7 +5,6 @@
 	view = "15x15"
 	cache_lifespan = 7
 
-
 /world/New()
 	map_ready = 1
 
@@ -20,15 +19,9 @@
 #endif
 	//logs
 	var/date_string = time2text(world.realtime, "YYYY/MM-Month/DD-Day")
-//	if(revdata && istext(revdata.revision) && length(revdata.revision)>7)
-//		log = file("data/logs/runtime/[copytext(revdata.revision,1,8)].log")
-//	else
-//		log = file("data/logs/runtime/[time2text(world.realtime,"YYYY-MM")].log")		//funtimelog
 	href_logfile = file("data/logs/[date_string] hrefs.htm")
-	diary = file("data/logs/[date_string].log")
 	admindiary = file("data/logs/[date_string] Admin.log")
 	diaryofmeanpeople = file("data/logs/[date_string] Attack.log")
-	diary << "\n\nStarting up. [time2text(world.timeofday, "hh:mm.ss")]\n---------------------"
 	admindiary << "\n\nStarting up. [time2text(world.timeofday, "hh:mm.ss")]\n---------------------"
 	diaryofmeanpeople << "\n\nStarting up. [time2text(world.timeofday, "hh:mm.ss")]\n---------------------"
 	changelog_hash = md5('html/changelog.html')					//used for telling if the changelog has changed recently
@@ -40,7 +33,8 @@
 	load_motd()
 	load_admins()
 	LoadBansjob()
-	load_whitelist()
+	if(config.usewhitelist)
+		load_whitelist()
 	jobban_loadbanfile()
 	appearance_loadbanfile()
 	jobban_updatelegacybans()
@@ -52,7 +46,6 @@
 	setup_pretty_filter()
 
 	if(config && config.server_name != null && config.server_suffix && world.port > 0)
-		// dumb and hardcoded but I don't care~
 		config.server_name += " #[(world.port % 1000) / 100]"
 
 	timezoneOffset = text2num(time2text(0,"hh")) * 36000
@@ -134,7 +127,7 @@
 			if(input["key"] != global.comms_key)
 				return "Bad Key"
 			else
-#define CHAT_PULLR	64 //for some reason this has to be here, not sure why. Look in preferences.dm for the "proper" definition.
+#define CHAT_PULLR	64 //defined in preferences.dm, but not available here at compilation time
 				for(var/client/C in clients)
 					if(C.prefs && (C.prefs.chat_toggles & CHAT_PULLR))
 						C << "<span class='announce'>PR: [input["announce"]]</span>"
@@ -166,7 +159,6 @@ var/feedback_set = 0
 	#ifdef dellogging
 	var/log = file("data/logs/del.log")
 	log << time2text(world.realtime)
-	//mergeSort(del_counter, /proc/cmp_descending_associative)	//still testing the sorting procs. Use notepad++ to sort the resultant logfile for now.
 	for(var/index in del_counter)
 		var/count = del_counter[index]
 		if(count > 10)

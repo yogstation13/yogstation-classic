@@ -50,7 +50,7 @@ Greatbigben = Moderator V1
 
 Stevenator1 = Coder lvl1
 Thegreatnacho = Coder lvl1
-Kn0ss0s = Coder lvl2
+Kn0ss0s = Council
 
 Eliteixhitman = Retired Host
 Crazyhyperway = Retired Admin

@@ -56,10 +56,10 @@ var/pipenetwarnings = 10
 
 							if(item.parent)
 								if(pipenetwarnings > 0)
-									error("[item.type] added to a pipenet while still having one. (pipes leading to the same spot stacking in one turf) Nearby: ([item.x], [item.y], [item.z])")
+									warning("build_pipeline(): [item.type] added to a pipenet while still having one. (pipes leading to the same spot stacking in one turf) Nearby: ([item.x], [item.y], [item.z])")
 									pipenetwarnings -= 1
 									if(pipenetwarnings == 0)
-										error("further messages about pipenets will be supressed")
+										warning("build_pipeline(): further messages about pipenets will be supressed")
 							members += item
 							possible_expansions += item
 
@@ -206,10 +206,11 @@ var/pipenetwarnings = 10
 		var/datum/pipeline/P = PL[i]
 		GL += P.air
 		GL += P.other_airs
-		for(var/obj/machinery/atmospherics/components/binary/valve/V in P.other_atmosmch)
+// TODO : IS REQUIRED?
+		/*for(var/obj/machinery/atmospherics/binary/valve/V in P.other_atmosmch)
 			if(V.open)
 				PL |= V.parents["p1"]
-				PL |= V.parents["p2"]
+				PL |= V.parents["p2"]*/
 		for(var/obj/machinery/atmospherics/components/unary/portables_connector/C in P.other_atmosmch)
 			if(C.connected_device)
 				GL += C.portableConnectorReturnAir()

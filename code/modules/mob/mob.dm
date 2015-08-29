@@ -5,8 +5,8 @@
 	qdel(hud_used)
 	if(mind && mind.current == src)
 		spellremove(src)
-	for(var/datum/disease/infection in viruses)
-		infection.cure(0)
+	for(var/infection in viruses)
+		qdel(infection)
 	ghostize()
 	..()
 
@@ -376,7 +376,7 @@ var/list/slot_equipment_priority = list( \
 
 //this and stop_pulling really ought to be /mob/living procs
 /mob/proc/start_pulling(atom/movable/AM)
-	if ( !AM || !src || src==AM || !isturf(src.loc) )	//if there's no person pulling OR the person is pulling themself OR the object being pulled is inside something: abort!
+	if ( !AM || !src || src==AM || !isturf(AM.loc) )	//if there's no person pulling OR the person is pulling themself OR the object being pulled is inside something: abort!
 		return
 	if (!( AM.anchored ))
 		AM.add_fingerprint(src)
@@ -421,12 +421,12 @@ var/list/slot_equipment_priority = list( \
 		var/obj/item/W = l_hand
 		if (W)
 			W.attack_self(src)
-			update_inv_l_hand(0)
+			update_inv_l_hand()
 	else
 		var/obj/item/W = r_hand
 		if (W)
 			W.attack_self(src)
-			update_inv_r_hand(0)
+			update_inv_r_hand()
 	return
 
 /*
@@ -964,6 +964,14 @@ var/list/slot_equipment_priority = list( \
 					return G
 				break
 
+/mob/proc/notify_ghost_cloning(var/message = "Someone is trying to revive you. Re-enter your corpse if you want to be revived!", var/sound = 'sound/effects/genetics.ogg')
+	var/mob/dead/observer/ghost = get_ghost()
+	if(ghost)
+		ghost.notify_cloning(message, sound)
+		return ghost
+
+
+
 /mob/proc/adjustEarDamage()
 	return
 
@@ -995,3 +1003,7 @@ var/list/slot_equipment_priority = list( \
 			client << "<span class='userdanger'>You are frozen by an administrator.</span>"
 			log_admin("[key_name(admin)] froze [key_name(src)].")
 			message_admins("[key_name(admin, admin.client)] froze [key_name(src, src.client)].")
+
+//override to avoid rotating pixel_xy on mobs
+/mob/shuttleRotate(rotation)
+	dir = angle2dir(rotation+dir2angle(dir))

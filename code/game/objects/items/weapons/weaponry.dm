@@ -303,7 +303,7 @@
 	if(istype(A, /mob/living/carbon/human) && proximity == 1)
 		var/mob/living/carbon/human/H = A
 		if(H.health <= 30&&src.enabled)
-			var/mob/C = new /mob/living/simple_animal/pet/corgi(loc)
+			var/mob/C = new /mob/living/simple_animal/pet/dog/corgi(loc)
 			switch(H.gender)
 				if(MALE)
 					C.icon_state = "corgi"

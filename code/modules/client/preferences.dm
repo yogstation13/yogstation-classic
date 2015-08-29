@@ -1161,5 +1161,15 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 
 		character.backbag = backbag
 
-		character.update_body()
-		character.update_hair()
+		if(character.dna)
+			var/datum/species/chosen_species
+
+			character.dna.real_name = character.real_name
+			if(pref_species != /datum/species/human && config.mutant_races)
+				chosen_species = pref_species.type
+			else
+				chosen_species = /datum/species/human
+			hardset_dna(character, null, null, null, null, chosen_species, features)
+		else
+			character.update_body()
+			character.update_hair()

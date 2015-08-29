@@ -417,6 +417,10 @@
 	G.loc = src.loc
 	G.key = ghost.key
 	G << "You are an adamantine golem. You move slowly, but are highly resistant to heat and cold as well as blunt trauma. You are unable to wear clothes, but can still use most tools. Serve [user], and assist them in completing their goals at any cost."
+	G.mind.store_memory("<b>Serve [user.real_name], your creator.</b>")
+	if(user.mind.special_role)
+		message_admins("[G.real_name] has been summoned by [user.real_name], an antagonist.")
+	log_game("[G.real_name] ([G.key]) was made a golem by [user.real_name]([user.key]).")
 	qdel(src)
 
 
@@ -432,13 +436,16 @@
 	pixel_x = -64
 	pixel_y = -64
 	unacidable = 1
-	var/mob/living/immune = null // the one who creates the timestop is immune
+	var/mob/living/immune = list() // the one who creates the timestop is immune
 	var/freezerange = 2
 	var/duration = 140
 	alpha = 125
 
 /obj/effect/timestop/New()
 	..()
+	for(var/mob/living/M in player_list)
+		for(var/obj/effect/proc_holder/spell/aoe_turf/conjure/timestop/T in M.mind.spell_list) //People who can stop time are immune to timestop
+			immune |= M
 	timestop()
 
 
@@ -447,7 +454,7 @@
 	while(loc)
 		if(duration)
 			for(var/mob/living/M in orange (freezerange, src.loc))
-				if(M == immune)
+				if(M in immune)
 					continue
 				M.stunned = 10
 				M.anchored = 1
@@ -473,6 +480,9 @@
 			return
 		sleep(1)
 
+
+/obj/effect/timestop/wizard
+	duration = 90
 
 
 /obj/item/stack/tile/bluespace

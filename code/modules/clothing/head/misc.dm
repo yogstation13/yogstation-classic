@@ -371,3 +371,8 @@
 				var/turf/T = get_turf(C)
 				user << "<b>[C]:</b> [iscarbon(C.loc) ? "Worn by [C.loc], " : ""][get_area(C)], [T.loc.x], [T.loc.y], [C.locked ? "<span class='boldannounce'>Locked</span>" : "<font color='green'><b>Unlocked</b></font>"]"
 			return
+
+/obj/item/clothing/head/rice_hat
+	name = "rice hat"
+	desc = "Welcome to the rice fields, motherfucker."
+	icon_state = "rice_hat"
