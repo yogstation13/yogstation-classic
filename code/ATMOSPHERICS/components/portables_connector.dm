@@ -1,7 +1,7 @@
 /obj/machinery/atmospherics/unary/portables_connector
 	name = "connector port"
 	desc = "For connecting portables devices related to atmospherics control."
-	icon = 'icons/obj/atmospherics/unary_devices.dmi'
+	icon = 'icons/obj/atmospherics/components/unary_devices.dmi'
 	icon_state = "connector_map" //Only for mapping purposes, so mappers can see direction
 	can_unwrench = 1
 	var/obj/machinery/portable_atmospherics/connected_device
@@ -22,7 +22,7 @@
 			col = node.pipe_color
 		else
 			state = "pipe_exposed"
-		underlays += getpipeimage('icons/obj/atmospherics/binary_devices.dmi', state, initialize_directions, col)
+		underlays += getpipeimage('icons/obj/atmospherics/components/binary_devices.dmi', state, initialize_directions, col)
 
 /obj/machinery/atmospherics/unary/portables_connector/process()
 	if(!connected_device)

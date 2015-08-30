@@ -64,7 +64,7 @@ var/global/list/disposalpipeID2State=list(
 
 /datum/pipe_info/disposal
 	categoryId = CATEGORY_DISPOSALS
-	icon = 'icons/obj/atmospherics/disposal.dmi'
+	icon = 'icons/obj/atmospherics/pipes/disposal.dmi'
 	icon_state = "meterX"
 
 /datum/pipe_info/disposal/New(var/pid,var/dt)

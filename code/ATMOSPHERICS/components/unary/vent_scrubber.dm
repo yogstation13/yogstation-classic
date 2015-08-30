@@ -48,7 +48,7 @@
 /obj/machinery/atmospherics/unary/vent_scrubber/update_icon_nopipes()
 	overlays.Cut()
 	if(showpipe)
-		overlays += getpipeimage('icons/obj/atmospherics/unary_devices.dmi', "scrub_cap", initialize_directions)
+		overlays += getpipeimage('icons/obj/atmospherics/components/unary_devices.dmi', "scrub_cap", initialize_directions)
 
 	if(!node || !on || stat & (NOPOWER|BROKEN))
 		icon_state = "scrub_off"

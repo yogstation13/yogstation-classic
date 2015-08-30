@@ -71,7 +71,7 @@
 /obj/machinery/atmospherics/unary/vent_pump/update_icon_nopipes()
 	overlays.Cut()
 	if(showpipe)
-		overlays += getpipeimage('icons/obj/atmospherics/unary_devices.dmi', "vent_cap", initialize_directions)
+		overlays += getpipeimage('icons/obj/atmospherics/components/unary_devices.dmi', "vent_cap", initialize_directions)
 
 	if(welded)
 		icon_state = "vent_welded"

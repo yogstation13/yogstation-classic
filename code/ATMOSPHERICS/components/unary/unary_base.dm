@@ -1,5 +1,5 @@
 /obj/machinery/atmospherics/unary
-	icon = 'icons/obj/atmospherics/unary_devices.dmi'
+	icon = 'icons/obj/atmospherics/components/unary_devices.dmi'
 	dir = SOUTH
 	initialize_directions = SOUTH
 	layer = TURF_LAYER+0.1
@@ -38,7 +38,7 @@ Iconnery
 		else
 			state = "pipe_exposed"
 
-		underlays += getpipeimage('icons/obj/atmospherics/binary_devices.dmi', state, initialize_directions, col)
+		underlays += getpipeimage('icons/obj/atmospherics/components/binary_devices.dmi', state, initialize_directions, col)
 
 /obj/machinery/atmospherics/unary/hide(var/intact)
 	showpipe = !intact
