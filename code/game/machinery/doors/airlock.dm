@@ -975,7 +975,7 @@ About the new airlock wires panel:
 											"<span class='notice'>You [welded ? "weld the airlock shut":"unweld the airlock"].</span>")
 						update_icon()
 		return
-	else if(istype(C, /obj/item/weapon/melee/energy/sword))
+	else if((istype(C, /obj/item/weapon/melee/energy/sword)) || (istype(C, /obj/item/weapon/melee/energy/axe)) || (istype(C, /obj/item/weapon/twohanded/dualsaber)))
 		var/obj/item/weapon/melee/energy/sword/S = C
 		if(S.icon_state == "sword0" || S.icon_state == "dualsaber0" || S.icon_state == "axe0")
 			user << "<span class='notice'>The sword is not engaged, you cannot cut anything!</span>"

@@ -10,47 +10,39 @@
 
 Aranclanos = TGCoder
 
-Alek2ander = Council
-20thgirl = Council
+Ephemeralis = HeadCoder
+
 05rhardy = Council
 Xantam = Council
-Madventurer =  Council
 AsV9 = Council
-Unmovable = Council
-Ephemeralis = Council
-
+Blukey = Council
+Johncena1469 = Council
 
 Joseph Frost = Senior Admin
 Chuggachar = Senior Admin
-Atomicapples = Senior Admin
 Hydre = Senior Admin
-Blukey = Senior Admin
+Madventurer =  Senior Admin
+Slovenian = Senior Admin
+X Yamahawk X = Senior Admin
 
-Slovenian = Primary Admin
-Spheretech = Primary Admin
 Jhon2221 = Primary Admin
 Eff chap = Primary Admin
 Bonette = Primary Admin
 Misutto = Primary Admin
+Gremlen12 = Primary Admin
 
-Gremlen12 = Administrator 
 BestMango = Administrator
-X Yamahawk X = Administrator
-GriffinMan = Administrator
-SKR6DarkVoid = Administrator
 The_73MPL4R = Administrator
-Johncena1469 = Administrator
 Seiko Yamada = Administrator
+Groudonmaster = Administrator 
+George99 = Administrator
+Greatbigben = Administrator
 
-Universum = Moderator V1
-Dzlan = Moderator V2
-George99 = Moderator V2
-Wolfieman = Moderator V2
-Greatbigben = Moderator V1
+Thestabman = Moderator V2
+GrayRachnid = Moderator V2
 
 Stevenator1 = Coder lvl1
-Thegreatnacho = Coder lvl1
-Kn0ss0s = Coder lvl2
+Kn0ss0s = Coder lvl3
 
 Eliteixhitman = Retired Host
 Crazyhyperway = Retired Admin
@@ -62,6 +54,7 @@ Generalpie = Retired Admin
 Rumia29 = Retired Admin
 Willverdrag1314 = Retired Admin
 Firestorm258 = Retired Admin
-Commander126 = Retired Admin
+Alek2ander = Retired Admin
+Unmovable = Retired Admin
 
 Yogstation13-Bot = Bot

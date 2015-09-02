@@ -44,6 +44,7 @@ Retired Host		= +ADMIN +STEALTH +REJUV +SERVER +BAN
 Coder lvl1		=
 Coder lvl2		= +ADMIN +VAREDIT +DEBUG +SPAWN
 Coder lvl3		= +@ +SERVER +FUN +BAN
+HeadCoder		= +EVERYTHING
 
 Wizard			= +EVERYTHING
 TGCoder			= +EVERYTHING
