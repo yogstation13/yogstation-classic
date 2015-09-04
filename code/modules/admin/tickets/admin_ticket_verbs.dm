@@ -8,6 +8,8 @@
 		return
 
 	ticket_title = sanitize(copytext(ticket_title,1,MAX_MESSAGE_LEN))
+	ticket_title = replacetext(ticket_title, "'", "´")
+	ticket_title = replacetext(ticket_title, "&#39;", "´")
 
 	var/datum/admin_ticket/found_ticket = null
 	for(var/datum/admin_ticket/T in tickets_list)

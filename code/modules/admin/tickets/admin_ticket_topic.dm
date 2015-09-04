@@ -41,6 +41,9 @@
 		var/logtext = input("Please enter your [(!compare_ckey(usr, T.handling_admin) && !compare_ckey(usr, T.owner_ckey) ? "supplimentary comment" : "reply")]:") as text|null
 
 		logtext = sanitize(copytext(logtext,1,MAX_MESSAGE_LEN))
+		logtext = replacetext(logtext, "'", "´")
+		logtext = replacetext(logtext, "&#39;", "´")
+
 
 		if(logtext)
 			T.add_log(new /datum/ticket_log(src, C, logtext, (!compare_ckey(usr, T.handling_admin) && !compare_ckey(usr, T.owner_ckey)) ? 1 : 0), M)

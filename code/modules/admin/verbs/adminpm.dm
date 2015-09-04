@@ -130,6 +130,8 @@
 				return
 
 			if(!T.resolved)
+				msg = replacetext(msg, "'", "´")
+				msg = replacetext(msg, "&#39;", "´")
 				T.add_log(msg, get_client(src))
 
 				//AdminPM popup for ApocStation and anybody else who wants to use it. Set it with POPUP_ADMIN_PM in config.txt ~Carn
@@ -138,6 +140,8 @@
 						var/sender = src
 						var/sendername = key
 						var/reply = input(C, msg,"Admin PM from-[sendername]", "") as text|null		//show message and await a reply
+						reply = replacetext(reply, "'", "´")
+						reply = replacetext(reply, "&#39;", "´")
 						if(C && reply)
 							if(sender)
 								C.cmd_admin_pm(src,reply)										//sender is still about, let's reply to them
