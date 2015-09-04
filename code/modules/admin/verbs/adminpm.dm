@@ -155,6 +155,10 @@
 		src << "<span class='boldnotice'>Your ticket was closed. Only admins can add finishing comments to it.</span>"
 		return
 
+	if(prefs.muted & MUTE_ADMINHELP)
+		src << "<font color='red'>Error: Admin-PM: You are unable to use admin PM-s (muted).</font>"
+		return
+
 	// If we didn't find a ticket, we should make one. This bypasses the rest of the original PM system
 	var/datum/admin_ticket/T = new /datum/admin_ticket(src, msg, C)
 	if(!T.error)

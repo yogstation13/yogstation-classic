@@ -3,6 +3,10 @@
 	set category = "Admin"
 	set name = "Adminhelp"
 
+	if(prefs.muted & MUTE_ADMINHELP)
+		src << "<font color='red'>Error: Admin-PM: You are unable to use admin PM-s (muted).</font>"
+		return
+
 	if(!ticket_title)
 		usr << "<span class='ticket-status'>You did not supply a message for your ticket. Ignoring your request.</span>"
 		return
