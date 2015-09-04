@@ -84,6 +84,7 @@ Admin:
 \tF6 = player-panel
 \tF7 = admin-pm
 \tF8 = Invisimin
+\tF9 = Invisimin
 </font>"}
 
 	mob.hotkey_help()

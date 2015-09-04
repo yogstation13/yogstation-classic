@@ -108,14 +108,6 @@ macro "borghotkeymode"
 		command = "resist"
 		is-disabled = false
 	elem 
-		name = "O"
-		command = "ooc"
-		is-disabled = false
-	elem 
-		name = "CTRL+O"
-		command = "ooc"
-		is-disabled = false
-	elem 
 		name = "D+REP"
 		command = ".east"
 		is-disabled = false
@@ -138,6 +130,14 @@ macro "borghotkeymode"
 	elem 
 		name = "CTRL+G"
 		command = "a-intent right"
+		is-disabled = false
+	elem 
+		name = "O"
+		command = "ooc"
+		is-disabled = false
+	elem 
+		name = "CTRL+O"
+		command = "ooc"
 		is-disabled = false
 	elem 
 		name = "Q"
@@ -222,6 +222,10 @@ macro "borghotkeymode"
 	elem 
 		name = "F8"
 		command = "Invisimin"
+		is-disabled = false
+	elem 
+		name = "F9"
+		command = "Adminlisttickets"
 		is-disabled = false
 	elem 
 		name = "F12"
@@ -334,6 +338,10 @@ macro "macro"
 		command = "a-intent right"
 		is-disabled = false
 	elem 
+		name = "CTRL+O"
+		command = "ooc"
+		is-disabled = false
+	elem 
 		name = "CTRL+Q"
 		command = ".northwest"
 		is-disabled = false
@@ -382,10 +390,6 @@ macro "macro"
 		command = "Aghost"
 		is-disabled = false
 	elem 
-		name = "CTRL+O"
-		command = "ooc"
-		is-disabled = false
-	elem 
 		name = "F6"
 		command = "Player-Panel"
 		is-disabled = false
@@ -396,6 +400,10 @@ macro "macro"
 	elem 
 		name = "F8"
 		command = "Invisimin"
+		is-disabled = false
+	elem 
+		name = "F9"
+		command = "Adminlisttickets"
 		is-disabled = false
 	elem 
 		name = "F12"
@@ -652,6 +660,10 @@ macro "hotkeymode"
 		command = "Invisimin"
 		is-disabled = false
 	elem 
+		name = "F9"
+		command = "Adminlisttickets"
+		is-disabled = false
+	elem 
 		name = "F12"
 		command = "F12"
 		is-disabled = false
@@ -742,10 +754,6 @@ macro "borgmacro"
 		command = "resist"
 		is-disabled = false
 	elem 
-		name = "CTRL+O"
-		command = "ooc"
-		is-disabled = false
-	elem 
 		name = "CTRL+D+REP"
 		command = ".east"
 		is-disabled = false
@@ -756,6 +764,10 @@ macro "borgmacro"
 	elem 
 		name = "CTRL+G"
 		command = "a-intent right"
+		is-disabled = false
+	elem 
+		name = "CTRL+O"
+		command = "ooc"
 		is-disabled = false
 	elem 
 		name = "CTRL+Q"
@@ -812,6 +824,10 @@ macro "borgmacro"
 	elem 
 		name = "F8"
 		command = "Invisimin"
+		is-disabled = false
+	elem 
+		name = "F9"
+		command = "Adminlisttickets"
 		is-disabled = false
 	elem 
 		name = "F12"
