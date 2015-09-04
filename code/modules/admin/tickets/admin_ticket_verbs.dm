@@ -59,26 +59,50 @@
 	if(holder)
 		content += {"<p class='info-bar'>
 			<a href='?user=\ref[src];action=refresh_admin_ticket_list;flag=[flag]'>Refresh List</a>
-			<a href='?user=\ref[src];action=refresh_admin_ticket_list;flag=[(flag | TICKET_FLAG_LIST_ALL) & ~TICKET_FLAG_LIST_MINE]'>All Tickets</a>
-			<a href='?user=\ref[src];action=refresh_admin_ticket_list;flag=[(flag | TICKET_FLAG_LIST_MINE) & ~TICKET_FLAG_LIST_ALL]'>My Tickets</a>
+			<a href='?user=\ref[src];action=refresh_admin_ticket_list;flag=[(flag | TICKET_FLAG_LIST_ALL) & ~TICKET_FLAG_LIST_MINE & ~TICKET_FLAG_LIST_UNCLAIMED]'>All Tickets</a>
+
+			<a href='?user=\ref[src];action=refresh_admin_ticket_list;flag=
+				[flag & TICKET_FLAG_LIST_MINE ? "[(flag & ~TICKET_FLAG_LIST_MINE) & ~TICKET_FLAG_LIST_ALL]" : "[(flag | TICKET_FLAG_LIST_MINE) & ~TICKET_FLAG_LIST_ALL]"]
+				'>[flag & TICKET_FLAG_LIST_MINE ? "¤ " : ""]My Tickets</a>
+
+			<a href='?user=\ref[src];action=refresh_admin_ticket_list;flag=
+				[flag & TICKET_FLAG_LIST_UNCLAIMED ? "[(flag & ~TICKET_FLAG_LIST_UNCLAIMED) & ~TICKET_FLAG_LIST_ALL]" : "[(flag | TICKET_FLAG_LIST_UNCLAIMED) & ~TICKET_FLAG_LIST_ALL]"]
+				'>[flag & TICKET_FLAG_LIST_UNCLAIMED ? "¤ " : ""]Unclaimed</a>
+
 		</p>"}
 
 		content += {"<p class='info-bar'>
 			Filtering:<b>
 			[(flag & TICKET_FLAG_LIST_ALL) ? " All" : ""]
 			[(flag & TICKET_FLAG_LIST_MINE) ? " Mine" : ""]
+			[(flag & TICKET_FLAG_LIST_UNCLAIMED) ? " Unclaimed" : ""]
 		</b></p>"}
 
 		var/list/resolved = new /list()
 		var/list/unresolved = new /list()
 
 		for(var/i = tickets_list.len, i >= 1, i--)
-		//for(var/datum/admin_ticket/T in tickets_list)
 			var/datum/admin_ticket/T = tickets_list[i]
 
-			if(flag & TICKET_FLAG_LIST_MINE)
-				if(!compare_ckey(src, T.owner_ckey) && !compare_ckey(src, T.handling_admin))
-					continue
+			var/include = 0
+
+			if(!(flag & TICKET_FLAG_LIST_ALL))
+				if(flag & TICKET_FLAG_LIST_MINE)
+					if(!compare_ckey(src, T.owner_ckey) && !compare_ckey(src, T.handling_admin))
+						include = 0
+					else
+						include = 1
+
+				if(!include && flag & TICKET_FLAG_LIST_UNCLAIMED)
+					if(T.handling_admin)
+						include = 0
+					else
+						include = 1
+			else
+				include = 1
+
+			if(!include)
+				continue
 
 			if(T.resolved)
 				resolved.Add(T)

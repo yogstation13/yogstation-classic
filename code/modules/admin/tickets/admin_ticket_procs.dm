@@ -197,7 +197,7 @@
 		if(unresolvedCount == 0)
 			if(alert(usr, "You have resolved the last ticket (the server restart is currently delayed!). Would you like to restart the server now?", "Restart Server", "Restart", "Cancel") == "Restart")
 				ticker.delay_end = 0
-				world.Reboot("Initiated by [usr.client.holder.fakekey ? "Admin" : usr.key].", "end_proper", "proper completion", 10)
+				world.Reboot("Initiated by [usr.client.holder.fakekey ? "Admin" : usr.key].", "end_proper", "proper completion", 100)
 			else
 				usr << "<span class='ticket-status'>You chose not to restart the server. If you do not have permissions to restart the server normally, you can still do so by making a new ticket and resolving it again.</span>"
 
