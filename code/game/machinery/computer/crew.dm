@@ -94,6 +94,9 @@ var/global/datum/crewmonitor/crewmonitor = new
 /datum/crewmonitor/proc/show(mob/mob, z)
 	if (!z) z = mob.z
 
+	if (!z && istype(mob, /mob/living/silicon/pai))
+		z = 1
+
 	if (z > 0 && src.interfaces)
 		var/datum/html_interface/hi
 
