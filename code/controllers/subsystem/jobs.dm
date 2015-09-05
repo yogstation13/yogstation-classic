@@ -89,7 +89,7 @@ var/datum/subsystem/job/SSjob
 		if(player.mind && job.title in player.mind.restricted_roles)
 			Debug("FOC incompatible with antagonist role, Player: [player]")
 			continue
-		if(config.enforce_human_authority && (job.title in command_positions) && player.client.prefs.pref_species.id != "human")
+		if(config.enforce_human_authority && !player.client.prefs.pref_species.qualifies_for_rank(job.title, player.client.prefs.features))
 			Debug("FOC non-human failed, Player: [player]")
 			continue
 		if(((job.title in command_positions) || (job.title in nonhuman_positions)) && (player.client.prefs.toggles & QUIET_ROUND))
@@ -124,7 +124,7 @@ var/datum/subsystem/job/SSjob
 			Debug("GRJ incompatible with antagonist role, Player: [player], Job: [job.title]")
 			continue
 
-		if(config.enforce_human_authority && (job.title in command_positions) && player.client.prefs.pref_species.id != "human")
+		if(config.enforce_human_authority && !player.client.prefs.pref_species.qualifies_for_rank(job.title, player.client.prefs.features))
 			Debug("GRJ non-human failed, Player: [player]")
 			continue
 
@@ -297,7 +297,7 @@ var/datum/subsystem/job/SSjob
 					Debug("DO incompatible with antagonist role, Player: [player], Job:[job.title]")
 					continue
 
-				if(config.enforce_human_authority && (job.title in command_positions) && player.client.prefs.pref_species.id != "human")
+				if(config.enforce_human_authority && !player.client.prefs.pref_species.qualifies_for_rank(job.title, player.client.prefs.features))
 					Debug("DO non-human failed, Player: [player], Job:[job.title]")
 					continue
 
@@ -468,7 +468,7 @@ var/datum/subsystem/job/SSjob
 			return 1
 	return 0
 
-/datum/subsystem/job/proc/RejectPlayer(var/mob/new_player/player)
+/datum/subsystem/job/proc/RejectPlayer(mob/new_player/player)
 	if(player.mind && player.mind.special_role)
 		return
 	Debug("Popcap overflow Check observer located, Player: [player]")

@@ -4,8 +4,8 @@
 	desc = "It looks like it could use some more flair."
 	name = "bartender's uniform"
 	icon_state = "barman"
-	item_state = "barman"
-	item_color = "bar_suit"
+	item_state = "bar_suit"
+	item_color = "barman"
 
 /obj/item/clothing/under/rank/clerk
 	desc = "Oh, look it comes with its own vest."

@@ -46,7 +46,7 @@ var/list/image/ghost_darkness_images = list() //this is a list of images for thi
 			if(body.real_name)
 				name = body.real_name
 			else
-				name = random_name(gender)
+				name = random_unique_name(gender)
 
 		mind = body.mind	//we don't transfer the mind but we keep a reference to it.
 
@@ -54,7 +54,7 @@ var/list/image/ghost_darkness_images = list() //this is a list of images for thi
 	loc = T
 
 	if(!name)							//To prevent nameless ghosts
-		name = random_name(gender)
+		name = random_unique_name(gender)
 	real_name = name
 
 	if(!fun_verbs)
@@ -79,13 +79,11 @@ Transfer_mind is there to check if mob is being deleted/not going to have a body
 Works together with spawning an observer, noted above.
 */
 
-/mob/proc/ghostize(var/can_reenter_corpse = 1)
+/mob/proc/ghostize(can_reenter_corpse = 1)
 	if(key)
 		if(!cmptext(copytext(key,1,2),"@")) //aghost
 			var/mob/dead/observer/ghost = new(src)	//Transfer safety to observer spawning proc.
 			ghost.can_reenter_corpse = can_reenter_corpse
-			if(!can_reenter_corpse)
-				add_logs(src, src, "ghosted permanently")
 			ghost.key = key
 			return ghost
 
@@ -100,6 +98,8 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if(stat != DEAD)
 		succumb()
 	if(stat == DEAD)
+		ghostize(1)
+	else if(istype(src, /mob/living/carbon/brain))
 		ghostize(1)
 	else
 		var/response = alert(src, "Are you -sure- you want to ghost?\n(You are alive. If you ghost whilst still alive you may not play again this round! You can't change your mind so choose wisely!!)","Are you sure you want to ghost?","Ghost","Stay in body")
@@ -144,12 +144,9 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 					if(malf.malf_mode_declared && (malf.apcs > 0))
 						stat(null, "Time left: [max(malf.AI_win_timeleft/malf.apcs, 0)]")
 
-				if(istype(ticker.mode, /datum/game_mode/gang))
-					var/datum/game_mode/gang/mode = ticker.mode
-					if(isnum(mode.A_timer))
-						stat(null, "[gang_name("A")] Gang Takeover: [max(mode.A_timer, 0)]")
-					if(isnum(mode.B_timer))
-						stat(null, "[gang_name("B")] Gang Takeover: [max(mode.B_timer, 0)]")
+				for(var/datum/gang/G in ticker.mode.gangs)
+					if(isnum(G.dom_timer))
+						stat(null, "[G.name] Gang Takeover: [max(G.dom_timer, 0)]")
 
 /mob/dead/observer/verb/reenter_corpse()
 	set category = "Ghost"
@@ -173,20 +170,6 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	mind.current.key = key
 	return 1
 
-/mob/dead/observer/proc/toggleninjahud()
-	set category = "Ghost"
-	set name = "Toggle Antag Icons"
-	if(client && client.holder)
-		if(ninjahud)
-			ninjahud = 0
-			for(var/image/hud in client.images)
-				if(copytext(hud.icon_state,1,4) == "hud")
-					client.images -= hud
-		else
-			ninjahud = 1
-		src << "\blue Antag icons toggled [ninjahud ? "on" : "off"]."
-	feedback_add_details("admin_verb","TNH")
-
 /mob/dead/observer/verb/register_pai_candidate()
 	set category = "Ghost"
 	set name = "pAI Setup"
@@ -197,6 +180,13 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	else
 		usr << "Can't become a pAI candidate while not dead!"
 		return
+
+/mob/dead/observer/proc/notify_cloning(var/message, var/sound)
+	if(message)
+		src << "<span class='ghostalert'>[message]</span>"
+	src << "<span class='ghostalert'><a href=?src=\ref[src];reenter=1>(Click to re-enter)</a></span>"
+	if(sound)
+		src << sound(sound)
 
 /mob/dead/observer/proc/dead_tele()
 	set category = "Ghost"
@@ -233,7 +223,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	ManualFollow(target)
 
 // This is the ghost's follow verb with an argument
-/mob/dead/observer/proc/ManualFollow(var/atom/movable/target)
+/mob/dead/observer/proc/ManualFollow(atom/movable/target)
 	if(target && target != src)
 		if(following && following == target)
 			return
@@ -252,64 +242,20 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 				sleep(15)
 			if (target == following) following = null
 
+/mob/dead/observer/proc/toggleninjahud()
+	set category = "Ghost"
+	set name = "Toggle Antag Icons"
+	if(client && client.holder)
+		if(ninjahud)
+			ninjahud = 0
+			for(var/image/hud in client.images)
+				if(copytext(hud.icon_state,1,4) == "hud")
+					client.images -= hud
+		else
+			ninjahud = 1
+		src << "\blue Antag icons toggled [ninjahud ? "on" : "off"]."
+	feedback_add_details("admin_verb","TNH")
 
-/mob/dead/observer/Life()
-	if(client && ninjahud)
-		var/icon/tempHud = 'icons/mob/hud.dmi'
-		for(var/image/hud in client.images)
-			if(copytext(hud.icon_state,1,4) == "hud")
-				client.images -= hud
-		for(var/mob/living/target in oview(src))
-			if(target.mind)//They need to have a mind.
-				if(iscarbon(target))
-					if(target.mind.special_role == "[gang_name("A")] Gang (A) Boss" || target.mind.special_role == "[gang_name("A")] Gang (A) Lieutenant")
-						client.images += image(tempHud,target,"hudbossa")
-					else if(target.mind.special_role == "[gang_name("A")] Gang (A)")
-						client.images += image(tempHud,target,"hudganga")
-					else if(target.mind.special_role == "[gang_name("B")] Gang (B) Boss" || target.mind.special_role == "[gang_name("B")] Gang (B) Lieutenant")
-						client.images += image(tempHud,target,"hudbossb")
-					else if(target.mind.special_role == "[gang_name("B")] Gang (B)")
-						client.images += image(tempHud,target,"hudgangb")
-					else switch(target.mind.special_role)
-						if("traitor")
-							client.images += image(tempHud,target,"hudtraitor")
-						if("Revolutionary")
-							client.images += image(tempHud,target,"hudrevolutionary")
-						if("Head Revolutionary")
-							client.images += image(tempHud,target,"hudheadrevolutionary")
-						if("Cultist")
-							client.images += image(tempHud,target,"hudcultist")
-						if("Changeling")
-							client.images += image(tempHud,target,"hudchangeling")
-						if("Wizard","Fake Wizard")
-							client.images += image(tempHud,target,"hudwizard")
-						if("Hunter","Sentinel","Drone","Queen")
-							client.images += image(tempHud,target,"hudalien")
-						if("Syndicate")
-							client.images += image(tempHud,target,"hudoperative")
-						if("Death Commando")
-							client.images += image(tempHud,target,"huddeathsquad")
-						if("Space Ninja")
-							client.images += image(tempHud,target,"hudninja")
-						if("Abductor")
-							client.images += image(tempHud,target,"hudabductor")
-						if("Shadowling")
-							client.images += image(tempHud,target,"shadowling")
-						if("Thrall")
-							client.images += image(tempHud,target,"thrall")
-						if(null)
-							//Nothing
-						else//If we don't know what role they have but they have one.
-							client.images += image(tempHud,target,"hudunknown1")
-
-				else if(issilicon(target))//If the silicon mob has no law datum, no inherent laws, or a law zero, add them to the hud.
-					var/mob/living/silicon/silicon_target = target
-					if(!silicon_target.laws || (silicon_target.laws && (silicon_target.laws.zeroth || !silicon_target.laws.inherent.len)))
-						if(isrobot(silicon_target))//Different icons for robutts and AI.
-							client.images += image(tempHud,silicon_target,"hudmalborg")
-						else
-							client.images += image(tempHud,silicon_target,"hudmalai")
-	return
 
 /mob/dead/observer/verb/jumptomob() //Moves the ghost instead of just changing the ghosts's eye -Nodrak
 	set category = "Ghost"
@@ -452,8 +398,62 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	return ..()
 
 /mob/dead/observer/Topic(href, href_list)
-	if(href_list["follow"])
-		var/atom/movable/target = locate(href_list["follow"])
-		if((usr == src) && istype(target) && (target != src)) //for safety against href exploits
-			ManualFollow(target)
+	..()
+	if(usr == src)
+		if(href_list["follow"])
+			var/atom/movable/target = locate(href_list["follow"])
+			if((usr == src) && istype(target) && (target != src))
+				ManualFollow(target)
+		if(href_list["reenter"])
+			reenter_corpse()
+
+/mob/dead/observer/Life()
+	if(client && ninjahud)
+		var/icon/tempHud = 'icons/mob/hud.dmi'
+		for(var/image/hud in client.images)
+			if(copytext(hud.icon_state,1,4) == "hud")
+				client.images -= hud
+		for(var/mob/living/target in oview(src))
+			if(target.mind)//They need to have a mind.
+				if(iscarbon(target))
+					switch(target.mind.special_role)
+						if("traitor")
+							client.images += image(tempHud,target,"hudtraitor")
+						if("Revolutionary")
+							client.images += image(tempHud,target,"hudrevolutionary")
+						if("Head Revolutionary")
+							client.images += image(tempHud,target,"hudheadrevolutionary")
+						if("Cultist")
+							client.images += image(tempHud,target,"hudcultist")
+						if("Changeling")
+							client.images += image(tempHud,target,"hudchangeling")
+						if("Wizard","Fake Wizard")
+							client.images += image(tempHud,target,"hudwizard")
+						if("Hunter","Sentinel","Drone","Queen")
+							client.images += image(tempHud,target,"hudalien")
+						if("Syndicate")
+							client.images += image(tempHud,target,"hudoperative")
+						if("Death Commando")
+							client.images += image(tempHud,target,"huddeathsquad")
+						if("Space Ninja")
+							client.images += image(tempHud,target,"hudninja")
+						if("Abductor")
+							client.images += image(tempHud,target,"hudabductor")
+						if("Shadowling")
+							client.images += image(tempHud,target,"shadowling")
+						if("Thrall")
+							client.images += image(tempHud,target,"thrall")
+						if(null)
+							//Nothing
+						else//If we don't know what role they have but they have one.
+							client.images += image(tempHud,target,"hudunknown1")
+
+				else if(issilicon(target))//If the silicon mob has no law datum, no inherent laws, or a law zero, add them to the hud.
+					var/mob/living/silicon/silicon_target = target
+					if(!silicon_target.laws || (silicon_target.laws && (silicon_target.laws.zeroth || !silicon_target.laws.inherent.len)))
+						if(isrobot(silicon_target))//Different icons for robutts and AI.
+							client.images += image(tempHud,silicon_target,"hudmalborg")
+						else
+							client.images += image(tempHud,silicon_target,"hudmalai")
+	return
 

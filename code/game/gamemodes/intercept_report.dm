@@ -55,7 +55,7 @@
 	)
 
 
-/datum/intercept_text/proc/build(var/mode_type, datum/mind/correct_person)
+/datum/intercept_text/proc/build(mode_type, datum/mind/correct_person)
 	switch(mode_type)
 		if("revolution")
 			src.text = ""
@@ -88,6 +88,10 @@
 		if("changeling","traitorchan")
 			src.text = ""
 			src.build_changeling(correct_person)
+			return src.text
+		if("shadowling")
+			src.text = ""
+			src.build_shadowling(correct_person)
 			return src.text
 		else
 			return null
@@ -229,7 +233,7 @@
 
 /datum/intercept_text/proc/build_gang(datum/mind/correct_person)
 	src.text += "<BR><BR>We have reports of criminal activity in close proximity to our operations within your sector."
-	src.text += "Ensure law and order is maintained on the station and be on the lookout for aggressive factionalism within the crew."
+	src.text += "Ensure law and order is maintained on the station and be on the lookout for territorial aggression within the crew."
 	src.text += "In the event of a full-scale criminal takeover threat, sensitive research items are to be secured and the station evacuated ASAP."
 	src.text += "<BR><HR>"
 
@@ -290,3 +294,9 @@
 	src.text += "These lifeforms are associated with the <B><U>[orgname1] [orgname2]</U></B> and may be attempting to acquire sensitive materials on their behalf.  "
 	src.text += "Please take care not to alarm the crew, as <B><U>[cname]</U></B> may take advantage of a panic situation. Remember, they can be anybody, suspect everybody!"
 	src.text += "<BR><HR>"
+
+/datum/intercept_text/proc/build_shadowling(datum/mind/correct_person)
+	src.text += "<br><br>Sightings of strange alien creatures have been observed in your area. These aliens supposedly possess the ability to enslave unwitting personnel and leech from their power. \
+	Be wary of dark areas and ensure all lights are kept well-maintained. Closely monitor all crew for suspicious behavior and perform dethralling surgery if they have obvious tells. Investigate all \
+	reports of odd or suspicious sightings in maintenance."
+	src.text += "<br><br>"

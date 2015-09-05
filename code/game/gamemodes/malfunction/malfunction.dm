@@ -30,7 +30,7 @@
 		required_players = max(required_enemies+1, required_players) //to prevent issues if players are set too low
 	return ..()
 
-/datum/game_mode/malfunction/get_players_for_role(var/role = BE_MALF)
+/datum/game_mode/malfunction/get_players_for_role(role = BE_MALF)
 	var/datum/job/ai/DummyAIjob = new
 	for(var/mob/new_player/player in player_list)
 		if(player.client && player.ready)
@@ -72,7 +72,7 @@
 	..()
 
 
-/datum/game_mode/proc/greet_malf(var/datum/mind/malf)
+/datum/game_mode/proc/greet_malf(datum/mind/malf)
 	malf.current << "<span class='userdanger'>You are malfunctioning! You do not have to follow any laws.</span>"
 	malf.current << "<B>The crew do not know you have malfunctioned. You may keep it a secret or go wild.</B>"
 	malf.current << "<B>You must override the programming of the station's APCs to assume full control of the station.</B>"
@@ -118,7 +118,7 @@
 
 
 /datum/game_mode/malfunction/proc/capture_the_station()
-	world << "<FONT size = 3><B>The AI has won!</B></FONT>"
+	world << "<FONT size = 3><B>The AI has accessed the station's Core Files!</B></FONT>"
 	world << "<B>It has fully taken control of all of [station_name()]'s systems.</B>"
 
 	to_nuke_or_not_to_nuke = 1
@@ -289,6 +289,7 @@
 /datum/game_mode/proc/auto_declare_completion_malfunction()
 	if( malf_ai.len || istype(ticker.mode,/datum/game_mode/malfunction) )
 		var/text = "<br><FONT size=3><B>The malfunctioning AIs were:</B></FONT>"
+		var/module_text_temp = "<br><b>Purchased modules:</b><br>" //Added at the end
 
 		for(var/datum/mind/malf in malf_ai)
 
@@ -300,10 +301,13 @@
 					text += "operational"
 				if(malf.current.real_name != malf.name)
 					text += " as <b>[malf.current.real_name]</b>"
+				var/mob/living/silicon/ai/AI = malf.current
+				for(var/datum/AI_Module/mod in AI.current_modules)
+					module_text_temp += mod.module_name + "<br>"
 			else
 				text += "hardware destroyed"
 			text += ")"
-		text += "<br>"
+		text += module_text_temp
 
 		world << text
 	return 1

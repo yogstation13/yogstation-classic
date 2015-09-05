@@ -64,6 +64,9 @@
 			var/obj/item/weapon/implanter/S = new /obj/item/weapon/implanter(src)
 			S.imp = new /obj/item/weapon/implant/explosive(S)
 			S.name += " (explosive)"
+			var/obj/item/weapon/implanter/Z = new /obj/item/weapon/implanter(src)
+			Z.imp = new /obj/item/weapon/implant/zombie(Z)
+			new /obj/item/weapon/implanter/storage(src)
 			return
 
 		if("hacker")
@@ -100,6 +103,16 @@
 	..()
 	var/obj/item/weapon/implanter/O = new(src)
 	O.imp = new /obj/item/weapon/implant/freedom(O)
+	O.update_icon()
+	return
+
+/obj/item/weapon/storage/box/syndie_kit/imp_zombie
+	name = "boxed zombie implant (with injector)"
+
+/obj/item/weapon/storage/box/syndie_kit/imp_zombie/New()
+	..()
+	var/obj/item/weapon/implanter/O = new(src)
+	O.imp = new /obj/item/weapon/implant/zombie(O)
 	O.update_icon()
 	return
 
@@ -142,6 +155,20 @@
 	O.update_icon()
 	return
 
+/obj/item/weapon/storage/box/syndie_kit/bioterror
+	name = "bioterror syringe box"
+
+/obj/item/weapon/storage/box/syndie_kit/bioterror/New()
+	..()
+	new /obj/item/weapon/reagent_containers/syringe/bioterror(src)
+	new /obj/item/weapon/reagent_containers/syringe/bioterror(src)
+	new /obj/item/weapon/reagent_containers/syringe/bioterror(src)
+	new /obj/item/weapon/reagent_containers/syringe/bioterror(src)
+	new /obj/item/weapon/reagent_containers/syringe/bioterror(src)
+	new /obj/item/weapon/reagent_containers/syringe/bioterror(src)
+	new /obj/item/weapon/reagent_containers/syringe/bioterror(src)
+	return
+
 
 /obj/item/weapon/storage/box/syndie_kit/imp_adrenal
 	name = "boxed adrenal implant (with injector)"
@@ -151,6 +178,15 @@
 	var/obj/item/weapon/implanter/O = new(src)
 	O.imp = new /obj/item/weapon/implant/adrenalin(O)
 	O.update_icon()
+	return
+
+
+/obj/item/weapon/storage/box/syndie_kit/imp_storage
+	name = "boxed storage implant (with injector)"
+
+/obj/item/weapon/storage/box/syndie_kit/imp_storage/New()
+	..()
+	new /obj/item/weapon/implanter/storage(src)
 	return
 
 
@@ -173,12 +209,13 @@
 	..()
 	new /obj/item/weapon/grenade/empgrenade(src)
 	new /obj/item/weapon/grenade/empgrenade(src)
-	new /obj/item/weapon/implanter/emp/(src)
-	new /obj/item/device/flashlight/emp/(src)
+	new /obj/item/weapon/implanter/emp(src)
+	new /obj/item/device/flashlight/emp(src)
 	return
 
 /obj/item/weapon/storage/box/syndie_kit/chemical
 	name = "boxed chemical kit"
+	storage_slots = 14
 
 /obj/item/weapon/storage/box/syndie_kit/chemical/New()
 	..()
@@ -195,3 +232,13 @@
 	new /obj/item/weapon/reagent_containers/glass/bottle/curare(src)
 	new /obj/item/weapon/reagent_containers/glass/bottle/amanitin(src)
 	return
+
+/obj/item/weapon/storage/box/syndie_kit/nuke
+	name = "box"
+
+/obj/item/weapon/storage/box/syndie_kit/nuke/New()
+	..()
+	new /obj/item/weapon/screwdriver/nuke(src)
+	new /obj/item/nuke_core_container(src)
+	new /obj/item/weapon/paper/nuke_instructions(src)
+	new /obj/item/weapon/paper/nuke_plans(src)

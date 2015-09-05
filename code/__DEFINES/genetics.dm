@@ -25,6 +25,8 @@
 #define CHAV		"Chav"
 #define ELVIS		"Elvis"
 
+#define CHAMELEON_MUTATION_DEFAULT_TRANSPARENCY 204
+
 // String identifiers for associative list lookup
 
 //Types of usual mutations
@@ -73,6 +75,7 @@
 #define TR_KEEPSE		32 // changelings shouldn't edit the DNA's SE when turning into a monkey
 #define TR_DEFAULTMSG	64
 #define TR_KEEPSRC		128
+#define TR_KEEPORGANS	256
 
 //Organ stuff, It's here because "Genetics" is the most relevant file for organs
 #define ORGAN_ORGANIC   1

@@ -1,7 +1,6 @@
 	////////////
 	//SECURITY//
 	////////////
-#define TOPIC_SPAM_DELAY	2		//2 ticks is about 2/10ths of a second; it was 4 ticks, but that caused too many clicks to be lost due to lag
 #define UPLOAD_LIMIT		1048576	//Restricts client uploads to the server to 1MB //Could probably do with being lower.
 #define MIN_CLIENT_VERSION	0		//Just an ambiguously low version for now, I don't want to suddenly stop people playing.
 									//I would just like the code ready should it ever need to be used.
@@ -39,11 +38,6 @@
 
 	if(!usr || usr != mob)	//stops us calling Topic for somebody else's client. Also helps prevent usr=null
 		return
-
-	//Reduces spamming of links by dropping calls that happen during the delay period
-	if(next_allowed_topic_time > world.time)
-		return
-	next_allowed_topic_time = world.time + TOPIC_SPAM_DELAY
 
 	//Admin PM
 	if(href_list["priv_msg"])
@@ -107,7 +101,7 @@
 		return 0
 	return 1
 
-/client/proc/handle_spam_prevention(var/message, var/mute_type)
+/client/proc/handle_spam_prevention(message, mute_type)
 	if(config.automute_on && !holder && src.last_message == message)
 		src.last_message_count++
 		if(src.last_message_count >= SPAM_TRIGGER_AUTOMUTE)
@@ -213,6 +207,8 @@ var/next_external_rsc = 0
 			if (config.irc_first_connection_alert)
 				send2irc_adminless_only("New-user", "[key_name(src)] is connecting for the first time!")
 
+		player_age = 0 // set it from -1 to 0 so the job selection code doesn't have a panic attack
+
 	else if (isnum(player_age) && player_age < config.notify_new_player_age)
 		message_admins("New user: [key_name_admin(src)] just connected with an age of [player_age] day[(player_age==1?"":"s")]")
 
@@ -239,12 +235,16 @@ var/next_external_rsc = 0
 			config.allow_vote_restart = 0
 		add_admin_verbs()
 		add_donor_verbs()
-		admin_memo_show()
+		admin_memo_output("Show")
 		if((global.comms_key == "default_pwd" || length(global.comms_key) <= 6) && global.comms_allowed) //It's the default value or less than 6 characters long, but it somehow didn't disable comms.
 			src << "<span class='danger'>The server's API key is either too short or is the default value! Consider changing it immediately!</span>"
 
-	spawn(0)
-		send_resources()
+	send_resources()
+
+	if(!void)
+		void = new()
+
+	screen += void
 
 	if(prefs.lastchangelog != changelog_hash) //bolds the changelog button on the interface so we know there are updates.
 		src << "<span class='info'>You have unread updates in the changelog.</span>"
@@ -255,6 +255,9 @@ var/next_external_rsc = 0
 
 	if(holder || !config.admin_who_blocked)
 		verbs += /client/proc/adminwho
+
+	if (config && config.autoconvert_notes)
+		convert_notes_sql(ckey)
 
 	//////////////
 	//DISCONNECT//
@@ -376,6 +379,11 @@ proc/sync_logout_with_db(number)
 		for (var/type in typesof(/datum/html_interface))
 			hi = new type(null)
 			hi.sendResources(src)
+
+	// Preload the crew monitor. This needs to be done due to BYOND bug http://www.byond.com/forum/?post=1487244
+	spawn
+		if (crewmonitor && crewmonitor.initialized)
+			crewmonitor.sendResources(src)
 
 	//Send nanoui files to client
 	SSnano.send_resources(src)

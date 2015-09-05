@@ -1,4 +1,4 @@
-/proc/priority_announce(var/text, var/title = "", var/sound = 'sound/AI/attention.ogg', var/type)
+/proc/priority_announce(text, title = "", sound = 'sound/AI/attention.ogg', type)
 	if(!text)
 		return
 
@@ -70,7 +70,7 @@
 			C.messagetext.Add(text)
 
 
-/proc/minor_announce(var/message, var/title = "Attention:", var/alert)
+/proc/minor_announce(message, title = "Attention:", alert)
 	if(!message)
 		return
 

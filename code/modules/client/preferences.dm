@@ -54,7 +54,7 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 	var/underwear = "Nude"				//underwear type
 	var/undershirt = "Nude"				//undershirt type
 	var/socks = "Nude"					//socks type
-	var/backbag = 2						//backpack type
+	var/backbag = 1						//backpack type
 	var/hair_style = "Bald"				//Hair type
 	var/hair_color = "000"				//Hair color
 	var/facial_hair_style = "Shaved"	//Face hair type
@@ -62,7 +62,7 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 	var/skin_tone = "caucasian1"		//Skin color
 	var/eye_color = "000"				//Eye color
 	var/datum/species/pref_species = new /datum/species/human()	//Mutant race
-	var/list/features = list("mcolor" = "FFF", "tail" = "Smooth", "snout" = "Round", "horns" = "None", "frills" = "None", "spines" = "None", "body_markings" = "None")
+	var/list/features = list("mcolor" = "FFF", "tail_lizard" = "Smooth", "tail_human" = "None", "snout" = "Round", "horns" = "None", "ears" = "None", "frills" = "None", "spines" = "None", "body_markings" = "None")
 
 	var/list/custom_names = list("clown", "mime", "ai", "cyborg", "religion", "deity")
 
@@ -117,7 +117,7 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 			return
 	//we couldn't load character data so just randomize the character appearance + name
 	random_character()		//let's create a random character then - rather than a fat, bald and naked man.
-	real_name = random_name(gender)
+	real_name = pref_species.random_name(gender,1)
 	if(!loaded_preferences_successfully)
 		save_preferences()
 	save_character()		//let's save this new random character so it doesn't keep generating new ones.
@@ -163,6 +163,10 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 					dat += "<h2>Donator</h2>"
 					dat += "<b>Fancy Hat:</b> "
 					dat += "<a href='?_src_=prefs;preference=donor;task=hat'>Pick</a> [donor_hat ? "\"[donor_hat]\"" : "None selected"]<BR>"
+				else
+					dat += "<h2>Donator</h2>"
+					dat += "<b>Fancy Hat:</b> "
+					dat += "Become a <a href='http://www.yogstation.net/index.php?do=donate'>donator for fancy hats</a>!<BR>"
 
 				dat += "<h2>Identity</h2>"
 				dat += "<table width='100%'><tr><td width='75%' valign='top'>"
@@ -250,69 +254,91 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 
 					dat += "</td>"
 
-				if(MUTCOLORS in pref_species.specflags)
+				if(config.mutant_races) //We don't allow mutant bodyparts for humans either unless this is true.
 
-					dat += "<td valign='top' width='21%'>"
+					if((MUTCOLORS in pref_species.specflags) || (MUTCOLORS_PARTSONLY in pref_species.specflags))
 
-					dat += "<h3>Alien Color</h3>"
+						dat += "<td valign='top' width='21%'>"
 
-					dat += "<span style='border: 1px solid #161616; background-color: #[features["mcolor"]];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=mutant_color;task=input'>Change</a><BR>"
+						dat += "<h3>Alien/Mutant Color</h3>"
 
-					dat += "</td>"
+						dat += "<span style='border: 1px solid #161616; background-color: #[features["mcolor"]];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=mutant_color;task=input'>Change</a><BR>"
 
-				if("tail" in pref_species.mutant_bodyparts)
-					dat += "<td valign='top' width='7%'>"
+						dat += "</td>"
 
-					dat += "<h3>Tail</h3>"
+					if("tail_lizard" in pref_species.mutant_bodyparts)
+						dat += "<td valign='top' width='7%'>"
 
-					dat += "<a href='?_src_=prefs;preference=tail;task=input'>[features["tail"]]</a><BR>"
+						dat += "<h3>Tail</h3>"
 
-					dat += "</td>"
+						dat += "<a href='?_src_=prefs;preference=tail_lizard;task=input'>[features["tail_lizard"]]</a><BR>"
 
-				if("snout" in pref_species.mutant_bodyparts)
-					dat += "<td valign='top' width='7%'>"
+						dat += "</td>"
 
-					dat += "<h3>Snout</h3>"
+					if("snout" in pref_species.mutant_bodyparts)
+						dat += "<td valign='top' width='7%'>"
 
-					dat += "<a href='?_src_=prefs;preference=snout;task=input'>[features["snout"]]</a><BR>"
+						dat += "<h3>Snout</h3>"
 
-					dat += "</td>"
+						dat += "<a href='?_src_=prefs;preference=snout;task=input'>[features["snout"]]</a><BR>"
 
-				if("horns" in pref_species.mutant_bodyparts)
-					dat += "<td valign='top' width='7%'>"
+						dat += "</td>"
 
-					dat += "<h3>Horns</h3>"
+					if("horns" in pref_species.mutant_bodyparts)
+						dat += "<td valign='top' width='7%'>"
 
-					dat += "<a href='?_src_=prefs;preference=horns;task=input'>[features["horns"]]</a><BR>"
+						dat += "<h3>Horns</h3>"
 
-					dat += "</td>"
+						dat += "<a href='?_src_=prefs;preference=horns;task=input'>[features["horns"]]</a><BR>"
 
-				if("frills" in pref_species.mutant_bodyparts)
-					dat += "<td valign='top' width='7%'>"
+						dat += "</td>"
 
-					dat += "<h3>Frills</h3>"
+					if("frills" in pref_species.mutant_bodyparts)
+						dat += "<td valign='top' width='7%'>"
 
-					dat += "<a href='?_src_=prefs;preference=frills;task=input'>[features["frills"]]</a><BR>"
+						dat += "<h3>Frills</h3>"
 
-					dat += "</td>"
+						dat += "<a href='?_src_=prefs;preference=frills;task=input'>[features["frills"]]</a><BR>"
 
-				if("spines" in pref_species.mutant_bodyparts)
-					dat += "<td valign='top' width='7%'>"
+						dat += "</td>"
 
-					dat += "<h3>Spines</h3>"
+					if("spines" in pref_species.mutant_bodyparts)
+						dat += "<td valign='top' width='7%'>"
 
-					dat += "<a href='?_src_=prefs;preference=spines;task=input'>[features["spines"]]</a><BR>"
+						dat += "<h3>Spines</h3>"
 
-					dat += "</td>"
+						dat += "<a href='?_src_=prefs;preference=spines;task=input'>[features["spines"]]</a><BR>"
 
-				if("body_markings" in pref_species.mutant_bodyparts)
-					dat += "<td valign='top' width='7%'>"
+						dat += "</td>"
 
-					dat += "<h3>Body Markings</h3>"
+					if("body_markings" in pref_species.mutant_bodyparts)
+						dat += "<td valign='top' width='7%'>"
 
-					dat += "<a href='?_src_=prefs;preference=body_markings;task=input'>[features["body_markings"]]</a><BR>"
+						dat += "<h3>Body Markings</h3>"
 
-					dat += "</td>"
+						dat += "<a href='?_src_=prefs;preference=body_markings;task=input'>[features["body_markings"]]</a><BR>"
+
+						dat += "</td>"
+
+				if(config.mutant_humans)
+
+					if("tail_human" in pref_species.mutant_bodyparts)
+						dat += "<td valign='top' width='7%'>"
+
+						dat += "<h3>Tail</h3>"
+
+						dat += "<a href='?_src_=prefs;preference=tail_human;task=input'>[features["tail_human"]]</a><BR>"
+
+						dat += "</td>"
+
+					if("ears" in pref_species.mutant_bodyparts)
+						dat += "<td valign='top' width='7%'>"
+
+						dat += "<h3>Ears</h3>"
+
+						dat += "<a href='?_src_=prefs;preference=ears;task=input'>[features["ears"]]</a><BR>"
+
+						dat += "</td>"
 
 				dat += "</tr></table>"
 
@@ -390,7 +416,7 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 		dat += "</center>"
 
 		//user << browse(dat, "window=preferences;size=560x560")
-		var/datum/browser/popup = new(user, "preferences", "<div align='center'>Character Setup</div>", 640, 750)
+		var/datum/browser/popup = new(user, "preferences", "<div align='center'>Character Setup</div>", 640, 800)
 		popup.set_content(dat)
 		popup.open(0)
 
@@ -447,8 +473,11 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 			if((job_civilian_low & ASSISTANT) && (rank != "Assistant") && !jobban_isbanned(user, "Assistant"))
 				HTML += "<font color=orange>[rank]</font></td><td></td></tr>"
 				continue
-			if(config.enforce_human_authority && (rank in command_positions) && user.client.prefs.pref_species.id != "human")
-				HTML += "<font color=red>[rank]</font></td><td><font color=red><b> \[NON-HUMAN\]</b></font></td></tr>"
+			if(config.enforce_human_authority && !user.client.prefs.pref_species.qualifies_for_rank(rank, user.client.prefs.features))
+				if(user.client.prefs.pref_species.id == "human")
+					HTML += "<font color=red>[rank]</font></td><td><font color=red><b> \[MUTANT\]</b></font></td></tr>"
+				else
+					HTML += "<font color=red>[rank]</font></td><td><font color=red><b> \[NON-HUMAN\]</b></font></td></tr>"
 				continue
 			if(((rank in command_positions) || (rank in nonhuman_positions)) && (src.toggles & QUIET_ROUND))
 				HTML += "<font color=blue>[rank]</font></td><td><font color=blue><b> \[QUIET\]</b></font></td></tr>"
@@ -518,7 +547,7 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 		popup.open(0)
 		return
 
-	proc/SetJobPreferenceLevel(var/datum/job/job, var/level)
+	proc/SetJobPreferenceLevel(datum/job/job, level)
 		if (!job)
 			return 0
 
@@ -620,7 +649,7 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 		job_engsec_low = 0
 
 
-	proc/GetJobDepartment(var/datum/job/job, var/level)
+	proc/GetJobDepartment(datum/job/job, level)
 		if(!job || !level)	return 0
 		switch(job.department_flag)
 			if(CIVILIAN)
@@ -738,7 +767,7 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 			if("random")
 				switch(href_list["preference"])
 					if("name")
-						real_name = random_name(gender)
+						real_name = pref_species.random_name(gender,1)
 					if("age")
 						age = rand(AGE_MIN, AGE_MAX)
 					if("hair")
@@ -760,7 +789,7 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 					if("s_tone")
 						skin_tone = random_skin_tone()
 					if("bag")
-						backbag = rand(1,3)
+						backbag = rand(1,2)
 					if("all")
 						random_character()
 
@@ -880,24 +909,32 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 						if(result)
 							var/newtype = roundstart_species[result]
 							pref_species = new newtype()
-							if(features["mcolor"] == "#000")
+							//Now that we changed our species, we must verify that the mutant colour is still allowed.
+							var/temp_hsv = RGBtoHSV(features["mcolor"])
+							if(features["mcolor"] == "#000" || (!(MUTCOLORS_PARTSONLY in pref_species.specflags) && ReadHSV(temp_hsv)[3] < ReadHSV("#7F7F7F")[3]))
 								features["mcolor"] = pref_species.default_color
-
 					if("mutant_color")
-						var/new_mutantcolor = input(user, "Choose your character's alien skin color:", "Character Preference") as color|null
+						var/new_mutantcolor = input(user, "Choose your character's alien/mutant color:", "Character Preference") as color|null
 						if(new_mutantcolor)
 							var/temp_hsv = RGBtoHSV(new_mutantcolor)
 							if(new_mutantcolor == "#000000")
 								features["mcolor"] = pref_species.default_color
-							else if(ReadHSV(temp_hsv)[3] >= ReadHSV("#7F7F7F")[3]) // mutantcolors must be bright
+							else if((MUTCOLORS_PARTSONLY in pref_species.specflags) || ReadHSV(temp_hsv)[3] >= ReadHSV("#7F7F7F")[3]) // mutantcolors must be bright, but only if they affect the skin
 								features["mcolor"] = sanitize_hexcolor(new_mutantcolor)
 							else
 								user << "<span class='danger'>Invalid color. Your color is not bright enough.</span>"
-					if("tail")
+
+					if("tail_lizard")
 						var/new_tail
-						new_tail = input(user, "Choose your character's tail:", "Character Preference") as null|anything in tails_list
+						new_tail = input(user, "Choose your character's tail:", "Character Preference") as null|anything in tails_list_lizard
 						if(new_tail)
-							features["tail"] = new_tail
+							features["tail_lizard"] = new_tail
+
+					if("tail_human")
+						var/new_tail
+						new_tail = input(user, "Choose your character's tail:", "Character Preference") as null|anything in tails_list_human
+						if(new_tail)
+							features["tail_human"] = new_tail
 
 					if("snout")
 						var/new_snout
@@ -910,6 +947,12 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 						new_horns = input(user, "Choose your character's horns:", "Character Preference") as null|anything in horns_list
 						if(new_horns)
 							features["horns"] = new_horns
+
+					if("ears")
+						var/new_ears
+						new_ears = input(user, "Choose your character's ears:", "Character Preference") as null|anything in ears_list
+						if(new_ears)
+							features["ears"] = new_ears
 
 					if("frills")
 						var/new_frills
@@ -1067,7 +1110,7 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 					if("changeslot")
 						if(!load_character(text2num(href_list["num"])))
 							random_character()
-							real_name = random_name(gender)
+							real_name = random_unique_name(gender)
 							save_character()
 
 					if("tab")
@@ -1079,7 +1122,7 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 
 	proc/copy_to(mob/living/carbon/human/character)
 		if(be_random_name)
-			real_name = random_name(gender)
+			real_name = pref_species.random_name(gender)
 
 		if(be_random_body)
 			random_character(gender)
@@ -1120,9 +1163,17 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 
 		character.features = features
 
-		if(backbag > 3 || backbag < 1)
-			backbag = 1 //Same as above
 		character.backbag = backbag
 
-		character.update_body()
-		character.update_hair()
+		if(character.dna)
+			var/datum/species/chosen_species
+
+			character.dna.real_name = character.real_name
+			if(pref_species != /datum/species/human && config.mutant_races)
+				chosen_species = pref_species.type
+			else
+				chosen_species = /datum/species/human
+			hardset_dna(character, null, null, null, null, chosen_species, features)
+		else
+			character.update_body()
+			character.update_hair()

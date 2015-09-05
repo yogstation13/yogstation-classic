@@ -21,7 +21,7 @@
 		if(mind.current == ticker.mode.sacrifice_target)	return 0
 	return 1
 
-/proc/cultist_commune(var/mob/living/user, var/clear = 0, var/say = 0, var/message)
+/proc/cultist_commune(mob/living/user, clear = 0, say = 0, message)
 	if(!message)
 		return
 	if(say)
@@ -136,7 +136,7 @@
 	..()
 
 
-/datum/game_mode/cult/proc/memorize_cult_objectives(var/datum/mind/cult_mind)
+/datum/game_mode/cult/proc/memorize_cult_objectives(datum/mind/cult_mind)
 	for(var/obj_count = 1,obj_count <= cult_objectives.len,obj_count++)
 		var/explanation
 		switch(cult_objectives[obj_count])
@@ -203,7 +203,7 @@
 //			startwords -= word
 //	return ..(cult_mob,word)
 
-/datum/game_mode/proc/grant_runeword(mob/living/carbon/human/cult_mob, var/word)
+/datum/game_mode/proc/grant_runeword(mob/living/carbon/human/cult_mob, word)
 	if(!wordtravel)
 		runerandom()
 	if (!word)
@@ -249,6 +249,7 @@
 		cult += cult_mind
 		cult_mind.current.cult_add_comm()
 		cult_mind.special_role = "Cultist"
+		log_attack("[cult_mind.current]([cult_mind.key]) has been converted to the cult.")
 		update_cult_icons_added(cult_mind)
 		cult_mind.current.attack_log += "\[[time_stamp()]\] <span class='danger'>Has been converted to the cult!</span>"
 		return 1
@@ -267,6 +268,7 @@
 		cult_mind.current.Paralyse(5)
 		cult_mind.current << "<span class='userdanger'>An unfamiliar white light flashes through your mind, cleansing the taint of the dark-one and the memories of your time as his servant with it.</span>"
 		cult_mind.memory = ""
+		log_attack("[cult_mind.current]([cult_mind.key]) has renounced the cult.")
 		cult_mind.cult_words = initial(cult_mind.cult_words)
 		cult_mind.special_role = null
 		update_cult_icons_removed(cult_mind)

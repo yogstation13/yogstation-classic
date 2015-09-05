@@ -82,7 +82,8 @@
 							cameranet.addCamera(src)
 						emped = 0 //Resets the consecutive EMP count
 						spawn(100)
-							cancelCameraAlarm()
+							if(!qdeleted(src))
+								cancelCameraAlarm()
 			for(var/mob/O in mob_list)
 				if (O.client && O.client.eye == src)
 					O.unset_machine()
@@ -102,16 +103,16 @@
 	qdel(src)
 	return
 
-/obj/machinery/camera/proc/setViewRange(var/num = 7)
+/obj/machinery/camera/proc/setViewRange(num = 7)
 	src.view_range = num
 	cameranet.updateVisibility(src, 0)
 
-/obj/machinery/camera/proc/shock(var/mob/living/user)
+/obj/machinery/camera/proc/shock(mob/living/user)
 	if(!istype(user))
 		return
 	user.electrocute_act(10, src)
 
-/obj/machinery/camera/attack_paw(mob/living/carbon/alien/humanoid/user as mob)
+/obj/machinery/camera/attack_paw(mob/living/carbon/alien/humanoid/user)
 	if(!istype(user))
 		return
 	user.do_attack_animation(src)
@@ -237,27 +238,26 @@
 	return
 
 /obj/machinery/camera/proc/deactivate(mob/user, displaymessage = 1) //this should be called toggle() but doing a find and replace for this would be ass
-	if(displaymessage)
-		status = !status
-		if(!status)
-			if(user)
-				visible_message("<span class='danger'>[user] deactivates [src]!</span>")
-				add_hiddenprint(user)
-			else
-				visible_message("<span class='danger'>\The [src] deactivates!</span>")
-			icon_state = "[initial(icon_state)]1"
-		else
-			if(user)
-				visible_message("<span class='danger'>[user] reactivates [src]!</span>")
-				add_hiddenprint(user)
-			else
-				visible_message("<span class='danger'>\The [src] reactivates!</span>")
-			triggerCameraAlarm()
-			icon_state = initial(icon_state)
-			spawn(100)
+	status = !status
+	cameranet.updateChunk(x, y, z)
+	var/change_msg = "deactivates"
+	if(!status)
+		icon_state = "[initial(icon_state)]1"
+	else
+		icon_state = initial(icon_state)
+		change_msg = "reactivates"
+		triggerCameraAlarm()
+		spawn(100)
+			if(!qdeleted(src))
 				cancelCameraAlarm()
+	if(displaymessage)
+		if(user)
+			visible_message("<span class='danger'>[user] [change_msg] [src]!</span>")
+			add_hiddenprint(user)
+		else
+			visible_message("<span class='danger'>\The [src] [change_msg]!</span>")
+
 		playsound(src.loc, 'sound/items/Wirecutter.ogg', 100, 1)
-		cameranet.updateChunk(x, y, z)
 
 	// now disconnect anyone using the camera
 	//Apparently, this will disconnect anyone even if the camera was re-activated.
@@ -329,7 +329,7 @@
 
 	return null
 
-/obj/machinery/camera/proc/weld(var/obj/item/weapon/weldingtool/WT, var/mob/living/user)
+/obj/machinery/camera/proc/weld(obj/item/weapon/weldingtool/WT, mob/living/user)
 	if(busy)
 		return 0
 	if(!WT.remove_fuel(0, user))
@@ -346,7 +346,7 @@
 	busy = 0
 	return 0
 
-/obj/machinery/camera/bullet_act(var/obj/item/projectile/proj)
+/obj/machinery/camera/bullet_act(obj/item/projectile/proj)
 	if(proj.damage_type == BRUTE)
 		health = max(0, health - proj.damage)
 		if(!health && status)

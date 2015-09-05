@@ -81,16 +81,15 @@
 			else
 				C << "<font color='[normal_ooc_colour]'><span class='ooc'><span class='prefix'>OOC:</span> <EM>[keyname]:</EM> <span class='message'>[msg]</span></span></font>"
 
-/proc/toggle_ooc()
-	ooc_allowed = !( ooc_allowed )
-	if (ooc_allowed)
-		world << "<B>The OOC channel has been globally enabled!</B>"
-	else
-		world << "<B>The OOC channel has been globally disabled!</B>"
-
-/proc/auto_toggle_ooc(var/on)
-	if(!config.ooc_during_round && ooc_allowed != on)
-		toggle_ooc()
+/proc/toggle_ooc(toggle = null)
+	if(toggle != null) //if we're specifically en/disabling ooc
+		if(toggle != ooc_allowed)
+			ooc_allowed = toggle
+		else
+			return
+	else //otherwise just toggle it
+		ooc_allowed = !ooc_allowed
+	world << "<B>The OOC channel has been globally [ooc_allowed ? "enabled" : "disabled"].</B>"
 
 var/global/normal_ooc_colour = "#002eb8"
 
@@ -161,4 +160,4 @@ var/global/normal_ooc_colour = "#002eb8"
 		usr << "<span class='notice'>Sorry, that function is not enabled on this server.</span>"
 		return
 
-	see_own_notes()
+	show_note(usr, null, 1)

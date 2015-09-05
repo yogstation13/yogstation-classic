@@ -27,7 +27,8 @@ RENAME_CYBORG
 #Comment this out if you want OOC to be automatically disabled during the round, it will be enabled during the lobby and after the round end results.
 OOC_DURING_ROUND
 
-
+### EMOJI ###
+#Comment this out if you want to disable emojis
 EMOJIS
 
 ### MOB MOVEMENT ###
@@ -105,22 +106,49 @@ PROBABILITY ABDUCTION 0
 ## You probably want to keep sandbox off by default for secret and random.
 PROBABILITY SANDBOX 0
 
-## Uncomment to make rounds which end instantly (Rev, Wizard, Malf) continue until
-## the shuttle is called or the station is nuked.
-## Malf and Rev will let the shuttle be called when the antags/protags are dead.
+
+## Toggles for continuous modes.
+## Modes that aren't continuous will end the instant all antagonists are dead.
+
+CONTINUOUS TRAITOR
+CONTINUOUS TRAITORCHAN
+CONTINUOUS DOUBLE_AGENTS
+#CONTINUOUS NUCLEAR
 #CONTINUOUS REVOLUTION
-#CONTINUOUS GANG
+#CONTINUOUS SHADOWLING
+CONTINUOUS GANG
+CONTINUOUS CULT
+CONTINUOUS CHANGELING
 CONTINUOUS WIZARD
 #CONTINUOUS MALFUNCTION
 CONTINUOUS BLOB
+#CONTINUOUS RAGINMAGES
+#CONTINUOUS MONKEY
 
+##Note: do not toggle continuous off for these modes, as they have no antagonists and would thus end immediately!
+
+CONTINUOUS METEOR
+CONTINUOUS EXTENDED
+
+
+## Toggles for allowing midround antagonists (aka mulligan antagonists).
+## In modes that are continuous, if all antagonists should die then a new set of antagonists will be created.
+
+#MIDROUND_ANTAG TRAITOR
+#MIDROUND_ANTAG TRAITORCHAN
+#MIDROUND_ANTAG DOUBLE_AGENTS
+#MIDROUND_ANTAG  NUCLEAR
+#MIDROUND_ANTAG  REVOLUTION
+#MIDROUND_ANTAG  SHADOWLING
+#MIDROUND_ANTAG  GANG
+#MIDROUND_ANTAG CULT
+#MIDROUND_ANTAG CHANGELING
 MIDROUND_ANTAG WIZARD
 MIDROUND_ANTAG MALFUNCTION
 MIDROUND_ANTAG BLOB
+#MIDROUND_ANTAG  RAGINMAGES
+#MIDROUND_ANTAG  MONKEY
 
-MIDROUND_ANTAG_TIME_CHECK 60
-
-MIDROUND_ANTAG_LIFE_CHECK 0.7
 
 ## The amount of time it takes for the emergency shuttle to be called, from round start.
 SHUTTLE_REFUEL_DELAY 12000
@@ -141,6 +169,12 @@ TRAITOR_OBJECTIVES_AMOUNT 2
 ## Uncomment to prohibit jobs that start with loyalty
 ## implants from being most antagonists.
 PROTECT_ROLES_FROM_ANTAGONIST
+
+## Uncomment to prohibit assistants from becoming most antagonists.
+#PROTECT_ASSISTANT_FROM_ANTAGONIST
+
+## If non-human species are barred from joining as a head of staff
+#ENFORCE_HUMAN_AUTHORITY
 
 ## If late-joining players have a chance to become a traitor/changeling
 ALLOW_LATEJOIN_ANTAGONISTS
@@ -209,24 +243,61 @@ SECURITY_HAS_MAINT_ACCESS
 ## Set to 0/commented for "off", silicons will just start with Asimov.
 ## Set to 1 for "custom", silicons will start with the custom laws defined in silicon_laws.txt. (If silicon_laws.txt is empty, the AI will spawn with asimov and Custom boards will auto-delete.)
 ## Set to 2 for "random", silicons will start with a random lawset picked from (at the time of writing): P.A.L.A.D.I.N., Corporate, Asimov. More can be added by changing the law datum paths in ai_laws.dm.
-DEFAULT_LAWS 1
+DEFAULT_LAWS 0
 
-## Uncoment to give players the choice of their species before they join the game
-JOIN_WITH_MUTANT_RACE
-
-STARLIGHT
-
-ASSISTANT_CAP -1
-
+### SILICON LAW MAX AMOUNT ###
+## The maximum number of laws a silicon can have
+## Attempting to upload laws past this point will fail unless the AI is reset
 SILICON_MAX_LAW_AMOUNT 10
 
+## Uncomment to give players the choice of their species before they join the game
+JOIN_WITH_MUTANT_RACE
+
+## Uncomment to give players the choice of joining as a human with mutant bodyparts before they join the game
+#JOIN_WITH_MUTANT_HUMANS
+
+## Assistant slot cap. Set to -1 for unlimited.
+ASSISTANT_CAP -1
+
+## Starlight for exterior walls and breaches. Uncomment for starlight!
+STARLIGHT
+
+## Uncomment to bring back old grey suit assistants instead of the now default rainbow colored assistants.
 #GREY_ASSISTANTS
 
+### Midround Antag (aka Mulligan antag) config options ###
 
+## A time, in minutes, after which the midround antag system stops attempting to run and continuous rounds end immediately upon completion.
+MIDROUND_ANTAG_TIME_CHECK 60
+
+## A ratio of living to total crew members, the lower this is, the more people will have to die in order for midround antag to be skipped
+MIDROUND_ANTAG_LIFE_CHECK 0.7
+
+###Limit Spell Choices##
+## Uncomment to disallow wizards from using certain spells that may be too chaotic/fun for your playerbase
 
 #NO_SUMMON_GUNS
 #NO_SUMMON_MAGIC
 NO_SUMMON_EVENTS
 
+//Comment for "normal" explosions, which ignore obstacles
+//Uncomment for explosions that react to doors and walls
 REACTIONARY_EXPLOSIONS
+
+### Configure the bomb cap
+## This caps all explosions to the specified range. Used for both balance reasons and to prevent overloading the server and lagging the game out.
+## This is given as the 3rd number(light damage) in the standard (1,2,3) explosion notation. The other numbers are derived by dividing by 2 and 4.
+## eg: If you give the number 20. The bomb cap will be 5,10,20.
+## Can be any number between 4 and 128, some examples are provided below.
+
+## Default (3,7,14)
+#BOMBCAP 14
+## One 'step' up (4,8,16) (recommended if you enable REACTIONARY_EXPLOSIONS above)
+#BOMBCAP 16
+## LagHell (7,14,28)
+#BOMBCAP 28
+
 BOMBCAP 20
+
+
+

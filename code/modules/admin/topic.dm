@@ -103,11 +103,11 @@
 				new/datum/round_event/blob(strength)
 			if("12")
 				if(src.makeGangsters())
-					message_admins("[key_name(usr)] started a gang war.")
-					log_admin("[key_name(usr)] started a gang war.")
+					message_admins("[key_name(usr)] created gangs.")
+					log_admin("[key_name(usr)] created gangs.")
 				else
-					message_admins("[key_name(usr)] tried to start a gang war. Unfortunately, there were not enough candidates available.")
-					log_admin("[key_name(usr)] failed to start a gang war.")
+					message_admins("[key_name(usr)] tried to create gangs. Unfortunately, there were not enough candidates available.")
+					log_admin("[key_name(usr)] failed create gangs.")
 			if("13")
 				message_admins("[key_name(usr)] is creating a Centcom response team...")
 				if(src.makeEmergencyresponseteam())
@@ -352,7 +352,6 @@
 
 		message_admins("<span class='adminnotice'>[key_name_admin(usr)] is considering ending the round.</span>")
 		if(alert(usr, "This will end the round, are you SURE you want to do this?", "Confirmation", "Yes", "No") == "Yes")
-			spawn(200) //I wish you would step back from that ledge my friend
 			if(alert(usr, "Final Confirmation: End the round NOW?", "Confirmation", "Yes", "No") == "Yes")
 				message_admins("<span class='adminnotice'>[key_name_admin(usr)] has ended the round.</span>")
 				ticker.force_ending = 1 //Yeah there we go APC destroyed mission accomplished
@@ -391,8 +390,9 @@
 			if("robot")				M.change_mob_type( /mob/living/silicon/robot , null, null, delmob )
 			if("cat")				M.change_mob_type( /mob/living/simple_animal/pet/cat , null, null, delmob )
 			if("runtime")			M.change_mob_type( /mob/living/simple_animal/pet/cat/Runtime , null, null, delmob )
-			if("corgi")				M.change_mob_type( /mob/living/simple_animal/pet/corgi , null, null, delmob )
-			if("ian")				M.change_mob_type( /mob/living/simple_animal/pet/corgi/Ian , null, null, delmob )
+			if("corgi")				M.change_mob_type( /mob/living/simple_animal/pet/dog/corgi , null, null, delmob )
+			if("ian")				M.change_mob_type( /mob/living/simple_animal/pet/dog/corgi/Ian , null, null, delmob )
+			if("pug")				M.change_mob_type( /mob/living/simple_animal/pet/dog/pug , null, null, delmob )
 			if("crab")				M.change_mob_type( /mob/living/simple_animal/crab , null, null, delmob )
 			if("coffee")			M.change_mob_type( /mob/living/simple_animal/crab/Coffee , null, null, delmob )
 			if("parrot")			M.change_mob_type( /mob/living/simple_animal/parrot , null, null, delmob )
@@ -505,7 +505,7 @@
 				feedback_inc("ban_appearance",1)
 				DB_ban_record(BANTYPE_APPEARANCE, M, -1, reason)
 				appearance_fullban(M, "[reason]; By [usr.ckey] on [time2text(world.realtime)]")
-				notes_add(M.ckey, "Appearance banned - [reason]")
+				add_note(M.ckey, "Appearance banned - [reason]", null, usr, 0)
 				message_admins("<span class='adminnotice'>[key_name_admin(usr)] appearance banned [key_name_admin(M)]</span>")
 				M << "<span class='boldannounce'><BIG>You have been appearance banned by [usr.client.ckey].</BIG></span>"
 				M << "<span class='boldannounce'>The reason is: [reason]</span>"
@@ -921,7 +921,7 @@
 							msg = job
 						else
 							msg += ", [job]"
-					notes_add(M.ckey, "Banned  from [msg] - [reason]")
+					add_note(M.ckey, "Banned  from [msg] - [reason]", null, usr, 0)
 					message_admins("<span class='adminnotice'>[key_name_admin(usr)] banned [key_name_admin(M)] from [msg] for [mins] minutes</span>")
 					M << "<span class='boldannounce'><BIG>You have been jobbanned by [usr.client.ckey] from: [msg].</BIG></span>"
 					M << "<span class='boldannounce'>The reason is: [reason]</span>"
@@ -941,7 +941,7 @@
 							jobban_fullban(M, job, "[reason]; By [usr.ckey] on [time2text(world.realtime)]")
 							if(!msg)	msg = job
 							else		msg += ", [job]"
-						notes_add(M.ckey, "Banned  from [msg] - [reason]")
+						add_note(M.ckey, "Banned  from [msg] - [reason]", null, usr, 0)
 						message_admins("<span class='adminnotice'>[key_name_admin(usr)] banned [key_name_admin(M)] from [msg]</span>")
 						M << "<span class='boldannounce'><BIG>You have been jobbanned by [usr.client.ckey] from: [msg].</BIG></span>"
 						M << "<span class='boldannounce'>The reason is: [reason]</span>"
@@ -994,17 +994,48 @@
 			del(M.client)
 
 	//Player Notes
-	else if(href_list["notes"])
-		var/ckey = href_list["ckey"]
-		switch(href_list["notes"])
-			if("show")
-				notes_show(ckey)
-			if("add")
-				notes_add(ckey,href_list["text"], 1)
-				notes_show(ckey)
-			if("remove")
-				notes_remove(ckey,text2num(href_list["from"]),text2num(href_list["to"]))
-				notes_show(ckey)
+	else if(href_list["addnote"])
+		var/target_ckey = href_list["addnote"]
+		add_note(target_ckey)
+
+	else if(href_list["addnoteempty"])
+		add_note()
+
+	else if(href_list["removenote"])
+		var/note_id = href_list["removenote"]
+		remove_note(note_id)
+
+	else if(href_list["editnote"])
+		var/note_id = href_list["editnote"]
+		edit_note(note_id)
+
+	else if(href_list["shownote"])
+		var/target = href_list["shownote"]
+		show_note(index = target)
+
+	else if(href_list["nonalpha"])
+		var/target = href_list["nonalpha"]
+		target = text2num(target)
+		show_note(index = target)
+
+	else if(href_list["shownoteckey"])
+		var/target_ckey = href_list["shownoteckey"]
+		show_note(target_ckey)
+
+	else if(href_list["notessearch"])
+		var/target = href_list["notessearch"]
+		show_note(index = target)
+
+	else if(href_list["noteedits"])
+		var/note_id = sanitizeSQL("[href_list["noteedits"]]")
+		var/DBQuery/query_noteedits = dbcon.NewQuery("SELECT edits FROM [format_table_name("notes")] WHERE id = '[note_id]'")
+		if(!query_noteedits.Execute())
+			var/err = query_noteedits.ErrorMsg()
+			log_game("SQL ERROR obtaining edits from notes table. Error : \[[err]\]\n")
+			return
+		if(query_noteedits.NextRow())
+			var/edit_log = query_noteedits.item[1]
+			usr << browse(edit_log,"window=noteedits")
 
 	else if(href_list["removejobban"])
 		if(!check_rights(R_BAN))	return
@@ -1491,6 +1522,16 @@
 
 		usr.client.cmd_admin_animalize(M)
 
+	else if(href_list["gangpoints"])
+		var/datum/gang/G = locate(href_list["gangpoints"]) in ticker.mode.gangs
+		if(G)
+			var/newpoints = input("Set [G.name ] Gang's influence.","Set Influence",G.points) as null|num
+			if(newpoints)
+				message_admins("[key_name_admin(usr)] changed the [G.name] Gang's influence from [G.points] to [newpoints]</span>")
+				log_admin("[key_name(usr)] changed the [G.name] Gang's influence from [G.points] to [newpoints]</span>")
+				G.points = newpoints
+				G.message_gangtools("Your gang now has [G.points] influence.")
+
 	else if(href_list["adminplayeropts"])
 		var/mob/M = locate(href_list["adminplayeropts"])
 		show_player_panel(M)
@@ -1837,41 +1878,36 @@
 		if(!obj_dir || !(obj_dir in list(1,2,4,8,5,6,9,10)))
 			obj_dir = 2
 		var/obj_name = sanitize(href_list["object_name"])
+
+
+		var/atom/target //Where the object will be spawned
 		var/where = href_list["object_where"]
 		if (!( where in list("onfloor","inhand","inmarked") ))
 			where = "onfloor"
 
-		if( where == "inhand" )
-			usr << "Support for inhand not available yet. Will spawn on floor."
-			where = "onfloor"
 
-		if ( where == "inhand" )	//Can only give when human or monkey
-			if ( !( ishuman(usr) || ismonkey(usr) ) )
-				usr << "Can only spawn in hand when you're a human or a monkey."
-				where = "onfloor"
-			else if ( usr.get_active_hand() )
-				usr << "Your active hand is full. Spawning on floor."
-				where = "onfloor"
+		switch(where)
+			if("inhand")
+				if (!iscarbon(usr) && !isrobot(usr))
+					usr << "Can only spawn in hand when you're a carbon mob or cyborg."
+					where = "onfloor"
+				target = usr
 
-		if ( where == "inmarked" )
-			if ( !marked_datum )
-				usr << "You don't have any object marked. Abandoning spawn."
-				return
-			else
-				if ( !istype(marked_datum,/atom) )
-					usr << "The object you have marked cannot be used as a target. Target must be of type /atom. Abandoning spawn."
-					return
-
-		var/atom/target //Where the object will be spawned
-		switch ( where )
-			if ( "onfloor" )
-				switch (href_list["offset_type"])
+			if("onfloor")
+				switch(href_list["offset_type"])
 					if ("absolute")
 						target = locate(0 + X,0 + Y,0 + Z)
 					if ("relative")
 						target = locate(loc.x + X,loc.y + Y,loc.z + Z)
-			if ( "inmarked" )
-				target = marked_datum
+			if("inmarked")
+				if(!marked_datum)
+					usr << "You don't have any object marked. Abandoning spawn."
+					return
+				else if(!istype(marked_datum,/atom))
+					usr << "The object you have marked cannot be used as a target. Target must be of type /atom. Abandoning spawn."
+					return
+				else
+					target = marked_datum
 
 		if(target)
 			for (var/path in paths)
@@ -1879,9 +1915,8 @@
 					if(path in typesof(/turf))
 						var/turf/O = target
 						var/turf/N = O.ChangeTurf(path)
-						if(N)
-							if(obj_name)
-								N.name = obj_name
+						if(N && obj_name)
+							N.name = obj_name
 					else
 						var/atom/O = new path(target)
 						if(O)
@@ -1891,6 +1926,18 @@
 								if(istype(O,/mob))
 									var/mob/M = O
 									M.real_name = obj_name
+							if(where == "inhand" && isliving(usr) && istype(O, /obj/item))
+								var/mob/living/L = usr
+								var/obj/item/I = O
+								L.put_in_hands(I)
+								if(isrobot(L))
+									var/mob/living/silicon/robot/R = L
+									if(R.module)
+										R.module.modules += I
+										I.loc = R.module
+										R.module.rebuild()
+										R.activate_module(I)
+
 
 		if (number == 1)
 			log_admin("[key_name(usr)] created a [english_list(paths)]")
@@ -2100,5 +2147,39 @@
 		var/datum/newscaster/feed_message/FM = locate(href_list["ac_lock_comment"])
 		FM.locked ^= 1
 		src.access_news_network()
+
 	else if(href_list["sendtoprison"])
 		usr.client.sendmob(locate(href_list["sendtoprison"]),/area/centcom/prison)
+	else if(href_list["memoeditlist"])
+		var/sql_key = sanitizeSQL("[href_list["memoeditlist"]]")
+		var/DBQuery/query_memoedits = dbcon.NewQuery("SELECT edits FROM [format_table_name("memo")] WHERE (ckey = '[sql_key]')")
+		if(!query_memoedits.Execute())
+			var/err = query_memoedits.ErrorMsg()
+			log_game("SQL ERROR obtaining edits from memo table. Error : \[[err]\]\n")
+			return
+		if(query_memoedits.NextRow())
+			var/edit_log = query_memoedits.item[1]
+			usr << browse(edit_log,"window=memoeditlist")
+
+	else if(href_list["check_antagonist"])
+		if(!check_rights(R_ADMIN))
+			return
+		check_antagonists()
+
+	else if(href_list["kick_all_from_lobby"])
+		if(!check_rights(R_ADMIN))
+			return
+		if(ticker && ticker.current_state == GAME_STATE_PLAYING)
+			var/afkonly = text2num(href_list["afkonly"])
+			if(alert("Are you sure you want to kick all [afkonly ? "AFK" : ""] clients from the lobby??","Message","Yes","Cancel") != "Yes")
+				usr << "Kick clients from lobby aborted"
+				return
+			var/list/listkicked = kick_clients_in_lobby("<span class='danger'>You were kicked from the lobby by an Administrator.</span>", afkonly)
+
+			var/strkicked = ""
+			for(var/name in listkicked)
+				strkicked += "[name], "
+			message_admins("[key_name_admin(usr)] has kicked [afkonly ? "all AFK" : "all"] clients from the lobby. [length(listkicked)] clients kicked: [strkicked ? strkicked : "--"]")
+			log_admin("[key_name(usr)] has kicked [afkonly ? "all AFK" : "all"] clients from the lobby. [length(listkicked)] clients kicked: [strkicked ? strkicked : "--"]")
+		else
+			usr << "You may only use this when the game is running"

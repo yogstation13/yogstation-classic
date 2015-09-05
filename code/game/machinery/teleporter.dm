@@ -25,6 +25,7 @@
 	if (power_station)
 		power_station.teleporter_console = null
 		power_station = null
+	..()
 
 /obj/machinery/computer/teleporter/proc/link_power_station()
 	if(power_station)
@@ -35,7 +36,7 @@
 			break
 	return power_station
 
-/obj/machinery/computer/teleporter/attackby(I as obj, mob/living/user as mob, params)
+/obj/machinery/computer/teleporter/attackby(obj/I, mob/living/user, params)
 	if(istype(I, /obj/item/device/gps))
 		var/obj/item/device/gps/L = I
 		if(L.locked_location && !(stat & (NOPOWER|BROKEN)))
@@ -100,10 +101,10 @@
 		return
 
 	if(!check_hub_connection())
-		usr << "<span class='warning'>Error: Unable to detect hub.</span>"
+		say("<span class='warning'>Error: Unable to detect hub.</span>")
 		return
 	if(calibrating)
-		usr << "<span class='warning'>Error: Calibration in progress. Stand by.</span>"
+		say("<span class='warning'>Error: Calibration in progress. Stand by.</span>")
 		return
 
 	if(href_list["regimeset"])
@@ -123,21 +124,21 @@
 		target = get_turf(locked.locked_location)
 	if(href_list["calibrate"])
 		if(!target)
-			usr << "<span class='danger'>Error: No target set to calibrate to.</span>"
+			say("<span class='danger'>Error: No target set to calibrate to.</span>")
 			return
 		if(power_station.teleporter_hub.calibrated || power_station.teleporter_hub.accurate >= 3)
-			usr << "<span class='warning'>Hub is already calibrated!</span>"
+			say("<span class='warning'>Hub is already calibrated!</span>")
 			return
-		src.visible_message("<span class='notice'>Processing hub calibration to target...</span>")
+		say("<span class='notice'>Processing hub calibration to target...</span>")
 
 		calibrating = 1
 		spawn(50 * (3 - power_station.teleporter_hub.accurate)) //Better parts mean faster calibration
 			calibrating = 0
 			if(check_hub_connection())
 				power_station.teleporter_hub.calibrated = 1
-				src.visible_message("<span class='notice'>Calibration complete.</span>")
+				say("<span class='notice'>Calibration complete.</span>")
 			else
-				src.visible_message("<span class='danger'>Error: Unable to detect hub.</span>")
+				say("<span class='danger'>Error: Unable to detect hub.</span>")
 			updateDialog()
 
 	updateDialog()
@@ -268,6 +269,7 @@
 	if (power_station)
 		power_station.teleporter_hub = null
 		power_station = null
+	..()
 
 /obj/machinery/teleport/hub/RefreshParts()
 	var/A = 0
@@ -391,7 +393,7 @@
 		teleporter_console = null
 	..()
 
-/obj/machinery/teleport/station/attackby(var/obj/item/weapon/W, mob/user, params)
+/obj/machinery/teleport/station/attackby(obj/item/weapon/W, mob/user, params)
 	if(istype(W, /obj/item/device/multitool) && !panel_open)
 		var/obj/item/device/multitool/M = W
 		if(M.buffer && istype(M.buffer, /obj/machinery/teleport/station) && M.buffer != src)

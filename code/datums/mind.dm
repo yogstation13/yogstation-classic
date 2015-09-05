@@ -55,6 +55,7 @@
 	var/miming = 0 // Mime's vow of silence
 	var/antag_hud_icon_state = null //this mind's ANTAG_HUD should have this icon_state
 	var/datum/atom_hud/antag/antag_hud = null //this mind's antag HUD
+	var/datum/gang/gang_datum //Which gang this mind belongs to, if any
 	var/quiet_round = 0 //Won't be picked as target in most cases
 
 /datum/mind/New(var/key)
@@ -164,7 +165,7 @@
 
 
 /datum/mind/proc/remove_gang()
-		ticker.mode.remove_gangster(src,0,1)
+		ticker.mode.remove_gangster(src,0,1,1)
 		remove_objectives()
 
 /datum/mind/proc/remove_malf()
@@ -229,7 +230,7 @@
 		out += "<font color=red><b>QUIET ROUND ACTIVE</b></font> (<a href='?src=\ref[src];quiet_override=1'>Override</a>)<br>"
 	out += "Mind currently owned by key: [key] [active?"(synced)":"(not synced)"]<br>"
 	out += "Assigned role: [assigned_role]. <a href='?src=\ref[src];role_edit=1'>Edit</a><br>"
-	out += "Factions and special roles:<br>"
+	out += "Faction and special role: <b><font color='red'>[special_role]</font></b><br>"
 
 	var/list/sections = list(
 		"revolution",
@@ -253,7 +254,7 @@
 		if (assigned_role in command_positions)
 			text += "<b>HEAD</b>|loyal|employee|headrev|rev"
 		else if (src in ticker.mode.head_revolutionaries)
-			text = "head|loyal|<a href='?src=\ref[src];revolution=clear'>employee</a>|<b>HEADREV</b>|<a href='?src=\ref[src];revolution=rev'>rev</a>"
+			text += "head|loyal|<a href='?src=\ref[src];revolution=clear'>employee</a>|<b>HEADREV</b>|<a href='?src=\ref[src];revolution=rev'>rev</a>"
 			text += "<br>Flash: <a href='?src=\ref[src];revolution=flash'>give</a>"
 
 			var/list/L = current.get_contents()
@@ -288,45 +289,41 @@
 		if (ticker.mode.config_tag=="gang")
 			text = uppertext(text)
 		text = "<i><b>[text]</b></i>: "
-		if (src in ticker.mode.A_bosses)
-			text += "loyal|<a href='?src=\ref[src];gang=clear'>none</a>|<B>(A)</B> <a href='?src=\ref[src];gang=agang'>gangster</a> <b>BOSS</b>|(B) <a href='?src=\ref[src];gang=bgang'>gangster</a> <a href='?src=\ref[src];gang=bboss'>boss</a>"
-			text += "<br>Equipment: <a href='?src=\ref[src];gang=equip'>give</a>"
-
-			var/list/L = current.get_contents()
-			var/obj/item/device/gangtool/gangtool = locate() in L
-			if (gangtool)
-				text += "|<a href='?src=\ref[src];gang=takeequip'>take</a>."
-			else
-				text += "."
-
-		else if (src in ticker.mode.B_bosses)
-			text += "loyal|<a href='?src=\ref[src];gang=clear'>none</a>|(A) <a href='?src=\ref[src];gang=agang'>gangster</a> <a href='?src=\ref[src];gang=aboss'>boss</a>|<B>(B)</B> <a href='?src=\ref[src];gang=bgang'>gangster</a> <b>BOSS</b>"
-			text += "<br>Equipment: <a href='?src=\ref[src];gang=equip'>give</a>"
-
-			var/list/L = current.get_contents()
-			var/obj/item/device/gangtool/gangtool = locate() in L
-			if (gangtool)
-				text += "|<a href='?src=\ref[src];gang=takeequip'>take</a>."
-			else
-				text += "."
-
-		else if (src in ticker.mode.A_gang)
-			text += "loyal|<a href='?src=\ref[src];gang=clear'>none</a>|<B>(A) GANGSTER</B> <a href='?src=\ref[src];gang=aboss'>boss</a>|(B) <a href='?src=\ref[src];gang=bgang'>gangster</a> <a href='?src=\ref[src];gang=bboss'>boss</a>"
-		else if (src in ticker.mode.B_gang)
-			text += "loyal|<a href='?src=\ref[src];gang=clear'>none</a>|(A) <a href='?src=\ref[src];gang=agang'>gangster</a> <a href='?src=\ref[src];gang=aboss'>boss</a>|<B>(B) GANGSTER</B> <a href='?src=\ref[src];gang=bboss'>boss</a>"
-		else if(isloyal(current))
-			text += "<B>LOYAL</B>|none|(A) <a href='?src=\ref[src];gang=agang'>gangster</a> <a href='?src=\ref[src];gang=aboss'>boss</a>|(B) <a href='?src=\ref[src];gang=bgang'>gangster</a> <a href='?src=\ref[src];gang=bboss'>boss</a>"
+		text += "[isloyal(current) ? "<B>LOYAL</B>" : "loyal"]|"
+		if(src in ticker.mode.get_all_gangsters())
+			text += "<a href='?src=\ref[src];gang=clear'>none</a>"
 		else
-			text += "loyal|<B>NONE</B>|(A) <a href='?src=\ref[src];gang=agang'>gangster</a> <a href='?src=\ref[src];gang=aboss'>boss</a>|(B) <a href='?src=\ref[src];gang=bgang'>gangster</a> <a href='?src=\ref[src];gang=bboss'>boss</a>"
-
+			text += "<B>NONE</B>"
 
 		if(current && current.client && current.client.prefs.be_special & BE_GANG)
-			text += "|Enabled in Prefs"
+			text += "|Enabled in Prefs<BR>"
 		else
-			text += "|Disabled in Prefs"
+			text += "|Disabled in Prefs<BR>"
 
+		for(var/datum/gang/G in ticker.mode.gangs)
+			text += "<i>[G.name]</i>: "
+			if(src in (G.gangsters))
+				text += "<B>GANGSTER</B>"
+			else
+				text += "<a href='?src=\ref[src];gangster=\ref[G]'>gangster</a>"
+			text += "|"
+			if(src in (G.bosses))
+				text += "<B>GANG LEADER</B>"
+				text += "|Equipment: <a href='?src=\ref[src];gang=equip'>give</a>"
+				var/list/L = current.get_contents()
+				var/obj/item/device/gangtool/gangtool = locate() in L
+				if (gangtool)
+					text += "|<a href='?src=\ref[src];gang=takeequip'>take</a>"
+
+			else
+				text += "<a href='?src=\ref[src];gangboss=\ref[G]'>gang leader</a>"
+			text += "<BR>"
+
+		if(gang_colors_pool.len)
+			text += "<a href='?src=\ref[src];gang=new'>Create New Gang</a>"
 
 		sections["gang"] = text
+
 
 		/** CULT ***/
 		text = "cult"
@@ -381,7 +378,7 @@
 			text += "<b>YES</b>|<a href='?src=\ref[src];changeling=clear'>no</a>"
 			if (objectives.len==0)
 				text += "<br>Objectives are empty! <a href='?src=\ref[src];changeling=autoobjectives'>Randomize!</a>"
-			if( changeling && changeling.absorbed_dna.len && (current.real_name != changeling.absorbed_dna[1]) )
+			if(changeling && changeling.stored_profiles.len && (current.real_name != changeling.first_prof.name) )
 				text += "<br><a href='?src=\ref[src];changeling=initialdna'>Transform to initial appearance.</a>"
 		else
 			text += "<a href='?src=\ref[src];changeling=changeling'>yes</a>|<b>NO</b>"
@@ -541,12 +538,12 @@
 		if (sections["traitor"])
 			out += sections["traitor"]+"<br>"
 		if (sections["changeling"])
-			out += sections["changeling"]+"<br>"
+			out += sections["changeling"]+"<br><br>"
 		sections -= "traitor"
 		sections -= "changeling"
 	else
 		if (sections[ticker.mode.config_tag])
-			out += sections[ticker.mode.config_tag]+"<br>"
+			out += sections[ticker.mode.config_tag]+"<br><br>"
 		sections -= ticker.mode.config_tag
 	for (var/i in sections)
 		if (sections[i])
@@ -554,8 +551,6 @@
 
 
 	if (((src in ticker.mode.head_revolutionaries) || \
-		(src in ticker.mode.A_bosses)              || \
-		(src in ticker.mode.B_bosses)              || \
 		(src in ticker.mode.traitors)              || \
 		(src in ticker.mode.syndicates))           && \
 		istype(current,/mob/living/carbon/human)      )
@@ -574,7 +569,7 @@
 		text += "." //hiel grammar
 		out += text
 
-	out += "<br>"
+	out += "<br><br>"
 
 	out += "<b>Memory:</b><br>"
 	out += memory
@@ -591,7 +586,8 @@
 
 	out += "<a href='?src=\ref[src];obj_announce=1'>Announce objectives</a><br><br>"
 
-	usr << browse(out, "window=edit_memory[src];size=500x500")
+	usr << browse(out, "window=edit_memory[src];size=500x600")
+
 
 /datum/mind/Topic(href, href_list)
 	if(!check_rights(R_ADMIN))	return
@@ -715,7 +711,7 @@
 						new_objective.explanation_text = "Download [target_number] research levels."
 					if("capture")
 						new_objective = new /datum/objective/capture
-						new_objective.explanation_text = "Accumulate [target_number] capture points."
+						new_objective.explanation_text = "Capture [target_number] lifeforms with an energy net. Live, rare specimens are worth more."
 					if("absorb")
 						new_objective = new /datum/objective/absorb
 						new_objective.explanation_text = "Absorb [target_number] compatible genomes."
@@ -826,6 +822,10 @@
 				else
 					flash.broken = 0
 
+
+
+//////////////////// GANG MODE
+
 	else if (href_list["gang"])
 		switch(href_list["gang"])
 			if("clear")
@@ -833,50 +833,8 @@
 				message_admins("[key_name_admin(usr)] has de-gang'ed [current].")
 				log_admin("[key_name(usr)] has de-gang'ed [current].")
 
-			if("agang")
-				if(src in ticker.mode.A_gang)
-					return
-				ticker.mode.remove_gangster(src, 0, 2)
-				ticker.mode.add_gangster(src,"A",0)
-				message_admins("[key_name_admin(usr)] has added [current] to the [gang_name("A")] Gang (A).")
-				log_admin("[key_name(usr)] has added [current] to the [gang_name("A")] Gang (A).")
-
-			if("aboss")
-				if(src in ticker.mode.A_bosses)
-					return
-				ticker.mode.remove_gangster(src, 0, 2)
-				ticker.mode.A_bosses += src
-				src.special_role = "[gang_name("A")] Gang (A) Boss"
-				ticker.mode.update_gang_icons_added(src, "A")
-				current << "<FONT size=3 color=red><B>You are a [gang_name("A")] Gang Boss!</B></FONT>"
-				message_admins("[key_name_admin(usr)] has added [current] to the [gang_name("A")] Gang (A) leadership.")
-				log_admin("[key_name(usr)] has added [current] to the [gang_name("A")] Gang (A) leadership.")
-				ticker.mode.forge_gang_objectives(src)
-				ticker.mode.greet_gang(src,0)
-
-			if("bgang")
-				if(src in ticker.mode.B_gang)
-					return
-				ticker.mode.remove_gangster(src, 0, 2)
-				ticker.mode.add_gangster(src,"B",0)
-				message_admins("[key_name_admin(usr)] has added [current] to the [gang_name("B")] Gang (B).")
-				log_admin("[key_name(usr)] has added [current] to the [gang_name("B")] Gang (B).")
-
-			if("bboss")
-				if(src in ticker.mode.B_bosses)
-					return
-				ticker.mode.remove_gangster(src, 0, 2)
-				ticker.mode.B_bosses += src
-				src.special_role = "[gang_name("B")] Gang (B) Boss"
-				ticker.mode.update_gang_icons_added(src, "B")
-				current << "<FONT size=3 color=red><B>You are a [gang_name("B")] Gang Boss!</B></FONT>"
-				message_admins("[key_name_admin(usr)] has added [current] to the [gang_name("B")] Gang (B) leadership.")
-				log_admin("[key_name(usr)] has added [current] to the [gang_name("B")] Gang (B) leadership.")
-				ticker.mode.forge_gang_objectives(src)
-				ticker.mode.greet_gang(src,0)
-
 			if("equip")
-				switch(ticker.mode.equip_gang(current))
+				switch(ticker.mode.equip_gang(current,gang_datum))
 					if(1)
 						usr << "<span class='warning'>Unable to equip territory spraycan!</span>"
 					if(2)
@@ -892,6 +850,46 @@
 					qdel(gangtool)
 				for(var/obj/item/toy/crayon/spraycan/gang/SC in L)
 					qdel(SC)
+
+			if("new")
+				if(gang_colors_pool.len)
+					var/list/names = list("Random") + gang_name_pool
+					var/gangname = input("Pick a gang name.","Select Name") as null|anything in names
+					if(gangname && gang_colors_pool.len) //Check again just in case another admin made max gangs at the same time
+						if(!(gangname in gang_name_pool))
+							gangname = null
+						var/datum/gang/newgang = new(null,gangname)
+						ticker.mode.gangs += newgang
+						message_admins("[key_name_admin(usr)] has created the [newgang.name] Gang.")
+						log_admin("[key_name(usr)] has created the [newgang.name] Gang.")
+
+	else if (href_list["gangboss"])
+		var/datum/gang/G = locate(href_list["gangboss"]) in ticker.mode.gangs
+		if(!G || (src in G.bosses))
+			return
+		ticker.mode.remove_gangster(src,0,2,1)
+		G.bosses += src
+		gang_datum = G
+		special_role = "[G.name] Gang Boss"
+		G.add_gang_hud(src)
+		current << "<FONT size=3 color=red><B>You are a [G.name] Gang Boss!</B></FONT>"
+		message_admins("[key_name_admin(usr)] has added [current] to the [G.name] Gang leadership.")
+		log_admin("[key_name(usr)] has added [current] to the [G.name] Gang leadership.")
+		ticker.mode.forge_gang_objectives(src)
+		ticker.mode.greet_gang(src,0)
+
+	else if (href_list["gangster"])
+		var/datum/gang/G = locate(href_list["gangster"]) in ticker.mode.gangs
+		if(!G || (src in G.gangsters))
+			return
+		ticker.mode.remove_gangster(src,0,2,1)
+		ticker.mode.add_gangster(src,G,0)
+		message_admins("[key_name_admin(usr)] has added [current] to the [G.name] Gang (A).")
+		log_admin("[key_name(usr)] has added [current] to the [G.name] Gang (A).")
+
+/////////////////////////////////
+
+
 
 	else if (href_list["cult"])
 		switch(href_list["cult"])
@@ -975,12 +973,12 @@
 				usr << "<span class='notice'>The objectives for changeling [key] have been generated. You can edit them and anounce manually.</span>"
 
 			if("initialdna")
-				if( !changeling || !changeling.absorbed_dna.len || !istype(current, /mob/living/carbon))
+				if( !changeling || !changeling.stored_profiles.len || !istype(current, /mob/living/carbon))
 					usr << "<span class='danger'>Resetting DNA failed!</span>"
 				else
 					var/mob/living/carbon/C = current
-					C.dna = changeling.absorbed_dna[1]
-					C.real_name = C.dna.real_name
+					C.dna = changeling.first_prof.dna
+					C.real_name = changeling.first_prof.name
 					updateappearance(C)
 					domutcheck(C)
 
@@ -1070,12 +1068,10 @@
 					src.spell_list = null
 					message_admins("[key_name_admin(usr)] has de-shadowling'ed [current].")
 					log_admin("[key_name(usr)] has de-shadowling'ed [current].")
-					current.verbs -= /mob/living/carbon/human/proc/shadowling_hatch
-					current.verbs -= /mob/living/carbon/human/proc/shadowling_ascendance
+					remove_spell(/obj/effect/proc_holder/spell/targeted/shadowling_hatch)
+					remove_spell(/obj/effect/proc_holder/spell/targeted/shadowling_ascend)
 				else if(src in ticker.mode.thralls)
-					ticker.mode.thralls -= src
-					special_role = null
-					current << "<span class='userdanger'>You have been brainwashed! You are no longer a thrall!</span>"
+					ticker.mode.remove_thrall(src,0)
 					message_admins("[key_name_admin(usr)] has de-thrall'ed [current].")
 					log_admin("[key_name(usr)] has de-thrall'ed [current].")
 			if("shadowling")
@@ -1084,9 +1080,9 @@
 					return
 				ticker.mode.shadows += src
 				special_role = "shadowling"
-				current << "<span class='deadsay'><b>You notice a brightening around you. No, it isn't that. The shadows grow, darken, swirl. The darkness has a new welcome for you, and you realize with a \
-				start that you can't be human. No, you are a shadowling, a harbringer of the shadows! Your alien abilities have been unlocked from within, and you may both commune with your allies and use \
-				a chrysalis to reveal your true form. You are to ascend at all costs.</b></span>"
+				current << "<span class='shadowling'><b>Something stirs deep in your mind. A red light floods your vision, and slowly you remember. Though your human disguise has served you well, the \
+				time is nigh to cast it off and enter your true form. You have disguised yourself amongst the humans, but you are not one of them. You are a shadowling, and you are to ascend at all costs.\
+				</b></span>"
 				ticker.mode.finalize_shadowling(src)
 				ticker.mode.update_shadow_icons_added(src)
 			if("thrall")
@@ -1165,7 +1161,7 @@
 								sleep(0) //because deleting of virus is doing throught spawn(0)
 						log_admin("[key_name(usr)] attempting to humanize [key_name(current)]")
 						message_admins("<span class='notice'>[key_name_admin(usr)] attempting to humanize [key_name_admin(current)]</span>")
-						H = M.humanize(TR_KEEPITEMS | TR_KEEPIMPLANTS | TR_KEEPDAMAGE | TR_KEEPVIRUS | TR_DEFAULTMSG)
+						H = M.humanize(TR_KEEPITEMS | TR_KEEPIMPLANTS | TR_KEEPORGANS | TR_KEEPDAMAGE | TR_KEEPVIRUS | TR_DEFAULTMSG)
 						if(H)
 							src = H.mind
 
@@ -1216,6 +1212,7 @@
 					if (!isnull(crystals))
 						if (suplink)
 							suplink.uses = crystals
+							message_admins("[key_name_admin(usr)] changed [current]'s telecrystal count to [crystals].")
 							log_admin("[key_name(usr)] changed [current]'s telecrystal count to [crystals].")
 			if("uplink")
 				if (!ticker.mode.equip_traitor(current, !(src in ticker.mode.traitors)))
@@ -1271,7 +1268,7 @@
 		ticker.mode.finalize_traitor(src)
 		ticker.mode.greet_traitor(src)
 
-/datum/mind/proc/make_Nuke(var/turf/spawnloc,var/nuke_code,var/leader=0)
+/datum/mind/proc/make_Nuke(turf/spawnloc,nuke_code,leader=0)
 	if(quiet_round)
 		return
 	if(!(src in ticker.mode.syndicates))
@@ -1401,16 +1398,14 @@
 	fail |= !ticker.mode.equip_revolutionary(current)
 
 
-/datum/mind/proc/make_Gang(var/gang)
-	special_role = "[gang_name(gang)] Gang ([gang]) Boss"
-	if(gang=="A")
-		ticker.mode.A_bosses += src
-	else if(gang=="B")
-		ticker.mode.B_bosses += src
-	ticker.mode.update_gang_icons_added(src, gang)
-	ticker.mode.forge_gang_objectives(src, gang)
+/datum/mind/proc/make_Gang(datum/gang/G)
+	special_role = "[G.name] Gang Boss"
+	G.bosses += src
+	gang_datum = G
+	G.add_gang_hud(src)
+	ticker.mode.forge_gang_objectives(src)
 	ticker.mode.greet_gang(src)
-	ticker.mode.equip_gang(current)
+	ticker.mode.equip_gang(current,G)
 
 /datum/mind/proc/make_Abductor()
 	var/role = alert("Abductor Role ?","Role","Agent","Scientist")
@@ -1465,7 +1460,7 @@
 
 
 
-/datum/mind/proc/AddSpell(var/obj/effect/proc_holder/spell/spell)
+/datum/mind/proc/AddSpell(obj/effect/proc_holder/spell/spell)
 	spell_list += spell
 	if(!spell.action)
 		spell.action = new/datum/action/spell_action
@@ -1476,7 +1471,7 @@
 		spell.action.background_icon_state = spell.action_background_icon_state
 	spell.action.Grant(current)
 	return
-/datum/mind/proc/transfer_actions(var/mob/living/new_character)
+/datum/mind/proc/transfer_actions(mob/living/new_character)
 	if(current && current.actions)
 		for(var/datum/action/A in current.actions)
 			A.Grant(new_character)
@@ -1508,7 +1503,8 @@
 		if(ticker)
 			ticker.minds += mind
 		else
-			ERROR("mind_initialize(): No ticker ready yet! Please inform coderbus")
+			spawn(0)
+				throw EXCEPTION("mind_initialize(): No ticker ready")
 	if(!mind.name)	mind.name = real_name
 	mind.current = src
 
@@ -1580,7 +1576,7 @@
 	mind.assigned_role = "Animal"
 	mind.special_role = "Animal"
 
-/mob/living/simple_animal/pet/corgi/mind_initialize()
+/mob/living/simple_animal/pet/dog/corgi/mind_initialize()
 	..()
 	mind.assigned_role = "Corgi"
 	mind.special_role = "Corgi"

@@ -122,11 +122,14 @@
 /turf/simulated/floor/plasteel/cult/narsie_act()
 	return
 
+/turf/simulated/floor/plasteel/cult/airless
+	oxygen = 0
+	nitrogen = 0
+	temperature = TCMB
 
 /turf/simulated/floor/plasteel/shuttle
-	icon = 'icons/turf/shuttle.dmi'
-	icon_state = "floor"
+	icon_state = "shuttlefloor"
 
 /turf/simulated/floor/plasteel/shuttle/red
 	name = "Brig floor"
-	icon_state = "floor4"
+	icon_state = "shuttlefloor4"

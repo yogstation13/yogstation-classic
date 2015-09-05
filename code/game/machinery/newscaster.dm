@@ -164,8 +164,7 @@ var/list/obj/machinery/newscaster/allCasters = list()
 	desc = "Used to build newscasters, just secure to the wall."
 	icon_state = "newscaster"
 	item_state = "syringe_kit"
-	m_amt = 14000
-	g_amt = 8000
+	materials = list(MAT_METAL=14000, MAT_GLASS=8000)
 
 /obj/item/newscaster_frame/proc/try_build(turf/on_wall)
 	if (get_dist(on_wall,usr)>1)
@@ -844,7 +843,8 @@ var/list/obj/machinery/newscaster/allCasters = list()
 		var/mob/living/silicon/ai_user = user
 		scanned_user = "[ai_user.name] ([ai_user.job])"
 	else
-		ERROR("Newscaster used by non-human/silicon mob: [user.type]")
+		throw EXCEPTION("Invalid user for this proc")
+		return
 
 /obj/machinery/newscaster/proc/print_paper()
 	feedback_inc("newscaster_newspapers_printed",1)

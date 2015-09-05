@@ -84,7 +84,7 @@ var/datum/subsystem/pai/SSpai
 				return
 		recruitWindow(usr)
 
-/datum/subsystem/pai/proc/recruitWindow(var/mob/M as mob)
+/datum/subsystem/pai/proc/recruitWindow(mob/M)
 	var/datum/paiCandidate/candidate
 	for(var/datum/paiCandidate/c in candidates)
 		if(c.key == M.key)
@@ -135,7 +135,7 @@ var/datum/subsystem/pai/SSpai
 
 	M << browse(dat, "window=paiRecruit")
 
-/datum/subsystem/pai/proc/findPAI(var/obj/item/device/paicard/p, var/mob/user)
+/datum/subsystem/pai/proc/findPAI(obj/item/device/paicard/p, mob/user)
 	requestRecruits()
 	var/list/available = list()
 	for(var/datum/paiCandidate/c in SSpai.candidates)
@@ -206,7 +206,7 @@ var/datum/subsystem/pai/SSpai
 			if(!hasSubmitted && (O.client.prefs.be_special & BE_PAI))
 				question(O.client)
 
-/datum/subsystem/pai/proc/question(var/client/C)
+/datum/subsystem/pai/proc/question(client/C)
 	spawn(0)
 		if(!C)	return
 		asked.Add(C.key)

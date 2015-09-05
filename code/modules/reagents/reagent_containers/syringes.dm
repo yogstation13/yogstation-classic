@@ -12,8 +12,7 @@
 	volume = 15
 	var/mode = SYRINGE_DRAW
 	var/busy = 0		// needed for delayed drawing of blood
-	g_amt = 20
-	m_amt = 10
+	materials = list(MAT_METAL=10, MAT_GLASS=20)
 
 /obj/item/weapon/reagent_containers/syringe/New()
 	..()
@@ -141,7 +140,14 @@
 			if(ismob(target) && target != user)
 				target.visible_message("<span class='danger'>[user] is trying to inject [target]!</span>", \
 										"<span class='userdanger'>[user] is trying to inject [target]!</span>")
-				if(!do_mob(user, target)) return
+				if(!do_mob(user, target))
+					return
+				//Sanity checks after sleep
+				if(!reagents.total_volume)
+					return
+				if(target.reagents.total_volume >= target.reagents.maximum_volume)
+					return
+
 				target.visible_message("<span class='danger'>[user] injects [target] with the syringe!", \
 								"<span class='userdanger'>[user] injects [target] with the syringe!")
 				//Attack log entries are produced here due to failure to produce elsewhere. Remove them here if you have doubles from normal syringes.
@@ -227,6 +233,11 @@
 	name = "syringe (spaceacillin)"
 	desc = "Contains antiviral agents."
 	list_reagents = list("spaceacillin" = 15)
+
+/obj/item/weapon/reagent_containers/syringe/bioterror
+	name = "bioterror syringe"
+	desc = "Contains several paralyzing reagents."
+	list_reagents = list("neurotoxin" = 5, "mutetoxin" = 5, "sodium_thiopental" = 5)
 
 /obj/item/weapon/reagent_containers/syringe/stimulants
 	name = "Stimpack"

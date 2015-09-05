@@ -36,6 +36,9 @@
 		if(SOUTHWEST)
 			initialize_directions_he = SOUTH|WEST
 
+/obj/machinery/atmospherics/pipe/simple/heat_exchanging/GetInitDirections()
+	return ..() | initialize_directions_he
+
 /obj/machinery/atmospherics/pipe/simple/heat_exchanging/atmosinit()
 	normalize_dir()
 	var/N = 2
@@ -111,6 +114,9 @@
 	level = 2
 	minimum_temperature_difference = 300
 	thermal_conductivity = WALL_HEAT_TRANSFER_COEFFICIENT
+
+/obj/machinery/atmospherics/pipe/simple/heat_exchanging/junction/normalize_dir()
+	return
 
 /obj/machinery/atmospherics/pipe/simple/heat_exchanging/junction/SetInitDirections()
 	switch(dir)
