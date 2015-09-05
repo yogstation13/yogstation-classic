@@ -61,23 +61,15 @@
 		new default_storagebox(BPK)
 		H.equip_to_slot_or_del(BPK, slot_back,1)
 
-		if(is_donator(H))
-			H.equip_to_slot_or_del(H.client.prefs.donor_hat, slot_head)
-	if(2) // Backpack
+	if(H.backbag == 2) // Backpack
 		BPK = new default_backpack(H)
 		new default_storagebox(BPK)
 		H.equip_to_slot_or_del(BPK, slot_back,1)
 
-		if(is_donator(H))
-			H.equip_to_slot_or_del(H.client.prefs.donor_hat, slot_head)
-
-	if(3) //Satchel
+	if(H.backbag == 3) //Satchel
 		BPK = new default_satchel(H)
 		new default_storagebox(BPK)
 		H.equip_to_slot_or_del(BPK, slot_back,1)
-
-		if(is_donator(H))
-			H.equip_to_slot_or_del(H.client.prefs.donor_hat, slot_head)
 
 //But don't override this
 /datum/job/proc/equip(mob/living/carbon/human/H)
@@ -113,6 +105,9 @@
 
 	//Equip headset
 	H.equip_to_slot_or_del(new src.default_headset(H), slot_ears)
+
+	if(is_donator(H))
+		H.equip_to_slot_or_del(H.client.prefs.donor_hat, slot_head)
 
 /datum/job/proc/apply_fingerprints(mob/living/carbon/human/H)
 	if(!istype(H))

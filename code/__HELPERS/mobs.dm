@@ -119,6 +119,10 @@ var/global/list/roundstart_species[0]
 		else				return "unknown"
 
 /proc/is_donator(mob/user)
+	// Enable only for testing!
+	//if(is_admin(user))
+	//	return 1
+
 	if(ismob(user))
 		if(user.client && user.client.prefs)
 			return (user.client.prefs.unlock_content & 2)

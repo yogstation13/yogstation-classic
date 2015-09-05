@@ -163,6 +163,10 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 					dat += "<h2>Donator</h2>"
 					dat += "<b>Fancy Hat:</b> "
 					dat += "<a href='?_src_=prefs;preference=donor;task=hat'>Pick</a> [donor_hat ? "\"[donor_hat]\"" : "None selected"]<BR>"
+				else
+					dat += "<h2>Donator</h2>"
+					dat += "<b>Fancy Hat:</b> "
+					dat += "Become a <a href='http://www.yogstation.net/index.php?do=donate'>donator for fancy hats</a>!<BR>"
 
 				dat += "<h2>Identity</h2>"
 				dat += "<table width='100%'><tr><td width='75%' valign='top'>"
@@ -412,7 +416,7 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 		dat += "</center>"
 
 		//user << browse(dat, "window=preferences;size=560x560")
-		var/datum/browser/popup = new(user, "preferences", "<div align='center'>Character Setup</div>", 640, 750)
+		var/datum/browser/popup = new(user, "preferences", "<div align='center'>Character Setup</div>", 640, 800)
 		popup.set_content(dat)
 		popup.open(0)
 
