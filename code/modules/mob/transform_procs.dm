@@ -16,6 +16,8 @@
 			int_organs += I
 			I.Remove(src, 1)
 
+	drop_all()
+
 	//Make mob invisible and spawn animation
 	regenerate_icons()
 	notransform = 1

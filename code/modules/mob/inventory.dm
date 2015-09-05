@@ -174,3 +174,10 @@
 	//if(hasvar(src,"r_hand")) if(src:r_hand) items += src:r_hand
 
 	return items
+
+
+/mob/proc/drop_all()
+	var/list/items = get_equipped_items()
+
+	for(var/obj/item/I in items)
+		unEquip(I, 1)
