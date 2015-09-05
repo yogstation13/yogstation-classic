@@ -93,6 +93,9 @@ DEFAULT_NO_VOTE
 ## disable abandon mob
 NORESPAWN
 
+## disables calling del(src) on newmobs if they logout before spawnin in
+# DONT_DEL_NEWMOB
+
 ## set a hosted by name for unix platforms
 HOSTEDBY Yogstation13-Bot
 
@@ -155,6 +158,11 @@ TICKCOMP 1
 ## Communication key for receiving data through world/Topic(), you don't want to give this out
 #COMMS_KEY default_pwd
 
+## Uncomment this to let players see their own notes (they can still be set by admins only)
+#SEE_OWN_NOTES
+
+##Note: all population caps can be used with each other if desired.
+
 ## Uncomment for 'soft' population caps, players will be warned while joining if the living crew exceeds the listed number.
 #SOFT_POPCAP 100
 
@@ -187,3 +195,9 @@ NOTIFY_NEW_PLAYER_AGE 3
 
 ## Uncomment to have the changelog file automatically open when a user connects and hasn't seen the latest changelog
 #AGGRESSIVE_CHANGELOG
+
+## Uncomment to have the game log runtimes to the log folder. (Note: this disables normal output in dd/ds, so it should be left off for testing.
+#LOG_RUNTIMES
+
+##Comment this out if you've used the mass conversion sql proc for notes or want to stop converting notes
+AUTOCONVERT_NOTES
