@@ -149,9 +149,8 @@
 /client/Topic(href, href_list, hsrc)
 	..()
 
-	var/client/C = usr.client
-
 	if(href_list["action"] == "refresh_admin_ticket_list")
+		var/client/C = usr.client
 		var/flag = href_list["flag"]
 		if(!flag)
 			flag = TICKET_FLAG_LIST_ALL

@@ -211,3 +211,51 @@
 	usr << browse(null, "window=ViewTickets")
 	usr << browse(html, "window=ViewTickets")
 
+/client/verb/afk()
+	set name = "AFK"
+	set category = "Admin"
+	set desc = "Report to Admins and your peers that your will go AFK"
+
+	if(src.mob)
+		var/mob/M = src.mob
+
+		if(!M || !M.job)
+			src << "<p class='info-bar emboldened'>You do not appear to have a job.</p>"
+		else
+			var/time = input(src, "How long do you expect to be gone?") in list("5 minutes","10 minutes","15 minutes","30 minutes","Whole round","Unknown")
+
+			if(!time)
+				return
+
+			var/reason = input(src, "Do you have time to give a reason? If so, please give it:") as null|text
+
+			var/text = "I need to catch some shut-eye. Please keep an eye on the crew whilst I am resting this shift."
+			if(time == "5 minutes")
+				text = "I need to shut my eyes for a brief moment."
+			else if(time == "10 minutes")
+				text = "I need to shut my eyes for a short while."
+			else if(time == "15 minutes")
+				text = "I need to shut my eyes for a short while. Please keep an eye on the crew whilst I am resting."
+			else if(time == "30 minutes")
+				text = "I need to shut my eyes for quite a while. Please keep an eye on the crew whilst I am resting."
+			else if(time == "Whole round")
+				text = "I need to shut my eyes for a long time... Someone please take over my station responsibilities."
+
+			var/alert_admins = 0
+			if(M.job == "AI")
+				alert_admins = 1
+				M.say(".c [text] (([M.job])).")
+				M.say(".o [text] (([M.job])).")
+			else if(M.job == "Captain" || M.job == "Head of Personnel" || M.job == "Head of Security" || M.job == "Chief Engineer" || M.job == "Research Director" || M.job == "Chief Medical Officer")
+				alert_admins = 1
+				M.say(".h [text] (([M.job])).")
+			else
+				M.say(".h [text] (([M.job])).")
+
+			if(alert_admins)
+				admin_ticket("I need to go AFK as '[M.job]' for duration of '[time]' [reason ? " with the reason: '[reason]'" : ""]")
+			else
+				src << "<p class='info-bar emboldened'>It is not necessary to report being AFK if you are not in the game.</p>"
+	else
+		src << "<p class='info-bar emboldened'>It is not necessary to report being AFK if you are not in the game.</p>"
+
