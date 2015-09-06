@@ -26,10 +26,8 @@
 		////////////
 		//SECURITY//
 		////////////
-	var/next_allowed_topic_time = 10
 	// comment out the line below when debugging locally to enable the options & messages menu
 	control_freak = 1
-
 
 		////////////////////////////////////
 		//things that require the database//
@@ -44,3 +42,9 @@
 	var/WMIQueries = 0
 
 	preload_rsc = PRELOAD_RSC
+
+	var/global/obj/screen/click_catcher/void
+
+	// Used by html_interface module.
+	var/hi_last_pos
+

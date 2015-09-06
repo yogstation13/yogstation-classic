@@ -78,7 +78,7 @@ display round(lastgen) and plasmatank amount
 		icon_state = initial(icon_state)
 		handleInactive()
 
-/obj/machinery/power/port_gen/attack_hand(mob/user as mob)
+/obj/machinery/power/port_gen/attack_hand(mob/user)
 	if(..())
 		return
 	if(!anchored)
@@ -123,7 +123,6 @@ display round(lastgen) and plasmatank amount
 
 /obj/machinery/power/port_gen/pacman/RefreshParts()
 	var/temp_rating = 0
-	var/temp_reliability = 0
 	var/consumption_coeff = 0
 	for(var/obj/item/weapon/stock_parts/SP in component_parts)
 		if(istype(SP, /obj/item/weapon/stock_parts/matter_bin))
@@ -132,9 +131,6 @@ display round(lastgen) and plasmatank amount
 			temp_rating += SP.rating
 		else
 			consumption_coeff += SP.rating
-	for(var/obj/item/weapon/CP in component_parts)
-		temp_reliability += CP.reliability
-	reliability = min(round(temp_reliability / 4), 100)
 	power_gen = round(initial(power_gen) * temp_rating * 2)
 	consumption = consumption_coeff
 
@@ -198,7 +194,7 @@ display round(lastgen) and plasmatank amount
 /obj/machinery/power/port_gen/pacman/proc/overheat()
 	explosion(src.loc, 2, 5, 2, -1)
 
-/obj/machinery/power/port_gen/pacman/attackby(var/obj/item/O as obj, var/mob/user as mob)
+/obj/machinery/power/port_gen/pacman/attackby(obj/item/O, mob/user, params)
 	if(istype(O, sheet_path))
 		var/obj/item/stack/addstack = O
 		var/amount = min((max_sheets - sheets), addstack.amount)
@@ -210,9 +206,6 @@ display round(lastgen) and plasmatank amount
 		addstack.use(amount)
 		updateUsrDialog()
 		return
-	else if (istype(O, /obj/item/weapon/card/emag))
-		emagged = 1
-		emp_act(1)
 	else if(!active)
 
 		if(exchange_parts(user, O))
@@ -241,17 +234,22 @@ display round(lastgen) and plasmatank amount
 		else if(istype(O, /obj/item/weapon/crowbar) && panel_open)
 			default_deconstruction_crowbar(O)
 
-/obj/machinery/power/port_gen/pacman/attack_hand(mob/user as mob)
+/obj/machinery/power/port_gen/pacman/emag_act(mob/user)
+	if(!emagged)
+		emagged = 1
+		emp_act(1)
+
+/obj/machinery/power/port_gen/pacman/attack_hand(mob/user)
 	..()
 	if (!anchored)
 		return
 
 	interact(user)
 
-/obj/machinery/power/port_gen/pacman/attack_ai(mob/user as mob)
+/obj/machinery/power/port_gen/pacman/attack_ai(mob/user)
 	interact(user)
 
-/obj/machinery/power/port_gen/pacman/attack_paw(mob/user as mob)
+/obj/machinery/power/port_gen/pacman/attack_paw(mob/user)
 	interact(user)
 
 /obj/machinery/power/port_gen/pacman/interact(mob/user)

@@ -15,11 +15,14 @@
 
 /obj/item/weapon/holosign_creator/afterattack(atom/target, mob/user, flag)
 	if(flag)
+		if(!check_allowed_items(target, 1)) return
 		var/turf/T = get_turf(target)
 		var/obj/effect/overlay/holograph/H = locate() in T
 		if(H)
 			user << "<span class='notice'>You use [src] to destroy [H].</span>"
+			signs.Remove(H)
 			qdel(H)
+			signs -= H
 		else
 			if(signs.len < max_signs)
 				H = new(get_turf(target))

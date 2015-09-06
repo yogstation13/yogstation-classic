@@ -27,7 +27,7 @@
 		if(C.pai && (C.pai.stat != DEAD) && C.pai.pairing)
 			C.pai.pair(src)
 
-/obj/machinery/artillerycontrol/attack_hand(mob/user as mob)
+/obj/machinery/artillerycontrol/attack_hand(mob/user)
 	user.set_machine(src)
 	var/dat = "<B>Bluespace Artillery Control:</B><BR>"
 	dat += "Locked on<BR>"
@@ -56,7 +56,7 @@
 		explosion(loc,2,5,11)
 		reload = 0
 
-/*mob/proc/openfire()
+/*/mob/proc/openfire()
 	var/A
 	A = input("Area to jump bombard", "Open Fire", A) in teleportlocs
 	var/area/thearea = teleportlocs[A]

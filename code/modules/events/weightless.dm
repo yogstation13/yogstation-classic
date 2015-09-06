@@ -16,7 +16,6 @@
 	command_alert("Warning: Failsafes for the station's artificial gravity arrays have been triggered. Please be aware that if this problem recurs it may result in formation of gravitational anomalies. Nanotrasen wishes to remind you that the unauthorised formation of anomalies within Nanotrasen facilities is strictly prohibited by health and safety regulation [rand(99,9999)][pick("a","b","c")]:subclause[rand(1,20)][pick("a","b","c")].")
 
 /datum/round_event/weightless/start()
-	message_admins("Random Event: Gravity Systems Failure")
 	for(var/area/A in world)
 		A.gravitychange(0)
 

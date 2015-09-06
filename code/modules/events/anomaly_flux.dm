@@ -15,7 +15,6 @@
 
 
 /datum/round_event/anomaly/anomaly_flux/start()
-	message_admins("Random Event: Energectic Flux")
 	var/turf/T = pick(get_area_turfs(impact_area))
 	if(T)
 		newAnomaly = new /obj/effect/anomaly/flux(T.loc)
@@ -23,5 +22,5 @@
 
 /datum/round_event/anomaly/anomaly_flux/end()
 	if(newAnomaly.loc)//If it hasn't been neutralized, it's time to blow up.
-		explosion(newAnomaly, -1, 3, 5, 5)
+		explosion(newAnomaly, -1, 3, 8, 10)
 		qdel(newAnomaly)

@@ -19,9 +19,8 @@
 	endWhen = rand(40, 80)
 
 /datum/round_event/wormholes/start()
-	message_admins("Random Event: Wormholes")
 	for(var/turf/simulated/floor/T in world)
-		if(T.z == 1)
+		if(T.z == ZLEVEL_STATION)
 			pick_turfs += T
 
 	for(var/i = 1, i <= number_of_wormholes, i++)
@@ -53,7 +52,7 @@
 /obj/effect/portal/wormhole/attack_hand(mob/user)
 	teleport(user)
 
-/obj/effect/portal/wormhole/attackby(obj/item/I, mob/user)
+/obj/effect/portal/wormhole/attackby(obj/item/I, mob/user, params)
 	teleport(user)
 
 /obj/effect/portal/wormhole/teleport(atom/movable/M)

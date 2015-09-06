@@ -24,6 +24,5 @@
 
 
 /datum/round_event/communications_blackout/start()
-	message_admins("Random Event: Communications Blackout")
 	for(var/obj/machinery/telecomms/T in telecomms_list)
 		T.emp_act(1)

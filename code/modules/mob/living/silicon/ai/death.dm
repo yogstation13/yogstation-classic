@@ -22,7 +22,7 @@
 		see_invisible = see_override
 
 	shuttle_caller_list -= src
-	emergency_shuttle.autoshuttlecall()
+	SSshuttle.autoEvac()
 
 	if(explosive)
 		spawn(10)

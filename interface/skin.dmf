@@ -100,6 +100,14 @@ macro "borghotkeymode"
 		command = ".west"
 		is-disabled = false
 	elem 
+		name = "B"
+		command = "resist"
+		is-disabled = false
+	elem 
+		name = "CTRL+B"
+		command = "resist"
+		is-disabled = false
+	elem 
 		name = "D+REP"
 		command = ".east"
 		is-disabled = false
@@ -122,6 +130,14 @@ macro "borghotkeymode"
 	elem 
 		name = "CTRL+G"
 		command = "a-intent right"
+		is-disabled = false
+	elem 
+		name = "O"
+		command = "ooc"
+		is-disabled = false
+	elem 
+		name = "CTRL+O"
+		command = "ooc"
 		is-disabled = false
 	elem 
 		name = "Q"
@@ -197,7 +213,7 @@ macro "borghotkeymode"
 		is-disabled = false
 	elem 
 		name = "F6"
-		command = "Player-Panel-New"
+		command = "Player-Panel"
 		is-disabled = false
 	elem 
 		name = "F7"
@@ -206,6 +222,10 @@ macro "borghotkeymode"
 	elem 
 		name = "F8"
 		command = "Invisimin"
+		is-disabled = false
+	elem 
+		name = "F9"
+		command = "Adminlisttickets"
 		is-disabled = false
 	elem 
 		name = "F12"
@@ -298,6 +318,10 @@ macro "macro"
 		command = ".west"
 		is-disabled = false
 	elem 
+		name = "CTRL+B"
+		command = "resist"
+		is-disabled = false
+	elem 
 		name = "CTRL+D+REP"
 		command = ".east"
 		is-disabled = false
@@ -312,6 +336,10 @@ macro "macro"
 	elem 
 		name = "CTRL+G"
 		command = "a-intent right"
+		is-disabled = false
+	elem 
+		name = "CTRL+O"
+		command = "ooc"
 		is-disabled = false
 	elem 
 		name = "CTRL+Q"
@@ -363,7 +391,7 @@ macro "macro"
 		is-disabled = false
 	elem 
 		name = "F6"
-		command = "Player-Panel-New"
+		command = "Player-Panel"
 		is-disabled = false
 	elem 
 		name = "F7"
@@ -372,6 +400,10 @@ macro "macro"
 	elem 
 		name = "F8"
 		command = "Invisimin"
+		is-disabled = false
+	elem 
+		name = "F9"
+		command = "Adminlisttickets"
 		is-disabled = false
 	elem 
 		name = "F12"
@@ -484,6 +516,14 @@ macro "hotkeymode"
 		command = ".west"
 		is-disabled = false
 	elem 
+		name = "B"
+		command = "resist"
+		is-disabled = false
+	elem 
+		name = "CTRL+B"
+		command = "resist"
+		is-disabled = false
+	elem 
 		name = "D+REP"
 		command = ".east"
 		is-disabled = false
@@ -514,6 +554,18 @@ macro "hotkeymode"
 	elem 
 		name = "CTRL+G"
 		command = "a-intent right"
+		is-disabled = false
+	elem 
+		name = "M"
+		command = "me"
+		is-disabled = false
+	elem 
+		name = "O"
+		command = "ooc"
+		is-disabled = false
+	elem 
+		name = "CTRL+O"
+		command = "ooc"
 		is-disabled = false
 	elem 
 		name = "Q"
@@ -597,7 +649,7 @@ macro "hotkeymode"
 		is-disabled = false
 	elem 
 		name = "F6"
-		command = "Player-Panel-New"
+		command = "Player-Panel"
 		is-disabled = false
 	elem 
 		name = "F7"
@@ -606,6 +658,10 @@ macro "hotkeymode"
 	elem 
 		name = "F8"
 		command = "Invisimin"
+		is-disabled = false
+	elem 
+		name = "F9"
+		command = "Adminlisttickets"
 		is-disabled = false
 	elem 
 		name = "F12"
@@ -694,6 +750,10 @@ macro "borgmacro"
 		command = ".west"
 		is-disabled = false
 	elem 
+		name = "CTRL+B"
+		command = "resist"
+		is-disabled = false
+	elem 
 		name = "CTRL+D+REP"
 		command = ".east"
 		is-disabled = false
@@ -704,6 +764,10 @@ macro "borgmacro"
 	elem 
 		name = "CTRL+G"
 		command = "a-intent right"
+		is-disabled = false
+	elem 
+		name = "CTRL+O"
+		command = "ooc"
 		is-disabled = false
 	elem 
 		name = "CTRL+Q"
@@ -751,7 +815,7 @@ macro "borgmacro"
 		is-disabled = false
 	elem 
 		name = "F6"
-		command = "Player-Panel-New"
+		command = "Player-Panel"
 		is-disabled = false
 	elem 
 		name = "F7"
@@ -760,6 +824,10 @@ macro "borgmacro"
 	elem 
 		name = "F8"
 		command = "Invisimin"
+		is-disabled = false
+	elem 
+		name = "F9"
+		command = "Adminlisttickets"
 		is-disabled = false
 	elem 
 		name = "F12"
@@ -888,6 +956,15 @@ menu "menu"
 	elem 
 		name = "&Hotkeys"
 		command = "hotkeys-help"
+		category = "&Help"
+		is-checked = false
+		can-check = false
+		group = ""
+		is-disabled = false
+		saved-params = "is-checked"
+	elem 
+		name = "About Yogstation"
+		command = "about"
 		category = "&Help"
 		is-checked = false
 		can-check = false
@@ -1193,6 +1270,8 @@ window "chemdispenser"
 		keep-aspect = false
 		align = center
 		text-wrap = false
+		allow-html = false
+		letterbox = true
 	elem "eject"
 		type = BUTTON
 		pos = 264,4
@@ -1359,6 +1438,8 @@ window "chemdispenser"
 		keep-aspect = false
 		align = center
 		text-wrap = false
+		allow-html = false
+		letterbox = true
 	elem "child1"
 		type = CHILD
 		pos = 0,40
@@ -1480,6 +1561,8 @@ window "chemdispenser_reagents"
 		keep-aspect = false
 		align = center
 		text-wrap = false
+		allow-html = false
+		letterbox = true
 
 window "mainwindow"
 	elem "mainwindow"
@@ -1690,6 +1773,8 @@ window "mapwindow"
 		on-size = ""
 		icon-size = 0
 		text-mode = false
+		letterbox = true
+		zoom = 0
 		on-show = ".winset\"mainwindow.mainvsplit.left=mapwindow\""
 		on-hide = ".winset\"mainwindow.mainvsplit.left=\""
 		style = ""
@@ -1765,7 +1850,7 @@ window "rpane"
 	elem "rpane"
 		type = MAIN
 		pos = 281,0
-		size = 640x480
+		size = 698x480
 		anchor1 = none
 		anchor2 = none
 		font-family = ""
@@ -1801,10 +1886,38 @@ window "rpane"
 		macro = ""
 		menu = ""
 		on-close = ""
+	elem "ticketsb"
+		type = BUTTON
+		pos = 408,0
+		size = 67x16
+		anchor1 = none
+		anchor2 = none
+		font-family = ""
+		font-size = 0
+		font-style = ""
+		text-color = #000000
+		background-color = none
+		is-visible = true
+		is-disabled = false
+		is-transparent = false
+		is-default = false
+		border = none
+		drop-zone = false
+		right-click = false
+		saved-params = "is-checked"
+		on-size = ""
+		text = "Tickets"
+		image = ""
+		command = "tickets"
+		is-flat = false
+		stretch = false
+		is-checked = false
+		group = "rpanemode"
+		button-type = pushbutton
 	elem "rpanewindow"
 		type = CHILD
-		pos = 0,0
-		size = 640x499
+		pos = 8,56
+		size = 698x499
 		anchor1 = 0,0
 		anchor2 = 100,100
 		font-family = ""
@@ -1827,34 +1940,6 @@ window "rpane"
 		splitter = 50
 		show-splitter = true
 		lock = none
-	elem "reportissueb"
-		type = BUTTON
-		pos = 480,0
-		size = 67x16
-		anchor1 = none
-		anchor2 = none
-		font-family = ""
-		font-size = 0
-		font-style = ""
-		text-color = #000000
-		background-color = none
-		is-visible = true
-		is-disabled = false
-		is-transparent = false
-		is-default = false
-		border = none
-		drop-zone = false
-		right-click = false
-		saved-params = "is-checked"
-		on-size = ""
-		text = "Report Issue"
-		image = ""
-		command = "report-issue"
-		is-flat = false
-		stretch = false
-		is-checked = false
-		group = "rpanemode"
-		button-type = pushbutton
 	elem "changelogb"
 		type = BUTTON
 		pos = 336,0
@@ -1906,34 +1991,6 @@ window "rpane"
 		text = "Rules"
 		image = ""
 		command = "rules"
-		is-flat = false
-		stretch = false
-		is-checked = false
-		group = "rpanemode"
-		button-type = pushbutton
-	elem "githubb"
-		type = BUTTON
-		pos = 408,0
-		size = 67x16
-		anchor1 = none
-		anchor2 = none
-		font-family = ""
-		font-size = 0
-		font-style = ""
-		text-color = #000000
-		background-color = none
-		is-visible = true
-		is-disabled = false
-		is-transparent = false
-		is-default = false
-		border = none
-		drop-zone = false
-		right-click = false
-		saved-params = "is-checked"
-		on-size = ""
-		text = "Github"
-		image = ""
-		command = "github"
 		is-flat = false
 		stretch = false
 		is-checked = false
@@ -2025,7 +2082,7 @@ window "rpane"
 		button-type = pushbox
 	elem "browseb"
 		type = BUTTON
-		pos = 552,0
+		pos = 620,0
 		size = 60x16
 		anchor1 = none
 		anchor2 = none
@@ -2218,4 +2275,6 @@ window "infowindow"
 		on-show = ".winset\"rpane.infob.is-visible=true;rpane.browseb.is-visible=true?rpane.infob.pos=130,0:rpane.infob.pos=65,0 rpane.textb.is-visible=true rpane.infob.is-checked=true rpane.rpanewindow.pos=0,30 rpane.rpanewindow.size=0x0 rpane.rpanewindow.left=infowindow\""
 		on-hide = ".winset\"rpane.infob.is-visible=false;rpane.browseb.is-visible=true?rpane.browseb.is-checked=true rpane.rpanewindow.left=browserwindow:rpane.textb.is-visible=true rpane.rpanewindow.pos=0,30 rpane.rpanewindow.size=0x0 rpane.rpanewindow.left=\""
 		on-tab = ""
+		prefix-color = none
+		suffix-color = none
 

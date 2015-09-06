@@ -1,23 +1,22 @@
 /mob/living/carbon/human/zombie
 	name = "zombie"
 	voice_name = "zombie"
-	say_message = "moans"
+	verb_say = "moans"
 	icon = 'icons/mob/zombie.dmi'
 	icon_state = "zombie1"
 	gender = NEUTER
 	pass_flags = PASSTABLE
 	//languages = ZOMBIE
-	update_icon = 0		///no need to call regenerate_icon
-	ventcrawler = 0
+	ventcrawler = 1
 
 /mob/living/carbon/human/zombie/New()
 	create_reagents(1000)
 	verbs += /mob/living/proc/mob_sleep
 	verbs += /mob/living/proc/lay_down
 
-	internal_organs += new /obj/item/organ/appendix
-	internal_organs += new /obj/item/organ/heart
-	internal_organs += new /obj/item/organ/brain
+	internal_organs += new /obj/item/organ/internal/appendix
+	internal_organs += new /obj/item/organ/internal/heart
+	internal_organs += new /obj/item/organ/internal/brain
 
 	if(name == "zombie")
 		name = text("zombie ([rand(1, 1000)])")
@@ -25,6 +24,13 @@
 	gender = pick(MALE, FEMALE)
 
 	..()
+
+/mob/living/carbon/human/zombie/prepare_data_huds()
+	//Prepare our med HUD...
+	..()
+	//...and display it.
+	for(var/datum/atom_hud/data/medical/hud in huds)
+		hud.add_to_hud(src)
 
 /mob/living/carbon/human/zombie/Move(NewLoc, direct)
 	..(NewLoc, direct)
@@ -94,7 +100,8 @@
 					adjustBruteLoss(damage)
 					health = 100 - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss()
 				for(var/datum/disease/D in M.viruses)
-					contract_disease(D,1,0)
+					//contract_disease(D,1,0)
+					ForceContractDisease(D)
 			else
 				visible_message("<span class='danger'>[M.name] has attempted to bite [name]!</span>", \
 					"<span class='userdanger'>[M.name] has attempted to bite [name]!</span>")
@@ -261,63 +268,13 @@
 		updatehealth()*/
 
 
-/mob/living/carbon/human/zombie/attack_slime(mob/living/carbon/slime/M as mob)
-	if (!ticker)
-		M << "You cannot attack people before the game has started."
-		return
-
-	if(M.Victim) return // can't attack while eating!
-
-	if (health > -100)
-
-		visible_message("<span class='danger'>The [M.name] glomps [src]!</span>", \
-				"<span class='userdanger'>The [M.name] glomps [src]!</span>")
-
-		var/damage = rand(1, 3)
-
+/mob/living/carbon/human/zombie/attack_slime(mob/living/simple_animal/slime/M as mob)
+	if(..()) //successful slime attack
+		var/damage = rand(5, 35)
 		if(M.is_adult)
 			damage = rand(20, 40)
-		else
-			damage = rand(5, 35)
-
 		adjustBruteLoss(damage)
-
-		if(M.powerlevel > 0)
-			var/stunprob = 10
-			var/power = M.powerlevel + rand(0,3)
-
-			switch(M.powerlevel)
-				if(1 to 2) stunprob = 20
-				if(3 to 4) stunprob = 30
-				if(5 to 6) stunprob = 40
-				if(7 to 8) stunprob = 60
-				if(9) 	   stunprob = 70
-				if(10) 	   stunprob = 95
-
-			if(prob(stunprob))
-				M.powerlevel -= 3
-				if(M.powerlevel < 0)
-					M.powerlevel = 0
-
-				visible_message("<span class='danger'>[M] shocked [src]!</span>", \
-						"<span class='userdanger'>[M] shocked [src]!</span>")
-
-				Weaken(power)
-				if (stuttering < power)
-					stuttering = power
-				Stun(power)
-
-				var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
-				s.set_up(5, 1, src)
-				s.start()
-
-				if (prob(stunprob) && M.powerlevel >= 8)
-					adjustFireLoss(M.powerlevel * rand(6,10))
-
-
 		updatehealth()
-
-	return
 
 /mob/living/carbon/human/zombie/Stat()
 	..()
@@ -412,9 +369,6 @@
 
 	return threatcount
 
-/mob/living/carbon/human/zombie/SpeciesCanConsume()
-	return 1 // Monkeys can eat, drink, and be forced to do so
-
 /mob/living/carbon/human/zombie/proc/urrizeText(var/message)
 	var/len = (length(message) / 10) + 1
 
@@ -430,4 +384,4 @@
 	return ..(message, bubble_type)
 
 /mob/living/carbon/human/zombie/say_quote(var/text)
-	return "[say_message], \"[text]\"";
+	return "[verb_say], \"[text]\"";

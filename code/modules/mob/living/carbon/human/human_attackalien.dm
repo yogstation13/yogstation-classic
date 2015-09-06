@@ -1,27 +1,10 @@
-/mob/living/carbon/human/attack_alien(mob/living/carbon/alien/humanoid/M as mob)
+/mob/living/carbon/human/attack_alien(mob/living/carbon/alien/humanoid/M)
 	if(check_shields(0, M.name))
 		visible_message("<span class='danger'>[M] attempted to touch [src]!</span>")
 		return 0
 
-	switch(M.a_intent)
-		if ("help")
-			visible_message("<span class='warning'> [M] caresses [src] with its scythe like arm.</span>")
-		if ("grab")
-			if(M == src || anchored)
-				return
-			if (w_uniform)
-				w_uniform.add_fingerprint(M)
-			var/obj/item/weapon/grab/G = new /obj/item/weapon/grab(M, src)
-
-			M.put_in_active_hand(G)
-
-			G.synch()
-			LAssailant = M
-
-			playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
-			visible_message("<span class='danger'>[M] has grabbed [src] passively!</span>")
-
-		if("harm")
+	if(..())
+		if(M.a_intent == "harm")
 			if (w_uniform)
 				w_uniform.add_fingerprint(M)
 			var/damage = rand(15, 30)
@@ -31,7 +14,7 @@
 					"<span class='userdanger'>[M] has lunged at [src]!</span>")
 				return 0
 			var/obj/item/organ/limb/affecting = get_organ(ran_zone(M.zone_sel.selecting))
-			var/armor_block = run_armor_check(affecting, "melee")
+			var/armor_block = run_armor_check(affecting, "melee","","",10)
 
 			playsound(loc, 'sound/weapons/slice.ogg', 25, 1, -1)
 			visible_message("<span class='danger'>[M] has slashed at [src]!</span>", \
@@ -42,13 +25,15 @@
 				visible_message("<span class='danger'>[M] has wounded [src]!</span>", \
 					"<span class='userdanger'>[M] has wounded [src]!</span>")
 				apply_effect(4, WEAKEN, armor_block)
+				add_logs(M, src, "attacked")
 			updatehealth()
 
-		if("disarm")
+		if(M.a_intent == "disarm")
 			var/randn = rand(1, 100)
 			if (randn <= 80)
 				playsound(loc, 'sound/weapons/pierce.ogg', 25, 1, -1)
 				Weaken(5)
+				add_logs(M, src, "tackled")
 				visible_message("<span class='danger'>[M] has tackled down [src]!</span>", \
 					"<span class='userdanger'>[M] has tackled down [src]!</span>")
 			else

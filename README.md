@@ -1,12 +1,17 @@
-##/tg/station v1.0.1
+##Yogstation
 
-[![Build Status](https://travis-ci.org/tgstation/-tg-station.png)](https://travis-ci.org/tgstation/-tg-station)
+Copyright (C) Yogstation 2013-2015
 
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
 
-**Website:** http://www.tgstation13.org <BR>
-**Code:** https://github.com/tgstation/-tg-station <BR>
-**Wiki** http://tgstation13.org/wiki/Main_Page<BR>
-**IRC:** irc://irc.rizon.net/coderbus <BR>
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License (http://www.gnu.org/licenses/agpl-3.0.en.html)
+for more details.
 
 ##DOWNLOADING
 
@@ -71,59 +76,22 @@ compiled tgstation.dmb file.  Make sure to set the port to the one you
 specified in the config.txt, and set the Security box to 'Safe'.  Then press GO
 and the server should start up and be ready to join.
 
+###HOSTING ON LINUX
+We use BYGEX for some of our text replacement related code. Unfortunately, we
+only have a windows dll included right now. You can find a version known to compile on linux, along with some basic install instructions here
+https://github.com/optimumtact/byond-regex
+
+Otherwise, edit the file `code/_compile_options.dm`, and comment out:
+`#define USE_BYGEX`
+at the bottom, so that it looks like this:
+`//#define USE_BYGEX`
+Recompile the codebase afterwards.
+
+
 ##UPDATING
 
-To update an existing installation, first back up your /config and /data folders
-as these store your server configuration, player preferences and banlist.
+##DOWNLOADING
+This source code is available upon request. Please submit a support ticket on the Yogstation forums.
 
-Then, extract the new files (preferably into a clean directory, but updating in
-place should work fine), copy your /config and /data folders back into the new
-install, overwriting when prompted except if we've specified otherwise, and
-recompile the game.  Once you start the server up again, you should be running
-the new version.
 
-##MAPS
 
-/tg/station currently comes equipped with three maps.
-
-* [tgstation2 (default)](http://tgstation13.org/wiki/Boxstation)
-* [MetaStation](http://tgstation13.org/wiki/MetaStation)
-* [MiniStation](http://tgstation13.org/wiki/MiniStation)
-
-All maps have their own code file that is in the base of the _maps directory. Instead of loading the map directly we instead use a code file to include the map and then include any other code changes that are needed for it; for example MiniStation changes the uplink items for the map. Follow this guideline when adding your own map, to your fork, for easy compatibility.
-
-If you want to load a different map, just open the corresponding map's code file in Dream Maker, make sure all of the other map code files are unticked in the file tree, in the left side of the screen, and then make sure the map code file you want is ticked.
-
-Anytime you want to make changes to a map it's imperative you use the [Map Merging tools](http://tgstation13.org/wiki/Map_Merger)
-
-##AWAY MISSIONS
-
-/tg/station supports loading away missions however they are disabled by default.
-
-Map files for away missions are located in the _maps/RandomZLevels directory. Each away mission includes it's own code definitions located in /code/modules/awaymissions/mission_code. These files must be included and compiled with the server beforehand otherwise the server will crash upon trying to load away missions that lack their code.
-
-To enable an away mission open fileList.txt in the _maps/RandomZLevels directory and uncomment one of the .dmm lines by removing the #. If more than one away mission is uncommented then the away mission loader will randomly select one the enabled ones to load.
-
-##SQL SETUP
-
-The SQL backend for the library and stats tracking requires a 
-MySQL server.  Your server details go in /config/dbconfig.txt, and the SQL 
-schema is in /SQL/tgstation_schema.sql and /SQL/tgstation_schema_prefix.sql depending on if you want table prefixes.  More detailed setup instructions are located here: http://www.tgstation13.org/wiki/Downloading_the_source_code#Setting_up_the_database
-
-##IRC BOT SETUP
-
-Included in the repository is an IRC bot capable of relaying adminhelps to a specified
-IRC channel/server (thanks to Skibiliano).
-Instructions for bot setup are included in the /bot folder along with the script
-itself
-
-##CONTRIBUTING
-
-Please see [CONTRIBUTING.md](CONTRIBUTING.md)
-
-##LICENSE
-
-All code is under a GNU GPL v3 license (http://www.gnu.org/licenses/gpl.html),
-including tools unless their readme specifies otherwise.
-All content including icons and sound is under a Creative Commons 3.0 BY-SA
-license (http://creativecommons.org/licenses/by-sa/3.0/).

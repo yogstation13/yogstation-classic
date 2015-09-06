@@ -17,7 +17,6 @@ var/global/list/datum/stack_recipe/metal_recipes = list ( \
 	new/datum/stack_recipe("comfy chair", /obj/structure/stool/bed/chair/comfy/beige, 2, one_per_turf = 1, on_floor = 1), \
 	new/datum/stack_recipe("bed", /obj/structure/stool/bed, 2, one_per_turf = 1, on_floor = 1), \
 	null, \
-	new/datum/stack_recipe("table parts", /obj/item/weapon/table_parts, 2), \
 	new/datum/stack_recipe("rack parts", /obj/item/weapon/rack_parts), \
 	new/datum/stack_recipe("closet", /obj/structure/closet, 2, time = 15, one_per_turf = 1, on_floor = 1), \
 	null, \
@@ -29,6 +28,7 @@ var/global/list/datum/stack_recipe/metal_recipes = list ( \
 	new/datum/stack_recipe("computer frame", /obj/structure/computerframe, 5, time = 25, one_per_turf = 1, on_floor = 1), \
 	new/datum/stack_recipe("wall girders", /obj/structure/girder, 2, time = 50, one_per_turf = 1, on_floor = 1), \
 	new/datum/stack_recipe("airlock assembly", /obj/structure/door_assembly, 4, time = 50, one_per_turf = 1, on_floor = 1), \
+	new/datum/stack_recipe("firelock frame", /obj/structure/firelock_frame, 3, time = 50, one_per_turf = 1, on_floor = 1), \
 	new/datum/stack_recipe("machine frame", /obj/machinery/constructable_frame/machine_frame, 5, time = 25, one_per_turf = 1, on_floor = 1), \
 	new/datum/stack_recipe("turret frame", /obj/machinery/porta_turret_construct, 5, time = 25, one_per_turf = 1, on_floor = 1), \
 	null, \
@@ -48,13 +48,13 @@ var/global/list/datum/stack_recipe/metal_recipes = list ( \
 	desc = "Sheets made out of metal."
 	singular_name = "metal sheet"
 	icon_state = "sheet-metal"
-	m_amt = MINERAL_MATERIAL_AMOUNT
+	materials = list(MAT_METAL=MINERAL_MATERIAL_AMOUNT)
 	throwforce = 10.0
 	flags = CONDUCT
 	origin_tech = "materials=1"
 
 /obj/item/stack/sheet/metal/cyborg
-	m_amt = 0
+	materials = list()
 	is_cyborg = 1
 	cost = 500
 
@@ -76,7 +76,7 @@ var/global/list/datum/stack_recipe/plasteel_recipes = list ( \
 	desc = "This sheet is an alloy of iron and plasma."
 	icon_state = "sheet-plasteel"
 	item_state = "sheet-metal"
-	m_amt = 6000
+	materials = list(MAT_METAL=6000, MAT_PLASMA=6000)
 	throwforce = 10.0
 	flags = CONDUCT
 	origin_tech = "materials=2"
@@ -91,7 +91,7 @@ var/global/list/datum/stack_recipe/plasteel_recipes = list ( \
 var/global/list/datum/stack_recipe/wood_recipes = list ( \
 	new/datum/stack_recipe("wooden sandals", /obj/item/clothing/shoes/sandal, 1), \
 	new/datum/stack_recipe("wood floor tile", /obj/item/stack/tile/wood, 1, 4, 20), \
-	new/datum/stack_recipe("table parts", /obj/item/weapon/table_parts/wood, 2), \
+	new/datum/stack_recipe("wood table frame", /obj/structure/table_frame/wood, 2, time = 10), \
 	new/datum/stack_recipe("rifle stock", /obj/item/weaponcrafting/stock, 10, time = 40), \
 	new/datum/stack_recipe("wooden chair", /obj/structure/stool/bed/chair/wood/normal, 3, time = 10, one_per_turf = 1, on_floor = 1), \
 	new/datum/stack_recipe("wooden barricade", /obj/structure/barricade/wooden, 5, time = 50, one_per_turf = 1, on_floor = 1), \
@@ -99,6 +99,7 @@ var/global/list/datum/stack_recipe/wood_recipes = list ( \
 	new/datum/stack_recipe("coffin", /obj/structure/closet/coffin, 5, time = 15, one_per_turf = 1, on_floor = 1), \
 	new/datum/stack_recipe("book case", /obj/structure/bookcase, 4, time = 15, one_per_turf = 1, on_floor = 1), \
 	new/datum/stack_recipe("drying rack", /obj/machinery/smartfridge/drying_rack, 10, time = 15, one_per_turf = 1, on_floor = 1), \
+	new/datum/stack_recipe("dog bed", /obj/structure/stool/bed/dogbed, 10, time = 10, one_per_turf = 1, on_floor = 1), \
 	)
 
 /obj/item/stack/sheet/mineral/wood
@@ -109,6 +110,7 @@ var/global/list/datum/stack_recipe/wood_recipes = list ( \
 	icon = 'icons/obj/items.dmi'
 	origin_tech = "materials=1;biotech=1"
 	sheettype = "wood"
+	burn_state = 0 //Burnable
 
 /obj/item/stack/sheet/mineral/wood/New(var/loc, var/amount=null)
 	recipes = wood_recipes
@@ -123,6 +125,7 @@ var/global/list/datum/stack_recipe/wood_recipes = list ( \
 	singular_name = "cloth roll"
 	icon_state = "sheet-cloth"
 	origin_tech = "materials=2"
+	burn_state = 0 //Burnable
 
 /*
  * Cardboard
@@ -144,6 +147,7 @@ var/global/list/datum/stack_recipe/cardboard_recipes = list ( \
 	singular_name = "cardboard sheet"
 	icon_state = "sheet-card"
 	origin_tech = "materials=1"
+	burn_state = 0 //Burnable
 
 /obj/item/stack/sheet/cardboard/New(var/loc, var/amount=null)
 		recipes = cardboard_recipes

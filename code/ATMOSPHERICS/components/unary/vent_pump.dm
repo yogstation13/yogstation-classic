@@ -55,6 +55,11 @@
 		src.initialize()
 		src.broadcast_status()
 
+/obj/machinery/atmospherics/unary/vent_pump/Destroy()
+	if(radio_controller)
+		radio_controller.remove_object(src,frequency)
+	..()
+
 /obj/machinery/atmospherics/unary/vent_pump/high_volume
 	name = "large air vent"
 	power_channel = EQUIP
@@ -66,7 +71,7 @@
 /obj/machinery/atmospherics/unary/vent_pump/update_icon_nopipes()
 	overlays.Cut()
 	if(showpipe)
-		overlays += getpipeimage('icons/obj/atmospherics/unary_devices.dmi', "vent_cap", initialize_directions)
+		overlays += getpipeimage('icons/obj/atmospherics/components/unary_devices.dmi', "vent_cap", initialize_directions)
 
 	if(welded)
 		icon_state = "vent_welded"
@@ -114,8 +119,7 @@
 				loc.assume_air(removed)
 				air_update_turf()
 
-				if(network)
-					network.update = 1
+				parent.update = 1
 
 	else //external -> internal
 		var/pressure_delta = 10000
@@ -135,8 +139,7 @@
 				air_contents.merge(removed)
 				air_update_turf()
 
-				if(network)
-					network.update = 1
+				parent.update = 1
 
 	return 1
 
@@ -308,7 +311,7 @@
 	Alt-click to ventcrawl
 */
 /obj/machinery/atmospherics/unary/vent_pump/AltClick(var/mob/living/L)
-	if(!L || !istype(L) || !L.ventcrawler || !isliving(L) || !Adjacent(L))
+	if(!L.ventcrawler || !isliving(L) || !Adjacent(L))
 		return
 	if(L.stat)
 		L << "You must be conscious to do this!"
@@ -319,16 +322,9 @@
 	if(welded)
 		L << "That vent is welded shut."
 		return
-	if(istype(L.loc, /obj))
-		L << "You can't vent crawl from inside of a container!"
-		return
-
-	if(!network || !network.normal_members.len)
-		L << "This vent is not connected to anything."
-		return
 
 	var/list/vents = list()
-	for(var/obj/machinery/atmospherics/unary/vent_pump/temp_vent in network.normal_members)
+	for(var/obj/machinery/atmospherics/unary/vent_pump/temp_vent in parent.other_atmosmch)
 		if(temp_vent.welded)
 			continue
 		if(temp_vent in loc)
@@ -362,7 +358,7 @@
 	var/obj/machinery/atmospherics/unary/vent_pump/target_vent = vents[selection]
 	if(!target_vent)
 		return
-		
+
 	for(var/mob/O in viewers(L, null))
 		O.show_message(text("<B>[L] scrambles into the ventilation ducts!</B>"), 1)
 
@@ -373,6 +369,6 @@
 		target_vent = src
 		L << "<span class='warning'>The vent you were heading to appears to be welded.</span>"
 	L.loc = target_vent.loc
-	var/area/new_area = get_area(loc)
+	var/area/new_area = get_area(L.loc)
 	if(new_area)
 		new_area.Entered(L)

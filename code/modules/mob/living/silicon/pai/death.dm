@@ -1,7 +1,21 @@
 /mob/living/silicon/pai/death(gibbed)
 	if(stat == DEAD)	return
 	unpair(1)
+
+	if(canmove || resting)
+		var/turf/T = get_turf(loc)
+		for (var/mob/M in viewers(T))
+			M.show_message("\red [src]'s holographic emitters lose power and coherence immediately, collapsing into the charred remains of what was once a personal AI.", 3, "\red A loud beeping followed by the tinkling clatter of glass and metal suddenly fills the air.", 2)
+		name = "pAI debris"
+		desc = "The unfortunate remains of some poor personal AI device."
+		icon = 'icons/mob/robots.dmi'
+		icon_state = "gib6"
+	else
+		card.overlays.Cut()
+		card.overlays += "pai-off"
+
 	stat = DEAD
+	close_up()
 	canmove = 0
 	if(blind)	blind.layer = 0
 	sight |= SEE_TURFS|SEE_MOBS|SEE_OBJS

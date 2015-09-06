@@ -34,10 +34,15 @@
 
 	w_class = 4
 	max_w_class = 2
-	storage_slots = 21
+	max_combined_w_class = 30
+	storage_slots = 30
 	can_hold = list() // any
 	cant_hold = list(/obj/item/weapon/disk/nuclear)
 
+/obj/item/weapon/storage/bag/trash/suicide_act(mob/user)
+	user.visible_message("<span class='suicide'>[user] puts the [src.name] over their head and starts chomping at the insides! Disgusting!</span>")
+	playsound(loc, 'sound/items/eatfood.ogg', 50, 1, -1)
+	return (TOXLOSS)
 
 /obj/item/weapon/storage/bag/trash/update_icon()
 	if(contents.len == 0)
@@ -74,6 +79,17 @@
 	max_w_class = 3
 	can_hold = list(/obj/item/weapon/ore)
 
+/obj/item/weapon/storage/bag/ore/cyborg
+	name = "cyborg mining satchel"
+
+/obj/item/weapon/storage/bag/ore/holding //miners, your messiah has arrived
+	name = "mining satchel of holding"
+	desc = "A revolution in convenience, this satchel allows for infinite ore storage. It's been outfitted with anti-malfunction safety measures."
+	storage_slots = INFINITY
+	max_combined_w_class = INFINITY
+	origin_tech = "bluespace=3"
+	icon_state = "satchel_bspace"
+
 // -----------------------------
 //       Photo Satchel
 // -----------------------------
@@ -97,13 +113,14 @@
 
 /obj/item/weapon/storage/bag/plants
 	name = "plant bag"
-	icon = 'icons/obj/hydroponics.dmi'
+	icon = 'icons/obj/hydroponics/equipment.dmi'
 	icon_state = "plantbag"
 	storage_slots = 50; //the number of plant pieces it can carry.
 	max_combined_w_class = 200 //Doesn't matter what this is, so long as it's more or equal to storage_slots * plants.w_class
 	max_w_class = 3
 	w_class = 1
 	can_hold = list(/obj/item/weapon/reagent_containers/food/snacks/grown,/obj/item/seeds,/obj/item/weapon/grown)
+	burn_state = 0 //Burnable
 
 ////////
 
@@ -112,13 +129,15 @@
 	desc = "For the enterprising botanist on the go. Less efficient than the stationary model, it creates one seed per plant."
 	icon_state = "portaseeder"
 
-	verb/dissolve_contents()
-		set name = "Activate Seed Extraction"
-		set category = "Object"
-		set desc = "Activate to convert your plants into plantable seeds."
-		for(var/obj/item/O in contents)
-			seedify(O, 1)
-		close_all()
+/obj/item/weapon/storage/bag/plants/portaseeder/verb/dissolve_contents()
+	set name = "Activate Seed Extraction"
+	set category = "Object"
+	set desc = "Activate to convert your plants into plantable seeds."
+	if(usr.stat || !usr.canmove || usr.restrained())
+		return
+	for(var/obj/item/O in contents)
+		seedify(O, 1)
+	close_all()
 
 
 // -----------------------------
@@ -143,7 +162,7 @@
 	//verbs -= /obj/item/weapon/storage/verb/quick_empty
 	//verbs += /obj/item/weapon/storage/bag/sheetsnatcher/quick_empty
 
-/obj/item/weapon/storage/bag/sheetsnatcher/can_be_inserted(obj/item/W as obj, stop_messages = 0)
+/obj/item/weapon/storage/bag/sheetsnatcher/can_be_inserted(obj/item/W, stop_messages = 0)
 	if(!istype(W,/obj/item/stack/sheet) || istype(W,/obj/item/stack/sheet/mineral/sandstone) || istype(W,/obj/item/stack/sheet/mineral/wood))
 		if(!stop_messages)
 			usr << "The snatcher does not accept [W]."
@@ -159,7 +178,7 @@
 
 
 // Modified handle_item_insertion.  Would prefer not to, but...
-/obj/item/weapon/storage/bag/sheetsnatcher/handle_item_insertion(obj/item/W as obj, prevent_warning = 0)
+/obj/item/weapon/storage/bag/sheetsnatcher/handle_item_insertion(obj/item/W, prevent_warning = 0)
 	var/obj/item/stack/sheet/S = W
 	if(!istype(S)) return 0
 
@@ -199,7 +218,7 @@
 
 // Sets up numbered display to show the stack size of each stored mineral
 // NOTE: numbered display is turned off currently because it's broken
-/obj/item/weapon/storage/bag/sheetsnatcher/orient2hud(mob/user as mob)
+/obj/item/weapon/storage/bag/sheetsnatcher/orient2hud(mob/user)
 	var/adjusted_contents = contents.len
 
 	//Numbered contents display
@@ -238,7 +257,7 @@
 	update_icon()
 
 // Instead of removing
-/obj/item/weapon/storage/bag/sheetsnatcher/remove_from_storage(obj/item/W as obj, atom/new_location)
+/obj/item/weapon/storage/bag/sheetsnatcher/remove_from_storage(obj/item/W, atom/new_location)
 	var/obj/item/stack/sheet/S = W
 	if(!istype(S)) return 0
 
@@ -278,14 +297,15 @@
 	max_combined_w_class = 21
 	max_w_class = 3
 	w_class = 4 //Bigger than a book because physics
-	can_hold = list(/obj/item/weapon/book, /obj/item/weapon/spellbook) //No bibles, consistent with bookcase
+	can_hold = list(/obj/item/weapon/book, /obj/item/weapon/storage/book, /obj/item/weapon/spellbook)
+	burn_state = 0 //Burnable
 
 /*
  * Trays - Agouri
  */
 /obj/item/weapon/storage/bag/tray
 	name = "tray"
-	icon = 'icons/obj/food.dmi'
+	icon = 'icons/obj/food/containers.dmi'
 	icon_state = "tray"
 	desc = "A metal tray to lay food on."
 	force = 5
@@ -294,10 +314,10 @@
 	throw_range = 5
 	w_class = 4.0
 	flags = CONDUCT
-	m_amt = 3000
+	materials = list(MAT_METAL=3000)
 	preposition = "on"
 
-/obj/item/weapon/storage/bag/tray/attack(mob/living/M as mob, mob/living/user as mob)
+/obj/item/weapon/storage/bag/tray/attack(mob/living/M, mob/living/user)
 	..()
 	// Drop all the things. All of them.
 	var/list/obj/item/oldContents = contents.Copy()
@@ -334,3 +354,18 @@
 	..()
 
 
+/*
+ *	Chemistry bag
+ */
+
+/obj/item/weapon/storage/bag/chemistry
+	name = "chemistry bag"
+	icon = 'icons/obj/chemical.dmi'
+	icon_state = "bag"
+	desc = "A bag for storing pills, patches, and bottles."
+	storage_slots = 50
+	max_combined_w_class = 200
+	w_class = 1
+	preposition = "in"
+	can_hold = list(/obj/item/weapon/reagent_containers/pill, /obj/item/weapon/reagent_containers/glass/beaker, /obj/item/weapon/reagent_containers/glass/bottle)
+	burn_state = 0 //Burnable

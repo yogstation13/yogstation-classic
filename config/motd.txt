@@ -1,5 +1,13 @@
-<!-- Most valid html will work in here, excluding images. -->
-
-<h1>Welcome to Space Station 13!</h1>
-
-<i>This server is running a /tg/station 13 Git build.</i>
+<h1><font color="black"><strong><font size="2"><span style="line-height: 20.7999992370605px;">Welcome to Yogstation13!</span></font></strong></h1></font>
+<br>
+<font color="red"><h2>If you have an issue, please Ahelp it by pressing F1 or going to the admin tab and clicking Ahelp.</h2></font>
+<br>
+<font color="blue"><p>We're constantly seeking dedicated new admins and coders to improve our server. Without them, you wouldn't have a server to play on. If you feel you maybe a good addition to our team, please apply: <a href="http://forums.yogstation.net/index.php?forms/admin-application-form.4/respond">Here for admin</a>, and <a href="http://forums.yogstation.net/index.php?forms/coder-application-form.12/respond">Here for coding</a>.</p></font>
+<br>
+Rules were recently changed, read please.
+<br>
+http://forums.yogstation.net/index.php?threads/change-to-the-rules.5437/
+<br>
+Our Teamspeak!: 108.61.25.67:10457
+<br>
+<p><font color="brown">To donate to our server, please <a href="http://www.yogstation.net/index.php?do=donate">head here</a>. Without donations, our server cannot stay alive. We run on donations.</p></font>

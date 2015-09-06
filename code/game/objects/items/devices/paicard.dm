@@ -7,18 +7,25 @@
 	slot_flags = SLOT_BELT
 	origin_tech = "programming=2"
 	var/obj/item/device/radio/radio
-	var/looking_for_personality = 0
+	var/looking_for_personality = 1
 	var/mob/living/silicon/pai/pai
 
 /obj/item/device/paicard/New()
 	..()
-	overlays += "pai-off"
+	setBaseOverlay()
 
 /obj/item/device/paicard/Destroy()
 	//Will stop people throwing friend pAIs into the singularity so they can respawn
 	if(!isnull(pai))
 		pai.death(0)
 	..()
+
+/obj/item/device/paicard/examine()
+	if (pai)
+		pai.examine()
+		return
+	else
+		return ..()
 
 /obj/item/device/paicard/attack_self(mob/user)
 	if (!in_range(src, user))
@@ -50,7 +57,7 @@
 		else
 			dat += "No personality is installed.<br>"
 			dat += "<A href='byond://?src=\ref[src];request=1'>\[Request personal AI personality\]</a><br>"
-			dat += "Each time this button is pressed, a request will be sent out to any available personalities. Check back often and alot time for personalities to respond. This process could take anywhere from 15 seconds to several minutes, depending on the available personalities' timeliness."
+			dat += "Each time this button is pressed, a request will be sent out to any available personalities. Check back often and give a lot of time for personalities to respond. This process could take anywhere from 15 seconds to several minutes, depending on the available personalities' timeliness."
 	user << browse(dat, "window=paicard")
 	onclose(user, "paicard")
 	return
@@ -62,14 +69,14 @@
 
 	if(href_list["request"])
 		src.looking_for_personality = 1
-		paiController.findPAI(src, usr)
+		SSpai.findPAI(src, usr)
 
 	if(pai)
 		if(href_list["setdna"])
 			if(pai.master_dna)
 				return
 			if(!istype(usr, /mob/living/carbon))
-				usr << "<span class='notice'>You don't have any DNA, or your DNA is incompatible with this device.</span>"
+				usr << "<span class='warning'>You don't have any DNA, or your DNA is incompatible with this device!</span>"
 			else
 				var/mob/living/carbon/M = usr
 				pai.master = M.real_name
@@ -105,28 +112,44 @@
 
 /obj/item/device/paicard/proc/setPersonality(mob/living/silicon/pai/personality)
 	src.pai = personality
-	src.overlays += "pai-happy"
+	src.pai.description = personality.description
+	setEmotionOverlay("pai-null")
 
 /obj/item/device/paicard/proc/removePersonality()
 	src.pai = null
-	src.overlays.Cut()
-	src.overlays += "pai-off"
+	setEmotionOverlay("pai-off")
+
+/obj/item/device/paicard/proc/setAlert()
+	setEmotionOverlay("pai-alert")
+
+/obj/item/device/paicard/proc/setBaseOverlay()
+	if (SSpai && SSpai.availableRecruitsCount() != 0)
+		src.alertUpdate()
+	else
+		setEmotionOverlay("pai-off")
 
 /obj/item/device/paicard/proc/setEmotion(var/emotion)
 	if(pai)
-		src.overlays.Cut()
 		switch(emotion)
-			if(1) src.overlays += "pai-happy"
-			if(2) src.overlays += "pai-cat"
-			if(3) src.overlays += "pai-extremely-happy"
-			if(4) src.overlays += "pai-face"
-			if(5) src.overlays += "pai-laugh"
-			if(6) src.overlays += "pai-off"
-			if(7) src.overlays += "pai-sad"
-			if(8) src.overlays += "pai-angry"
-			if(9) src.overlays += "pai-what"
+			if(1) setEmotionOverlay("pai-happy")
+			if(2) setEmotionOverlay("pai-cat")
+			if(3) setEmotionOverlay("pai-extremely-happy")
+			if(4) setEmotionOverlay("pai-face")
+			if(5) setEmotionOverlay("pai-laugh")
+			if(6) setEmotionOverlay("pai-off")
+			if(7) setEmotionOverlay("pai-sad")
+			if(8) setEmotionOverlay("pai-angry")
+			if(9) setEmotionOverlay("pai-what")
+			if(10) setEmotionOverlay("pai-null")
+
+/obj/item/device/paicard/proc/setEmotionOverlay(var/overlay)
+	src.overlays.Cut()
+	src.overlays += overlay
+
+	world << output("[overlay]", "pai.browser:onDisplayChanged")
 
 /obj/item/device/paicard/proc/alertUpdate()
+	src.setAlert()
 	visible_message("<span class ='info'>[src] flashes a message across its screen, \"Additional personalities available for download.\"", 3, "<span class='notice'>[src] bleeps electronically.</span>", 2)
 
 /obj/item/device/paicard/emp_act(severity)

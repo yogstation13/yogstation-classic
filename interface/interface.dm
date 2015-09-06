@@ -27,12 +27,13 @@
 	set name = "Rules"
 	set desc = "Show Server Rules."
 	set hidden = 1
-	if(config.rulesurl)
+	/*if(config.rulesurl)
 		if(alert("This will open the rules in your browser. Are you sure?",,"Yes","No")=="No")
 			return
 		src << link(config.rulesurl)
 	else
-		src << "<span class='danger'>The rules URL is not set in the server configuration.</span>"
+		src << "<span class='danger'>The rules URL is not set in the server configuration.</span>"*/
+	src << browse(file('html/rules.html'), "window=rules;size=480x320")
 	return
 
 /client/verb/github()
@@ -59,6 +60,20 @@
 		src << "<span class='danger'>The Github URL is not set in the server configuration.</span>"
 	return
 
+/client/verb/show_tickets()
+	set name = "Tickets"
+	set desc = "Show list of tickets"
+	set hidden = 1
+	if(holder)
+		view_tickets()
+	else
+		for(var/datum/admin_ticket/T in tickets_list)
+			if(compare_ckey(T.owner_ckey, usr) && !T.resolved)
+				T.view_log()
+				return
+		src << "<span class='danger'>You have no open tickets!</span>"
+	return
+
 /client/verb/hotkeys_help()
 	set name = "hotkeys-help"
 	set category = "OOC"
@@ -66,9 +81,10 @@
 	var/adminhotkeys = {"<font color='purple'>
 Admin:
 \tF5 = Aghost (admin-ghost)
-\tF6 = player-panel-new
+\tF6 = player-panel
 \tF7 = admin-pm
 \tF8 = Invisimin
+\tF9 = Invisimin
 </font>"}
 
 	mob.hotkey_help()
@@ -88,7 +104,10 @@ Hotkey-Mode: (hotkey-mode must be on)
 \tq = drop
 \te = equip
 \tr = throw
+\tm = me
 \tt = say
+\to = OOC
+\tb = resist
 \tx = swap-hand
 \tz = activate held object (or y)
 \tf = cycle-intents-left
@@ -108,6 +127,8 @@ Any-Mode: (hotkey doesn't need to be on)
 \tCtrl+q = drop
 \tCtrl+e = equip
 \tCtrl+r = throw
+\tCtrl+b = resist
+\tCtrl+O = OOC
 \tCtrl+x = swap-hand
 \tCtrl+z = activate held object (or Ctrl+y)
 \tCtrl+f = cycle-intents-left
@@ -137,7 +158,9 @@ Hotkey-Mode: (hotkey-mode must be on)
 \tw = up
 \tq = unequip active module
 \tt = say
+\to = OOC
 \tx = cycle active modules
+\tb = resist
 \tz = activate held object (or y)
 \tf = cycle-intents-left
 \tg = cycle-intents-right
@@ -155,6 +178,8 @@ Any-Mode: (hotkey doesn't need to be on)
 \tCtrl+w = up
 \tCtrl+q = unequip active module
 \tCtrl+x = cycle active modules
+\tCtrl+b = resist
+\tCtrl+o = OOC
 \tCtrl+z = activate held object (or Ctrl+y)
 \tCtrl+f = cycle-intents-left
 \tCtrl+g = cycle-intents-right
@@ -170,3 +195,10 @@ Any-Mode: (hotkey doesn't need to be on)
 
 	src << hotkey_mode
 	src << other
+
+// Needed to circumvent a bug where .winset does not work when used on the window.on-size event in skins.
+// Used by /datum/html_interface/nanotrasen (code/modules/html_interface/nanotrasen/nanotrasen.dm)
+/client/verb/_swinset(var/x as text)
+	set name = ".swinset"
+	set hidden = 1
+	winset(src, null, x)

@@ -13,16 +13,49 @@
 		else			return "000"
 
 /proc/random_underwear(gender)
+	if(!underwear_list.len)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/underwear, underwear_list, underwear_m, underwear_f)
 	switch(gender)
 		if(MALE)	return pick(underwear_m)
 		if(FEMALE)	return pick(underwear_f)
 		else		return pick(underwear_list)
 
 /proc/random_undershirt(gender)
+	if(!undershirt_list.len)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/undershirt, undershirt_list, undershirt_m, undershirt_f)
 	switch(gender)
 		if(MALE)	return pick(undershirt_m)
 		if(FEMALE)	return pick(undershirt_f)
 		else		return pick(undershirt_list)
+
+/proc/random_socks(gender)
+	if(!socks_list.len)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/socks, socks_list, socks_m, socks_f)
+	switch(gender)
+		if(MALE)	return pick(socks_m)
+		if(FEMALE)	return pick(socks_f)
+		else		return pick(socks_list)
+
+/proc/random_features()
+	if(!tails_list_human.len)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/human, tails_list_human)
+	if(!tails_list_lizard.len)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/lizard, tails_list_lizard)
+	if(!snouts_list.len)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/snouts, snouts_list)
+	if(!horns_list.len)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/horns, horns_list)
+	if(!ears_list.len)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/ears, horns_list)
+	if(!frills_list.len)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/frills, frills_list)
+	if(!spines_list.len)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/spines, spines_list)
+	if(!body_markings_list.len)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/body_markings, body_markings_list)
+
+	//For now we will always return none for tail_human and ears.
+	return(list("mcolor" = pick("FFFFFF","7F7F7F", "7FFF7F", "7F7FFF", "FF7F7F", "7FFFFF", "FF7FFF", "FFFF7F"), "tail_lizard" = pick(tails_list_lizard), "tail_human" = "None", "snout" = pick(snouts_list), "horns" = pick(horns_list), "ears" = "None", "frills" = pick(frills_list), "spines" = pick(spines_list), "body_markings" = pick(body_markings_list)))
 
 /proc/random_hair_style(gender)
 	switch(gender)
@@ -36,10 +69,17 @@
 		if(FEMALE)	return pick(facial_hair_styles_female_list)
 		else		return pick(facial_hair_styles_list)
 
-/proc/random_name(gender, attempts_to_find_unique_name=10)
+/proc/random_unique_name(gender, attempts_to_find_unique_name=10)
 	for(var/i=1, i<=attempts_to_find_unique_name, i++)
 		if(gender==FEMALE)	. = capitalize(pick(first_names_female)) + " " + capitalize(pick(last_names))
 		else				. = capitalize(pick(first_names_male)) + " " + capitalize(pick(last_names))
+
+		if(i != attempts_to_find_unique_name && !findname(.))
+			break
+
+/proc/random_unique_lizard_name(gender, attempts_to_find_unique_name=10)
+	for(var/i=1, i<=attempts_to_find_unique_name, i++)
+		. = capitalize(lizard_name(gender))
 
 		if(i != attempts_to_find_unique_name && !findname(.))
 			break
@@ -78,6 +118,32 @@ var/global/list/roundstart_species[0]
 		if(70 to INFINITY)	return "elderly"
 		else				return "unknown"
 
+/proc/is_donator(mob/user)
+	// Enable only for testing!
+	//if(is_admin(user))
+	//	return 1
+
+	if(ismob(user))
+		if(user.client && user.client.prefs)
+			return (user.client.prefs.unlock_content & 2)
+	else if(istype(user, /client))
+		var/client/C = user
+		if(C.prefs)
+			return (C.prefs.unlock_content & 2)
+	else
+		return 0
+
+/proc/is_veteran(mob/user)
+	if(ismob(user))
+		if(user.client && user.client.prefs)
+			return (user.client.prefs.unlock_content & 4)
+	else if(istype(user, /client))
+		var/client/C = user
+		if(C.prefs)
+			return (C.prefs.unlock_content & 4)
+	else
+		return 0
+
 /*
 Proc for attack log creation, because really why not
 1 argument is the actor
@@ -88,10 +154,107 @@ Proc for attack log creation, because really why not
 6 is additional information, anything that needs to be added
 */
 
-/proc/add_logs(mob/user, mob/target, what_done, var/admin=1, var/object=null, var/addition=null)
+/proc/add_logs(mob/user, mob/target, what_done, object=null, addition=null)
+	var/newhealthtxt = ""
+	if (target && isliving(target))
+		var/mob/living/L = target
+		newhealthtxt = " (NEWHP: [L.health])"
 	if(user && ismob(user))
-		user.attack_log += text("\[[time_stamp()]\] <font color='red'>Has [what_done] [target ? "[target.name][(ismob(target) && target.ckey) ? "([target.ckey])" : ""]" : "NON-EXISTANT SUBJECT"][object ? " with [object]" : " "][addition]</font>")
+		user.attack_log += text("\[[time_stamp()]\] <font color='red'>Has [what_done] [target ? "[target.name][(ismob(target) && target.ckey) ? "([target.ckey])" : ""]" : "NON-EXISTANT SUBJECT"][object ? " with [object]" : " "][addition][newhealthtxt]</font>")
 	if(target && ismob(target))
-		target.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been [what_done] by [user ? "[user.name][(ismob(user) && user.ckey) ? "([user.ckey])" : ""]" : "NON-EXISTANT SUBJECT"][object ? " with [object]" : " "][addition]</font>")
-	if(admin)
-		log_attack("<font color='red'>[user ? "[user.name][(ismob(user) && user.ckey) ? "([user.ckey])" : ""]" : "NON-EXISTANT SUBJECT"] [what_done] [target ? "[target.name][(ismob(target) && target.ckey)? "([target.ckey])" : ""]" : "NON-EXISTANT SUBJECT"][object ? " with [object]" : " "][addition]</font>")
+		target.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been [what_done] by [user ? "[user.name][(ismob(user) && user.ckey) ? "([user.ckey])" : ""]" : "NON-EXISTANT SUBJECT"][object ? " with [object]" : " "][addition][newhealthtxt]</font>")
+	log_attack("[user ? "[user.name][(ismob(user) && user.ckey) ? "([user.ckey])" : ""]" : "NON-EXISTANT SUBJECT"] [what_done] [target ? "[target.name][(ismob(target) && target.ckey)? "([target.ckey])" : ""]" : "NON-EXISTANT SUBJECT"][object ? " with [object]" : " "][addition][newhealthtxt]")
+
+
+/proc/get_ckey(var/user)
+	if(ismob(user))
+		var/mob/temp = user
+		return temp.ckey
+	else if(istype(user, /client))
+		var/client/temp = user
+		return temp.ckey
+
+	return "* Unknown *"
+
+/proc/get_client(var/user)
+	if(istype(user, /client))
+		return user
+	if(ismob(user))
+		var/mob/temp = user
+		return temp.client
+	return user
+
+/proc/get_fancy_key(mob/user)
+	if(ismob(user))
+		var/mob/temp = user
+		return temp.key
+	else if(istype(user, /client))
+		var/client/temp = user
+		return temp.key
+
+	return "* Unknown *"
+
+/proc/has_pref(var/user, var/pref)
+	if(ismob(user))
+		var/mob/temp = user
+
+		if(temp && temp.client && temp.client.prefs && temp.client.prefs.toggles & pref)
+			return 1
+	else if(istype(user, /client))
+		var/client/temp = user
+
+		if(temp && temp.prefs && temp.prefs.toggles & pref)
+			return 1
+
+	return 0
+
+/proc/is_admin(var/user)
+	if(ismob(user))
+		var/mob/temp = user
+
+		if(temp && temp.client && temp.client.holder)
+			return 1
+	else if(istype(user, /client))
+		var/client/temp = user
+
+		if(temp && temp.holder)
+			return 1
+
+	return 0
+
+/proc/compare_ckey(var/user, var/target)
+	if(!user || !target)
+		return 0
+
+	var/key1 = user
+	var/key2 = target
+
+	if(ismob(user))
+		var/mob/M = user
+		if(M.ckey)
+			key1 = M.ckey
+		else if(M.client && M.client.ckey)
+			key1 = M.client.ckey
+	else if(istype(user, /client))
+		var/client/C = user
+		key1 = C.ckey
+	else
+		key1 = lowertext(key1)
+
+	if(ismob(target))
+		var/mob/M = target
+		if(M.ckey)
+			key2 = M.ckey
+		else if(M.client && M.client.ckey)
+			key2 = M.client.ckey
+	else if(istype(target, /client))
+		var/client/C = target
+		key2 = C.ckey
+	else
+		key2 = lowertext(key2)
+
+
+	if(key1 == key2)
+		return 1
+	else
+		return 0

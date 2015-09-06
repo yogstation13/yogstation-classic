@@ -7,6 +7,54 @@
 # NOTE: if the rank-name cannot be found in admin_ranks.txt, they will not be adminned! ~Carn #
 # NOTE: syntax was changed to allow hyphenation of ranknames, since spaces are stripped.      #
 ###############################################################################################
-Alek2ander = Game Master
-Kn0ss0s= Game Master
-Kn0ss0sTestAdmin= Game Master
+
+Aranclanos = TGCoder
+
+Ephemeralis = HeadCoder
+
+05rhardy = Council
+Xantam = Council
+AsV9 = Council
+Blukey = Council
+Johncena1469 = Council
+
+Joseph Frost = Senior Admin
+Chuggachar = Senior Admin
+Hydre = Senior Admin
+Madventurer =  Senior Admin
+Slovenian = Senior Admin
+X Yamahawk X = Senior Admin
+
+Jhon2221 = Primary Admin
+Eff chap = Primary Admin
+Bonette = Primary Admin
+Misutto = Primary Admin
+Gremlen12 = Primary Admin
+
+BestMango = Administrator
+The_73MPL4R = Administrator
+Seiko Yamada = Administrator
+Groudonmaster = Administrator 
+George99 = Administrator
+Greatbigben = Administrator
+
+Thestabman = Moderator V2
+GrayRachnid = Moderator V2
+
+Stevenator1 = Coder lvl1
+Kn0ss0s = Head Coder
+
+Eliteixhitman = Retired Host
+Crazyhyperway = Retired Admin
+Hadrin Alucard = Retired Admin
+MrMecham = Retired Admin
+Aksuduud = Retired Admin
+Oakboscage = Retired Admin
+Generalpie = Retired Admin
+Rumia29 = Retired Admin
+Willverdrag1314 = Retired Admin
+Firestorm258 = Retired Admin
+Alek2ander = Retired Admin
+Unmovable = Retired Admin
+
+Yogstation13-Bot = Bot

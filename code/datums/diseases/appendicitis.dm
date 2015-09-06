@@ -2,28 +2,26 @@
 	form = "Condition"
 	name = "Appendicitis"
 	max_stages = 3
-	spread = "Acute"
-	cure = "Surgery"
+	cure_text = "Surgery"
 	agent = "Shitty Appendix"
-	affected_species = list("Human")
+	viable_mobtypes = list(/mob/living/carbon/human)
 	permeability_mod = 1
-	contagious_period = 9001 //slightly hacky, but hey! whatever works, right?
 	desc = "If left untreated the subject will become very weak, and may vomit often."
 	severity = "Dangerous!"
 	longevity = 1000
-	hidden = list(0, 1)
-	requires = 1
-	required_limb = list(/obj/item/organ/limb/chest)
+	disease_flags = CAN_CARRY|CAN_RESIST
+	spread_flags = NON_CONTAGIOUS
+	visibility_flags = HIDDEN_PANDEMIC
+	required_organs = list(/obj/item/organ/internal/appendix)
 
 /datum/disease/appendicitis/stage_act()
 	..()
-
 	switch(stage)
 		if(1)
 			if(prob(5))
 				affected_mob.emote("cough")
 		if(2)
-			var/obj/item/organ/appendix/A = affected_mob.getorgan(/obj/item/organ/appendix)
+			var/obj/item/organ/internal/appendix/A = affected_mob.getorgan(/obj/item/organ/internal/appendix)
 			if(A)
 				A.inflamed = 1
 				A.update_icon()

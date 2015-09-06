@@ -25,7 +25,6 @@
 
 
 /datum/round_event/brand_intelligence/start()
-	message_admins("Random Event: Brand Intelligence")
 	for(var/obj/machinery/vending/V in machines)
 		if(V.z != 1)	continue
 		vendingMachines.Add(V)
@@ -41,7 +40,7 @@
 
 
 /datum/round_event/brand_intelligence/tick()
-	if(!originMachine || originMachine.shut_up || originMachine.wires.IsAllCut())	//if the original vending machine is missing or has it's voice switch flipped
+	if(!originMachine || originMachine.gc_destroyed || originMachine.shut_up || originMachine.wires.IsAllCut())	//if the original vending machine is missing or has it's voice switch flipped
 		for(var/obj/machinery/vending/saved in infectedMachines)
 			saved.shoot_inventory = 0
 		if(originMachine)
@@ -52,11 +51,11 @@
 
 	if(!vendingMachines.len)	//if every machine is infected
 		for(var/obj/machinery/vending/upriser in infectedMachines)
-			if(prob(70))
-				var/mob/living/simple_animal/hostile/mimic/copy/M = new(upriser.loc, upriser, null, 1) // it will delete upriser on creation and override any machine checks
-				M.faction = list("profit")
-				M.speak = rampant_speeches.Copy()
-				M.speak_chance = 15
+			if(prob(70) && !upriser.gc_destroyed)
+				upriser.shut_up = 1
+				upriser.shoot_inventory = 0
+				new /mob/living/simple_animal/hostile/mimic/copy/machine(upriser.loc, upriser, null) // it will delete upriser on creation and override any machine checks
+
 			else
 				explosion(upriser.loc, -1, 1, 2, 4, 0)
 				qdel(upriser)

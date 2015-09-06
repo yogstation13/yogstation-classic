@@ -93,8 +93,13 @@
 	if(src.check_access(null))
 		return 1
 	if(istype(M, /mob/living/silicon))
-		//AI can do whatever he wants
-		return 1
+		//AI can do whatever he wants UNLESS THEY'RE SUBSILICON PAI SCUM THEN THEY HAVE TO GO BY THE LIST FUCKERS
+		if (istype(M, /mob/living/silicon/pai))
+			var/mob/living/silicon/pai/P = M
+			if (check_access(P.access_card))
+				return 1
+		else
+			return 1
 	else if(istype(M, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M
 		//if they are holding or wearing a card that has access, that works
@@ -156,7 +161,7 @@
 	return 1
 
 
-/obj/proc/check_access_list(var/list/L)
+/obj/proc/check_access_list(list/L)
 	if(!src.req_access  && !src.req_one_access)	return 1
 	if(!istype(src.req_access, /list))	return 1
 	if(!src.req_access.len && (!src.req_one_access || !src.req_one_access.len))	return 1
@@ -194,8 +199,14 @@
 			return get_all_centcom_access()
 		if("Centcom Commander")
 			return get_all_centcom_access()
-		else
-			return list()
+		if("Emergency Response Team Commander")
+			return get_ert_access("commander")
+		if("Security Response Officer")
+			return get_ert_access("sec")
+		if("Engineer Response Officer")
+			return get_ert_access("eng")
+		if("Medical Response Officer")
+			return get_ert_access("med")
 
 /proc/get_all_accesses()
 	return list(access_security, access_sec_doors, access_brig, access_armory, access_forensics_lockers, access_court,
@@ -213,10 +224,21 @@
 /proc/get_all_centcom_access()
 	return list(access_cent_general, access_cent_thunder, access_cent_specops, access_cent_medical, access_cent_living, access_cent_storage, access_cent_teleporter, access_cent_captain)
 
+/proc/get_ert_access(class)
+	switch(class)
+		if("commander")
+			return get_all_centcom_access()
+		if("sec")
+			return list(access_cent_general, access_cent_specops, access_cent_living)
+		if("eng")
+			return list(access_cent_general, access_cent_specops, access_cent_living, access_cent_storage)
+		if("med")
+			return list(access_cent_general, access_cent_specops, access_cent_medical, access_cent_living)
+
 /proc/get_all_syndicate_access()
 	return list(access_syndicate, access_syndicate)
 
-/proc/get_region_accesses(var/code)
+/proc/get_region_accesses(code)
 	switch(code)
 		if(0)
 			return get_all_accesses()
@@ -235,7 +257,7 @@
 		if(7) //command
 			return list(access_heads, access_RC_announce, access_keycard_auth, access_change_ids, access_ai_upload, access_teleporter, access_eva, access_gateway, access_all_personal_lockers, access_heads_vault, access_hop, access_captain)
 
-/proc/get_region_accesses_name(var/code)
+/proc/get_region_accesses_name(code)
 	switch(code)
 		if(0)
 			return "All"
@@ -412,11 +434,11 @@
 				"Atmospheric Technician", "Chief Medical Officer", "Medical Doctor", "Chemist", "Geneticist", "Virologist", "Mining Medic", "Paramedic", "Psychiatrist",
 				"Research Director", "Scientist", "Roboticist", "Head of Security", "Warden", "Detective", "Security Officer")
 
-proc/get_all_job_icons() //For all existing HUD icons
+/proc/get_all_job_icons() //For all existing HUD icons
 	return get_all_jobs() + list("Prisoner")
 
 /proc/get_all_centcom_jobs()
-	return list("VIP Guest","Custodian","Thunderdome Overseer","Centcom Official","Medical Officer","Death Commando","Research Officer","Special Ops Officer","Admiral","Centcom Commander")
+	return list("VIP Guest","Custodian","Thunderdome Overseer","Centcom Official","Medical Officer","Death Commando","Research Officer","Special Ops Officer","Admiral","Centcom Commander","Emergency Response Team Commander","Security Response Officer","Engineer Response Officer", "Medical Response Officer")
 
 /obj/item/proc/GetJobName() //Used in secHUD icon generation
 	var/obj/item/weapon/card/id/I = GetID()

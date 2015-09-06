@@ -3,19 +3,10 @@
 //1 = code blue
 //2 = code red
 //3 = code delta
-//4 = code charlie foxtrot
-
-//previous code was sloppy.  global vars to keep track of overlays.
-/var
-	alertOverlayGreen	= image('icons/obj/monitors.dmi', "overlay_green")
-	alertOverlayBlue	= image('icons/obj/monitors.dmi', "overlay_blue")
-	alertOverlayRed		= image('icons/obj/monitors.dmi', "overlay_red")
-	alertOverlayDelta	= image('icons/obj/monitors.dmi', "overlay_delta")
-	alertOverlayCF		= image('icons/obj/monitors.dmi', "overlay_cf")
 
 //config.alert_desc_blue_downto
 
-/proc/set_security_level(var/level)
+/proc/set_security_level(level)
 	switch(level)
 		if("green")
 			level = SEC_LEVEL_GREEN
@@ -25,29 +16,15 @@
 			level = SEC_LEVEL_RED
 		if("delta")
 			level = SEC_LEVEL_DELTA
-		if("charlie foxtrot")
-			level = SEC_LEVEL_CF
 
 	//Will not be announced if you try to set to the same level as it already is
-	if(level >= SEC_LEVEL_GREEN && level <= SEC_LEVEL_CF && level != security_level)
-		var/toStrip = null
-		switch(security_level)
-			if(SEC_LEVEL_GREEN)
-				toStrip = alertOverlayGreen
-			if(SEC_LEVEL_BLUE)
-				toStrip = alertOverlayBlue
-			if(SEC_LEVEL_RED)
-				toStrip = alertOverlayRed
-			if(SEC_LEVEL_DELTA)
-				toStrip = alertOverlayDelta
-			if(SEC_LEVEL_CF)
-				toStrip = alertOverlayCF
+	if(level >= SEC_LEVEL_GREEN && level <= SEC_LEVEL_DELTA && level != security_level)
 		switch(level)
 			if(SEC_LEVEL_GREEN)
 				minor_announce(config.alert_desc_green, "Attention! Security level lowered to green:")
 				security_level = SEC_LEVEL_GREEN
-				for(var/obj/machinery/firealarm/FA in world)
-					if(FA.z == 1)
+				for(var/obj/machinery/firealarm/FA in machines)
+					if(FA.z == ZLEVEL_STATION)
 						FA.update_icon()
 			if(SEC_LEVEL_BLUE)
 				if(security_level < SEC_LEVEL_BLUE)
@@ -55,8 +32,8 @@
 				else
 					minor_announce(config.alert_desc_blue_downto, "Attention! Security level lowered to blue:")
 				security_level = SEC_LEVEL_BLUE
-				for(var/obj/machinery/firealarm/FA in world)
-					if(FA.z == 1)
+				for(var/obj/machinery/firealarm/FA in machines)
+					if(FA.z == ZLEVEL_STATION)
 						FA.update_icon()
 			if(SEC_LEVEL_RED)
 				if(security_level < SEC_LEVEL_RED)
@@ -70,26 +47,19 @@
 				if(CC)
 					CC.post_status("alert", "redalert")*/
 
-				for(var/obj/machinery/firealarm/FA in world)
-					if(FA.z == 1)
+				for(var/obj/machinery/firealarm/FA in machines)
+					if(FA.z == ZLEVEL_STATION)
 						FA.update_icon()
+				for(var/obj/machinery/computer/shuttle/pod/pod in machines)
+					pod.admin_controlled = 0
 			if(SEC_LEVEL_DELTA)
 				minor_announce(config.alert_desc_delta, "Attention! Delta security level reached!",1)
 				security_level = SEC_LEVEL_DELTA
-				for(var/obj/machinery/firealarm/FA in world)
-					if(FA.z == 1)
+				for(var/obj/machinery/firealarm/FA in machines)
+					if(FA.z == ZLEVEL_STATION)
 						FA.update_icon()
-			if(SEC_LEVEL_CF)
-				world << "<font size=4 color='red'>Attention! Code Charlie Foxtrot has been declared!</font>"
-				// !! comment out the following 1 line of code when config.alert_desc_cf exists
-				world << "<font color='red'>All contracts have been burned!</font>"
-				// !! uncomment the following 1 line of code when config.alert_desc_cf exists
-				// world << "<font color='red'>[config.alert_desc_cf]</font>
-				security_level = SEC_LEVEL_CF
-				for(var/obj/machinery/firealarm/FA in world)
-					if(FA.z == 1)
-						FA.overlays.Remove(toStrip)
-						FA.overlays += alertOverlayCF
+				for(var/obj/machinery/computer/shuttle/pod/pod in machines)
+					pod.admin_controlled = 0
 	else
 		return
 
@@ -104,7 +74,7 @@
 		if(SEC_LEVEL_DELTA)
 			return "delta"
 
-/proc/num2seclevel(var/num)
+/proc/num2seclevel(num)
 	switch(num)
 		if(SEC_LEVEL_GREEN)
 			return "green"
@@ -115,7 +85,7 @@
 		if(SEC_LEVEL_DELTA)
 			return "delta"
 
-/proc/seclevel2num(var/seclevel)
+/proc/seclevel2num(seclevel)
 	switch( lowertext(seclevel) )
 		if("green")
 			return SEC_LEVEL_GREEN

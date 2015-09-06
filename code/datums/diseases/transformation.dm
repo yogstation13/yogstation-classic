@@ -1,15 +1,15 @@
 /datum/disease/transformation
-
 	name = "Transformation"
 	max_stages = 5
-	spread = "Acute"
-	spread_type = SPECIAL
-	cure = "A coder's love (theoretical)."
+	spread_text = "Acute"
+	spread_flags = SPECIAL
+	cure_text = "A coder's love (theoretical)."
 	agent = "Shenanigans"
-	affected_species = list("Human", "Monkey", "Alien")
-	severity = "Harmful"
+	viable_mobtypes = list(/mob/living/carbon/human, /mob/living/carbon/monkey, /mob/living/carbon/alien)
+	severity = HARMFUL
 	stage_prob = 10
-	hidden = list(1, 1)
+	visibility_flags = HIDDEN_SCANNER|HIDDEN_PANDEMIC
+	disease_flags = CURABLE
 	var/list/stage1 = list("You feel unremarkable.")
 	var/list/stage2 = list("You feel boring.")
 	var/list/stage3 = list("You feel utterly plain.")
@@ -35,7 +35,7 @@
 		if(5)
 			do_disease_transformation(affected_mob)
 
-/datum/disease/transformation/proc/do_disease_transformation(var/mob/living/affected_mob)
+/datum/disease/transformation/proc/do_disease_transformation(mob/living/affected_mob)
 	if(istype(affected_mob, /mob/living/carbon) && affected_mob.stat != DEAD)
 		if(stage5)
 			affected_mob << pick(stage5)
@@ -62,25 +62,25 @@
 				affected_mob.mind.transfer_to(new_mob)
 			else
 				new_mob.key = affected_mob.key
-				qdel(affected_mob)
+		qdel(affected_mob)
 
 
 
 /datum/disease/transformation/jungle_fever
 	name = "Jungle Fever"
-	cure = "Bananas"
-	cure_id = "banana"
-	spread = "Monkey Bites"
-	spread_type = SPECIAL
-	affected_species = list("Monkey", "Human")
+	cure_text = "Bananas"
+	cures = list("banana")
+	spread_text = "Monkey Bites"
+	spread_flags = SPECIAL
+	viable_mobtypes = list(/mob/living/carbon/monkey, /mob/living/carbon/human)
 	permeability_mod = 1
 	cure_chance = 1
-	curable = 0
+	disease_flags = CAN_CARRY|CAN_RESIST
 	longevity = 30
 	desc = "Monkeys with this disease will bite humans, causing humans to mutate into a monkey."
-	severity = "BIOHAZARD THREAT!"
-	hidden = list(0, 0)//Not hidden, with the exception of the starting ape.
+	severity = BIOHAZARD
 	stage_prob = 4
+	visibility_flags = 0
 	agent = "Kongey Vibrion M-909"
 	new_form = /mob/living/carbon/monkey
 
@@ -91,10 +91,10 @@
 					"<span class='warning'>You have a craving for bananas.</span>", "<span class='warning'>Your mind feels clouded.</span>")
 	stage5	= list("<span class='warning'>You feel like monkeying around.</span>")
 
-/datum/disease/transformation/jungle_fever/do_disease_transformation(var/mob/living/carbon/affected_mob)
+/datum/disease/transformation/jungle_fever/do_disease_transformation(mob/living/carbon/affected_mob)
 	if(!ismonkey(affected_mob))
-		affected_mob.monkeyize(TR_KEEPITEMS | TR_KEEPIMPLANTS | TR_KEEPDAMAGE | TR_KEEPVIRUS | TR_KEEPSE)
 		ticker.mode.add_monkey(affected_mob.mind)
+		affected_mob.monkeyize(TR_KEEPITEMS | TR_KEEPIMPLANTS | TR_KEEPORGANS | TR_KEEPDAMAGE | TR_KEEPVIRUS | TR_KEEPSE)
 
 /datum/disease/transformation/jungle_fever/stage_act()
 	..()
@@ -117,19 +117,19 @@
 
 /datum/disease/transformation/rage_virus
 	name = "Rage Virus"
-	cure = "Bananas"
-	cure_id = "banana"
-	spread = "Zombie Bites"
-	spread_type = SPECIAL
-	affected_species = list("Human")
+	cure_text = "Bananas"
+	cures = list("banana")
+	spread_text = "Zombie Bites"
+	spread_flags = SPECIAL
+	viable_mobtypes = list(/mob/living/carbon/human)
 	permeability_mod = 1
 	cure_chance = 1
-	curable = 0
+	disease_flags = CAN_CARRY|CAN_RESIST
 	longevity = 30
 	desc = "Crewmembers with this disease will bite other humans, causing them to turn into zombies."
-	severity = "BIOHAZARD THREAT!"
-	hidden = list(0, 0)//Not hidden, with the exception of the starting zombie.
+	severity = BIOHAZARD
 	stage_prob = 4
+	visibility_flags = 0
 	agent = "Rage T-1"
 	new_form = /mob/living/carbon/human/zombie
 
@@ -168,13 +168,13 @@
 /datum/disease/transformation/robot
 
 	name = "Robotic Transformation"
-	cure = "An injection of copper."
-	cure_id = list("copper")
+	cure_text = "An injection of copper."
+	cures = list("copper")
 	cure_chance = 5
 	agent = "R2D2 Nanomachines"
 	desc = "This disease, actually acute nanomachine infection, converts the victim into a cyborg."
-	severity = "Dangerous!"
-	hidden = list(0, 0)
+	severity = DANGEROUS
+	visibility_flags = 0
 	stage1	= null
 	stage2	= list("Your joints feel stiff.", "<span class='danger'>Beep...boop..</span>")
 	stage3	= list("<span class='danger'>Your joints feel very stiff.</span>", "Your skin feels loose.", "<span class='danger'>You can feel something move...inside.</span>")
@@ -200,13 +200,13 @@
 /datum/disease/transformation/xeno
 
 	name = "Xenomorph Transformation"
-	cure = "Spaceacillin & Glycerol"
-	cure_id = list("spaceacillin", "glycerol")
+	cure_text = "Spaceacillin & Glycerol"
+	cures = list("spaceacillin", "glycerol")
 	cure_chance = 5
 	agent = "Rip-LEY Alien Microbes"
 	desc = "This disease changes the victim into a xenomorph."
-	severity = "BIOHAZARD THREAT!"
-	hidden = list(0, 0)
+	severity = BIOHAZARD
+	visibility_flags = 0
 	stage1	= null
 	stage2	= list("Your throat feels scratchy.", "<span class='danger'>Kill...</span>")
 	stage3	= list("<span class='danger'>Your throat feels very scratchy.</span>", "Your skin feels tight.", "<span class='danger'>You can feel something move...inside.</span>")
@@ -228,19 +228,19 @@
 
 /datum/disease/transformation/slime
 	name = "Advanced Mutation Transformation"
-	cure = "frost oil"
-	cure_id = list("frostoil")
+	cure_text = "frost oil"
+	cures = list("frostoil")
 	cure_chance = 80
 	agent = "Advanced Mutation Toxin"
 	desc = "This highly concentrated extract converts anything into more of itself."
-	severity = "BIOHAZARD THREAT!"
-	hidden = list(0, 0)
+	severity = BIOHAZARD
+	visibility_flags = 0
 	stage1	= list("You don't feel very well.")
 	stage2	= list("You are turning a little green.")
 	stage3	= list("<span class='danger'>Your limbs are getting oozy.</span>", "<span class='danger'>Your skin begins to peel away.</span>")
 	stage4	= list("<span class='danger'>You are turning into a slime.</span>")
 	stage5	= list("<span class='danger'>You have become a slime.</span>")
-	new_form = /mob/living/carbon/slime
+	new_form = /mob/living/simple_animal/slime
 
 /datum/disease/transformation/slime/stage_act()
 	..()
@@ -252,21 +252,22 @@
 			if(ishuman(affected_mob))
 				var/mob/living/carbon/human/human = affected_mob
 				if(human.dna && human.dna.species.id != "slime")
-					human.dna.species = new /datum/species/slime()
-					human.update_icons()
+					hardset_dna(human, null, null, null, null, /datum/species/slime)
+					human.regenerate_icons()
 
 /datum/disease/transformation/corgi
 	name = "The Barkening"
-	cure = "Death"
+	cure_text = "Death"
+	cures = list("adminordrazine")
 	agent = "Fell Doge Majicks"
 	desc = "This disease transforms the victim into a corgi."
-	hidden = list(0, 0)
+	visibility_flags = 0
 	stage1	= list("BARK.")
 	stage2	= list("You feel the need to wear silly hats.")
 	stage3	= list("<span class='danger'>Must... eat... chocolate....</span>", "<span class='danger'>YAP</span>")
 	stage4	= list("<span class='danger'>Visions of washing machines assail your mind!</span>")
 	stage5	= list("<span class='danger'>AUUUUUU!!!</span>")
-	new_form = /mob/living/simple_animal/corgi
+	new_form = /mob/living/simple_animal/pet/dog/corgi
 
 /datum/disease/transformation/corgi/stage_act()
 	..()

@@ -19,7 +19,6 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 	priority_announce("What the fuck was that?!", "General Alert")
 
 /datum/round_event/immovable_rod/start()
-	message_admins("Random Event: Immovable Rod")
 	var/startside = pick(cardinal)
 	var/turf/startT = spaceDebrisStartLoc(startside, 1)
 	var/turf/endT = spaceDebrisFinishLoc(startside, 1)
@@ -48,15 +47,13 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 		qdel(src)
 	return ..()
 
-/obj/effect/immovablerod/Bump(atom/clong)
-	playsound(src, 'sound/effects/bang.ogg', 50, 1)
-	audible_message("CLANG")
+/obj/effect/immovablerod/ex_act(test)
+	return 0
 
-	if(istype(clong, /turf/unsimulated) || istype(clong, /turf/simulated/shuttle)) //Unstoppable force meets immovable object
-		explosion(src.loc, 4, 5, 6, 7, 0)
-		if(src)
-			qdel(src)
-		return
+/obj/effect/immovablerod/Bump(atom/clong)
+	if(prob(10))
+		playsound(src, 'sound/effects/bang.ogg', 50, 1)
+		audible_message("CLANG")
 
 	if(clong && prob(25))
 		x = clong.x
@@ -67,7 +64,10 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 			clong.ex_act(2)
 
 	else if (istype(clong, /mob))
+		if(istype(clong, /mob/living/carbon/human))
+			var/mob/living/carbon/human/H = clong
+			H.visible_message("<span class='danger'>[H.name] is penetrated by an immovable rod!</span>" , "<span class='userdanger'>The rod penetrates you!</span>" , "<span class ='danger'>You hear a CLANG!</span>")
+			H.adjustBruteLoss(160)
 		if(clong.density || prob(10))
 			clong.ex_act(2)
-	else
-		qdel(src)
+	return

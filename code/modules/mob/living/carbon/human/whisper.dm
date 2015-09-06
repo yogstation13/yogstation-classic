@@ -1,6 +1,8 @@
 /mob/living/carbon/human/whisper(message as text)
 	if(!IsVocal())
 		return
+	if(!message)
+		return
 
 	if(say_disabled)	//This is here to try to identify lag problems
 		usr << "<span class='danger'>Speech is currently admin-disabled.</span>"
@@ -10,11 +12,11 @@
 		return
 
 
-	message = trim(copytext(strip_html_simple(message), 1, MAX_MESSAGE_LEN))
+	message = trim(html_encode(message))
 	if(!can_speak(message))
 		return
 
-	message = "<i>[message]</i>"
+	message = "[message]"
 	log_whisper("[src.name]/[src.key] : [message]")
 
 	if (src.client)
@@ -46,12 +48,12 @@
 
 	var/list/listening_dead = list()
 	for(var/mob/M in player_list)
-		if(M.stat == DEAD && ((M.client.prefs.toggles & CHAT_GHOSTWHISPER) || (get_dist(M, src) <= 7)))
+		if(M.stat == DEAD && M.client && ((M.client.prefs.chat_toggles & CHAT_GHOSTWHISPER) || (get_dist(M, src) <= 7)))
 			listening_dead |= M
 
-	var/list/listening = get_hear(1, src)
+	var/list/listening = get_hearers_in_view(1, src)
 	listening |= listening_dead
-	var/list/eavesdropping = hearers(2, src)
+	var/list/eavesdropping = get_hearers_in_view(2, src)
 	eavesdropping -= listening
 	var/list/watching  = hearers(5, src)
 	watching  -= listening
@@ -63,15 +65,20 @@
 	for(var/mob/M in watching)
 		M.show_message(rendered, 2)
 
-	rendered = "<span class='game say'><span class='name'>[GetVoice()]</span>[alt_name] [whispers], <span class='message'>\"[message]\"</span></span>"
+	var/spans = list(SPAN_ITALICS)
+	rendered = "<span class='game say'><span class='name'>[GetVoice()]</span>[alt_name] [whispers], <span class='message'>\"[attach_spans(message, spans)]\"</span></span>"
 
-	for(var/mob/M in listening)
-		M.Hear(rendered, src, languages, message)
+	for(var/atom/movable/AM in listening)
+		if(istype(AM,/obj/item/device/radio))
+			continue
+		AM.Hear(rendered, src, languages, message, , spans)
 
 	message = stars(message)
-	rendered = "<span class='game say'><span class='name'>[GetVoice()]</span>[alt_name] [whispers], <span class='message'>\"[message]\"</span></span>"
-	for(var/mob/M in eavesdropping)
-		M.Hear(rendered, src, languages, message)
+	rendered = "<span class='game say'><span class='name'>[GetVoice()]</span>[alt_name] [whispers], <span class='message'>\"[attach_spans(message, spans)]\"</span></span>"
+	for(var/atom/movable/AM in eavesdropping)
+		if(istype(AM,/obj/item/device/radio))
+			continue
+		AM.Hear(rendered, src, languages, message, , spans)
 
 	if(critical) //Dying words.
 		succumb(1)

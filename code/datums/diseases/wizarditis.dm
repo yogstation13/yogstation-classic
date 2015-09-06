@@ -1,18 +1,17 @@
 /datum/disease/wizarditis
 	name = "Wizarditis"
 	max_stages = 4
-	spread = "Airborne"
-	cure = "The Manly Dorf"
-	cure_id = "manlydorf"
+	spread_text = "Airborne"
+	cure_text = "The Manly Dorf"
+	cures = list("manlydorf")
 	cure_chance = 100
 	agent = "Rincewindus Vulgaris"
-	affected_species = list("Human")
-	curable = 1
+	viable_mobtypes = list(/mob/living/carbon/human)
+	disease_flags = CAN_CARRY|CAN_RESIST
 	permeability_mod = 0.75
 	desc = "Some speculate, that this virus is the cause of Wizard Federation existance. Subjects affected show the signs of mental retardation, yelling obscure sentences or total gibberish. On late stages subjects sometime express the feelings of inner power, and, cite, 'the ability to control the forces of cosmos themselves!' A gulp of strong, manly spirits usually reverts them to normal, humanlike, condition."
-	severity = "Harmful"
-	requires = 1
-	required_limb = list(/obj/item/organ/limb/head)
+	severity = HARMFUL
+	required_organs = list(/obj/item/organ/limb/head)
 
 /*
 BIRUZ BENNAR
@@ -32,14 +31,14 @@ STI KALY - blind
 			if(prob(1)&&prob(50))
 				affected_mob.say(pick("You shall not pass!", "Expeliarmus!", "By Merlins beard!", "Feel the power of the Dark Side!"))
 			if(prob(1)&&prob(50))
-				affected_mob << "<span class='danger'>You feel [pick("that you don't have enough mana.", "that the winds of magic are gone.", "an urge to summon familiar.")].</span>"
+				affected_mob << "<span class='danger'>You feel [pick("that you don't have enough mana", "that the winds of magic are gone", "an urge to summon familiar")].</span>"
 
 
 		if(3)
 			if(prob(1)&&prob(50))
 				affected_mob.say(pick("NEC CANTIO!","AULIE OXIN FIERA!", "STI KALY!", "TARCOL MINTI ZHERI!"))
 			if(prob(1)&&prob(50))
-				affected_mob << "\<span class='danger'>You feel [pick("the magic bubbling in your veins","that this location gives you a +1 to INT","an urge to summon familiar.")].</span>"
+				affected_mob << "<span class='danger'>You feel [pick("the magic bubbling in your veins","that this location gives you a +1 to INT","an urge to summon familiar")].</span>"
 
 		if(4)
 
@@ -55,7 +54,7 @@ STI KALY - blind
 
 
 
-/datum/disease/wizarditis/proc/spawn_wizard_clothes(var/chance = 0)
+/datum/disease/wizarditis/proc/spawn_wizard_clothes(chance = 0)
 	if(istype(affected_mob, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = affected_mob
 		if(prob(chance))

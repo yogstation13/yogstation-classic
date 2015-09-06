@@ -1,27 +1,21 @@
 /obj
 	languages = HUMAN
-	//var/datum/module/mod		//not used
-	var/m_amt = 0	// metal
-	var/g_amt = 0	// glass
-	var/origin_tech = null	//Used by R&D to determine what research bonuses it grants.
-	var/reliability = 100	//Used by SOME devices to determine how reliable they are.
 	var/crit_fail = 0
 	var/unacidable = 0 //universal "unacidabliness" var, here so you can use it in any obj.
 	animate_movement = 2
 	var/throwforce = 0
-	var/list/attack_verb = list() //Used in attackby() to say how something was attacked "[x] has been [z.attack_verb] by [y] with [z]"
 	var/in_use = 0 // If we have a user using us, this will be set on. We will check if the user has stopped using us, and thus stop updating and LAGGING EVERYTHING!
 
 	var/damtype = "brute"
 	var/force = 0
 
-/obj/proc/process()
-	processing_objects.Remove(src)
-	return 0
+	var/burn_state = -1 // -1=fireproof | 0=will burn in fires | 1=currently on fire
+	var/burntime = 10 //How long it takes to burn to ashes, in seconds
+	var/burn_world_time //What world time the object will burn up completely
 
 /obj/Destroy()
 	if(!istype(src, /obj/machinery))
-		processing_objects.Remove(src) // TODO: Have a processing bitflag to reduce on unnecessary loops through the processing lists
+		SSobj.processing.Remove(src) // TODO: Have a processing bitflag to reduce on unnecessary loops through the processing lists
 	..()
 
 /obj/assume_air(datum/gas_mixture/giver)
@@ -71,13 +65,19 @@
 				if (usr.client && usr.machine==src) // && M.machine == src is omitted because if we triggered this by using the dialog, it doesn't matter if our machine changed in between triggering it and this - the dialog is probably still supposed to refresh.
 					is_in_use = 1
 					src.attack_ai(usr)
+		else if(istype(usr, /mob/living/silicon/pai))
+			var/mob/living/silicon/pai/pai = usr
+			if(pai.paired != null && pai.paired == src)
+				is_in_use = 1
+				src.attack_hand(usr)
 
 		// check for TK users
 
-		if (istype(usr, /mob/living/carbon/human))
-			if(istype(usr.l_hand, /obj/item/tk_grab) || istype(usr.r_hand, /obj/item/tk_grab/))
-				if(!(usr in nearby))
-					if(usr.client && usr.machine==src)
+		if(ishuman(usr))
+			var/mob/living/carbon/human/H = usr
+			if(!(usr in nearby))
+				if(usr.client && usr.machine==src)
+					if(H.dna.check_mutation(TK))
 						is_in_use = 1
 						src.attack_hand(usr)
 		in_use = is_in_use
@@ -108,7 +108,7 @@
 /mob/proc/unset_machine()
 	src.machine = null
 
-/mob/proc/set_machine(var/obj/O)
+/mob/proc/set_machine(obj/O)
 	if(src.machine)
 		unset_machine()
 	src.machine = O
@@ -127,6 +127,15 @@
 /obj/proc/hide(h)
 	return
 
+/obj/ex_act(severity, target)
+	if(severity == 1 || target == src)
+		qdel(src)
+	else if(severity == 2)
+		if(prob(50))
+			qdel(src)
+	if(!gc_destroyed)
+		..()
+
 //If a mob logouts/logins in side of an object you can use this proc
 /obj/proc/on_log()
 	..()
@@ -139,3 +148,41 @@
 	if(src && isnull(gc_destroyed))
 		qdel(src)
 	return 2
+
+/obj/singularity_pull(S, current_size)
+	if(!anchored || current_size >= STAGE_FIVE)
+		step_towards(src,S)
+
+/obj/proc/Deconstruct()
+	qdel(src)
+
+/obj/get_spans()
+	return ..() | SPAN_ROBOT
+
+/obj/storage_contents_dump_act(obj/item/weapon/storage/src_object, mob/user)
+	var/turf/T = get_turf(src)
+	return T.storage_contents_dump_act(src_object, user)
+
+/obj/fire_act(global_overlay=1)
+	if(!burn_state)
+		burn_state = 1
+		SSobj.burning += src
+		burn_world_time = world.time + burntime*rand(10,20)
+		if(global_overlay)
+			overlays += fire_overlay
+		return 1
+
+/obj/proc/burn()
+	for(var/obj/item/Item in contents) //Empty out the contents
+		Item.loc = src.loc
+		Item.fire_act() //Set them on fire, too
+	var/obj/effect/decal/cleanable/ash/A = new(src.loc)
+	A.desc = "Looks like this used to be a [name] some time ago."
+	SSobj.burning -= src
+	qdel(src)
+
+/obj/proc/extinguish()
+	if(burn_state == 1)
+		burn_state = 0
+		overlays -= fire_overlay
+		SSobj.burning -= src

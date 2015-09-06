@@ -2,19 +2,15 @@
 	name = "armory closet"
 	desc = "Why is this here?"
 	icon_state = "syndicate"
-	icon_closed = "syndicate"
-	icon_opened = "syndicateopen"
-
 
 /obj/structure/closet/syndicate/personal
 	desc = "It's a personal storage unit for operative gear."
 
 /obj/structure/closet/syndicate/personal/New()
 	..()
-	sleep(2)
 	new /obj/item/clothing/under/syndicate(src)
-	new /obj/item/clothing/suit/armor/vest(src)
-	new /obj/item/clothing/head/helmet/swat/syndicate(src)
+	new /obj/item/clothing/shoes/sneakers/black(src)
+	new /obj/item/device/radio/headset/syndicate(src)
 	new /obj/item/ammo_box/magazine/m10mm(src)
 	new /obj/item/weapon/storage/belt/military(src)
 	new /obj/item/weapon/crowbar/red(src)
@@ -26,7 +22,7 @@
 
 /obj/structure/closet/syndicate/nuclear/New()
 	..()
-	sleep(2)
+	contents = list()
 	new /obj/item/ammo_box/magazine/m10mm(src)
 	new /obj/item/ammo_box/magazine/m10mm(src)
 	new /obj/item/ammo_box/magazine/m10mm(src)
@@ -34,11 +30,12 @@
 	new /obj/item/ammo_box/magazine/m10mm(src)
 	new /obj/item/weapon/storage/box/flashbangs(src)
 	new /obj/item/weapon/storage/box/teargas(src)
-	new /obj/item/weapon/gun/projectile/automatic/bulldog(src)
-	new /obj/item/weapon/gun/projectile/automatic/bulldog(src)
-	new /obj/item/weapon/gun/projectile/automatic/bulldog(src)
-	new /obj/item/weapon/gun/projectile/automatic/bulldog(src)
-	new /obj/item/weapon/gun/projectile/automatic/bulldog(src)
+	new /obj/item/weapon/storage/backpack/dufflebag/syndie/med(src)
+	new /obj/item/weapon/gun/projectile/automatic/shotgun/bulldog(src)
+	new /obj/item/weapon/gun/projectile/automatic/shotgun/bulldog(src)
+	new /obj/item/weapon/gun/projectile/automatic/shotgun/bulldog(src)
+	new /obj/item/weapon/gun/projectile/automatic/shotgun/bulldog(src)
+	new /obj/item/weapon/gun/projectile/automatic/shotgun/bulldog(src)
 	new /obj/item/weapon/pinpointer/nukeop(src)
 	new /obj/item/weapon/pinpointer/nukeop(src)
 	new /obj/item/weapon/pinpointer/nukeop(src)
@@ -57,8 +54,6 @@
 	var/rare_min = 5  //Minimum HONK of HONK in the stack HONK HONK rare minerals
 	var/rare_max = 20 //Maximum HONK HONK HONK in the HONK for HONK rare HONK
 
-
-	sleep(2)
 
 	var/pickednum = rand(1, 50)
 
@@ -110,6 +105,8 @@
 	desc = "It's an emergency storage closet for repairs."
 
 /obj/structure/closet/syndicate/resources/everything/New()
+	..()
+	contents = list()
 	var/list/resources = list(
 	/obj/item/stack/sheet/metal,
 	/obj/item/stack/sheet/glass,
@@ -122,8 +119,6 @@
 	/obj/item/stack/sheet/plasteel,
 	/obj/item/stack/rods
 	)
-
-	sleep(2)
 
 	for(var/i = 0, i<2, i++)
 		for(var/res in resources)

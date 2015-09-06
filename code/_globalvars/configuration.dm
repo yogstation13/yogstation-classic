@@ -34,6 +34,7 @@ var/MAX_EX_FLASH_RANGE = 14
 var/MAX_EX_FLAME_RANGE = 14
 
 var/list/be_special_flags = list(
+	"Zombie" = BE_ZOMBIE,
 	"Traitor" = BE_TRAITOR,
 	"Operative" = BE_OPERATIVE,
 	"Changeling" = BE_CHANGELING,
@@ -46,6 +47,8 @@ var/list/be_special_flags = list(
 	"Blob" = BE_BLOB,
 	"Ninja" = BE_NINJA,
 	"Monkey" = BE_MONKEY,
-	"Zombie" = BE_ZOMBIE,
-	"Gang" = BE_GANG
+	"Gang" = BE_GANG,
+	"Abductor" = BE_ABDUCTOR,
+	"Revenant" = BE_REVENANT,
+	"Shadowling" = BE_SHADOWLING
 	)

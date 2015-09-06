@@ -3,6 +3,7 @@
 	typepath = /datum/round_event/electrical_storm
 	earliest_start = 6000
 	weight = 40
+	alertadmins = 0
 
 /datum/round_event/electrical_storm
 	var/lightsoutAmount	= 1
@@ -14,7 +15,6 @@
 
 
 /datum/round_event/electrical_storm/start()
-	message_admins("Random Event: Electrical Storm")
 	var/list/epicentreList = list()
 
 	for(var/i=1, i <= lightsoutAmount, i++)

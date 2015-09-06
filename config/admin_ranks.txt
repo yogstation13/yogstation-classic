@@ -27,14 +27,28 @@
 # +SPAWN (or +CREATE) = mob transformations, spawning of most atoms including mobs (high-risk atoms, e.g. blackholes, will require the +FUN flag too)
 # +EVERYTHING (or +HOST or +ALL) = Simply gives you everything without having to type every flag
 
-Admin Observer
-Moderator		= +ADMIN
-Admin Candidate	= +@
-Trial Admin		= +@ +SPAWN +REJUV +VAREDIT +BAN
-Badmin			= +@ +POSSESS +BUILDMODE +SERVER +FUN
-Game Admin		= +@ +STEALTH +SOUNDS +DEBUG
-Game Master		= +EVERYTHING
+Admin Observer		= +STEALTH
+ProbationAdmin		= +STEALTH +ADMIN +REJUV +BAN +SERVER +VAREDIT
+Non Playing Admin	= +STEALTH +ADMIN +REJUV +NOJOIN +BAN +SERVER
+Non Playing Mod		= +STEALTH +ADMIN +REJUV +NOJOIN
+Moderator V1		= +STEALTH +ADMIN +REJUV
+Moderator V2		= +@ +BAN
+Administrator		= +@ +SPAWN +VAREDIT +DEBUG +SERVER +FUN
+Primary Admin		= +@ +POSSESS +BUILDMODE
+Senior Admin		= +@ +SOUND +PERMISSIONS
+Council			= +EVERYTHING
 
-Host			= +EVERYTHING
+Retired Admin		= +ADMIN +STEALTH +REJUV +SERVER +BAN
+Retired Host		= +ADMIN +STEALTH +REJUV +SERVER +BAN
 
-Coder			= +DEBUG +VAREDIT +SERVER +SPAWN
+Coder lvl1		=
+Coder lvl2		= +ADMIN +VAREDIT +DEBUG +SPAWN
+Coder lvl3		= +@ +SERVER +FUN +BAN
+Head Coder		= +EVERYTHING
+
+Wizard			= +EVERYTHING
+TGCoder			= +EVERYTHING
+Overlord		= +EVERYTHING
+CouncilAdvisor 		= +EVERYTHING
+
+Bot			= +ALL

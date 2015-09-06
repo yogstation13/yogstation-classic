@@ -18,7 +18,7 @@
 	var/zombies_to_win = 0
 	var/escaped_zombies = 0
 
-	var/players_per_carrier = 20
+	var/players_per_carrier = 7
 
 
 /datum/game_mode/zombies/pre_setup()
@@ -63,7 +63,6 @@
 		zombie_infectees += carriermind
 
 		var/datum/disease/D = new /datum/disease/transformation/rage_virus
-		D.hidden = list(1,1)
 		D.holder = carriermind.current
 		D.affected_mob = carriermind.current
 		carriermind.current.viruses += D

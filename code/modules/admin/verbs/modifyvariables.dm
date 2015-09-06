@@ -5,6 +5,10 @@ var/list/forbidden_varedit_object_types = list(
 										/datum/admin_rank					//editing my own rank? it's more likely than you think
 									)
 
+var/list/VVlocked = list("vars", "client", "virus", "viruses", "cuffed", "last_eaten", "unlock_content", "step_x", "step_y", "force_ending")
+var/list/VVicon_edit_lock = list("icon", "icon_state", "overlays", "underlays")
+var/list/VVckey_edit = list("key", "ckey")
+
 /*
 /client/proc/cmd_modify_object_variables(obj/O as obj|mob|turf|area in world)
 	set category = "Debug"
@@ -24,7 +28,7 @@ var/list/forbidden_varedit_object_types = list(
 		src.modify_variables(ticker)
 		feedback_add_details("admin_verb","ETV") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
-/client/proc/mod_list_add_ass() //haha
+/client/proc/mod_list_add_ass(atom/O) //haha
 
 	var/class = "text"
 	if(src.holder && src.holder.marked_datum)
@@ -73,10 +77,18 @@ var/list/forbidden_varedit_object_types = list(
 
 	if((class != "null") && !var_value) return
 
+	if(istext(var_value))
+		if(findtext(var_value,"\["))
+			var/process_vars = alert(usr,"\[] detected in string, process as variables?","Process Variables?","Yes","No")
+			if(process_vars == "Yes")
+				var/list/varsvars = string2listofvars(var_value, O)
+				for(var/V in varsvars)
+					var_value = replacetext(var_value,"\[[V]]","[O.vars[V]]")
+
 	return var_value
 
 
-/client/proc/mod_list_add(var/list/L, var/atom/hobject = null, var/listname = "")
+/client/proc/mod_list_add(list/L, atom/O, original_name, objectvar)
 
 	var/class = "text"
 	if(src.holder && src.holder.marked_datum)
@@ -125,46 +137,69 @@ var/list/forbidden_varedit_object_types = list(
 
 	if((class != "null") && !var_value) return
 
-	var/ass_list_entry = alert("Would you like to associate a var with the list entry?",,"Yes","No")
-	switch(ass_list_entry)
+	if(istext(var_value))
+		if(findtext(var_value,"\["))
+			var/process_vars = alert(usr,"\[] detected in string, process as variables?","Process Variables?","Yes","No")
+			if(process_vars == "Yes")
+				var/list/varsvars = string2listofvars(var_value, O)
+				for(var/V in varsvars)
+					var_value = replacetext(var_value,"\[[V]]","[O.vars[V]]")
+
+	L += var_value
+	switch(alert("Would you like to associate a var with the list entry?",,"Yes","No"))
 		if("Yes")
-			L += var_value
-			L[var_value] = mod_list_add_ass() //haha
-		if("No")
-			L += var_value
-	world.log << "### VarEdit by [src]: [hobject ? hobject.type : "???"] [listname]\[[var_value]\]=[(ass_list_entry == "Yes") ? html_encode(L[var_value]) : "added"]"
-	log_admin("[key_name(src)] added [hobject]'s [listname]\[[var_value]\]=[(ass_list_entry == "Yes") ? L[var_value] : "null"]")
-	message_admins("[key_name_admin(src)] added [hobject]'s [listname]\[[var_value]\]=[(ass_list_entry == "Yes") ? L[var_value] : "null"]")
+			L[var_value] = mod_list_add_ass(O) //haha
+	world.log << "### ListVarEdit by [src]: [O.type] [objectvar]: ADDED=[var_value]"
+	log_admin("[key_name(src)] modified [original_name]'s [objectvar]: ADDED=[var_value]")
+	message_admins("[key_name_admin(src)] modified [original_name]'s [objectvar]: ADDED=[var_value]")
 
-
-/client/proc/mod_list(var/list/L, var/atom/hobject = null, var/listname = "")
+/client/proc/mod_list(list/L, atom/O, original_name, objectvar)
 	if(!check_rights(R_VAREDIT))	return
-
 	if(!istype(L,/list)) src << "Not a List."
 
-	var/list/locked = list("vars", "client", "virus", "viruses", "cuffed", "last_eaten", "unlock_content", "step_x", "step_y")
-	var/list/ckey_edit = list("key", "ckey")
-	var/list/icon_edit = list("icon", "icon_state", "overlays", "underlays")
-	var/list/names = sortList(L)
+	if(L.len > 1000)
+		var/confirm = alert(src, "The list you're trying to edit is very long, continuing may crash the server.", "Warning", "Continue", "Abort")
+		if(confirm != "Continue")
+			return
 
-	var/variable = input("Which var?","Var") as null|anything in names + "(ADD VAR)"
+	var/assoc = 0
+	if(L.len > 0)
+		var/a = L[1]
+		if(istext(a) && L[a] != null)
+			assoc = 1 //This is pretty weak test but i can't think of anything else
+			usr << "List appears to be associative."
+
+	var/list/names = null
+	if(!assoc)
+		names = sortList(L)
+
+	var/variable
+	var/assoc_key
+	if(assoc)
+		variable = input("Which var?","Var") as null|anything in L + "(ADD VAR)"
+	else
+		variable = input("Which var?","Var") as null|anything in names + "(ADD VAR)"
 
 	if(variable == "(ADD VAR)")
-		mod_list_add(L, hobject, listname)
+		mod_list_add(L, O, original_name, objectvar)
 		return
 
-	if(!variable)
+	if(assoc)
+		assoc_key = variable
+		variable = L[assoc_key]
+
+	if(!assoc && !variable || assoc && !assoc_key)
 		return
 
 	var/default
 
 	var/dir
 
-	if(variable in locked)
+	if(variable in VVlocked)
 		if(!check_rights(R_DEBUG))	return
-	if(variable in ckey_edit)
+	if(variable in VVckey_edit)
 		if(!check_rights(R_SPAWN|R_DEBUG)) return
-	if(variable in icon_edit)
+	if(variable in VVicon_edit_lock)
 		if(!check_rights(R_FUN|R_DEBUG)) return
 
 	if(isnull(variable))
@@ -243,62 +278,108 @@ var/list/forbidden_varedit_object_types = list(
 	if(holder.marked_datum && class == "marked datum ([holder.marked_datum.type])")
 		class = "marked datum"
 
+	var/original_var
+	if(assoc)
+		original_var = L[assoc_key]
+	else
+		original_var = L[L.Find(variable)]
+
+	var/new_var
 	switch(class) //Spits a runtime error if you try to modify an entry in the contents list. Dunno how to fix it, yet.
 
 		if("list")
-			mod_list(variable)
-			return
+			mod_list(variable, O, original_name, objectvar)
 
 		if("restore to default")
-			L[L.Find(variable)]=initial(variable)
+			new_var = initial(variable)
+			if(assoc)
+				L[assoc_key] = new_var
+			else
+				L[L.Find(variable)] = new_var
 
 		if("edit referenced object")
 			modify_variables(variable)
 
 		if("DELETE FROM LIST")
+			world.log << "### ListVarEdit by [src]: [O.type] [objectvar]: REMOVED=[html_encode("[variable]")]"
+			log_admin("[key_name(src)] modified [original_name]'s [objectvar]: REMOVED=[variable]")
+			message_admins("[key_name_admin(src)] modified [original_name]'s [objectvar]: REMOVED=[variable]")
 			L -= variable
-			world.log << "### VarEdit by [src]: [hobject ? hobject.type : "???"] [listname]\[[variable]\]=removed"
-			log_admin("[key_name(src)] removed [hobject]'s [listname]\[[variable]\]")
-			message_admins("[key_name_admin(src)] removed [hobject]'s [listname]\[[variable]\]")
 			return
 
 		if("null")
 			L[L.Find(variable)] = null
 
 		if("text")
-			L[L.Find(variable)] = input("Enter new text:","Text") as text
+			new_var = input("Enter new text:","Text") as text
+
+			if(findtext(new_var,"\["))
+				var/process_vars = alert(usr,"\[] detected in string, process as variables?","Process Variables?","Yes","No")
+				if(process_vars == "Yes")
+					var/list/varsvars = string2listofvars(new_var, O)
+					for(var/V in varsvars)
+						new_var = replacetext(new_var,"\[[V]]","[O.vars[V]]")
+
+			if(assoc)
+				L[assoc_key] = new_var
+			else
+				L[L.Find(variable)] = new_var
 
 		if("num")
-			L[L.Find(variable)] = input("Enter new number:","Num") as num
+			new_var = input("Enter new number:","Num") as num
+			if(assoc)
+				L[assoc_key] = new_var
+			else
+				L[L.Find(variable)] = new_var
 
 		if("type")
-			L[L.Find(variable)] = input("Enter type:","Type") in typesof(/obj,/mob,/area,/turf)
+			new_var = input("Enter type:","Type") in typesof(/obj,/mob,/area,/turf)
+			if(assoc)
+				L[assoc_key] = new_var
+			else
+				L[L.Find(variable)] = new_var
 
 		if("reference")
-			L[L.Find(variable)] = input("Select reference:","Reference") as mob|obj|turf|area in world
+			new_var = input("Select reference:","Reference") as mob|obj|turf|area in world
+			if(assoc)
+				L[assoc_key] = new_var
+			else
+				L[L.Find(variable)] = new_var
 
 		if("mob reference")
-			L[L.Find(variable)] = input("Select reference:","Reference") as mob in world
+			new_var = input("Select reference:","Reference") as mob in world
+			if(assoc)
+				L[assoc_key] = new_var
+			else
+				L[L.Find(variable)] = new_var
 
 		if("file")
-			L[L.Find(variable)] = input("Pick file:","File") as file
+			new_var = input("Pick file:","File") as file
+			if(assoc)
+				L[assoc_key] = new_var
+			else
+				L[L.Find(variable)] = new_var
 
 		if("icon")
-			L[L.Find(variable)] = input("Pick icon:","Icon") as icon
+			new_var = input("Pick icon:","Icon") as icon
+			if(assoc)
+				L[assoc_key] = new_var
+			else
+				L[L.Find(variable)] = new_var
 
 		if("marked datum")
-			L[L.Find(variable)] = holder.marked_datum
-	world.log << "### VarEdit by [src]: [hobject ? hobject.type : "???"] [listname]\[[variable]\]=[html_encode(L.Find(variable))]"
-	log_admin("[key_name(src)] modified [hobject]'s [listname]\[[variable]\] to [L.Find(variable)]")
-	message_admins("[key_name_admin(src)] modified [hobject]'s [listname]\[[variable]\] to [L.Find(variable)]")
+			new_var = holder.marked_datum
+			if(assoc)
+				L[assoc_key] = new_var
+			else
+				L[L.Find(variable)] = new_var
 
+	world.log << "### ListVarEdit by [src]: [O.type] [objectvar]: [original_var]=[new_var]"
+	log_admin("[key_name(src)] modified [original_name]'s [objectvar]: [original_var]=[new_var]")
+	message_admins("[key_name_admin(src)] modified [original_name]'s varlist [objectvar]: [original_var]=[new_var]")
 
-/client/proc/modify_variables(var/atom/O, var/param_var_name = null, var/autodetect_class = 0)
+/client/proc/modify_variables(atom/O, param_var_name = null, autodetect_class = 0)
 	if(!check_rights(R_VAREDIT))	return
-
-	var/list/locked = list("vars", "client", "virus", "cuffed", "last_eaten", "mutantrace")
-	var/list/ckey_edit = list("key", "ckey")
-	var/list/icon_edit = list("icon", "icon_state", "overlays", "underlays")
 
 	for(var/p in forbidden_varedit_object_types)
 		if( istype(O,p) )
@@ -318,11 +399,11 @@ var/list/forbidden_varedit_object_types = list(
 			src << "A variable with this name ([param_var_name]) doesn't exist in this atom ([O])"
 			return
 
-		if(param_var_name == "holder" || (param_var_name in locked))
+		if(param_var_name in VVlocked)
 			if(!check_rights(R_DEBUG))	return
-		if(param_var_name in ckey_edit)
+		if(param_var_name in VVckey_edit)
 			if(!check_rights(R_SPAWN|R_DEBUG)) return
-		if(param_var_name in icon_edit)
+		if(param_var_name in VVicon_edit_lock)
 			if(!check_rights(R_FUN|R_DEBUG)) return
 
 		variable = param_var_name
@@ -380,11 +461,11 @@ var/list/forbidden_varedit_object_types = list(
 		if(!variable)	return
 		var_value = O.vars[variable]
 
-		if(variable == "holder" || (variable in locked))
+		if(variable in VVlocked)
 			if(!check_rights(R_DEBUG)) return
-		if(variable in ckey_edit)
+		if(variable in VVckey_edit)
 			if(!check_rights(R_SPAWN|R_DEBUG)) return
-		if(variable in icon_edit)
+		if(variable in VVicon_edit_lock)
 			if(!check_rights(R_FUN|R_DEBUG)) return
 
 	if(!autodetect_class)
@@ -475,7 +556,7 @@ var/list/forbidden_varedit_object_types = list(
 	switch(class)
 
 		if("list")
-			mod_list(O.vars[variable], O, variable)
+			mod_list(O.vars[variable], O, original_name, variable)
 			return
 
 		if("restore to default")
@@ -490,6 +571,14 @@ var/list/forbidden_varedit_object_types = list(
 		if("text")
 			var/var_new = input("Enter new text:","Text",O.vars[variable]) as null|text
 			if(var_new==null) return
+
+			if(findtext(var_new,"\["))
+				var/process_vars = alert(usr,"\[] detected in string, process as variables?","Process Variables?","Yes","No")
+				if(process_vars == "Yes")
+					var/list/varsvars = string2listofvars(var_new, O)
+					for(var/V in varsvars)
+						var_new = replacetext(var_new,"\[[V]]","[O.vars[V]]")
+
 			O.vars[variable] = var_new
 
 		if("num")
@@ -543,4 +632,3 @@ var/list/forbidden_varedit_object_types = list(
 	world.log << "### VarEdit by [src]: [O.type] [variable]=[html_encode("[O.vars[variable]]")]"
 	log_admin("[key_name(src)] modified [original_name]'s [variable] to [O.vars[variable]]")
 	message_admins("[key_name_admin(src)] modified [original_name]'s [variable] to [O.vars[variable]]")
-

@@ -1,15 +1,15 @@
 /obj/machinery/computer/mecha
 	name = "exosuit control console"
 	desc = "Used to remotely locate or lockdown exosuits."
-	icon = 'icons/obj/computer.dmi'
-	icon_state = "mecha"
+	icon_screen = "mecha"
+	icon_keyboard = "tech_key"
 	req_access = list(access_robotics)
 	circuit = "/obj/item/weapon/circuitboard/mecha_control"
 	var/list/located = list()
 	var/screen = 0
 	var/stored_data
 
-/obj/machinery/computer/mecha/attack_hand(var/mob/user as mob)
+/obj/machinery/computer/mecha/attack_hand(mob/user)
 	if(..())
 		return
 	user.set_machine(src)
@@ -21,7 +21,7 @@
 			if(answer)
 				dat += {"<hr>[answer]<br/>
 						  <a href='?src=\ref[src];send_message=\ref[TR]'>Send message</a><br/>
-						  <a href='?src=\ref[src];get_log=\ref[TR]'>Show exosuit log</a> | <a style='color: #f00;' href='?src=\ref[src];shock=\ref[TR]'>(EMP pulse)</a><br>"}
+						  <a href='?src=\ref[src];get_log=\ref[TR]'>Show exosuit log</a> | <a style='color: #00f;' href='?src=\ref[src];reset=\ref[TR]'>(Reset access)</a> |<a style='color: #ff0;' href='?src=\ref[src];eject=\ref[TR]'>(Force eject)</a> | <a style='color: #f00;' href='?src=\ref[src];shock=\ref[TR]'>(SHUTDOWN)</a><br>"}
 
 	if(screen==1)
 		dat += "<h3>Log contents</h3>"
@@ -41,11 +41,17 @@
 	var/datum/topic_input/filter = new /datum/topic_input(href,href_list)
 	if(href_list["send_message"])
 		var/obj/item/mecha_parts/mecha_tracking/MT = filter.getObj("send_message")
-		var/message = strip_html_simple(input(usr,"Input message","Transmit message") as text)
+		var/message = stripped_input(usr,"Input message","Transmit message")
 		var/obj/mecha/M = MT.in_mecha()
 		if(trim(message) && M)
 			M.occupant_message(message)
 		return
+	if(href_list["reset"])
+		var/obj/item/mecha_parts/mecha_tracking/MT = filter.getObj("reset")
+		MT.reset()
+	if(href_list["eject"])
+		var/obj/item/mecha_parts/mecha_tracking/MT = filter.getObj("eject")
+		MT.eject()
 	if(href_list["shock"])
 		var/obj/item/mecha_parts/mecha_tracking/MT = filter.getObj("shock")
 		MT.shock()
@@ -55,19 +61,16 @@
 		screen = 1
 	if(href_list["return"])
 		screen = 0
-	src.updateUsrDialog()
+	updateUsrDialog()
 	return
-
-
 
 /obj/item/mecha_parts/mecha_tracking
 	name = "exosuit tracking beacon"
 	desc = "Device used to transmit exosuit data."
 	icon = 'icons/obj/device.dmi'
 	icon_state = "motion2"
+	w_class = 2
 	origin_tech = "programming=2;magnets=2"
-	construction_time = 50
-	construction_cost = list("metal"=500)
 
 /obj/item/mecha_parts/mecha_tracking/proc/get_mecha_info()
 	if(!in_mecha())
@@ -100,10 +103,28 @@
 		return src.loc
 	return 0
 
+/obj/item/mecha_parts/mecha_tracking/proc/eject()
+	var/obj/mecha/M = in_mecha()
+	if(M && M.occupant)
+		M.occupant_message("<span class='userdanger'>CODE NT-09-THETA. Forcing ejection due to external command.</span>")
+		M.log_message("Forcefully ejecting [M.occupant].")
+		M.go_out()
+
+/obj/item/mecha_parts/mecha_tracking/proc/reset()
+	var/obj/mecha/M = in_mecha()
+	if(M)
+		M.occupant_message("<span class='userdanger'>CODE NT-26-PSI. Access restrictions reset due to external command.</span>")
+		M.log_message("Access restrictions reset.")
+		M.dna = null
+		M.operation_req_access = list()
+
 /obj/item/mecha_parts/mecha_tracking/proc/shock()
 	var/obj/mecha/M = in_mecha()
 	if(M)
-		M.emp_act(2)
+		M.occupant_message("<span class='userdanger'>CODE NT-51-EPSILON. Shutting down all power systems due to external command.</span>")
+		M.log_message("Shutdown command received.")
+		M.use_power(M.get_charge())
+		M.setInternalDamage(MECHA_INT_SHORT_CIRCUIT)
 	qdel(src)
 
 /obj/item/mecha_parts/mecha_tracking/proc/get_mecha_log()

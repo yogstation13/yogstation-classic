@@ -18,7 +18,7 @@ var/list/sting_paths
 	usr << browse(dat, "window=powers;size=600x700")//900x480
 
 
-/obj/effect/proc_holder/changeling/evolution_menu/proc/create_menu(var/datum/changeling/changeling)
+/obj/effect/proc_holder/changeling/evolution_menu/proc/create_menu(datum/changeling/changeling)
 	var/dat
 	dat +="<html><head><title>Changling Evolution Menu</title></head>"
 
@@ -259,7 +259,7 @@ var/list/sting_paths
 					<a id='link[i]'
 					onmouseover='expand("item[i]","[P.name]","[P.desc]","[P.helptext]","[P]",[ownsthis])'
 					>
-					<b id='search[i]'>Evolve [P][ownsthis ? " - Purchased" : ((P.dna_cost > 1) ? " - Cost: [P.dna_cost]" : "")]</b>
+					<b id='search[i]'>Evolve [P][ownsthis ? " - Purchased" : (P.req_dna>changeling.absorbedcount ? " - Requires [P.req_dna] absorptions" : " - Cost: [P.dna_cost]")]</b>
 					</a>
 					<br><span id='item[i]'></span>
 				</td>
@@ -297,7 +297,7 @@ var/list/sting_paths
 	usr << browse(dat, "window=powers;size=600x700")
 /////
 
-/datum/changeling/proc/purchasePower(var/mob/living/carbon/user, var/sting_name)
+/datum/changeling/proc/purchasePower(mob/living/carbon/user, sting_name)
 
 	var/obj/effect/proc_holder/changeling/thepower = null
 
@@ -310,6 +310,10 @@ var/list/sting_paths
 
 	if(thepower == null)
 		user << "This is awkward. Changeling power purchase failed, please report this bug to a coder!"
+		return
+
+	if(absorbedcount < thepower.req_dna)
+		user << "We lack the energy to evolve this ability!"
 		return
 
 	if(has_sting(thepower))
@@ -333,15 +337,18 @@ var/list/sting_paths
 	thepower.on_purchase(user)
 
 //Reselect powers
-/datum/changeling/proc/lingRespec(var/mob/user)
+/datum/changeling/proc/lingRespec(mob/user)
+	if(!ishuman(user))
+		user << "<span class='danger'>We can't remove our evolutions in this form!</span>"
+		return
 	if(canrespec)
-		user << "We have removed our evolutions from this form, and are now ready to readapt."
+		user << "<span class='notice'>We have removed our evolutions from this form, and are now ready to readapt.</span>"
 		user.remove_changeling_powers(1)
 		canrespec = 0
 		user.make_changeling()
 		return 1
 	else
-		user << "You lack the power to readapt your evolutions!"
+		user << "<span class='danger'>You lack the power to readapt your evolutions!</span>"
 		return 0
 
 /mob/proc/make_changeling()
@@ -361,10 +368,11 @@ var/list/sting_paths
 		if(!S.dna_cost)
 			if(!mind.changeling.has_sting(S))
 				mind.changeling.purchasedpowers+=S
-				S.on_purchase(src)
+			S.on_purchase(src)
 
 	var/mob/living/carbon/C = src		//only carbons have dna now, so we have to typecaste
-	mind.changeling.absorbed_dna |= C.dna
+	var/datum/changelingprofile/prof = mind.changeling.add_profile(C) //not really a point in typecasting here but somebody will probably get mad at me if i dont
+	mind.changeling.first_prof = prof
 	return 1
 
 /datum/changeling/proc/reset()
@@ -377,7 +385,7 @@ var/list/sting_paths
 	chem_recharge_slowdown = initial(chem_recharge_slowdown)
 	mimicing = ""
 
-/mob/proc/remove_changeling_powers(var/keep_free_powers=0)
+/mob/proc/remove_changeling_powers(keep_free_powers=0)
 	if(ishuman(src) || ismonkey(src))
 		if(mind && mind.changeling)
 			digitalcamo = 0
@@ -386,6 +394,9 @@ var/list/sting_paths
 			for(var/obj/effect/proc_holder/changeling/p in mind.changeling.purchasedpowers)
 				if(!(p.dna_cost == 0 && keep_free_powers))
 					mind.changeling.purchasedpowers -= p
+				if(istype(p,/obj/effect/proc_holder/changeling/augmented_eyesight))
+					permanent_sight_flags -= SEE_MOBS
+					sight -= SEE_MOBS
 		if(hud_used)
 			hud_used.lingstingdisplay.icon_state = null
 			hud_used.lingstingdisplay.invisibility = 101
