@@ -1,3 +1,15 @@
+/*
+	TODO
+
+	* Break glass instead of knocking
+	* Venting slower
+	* Drop clothes [DONE]
+	* Give icon
+
+	* Level up zombies
+	* Multiple zombies working together to open doors and break down structures
+*/
+
 /mob/living/carbon/human/zombie
 	name = "zombie"
 	voice_name = "zombie"
@@ -24,6 +36,18 @@
 	gender = pick(MALE, FEMALE)
 
 	..()
+
+/proc/is_zombie(mob/user)
+	if(istype(user, /mob/living/carbon/human/zombie))
+		return 1
+	else
+		return 0
+
+/proc/is_infected(mob/M)
+	for(var/datum/disease/D in M.viruses)
+		if(istype(D, /datum/disease/transformation/rage_virus))
+			return 1
+	return 0
 
 /mob/living/carbon/human/zombie/prepare_data_huds()
 	//Prepare our med HUD...
@@ -85,26 +109,58 @@
 
 
 /mob/living/carbon/human/zombie/attack_paw(mob/M as mob)
-	..()
+	//..()
 
 	if (M.a_intent == "help")
 		help_shake_act(M)
 	else
 		if (M.a_intent == "harm" && !M.is_muzzled())
-			if (prob(85))
+			if (prob(50))
 				playsound(loc, 'sound/weapons/bite.ogg', 50, 1, -1)
-				visible_message("<span class='danger'>[M.name] bites [name]!</span>", \
-						"<span class='userdanger'>[M.name] bites [name]!</span>")
-				var/damage = rand(1, 5)
-				if (health > -100)
-					adjustBruteLoss(damage)
-					health = 100 - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss()
+
+				var/isZombie = is_zombie(src)
+				var/isInfected = is_infected(src)
+				//var/isDead = (src.stat == DEAD ? 1 : 0)
+				var/isUnconcious = (src.stat == UNCONSCIOUS ? 1 : 0)
+				var/isCritical = src.InCritical()
+
+				var/allowDamage = 1
+				var/selfMessage = ""
+				var/localMessage = ""
+				if(isZombie)
+					selfMessage = "Your zombified brain doesn't let you really bite into another zombie, instead you just nibble the flesh."
+					localMessage = "[M.name] nibbles [name]."
+					allowDamage = 0
+				else if(isInfected)
+					selfMessage = "Your zombified brain doesn't let you really bite into an infected, instead you just nibble the flesh."
+					localMessage = "[M.name] nibbles [name]."
+					allowDamage = 0
+				else if(isCritical)
+					selfMessage = "You struggle to find any meat on [name], he twitches a little! This body seems to not have much left to eat."
+					localMessage = "[M.name] eats [name], he twitches a little!"
+					allowDamage = 0
+				else if(isUnconcious)
+					selfMessage = "You eat a chunk out of [name], he twitches a lot! It would be tasty, if that part of your brain still worked."
+					localMessage = "[M.name] eats [name], he twitches a lot!"
+				else //if(isDead)
+					selfMessage = "You bite a chunk out of [name]! It would be tasty, if that part of your brain still worked."
+					localMessage = "[M.name] bites [name] ferociously!"
+
+				visible_message("<span class='danger'>[selfMessage]</span>", \
+						"<span class='userdanger'>[localMessage]</span>")
+
+				if(allowDamage)
+					var/damage = rand(20, 30)
+					if (health > -100)
+						adjustBruteLoss(damage)
+						health = 100 - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss()
+
 				for(var/datum/disease/D in M.viruses)
 					//contract_disease(D,1,0)
-					ForceContractDisease(D)
+					src.ForceContractDisease(D)
 			else
-				visible_message("<span class='danger'>[M.name] has attempted to bite [name]!</span>", \
-					"<span class='userdanger'>[M.name] has attempted to bite [name]!</span>")
+				visible_message("<span class='danger'>[M.name] has attempted to bite [name] ferociously!</span>", \
+					"<span class='userdanger'>[M.name] has attempted to bite [name] ferociously!</span>")
 	return
 
 /mob/living/carbon/human/zombie/attack_larva(mob/living/carbon/alien/larva/L as mob)

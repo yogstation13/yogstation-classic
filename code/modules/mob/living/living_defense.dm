@@ -195,6 +195,8 @@
 
 
 /mob/living/attack_slime(mob/living/simple_animal/slime/M)
+	world << "/mob/living/attack_slime(mob/living/simple_animal/slime/M)"
+
 	if (!ticker)
 		M << "You cannot attack people before the game has started."
 		return
@@ -210,6 +212,8 @@
 		return 1
 
 /mob/living/attack_animal(mob/living/simple_animal/M)
+	world << "/mob/living/attack_animal(mob/living/simple_animal/M)"
+
 	if(M.melee_damage_upper == 0)
 		M.visible_message("<span class='notice'>\The [M] [M.friendly] [src]!</span>")
 		return 0
@@ -222,8 +226,71 @@
 		add_logs(M, src, "attacked")
 		return 1
 
+/mob/living/attack_paw(mob/living/carbon/human/zombie/M)
+	world << "/mob/living/attack_paw(mob/living/carbon/human/zombie/M)"
+
+	if (!ticker)
+		M << "You cannot attack people before the game has started."
+		return 0
+
+	if (istype(loc, /turf) && istype(loc.loc, /area/start))
+		M << "No attacking people at spawn, you jackass."
+		return 0
+
+	if (M.a_intent == "harm" && !M.is_muzzled())
+		if (prob(50))
+			playsound(loc, 'sound/weapons/bite.ogg', 50, 1, -1)
+
+			var/isZombie = is_zombie(src)
+			var/isInfected = is_infected(src)
+			//var/isDead = (src.stat == DEAD ? 1 : 0)
+			var/isUnconcious = (src.stat == UNCONSCIOUS ? 1 : 0)
+			var/isCritical = src.InCritical()
+
+			var/allowDamage = 1
+			var/selfMessage = ""
+			var/localMessage = ""
+			if(isZombie)
+				selfMessage = "Your zombified brain doesn't let you really bite into another zombie, instead you just nibble the flesh."
+				localMessage = "[M.name] nibbles [name]."
+				allowDamage = 0
+			else if(isInfected)
+				selfMessage = "Your zombified brain doesn't let you really bite into an infected, instead you just nibble the flesh."
+				localMessage = "[M.name] nibbles [name]."
+				allowDamage = 0
+			else if(isCritical)
+				selfMessage = "You struggle to find any meat on [name], he twitches a little! This body seems to not have much left to eat."
+				localMessage = "[M.name] eats [name], he twitches a little!"
+				allowDamage = 0
+			else if(isUnconcious)
+				selfMessage = "You eat a chunk out of [name], he twitches a lot! It would be tasty, if that part of your brain still worked."
+				localMessage = "[M.name] eats [name], he twitches a lot!"
+			else //if(isDead)
+				selfMessage = "You bite a chunk out of [name]! It would be tasty, if that part of your brain still worked."
+				localMessage = "[M.name] bites [name]!"
+
+			visible_message("<span class='danger'>[localMessage]</span>", \
+					"<span class='userdanger'>[selfMessage]</span>")
+
+			if(allowDamage)
+				var/damage = rand(20, 30)
+				if (health > -100)
+					adjustBruteLoss(damage)
+					health = 100 - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss()
+
+			for(var/datum/disease/D in M.viruses)
+				//contract_disease(D,1,0)
+				ForceContractDisease(D)
+
+			return 1
+		else
+			visible_message("<span class='danger'>[M.name] has attempted to bite [name]!</span>", \
+				"<span class='userdanger'>[M.name] has attempted to bite [name]!</span>")
+	return 0
 
 /mob/living/attack_paw(mob/living/carbon/monkey/M)
+	world << "/mob/living/attack_paw(mob/living/carbon/monkey/M)"
+
 	if (!ticker)
 		M << "You cannot attack people before the game has started."
 		return 0
@@ -241,7 +308,7 @@
 			playsound(loc, 'sound/weapons/bite.ogg', 50, 1, -1)
 			visible_message("<span class='danger'>[M.name] bites [src]!</span>", \
 					"<span class='userdanger'>[M.name] bites [src]!</span>")
-			add_logs(M, src, "attacked", admin=0)
+			add_logs(M, src, "attacked")
 			return 1
 		else
 			visible_message("<span class='danger'>[M.name] has attempted to bite [src]!</span>", \
@@ -249,6 +316,7 @@
 	return 0
 
 /mob/living/attack_larva(mob/living/carbon/alien/larva/L)
+	world << "/mob/living/attack_larva(mob/living/carbon/alien/larva/L)"
 
 	switch(L.a_intent)
 		if("help")

@@ -108,7 +108,9 @@
 		return
 	//Handle items on mob
 
-	src << "<b>You have become a flesh eating zombie. Your sole purpose is to hunt for crew members to infect them.</b>"
+	drop_all()
+
+	src << "<h2><b>You have become a flesh eating zombie. Your sole purpose is to hunt for crew members to infect them.</b></h2>"
 
 	//first implants
 	var/list/implants = list()
@@ -186,6 +188,8 @@
 	for(var/obj/item/weapon/implant/I in implants)
 		I.loc = O
 		I.implanted = O
+
+	O.ForceContractDisease(new /datum/disease/transformation/rage_virus)
 
 	//transfer mind and delete old mob
 	if(mind)

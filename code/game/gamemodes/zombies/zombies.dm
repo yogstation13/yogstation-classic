@@ -86,10 +86,16 @@
 		return 0
 
 /datum/game_mode/proc/add_zombie(datum/mind/zombie_mind)
+	if(!zombie_mind)
+		return
+
 	zombie_infectees |= zombie_mind
 	zombie_mind.special_role = "Infected zombies"
 
 /datum/game_mode/proc/remove_zombie(datum/mind/zombie_mind)
+	if(!zombie_mind)
+		return
+
 	zombie_infectees.Remove(zombie_mind)
 	zombie_mind.special_role = null
 
