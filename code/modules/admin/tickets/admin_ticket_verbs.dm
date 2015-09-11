@@ -213,7 +213,7 @@
 
 /client/verb/afk()
 	set name = "AFK"
-	set category = "Admin"
+	set category = "OOC"
 	set desc = "Report to Admins and your peers that your will go AFK"
 
 	if(src.mob)
