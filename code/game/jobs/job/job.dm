@@ -71,6 +71,9 @@
 		new default_storagebox(BPK)
 		H.equip_to_slot_or_del(BPK, slot_back,1)
 
+	if(is_donator(H))
+		BPK.contents += H.client.prefs.donor_hat
+
 //But don't override this
 /datum/job/proc/equip(mob/living/carbon/human/H)
 	if(!H)
@@ -106,8 +109,9 @@
 	//Equip headset
 	H.equip_to_slot_or_del(new src.default_headset(H), slot_ears)
 
-	if(is_donator(H))
-		H.equip_to_slot_or_del(H.client.prefs.donor_hat, slot_head)
+	// Moved Hats to backpack, instead of being forced on
+	/*if(is_donator(H))
+		H.equip_to_slot_or_del(H.client.prefs.donor_hat, slot_head)*/
 
 /datum/job/proc/apply_fingerprints(mob/living/carbon/human/H)
 	if(!istype(H))
