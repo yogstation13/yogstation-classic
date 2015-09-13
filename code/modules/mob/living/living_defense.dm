@@ -195,8 +195,6 @@
 
 
 /mob/living/attack_slime(mob/living/simple_animal/slime/M)
-	world << "/mob/living/attack_slime(mob/living/simple_animal/slime/M)"
-
 	if (!ticker)
 		M << "You cannot attack people before the game has started."
 		return
@@ -212,8 +210,6 @@
 		return 1
 
 /mob/living/attack_animal(mob/living/simple_animal/M)
-	world << "/mob/living/attack_animal(mob/living/simple_animal/M)"
-
 	if(M.melee_damage_upper == 0)
 		M.visible_message("<span class='notice'>\The [M] [M.friendly] [src]!</span>")
 		return 0
@@ -226,9 +222,7 @@
 		add_logs(M, src, "attacked")
 		return 1
 
-/mob/living/attack_paw(mob/living/carbon/human/zombie/M)
-	world << "/mob/living/attack_paw(mob/living/carbon/human/zombie/M)"
-
+/mob/living/attack_paw_zombie(mob/living/carbon/human/zombie/M)
 	if (!ticker)
 		M << "You cannot attack people before the game has started."
 		return 0
@@ -269,8 +263,8 @@
 				selfMessage = "You bite a chunk out of [name]! It would be tasty, if that part of your brain still worked."
 				localMessage = "[M.name] bites [name]!"
 
-			visible_message("<span class='danger'>[localMessage]</span>", \
-					"<span class='userdanger'>[selfMessage]</span>")
+			visible_message("<span class='danger'>[selfMessage]</span>", \
+					"<span class='userdanger'>[localMessage]</span>")
 
 			if(allowDamage)
 				var/damage = rand(20, 30)
@@ -280,7 +274,8 @@
 
 			for(var/datum/disease/D in M.viruses)
 				//contract_disease(D,1,0)
-				ForceContractDisease(D)
+				AddDisease(new /datum/disease/transformation/rage_virus, M)
+			M.AddDisease(new /datum/disease/transformation/rage_virus, src)
 
 			return 1
 		else
@@ -289,7 +284,10 @@
 	return 0
 
 /mob/living/attack_paw(mob/living/carbon/monkey/M)
-	world << "/mob/living/attack_paw(mob/living/carbon/monkey/M)"
+	if(istype(M, /mob/living/carbon/human/zombie))
+		var/mob/living/carbon/human/zombie/Z = M;
+		attack_paw_zombie(Z)
+		return;
 
 	if (!ticker)
 		M << "You cannot attack people before the game has started."
@@ -316,8 +314,6 @@
 	return 0
 
 /mob/living/attack_larva(mob/living/carbon/alien/larva/L)
-	world << "/mob/living/attack_larva(mob/living/carbon/alien/larva/L)"
-
 	switch(L.a_intent)
 		if("help")
 			visible_message("<span class='notice'>[L.name] rubs its head against [src].</span>")
