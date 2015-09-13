@@ -161,7 +161,7 @@
 	name = "bear trap"
 	throw_speed = 1
 	throw_range = 1
-	icon_state = "beartrap"
+	icon_state = "beartrap1"
 	desc = "A trap used to catch bears and other legged creatures."
 	var/armed = 0
 	var/trap_damage = 20

@@ -3,6 +3,7 @@ It's like a regular ol' straight pipe, but you can turn it on and off.
 */
 
 /obj/machinery/atmospherics/binary/valve
+	icon = 'icons/obj/atmospherics/components/binary_devices.dmi'
 	icon_state = "mvalve_map"
 	name = "manual valve"
 	desc = "A pipe valve"

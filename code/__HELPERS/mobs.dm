@@ -120,8 +120,8 @@ var/global/list/roundstart_species[0]
 
 /proc/is_donator(mob/user)
 	// Enable only for testing!
-	//if(is_admin(user))
-	//	return 1
+	if(is_admin(user))
+		return 1
 
 	if(ismob(user))
 		if(user.client && user.client.prefs)
