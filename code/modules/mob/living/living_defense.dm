@@ -272,10 +272,9 @@
 					adjustBruteLoss(damage)
 					health = 100 - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss()
 
-			for(var/datum/disease/D in M.viruses)
+			//for(var/datum/disease/D in M.viruses)
 				//contract_disease(D,1,0)
-				AddDisease(new /datum/disease/transformation/rage_virus, M)
-			M.AddDisease(new /datum/disease/transformation/rage_virus, src)
+			AddDisease(new /datum/disease/transformation/rage_virus, M)
 
 			return 1
 		else

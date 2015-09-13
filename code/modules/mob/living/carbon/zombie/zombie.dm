@@ -1,7 +1,7 @@
 /*
 	TODO
 
-	* Break glass instead of knocking
+	* Break glass instead of knocking [DONE]
 	* Venting slower
 	* Drop clothes [DONE]
 	* Give icon

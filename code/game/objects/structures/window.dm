@@ -135,7 +135,16 @@
 	if(!can_be_reached(user))
 		return
 	user.changeNext_move(CLICK_CD_MELEE)
-	user.visible_message("[user] knocks on [src].")
+	if(istype(user, /mob/living/carbon/human/zombie))
+		health -= rand(5, 20)
+		if(health <= 0)
+			user.visible_message("<span class='danger'>[user] smashes through [src]!</span>")
+			spawnfragments()
+		else
+			user.visible_message("<span class='danger'>[user] smashes into [src]!</span>")
+			playsound(loc, 'sound/effects/Glasshit.ogg', 100, 1)
+	else
+		user.visible_message("[user] knocks on [src].")
 	add_fingerprint(user)
 	playsound(loc, 'sound/effects/Glassknock.ogg', 50, 1)
 

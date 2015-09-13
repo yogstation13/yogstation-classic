@@ -189,7 +189,7 @@
 		I.loc = O
 		I.implanted = O
 
-	O.AddDisease(new /datum/disease/transformation/rage_virus)
+	//O.AddDisease(new /datum/disease/transformation/rage_virus)
 
 	//transfer mind and delete old mob
 	if(mind)
