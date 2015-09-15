@@ -249,7 +249,7 @@
 				localMessage = "[M.name] nibbles [name]."
 				allowDamage = 0
 			else if(isInfected)
-				selfMessage = "Your zombified brain doesn't let you really bite into an infected, instead you just nibble the flesh."
+				selfMessage = "Your zombified brain doesn't let you really bite into an infected, instead you just nibble the flesh transferring more of the infection. Quickening the transition."
 				localMessage = "[M.name] nibbles [name]."
 				allowDamage = 0
 			else if(isCritical)
@@ -267,14 +267,30 @@
 					"<span class='userdanger'>[localMessage]</span>")
 
 			if(allowDamage)
+				src << "<span class='danger'>The pain of being bitten causes you to drop what you are holding and fall over!</span>"
+				drop_l_hand()
+				drop_r_hand()
+				fall(1)
 				var/damage = rand(20, 30)
 				if (health > -100)
 					adjustBruteLoss(damage)
 					health = 100 - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss()
+					AddDisease(new /datum/disease/transformation/rage_virus, M)
+			else
+				for(var/datum/disease/D in viruses)
+					if(D.stage < 5)
+						D.stage++
+						D.process()
 
-			//for(var/datum/disease/D in M.viruses)
-				//contract_disease(D,1,0)
-			AddDisease(new /datum/disease/transformation/rage_virus, M)
+			/*var/totalRage = 0
+			for(var/datum/disease/D in viruses)
+				world << "disease=[D]"
+				if(istype(D, /datum/disease/transformation/rage_virus))
+					totalRage++
+					world << "totalRage=[totalRage]"
+					if(totalRage % 2 == 0)
+						world << "D.stage=[D.stage]"*/
+
 
 			return 1
 		else
