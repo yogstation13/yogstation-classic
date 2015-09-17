@@ -136,10 +136,10 @@
 	stage1	= list("<span class='warning'>You twitch violently.</span>")
 	stage2	= list("<span class='warning'>You twitch violently.</span>", "<span class='warning'>You feel unreasonably angry.</span>")
 	stage3	= list("<span class='warning'>You twitch violently.</span>", "<span class='warning'>You feel unreasonably angry.</span>",
-					"<span class='warning'>You find yourself staring at the head of your coworkers.</span>")
-	stage4	= list("<span class='warning'>You twitch extremelyviolently.</span>", "<span class='warning'>You feel unreasonably full of rage.</span>",
-					"<span class='warning'>You find yourself staring at the head of your coworkers.</span>")
-	stage5	= list("<span class='warning'>You are angry at your coworkers, filled by the desire to eat brains.</span>")
+					"<span class='warning'>You find yourself staring at the head of your coworkers.</span>", "<span class='warning'>Your co-workers suddenly look very tasty.</span>")
+	stage4	= list("<span class='warning'>You twitch extremely violently.</span>", "<span class='warning'>You feel unreasonably full of rage.</span>",
+					"<span class='warning'>You find yourself staring at the head of your coworkers.</span>", "<span class='warning'>You wretch forward as you try to control your rage.</span>")
+	stage5	= list("<span class='warning'>You are angry at your coworkers, filled by the desire to eat brains.</span>", "<span class='warning'>Mmmmmm....... braaaaainns...</span>")
 
 /datum/disease/transformation/rage_virus/do_disease_transformation(var/mob/living/carbon/affected_mob)
 	if(!iszombie(affected_mob))
