@@ -117,8 +117,8 @@
 
 /datum/disease/transformation/rage_virus
 	name = "Rage Virus"
-	cure_text = "Bananas"
-	cures = list("banana")
+	cure_text = "Pan-Galactic Gargle Blaster"
+	cures = list("gargle_blaster")
 	spread_text = "Zombie Bites"
 	spread_flags = SPECIAL & BLOOD
 	viable_mobtypes = list(/mob/living/carbon/human)
