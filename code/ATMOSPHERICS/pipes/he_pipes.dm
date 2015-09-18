@@ -86,7 +86,7 @@
 			buckled_mob.apply_damage(4 * log(pipe_air.temperature - heat_limit), BURN, "chest")
 
 	//Heat causes pipe to glow
-	if(pipe_air.temperature && (icon_temperature > 500 || pipe_air.temperature > 500)) //glow starts at 500K
+	if(pipe_air && pipe_air.temperature && (icon_temperature > 500 || pipe_air.temperature > 500)) //glow starts at 500K
 		if(abs(pipe_air.temperature - icon_temperature) > 10)
 			icon_temperature = pipe_air.temperature
 
