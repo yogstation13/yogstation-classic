@@ -1,6 +1,5 @@
 /obj/machinery/atmospherics/components/unary/heat_exchanger
 
-	icon = 'icons/obj/atmospherics/heat_exchanger.dmi'
 	icon_state = "he_intact"
 
 	name = "heat exchanger"

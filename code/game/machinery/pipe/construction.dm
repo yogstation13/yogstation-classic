@@ -202,10 +202,11 @@ var/global/list/pipeID2State = list(
 	for(var/obj/machinery/atmospherics/M in src.loc)
 		if(M == A) //we don't want to check to see if it interferes with itself
 			continue
-		if(M.GetInitDirections() & A.GetInitDirections())	// matches at least one direction on either type of pipe
+		// TODO : DOES THIS BREAK STUFF
+		/*if(M.GetInitDirections() & A.GetInitDirections())	// matches at least one direction on either type of pipe
 			user << "<span class='warning'>There is already a pipe at that location!</span>"
 			qdel(A)
-			return 1
+			return 1*/
 	// no conflicts found
 
 	if(pipename)

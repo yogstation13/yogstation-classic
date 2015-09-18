@@ -19,8 +19,8 @@ Construction breaks otherwise
 #define PIPE_PUMP				/obj/machinery/atmospherics/components/binary/pump
 #define PIPE_PASSIVE_GATE       /obj/machinery/atmospherics/components/binary/passive_gate
 #define PIPE_VOLUME_PUMP        /obj/machinery/atmospherics/components/binary/volume_pump
-#define PIPE_MVALVE				/obj/machinery/atmospherics/binary/valve
-#define PIPE_DVALVE             /obj/machinery/atmospherics/binary/valve/digital
+#define PIPE_MVALVE				/obj/machinery/atmospherics/components/binary/valve
+#define PIPE_DVALVE             /obj/machinery/atmospherics/components/binary/valve/digital
 //Trinary
 #define PIPE_GAS_FILTER			/obj/machinery/atmospherics/components/trinary/filter
 #define PIPE_GAS_MIXER			/obj/machinery/atmospherics/components/trinary/mixer

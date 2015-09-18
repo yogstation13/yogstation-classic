@@ -1,5 +1,5 @@
 /obj/machinery/atmospherics/components/unary/tank
-	icon = 'icons/obj/atmospherics/pipes/pipe_tank.dmi'
+	icon = 'icons/obj/atmospherics/pipes/pressure_tank.dmi'
 	icon_state = "generic"
 	name = "pressure tank"
 	desc = "A large vessel containing pressurized gas."
