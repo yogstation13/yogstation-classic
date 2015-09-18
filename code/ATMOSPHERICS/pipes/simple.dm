@@ -5,7 +5,7 @@ The regular pipe you see everywhere, including bent ones.
 */
 
 /obj/machinery/atmospherics/pipe/simple
-	icon = 'icons/obj/atmospherics/simple.dmi'
+	icon = 'icons/obj/atmospherics/pipes/simple.dmi'
 	icon_state = "intact"
 
 	name = "pipe"
@@ -18,15 +18,6 @@ The regular pipe you see everywhere, including bent ones.
 
 	var/obj/machinery/atmospherics/node1
 	var/obj/machinery/atmospherics/node2
-
-	var/minimum_temperature_difference = 300
-	var/thermal_conductivity = 0 //WALL_HEAT_TRANSFER_COEFFICIENT No
-
-	var/maximum_pressure = 70*ONE_ATMOSPHERE
-	var/fatigue_pressure = 55*ONE_ATMOSPHERE
-
-// TODO : IS REQUIRED?
-	var/alert_pressure = 55*ONE_ATMOSPHERE
 
 	level = 1
 

@@ -39,7 +39,7 @@ RPD
 	return "<li><a href='?src=\ref[dispenser];makepipe=[id];dir=[dir];type=[dirtype]'>[label]</a></li>"
 
 /datum/pipe_info/meter
-	icon = 'icons/obj/atmospherics/simple.dmi'
+	icon = 'icons/obj/atmospherics/pipes/simple.dmi'
 	icon_state = "meterX"
 
 /datum/pipe_info/meter/New()

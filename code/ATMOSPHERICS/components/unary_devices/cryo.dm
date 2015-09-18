@@ -201,8 +201,6 @@
 
 	if(href_list["switchOn"])
 		if(!state_open)
-			if(occupant)
-				occupant.ExtinguishMob()
 			on = 1
 
 	if(href_list["open"])
@@ -212,8 +210,6 @@
 		if(close_machine() == usr)
 			var/datum/nanoui/ui = SSnano.get_open_ui(usr, src, "main")
 			ui.close()
-			if(occupant)
-				occupant.ExtinguishMob()
 			on = 1
 	if(href_list["switchOff"])
 		on = 0
@@ -318,7 +314,7 @@
 				occupant.heal_organ_damage(heal_brute,heal_fire)
 		if(beaker && next_trans == 0)
 			beaker.reagents.trans_to(occupant, 1, 10)
-			beaker.reagents.reaction(occupant, VAPOR)
+			beaker.reagents.reaction(occupant)
 	next_trans++
 	if(next_trans == 10)
 		next_trans = 0

@@ -12,7 +12,8 @@
 Iconnery
 */
 
-/obj/machinery/atmospherics/components/unary/hide(intact)
+/obj/machinery/atmospherics/components/unary/hide(var/intact)
+	showpipe = !intact
 	update_icon()
 
 	..(intact)

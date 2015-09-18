@@ -26,9 +26,6 @@
 		air_update_turf()
 
 /obj/machinery/atmospherics/pipe/return_air()
-	// TODO : IS REQUIRED?
-	if(parent == null)
-		return null
 	return parent.air
 
 /obj/machinery/atmospherics/pipe/build_network()
