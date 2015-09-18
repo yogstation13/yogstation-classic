@@ -53,6 +53,13 @@
 		"Species 3157",
 		"Small Prick"
 	)
+	var/list/zombies = list(
+		"Shambler",
+		"Shuffler",
+		"Diseased",
+		"Forlorn",
+		"Crazed"
+	)
 
 
 /datum/intercept_text/proc/build(mode_type, datum/mind/correct_person)
@@ -294,6 +301,12 @@
 	src.text += "These lifeforms are associated with the <B><U>[orgname1] [orgname2]</U></B> and may be attempting to acquire sensitive materials on their behalf.  "
 	src.text += "Please take care not to alarm the crew, as <B><U>[cname]</U></B> may take advantage of a panic situation. Remember, they can be anybody, suspect everybody!"
 	src.text += "<BR><HR>"
+
+/datum/intercept_text/proc/build_zombies(datum/mind/correct_person)
+	src.text += "<BR><BR>Centcom has recently received a report of a plague infecting outlying space stations. We believe that one member of your crew may "
+	src.text += "have been previously escaped a quarantined station. It is believed that knowledge of this report amongst the crew will cause widespread panic "
+	src.text += "and witchhunts. In the event of a confirmed case of infection, activate quarantine protocols immediately and contain the outbreak."
+
 
 /datum/intercept_text/proc/build_shadowling(datum/mind/correct_person)
 	src.text += "<br><br>Sightings of strange alien creatures have been observed in your area. These aliens supposedly possess the ability to enslave unwitting personnel and leech from their power. \

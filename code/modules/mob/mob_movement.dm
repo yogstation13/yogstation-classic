@@ -142,6 +142,9 @@
 	if(mob.buckled)							//if we're buckled to something, tell it we moved.
 		return mob.buckled.relaymove(mob, direct)
 
+	if(istype(mob, /mob/living/carbon/human/zombie))
+		move_delay += config.walk_speed
+
 	if(mob.remote_control)					//we're controlling something, our movement is relayed to it
 		return mob.remote_control.relaymove(mob, direct)
 
@@ -187,6 +190,7 @@
 				move_delay += config.run_speed
 			if("walk")
 				move_delay += config.walk_speed
+
 		move_delay += mob.movement_delay()
 
 		if(config.Tickcomp)

@@ -20,7 +20,7 @@
 
 	//Make mob invisible and spawn animation
 	regenerate_icons()
-	notransform = 1
+	notransform = 0
 	canmove = 0
 	stunned = 1
 	icon = null
@@ -103,6 +103,110 @@
 		qdel(src)
 
 
+/mob/living/carbon/proc/zombieize(tr_flags = (TR_KEEPITEMS | TR_KEEPVIRUS | TR_DEFAULTMSG))
+	if (notransform)
+		return
+	//Handle items on mob
+
+	drop_all()
+
+	src << "<h2><b>You have become a flesh eating zombie. Your sole purpose is to hunt for crew members to infect them.</b></h2>"
+
+	//first implants
+	var/list/implants = list()
+	if (tr_flags & TR_KEEPIMPLANTS)
+		for(var/obj/item/weapon/implant/W in src)
+			implants += W
+
+	var/list/items = list()
+	if(tr_flags & TR_KEEPITEMS)
+		for(var/obj/item/W in (src.contents-implants))
+			// Not allowing head wear. Makes it easier to spot a zombie.
+			if(!(W.slot_flags & SLOT_HEAD))
+				items += W
+			unEquip(W)
+
+	//Make mob invisible and spawn animation
+	regenerate_icons()
+	notransform = 1
+	canmove = 0
+	stunned = 1
+	icon = null
+	invisibility = 101
+	//var/atom/movable/overlay/animation = new /atom/movable/overlay( loc )
+	//animation.icon_state = "blank"
+	//animation.icon = 'icons/mob/mob.dmi'
+	//animation.master = src
+
+	// Todo: Add proper human to zombie animation
+	//flick("h2zombie", animation)
+	//sleep(22)
+
+	//animation = null
+	var/mob/living/carbon/human/zombie/O = new /mob/living/carbon/human/zombie( loc )
+	//qdel(animation)
+
+
+	if(tr_flags & TR_KEEPITEMS)
+		for(var/obj/item/W in items)
+			O.equip_to_appropriate_slot(W)
+
+	// hash the original name?
+	if	(tr_flags & TR_HASHNAME)
+		var/number = rand(1, 1000)
+		O.name = "zombie ([number])"
+		O.real_name = "zombie ([number])"
+	else
+		O.name = name
+		O.real_name = real_name
+
+	//handle DNA and other attributes
+	O.dna = dna
+	dna = null
+	if (!(tr_flags & TR_KEEPSE))
+		O.dna.struc_enzymes = setblock(O.dna.struc_enzymes, RACEBLOCK, construct_block(BAD_MUTATION_DIFFICULTY,BAD_MUTATION_DIFFICULTY))
+	if(suiciding)
+		O.suiciding = suiciding
+	O.loc = loc
+	O.a_intent = "harm"
+
+	//keep viruses?
+	if (tr_flags & TR_KEEPVIRUS)
+		O.viruses = viruses
+		viruses = list()
+		for(var/datum/disease/D in O.viruses)
+			D.affected_mob = O
+
+	//keep damage?
+	if (tr_flags & TR_KEEPDAMAGE)
+		O.setToxLoss(getToxLoss())
+		O.adjustBruteLoss(getBruteLoss())
+		O.setOxyLoss(getOxyLoss())
+		O.adjustFireLoss(getFireLoss())
+
+	//re-add implants to new mob
+	for(var/obj/item/weapon/implant/I in implants)
+		I.loc = O
+		I.implanted = O
+
+	//O.AddDisease(new /datum/disease/transformation/rage_virus)
+
+	//transfer mind and delete old mob
+	if(mind)
+		mind.transfer_to(O)
+		if(O.mind.changeling)
+			O.mind.changeling.purchasedpowers += new /obj/effect/proc_holder/changeling/humanform(null)
+	if (tr_flags & TR_DEFAULTMSG)
+		O << "<B>You are now a zombie.</B>"
+	updateappearance(O)
+	. = O
+	if ( !(tr_flags & TR_KEEPSRC) ) //flag should be used if zombieize() is called inside another proc of src so that one does not crash
+		qdel(src)
+
+	return
+
+
+
 //////////////////////////           Humanize               //////////////////////////////
 //Could probably be merged with monkeyize but other transformations got their own procs, too
 
@@ -150,8 +254,15 @@
 	animation.icon_state = "blank"
 	animation.icon = 'icons/mob/mob.dmi'
 	animation.master = src
-	flick("monkey2h", animation)
-	sleep(22)
+
+	if(istype(src, /mob/living/carbon/human/zombie))
+		// Todo: Add proper zombie to human animation
+		//flick("zombie2h", animation)
+		//sleep(22)
+	else
+		flick("monkey2h", animation)
+		sleep(22)
+
 	var/mob/living/carbon/human/O = new( loc )
 	for(var/obj/item/C in O.loc)
 		O.equip_to_appropriate_slot(C)
