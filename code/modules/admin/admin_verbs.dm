@@ -24,6 +24,7 @@ var/list/admin_verbs_default = list(
 	/client/proc/view_tickets,
 	/client/proc/toggleticketlistenall,
 	/client/proc/reload_donators,
+	/client/proc/user_stats,
 	/client/proc/stop_sounds
 	)
 var/list/admin_verbs_admin = list(
@@ -357,6 +358,85 @@ var/list/admin_verbs_hideable = list(
 		else
 			mob.invisibility = INVISIBILITY_OBSERVER
 			mob << "<span class='adminnotice'><b>Invisimin on. You are now as invisible as a ghost.</b></span>"
+
+/client/proc/user_stats()
+	set name = "User stats"
+	set category = "Admin"
+	set desc = "Shows basic user statistics"
+	if(holder)
+		var/isLobby = 0
+		var/isDead = 0
+		var/isUnconcious = 0
+		var/isConcious = 0
+		var/isCritical = 0
+
+		var/isBlind = 0
+		var/isMute = 0
+		var/isDeaf = 0
+		var/isNearsighted = 0
+		var/isFat = 0
+		var/isHusk = 0
+		var/isNoClone = 0
+		var/isClumsy = 0
+		//var/isZombie = 0
+		//var/isInfected = 0
+
+		for(var/mob/M in player_list)
+			if(istype(M, /mob/new_player))
+				isLobby++
+			else if(M.stat == DEAD)
+				isDead++
+			else if(M.stat == UNCONSCIOUS)
+				isUnconcious++
+			else if(M.stat == CONSCIOUS)
+				isConcious++
+			else if(istype(M, /mob/living))
+				var/mob/living/L = M
+				if(L.InCritical())
+					isCritical++
+
+			if(M.disabilities & BLIND)
+				isBlind++
+			if(M.disabilities & MUTE)
+				isMute++
+			if(M.disabilities & DEAF)
+				isDeaf++
+			if(M.disabilities & NEARSIGHT)
+				isNearsighted++
+			if(M.disabilities & FAT)
+				isFat++
+			if(M.disabilities & HUSK)
+				isHusk++
+			if(M.disabilities & NOCLONE)
+				isNoClone++
+			if(M.disabilities & CLUMSY)
+				isClumsy++
+			//if(is_zombie(M))
+			//	isZombie++
+			//if(is_infected(M))
+			//	isInfected++
+
+		src << "<span class='boldannounce'>Player statistics</span>"
+		src << "<b>Statuses</b>"
+		src << "¤ Lobby: [isLobby]\t\t([((isLobby / player_list.len) * 100)]%)"
+		src << "¤ Concious: [isConcious]\t\t([((isConcious / player_list.len) * 100)]%)"
+		src << "¤ Dead: [isDead]\t\t([((isDead / player_list.len) * 100)]%)"
+		src << "¤ Unconcious: [isUnconcious]\t([((isUnconcious / player_list.len) * 100)]%)"
+		src << "¤ Critical: [isCritical]\t\t([((isCritical / player_list.len) * 100)]%)"
+		src << "<b>Disabilities</b>"
+		src << "¤ Blind: [isBlind]\t\t([((isBlind / player_list.len) * 100)]%)"
+		src << "¤ Mute: [isMute]\t\t([((isMute / player_list.len) * 100)]%)"
+		src << "¤ Deaf: [isDeaf]\t\t([((isDeaf / player_list.len) * 100)]%)"
+		src << "¤ Near Sighted: [isNearsighted]\t([((isNearsighted / player_list.len) * 100)]%)"
+		src << "¤ Fat: [isFat]\t\t([((isFat / player_list.len) * 100)]%)"
+		src << "¤ Husk: [isHusk]\t\t([((isHusk / player_list.len) * 100)]%)"
+		src << "¤ No Clone: [isNoClone]\t\t([((isNoClone / player_list.len) * 100)]%)"
+		src << "¤ Clumsy: [isClumsy]\t\t([((isClumsy / player_list.len) * 100)]%)"
+		//src << "Zombie: [isZombie]   ([((isZombie / player_list.len) * 100)]%)"
+		//src << "Infected: [isInfected]   ([((isInfected / player_list.len) * 100)]%)"
+		src << " "
+
+	feedback_add_details("admin_verb","UST") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/player_panel_new()
 	set name = "Player Panel"
