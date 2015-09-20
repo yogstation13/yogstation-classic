@@ -25,7 +25,7 @@ RPD
 	var/categoryId = CATEGORY_ATMOS
 	var/dir=SOUTH
 	var/dirtype = PIPE_BENDABLE
-	var/icon = 'icons/obj/atmospherics/pipe_item.dmi'
+	var/icon = 'icons/obj/atmospherics/pipes/pipe_item.dmi'
 	var/icon_state=""
 	var/selected=0
 
