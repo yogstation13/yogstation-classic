@@ -38,7 +38,7 @@
 
 /mob/camera/aiEye/Destroy()
 	ai = null
-	..()
+	//..()
 
 /atom/proc/move_camera_by_click()
 	if(istype(usr, /mob/living/silicon/ai))
