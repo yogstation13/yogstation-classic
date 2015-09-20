@@ -378,8 +378,8 @@ var/list/admin_verbs_hideable = list(
 		var/isHusk = 0
 		var/isNoClone = 0
 		var/isClumsy = 0
-		//var/isZombie = 0
-		//var/isInfected = 0
+		var/isZombie = 0
+		var/isInfected = 0
 
 		for(var/mob/M in player_list)
 			if(istype(M, /mob/new_player))
@@ -411,10 +411,10 @@ var/list/admin_verbs_hideable = list(
 				isNoClone++
 			if(M.disabilities & CLUMSY)
 				isClumsy++
-			//if(is_zombie(M))
-			//	isZombie++
-			//if(is_infected(M))
-			//	isInfected++
+			if(is_zombie(M))
+				isZombie++
+			if(is_infected(M))
+				isInfected++
 
 		src << "<span class='boldannounce'>Player statistics</span>"
 		src << "<b>Statuses</b>"
@@ -432,8 +432,9 @@ var/list/admin_verbs_hideable = list(
 		src << "¤ Husk: [isHusk]\t\t([((isHusk / player_list.len) * 100)]%)"
 		src << "¤ No Clone: [isNoClone]\t\t([((isNoClone / player_list.len) * 100)]%)"
 		src << "¤ Clumsy: [isClumsy]\t\t([((isClumsy / player_list.len) * 100)]%)"
-		//src << "Zombie: [isZombie]   ([((isZombie / player_list.len) * 100)]%)"
-		//src << "Infected: [isInfected]   ([((isInfected / player_list.len) * 100)]%)"
+		src << "<b>Game Modes</b>"
+		src << "¤ Zombie: [isZombie]\t\t([((isZombie / player_list.len) * 100)]%)"
+		src << "¤ Rage Infected: [isInfected]\t([((isInfected / player_list.len) * 100)]%)"
 		src << " "
 
 	feedback_add_details("admin_verb","UST") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!

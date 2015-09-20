@@ -435,7 +435,8 @@
 	return message
 
 /mob/living/carbon/human/zombie/say(message, bubble_type)
-	message = urrizeText(message)
+	if(src.stat != DEAD)
+		message = urrizeText(message)
 
 	return ..(message, bubble_type)
 
