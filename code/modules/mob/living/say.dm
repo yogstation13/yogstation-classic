@@ -128,6 +128,11 @@ var/list/crit_allowed_modes = list(MODE_WHISPER,MODE_CHANGELING,MODE_ALIEN)
 /mob/living/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, list/spans)
 	if(!client)
 		return
+
+	if(isAI(src))
+		message = keywords_lookup_ai(message)
+		raw_message = keywords_lookup_ai(raw_message)
+
 	var/deaf_message
 	var/deaf_type
 	if(speaker != src)
