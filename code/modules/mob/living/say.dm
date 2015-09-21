@@ -130,8 +130,8 @@ var/list/crit_allowed_modes = list(MODE_WHISPER,MODE_CHANGELING,MODE_ALIEN)
 		return
 
 	if(isAI(src))
-		message = keywords_lookup_ai(message)
-		raw_message = keywords_lookup_ai(raw_message)
+		message = keywords_lookup_ai(src, message)
+		raw_message = keywords_lookup_ai(src, raw_message)
 
 	var/deaf_message
 	var/deaf_type

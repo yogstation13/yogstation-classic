@@ -75,7 +75,7 @@
 		msg += "[original_word] "
 	return msg
 
-/proc/keywords_lookup_ai(msg)
+/proc/keywords_lookup_ai(mob/living/ML, msg)
 
 	//This is a list of words which are ignored by the parser when comparing message contents for names. MUST BE IN LOWER CASE!
 	var/list/adminhelp_ignored_words = list("unknown","the","a","an","of","monkey","alien","as", "i")
@@ -147,7 +147,7 @@
 							mobs_found += found
 							if(!ai_found && isAI(found))
 								ai_found = 1
-							msg += "[original_word]<font size='1' color='black'>(<A HREF='?src=\ref[found];track=[found.name]'>T</A>)</font> "
+							msg += "[original_word]<font size='1' color='black'>(<A HREF='?src=\ref[ML];track=[found.name]'>T</A>)</font> "
 							continue
 		msg += "[original_word] "
 	return msg
