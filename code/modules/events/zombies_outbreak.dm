@@ -1,36 +1,41 @@
-/*/datum/round_event_control/alien_infestation
-	name = "Alien Infestation"
-	typepath = /datum/round_event/alien_infestation
-	weight = 0
-	max_occurrences = 0
+/datum/round_event_control/zombies_outbreak
+	name = "Zombie Outbreak"
+	typepath = /datum/round_event/zombies_outbreak
+	weight = 3
+	max_occurrences = 1
 
-/datum/round_event/alien_infestation
+/datum/round_event/zombies_outbreak
 	announceWhen	= 400
 
 	var/spawncount = 1
 	var/successSpawn = 0	//So we don't make a command report if nothing gets spawned.
 
 
-/datum/round_event/alien_infestation/setup()
+/datum/round_event/zombies_outbreak/setup()
 	announceWhen = rand(announceWhen, announceWhen + 50)
 	spawncount = rand(1, 2)
 
-/datum/round_event/alien_infestation/kill()
+/datum/round_event/zombies_outbreak/kill()
 	if(!successSpawn && control)
 		control.occurrences--
 	return ..()
 
-/datum/round_event/alien_infestation/announce()
+/datum/round_event/zombies_outbreak/announce()
 	if(successSpawn)
-		priority_announce("Unidentified lifesigns detected coming aboard [station_name()]. Secure any exterior access, including ducting and ventilation.", "Lifesign Alert", 'sound/AI/aliens.ogg')
+		priority_announce("Confirmed outbreak of level 9 viral biohazard aboard [station_name()]. All personnel must contain the outbreak.", "Biohazard Alert", 'sound/AI/outbreak7.ogg')
 
 
-/datum/round_event/alien_infestation/start()
+/datum/round_event/zombies_outbreak/start()
 	var/list/candidates = list()
-	for(var/mob/dead/observer/G in player_list)
-		if(G.mind && G.mind.current && G.mind.current.stat == CONCIOUS)
-			if(!G.client.is_afk(afk_bracket) && (G.client.prefs.be_special & be_special_flag))
+	for(var/mob/living/carbon/human/G in player_list)
+		if(G.mind && G.mind.current && G.mind.current.stat == CONSCIOUS)
+			if(!G.client.is_afk(1200) && (G.client.prefs.be_special & BE_ZOMBIE))
 				candidates += G.client
 
-	candidates
-*/
+	while(spawncount > 0 && candidates.len)
+		var/mob/living/carbon/human/H = pick_n_take(candidates)
+		H.ForceContractDisease(new /datum/disease/transformation/rage_virus)
+		log_admin("Zombie outbreak event infected [key_name(H)].")
+
+		spawncount--
+		successSpawn = 1
