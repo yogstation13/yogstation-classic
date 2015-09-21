@@ -990,6 +990,7 @@
 #include "code\modules\events\spontaneous_appendicitis.dm"
 #include "code\modules\events\vent_clog.dm"
 #include "code\modules\events\wormholes.dm"
+#include "code\modules\events\zombies_outbreak.dm"
 #include "code\modules\events\holiday\xmas.dm"
 #include "code\modules\events\wizard\aid.dm"
 #include "code\modules\events\wizard\blobies.dm"

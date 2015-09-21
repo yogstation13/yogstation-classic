@@ -462,6 +462,10 @@
 							dead_mob_list -= H
 							living_mob_list |= list(H)
 							H.emote("gasp")
+							H << "<span class='notice'><b>Consciousness slowly creeps over you as your body reawakes.</b></span>"
+							H << "<span class='notice'>Fragmented images of your life and the shift thus far churn within your newfound consciousness...</span>"
+							H << "<span class='notice'>Memories spooling to an abrupt halt, the <u>minutes before your death</u> race by in an <b>indecipherable</b> blur of confusion and disorientation, veiled by a wall of complete amnesia.</span>"
+
 							if(tplus > tloss)
 								H.setBrainLoss( max(0, min(99, ((tlimit - tplus) / tlimit * 100))))
 							add_logs(user, M, "revived", defib)
