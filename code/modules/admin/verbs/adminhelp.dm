@@ -147,7 +147,7 @@
 							mobs_found += found
 							if(!ai_found && isAI(found))
 								ai_found = 1
-							msg += "[original_word]<font size='1' color='black'>(<A HREF='?src=\ref[ML];track=[found.name]'>T</A>)</font> "
+							msg += "[original_word]<font size='1' color='black'>(<A HREF=\"?src=\ref[ML];track=[found.name]\">T</A>)</font> "
 							continue
 		msg += "[original_word] "
 	return msg
