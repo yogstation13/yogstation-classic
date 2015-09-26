@@ -108,6 +108,7 @@ var/list/admin_verbs_spawn = list(
 	/client/proc/respawn_character
 	)
 var/list/admin_verbs_server = list(
+	/client/proc/lag_fixer,
 	/datum/admins/proc/startnow,
 	/datum/admins/proc/restart,
 	/datum/admins/proc/end_round,
@@ -358,6 +359,36 @@ var/list/admin_verbs_hideable = list(
 		else
 			mob.invisibility = INVISIBILITY_OBSERVER
 			mob << "<span class='adminnotice'><b>Invisimin on. You are now as invisible as a ghost.</b></span>"
+
+/client/proc/lag_fixer(var/fix in list("Cancel", "Toggle Air", "Low FPS", "Normal FPS", "High FPS"))
+	set name = "YogLag Fix"
+	set category = "Server"
+	set desc = "Tools to fix lag"
+
+	if(!holder)
+		return
+
+	var/msg = ""
+
+	if(fix == "Toggle Air")
+		SSair.can_fire = SSair.can_fire == 1 ? 0 : 1
+		src << "<span class='adminnotice'><b>Air has been [SSair.can_fire ? "started" : "stopped"].</b></span>"
+		msg = "[key_name(src)] has [SSair.can_fire ? "started" : "stopped"] the air subsystem."
+	else if(fix == "Low FPS")
+		config.Tickcomp = 1
+		world.fps = 11
+		msg = "[key_name(src)] has modified world.fps to [world.fps] and config.Tickcomp to [config.Tickcomp]"
+	else if(fix == "Normal FPS")
+		config.Tickcomp = 1
+		world.fps = 16
+		msg = "[key_name(src)] has modified world.fps to [world.fps] and config.Tickcomp to [config.Tickcomp]"
+	else if(fix == "High FPS")
+		config.Tickcomp = 1
+		world.fps = 20
+		msg = "[key_name(src)] has modified world.fps to [world.fps] and config.Tickcomp to [config.Tickcomp]"
+
+	log_admin(msg, 0)
+	message_admins(msg, 0)
 
 /client/proc/user_stats()
 	set name = "User stats"
