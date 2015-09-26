@@ -71,7 +71,7 @@
 		new default_storagebox(BPK)
 		H.equip_to_slot_or_del(BPK, slot_back,1)
 
-	if(is_donator(H))
+	if(is_donator(H) && BPK && H.client.prefs.donor_hat)
 		BPK.contents += H.client.prefs.donor_hat
 
 //But don't override this

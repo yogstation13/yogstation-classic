@@ -395,7 +395,7 @@
 		return
 
 /obj/structure/closet/emag_act(mob/user)
-	if(secure && !broken)
+	if(secure && !broken && !opened)
 		broken = 1
 		locked = 0
 		desc += " It appears to be broken."
