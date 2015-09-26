@@ -29,6 +29,25 @@
 		usr << browse(null, "window=stack")
 	..()
 
+/obj/item/stack/DblClick()
+	if(amount < 2)
+		return
+
+	var/originalAmount = amount
+	var/amount1 = 0
+	var/amount2 = 0
+	if(originalAmount % 2 == 0)
+		amount1 = originalAmount / 2
+		amount2 = originalAmount / 2
+	else
+		amount1 = round(originalAmount / 2) + 1
+		amount2 = round(originalAmount / 2)
+
+	var/obj/item/stack/N = new src.type (get_turf(src))
+
+	N.amount = amount1
+	src.amount = amount2
+
 /obj/item/stack/examine(mob/user)
 	..()
 	if (is_cyborg)
