@@ -241,6 +241,7 @@
 			var/isUnconcious = (src.stat == UNCONSCIOUS ? 1 : 0)
 			var/isCritical = src.InCritical()
 
+			var/knockOver = 1
 			var/allowDamage = 1
 			var/selfMessage = ""
 			var/localMessage = ""
@@ -248,6 +249,7 @@
 				selfMessage = "Your zombified brain doesn't let you really bite into another zombie, instead you just nibble the flesh."
 				localMessage = "[M.name] nibbles [name]."
 				allowDamage = 0
+				knockOver = 0
 			else if(isInfected)
 				selfMessage = "Your zombified brain doesn't let you really bite into an infected, instead you just nibble the flesh transferring more of the infection. Quickening the transition."
 				localMessage = "[M.name] nibbles [name]."
@@ -266,11 +268,18 @@
 			visible_message("<span class='danger'>[selfMessage]</span>", \
 					"<span class='userdanger'>[localMessage]</span>")
 
-			if(allowDamage)
+			if(knockOver)
 				src << "<span class='danger'>The pain of being bitten causes you to drop what you are holding and fall over!</span>"
 				drop_l_hand()
 				drop_r_hand()
 				fall(1)
+				resting = 1
+				update_canmove()
+				spawn(rand(30, 70))
+					resting = 0
+					update_canmove()
+
+			if(allowDamage)
 				var/damage = rand(20, 30)
 				if (health > -100)
 					adjustBruteLoss(damage)

@@ -28,7 +28,7 @@ var/global/mulebot_count = 0
 	var/turf/target				// this is turf to navigate to (location of beacon)
 	var/loaddir = 0				// this the direction to unload onto/load from
 	var/home_destination = "" 	// tag of home beacon
-	req_access = list(access_cargo) 
+	req_access = list(access_cargo)
 
 	mode = BOT_IDLE
 
@@ -130,6 +130,16 @@ obj/machinery/bot/mulebot/bot_reset()
 	else
 		..()
 	return
+
+/obj/machinery/bot/mulebot/attack_paw_zombie(mob/living/carbon/human/zombie/M)
+	if(load && ismob(load))  // chance to knock off rider
+		if(prob(50))
+			unload(0)
+			M.visible_message("<span class='danger'>[M] knocks [load] off [src]!</span>", "<span class='danger'>You knock [load] off [src]!</span>")
+
+	..(M)
+
+	return 0
 
 /obj/machinery/bot/mulebot/emag_act(mob/user)
 	locked = !locked

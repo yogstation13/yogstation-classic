@@ -410,10 +410,20 @@
 		if("grab")
 			grabbedby(M)
 		else
-			M.do_attack_animation(src)
-			playsound(src.loc, 'sound/effects/bang.ogg', 10, 1)
-			visible_message("<span class='warning'>[M] punches [src], but doesn't leave a dent.</span>", \
-						"<span class='warning'>[M] punches [src], but doesn't leave a dent.</span>")
+			if(is_zombie(M) && prob(70))
+				M.do_attack_animation(src)
+				playsound(loc, 'sound/weapons/bite.ogg', 50, 1, -1)
+				var/damage = rand(30, 40)
+				adjustBruteLoss(damage)
+				spawn(5)
+					playsound(src.loc, 'sound/effects/bang.ogg', 10, 1)
+				visible_message("<span class='warning'>[M] bites [src], its teeth cutting circuitry.</span>", \
+							"<span class='warning'>[M] punches [src], its teeth cutting circuitry.</span>")
+			else
+				M.do_attack_animation(src)
+				playsound(src.loc, 'sound/effects/bang.ogg', 10, 1)
+				visible_message("<span class='warning'>[M] punches [src], but doesn't leave a dent.</span>", \
+							"<span class='warning'>[M] punches [src], but doesn't leave a dent.</span>")
 	return 0
 
 /mob/living/silicon/adjustEarDamage()

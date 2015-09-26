@@ -328,6 +328,9 @@
 	if(istype(AM))
 		playsound(loc, 'sound/effects/glass_step.ogg', 50, 1)
 		if(ishuman(AM))
+			if(is_zombie(AM))
+				if(rand(1, 100) > 20) return 0
+
 			var/mob/living/carbon/human/H = AM
 			if(PIERCEIMMUNE in H.dna.species.specflags)
 				return 0

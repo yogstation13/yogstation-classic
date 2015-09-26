@@ -172,6 +172,27 @@
 		new /obj/effect/decal/cleanable/oil(loc)
 	healthcheck()
 
+/obj/machinery/bot/attack_paw_zombie(mob/living/carbon/human/zombie/M)
+	if(M.a_intent == "harm")
+		playsound(loc, "punch", 25, 1, -1)
+		visible_message("<span class='danger'>[M] has punched [src]!</span>", \
+				"<span class='userdanger'>[M] has punched [src]!</span>")
+
+		health -= rand(5, 25)
+		add_logs(M, src, "attacked")
+		if(prob(10))
+			new /obj/effect/decal/cleanable/oil(loc)
+		healthcheck()
+
+	return 0
+
+//set_machine must be 0 if clicking the machinery doesn't bring up a dialog
+/obj/machinery/attack_hand(mob/user, check_power = 1, set_machine = 1)
+	if(is_zombie(user))
+		attack_paw_zombie(user)
+		return 1
+	..(user, check_power, set_machine)
+
 /obj/machinery/bot/Topic(href, href_list) //Master Topic to handle common functions.
 	. = ..()
 	if (.)

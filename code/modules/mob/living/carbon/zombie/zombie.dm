@@ -438,7 +438,156 @@
 	if(src.stat != DEAD)
 		message = urrizeText(message)
 
+	playsound(loc, "zombie", 25, 1, 1)
+
 	return ..(message, bubble_type)
 
 /mob/living/carbon/human/zombie/say_quote(var/text)
 	return "[verb_say], \"[text]\"";
+
+
+
+/mob/living/carbon/human/zombie/check_breath(datum/gas_mixture/breath)
+	return
+
+/mob/living/carbon/human/zombie/adjustBruteLoss(amount)
+	if(status_flags & GODMODE)	return 0
+	amount = amount / 3
+	bruteloss = min(max(bruteloss + amount, 0),(maxHealth*2))
+	handle_regular_status_updates() //we update our health right away.
+
+/mob/living/carbon/human/zombie/adjustOxyLoss(amount)
+	return 0
+
+/mob/living/carbon/human/zombie/setOxyLoss(amount)
+	return 0
+
+/mob/living/carbon/human/zombie/adjustToxLoss(amount)
+	return 0
+
+/mob/living/carbon/human/zombie/setToxLoss(amount)
+	return 0
+
+/mob/living/carbon/human/zombie/adjustFireLoss(amount)
+	if(status_flags & GODMODE)	return 0
+	amount = amount * 2
+	fireloss = min(max(fireloss + amount, 0),(maxHealth*2))
+	handle_regular_status_updates() //we update our health right away.
+
+/mob/living/carbon/human/zombie/adjustCloneLoss(amount)
+	if(status_flags & GODMODE)	return 0
+	cloneloss = min(max(cloneloss + amount, 0),(maxHealth*2))
+	handle_regular_status_updates()
+
+/mob/living/carbon/human/zombie/setCloneLoss(amount)
+	if(status_flags & GODMODE)	return 0
+	cloneloss = amount
+	handle_regular_status_updates()
+
+/mob/living/carbon/human/zombie/adjustBrainLoss(amount)
+	if(status_flags & GODMODE)	return 0
+	amount = amount * 2
+	brainloss = min(max(brainloss + amount, 0),(maxHealth*2))
+	handle_regular_status_updates()
+
+/mob/living/carbon/human/zombie/setBrainLoss(amount)
+	if(status_flags & GODMODE)	return 0
+	brainloss = amount
+	handle_regular_status_updates() //we update our health right away.
+
+/mob/living/carbon/human/zombie/adjustStaminaLoss(amount)
+	if(status_flags & GODMODE)	return 0
+	amount = amount / 5
+	staminaloss = min(max(staminaloss + amount, 0),(maxHealth*2))
+
+/mob/living/carbon/human/zombie/setStaminaLoss(amount)
+	if(status_flags & GODMODE)	return 0
+	amount = amount / 5
+	staminaloss = amount
+
+
+
+
+
+/mob/Jitter(amount)
+	amount = amount / 7
+	..(amount)
+
+/mob/Dizzy(amount)
+	amount = amount / 7
+	..(amount)
+
+/mob/Stun(amount)
+	amount = amount / 3
+	..(amount)
+	return
+
+/mob/SetStunned(amount)
+	amount = amount / 3
+	..(amount)
+	return
+
+/mob/AdjustStunned(amount)
+	amount = amount / 3
+	..(amount)
+	return
+
+/mob/Weaken(amount, ignore_canweaken = 0)
+	amount = amount / 10
+	..(amount, ignore_canweaken)
+	return
+
+/mob/SetWeakened(amount)
+	amount = amount / 10
+	..(amount)
+	return
+
+/mob/AdjustWeakened(amount)
+	amount = amount / 10
+	..(amount)
+	return
+
+/mob/Paralyse(amount)
+	amount = amount / 2
+	..(amount)
+	return
+
+/mob/SetParalysis(amount)
+	amount = amount / 2
+	..(amount)
+	return
+
+/mob/AdjustParalysis(amount)
+	amount = amount / 2
+	..(amount)
+	return
+
+/mob/Sleeping(amount)
+	amount = amount / 10
+	..(amount)
+	return
+
+/mob/SetSleeping(amount)
+	amount = amount / 10
+	..(amount)
+	return
+
+/mob/AdjustSleeping(amount)
+	amount = amount / 10
+	..(amount)
+	return
+
+/mob/Resting(amount)
+	amount = amount / 10
+	..(amount)
+	return
+
+/mob/SetResting(amount)
+	amount = amount / 10
+	..(amount)
+	return
+
+/mob/AdjustResting(amount)
+	amount = amount / 10
+	..(amount)
+	return
