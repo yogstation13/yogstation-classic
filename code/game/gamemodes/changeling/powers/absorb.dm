@@ -110,8 +110,8 @@
 
 
 
-
-/obj/effect/proc_holder/changeling/swap_form
+//BELOW IS DISABLED DUE TO COUNCIL VOTE, TOO MUCH GRIEF
+/*/obj/effect/proc_holder/changeling/swap_form
 	name = "Swap Forms"
 	desc = "We force ourselves into the body of another form, pushing their consciousness into the form we left behind."
 	helptext = "We will bring all our abilities with us, but we will lose our old form DNA in exchange for the new one. The process will seem suspicious to any observers."
@@ -162,4 +162,4 @@
 		user.key = ghost.key
 
 	user.Paralyse(2)
-	target << "<span class='warning'>Our genes cry out as we swap our [user] form for [target].</span>"
+	target << "<span class='warning'>Our genes cry out as we swap our [user] form for [target].</span>"*/
