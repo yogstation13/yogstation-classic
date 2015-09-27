@@ -296,7 +296,6 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 	else
 		if (prob(55))
 			flicker_fade()
-	return
 	return 1
 
 /mob/living/silicon/pai/bullet_act(var/obj/item/projectile/Proj)
@@ -307,10 +306,10 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 	else
 		if (prob(85))
 			flicker_fade(20)
-	return
 	return 1
 
 /mob/living/silicon/pai/proc/flicker_fade(var/dur = 40)
+	updatehealth()
 	if (emittersFailing)
 		src << "<span class='boldwarning'>Your failing containment field surges at the new intrusion, searing your circuitry even more!</span>"
 		src.adjustFireLoss(5)
