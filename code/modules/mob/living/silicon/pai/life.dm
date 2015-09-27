@@ -4,7 +4,7 @@
 		return
 	if (src.selfrepair == 1 && src.health < 100)
 		if(prob(8))
-			if (prob(50))
+			if (prob(10))
 				src << "<span class='info'>/mnt/selfrepair >> identified hardware fault in external sector, amelioriating..</span>"
 			adjustBruteLoss(rand(-2, -3))
 			adjustFireLoss(rand(-1, -2))
