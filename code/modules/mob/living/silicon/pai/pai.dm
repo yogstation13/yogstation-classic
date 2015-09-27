@@ -296,7 +296,7 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 				close_up()
 		else
 			if(prob(35))
-				flicker_fade(80)
+				flicker_fade(50)
 		return 1
 
 	return
