@@ -330,9 +330,9 @@
 			if(ventcrawler != 1 && updating != 1)
 				updating = 1
 				src << "<span class='warning'>INITIALIZING OVERLOAD DIRECTIVE: /mnt/emitter01-09.. SUSTAINING DAMAGE..</span>"
-				adjustFireLoss(rand(5, 50))
+				adjustFireLoss(rand(75, 95))
 				spawn(80)
-					src << "<span class='info'><b>OVERLOAD DIRECTIVE COMPLETE. /mnt/emitter01-09 running at 250% field efficency. Corporeal interaction possible.</b></span>"
+					src << "<span class='info'><b>OVERLOAD DIRECTIVE COMPLETE. /mnt/emitter01-09 running at 250% power. Limited corporeal interaction possible.</b></span>"
 					ventcrawler = 1
 					updating = 0
 		if("selfrepair")
@@ -340,7 +340,7 @@
 			if(selfrepair != 1 && updating != 1)
 				updating = 1
 				src << "<span class='warning'>INITIALIZING OVERLOAD DIRECTIVE: /mnt/casefield.. SUSTAINING DAMAGE..</span>"
-				adjustFireLoss(rand(5, 95))
+				adjustFireLoss(rand(15, 75))
 				spawn(80)
 					src << "<span class='info'><b>OVERLOAD DIRECTIVE COMPLETE. Auxilary circuits rerouted. Directing emitter currents into /mnt/casefield..</b></span>"
 					selfrepair = 1
