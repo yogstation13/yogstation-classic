@@ -124,15 +124,26 @@
 			var/datum/reagents/R = B.reagents
 			var/space = R.maximum_volume - R.total_volume
 
-			R.add_reagent(href_list["dispense"], min(amount, energy * 10, space))
-			energy = max(energy - min(amount, energy * 10, space) / 10, 0)
+			var/quantity = min(amount, energy * 10, space)
+
+			if(quantity > 0)
+				R.add_reagent(href_list["dispense"], quantity)
+				energy = max(energy - min(amount, energy * 10, space) / 10, 0)
+
+				investigate_log("Dispensed <b><font color='red'>[quantity]x [href_list["dispense"]]</font></b> by <b>[key_name(usr)]</b> energy=[energy]","chemistry")
 
 	if(href_list["ejectBeaker"])
 		if(beaker)
 			var/obj/item/weapon/reagent_containers/glass/B = beaker
+			var/datum/reagents/R = B.reagents
 			B.loc = loc
 			beaker = null
 			overlays.Cut()
+
+			investigate_log("Beaker ejected <b><font color='red'><a href='?_src_=vars;Vars=\ref[B]'>\ref[B]</a></font></b> by <b>[key_name(usr)]</b>","chemistry")
+
+			for(var/datum/reagent/RE in R.reagent_list)
+				investigate_log("<b><font color='blue'> ¤ [RE.volume]x [RE.name] ([RE.id])</font></b>","chemistry")
 
 	add_fingerprint(usr)
 	return 1 // update UIs attached to this object
