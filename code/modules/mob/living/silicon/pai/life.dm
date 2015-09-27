@@ -4,9 +4,14 @@
 		return
 	if (src.selfrepair == 1 && src.health < 100)
 		if(prob(8))
+			if (prob(50))
+				src << "<span class='info'>/mnt/selfrepair >> identified hardware fault in external sector, amelioriating..</span>"
 			adjustBruteLoss(rand(-2, -3))
 			adjustFireLoss(rand(-1, -2))
 			updatehealth()
+			if (src.health > 99)
+				src << "<span class='info'>/mnt/selfrepair >> external sector repair complete. pausing process. </span>"
+
 
 	if (src.health < -50)
 		death()
