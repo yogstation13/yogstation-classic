@@ -174,7 +174,7 @@
 	return Deletion
 
 /obj/structure/table/interact(mob/user)
-	if(user.incapacitated() || user.lying || !Adjacent(user))
+	if(user.incapacitated() || user.lying || !Adjacent(user) || ispAI(user))
 		return
 	check_table()
 	if(!table_contents.len)
