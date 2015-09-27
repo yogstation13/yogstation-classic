@@ -34,7 +34,7 @@
 	if(!can_buckle || !istype(M) || (M.loc != loc) || M.buckled || (buckle_requires_restraints && !M.restrained()))
 		return 0
 
-	if (isslime(M) || isAI(M))
+	if (isslime(M) || isAI(M) || ispAI(M))
 		if(M == usr)
 			M << "<span class='warning'>You are unable to buckle yourself to the [src]!</span>"
 		else
@@ -72,7 +72,7 @@
 
 //Wrapper procs that handle sanity and user feedback
 /obj/proc/user_buckle_mob(mob/living/M, mob/user)
-	if(!user.Adjacent(M) || user.restrained() || user.lying || user.stat)
+	if(!user.Adjacent(M) || user.restrained() || user.lying || user.stat || ispAI(user))
 		return
 
 	add_fingerprint(user)
@@ -91,6 +91,9 @@
 				"<span class='italics'>You heat metal clanking.</span>")
 
 /obj/proc/user_unbuckle_mob(mob/user)
+	if (ispAI(user))
+		return
+
 	var/mob/living/M = unbuckle_mob()
 
 	if(M)
