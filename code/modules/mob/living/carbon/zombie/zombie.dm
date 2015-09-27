@@ -509,85 +509,85 @@
 
 
 
-/mob/Jitter(amount)
+/mob/living/carbon/human/zombie/Jitter(amount)
 	amount = amount / 7
 	..(amount)
 
-/mob/Dizzy(amount)
+/mob/living/carbon/human/zombie/Dizzy(amount)
 	amount = amount / 7
 	..(amount)
 
-/mob/Stun(amount)
+/mob/living/carbon/human/zombie/Stun(amount)
 	amount = amount / 3
 	..(amount)
 	return
 
-/mob/SetStunned(amount)
+/mob/living/carbon/human/zombie/SetStunned(amount)
 	amount = amount / 3
 	..(amount)
 	return
 
-/mob/AdjustStunned(amount)
+/mob/living/carbon/human/zombie/AdjustStunned(amount)
 	amount = amount / 3
 	..(amount)
 	return
 
-/mob/Weaken(amount, ignore_canweaken = 0)
+/mob/living/carbon/human/zombie/Weaken(amount, ignore_canweaken = 0)
 	amount = amount / 10
 	..(amount, ignore_canweaken)
 	return
 
-/mob/SetWeakened(amount)
+/mob/living/carbon/human/zombie/SetWeakened(amount)
 	amount = amount / 10
 	..(amount)
 	return
 
-/mob/AdjustWeakened(amount)
+/mob/living/carbon/human/zombie/AdjustWeakened(amount)
 	amount = amount / 10
 	..(amount)
 	return
 
-/mob/Paralyse(amount)
+/mob/living/carbon/human/zombie/Paralyse(amount)
 	amount = amount / 2
 	..(amount)
 	return
 
-/mob/SetParalysis(amount)
+/mob/living/carbon/human/zombie/SetParalysis(amount)
 	amount = amount / 2
 	..(amount)
 	return
 
-/mob/AdjustParalysis(amount)
+/mob/living/carbon/human/zombie/AdjustParalysis(amount)
 	amount = amount / 2
 	..(amount)
 	return
 
-/mob/Sleeping(amount)
+/mob/living/carbon/human/zombie/Sleeping(amount)
 	amount = amount / 10
 	..(amount)
 	return
 
-/mob/SetSleeping(amount)
+/mob/living/carbon/human/zombie/SetSleeping(amount)
 	amount = amount / 10
 	..(amount)
 	return
 
-/mob/AdjustSleeping(amount)
+/mob/living/carbon/human/zombie/AdjustSleeping(amount)
 	amount = amount / 10
 	..(amount)
 	return
 
-/mob/Resting(amount)
+/mob/living/carbon/human/zombie/Resting(amount)
 	amount = amount / 10
 	..(amount)
 	return
 
-/mob/SetResting(amount)
+/mob/living/carbon/human/zombie/SetResting(amount)
 	amount = amount / 10
 	..(amount)
 	return
 
-/mob/AdjustResting(amount)
+/mob/living/carbon/human/zombie/AdjustResting(amount)
 	amount = amount / 10
 	..(amount)
 	return
