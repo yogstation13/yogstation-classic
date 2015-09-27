@@ -26,6 +26,12 @@
 	var/ear_safety = M.check_ear_prot()
 	var/distance = max(1,get_dist(src,T))
 
+	if (ispAI(M))
+		var/mob/living/silicon/pai/mPAI = M
+		mPAI << "<span class='warning'>The sudden flash overloads your passive light detection array, disrupting your holographic emitters!</span>"
+		mPAI.flicker_fade(0)
+		return
+
 //Flash
 	if(M.weakeyes)
 		M.visible_message("<span class='disarm'><b>[M]</b> screams and collapses!</span>")
