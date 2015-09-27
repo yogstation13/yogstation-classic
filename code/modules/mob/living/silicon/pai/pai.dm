@@ -36,6 +36,9 @@
 	var/speakDoubleExclamation = "alarms"
 	var/speakQuery = "queries"
 
+	var/cooldowncap = 1 //how many hits per second it can take
+	var/cooldown = 0
+
 	var/obj/item/weapon/pai_cable/cable		// The cable we produce and use when door or camera jacking
 
 	var/master				// Name of the one who commands us
@@ -256,14 +259,26 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 
 /mob/living/silicon/pai/attackby(obj/item/weapon/W as obj, mob/user as mob, params)
 	if (!canmove) return ..() //not in card form, so just handle shit like usual
+	if (cooldown >= cooldowncap)
+		return
+
+	user.do_attack_animation(src)
 	if(!W.force)
-		visible_message("<span class='warning'>[user.name] strikes [src] harmlessly with [W], passing clean through its holographic projection.</span>")
+		visible_message("<span class='info'>[user.name] strikes [src] harmlessly with [W], passing clean through its holographic projection.</span>")
 	else
-		visible_message("<span class='warning'>[user.name] strikes [src] with [W], eliciting a dire ripple throughout its holographic projection!</span>")
+		if (emittersFailing)
+			visible_message("<span class='warning'>[user.name] strikes [src] with [W], its image stuttering and flickering wildly!! </span>")
+		else
+			visible_message("<span class='warning'>[user.name] strikes [src] with [W], eliciting a dire ripple throughout its holographic projection!</span>")
+
+		cooldown = cooldown + 1
+
 		if (prob(66))
 			if(stat != 2)
 				flicker_fade(rand(50, 80))
-	return
+		spawn(5)
+			cooldown = cooldown - 1
+	return 1
 
 /mob/living/silicon/pai/attack_hand(mob/living/carbon/human/user)
 	if(stat == 2) return
