@@ -333,6 +333,14 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 /mob/living/silicon/pai/show_inv(mob/user)
 	return
 
+/mob/living/silicon/pai/stripPanelUnequip(obj/item/what, mob/who, where)
+	src << "<span class='warning'>Your containment field stutters and warps intensely as you attempt to interact with the object, forcing you to cease lest the field fail.</span>"
+	return
+
+/mob/living/silicon/pai/stripPanelEquip(obj/item/what, mob/who, where)
+	src << "<span class='warning'>Your containment field stutters and warps intensely as you attempt to interact with the object, forcing you to cease lest the field fail.</span>"
+	return
+
 //disable ignition, no need for it. however, this will card the pAI instantly.
 /mob/living/silicon/pai/IgniteMob(var/mob/living/silicon/pai/P)
 	flicker_fade(0)
