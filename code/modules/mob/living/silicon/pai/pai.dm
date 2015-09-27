@@ -29,6 +29,7 @@
 	var/list/software = list()
 	var/userDNA		// The DNA string of our assigned user
 	var/obj/item/device/paicard/card	// The card we inhabit
+	var/emittersFailing = 0
 
 	var/speakStatement = "states"
 	var/speakExclamation = "declares"
@@ -307,15 +308,22 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 	return
 
 /mob/living/silicon/pai/proc/flicker_fade(var/dur = 40)
+	if (emittersFailing)
+		src << "<span class='boldwarning'>Your failing containment field surges at the new intrusion, searing your circuitry even more!</span>"
+		src.adjustFireLoss(5)
+		return
+
 	src << "<span class='boldwarning'>The holographic containment field surrounding you is failing! Your emitters whine in protest, burning out slightly.</span>"
 	src.adjustFireLoss(rand(5,15))
 	last_special = world.time + rand(100,500)
+	src.emittersFailing = 1
 
 	if (health < 5)
 		src << "<span class='boldwarning'>HARDWARE ERROR: EMITTERS OFFLINE</span>"
 
 	spawn(dur)
 		visible_message("<span class='danger'>[src]'s holographic field flickers out of existence!</span>")
+		src.emittersFailing = 0
 		close_up()
 
 /mob/living/silicon/pai/Bump(AM as mob|obj) //can open doors on touch but doesn't affect anything else
