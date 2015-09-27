@@ -318,31 +318,32 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 		visible_message("<span class='danger'>[src]'s holographic field flickers out of existence!</span>")
 		close_up()
 
-/mob/living/silicon/pai/Bump(AM as mob|obj)
+/mob/living/silicon/pai/Bump(AM as mob|obj) //can open doors on touch but doesn't affect anything else
 	if (istype(AM, /obj/machinery/door))
 		..()
 	else
 		return
 
-/mob/living/silicon/pai/Bumped(AM as mob|obj)
+/mob/living/silicon/pai/Bumped(AM as mob|obj) //cannot be bumped or bump other objects
 	return
 
-/mob/living/silicon/pai/start_pulling(var/atom/movable/AM)
+/mob/living/silicon/pai/start_pulling(var/atom/movable/AM) //cannot pull objects
 	return
 
-/mob/living/silicon/pai/show_inv(mob/user)
+/mob/living/silicon/pai/show_inv(mob/user) //prevents stripping
 	return
 
-/mob/living/silicon/pai/stripPanelUnequip(obj/item/what, mob/who, where)
+/mob/living/silicon/pai/stripPanelUnequip(obj/item/what, mob/who, where) //prevents stripping
 	src << "<span class='warning'>Your containment field stutters and warps intensely as you attempt to interact with the object, forcing you to cease lest the field fail.</span>"
 	return
 
-/mob/living/silicon/pai/stripPanelEquip(obj/item/what, mob/who, where)
+/mob/living/silicon/pai/stripPanelEquip(obj/item/what, mob/who, where) //prevents stripping
 	src << "<span class='warning'>Your containment field stutters and warps intensely as you attempt to interact with the object, forcing you to cease lest the field fail.</span>"
 	return
 
 //disable ignition, no need for it. however, this will card the pAI instantly.
 /mob/living/silicon/pai/IgniteMob(var/mob/living/silicon/pai/P)
+	src << "<span class='danger'>The intense heat from the nearby fire causes your holographic field to fail instantly, damaging your internal hardware!</span>"
 	flicker_fade(0)
 	return
 
