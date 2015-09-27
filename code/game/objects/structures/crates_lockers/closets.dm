@@ -193,7 +193,7 @@
 
 
 /obj/structure/closet/attackby(obj/item/weapon/W, mob/user, params)
-	if(user.loc == src)
+	if(user.loc == src || ispAI(user))
 		return
 	if(opened)
 		if(istype(W, /obj/item/weapon/grab))
