@@ -133,8 +133,8 @@
 	agent = "Rage T-1"
 	new_form = /mob/living/carbon/human/zombie
 
-	stage1	= list("<span class='warning'>You twitch violently.</span>", "<span class='warning'>Your teeth feel itchy.</span>")
-	stage2	= list("<span class='warning'>You twitch violently.</span>", "<span class='warning'>You feel unreasonably angry.</span>", "<span class='warning'>You stare unnecessarily long at your co-workers.</span>")
+	stage1	= list("<span class='notice'>You twitch violently.</span>", "<span class='warning'>Your teeth feel itchy.</span>")
+	stage2	= list("<span class='notice'>You twitch violently.</span>", "<span class='warning'>You feel unreasonably angry.</span>", "<span class='warning'>You stare unnecessarily long at your co-workers.</span>")
 	stage3	= list("<span class='warning'>You twitch violently.</span>", "<span class='warning'>You feel unreasonably angry.</span>",
 					"<span class='warning'>You find yourself staring at the head of your coworkers.</span>", "<span class='warning'>Your co-workers suddenly look very tasty.</span>")
 	stage4	= list("<span class='warning'>You twitch extremely violently.</span>", "<span class='warning'>You feel unreasonably full of rage.</span>",
