@@ -5,6 +5,7 @@
 	if (src.selfrepair == 1 && src.health < 100)
 		if(prob(12))
 			adjustBruteLoss(rand(-4, -8))
+			adjustFireLoss(rand(-4, -8))
 
 	if (src.health < -50)
 		death()
