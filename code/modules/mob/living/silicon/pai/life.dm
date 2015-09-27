@@ -3,9 +3,10 @@
 	if (src.stat == DEAD)
 		return
 	if (src.selfrepair == 1 && src.health < 100)
-		if(prob(12))
-			adjustBruteLoss(rand(-4, -8))
-			adjustFireLoss(rand(-4, -8))
+		if(prob(8))
+			adjustBruteLoss(rand(-2, -3))
+			adjustFireLoss(rand(-1, -2))
+			updatehealth()
 
 	if (src.health < -50)
 		death()
