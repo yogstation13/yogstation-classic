@@ -282,6 +282,7 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 		else
 			if(prob(35))
 				flicker_fade(80)
+		return 1
 
 	return
 
@@ -296,6 +297,7 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 		if (prob(55))
 			flicker_fade()
 	return
+	return 1
 
 /mob/living/silicon/pai/bullet_act(var/obj/item/projectile/Proj)
 	visible_message("<span class='info'>[Proj] tears cleanly through [src]'s holographic field, distorting its image horribly!!")
@@ -306,6 +308,7 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 		if (prob(85))
 			flicker_fade(20)
 	return
+	return 1
 
 /mob/living/silicon/pai/proc/flicker_fade(var/dur = 40)
 	if (emittersFailing)
