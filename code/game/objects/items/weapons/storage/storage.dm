@@ -258,6 +258,16 @@
 				usr << "<span class='warning'>[src] cannot hold [W]!</span>"
 			return 0
 
+	// Check for forbidden items inside the object, if it is a container itself
+	if(istype(W, /obj/item/weapon/storage))
+		var/obj/item/weapon/storage/temp = W
+		for(var/obj/O in temp.contents)
+			for(var/A in cant_hold) //Check for specific items which this container can't hold.
+				if(istype(O, A))
+					if(!stop_messages)
+						usr << "<span class='warning'>[src] cannot hold [O] (even inside [W])!</span>"
+					return 0
+
 	if(W.w_class > max_w_class)
 		if(!stop_messages)
 			usr << "<span class='warning'>[W] is too big for [src]!</span>"
