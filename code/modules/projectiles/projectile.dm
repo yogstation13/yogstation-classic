@@ -98,6 +98,11 @@
 		if(A == firer || (A == firer.loc && istype(A, /obj/mecha))) //cannot shoot yourself or your mech
 			loc = A.loc
 			return 0
+	if (ispAI(A)) //handle pAI projectile passthrough
+		var/mob/living/silicon/pai/bro = A
+		bro.bullet_act(src)
+		loc = bro.loc
+		return 0 //don't delete the projectile though
 
 	var/distance = get_dist(get_turf(A), starting) // Get the distance between the turf shot from and the mob we hit and use that for the calculations.
 	def_zone = ran_zone(def_zone, max(100-(7*distance), 5)) //Lower accurancy/longer range tradeoff. 7 is a balanced number to use.

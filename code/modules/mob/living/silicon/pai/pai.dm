@@ -352,6 +352,9 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 /mob/living/silicon/pai/Bumped(AM as mob|obj) //cannot be bumped or bump other objects
 	return
 
+/mob/living/silicon/pai/Crossed(AM as mob|obj) //cannot intercept projectiles
+	return
+
 /mob/living/silicon/pai/start_pulling(var/atom/movable/AM) //cannot pull objects
 	return
 
