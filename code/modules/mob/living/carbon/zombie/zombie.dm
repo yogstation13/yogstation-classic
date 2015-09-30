@@ -35,6 +35,8 @@
 	real_name = name
 	gender = pick(MALE, FEMALE)
 
+	disabilities |= CLUMSY
+
 	..()
 
 /proc/is_zombie(mob/user)
@@ -384,6 +386,14 @@
 		qdel(src)
 		return
 
+/mob/living/carbon/human/zombie/put_in_hand_check(obj/item/W)
+	if(istype(W, /obj/item/weapon/card))
+		return 1
+
+	if(istype(W, /obj/item/weapon) || istype(W, /obj/item/clothing/suit/armor) || istype(W, /obj/item/clothing/suit/bio_suit) || istype(W, /obj/item/clothing/head/helmet))
+		src << "You Zombified brain struggles to comprehend picking up the [W]. Somehow it is just too complicated to operate."
+		return 0
+	return ..(W)
 
 /mob/living/carbon/human/zombie/IsAdvancedToolUser()
 	return 0
