@@ -29,11 +29,15 @@
 	var/list/software = list()
 	var/userDNA		// The DNA string of our assigned user
 	var/obj/item/device/paicard/card	// The card we inhabit
+	var/emittersFailing = 0
 
 	var/speakStatement = "states"
 	var/speakExclamation = "declares"
 	var/speakDoubleExclamation = "alarms"
 	var/speakQuery = "queries"
+
+	var/cooldowncap = 1 //how many hits per second it can take
+	var/cooldown = 0
 
 	var/obj/item/weapon/pai_cable/cable		// The cable we produce and use when door or camera jacking
 
@@ -255,14 +259,26 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 
 /mob/living/silicon/pai/attackby(obj/item/weapon/W as obj, mob/user as mob, params)
 	if (!canmove) return ..() //not in card form, so just handle shit like usual
+	if (cooldown >= cooldowncap)
+		return
+
+	user.do_attack_animation(src)
 	if(!W.force)
-		visible_message("<span class='warning'>[user.name] strikes [src] harmlessly with [W], passing clean through its holographic projection.</span>")
+		visible_message("<span class='info'>[user.name] strikes [src] harmlessly with [W], passing clean through its holographic projection.</span>")
 	else
-		visible_message("<span class='warning'>[user.name] strikes [src] with [W], eliciting a dire ripple throughout its holographic projection!</span>")
+		if (emittersFailing)
+			visible_message("<span class='warning'>[user.name] strikes [src] with [W], its image stuttering and flickering wildly!! </span>")
+		else
+			visible_message("<span class='warning'>[user.name] strikes [src] with [W], eliciting a dire ripple throughout its holographic projection!</span>")
+
+		cooldown = cooldown + 1
+
 		if (prob(66))
 			if(stat != 2)
 				flicker_fade(rand(50, 80))
-	return
+		spawn(5)
+			cooldown = cooldown - 1
+	return 1
 
 /mob/living/silicon/pai/attack_hand(mob/living/carbon/human/user)
 	if(stat == 2) return
@@ -280,7 +296,8 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 				close_up()
 		else
 			if(prob(35))
-				flicker_fade(80)
+				flicker_fade(50)
+		return 1
 
 	return
 
@@ -294,7 +311,7 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 	else
 		if (prob(55))
 			flicker_fade()
-	return
+	return 1
 
 /mob/living/silicon/pai/bullet_act(var/obj/item/projectile/Proj)
 	visible_message("<span class='info'>[Proj] tears cleanly through [src]'s holographic field, distorting its image horribly!!")
@@ -304,18 +321,26 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 	else
 		if (prob(85))
 			flicker_fade(20)
-	return
+	return 1
 
 /mob/living/silicon/pai/proc/flicker_fade(var/dur = 40)
+	updatehealth()
+	if (emittersFailing)
+		src << "<span class='boldwarning'>Your failing containment field surges at the new intrusion, searing your circuitry even more!</span>"
+		src.adjustFireLoss(5)
+		return
+
 	src << "<span class='boldwarning'>The holographic containment field surrounding you is failing! Your emitters whine in protest, burning out slightly.</span>"
 	src.adjustFireLoss(rand(5,15))
 	last_special = world.time + rand(100,500)
+	src.emittersFailing = 1
 
 	if (health < 5)
 		src << "<span class='boldwarning'>HARDWARE ERROR: EMITTERS OFFLINE</span>"
 
 	spawn(dur)
 		visible_message("<span class='danger'>[src]'s holographic field flickers out of existence!</span>")
+		src.emittersFailing = 0
 		close_up()
 
 /mob/living/silicon/pai/Bump(AM as mob|obj) //can open doors on touch but doesn't affect anything else
