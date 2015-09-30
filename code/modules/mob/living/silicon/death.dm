@@ -6,3 +6,8 @@
 
 /mob/living/silicon/spawn_dust()
 	new /obj/effect/decal/remains/robot(loc)
+
+
+/mob/living/silicon/death(gibbed)
+	a_intent = "help"
+	return ..(gibbed)
