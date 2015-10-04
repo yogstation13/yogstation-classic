@@ -229,10 +229,11 @@
 /obj/effect/proc_holder/changeling/sting/stamina
 	name = "Enfeebling Sting"
 	desc = "Exhausts, then causes the victim to collapse for a medium duration."
-	helptext = "We secrete and administer a potent exhausting toxin to our victim, sapping them of their strength, before rendering them unconscious."
+	helptext = "We secrete and administer a potent exhausting toxin to our victim, sapping them of their strength, before rendering them unconscious. The toxin is difficult to maintain, and infecting a target with it will damage our genomes slightly."
 	sting_icon = "sting_cryo"
 	chemical_cost = 30
 	dna_cost = 2
+	genetic_damage = 50
 
 /obj/effect/proc_holder/changeling/sting/stamina/sting_action(mob/user, mob/target)
 	add_logs(user, target, "stung", "knockout sting")
