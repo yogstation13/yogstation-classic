@@ -105,7 +105,7 @@
 	return 1
 
 
-/obj/effect/proc_holder/changeling/sting/false_armblade
+/*/obj/effect/proc_holder/changeling/sting/false_armblade
 	name = "False Armblade Sting"
 	desc = "We silently sting a human, injecting a retrovirus that mutates their arm to temporarily appear as an armblade."
 	helptext = "The victim will form an armblade much like a changeling would, except the armblade is dull and useless."
@@ -153,7 +153,7 @@
 		user.update_inv_r_hand()
 
 	feedback_add_details("changeling_powers","AS")
-	return 1
+	return 1*/
 
 
 /obj/effect/proc_holder/changeling/sting/extract_dna
