@@ -185,7 +185,8 @@
 
 /obj/effect/proc_holder/changeling/sting/mute/sting_action(mob/user, mob/living/carbon/target)
 	add_logs(user, target, "stung", "mute sting")
-	target.silent += 30
+	if(target.reagents)
+		target.reagents.add_reagent("mutetoxin", 15)
 	feedback_add_details("changeling_powers","MS")
 	return 1
 
