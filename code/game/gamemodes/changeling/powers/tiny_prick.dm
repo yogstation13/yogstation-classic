@@ -212,7 +212,7 @@
 	desc = "Causes terror in the target."
 	helptext = "We evolve the ability to sting a target with a powerful hallucinogenic chemical. The target does not notice they have been stung, and the effect occurs after 30 to 60 seconds."
 	sting_icon = "sting_lsd"
-	chemical_cost = 10
+	chemical_cost = 25
 	dna_cost = 1
 
 /obj/effect/proc_holder/changeling/sting/LSD/sting_action(mob/user, mob/living/carbon/target)
