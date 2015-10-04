@@ -223,7 +223,22 @@
 	feedback_add_details("changeling_powers","HS")
 	return 1
 
-/obj/effect/proc_holder/changeling/sting/cryo
+/obj/effect/proc_holder/changeling/sting/stamina
+	name = "Enfeebling Sting"
+	desc = "Exhausts, then causes the victim to collapse for a medium duration."
+	helptext = "We secrete and administer a potent exhausting toxin to our victim, sapping them of their strength, before rendering them unconscious."
+	sting_icon = "sting_cryo"
+	chemical_cost = 30
+	dna_cost = 2
+
+/obj/effect/proc_holder/changeling/sting/stamina/sting_action(mob/user, mob/target)
+	add_logs(user, target, "stung", "knockout sting")
+	if(target.reagents)
+		target.reagents.add_reagent("tirizene", 22)
+	feedback_add_details("changeling_powers", "KS")
+	return 1
+
+/*/obj/effect/proc_holder/changeling/sting/cryo
 	name = "Cryogenic Sting"
 	desc = "We silently sting a human with a cocktail of chemicals that freeze them."
 	helptext = "Does not provide a warning to the victim, though they will likely realize they are suddenly freezing."
@@ -236,4 +251,4 @@
 	if(target.reagents)
 		target.reagents.add_reagent("frostoil", 30)
 	feedback_add_details("changeling_powers","CS")
-	return 1
+	return 1*/
