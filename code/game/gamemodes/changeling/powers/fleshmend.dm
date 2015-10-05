@@ -1,14 +1,15 @@
 /obj/effect/proc_holder/changeling/fleshmend
 	name = "Fleshmend"
-	desc = "Our flesh rapidly regenerates, healing our wounds."
+	desc = "Our flesh twists and knits itself back together, healing our wounds. Humans watching this will notice something amiss."
 	helptext = "Heals a moderate amount of damage over a short period of time. Can be used while unconscious."
-	chemical_cost = 25
+	chemical_cost = 35
 	dna_cost = 2
 	req_stat = UNCONSCIOUS
 
 //Starts healing you every second for 10 seconds. Can be used whilst unconscious.
 /obj/effect/proc_holder/changeling/fleshmend/sting_action(mob/living/user)
-	user << "<span class='notice'>We begin to heal rapidly.</span>"
+	user << "<span class='notice'>Our flesh surges with our prowess, our flesh mending any damage it has sustained.</span>"
+	user.visible_message("<span class='warning'>[user]'s flesh begins to roil and pulse unnaturally!</span>", 5)
 	spawn(0)
 		if(ishuman(user))
 			var/mob/living/carbon/human/H = user
@@ -16,6 +17,8 @@
 			H.remove_all_embedded_objects()
 
 		for(var/i = 0, i<10,i++)
+			if (prob(10))
+				user.visible_message("<span class='warning'>A sickeningly wet crunch emanates from [user].</span>", 2)
 			user.adjustBruteLoss(-10)
 			user.adjustOxyLoss(-10)
 			user.adjustFireLoss(-10)

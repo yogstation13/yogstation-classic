@@ -105,7 +105,7 @@
 	return 1
 
 
-/obj/effect/proc_holder/changeling/sting/false_armblade
+/*/obj/effect/proc_holder/changeling/sting/false_armblade
 	name = "False Armblade Sting"
 	desc = "We silently sting a human, injecting a retrovirus that mutates their arm to temporarily appear as an armblade."
 	helptext = "The victim will form an armblade much like a changeling would, except the armblade is dull and useless."
@@ -153,7 +153,7 @@
 		user.update_inv_r_hand()
 
 	feedback_add_details("changeling_powers","AS")
-	return 1
+	return 1*/
 
 
 /obj/effect/proc_holder/changeling/sting/extract_dna
@@ -185,7 +185,8 @@
 
 /obj/effect/proc_holder/changeling/sting/mute/sting_action(mob/user, mob/living/carbon/target)
 	add_logs(user, target, "stung", "mute sting")
-	target.silent += 30
+	if(target.reagents)
+		target.reagents.add_reagent("mutetoxin", 15)
 	feedback_add_details("changeling_powers","MS")
 	return 1
 
@@ -207,22 +208,41 @@
 	return 1
 
 /obj/effect/proc_holder/changeling/sting/LSD
-	name = "Hallucination Sting"
-	desc = "Causes terror in the target."
-	helptext = "We evolve the ability to sting a target with a powerful hallucinogenic chemical. The target does not notice they have been stung, and the effect occurs after 30 to 60 seconds."
+	name = "Hallucinogenic Pathogen Sting"
+	desc = "Unleashes a potent hallucinogenic pathogen upon the crew."
+	helptext = "We invite a pathogenic genome to take residence in our target, rendering them a host to a virulent hallucinogenic disease that is transmissable by air. We will not be affected by it, but our genes will be damaged by the pathogen's initial transmission."
 	sting_icon = "sting_lsd"
-	chemical_cost = 10
-	dna_cost = 1
+	chemical_cost = 50
+	dna_cost = 5
+	genetic_damage = 100
 
 /obj/effect/proc_holder/changeling/sting/LSD/sting_action(mob/user, mob/living/carbon/target)
-	add_logs(user, target, "stung", "LSD sting")
+	add_logs(user, target, "stung", "hallucination pathogen")
 	spawn(rand(300,600))
 		if(target)
-			target.hallucination = max(400, target.hallucination)
+			if(!target.resistances.Find(/datum/disease/lingvirus))
+				var/datum/disease/welp = new /datum/disease/lingvirus(0)
+				target.ContractDisease(welp)
 	feedback_add_details("changeling_powers","HS")
 	return 1
 
-/obj/effect/proc_holder/changeling/sting/cryo
+/obj/effect/proc_holder/changeling/sting/stamina
+	name = "Enfeebling Sting"
+	desc = "Exhausts, then causes the victim to collapse for a medium duration."
+	helptext = "We secrete and administer a potent exhausting toxin to our victim, sapping them of their strength, before rendering them unconscious. The toxin is difficult to maintain, and infecting a target with it will damage our genomes slightly."
+	sting_icon = "sting_cryo"
+	chemical_cost = 30
+	dna_cost = 2
+	genetic_damage = 50
+
+/obj/effect/proc_holder/changeling/sting/stamina/sting_action(mob/user, mob/target)
+	add_logs(user, target, "stung", "knockout sting")
+	if(target.reagents)
+		target.reagents.add_reagent("tirizene", 22)
+	feedback_add_details("changeling_powers", "KS")
+	return 1
+
+/*/obj/effect/proc_holder/changeling/sting/cryo
 	name = "Cryogenic Sting"
 	desc = "We silently sting a human with a cocktail of chemicals that freeze them."
 	helptext = "Does not provide a warning to the victim, though they will likely realize they are suddenly freezing."
@@ -235,4 +255,4 @@
 	if(target.reagents)
 		target.reagents.add_reagent("frostoil", 30)
 	feedback_add_details("changeling_powers","CS")
-	return 1
+	return 1*/
