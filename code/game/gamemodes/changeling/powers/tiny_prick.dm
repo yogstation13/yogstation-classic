@@ -235,6 +235,7 @@
 	genetic_damage = 50
 
 /obj/effect/proc_holder/changeling/sting/stamina/sting_action(mob/user, mob/target)
+	target << "<span class='danger'>You feel a tiny prick.</span>"
 	add_logs(user, target, "stung", "knockout sting")
 	if(target.reagents)
 		target.reagents.add_reagent("tirizene", 22)
