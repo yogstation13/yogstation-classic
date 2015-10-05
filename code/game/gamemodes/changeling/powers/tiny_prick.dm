@@ -207,16 +207,15 @@
 	feedback_add_details("changeling_powers","BS")
 	return 1
 
-/obj/effect/proc_holder/changeling/sting/LSD
+/obj/effect/proc_holder/changeling/sting/hallucinationpathogen
 	name = "Hallucinogenic Pathogen Sting"
 	desc = "Unleashes a potent hallucinogenic pathogen upon the crew."
-	helptext = "We invite a pathogenic genome to take residence in our target, rendering them a host to a virulent hallucinogenic disease that is transmissable by air. We will not be affected by it, but our genes will be damaged by the pathogen's initial transmission."
+	helptext = "We invite a pathogenic genome to take residence in our target, rendering them a host to a virulent hallucinogenic disease that is transmissable by air."
 	sting_icon = "sting_lsd"
 	chemical_cost = 50
 	dna_cost = 5
-	genetic_damage = 100
 
-/obj/effect/proc_holder/changeling/sting/LSD/sting_action(mob/user, mob/living/carbon/target)
+/obj/effect/proc_holder/changeling/sting/hallucinationpathogen/sting_action(mob/user, mob/living/carbon/target)
 	add_logs(user, target, "stung", "hallucination pathogen")
 	spawn(rand(300,600))
 		if(target)
