@@ -52,6 +52,18 @@
 				investigate_log("[user.name] ([user.ckey]) injected [M.name] ([M.ckey]) with [viruslist]", "viro")
 			add_logs(user, M, "injected", object="[src.name]", addition="([contained])")
 
+			if(M.viruses)
+				for(var/datum/disease/D in M.viruses)
+					for(var/datum/reagent/A in reagents.reagent_list)
+						if(A.id in D.cures)
+							if(D.stage <= 1)
+								M << "<span class='warning'>Whatever it was wrong with you, it seems to be gone now.</span>"
+								M.viruses.Remove(D)
+								qdel(D)
+							else
+								M << "<span class='warning'>You feel a little bit better.</span>"
+								D.stage--
+
 /obj/item/weapon/reagent_containers/hypospray/CMO
 	list_reagents = list("omnizine" = 30)
 

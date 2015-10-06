@@ -110,6 +110,19 @@
 				reagents.trans_to(M, bitesize)
 				bitecount++
 				On_Consume()
+
+			if(M.viruses)
+				for(var/datum/disease/D in M.viruses)
+					for(var/datum/reagent/A in reagents.reagent_list)
+						if(A.id in D.cures)
+							if(D.stage <= 1)
+								M << "<span class='warning'>Whatever it was wrong with you, it seems to be gone now.</span>"
+								M.viruses.Remove(D)
+								qdel(D)
+							else
+								M << "<span class='warning'>You feel a little bit better.</span>"
+								D.stage--
+
 			return 1
 
 	return 0
