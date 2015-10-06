@@ -117,14 +117,14 @@
 
 /datum/disease/transformation/rage_virus
 	name = "Rage Virus"
-	cure_text = "Pan-Galactic Gargle Blaster"
-	cures = list("gargle_blaster")
+	cure_text = "Whiskey"
+	cures = list("whiskey", "gargleblaster")
 	spread_text = "Zombie Bites"
-	spread_flags = SPECIAL & BLOOD
+	spread_flags = SPECIAL | BLOOD
 	viable_mobtypes = list(/mob/living/carbon/human)
 	permeability_mod = 1
 	cure_chance = 0
-	disease_flags = CAN_CARRY|CAN_RESIST
+	disease_flags = CURABLE
 	longevity = 30
 	desc = "Crewmembers with this disease will bite other humans, causing them to turn into zombies."
 	severity = BIOHAZARD

@@ -1,11 +1,11 @@
 /datum/round_event_control/zombies_outbreak
 	name = "Zombie Outbreak"
 	typepath = /datum/round_event/zombies_outbreak
-	weight = 8
+	weight = 3
 	max_occurrences = 1
 
 /datum/round_event/zombies_outbreak
-	announceWhen	= 100
+	announceWhen	= 30
 
 	var/spawncount = 1
 	var/successSpawn = 0	//So we don't make a command report if nothing gets spawned.
