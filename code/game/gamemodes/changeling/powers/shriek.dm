@@ -31,11 +31,12 @@
 /obj/effect/proc_holder/changeling/dissonant_shriek
 	name = "Dissonant Shriek"
 	desc = "We shift our vocal cords to release a high-frequency sound that overloads nearby electronics."
-	chemical_cost = 20
-	dna_cost = 1
+	chemical_cost = 25
+	dna_cost = 4
 
 //A flashy ability, good for crowd control and sewing chaos.
 /obj/effect/proc_holder/changeling/dissonant_shriek/sting_action(mob/user)
+	user.visible_message("<span class='boldwarning'>An unearthly keening resounds about the area, making your vision swim!</span>", 7)
 	for(var/obj/machinery/light/L in range(5, usr))
 		L.on = 1
 		L.broken()

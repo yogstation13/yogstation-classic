@@ -323,7 +323,7 @@ datum/reagent/toxin/mutetoxin //the new zombie powder.
 	color = "#6E2828"
 	data = 13
 	toxpwr = 0
-	metabolization_rate = 1.25 * REAGENTS_METABOLISM
+	metabolization_rate = 1 * REAGENTS_METABOLISM
 
 
 /datum/reagent/toxin/staminatoxin/on_mob_life(mob/living/carbon/M)
@@ -331,28 +331,30 @@ datum/reagent/toxin/mutetoxin //the new zombie powder.
 	data = max(data - 1, 3)
 
 	switch(current_cycle)
-		if (1 to 3)
-			M.adjustStaminaLoss(8)
-		if (4 to 7)
-			M.adjustStaminaLoss(16)
+		if (1 to 7)
+			M.adjustStaminaLoss(2)
 		if (8 to 12)
 			M.adjustStaminaLoss(24)
 		if (13 to 15)
-			M.adjustStaminaLoss(16)
-		if (16 to INFINITY)
 			M.adjustStaminaLoss(8)
+		if (16 to INFINITY)
+			M.adjustStaminaLoss(4)
 
 	switch(M.getStaminaLoss())
-		if (32 to 65)
+		if (80 to 119)
 			M.sleeping += 1.25
-		if (66 to INFINITY)
+		if (80 to INFINITY)
 			M.sleeping += 2
 
 	if (M.sleeping > 15)
 		M.sleeping = 15 //cap maximum sleeping duration for sanity's sake
+		M.reagents.remove_reagent("tirizene", 0.5) //exhaust the toxin quicker once its effects have taken hold at max cap anyway
+		if (prob(10))
+			M << "<span class='info'>The haze of your torpor fades as you drift closer to consciousness once more.</span>"
+
 
 	if (prob(10))
-		M << "<span class='danger'>A terrible ache settles over your limbs, worsening with the slightest movement!</span>"
+		M << "<span class='boldwarning'>You suddenly feel unreasonably exhausted.</span>"
 	..()
 
 /datum/reagent/toxin/polonium

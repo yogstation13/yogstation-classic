@@ -258,7 +258,16 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 	return
 
 /mob/living/silicon/pai/attackby(obj/item/weapon/W as obj, mob/user as mob, params)
-	if (!canmove) return ..() //not in card form, so just handle shit like usual
+	if (!canmove) //card has been hit
+		if (W.force)
+			user.visible_message("<span class='warning'>[user.name] slams [W] into [src]'s card, damaging it severely!</span>")
+			src.adjustBruteLoss(20)
+		else
+			user.visible_message("<span class='info'>[user.name] taps [W] against [src]'s screen.</span>")
+
+		..()
+		return
+
 	if (cooldown >= cooldowncap)
 		return
 
@@ -350,6 +359,9 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 		return
 
 /mob/living/silicon/pai/Bumped(AM as mob|obj) //cannot be bumped or bump other objects
+	return
+
+/mob/living/silicon/pai/Crossed(AM as mob|obj) //cannot intercept projectiles
 	return
 
 /mob/living/silicon/pai/start_pulling(var/atom/movable/AM) //cannot pull objects
