@@ -33,6 +33,7 @@
 			/mob/living/simple_animal/hostile/syndicate/melee,
 			/mob/living/simple_animal/hostile/syndicate/melee/space,
 			/mob/living/simple_animal/hostile/syndicate/ranged,
+			/mob/living/simple_animal/hostile/syndicate/ranged/orion,
 			/mob/living/simple_animal/hostile/syndicate/ranged/space,
 			/mob/living/simple_animal/hostile/alien/queen/large,
 			/mob/living/simple_animal/hostile/mushroom,
