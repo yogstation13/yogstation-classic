@@ -104,7 +104,7 @@
 			return 0
 
 		if(ishuman(target))
-			if(success && ticker.mode.add_gangster(target.mind,gang,0))
+			if(success)
 				target.Paralyse(5)
 			else
 				target.visible_message("<span class='warning'>[target] seems to resist the implant!</span>", "<span class='warning'>You feel the influence of your enemies try to invade your mind!</span>")
