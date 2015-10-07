@@ -519,7 +519,7 @@ var/list/uplink_items = list()
 	item = /obj/item/weapon/storage/belt/military
 	cost = 3
 	excludefrom = list(/datum/game_mode/nuclear)
-	
+
 /datum/uplink_item/device_tools/medkit
 	name = "Syndicate Combat Medic Kit"
 	desc = "The syndicate medkit is a suspicious black and red. Included is a combat stimulant injector for rapid healing, a medical hud for quick identification of injured comrades, \
@@ -539,8 +539,8 @@ var/list/uplink_items = list()
 /datum/uplink_item/device_tools/hardsuit
 	name = "Blood-red Hardsuit"
 	desc = "The feared suit of a syndicate nuclear agent. Features slightly better armoring and a built in jetpack that runs off standard atmospheric tanks. \
-	When the built in helmet is deployed your identity will be protected, even in death, as the suit cannot be removed by outside forces. Toggling the suit into combat mode \
-	will allow you all the mobility of a loose fitting uniform without sacrificing armoring. Additionally the suit is collapsible, small enough to fit within a backpack. \
+	When the built in helmet is deployed your identity will be protected. Toggling the suit into combat mode will allow you all the mobility of a loose fitting uniform without sacrificing armoring. \
+ 	Additionally the suit is collapsible, small enough to fit within a backpack. \
 	Nanotrasen crewmembers are trained to report red space suit sightings, these suits in particular are known to drive employees into a panic."
 	item = /obj/item/clothing/suit/space/hardsuit/syndi
 	cost = 8

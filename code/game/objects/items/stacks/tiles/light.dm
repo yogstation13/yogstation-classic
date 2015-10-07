@@ -2,6 +2,7 @@
 	name = "light tile"
 	singular_name = "light floor tile"
 	desc = "A floor tile, made out of glass. It produces light."
+	icon = 'icons/obj/tiles.dmi'
 	icon_state = "tile_e"
 	flags = CONDUCT
 	attack_verb = list("bashed", "battered", "bludgeoned", "thrashed", "smashed")
