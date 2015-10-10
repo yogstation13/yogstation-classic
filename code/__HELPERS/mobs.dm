@@ -166,6 +166,28 @@ Proc for attack log creation, because really why not
 	log_attack("[user ? "[user.name][(ismob(user) && user.ckey) ? "([user.ckey])" : ""]" : "NON-EXISTANT SUBJECT"] [what_done] [target ? "[target.name][(ismob(target) && target.ckey)? "([target.ckey])" : ""]" : "NON-EXISTANT SUBJECT"][object ? " with [object]" : " "][addition][newhealthtxt]")
 
 
+/proc/get_ip(user)
+	if(ismob(user))
+		var/mob/temp = user
+		if(temp.client)
+			return temp.client.address
+	else if(istype(user, /client))
+		var/client/temp = user
+		return temp.address
+
+	return "0.0.0.0"
+
+/proc/get_computer_id(user)
+	if(ismob(user))
+		var/mob/temp = user
+		if(temp.client)
+			return temp.client.computer_id
+	else if(istype(user, /client))
+		var/client/temp = user
+		return temp.computer_id
+
+	return "Unknown"
+
 /proc/get_ckey(var/user)
 	if(ismob(user))
 		var/mob/temp = user
