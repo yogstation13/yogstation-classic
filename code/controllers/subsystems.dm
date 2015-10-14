@@ -14,8 +14,8 @@
 	var/dynamic_wait = 0	//changes the wait based on the amount of time it took to process
 	var/dwait_upper = 20	//longest wait can be under dynamic_wait
 	var/dwait_lower = 5		//shortest wait can be under dynamic_wait
-	var/dwait_delta = 7		//How much should processing time effect dwait. or basically: wait = cost*dwait_delta
-	var/dwait_buffer = 1.5	//This number is subtracted from the processing time before calculating its new wait
+	var/dwait_delta = 8		//How much should processing time effect dwait. or basically: wait = cost*dwait_delta
+	var/dwait_buffer = 0	//This number is subtracted from the processing time before calculating its new wait
 
 	//things you will probably want to leave alone
 	var/can_fire = 0		//prevent fire() calls
@@ -23,6 +23,11 @@
 	var/next_fire = 0		//scheduled world.time for next fire()
 	var/cost = 0			//average time to execute
 	var/times_fired = 0		//number of times we have called fire()
+
+
+//dwait_buffer is taken from the cost as a 'forgiven' amount of lag,
+//lower is less laggy. dwait_buffer is what the cost is mutiply'ed by, raise it for less lag
+
 
 //used to initialize the subsystem BEFORE the map has loaded
 /datum/subsystem/New()

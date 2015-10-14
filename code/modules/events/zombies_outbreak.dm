@@ -1,7 +1,7 @@
 /datum/round_event_control/zombies_outbreak
 	name = "Zombie Outbreak"
 	typepath = /datum/round_event/zombies_outbreak
-	weight = 3
+	weight = 6
 	max_occurrences = 1
 
 /datum/round_event/zombies_outbreak
