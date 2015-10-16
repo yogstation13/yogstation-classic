@@ -12,7 +12,7 @@
 	//you can change how quickly it starts scaling back with dwait_buffer,
 	//and you can change how much it scales back with dwait_delta
 	var/dynamic_wait = 0	//changes the wait based on the amount of time it took to process
-	var/dwait_upper = 20	//longest wait can be under dynamic_wait
+	var/dwait_upper = 50	//longest wait can be under dynamic_wait
 	var/dwait_lower = 5		//shortest wait can be under dynamic_wait
 	var/dwait_delta = 8		//How much should processing time effect dwait. or basically: wait = cost*dwait_delta
 	var/dwait_buffer = 0	//This number is subtracted from the processing time before calculating its new wait
@@ -26,7 +26,7 @@
 
 
 //dwait_buffer is taken from the cost as a 'forgiven' amount of lag,
-//lower is less laggy. dwait_buffer is what the cost is mutiply'ed by, raise it for less lag
+//lower is less laggy. dwait_delta is what the cost is mutiply'ed by, raise it for less lag
 
 
 //used to initialize the subsystem BEFORE the map has loaded
