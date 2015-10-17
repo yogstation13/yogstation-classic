@@ -416,6 +416,7 @@
 							A.vars[variable] = O.vars[variable]
 
 		if("file")
+			if(!check_rights(R_UPLOAD)) return
 			var/new_value = input("Pick file:","File",O.vars[variable]) as null|file
 			if(new_value == null) return
 			O.vars[variable] = new_value
@@ -452,7 +453,9 @@
 							A.vars[variable] = O.vars[variable]
 
 		if("icon")
+			if(!check_rights(R_UPLOAD)) return
 			var/new_value = input("Pick icon:","Icon",O.vars[variable]) as null|icon
+
 			if(new_value == null) return
 			O.vars[variable] = new_value
 			if(method)

@@ -24,6 +24,8 @@
 	var/cost = 0			//average time to execute
 	var/times_fired = 0		//number of times we have called fire()
 
+	var/last_cost = 0
+
 
 //dwait_buffer is taken from the cost as a 'forgiven' amount of lag,
 //lower is less laggy. dwait_delta is what the cost is mutiply'ed by, raise it for less lag

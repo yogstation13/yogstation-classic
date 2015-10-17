@@ -93,12 +93,32 @@ calculate the longest number of ticks the MC can wait between each cycle without
 				for(var/datum/subsystem/SS in subsystems)
 					if(SS.can_fire > 0)
 						if(SS.next_fire <= world.time)
+
+							if(!istype(SS, /datum/subsystem/garbage_collector))
+								if(SS.cost > 3) // Is the last cost ultra shitty?
+									if(rand(1, 10) > 1) // 90% chance of missing this fire
+										SS.cost = MC_AVERAGE(SS.cost, 0)
+										continue
+								else if(SS.cost > 2) // Was the cost moderately shitty?
+									if(rand(1, 10) > 3) // 70% chance of missing this fire
+										SS.cost = MC_AVERAGE(SS.cost, 0)
+										continue
+								else if(SS.cost > 1.5) // Was the last cost over normal?
+									if(rand(1, 10) > 5) // 50% chance of missing this fire
+										SS.cost = MC_AVERAGE(SS.cost, 0)
+										continue
+								else if(SS.cost > 1) // Was the last cost slightly over normal?
+									if(rand(1, 10) > 7) // 30% chance of missing this fire
+										SS.cost = MC_AVERAGE(SS.cost, 0)
+										continue
+
 							SubSystemRan = 1
 							timer = world.timeofday
 							last_thing_processed = SS.type
 							SS.last_fire = world.time
 							SS.fire()
 							SS.cost = MC_AVERAGE(SS.cost, world.timeofday - timer)
+
 							if (SS.dynamic_wait)
 								var/oldwait = SS.wait
 								var/GlobalCostDelta = (SSCostPerSecond-(SS.cost/(SS.wait/10)))-1

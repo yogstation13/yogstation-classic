@@ -120,7 +120,7 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 /client/proc/get_callproc_args()
 	var/argnum = input("Number of arguments","Number:",0) as num|null
 	if(!argnum && (argnum!=0))	return
-	
+
 	var/list/lst = list()
 	//TODO: make a list to store whether each argument was initialised as null.
 	//Reason: So we can abort the proccall if say, one of our arguments was a mob which no longer exists
@@ -155,9 +155,11 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 				lst += input("Select reference:","Reference",usr) as mob in world
 
 			if("file")
+				if(!check_rights(R_UPLOAD)) return
 				lst += input("Pick file:","File") as file
 
 			if("icon")
+				if(!check_rights(R_UPLOAD)) return
 				lst += input("Pick icon:","Icon") as icon
 
 			if("client")
