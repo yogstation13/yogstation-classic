@@ -790,7 +790,7 @@ var/global/floorIsLava = 0
 			if(message)
 				C << message
 			kicked_client_names.Add("[C.ckey]")
-			del(C)
+			qdel(C)
 	return kicked_client_names
 
 //returns 1 to let the dragdrop code know we are trapping this event

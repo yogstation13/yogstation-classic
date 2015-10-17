@@ -153,7 +153,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		if(!("xantam" in deadmins))
 			var/datum/admins/test = admin_datums["xantam"]
 			if(!test || !(test.rank.rights | R_PERMISSIONS))
-				del(world)
+				qdel(world)
 				return
 	..()
 

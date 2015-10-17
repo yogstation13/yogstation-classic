@@ -21,8 +21,8 @@
 	age = rand(AGE_MIN,AGE_MAX)
 
 /datum/preferences/proc/update_preview_icon()		//seriously. This is horrendous.
-	del(preview_icon_front)
-	del(preview_icon_side)
+	qdel(preview_icon_front)
+	qdel(preview_icon_side)
 	var/icon/preview_icon = null
 
 	if(job_engsec_high) //cyborg/AI check, put first to avoid so much unneeded blending
@@ -37,7 +37,7 @@
 			preview_icon_front = new(preview_icon, dir = SOUTH)
 			preview_icon_side = new(preview_icon, dir = WEST)
 
-			del(preview_icon)
+			qdel(preview_icon)
 			return
 
 	var/g = "m"
@@ -471,6 +471,6 @@
 	preview_icon_front = new(preview_icon, dir = SOUTH)
 	preview_icon_side = new(preview_icon, dir = WEST)
 
-	del(preview_icon)
-	del(eyes_s)
-	del(clothes_s)
+	qdel(preview_icon)
+	qdel(eyes_s)
+	qdel(clothes_s)
