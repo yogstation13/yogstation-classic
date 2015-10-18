@@ -33,7 +33,7 @@
 		src << link(config.rulesurl)
 	else
 		src << "<span class='danger'>The rules URL is not set in the server configuration.</span>"*/
-	src << browse(file('html/rules.html'), "window=rules;size=480x320")
+	src << browse(file('html/rules.html'), "window=rules;size=700x700")
 	return
 
 /client/verb/github()
