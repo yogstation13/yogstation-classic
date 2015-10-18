@@ -13,6 +13,44 @@ var/jobban_keylist[0]		//to store the keys & ranks
 	jobban_keylist.Add(text("[ckey] - [rank]"))
 	jobban_savebanfile()
 
+/proc/jobban_check_mob(mob/M, rank)
+	if (!M || !rank) return 0
+
+	/*var/list/tempList = jobban_list_for_mob(M)
+	return jobban_job_in_list(tempList, rank)*/
+
+	var/DBQuery/query = dbcon.NewQuery("SELECT job FROM [format_table_name("ban")] WHERE ckey = '[get_ckey(M)]' AND job = '[rank]' AND (bantype = 'JOB_PERMABAN' OR bantype = 'JOB_TEMPBAN') AND isnull(unbanned)")
+	query.Execute()
+
+	if(query.NextRow())
+		return 1
+
+	return 0
+
+
+/proc/jobban_job_in_list(jobList, rank)
+	if (!jobList || !rank) return 0
+
+	for (var/s in jobList)
+		if(s == rank)
+			return 1
+
+	return 0
+
+/proc/jobban_list_for_mob(mob/M)
+	if (!M) return 0
+
+	var/DBQuery/query = dbcon.NewQuery("SELECT job FROM [format_table_name("ban")] WHERE ckey = '[get_ckey(M)]' AND (bantype = 'JOB_PERMABAN' OR bantype = 'JOB_TEMPBAN') AND isnull(unbanned)")
+	query.Execute()
+
+	var/list/ckey_job_bans = list()
+
+	while(query.NextRow())
+		var/job = query.item[1]
+		ckey_job_bans.Add(job)
+
+	return ckey_job_bans
+
 //returns a reason if M is banned from rank, returns 0 otherwise
 /proc/jobban_isbanned(mob/M, rank)
 	if(M && rank)

@@ -700,7 +700,7 @@ regex
 					p.pattern+=p.next.pattern
 					var/q=p.next
 					p.next=p.next.next
-					del(q)
+					qdel(q)
 
 	proc/TrueBlock()
 		if(!ptype) return pattern

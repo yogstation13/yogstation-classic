@@ -331,7 +331,7 @@
 					return 0
 		else
 			return 0
-	if(jobban_isbanned(src,rank))
+	if(jobban_check_mob(src,rank))
 		return 0
 	if(!job.player_old_enough(src.client))
 		return 0

@@ -191,7 +191,7 @@ var/datum/subsystem/pai/SSpai
 
 /datum/subsystem/pai/proc/requestRecruits()
 	for(var/mob/dead/observer/O in player_list)
-		if(jobban_isbanned(O, "pAI"))
+		if(jobban_check_mob(O, "pAI"))
 			continue
 		if(asked.Find(O.key))
 			if(world.time < asked[O.key] + askDelay)

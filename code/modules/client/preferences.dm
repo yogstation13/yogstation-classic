@@ -344,6 +344,7 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 
 
 			if (1) // Game Preferences
+				var/list/bans = jobban_list_for_mob(user)
 				dat += "<table><tr><td width='340px' height='300px' valign='top'>"
 				dat += "<h2>General Settings</h2>"
 				dat += "<b>UI Style:</b> <a href='?_src_=prefs;preference=ui'>[UI_style]</a><br>"
@@ -376,17 +377,17 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 
 				dat += "<h2>Antagonist Settings</h2>"
 
-				if(jobban_isbanned(user, "Syndicate"))
+				if(jobban_job_in_list(user, "Syndicate"))
 					dat += "<font color=red><b>You are banned from antagonist roles.</b></font>"
 					src.be_special = 0
 
 				else
 					var/n = 0
 					for (var/i in special_roles)
-						if(jobban_isbanned(user, i))
+						if(jobban_job_in_list(bans, i))
 							dat += "<b>Be [i]:</b> <font color=red><b>\[BANNED]</b></font><br>"
 						else if(i == "pAI/posibrain")
-							if(jobban_isbanned(user, "pAI"))
+							if(jobban_job_in_list(bans, "pAI"))
 								dat += "<b>Be [i]:</b> <font color=red><b>\[BANNED\]</b></font><br>"
 						else
 							var/days_remaining = null
@@ -441,6 +442,7 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 
 		//The job before the current job. I only use this to get the previous jobs color when I'm filling in blank rows.
 		var/datum/job/lastJob
+		var/list/bans = jobban_list_for_mob(user)
 
 		for(var/datum/job/job in SSjob.occupations)
 			if(job.spawn_positions == 0)
@@ -463,14 +465,14 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 			HTML += "<tr bgcolor='[job.selection_color]'><td width='60%' align='right'>"
 			var/rank = job.title
 			lastJob = job
-			if(jobban_isbanned(user, rank))
+			if(jobban_job_in_list(bans, rank))
 				HTML += "<font color=red>[rank]</font></td><td><font color=red><b> \[BANNED\]</b></font></td></tr>"
 				continue
 			if(!job.player_old_enough(user.client))
 				var/available_in_days = job.available_in_days(user.client)
 				HTML += "<font color=red>[rank]</font></td><td><font color=red> \[IN [(available_in_days)] DAYS\]</font></td></tr>"
 				continue
-			if((job_civilian_low & ASSISTANT) && (rank != "Assistant") && !jobban_isbanned(user, "Assistant"))
+			if((job_civilian_low & ASSISTANT) && (rank != "Assistant") && !jobban_job_in_list(bans, "Assistant"))
 				HTML += "<font color=orange>[rank]</font></td><td></td></tr>"
 				continue
 			if(config.enforce_human_authority && !user.client.prefs.pref_species.qualifies_for_rank(rank, user.client.prefs.features))
@@ -752,7 +754,7 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 					ResetJobs()
 					SetChoices(user)
 				if("random")
-					if(jobban_isbanned(user, "Assistant"))
+					if(jobban_check_mob(user, "Assistant"))
 						userandomjob = 1
 					else
 						userandomjob = !userandomjob
