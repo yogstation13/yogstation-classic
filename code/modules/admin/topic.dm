@@ -161,8 +161,9 @@
 	else if(href_list["dbsearchckey"] || href_list["dbsearchadmin"])
 		var/adminckey = href_list["dbsearchadmin"]
 		var/playerckey = href_list["dbsearchckey"]
+		var/step = href_list["step"]
 
-		DB_ban_panel(playerckey, adminckey)
+		DB_ban_panel(playerckey, adminckey, step)
 		return
 
 	else if(href_list["dbbanedit"])
@@ -537,6 +538,7 @@
 						      But it looks beautiful in-game
 						                -Nodrak
 	************************************WARNING!***********************************/
+		var/list/bans = jobban_list_for_mob(M)
 		var/counter = 0
 //Regular jobs
 	//Command (Blue)
@@ -547,7 +549,7 @@
 			var/datum/job/job = SSjob.GetJob(jobPos)
 			if(!job) continue
 
-			if(jobban_isbanned(M, job.title))
+			if(jobban_job_in_list(bans, job.title))
 				jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=[job.title];jobban4=\ref[M]'><font color=red>[replacetext(job.title, " ", "&nbsp")]</font></a></td>"
 				counter++
 			else
@@ -568,7 +570,7 @@
 			var/datum/job/job = SSjob.GetJob(jobPos)
 			if(!job) continue
 
-			if(jobban_isbanned(M, job.title))
+			if(jobban_job_in_list(bans, job.title))
 				jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=[job.title];jobban4=\ref[M]'><font color=red>[replacetext(job.title, " ", "&nbsp")]</font></a></td>"
 				counter++
 			else
@@ -589,7 +591,7 @@
 			var/datum/job/job = SSjob.GetJob(jobPos)
 			if(!job) continue
 
-			if(jobban_isbanned(M, job.title))
+			if(jobban_job_in_list(bans, job.title))
 				jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=[job.title];jobban4=\ref[M]'><font color=red>[replacetext(job.title, " ", "&nbsp")]</font></a></td>"
 				counter++
 			else
@@ -610,7 +612,7 @@
 			var/datum/job/job = SSjob.GetJob(jobPos)
 			if(!job) continue
 
-			if(jobban_isbanned(M, job.title))
+			if(jobban_job_in_list(bans, job.title))
 				jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=[job.title];jobban4=\ref[M]'><font color=red>[replacetext(job.title, " ", "&nbsp")]</font></a></td>"
 				counter++
 			else
@@ -631,7 +633,7 @@
 			var/datum/job/job = SSjob.GetJob(jobPos)
 			if(!job) continue
 
-			if(jobban_isbanned(M, job.title))
+			if(jobban_job_in_list(bans, job.title))
 				jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=[job.title];jobban4=\ref[M]'><font color=red>[replacetext(job.title, " ", "&nbsp")]</font></a></td>"
 				counter++
 			else
@@ -652,7 +654,7 @@
 			var/datum/job/job = SSjob.GetJob(jobPos)
 			if(!job) continue
 
-			if(jobban_isbanned(M, job.title))
+			if(jobban_job_in_list(bans, job.title))
 				jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=[job.title];jobban4=\ref[M]'><font color=red>[replacetext(job.title, " ", "&nbsp")]</font></a></td>"
 				counter++
 			else
@@ -673,7 +675,7 @@
 			var/datum/job/job = SSjob.GetJob(jobPos)
 			if(!job) continue
 
-			if(jobban_isbanned(M, job.title))
+			if(jobban_job_in_list(bans, job.title))
 				jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=[job.title];jobban4=\ref[M]'><font color=red>[replacetext(job.title, " ", "&nbsp")]</font></a></td>"
 				counter++
 			else
@@ -694,7 +696,7 @@
 			var/datum/job/job = SSjob.GetJob(jobPos)
 			if(!job) continue
 
-			if(jobban_isbanned(M, job.title))
+			if(jobban_job_in_list(bans, job.title))
 				jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=[job.title];jobban4=\ref[M]'><font color=red>[replacetext(job.title, " ", "&nbsp")]</font></a></td>"
 				counter++
 			else
@@ -712,28 +714,28 @@
 		jobs += "<tr bgcolor='eeeeee'><th colspan='4'><a href='?src=\ref[src];jobban3=ghostroles;jobban4=\ref[M]'>Ghost Roles</a></th></tr><tr align='center'>"
 
 		//pAI
-		if(jobban_isbanned(M, "pAI"))
+		if(jobban_job_in_list(bans, "pAI"))
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=pAI;jobban4=\ref[M]'><font color=red>[replacetext("pAI", " ", "&nbsp")]</font></a></td>"
 		else
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=pAI;jobban4=\ref[M]'>[replacetext("pAI", " ", "&nbsp")]</a></td>"
 
 
 		//Drones
-		if(jobban_isbanned(M, "drone"))
+		if(jobban_job_in_list(bans, "drone"))
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=drone;jobban4=\ref[M]'><font color=red>[replacetext("Drone", " ", "&nbsp")]</font></a></td>"
 		else
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=drone;jobban4=\ref[M]'>[replacetext("Drone", " ", "&nbsp")]</a></td>"
 
 
 		//Positronic Brains
-		if(jobban_isbanned(M, "posibrain"))
+		if(jobban_job_in_list(bans, "posibrain"))
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=posibrain;jobban4=\ref[M]'><font color=red>[replacetext("Posibrain", " ", "&nbsp")]</font></a></td>"
 		else
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=posibrain;jobban4=\ref[M]'>[replacetext("Posibrain", " ", "&nbsp")]</a></td>"
 
 
 		//Deathsquad
-		if(jobban_isbanned(M, "deathsquad"))
+		if(jobban_job_in_list(bans, "deathsquad"))
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=deathsquad;jobban4=\ref[M]'><font color=red>[replacetext("Deathsquad", " ", "&nbsp")]</font></a></td>"
 		else
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=deathsquad;jobban4=\ref[M]'>[replacetext("Deathsquad", " ", "&nbsp")]</a></td>"
@@ -741,30 +743,30 @@
 		jobs += "</tr></table>"
 
 	//Antagonist (Orange)
-		var/isbanned_dept = jobban_isbanned(M, "Syndicate")
+		var/isbanned_dept = jobban_job_in_list(bans, "Syndicate")
 		jobs += "<table cellpadding='1' cellspacing='0' width='100%'>"
 		jobs += "<tr bgcolor='ffeeaa'><th colspan='10'><a href='?src=\ref[src];jobban3=Syndicate;jobban4=\ref[M]'>Antagonist Positions</a></th></tr><tr align='center'>"
 
 		//Traitor
-		if(jobban_isbanned(M, "traitor") || isbanned_dept)
+		if(jobban_job_in_list(bans, "traitor") || isbanned_dept)
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=traitor;jobban4=\ref[M]'><font color=red>[replacetext("Traitor", " ", "&nbsp")]</font></a></td>"
 		else
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=traitor;jobban4=\ref[M]'>[replacetext("Traitor", " ", "&nbsp")]</a></td>"
 
 		//Changeling
-		if(jobban_isbanned(M, "changeling") || isbanned_dept)
+		if(jobban_job_in_list(bans, "changeling") || isbanned_dept)
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=changeling;jobban4=\ref[M]'><font color=red>[replacetext("Changeling", " ", "&nbsp")]</font></a></td>"
 		else
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=changeling;jobban4=\ref[M]'>[replacetext("Changeling", " ", "&nbsp")]</a></td>"
 
 		//Nuke Operative
-		if(jobban_isbanned(M, "operative") || isbanned_dept)
+		if(jobban_job_in_list(bans, "operative") || isbanned_dept)
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=operative;jobban4=\ref[M]'><font color=red>[replacetext("Nuke Operative", " ", "&nbsp")]</font></a></td>"
 		else
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=operative;jobban4=\ref[M]'>[replacetext("Nuke Operative", " ", "&nbsp")]</a></td>"
 
 		//Revolutionary
-		if(jobban_isbanned(M, "revolutionary") || isbanned_dept)
+		if(jobban_job_in_list(bans, "revolutionary") || isbanned_dept)
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=revolutionary;jobban4=\ref[M]'><font color=red>[replacetext("Revolutionary", " ", "&nbsp")]</font></a></td>"
 		else
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=revolutionary;jobban4=\ref[M]'>[replacetext("Revolutionary", " ", "&nbsp")]</a></td>"
@@ -772,43 +774,43 @@
 		jobs += "</tr><tr align='center'>" //Breaking it up so it fits nicer on the screen every 5 entries
 
 		//Gangster
-		if(jobban_isbanned(M, "gangster") || isbanned_dept)
+		if(jobban_job_in_list(bans, "gangster") || isbanned_dept)
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=gangster;jobban4=\ref[M]'><font color=red>[replacetext("Gangster", " ", "&nbsp")]</font></a></td>"
 		else
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=gangster;jobban4=\ref[M]'>[replacetext("Gangster", " ", "&nbsp")]</a></td>"
 
 		//Cultist
-		if(jobban_isbanned(M, "cultist") || isbanned_dept)
+		if(jobban_job_in_list(bans, "cultist") || isbanned_dept)
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=cultist;jobban4=\ref[M]'><font color=red>[replacetext("Cultist", " ", "&nbsp")]</font></a></td>"
 		else
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=cultist;jobban4=\ref[M]'>[replacetext("Cultist", " ", "&nbsp")]</a></td>"
 
 		//Wizard
-		if(jobban_isbanned(M, "wizard") || isbanned_dept)
+		if(jobban_job_in_list(bans, "wizard") || isbanned_dept)
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=wizard;jobban4=\ref[M]'><font color=red>[replacetext("Wizard", " ", "&nbsp")]</font></a></td>"
 		else
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=wizard;jobban4=\ref[M]'>[replacetext("Wizard", " ", "&nbsp")]</a></td>"
 
 		//Abductor
-		if(jobban_isbanned(M, "abductor") || isbanned_dept)
+		if(jobban_job_in_list(bans, "abductor") || isbanned_dept)
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=abductor;jobban4=\ref[M]'><font color=red>[replacetext("Abductor", " ", "&nbsp")]</font></a></td>"
 		else
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=abductor;jobban4=\ref[M]'>[replacetext("Abductor", " ", "&nbsp")]</a></td>"
 
 /*		//Malfunctioning AI	//Removed Malf-bans because they're a pain to impliment
-		if(jobban_isbanned(M, "malf AI") || isbanned_dept)
+		if(jobban_job_in_list(bans, "malf AI") || isbanned_dept)
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=malf AI;jobban4=\ref[M]'><font color=red>[replacetext("Malf AI", " ", "&nbsp")]</font></a></td>"
 		else
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=malf AI;jobban4=\ref[M]'>[replacetext("Malf AI", " ", "&nbsp")]</a></td>"
 
 		//Alien
-		if(jobban_isbanned(M, "alien candidate") || isbanned_dept)
+		if(jobban_job_in_list(bans, "alien candidate") || isbanned_dept)
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=alien candidate;jobban4=\ref[M]'><font color=red>[replacetext("Alien", " ", "&nbsp")]</font></a></td>"
 		else
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=alien candidate;jobban4=\ref[M]'>[replacetext("Alien", " ", "&nbsp")]</a></td>"
 
 		//Infested Monkey
-		if(jobban_isbanned(M, "infested monkey") || isbanned_dept)
+		if(jobban_job_in_list(bans, "infested monkey") || isbanned_dept)
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=infested monkey;jobban4=\ref[M]'><font color=red>[replacetext("Infested Monkey", " ", "&nbsp")]</font></a></td>"
 		else
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=infested monkey;jobban4=\ref[M]'>[replacetext("Infested Monkey", " ", "&nbsp")]</a></td>"
@@ -833,6 +835,7 @@
 			usr << "Job Master has not been setup!"
 			return
 
+		var/list/bans = jobban_list_for_mob(M)
 		//get jobs for department if specified, otherwise just returnt he one job in a list.
 		var/list/joblist = list()
 		switch(href_list["jobban3"])
@@ -892,7 +895,7 @@
 		//Create a list of unbanned jobs within joblist
 		var/list/notbannedlist = list()
 		for(var/job in joblist)
-			if(!jobban_isbanned(M, job))
+			if(!jobban_job_in_list(bans, job))
 				notbannedlist += job
 
 		//Banning comes first
@@ -960,7 +963,7 @@
 				return
 			var/msg
 			for(var/job in joblist)
-				var/reason = jobban_isbanned(M, job)
+				var/reason = jobban_job_in_list(bans, job)
 				if(!reason) continue //skip if it isn't jobbanned anyway
 				switch(alert("Job: '[job]' Reason: '[reason]' Un-jobban?","Please Confirm","Yes","No"))
 					if("Yes")

@@ -47,7 +47,7 @@ var/global/posibrain_notif_cooldown = 0
 
 //Two ways to activate a positronic brain. A clickable link in the ghost notif, or simply clicking the object itself.
 /obj/item/device/mmi/posibrain/proc/activate(mob/user)
-	if((brainmob && brainmob.key) || jobban_isbanned(user,"posibrain"))
+	if((brainmob && brainmob.key) || jobban_check_mob(user,"posibrain"))
 		return
 
 	var/posi_ask = alert("Become a positronic brain? (Warning, You can no longer be cloned, and all past lives will be forgotten!)","Are you positive?","Yes","No")

@@ -56,7 +56,7 @@ var/datum/subsystem/job/SSjob
 	if(player && player.mind && rank)
 		var/datum/job/job = GetJob(rank)
 		if(!job)	return 0
-		if(jobban_isbanned(player, rank))	return 0
+		if(jobban_check_mob(player, rank))	return 0
 		if(!job.player_old_enough(player.client)) return 0
 		var/position_limit = job.total_positions
 		if(!latejoin)
@@ -77,7 +77,7 @@ var/datum/subsystem/job/SSjob
 		if(job.whitelisted && !(player.ckey in whitelist))
 			Debug("FOC whitelist failed, Player: [player]")
 			continue
-		if(jobban_isbanned(player, job.title))
+		if(jobban_check_mob(player, job.title))
 			Debug("FOC isbanned failed, Player: [player]")
 			continue
 		if(!job.player_old_enough(player.client))
@@ -112,7 +112,7 @@ var/datum/subsystem/job/SSjob
 		if(job in command_positions) //If you want a command position, select it!
 			continue
 
-		if(jobban_isbanned(player, job.title))
+		if(jobban_check_mob(player, job.title))
 			Debug("GRJ isbanned failed, Player: [player], Job: [job.title]")
 			continue
 
@@ -280,12 +280,14 @@ var/datum/subsystem/job/SSjob
 			if(PopcapReached())
 				RejectPlayer(player)
 
+			var/list/bans = jobban_list_for_mob(player)
+
 			// Loop through all jobs
 			for(var/datum/job/job in shuffledoccupations) // SHUFFLE ME BABY
 				if(!job)
 					continue
 
-				if(jobban_isbanned(player, job.title))
+				if(jobban_job_in_list(bans, job.title))
 					Debug("DO isbanned failed, Player: [player], Job:[job.title]")
 					continue
 
@@ -317,7 +319,7 @@ var/datum/subsystem/job/SSjob
 	for(var/mob/new_player/player in unassigned)
 		if(PopcapReached())
 			RejectPlayer(player)
-		else if(jobban_isbanned(player, "Assistant"))
+		else if(jobban_check_mob(player, "Assistant"))
 			GiveRandomJob(player) //you get to roll for random before everyone else just to be sure you don't get assistant. you're so speshul
 
 	for(var/mob/new_player/player in unassigned)
@@ -444,7 +446,7 @@ var/datum/subsystem/job/SSjob
 		for(var/mob/new_player/player in player_list)
 			if(!(player.ready && player.mind && !player.mind.assigned_role))
 				continue //This player is not ready
-			if(jobban_isbanned(player, job.title))
+			if(jobban_check_mob(player, job.title))
 				level5++
 				continue
 			if(!job.player_old_enough(player.client))
