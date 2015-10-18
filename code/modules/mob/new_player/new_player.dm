@@ -294,7 +294,7 @@
 
 
 	if(href_list["drules"])
-		src << browse(file('html/rules.html'), "window=rules;size=600x700")
+		src << browse(file('html/rules.html'), "window=rules;size=700x700")
 		return
 
 	if(href_list["dtgwiki"])
