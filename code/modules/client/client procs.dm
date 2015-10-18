@@ -199,7 +199,7 @@ var/next_external_rsc = 0
 			log_access("Failed Login: [key] - New account attempting to connect during panic bunker")
 			message_admins("<span class='adminnotice'>Failed Login: [key] - New account attempting to connect during panic bunker</span>")
 			src << "Sorry but the server is currently not accepting connections from never before seen players."
-			del(src)
+			qdel(src)
 			return 0
 
 		if (config.notify_new_player_age >= 0)

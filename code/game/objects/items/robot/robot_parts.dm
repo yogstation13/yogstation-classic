@@ -185,7 +185,7 @@
 				user << "<span class='warning'>Sticking a dead brain into the frame would sort of defeat the purpose!</span>"
 				return
 
-			if(jobban_isbanned(BM, "Cyborg"))
+			if(jobban_check_mob(BM, "Cyborg"))
 				user << "<span class='warning'>This MMI does not seem to fit!</span>"
 				return
 

@@ -145,7 +145,7 @@
 					user << "<span class='warning'>This MMI does not seem to fit!</span>"
 					return
 
-				if(jobban_isbanned(M.brainmob, "AI"))
+				if(jobban_check_mob(M.brainmob, "AI"))
 					user << "<span class='warning'>This MMI does not seem to fit!</span>"
 					return
 

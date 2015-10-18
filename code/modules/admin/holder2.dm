@@ -17,12 +17,12 @@ var/list/admin_datums = list()
 /datum/admins/New(datum/admin_rank/R, ckey)
 	if(!ckey)
 		spawn(-1)
-			del(src)
+			qdel(src)
 		throw EXCEPTION("Admin datum created without a ckey")
 		return
 	if(!istype(R))
 		spawn(-1)
-			del(src)
+			qdel(src)
 		throw EXCEPTION("Admin datum created without a rank")
 		return
 	rank = R
@@ -94,7 +94,7 @@ you will have to do something like if(client.rights & R_ADMIN) yourself.
 	admin_datums -= ckey
 	if(holder)
 		holder.disassociate()
-		del(holder)
+		qdel(holder)
 	return 1
 
 //This proc checks whether subject has at least ONE of the rights specified in rights_required.

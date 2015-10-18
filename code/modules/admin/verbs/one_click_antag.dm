@@ -69,7 +69,8 @@
 			if(!applicant.stat)
 				if(applicant.mind)
 					if (!applicant.mind.special_role)
-						if(!jobban_isbanned(applicant, "traitor") && !jobban_isbanned(applicant, "Syndicate"))
+						var/list/bans = jobban_list_for_mob(applicant)
+						if(!jobban_job_in_list(bans, "traitor") && !jobban_job_in_list(bans, "Syndicate"))
 							if(temp.age_check(applicant.client))
 								if(!(applicant.job in temp.restricted_jobs))
 									candidates += applicant
@@ -105,7 +106,8 @@
 			if(!applicant.stat)
 				if(applicant.mind)
 					if (!applicant.mind.special_role)
-						if(!jobban_isbanned(applicant, "changeling") && !jobban_isbanned(applicant, "Syndicate"))
+						var/list/bans = jobban_list_for_mob(applicant)
+						if(!jobban_job_in_list(bans, "changeling") && !jobban_job_in_list(bans, "Syndicate"))
 							if(temp.age_check(applicant.client))
 								if(!(applicant.job in temp.restricted_jobs))
 									candidates += applicant
@@ -139,7 +141,8 @@
 			if(applicant.stat == CONSCIOUS)
 				if(applicant.mind)
 					if(!applicant.mind.special_role)
-						if(!jobban_isbanned(applicant, "revolutionary") && !jobban_isbanned(applicant, "Syndicate"))
+						var/list/bans = jobban_list_for_mob(applicant)
+						if(!jobban_job_in_list(bans, "revolutionary") && !jobban_job_in_list(bans, "Syndicate"))
 							if(temp.age_check(applicant.client))
 								if(!(applicant.job in temp.restricted_jobs))
 									candidates += applicant
@@ -162,7 +165,8 @@
 	var/time_passed = world.time
 
 	for(var/mob/dead/observer/G in player_list)
-		if(!jobban_isbanned(G, "wizard") && !jobban_isbanned(G, "Syndicate"))
+		var/list/bans = jobban_list_for_mob(G)
+		if(!jobban_job_in_list(bans, "wizard") && !jobban_job_in_list(bans, "Syndicate"))
 			if(temp.age_check(G.client))
 				spawn(0)
 					switch(alert(G, "Do you wish to be considered for the position of Space Wizard Foundation 'diplomat'?","Please answer in 30 seconds!","Yes","No"))
@@ -210,7 +214,8 @@
 			if(applicant.stat == CONSCIOUS)
 				if(applicant.mind)
 					if(!applicant.mind.special_role)
-						if(!jobban_isbanned(applicant, "cultist") && !jobban_isbanned(applicant, "Syndicate"))
+						var/list/bans = jobban_list_for_mob(applicant)
+						if(!jobban_job_in_list(bans, "cultist") && !jobban_job_in_list(bans, "Syndicate"))
 							if(temp.age_check(applicant.client))
 								if(!(applicant.job in temp.restricted_jobs))
 									candidates += applicant
@@ -318,7 +323,7 @@
 	var/squadSpawned = 0
 	if(adminleader)
 		candidates -= adminleader
-	
+
 	if(candidates.len >= 3) //Minimum 3 to be considered a squad
 		//Pick the lucky players
 		var/numagents = min(5,candidates.len) //How many commandos to spawn
@@ -405,7 +410,8 @@
 			if(!applicant.stat)
 				if(applicant.mind)
 					if(!applicant.mind.special_role)
-						if(!jobban_isbanned(applicant, "gangster") && !jobban_isbanned(applicant, "Syndicate"))
+						var/list/bans = jobban_list_for_mob(applicant)
+						if(!jobban_job_in_list(bans, "gangster") && !jobban_job_in_list(bans, "Syndicate"))
 							if(temp.age_check(applicant.client))
 								if(!(applicant.job in temp.restricted_jobs))
 									candidates += applicant
@@ -688,7 +694,8 @@
 			if(!gametypeCheck.age_check(G.client))
 				continue
 		if (jobbanType)
-			if(jobban_isbanned(G, jobbanType) || jobban_isbanned(G, "Syndicate"))
+			var/list/bans = jobban_list_for_mob(G)
+			if(jobban_job_in_list(bans, jobbanType) || jobban_job_in_list(bans, "Syndicate"))
 				continue
 		spawn(0)
 			G << 'sound/misc/notice2.ogg' //Alerting them to their consideration

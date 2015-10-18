@@ -12,9 +12,9 @@
 			M.show_message("\red With a terrible *crack*, [src]'s screen finally gives way and shatters completely. A trickle of smoke and the scent of capacitor fluid heralds the untimely demise of their former shell.", 3, "\red A shrill *crack* resounds in the air for a moment, accompanied by a feeble hiss and an electronic whine.", 2)
 		card.overlays.Cut()
 		card.overlays += "pai-off"
-		del(card.pai)
+		qdel(card.pai)
 
-	del(card)
+	qdel(card)
 	new /obj/effect/decal/cleanable/robot_debris(loc)
 
 	stat = DEAD
@@ -30,7 +30,7 @@
 
 	//New pAI's get a brand new mind to prevent meta stuff from their previous life. This new mind causes problems down the line if it's not deleted here.
 	//Read as: I have no idea what I'm doing but asking for help got me nowhere so this is what you get. - Nodrak
-	if(mind)	del(mind)
+	if(mind)	qdel(mind)
 	living_mob_list -= src
 	ghostize()
 	qdel(src)
