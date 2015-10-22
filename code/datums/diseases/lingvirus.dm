@@ -17,7 +17,7 @@
 	switch (stage)
 		if (1)
 			if (prob(2))
-				affected_mob.hallucination = min(1500, affected_mob.hallucination+200)
+				affected_mob.hallucination = max(1500, affected_mob.hallucination+200)
 			if (prob(3))
 				affected_mob << "<span class='info'>The world sways and warbles about you, as if caught in a desert heat.</span>"
 				affected_mob.emote("twitch")
@@ -25,20 +25,20 @@
 				affected_mob.visible_message("<span class='warning'>[affected_mob] suddenly begins to sweat.</span>")
 		if (2)
 			if (prob(5))
-				affected_mob.hallucination = min(1500, affected_mob.hallucination+500)
+				affected_mob.hallucination = max(1500, affected_mob.hallucination+500)
 			if (prob(2))
 				affected_mob << "<span class='warning'>You feel gravely ill. Something is terribly wrong.</span>"
 				affected_mob.emote("moan")
 		if (3)
 			if (prob(7))
-				affected_mob.hallucination = min(1500, affected_mob.hallucination+700)
+				affected_mob.hallucination = max(1500, affected_mob.hallucination+700)
 			if (prob(3) && affected_mob.hallucination >= 900)
 				affected_mob << "<span class='boldwarning'>The stress begins to wear away at your sanity. Your mouth falls open, hung wide in a silent scream.</span>"
 				affected_mob.emote("scream")
 				affected_mob.visible_message("<span class='boldwarning'>[affected_mob] shrieks manically and begins to tear at their hair.</span>")
 		if (4)
 			if (prob(1))
-				affected_mob.hallucination = min(300, affected_mob.hallucination+100)
+				affected_mob.hallucination = max(300, affected_mob.hallucination+100)
 			if (prob(3) && affected_mob.hallucination <= 300)
 				affected_mob << "<span class='info'>A wave of sudden, palpable relief washes over you as the feeling of intense discomfort fades, and the fog over your mind is lifted.</span>"
 				cure()
