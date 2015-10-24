@@ -79,3 +79,4 @@
 #define SLIME 16
 #define DRONE 32
 #define ZOMBIE 64
+#define SWARMER 128
