@@ -142,6 +142,9 @@
 	stage5	= list("<span class='warning'>You are angry at your coworkers, filled by the desire to eat brains.</span>", "<span class='warning'>Mmmmmm....... braaaaainns...</span>")
 
 /datum/disease/transformation/rage_virus/do_disease_transformation(var/mob/living/carbon/affected_mob)
+	if(!istype(affected_mob, /mob/living/carbon/human))
+		return
+
 	if(!iszombie(affected_mob))
 		ticker.mode.add_zombie(affected_mob.mind)
 		affected_mob.zombieize(TR_KEEPITEMS | TR_KEEPIMPLANTS | TR_KEEPDAMAGE | TR_KEEPVIRUS | TR_KEEPSE | TR_HASHNAME)
