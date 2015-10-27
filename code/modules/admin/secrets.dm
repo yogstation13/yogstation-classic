@@ -17,6 +17,7 @@
 			<B>Admin Secrets</B><BR>
 			<BR>
 			<A href='?src=\ref[src];secrets=clear_virus'>Cure all diseases currently in existence</A><BR>
+			<A href='?src=\ref[src];secrets=clear_virus_x'>Cure all diseases of a specific type currently in existence</A><BR>
 			<A href='?src=\ref[src];secrets=list_bombers'>Bombing List</A><BR>
 			<A href='?src=\ref[src];secrets=check_antagonist'>Show current traitors and objectives</A><BR>
 			<A href='?src=\ref[src];secrets=list_signalers'>Show last [length(lastsignalers)] signalers</A><BR>
@@ -140,6 +141,14 @@
 			if(choice == "Yes")
 				message_admins("[key_name_admin(usr)] has cured all diseases.")
 				for(var/datum/disease/D in SSdisease.processing)
+					D.cure(D)
+
+		if("clear_virus_x")
+
+			var/choice = input("What disease do you want to cure?") in typesof(/datum/disease)
+			message_admins("[key_name_admin(usr)] has cured all [choice].")
+			for(var/datum/disease/D in SSdisease.processing)
+				if(istype(D, choice))
 					D.cure(D)
 
 		if("list_bombers")
