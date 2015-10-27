@@ -183,6 +183,21 @@
 				M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Injected themselves ([contained]) with [src.name].</font>")
 				var/fraction = min(amount_per_transfer_from_this/reagents.total_volume, 1)
 				reagents.reaction(target, INGEST, fraction)
+
+			if(ismob(target))
+				var/mob/M = target
+				if(M.viruses)
+					for(var/datum/disease/D in M.viruses)
+						for(var/datum/reagent/A in reagents.reagent_list)
+							if(A.id in D.cures)
+								if(D.stage <= 1)
+									M << "<span class='warning'>Whatever it was wrong with you, it seems to be gone now.</span>"
+									M.viruses.Remove(D)
+									qdel(D)
+								else
+									M << "<span class='warning'>You feel a little bit better.</span>"
+									D.stage--
+
 			spawn(5)
 				var/datum/reagent/blood/B
 				for(var/datum/reagent/blood/d in src.reagents.reagent_list)
