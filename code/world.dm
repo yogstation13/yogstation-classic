@@ -188,13 +188,13 @@ var/feedback_set = 0
 
 	if(count < 50)
 		config.Tickcomp = 0
-		world.fps = 25
+		world.fps = 22
 	else if(count < 60)
 		config.Tickcomp = 0
-		world.fps = 23
+		world.fps = 21
 	else if(count < 70)
 		config.Tickcomp = 0
-		world.fps = 21
+		world.fps = 20
 	else if(count < 80)
 		config.Tickcomp = 0
 		world.fps = 19
