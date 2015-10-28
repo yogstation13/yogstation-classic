@@ -383,7 +383,7 @@ var/list/admin_verbs_hideable = list(
 		world.fps = 16
 		msg = "[key_name(src)] has modified world.fps to [world.fps] and config.Tickcomp to [config.Tickcomp]"
 	else if(fix == "High FPS")
-		config.Tickcomp = 1
+		config.Tickcomp = 0
 		world.fps = 20
 		msg = "[key_name(src)] has modified world.fps to [world.fps] and config.Tickcomp to [config.Tickcomp]"
 

@@ -259,6 +259,8 @@ var/next_external_rsc = 0
 	if (config && config.autoconvert_notes)
 		convert_notes_sql(ckey)
 
+	world.manage_fps()
+
 	//////////////
 	//DISCONNECT//
 	//////////////
@@ -273,6 +275,9 @@ var/next_external_rsc = 0
 	sync_logout_with_db(connection_number)
 	directory -= ckey
 	clients -= src
+
+	world.manage_fps()
+
 	return ..()
 
 
