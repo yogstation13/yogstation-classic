@@ -527,7 +527,7 @@
 "kg" = (/obj/structure/shuttle/engine/propulsion{icon_state = "propulsion"; dir = 8},/turf/simulated/wall/shuttle,/area/centcom/evac{name = "\improper Centcom Pod Recovery Vessel"})
 "kh" = (/obj/machinery/door/airlock/centcom{name = "Centcom Security"; opacity = 1; req_access_txt = "2"},/turf/simulated/floor/plasteel{icon_state = "dark"},/area/centcom/control)
 "ki" = (/turf/simulated/floor/plasteel{icon_state = "green"; dir = 8},/area/centcom/control)
-"kj" = (/mob/living/silicon/robot{icon_state = "rbborg"},/turf/simulated/floor/plasteel{icon_state = "floor"},/area/centcom/control)
+"kj" = (/mob/living/silicon/robot{icon_state = "rbborg"; name = "R.A.N.B.E.W"},/turf/simulated/floor/plasteel{icon_state = "floor"},/area/centcom/control)
 "kk" = (/turf/simulated/floor/plasteel{icon_state = "green"; dir = 4},/area/centcom/control)
 "kl" = (/obj/machinery/door/airlock/centcom{name = "Centcom Security"; opacity = 1; req_access_txt = "0"},/turf/simulated/floor/plasteel{icon_state = "dark"},/area/centcom/control)
 "km" = (/obj/machinery/status_display,/obj/effect/landmark/shuttledock{name = "escape"},/turf/simulated/wall/shuttle{icon_state = "swallc4"; dir = 2},/area/shuttle/escape)
