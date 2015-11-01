@@ -55,7 +55,7 @@ var/list/freqtospan = list(
 	var/messagepart = " <span class='message'>[lang_treat(speaker, message_langs, raw_message, spans)]</span></span>"
 
 	var/finished = "[spanpart1][spanpart2][freqpart][compose_track_href(speaker, namepart)][namepart][compose_job(speaker, message_langs, raw_message, radio_freq)][endspanpart][messagepart]"
-	if(speaker)
+	if(speaker && speaker.adm_chatlog)
 		speaker.adm_chatlog.enqueue(finished)
 	return finished
 
