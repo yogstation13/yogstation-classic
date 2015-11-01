@@ -35,6 +35,7 @@
 	if(pai && (!pai.master_dna || !pai.master))
 		dat += "<a href='byond://?src=\ref[src];setdna=1'>Imprint Master DNA</a><br>"
 	if(pai)
+		pai.last_special = world.time + 500
 		dat += "Installed Personality: [pai.name]<br>"
 		dat += "Prime directive: <br>[pai.laws.zeroth]<br>"
 		for(var/slaws in pai.laws.supplied)
