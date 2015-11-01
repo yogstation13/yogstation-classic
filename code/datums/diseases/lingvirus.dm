@@ -11,7 +11,7 @@
 
 /datum/disease/lingvirus/stage_act()
 	..()
-	if (affected_mob.mind.changeling)
+	if (affected_mob && affected_mob.mind && affected_mob.mind.changeling)
 		cure()
 		return
 	switch (stage)
