@@ -15,6 +15,8 @@
 	var/pass_flags = 0
 	glide_size = 8
 
+	var/datum/queue/adm_chatlog = new /datum/queue(20)
+
 
 /atom/movable/Move(atom/newloc, direct = 0)
 	if(!loc || !newloc) return 0
