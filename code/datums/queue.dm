@@ -42,3 +42,7 @@
 
 	// If the queue is empty, nothing is returned
 	return null
+
+// Returns the backing list of the queue
+/datum/queue/proc/get_list()
+	return items
