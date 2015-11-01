@@ -12,9 +12,7 @@
 			M.show_message("\red With a terrible *crack*, [src]'s screen finally gives way and shatters completely. A trickle of smoke and the scent of capacitor fluid heralds the untimely demise of their former shell.", 3, "\red A shrill *crack* resounds in the air for a moment, accompanied by a feeble hiss and an electronic whine.", 2)
 		card.overlays.Cut()
 		card.overlays += "pai-off"
-		qdel(card.pai)
 
-	qdel(card)
 	new /obj/effect/decal/cleanable/robot_debris(loc)
 
 	stat = DEAD
@@ -33,4 +31,5 @@
 	if(mind)	qdel(mind)
 	living_mob_list -= src
 	ghostize()
+	qdel(card)
 	qdel(src)
