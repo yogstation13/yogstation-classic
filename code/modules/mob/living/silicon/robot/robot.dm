@@ -1165,3 +1165,6 @@
 			connected_ai << "<br><br><span class='notice'>NOTICE - Cyborg module change detected: [name] has loaded the [designation] module.</span><br>"
 		if(3) //New Name
 			connected_ai << "<br><br><span class='notice'>NOTICE - Cyborg reclassification detected: [oldname] is now designated as [newname].</span><br>"
+
+/mob/living/silicon/robot/rainborg
+	icon_state = "rbborg"
