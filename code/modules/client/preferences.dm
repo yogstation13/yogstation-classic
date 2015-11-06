@@ -688,6 +688,21 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 				switch(href_list["task"])
 					if("hat")
 						var/list/items = list( \
+							/obj/item/clothing/head/beanie, \
+							/obj/item/clothing/head/bike, \
+							/obj/item/clothing/head/hardsuit_helm_clown, \
+							/obj/item/clothing/head/cowboy, \
+							/obj/item/clothing/head/crusader, \
+							/obj/item/clothing/head/cowboy_sheriff, \
+							/obj/item/clothing/head/dallas, \
+							/obj/item/clothing/head/drinking_hat, \
+							/obj/item/clothing/head/microwave, \
+							/obj/item/clothing/head/sith_hood, \
+							/obj/item/clothing/head/turban, \
+							/obj/item/clothing/cloak/sith_cloak, \
+							/obj/item/clothing/suit/armor/sith_suit, \
+							/obj/item/clothing/suit/armor/hardsuit_clown, \
+
 							/obj/item/clothing/head/collectable/petehat, \
 							/obj/item/clothing/head/collectable/slime, \
 							/obj/item/clothing/head/collectable/xenom, \
