@@ -18,7 +18,7 @@
 	var/maxVents = 3
 
 /datum/round_event/plasma_fire/announce()
-	priority_announce("Atmospherics error detected. Plasma routing temporarily diverted to distribution loop. Fires may occur.", "Station Atmospherics Monitoring")
+	priority_announce("WARNING: Fulminant atmospherics error detected. Plasma routing temporarily diverted to distribution loop. Fires may occur. Internals are advised.", "Station Atmospherics Monitoring")
 
 
 /datum/round_event/plasma_fire/setup()
@@ -30,7 +30,7 @@
 	//choose an area and populate our affected vents with it
 	var/list/epicentreList = list()
 
-	for(var/i=1, i <= 3, i++)
+	for(var/i=1, i <= maxVents, i++)
 		var/list/possibleEpicentres = list()
 		for(var/obj/effect/landmark/newEpicentre in landmarks_list)
 			if(newEpicentre.name == "lightsout" && !(newEpicentre in epicentreList))
@@ -65,10 +65,10 @@
 		pump.loc.assume_air(air_contents)
 		pump.air_update_turf()
 
-		if (prob(3)) //may the honkmother have mercy on your soul
+		if (prob(3)) //may the honkmother have mercy on your soul (this ignites the vent tile presumably causing hellfire and suffering)
 			var/turf/location = pump.loc
 			if (isturf(location))
 				location.hotspot_expose(1000,500,1)
 
 /datum/round_event/plasma_fire/end()
-	priority_announce("Subsystem error rectified. Distribution loop returning to normal. Atmospherics response advised for affected general area: [affectedArea]", "Station Atmospherics Monitoring")
+	priority_announce("Subsystem error rectified. Distribution loop returning to normal. Atmospherics response advised for affected general area: [affectedArea].", "Station Atmospherics Monitoring")
