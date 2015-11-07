@@ -6,9 +6,6 @@
 		usr << "<span class='danger'>Speech is currently admin-disabled.</span>"
 		return
 
-	if(src.adm_chatlog)
-		src.adm_chatlog.enqueue("[src] say: [message]")
-
 	usr.say(message)
 
 /mob/verb/whisper(message as text)
@@ -25,9 +22,6 @@
 		return
 
 	message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN))
-
-	if(src.adm_chatlog)
-		src.adm_chatlog.enqueue("[src] emote: [message]")
 
 	usr.emote("me",1,message)
 
@@ -48,9 +42,6 @@
 
 	message = src.say_quote(message)
 	var/rendered = "<span class='game deadsay'><span class='prefix'>DEAD:</span> <span class='name'>[name]</span>[alt_name] <span class='message'>[message]</span></span>"
-
-	if(src.adm_chatlog)
-		src.adm_chatlog.enqueue("[rendered]")
 
 	for(var/mob/M in player_list)
 		if(istype(M, /mob/new_player))

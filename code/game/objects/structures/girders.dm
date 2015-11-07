@@ -24,6 +24,7 @@
 				if(state != GIRDER_DISPLACED)
 					return
 				state = GIRDER_DISASSEMBLED
+				action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): disassembled")
 				user << "<span class='notice'>You disassemble the girder.</span>"
 				var/obj/item/stack/sheet/metal/M = new (loc, 2)
 				M.add_fingerprint(user)
@@ -34,6 +35,7 @@
 			if(do_after(user, 40, target = src))
 				if(state != GIRDER_REINF)
 					return
+				action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): support struts unsecured")
 				user << "<span class='notice'>You unsecure the support struts.</span>"
 				state = GIRDER_REINF_STRUTS
 
@@ -45,6 +47,7 @@
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 100, 1)
 			user << "<span class='notice'>You start securing the girder...</span>"
 			if(do_after(user, 40, target = src))
+				action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): secured")
 				user << "<span class='notice'>You secure the girder.</span>"
 				var/obj/structure/girder/G = new (loc)
 				transfer_fingerprints_to(G)
@@ -53,6 +56,7 @@
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 100, 1)
 			user << "<span class='notice'>You start unsecuring the girder...</span>"
 			if(do_after(user, 40, target = src))
+				action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): unsecured")
 				user << "<span class='notice'>You unsecure the girder.</span>"
 				var/obj/structure/girder/displaced/D = new (loc)
 				transfer_fingerprints_to(D)
@@ -62,6 +66,7 @@
 		user << "<span class='notice'>You start slicing apart the girder...</span>"
 		playsound(src, 'sound/items/Welder.ogg', 100, 1)
 		if(do_after(user, 30, target = src))
+			action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): sliced apart")
 			user << "<span class='notice'>You slice apart the girder.</span>"
 			var/obj/item/stack/sheet/metal/M = new (loc, 2)
 			M.add_fingerprint(user)
@@ -78,6 +83,7 @@
 		playsound(src.loc, 'sound/items/Wirecutter.ogg', 100, 1)
 		user << "<span class='notice'>You start removing support struts...</span>"
 		if(do_after(user, 40, target = src))
+			action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): support struts removed")
 			user << "<span class='notice'>You remove the support struts.</span>"
 			new /obj/item/stack/sheet/plasteel(get_turf(src))
 			var/obj/structure/girder/G = new (loc)
@@ -108,6 +114,7 @@
 						if(!src.loc || !S || S.get_amount() < 2)
 							return
 						S.use(2)
+						action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): created")
 						user << "<span class='notice'>You create a false wall. Push on it to open or close the passage.</span>"
 						var/obj/structure/falsewall/F = new (loc)
 						transfer_fingerprints_to(F)
@@ -121,6 +128,7 @@
 						if(loc == null || S.get_amount() < 2)
 							return
 						S.use(2)
+						action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): plating added")
 						user << "<span class='notice'>You add the plating.</span>"
 						var/turf/T = get_turf(src)
 						T.ChangeTurf(/turf/simulated/wall)
@@ -138,6 +146,7 @@
 						if(!src.loc || !S || S.amount < 2)
 							return
 						S.use(2)
+						action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): reinforced wall created")
 						user << "<span class='notice'>You create a reinforced false wall. Push on it to open or close the passage.</span>"
 						var/obj/structure/falsewall/reinforced/FW = new (loc)
 						transfer_fingerprints_to(FW)
@@ -151,6 +160,7 @@
 							if(!src.loc || !S || S.amount < 1)
 								return
 							S.use(1)
+							action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): fully reinforced")
 							user << "<span class='notice'>You fully reinforce the wall.</span>"
 							var/turf/T = get_turf(src)
 							T.ChangeTurf(/turf/simulated/wall/r_wall)
@@ -165,6 +175,7 @@
 							if(!src.loc || !S || S.amount < 1)
 								return
 							S.use(1)
+							action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): reinforced")
 							user << "<span class='notice'>You reinforce the girder.</span>"
 							var/obj/structure/girder/reinforced/R = new (loc)
 							transfer_fingerprints_to(R)
@@ -178,6 +189,7 @@
 					user << "<span class='warning'>You need at least two sheets to create a false wall!</span>"
 					return
 				S.use(2)
+				action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): wall created")
 				user << "<span class='notice'>You create a false wall. Push on it to open or close the passage.</span>"
 				var/F = text2path("/obj/structure/falsewall/[M]")
 				var/obj/structure/FW = new F (loc)
@@ -192,6 +204,7 @@
 					if(!src.loc || !S || S.amount < 2)
 						return
 					S.use(2)
+					action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): plating added")
 					user << "<span class='notice'>You add the plating.</span>"
 					var/turf/T = get_turf(src)
 					T.ChangeTurf(text2path("/turf/simulated/wall/mineral/[M]"))
@@ -207,6 +220,7 @@
 			if(!user.drop_item())
 				return
 			P.loc = src.loc
+			action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): pipe fitted")
 			user << "<span class='notice'>You fit the pipe into \the [src].</span>"
 	else
 		..()
@@ -299,6 +313,7 @@
 			if(do_after(user, 40, target = src))
 				if( !WT.isOn() )
 					return
+				action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): sliced apart")
 				user << "<span class='notice'>You slice apart the girder.</span>"
 				var/obj/effect/decal/remains/human/R = new (get_turf(src))
 				transfer_fingerprints_to(R)
@@ -308,6 +323,7 @@
 		user << "<span class='notice'>You start slicing apart the girder...</span>"
 		playsound(src, 'sound/items/Welder.ogg', 100, 1)
 		if(do_after(user, 30, target = src))
+			action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): sliced apart")
 			user << "<span class='notice'>You slice apart the girder.</span>"
 			var/obj/effect/decal/remains/human/R = new (get_turf(src))
 			transfer_fingerprints_to(R)
@@ -315,6 +331,7 @@
 
 	else if(istype(W, /obj/item/weapon/pickaxe/drill/jackhammer))
 		var/obj/item/weapon/pickaxe/drill/jackhammer/D = W
+		action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): smashed through")
 		user << "<span class='notice'>Your jackhammer smashes through the girder!</span>"
 		var/obj/effect/decal/remains/human/R = new (get_turf(src))
 		transfer_fingerprints_to(R)
