@@ -18,6 +18,7 @@
 				user << "<span class='notice'>You start wrenching the frame into place...</span>"
 				if(do_after(user, 20, target = src))
 					user << "<span class='notice'>You wrench the frame into place.</span>"
+					action.enqueue("[gameTimestamp()] ([user] - [user] - [src]): wrenched into place")
 					anchored = 1
 					state = 1
 			if(istype(P, /obj/item/weapon/weldingtool))
@@ -30,6 +31,7 @@
 				if(do_after(user, 20, target = src))
 					if(!src || !WT.remove_fuel(0, user)) return
 					user << "<span class='notice'>You deconstruct the frame.</span>"
+					action.enqueue("[gameTimestamp()] ([user] - [user] - [src]): frame deconstructed")
 					new /obj/item/stack/sheet/plasteel( loc, 4)
 					qdel(src)
 		if(1)
@@ -38,6 +40,7 @@
 				user << "<span class='notice'>You start to unfasten the frame...</span>"
 				if(do_after(user, 20, target = src))
 					user << "<span class='notice'>You unfasten the frame.</span>"
+					action.enqueue("[gameTimestamp()] ([user] - [user] - [src]): frame unfastened")
 					anchored = 0
 					state = 0
 			if(istype(P, /obj/item/weapon/circuitboard/aicore) && !circuit)
@@ -45,17 +48,20 @@
 					return
 				playsound(loc, 'sound/items/Deconstruct.ogg', 50, 1)
 				user << "<span class='notice'>You place the circuit board inside the frame.</span>"
+				action.enqueue("[gameTimestamp()] ([user] - [user] - [src]): circuit board inserted")
 				icon_state = "1"
 				circuit = P
 				P.loc = src
 			if(istype(P, /obj/item/weapon/screwdriver) && circuit)
 				playsound(loc, 'sound/items/Screwdriver.ogg', 50, 1)
 				user << "<span class='notice'>You screw the circuit board into place.</span>"
+				action.enqueue("[gameTimestamp()] ([user] - [user] - [src]): circuit board screwed in")
 				state = 2
 				icon_state = "2"
 			if(istype(P, /obj/item/weapon/crowbar) && circuit)
 				playsound(loc, 'sound/items/Crowbar.ogg', 50, 1)
 				user << "<span class='notice'>You remove the circuit board.</span>"
+				action.enqueue("[gameTimestamp()] ([user] - [user] - [src]): circuit board removed")
 				state = 1
 				icon_state = "0"
 				circuit.loc = loc
@@ -64,6 +70,7 @@
 			if(istype(P, /obj/item/weapon/screwdriver) && circuit)
 				playsound(loc, 'sound/items/Screwdriver.ogg', 50, 1)
 				user << "<span class='notice'>You unfasten the circuit board.</span>"
+				action.enqueue("[gameTimestamp()] ([user] - [user] - [src]): circuit board unfastened")
 				state = 1
 				icon_state = "1"
 			if(istype(P, /obj/item/stack/cable_coil))
@@ -75,6 +82,7 @@
 						if (C.get_amount() >= 5 && state == 2)
 							C.use(5)
 							user << "<span class='notice'>You add cables to the frame.</span>"
+							action.enqueue("[gameTimestamp()] ([user] - [user] - [src]): cables added")
 							state = 3
 							icon_state = "3"
 				else
@@ -87,6 +95,7 @@
 				else
 					playsound(loc, 'sound/items/Wirecutter.ogg', 50, 1)
 					user << "<span class='notice'>You remove the cables.</span>"
+					action.enqueue("[gameTimestamp()] ([user] - [user] - [src]): cables removed")
 					state = 2
 					icon_state = "2"
 					var/obj/item/stack/cable_coil/A = new /obj/item/stack/cable_coil( loc )
@@ -101,6 +110,7 @@
 						if (G.get_amount() >= 2 && state == 3)
 							G.use(2)
 							user << "<span class='notice'>You put in the glass panel.</span>"
+							action.enqueue("[gameTimestamp()] ([user] - [user] - [src]): glass panel added")
 							state = 4
 							icon_state = "4"
 				else
@@ -114,11 +124,13 @@
 				for(var/templaw in M.laws)
 					laws.add_inherent_law(templaw)
 				usr << "<span class='notice'>Law module applied.</span>"
+				action.enqueue("[gameTimestamp()] ([user] - [user] - [src]): law module applied")
 
 			if(istype(P, /obj/item/weapon/aiModule/reset/purge))
 				laws.clear_inherent_laws()
 				laws.clear_zeroth_law(0)
 				usr << "<span class='notice'>Laws cleared applied.</span>"
+				action.enqueue("[gameTimestamp()] ([user] - [user] - [src]): laws cleared applied")
 
 
 			if(istype(P, /obj/item/weapon/aiModule/supplied/freeform) || istype(P, /obj/item/weapon/aiModule/core/freeformcore))
@@ -127,6 +139,7 @@
 					return
 				laws.add_inherent_law(M.laws[1])
 				usr << "<span class='notice'>Added a freeform law.</span>"
+				action.enqueue("[gameTimestamp()] ([user] - [user] - [src]): added freeform law")
 
 			if(istype(P, /obj/item/device/mmi))
 				var/obj/item/device/mmi/M = P
@@ -167,11 +180,13 @@
 				M.loc = src
 				brain = M
 				usr << "<span class='notice'>Added a brain.</span>"
+				action.enqueue("[gameTimestamp()] ([user] - [user] - [src]): added a brain")
 				icon_state = "3b"
 
 			if(istype(P, /obj/item/weapon/crowbar) && brain)
 				playsound(loc, 'sound/items/Crowbar.ogg', 50, 1)
 				user << "<span class='notice'>You remove the brain.</span>"
+				action.enqueue("[gameTimestamp()] ([user] - [user] - [src]): brain removed")
 				brain.loc = loc
 				brain = null
 				icon_state = "3"
@@ -180,6 +195,7 @@
 			if(istype(P, /obj/item/weapon/crowbar))
 				playsound(loc, 'sound/items/Crowbar.ogg', 50, 1)
 				user << "<span class='notice'>You remove the glass panel.</span>"
+				action.enqueue("[gameTimestamp()] ([user] - [user] - [src]): glass panel removed")
 				state = 3
 				if (brain)
 					icon_state = "3b"
@@ -191,6 +207,7 @@
 			if(istype(P, /obj/item/weapon/screwdriver))
 				playsound(loc, 'sound/items/Screwdriver.ogg', 50, 1)
 				user << "<span class='notice'>You connect the monitor.</span>"
+				action.enqueue("[gameTimestamp()] ([user] - [user] - [src]): monitor connected")
 				if(!laws.inherent.len) //If laws isn't set to null but nobody supplied a board, the AI would normally be created lawless. We don't want that.
 					laws = null
 				new /mob/living/silicon/ai (loc, laws, brain)
@@ -215,10 +232,12 @@
 			if(0)
 				if(do_after(user, 20, target = src))
 					user << "<span class='notice'>You fasten the core into place.</span>"
+					action.enqueue("[gameTimestamp()] ([user] - [user] - [src]): core fastened")
 					anchored = 1
 			if(1)
 				if(do_after(user, 20, target = src))
 					user << "<span class='notice'>You unfasten the core.</span>"
+					action.enqueue("[gameTimestamp()] ([user] - [user] - [src]): core unfastened")
 					anchored = 0
 	return
 
