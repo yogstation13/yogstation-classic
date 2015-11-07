@@ -61,12 +61,7 @@
 		new default_storagebox(BPK)
 		H.equip_to_slot_or_del(BPK, slot_back,1)
 
-	if(H.backbag == 2) // Backpack
-		BPK = new default_backpack(H)
-		new default_storagebox(BPK)
-		H.equip_to_slot_or_del(BPK, slot_back,1)
-
-	if(H.backbag == 3) //Satchel
+	if(H.backbag == 2) //Satchel
 		BPK = new default_satchel(H)
 		new default_storagebox(BPK)
 		H.equip_to_slot_or_del(BPK, slot_back,1)
