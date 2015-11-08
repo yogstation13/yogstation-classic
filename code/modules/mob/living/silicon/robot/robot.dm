@@ -1165,3 +1165,15 @@
 			connected_ai << "<br><br><span class='notice'>NOTICE - Cyborg module change detected: [name] has loaded the [designation] module.</span><br>"
 		if(3) //New Name
 			connected_ai << "<br><br><span class='notice'>NOTICE - Cyborg reclassification detected: [oldname] is now designated as [newname].</span><br>"
+
+/mob/living/silicon/robot/rainborg
+	icon_state = "rbborg"
+
+/mob/living/silicon/robot/gutsy_medi
+	icon_state = "gutsy_medi"
+
+/mob/living/silicon/robot/gutsy_sec
+	icon_state = "gutsy_sec"
+
+/mob/living/silicon/robot/gutsy_standard
+	icon_state = "gutsy_standard"

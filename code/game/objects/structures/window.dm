@@ -210,14 +210,17 @@
 				//If state was unfastened, fasten it, else do the reverse
 				state = (state == 1 ? 2 : 1)
 				user << (state == 1 ? "<span class='notice'>You unfasten the window from the frame.</span>" : "<span class='notice'>You fasten the window to the frame.</span>")
+				adm_action_log.enqueue("[gameTimestamp()] ([user] - [I] - [src]): window [state == 1 ? "unfastened from" : "fastened to"] frame")
 			else if(reinf && state == 0)
 				anchored = !anchored
 				update_nearby_icons()
 				user << (anchored ? "<span class='notice'>You fasten the frame to the floor.</span>" : "<span class='notice'>You unfasten the frame from the floor.</span>")
+				adm_action_log.enqueue("[gameTimestamp()] ([user] - [I] - [src]): frame [anchored ? "fastened to" : "unfastened from"] floor")
 			else if(!reinf)
 				anchored = !anchored
 				update_nearby_icons()
 				user << (anchored ? "<span class='notice'>You fasten the window to the floor.</span>" : "<span class='notice'>You unfasten the window.</span>")
+				adm_action_log.enqueue("[gameTimestamp()] ([user] - [I] - [src]): window [anchored ? "fastened to" : "unfastened from"] floor")
 
 	else if (istype(I, /obj/item/weapon/crowbar) && reinf && (state == 0 || state == 1))
 		user << (state == 0 ? "<span class='notice'>You begin to lever the window into the frame...</span>" : "<span class='notice'>You begin to lever the window out of the frame...</span>")
@@ -226,6 +229,7 @@
 			//If state was out of frame, put into frame, else do the reverse
 			state = (state == 0 ? 1 : 0)
 			user << (state == 1 ? "<span class='notice'>You pry the window into the frame.</span>" : "<span class='notice'>You pry the window out of the frame.</span>")
+			adm_action_log.enqueue("[gameTimestamp()] ([user] - [I] - [src]): window pried [state == 1 ? "into" : "out of"] frame")
 
 	else if(istype(I, /obj/item/weapon/weldingtool) && user.a_intent == "help")
 		var/obj/item/weapon/weldingtool/WT = I
@@ -236,6 +240,7 @@
 				if(do_after(user, 40, target = src))
 					health = maxhealth
 					playsound(loc, 'sound/items/Welder2.ogg', 50, 1)
+					adm_action_log.enqueue("[gameTimestamp()] ([user] - [I] - [src]): repaired")
 		else
 			user << "<span class='warning'>[src] is already in good condition!</span>"
 			return
@@ -265,6 +270,7 @@
 			playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
 			disassembled = 1
 			user << "<span class='notice'>You successfully disassemble [src].</span>"
+			adm_action_log.enqueue("[gameTimestamp()] ([user] - [I] - [src]): disassembled")
 			qdel(src)
 	else if(istype(I, /obj/item/weapon/rcd)) //Do not attack the window if the user is holding an RCD
 		return

@@ -5,6 +5,7 @@
 	if(say_disabled)	//This is here to try to identify lag problems
 		usr << "<span class='danger'>Speech is currently admin-disabled.</span>"
 		return
+
 	usr.say(message)
 
 /mob/verb/whisper(message as text)

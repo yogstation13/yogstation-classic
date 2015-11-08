@@ -22,7 +22,10 @@
 		"Mouse" = "mouse",
 		"Monkey" = "monkey",
 		"Corgi" = "corgi",
-		"Fox" = "fox"
+		"Fox" = "fox",
+		"Alien" = "alien",
+		"Chicken" = "chicken",
+		"Carp" = "carp"
 		)
 
 	var/ram = 100	// Used as currency to purchase different abilities
