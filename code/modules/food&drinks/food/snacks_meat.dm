@@ -33,7 +33,7 @@
 	bitesize = 6
 	filling_color = "#FA8072"
 
-/obj/item/weapon/reagent_containers/food/snacks/carpmeat/New()
+/obj/item/weapon/reagent_containers/food/snacks/dolphinmeat/New()
 	..()
 	eatverb = pick("bite","chew","choke down","gnaw","swallow","chomp")
 
