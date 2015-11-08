@@ -1168,3 +1168,12 @@
 
 /mob/living/silicon/robot/rainborg
 	icon_state = "rbborg"
+
+/mob/living/silicon/robot/gutsy_medi
+	icon_state = "gutsy_medi"
+
+/mob/living/silicon/robot/gutsy_sec
+	icon_state = "gutsy_sec"
+
+/mob/living/silicon/robot/gutsy_standard
+	icon_state = "gutsy_standard"
