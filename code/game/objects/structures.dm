@@ -1,7 +1,7 @@
 /obj/structure
 	icon = 'icons/obj/structures.dmi'
 	pressure_resistance = 8
-	var/datum/queue/action = new /datum/queue(20)
+	var/datum/queue/adm_action_log = new /datum/queue(20)
 
 /obj/structure/New()
 	..()

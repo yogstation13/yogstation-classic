@@ -82,7 +82,7 @@
 					if(do_after(user, 40, target = src))
 						if(!src || !WT.isOn()) return
 						user << "<span class='notice'>You disassemble the windoor assembly.</span>"
-						action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): disassembled")
+						adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): disassembled")
 						var/obj/item/stack/sheet/rglass/RG = new (get_turf(src), 5)
 						RG.add_fingerprint(user)
 						if(secure)
@@ -109,7 +109,7 @@
 							user << "<span class='warning'>There is already a windoor in that location!</span>"
 							return
 					user << "<span class='notice'>You secure the windoor assembly.</span>"
-					action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): secured")
+					adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): secured")
 					anchored = 1
 					if(secure)
 						name = "secure anchored windoor assembly"
@@ -125,7 +125,7 @@
 					if(!src || !anchored)
 						return
 					user << "<span class='notice'>You unsecure the windoor assembly.</span>"
-					action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): unsecured")
+					adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): unsecured")
 					anchored = 0
 					if(secure)
 						name = "secure windoor assembly"
@@ -146,7 +146,7 @@
 
 					P.use(2)
 					user << "<span class='notice'>You reinforce the windoor.</span>"
-					action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): reinforced")
+					adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): reinforced")
 					secure = 1
 					if(anchored)
 						name = "secure anchored windoor assembly"
@@ -165,7 +165,7 @@
 						user << "<span class='warning'>You need more cable to do this!</span>"
 						return
 					user << "<span class='notice'>You wire the windoor.</span>"
-					action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): wired")
+					adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): wired")
 					state = "02"
 					if(secure)
 						name = "secure wired windoor assembly"
@@ -186,7 +186,7 @@
 						return
 
 					user << "<span class='notice'>You cut the windoor wires.</span>"
-					action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): wires cut")
+					adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): wires cut")
 					new/obj/item/stack/cable_coil(get_turf(user), 1)
 					state = "01"
 					if(secure)
@@ -207,7 +207,7 @@
 						W.loc = src.loc
 						return
 					user << "<span class='notice'>You install the airlock electronics.</span>"
-					action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): electronics installed")
+					adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): electronics installed")
 					name = "near finished windoor assembly"
 					electronics = W
 				else
@@ -225,7 +225,7 @@
 					if(!src || !electronics)
 						return
 					user << "<span class='notice'>You remove the airlock electronics.</span>"
-					action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): electronics removed")
+					adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): electronics removed")
 					name = "wired windoor assembly"
 					var/obj/item/weapon/airlock_electronics/ae
 					ae = electronics
@@ -234,7 +234,7 @@
 
 			else if(istype(W, /obj/item/weapon/pen))
 				var/t = stripped_input(user, "Enter the name for the door.", name, created_name,MAX_NAME_LEN)
-				action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): name changed to [t]")
+				adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): name changed to [t]")
 				if(!t)
 					return
 				if(!in_range(src, usr) && loc != usr)
@@ -259,7 +259,7 @@
 
 						density = 1 //Shouldn't matter but just incase
 						user << "<span class='notice'>You finish the windoor.</span>"
-						action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): complete")
+						adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): complete")
 
 						if(secure)
 							var/obj/machinery/door/window/brigdoor/windoor = new /obj/machinery/door/window/brigdoor(loc)

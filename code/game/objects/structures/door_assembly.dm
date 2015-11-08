@@ -417,7 +417,7 @@
 
 			if(mineral && mineral != "glass")
 				mineral = null //I know this is stupid, but until we change glass to a boolean it's how this code works.
-			action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): paintjob changed")
+			adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): paintjob changed")
 			user << "<span class='notice'>You change the paintjob on the airlock assembly.</span>"
 
 	else if(istype(W, /obj/item/weapon/weldingtool) && !anchored )
@@ -430,7 +430,7 @@
 			if(do_after(user, 40, target = src))
 				if( !WT.isOn() )
 					return
-				action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): airlock assembly disassembled")
+				adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): airlock assembly disassembled")
 				user << "<span class='notice'>You disassemble the airlock assembly.</span>"
 				new /obj/item/stack/sheet/metal(get_turf(src), 4)
 				if (mineral)
@@ -463,7 +463,7 @@
 			if(do_after(user, 40, target = src))
 				if( src.anchored )
 					return
-				action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): airlock assembly secured")
+				adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): airlock assembly secured")
 				user << "<span class='notice'>You secure the airlock assembly.</span>"
 				src.name = "secured airlock assembly"
 				src.anchored = 1
@@ -478,7 +478,7 @@
 		if(do_after(user, 40, target = src))
 			if( !src.anchored )
 				return
-			action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): airlock assembly unsecured")
+			adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): airlock assembly unsecured")
 			user << "<span class='notice'>You unsecure the airlock assembly.</span>"
 			src.name = "airlock assembly"
 			src.anchored = 0
@@ -494,7 +494,7 @@
 			if(C.get_amount() < 1 || state != 0) return
 			C.use(1)
 			src.state = 1
-			action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): airlock assembly wired")
+			adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): airlock assembly wired")
 			user << "<span class='notice'>You wire the airlock assembly.</span>"
 			src.name = "wired airlock assembly"
 
@@ -506,7 +506,7 @@
 		if(do_after(user, 40, target = src))
 			if( src.state != 1 )
 				return
-			action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): airlock assembly wires cut")
+			adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): airlock assembly wires cut")
 			user << "<span class='notice'>You cut the wires from the airlock assembly.</span>"
 			new/obj/item/stack/cable_coil(get_turf(user), 1)
 			src.state = 0
@@ -523,7 +523,7 @@
 				return
 
 			W.loc = src
-			action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): airlock electronics installed")
+			adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): airlock electronics installed")
 			user << "<span class='notice'>You install the airlock electronics.</span>"
 			src.state = 2
 			src.name = "near finished airlock assembly"
@@ -538,7 +538,7 @@
 		if(do_after(user, 40, target = src))
 			if( src.state != 2 )
 				return
-			action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): airlock electronics removed")
+			adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): airlock electronics removed")
 			user << "<span class='notice'>You remove the airlock electronics.</span>"
 			src.state = 1
 			src.name = "wired airlock assembly"
@@ -560,12 +560,12 @@
 					if(do_after(user, 40, target = src))
 						if(G.get_amount() < 1 || mineral) return
 						if (G.type == /obj/item/stack/sheet/rglass)
-							action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): reinforced glass windows installed")
+							adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): reinforced glass windows installed")
 							user << "<span class='notice'>You install reinforced glass windows into the airlock assembly.</span>"
 							heat_proof_finished = 1 //reinforced glass makes the airlock heat-proof
 							name = "near finished heat-proofed window airlock assembly"
 						else
-							action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): regular glass windows installed")
+							adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): regular glass windows installed")
 							user << "<span class='notice'>You install regular glass windows into the airlock assembly.</span>"
 							name = "near finished window airlock assembly"
 						G.use(1)
@@ -590,7 +590,7 @@
 										 "<span class='notice'>You start to install [G.name] into the airlock assembly...</span>")
 						if(do_after(user, 40, target = src))
 							if(G.get_amount() < 2 || mineral) return
-							action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): plating installed")
+							adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): plating installed")
 							user << "<span class='notice'>You install [M] plating into the airlock assembly.</span>"
 							G.use(2)
 							mineral = "[M]"
@@ -607,7 +607,7 @@
 
 		if(do_after(user, 40, target = src))
 			if(src.loc && state == 2)
-				action.enqueue("[gameTimestamp()] ([user] - [W] - [src]): airlock finished")
+				adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): airlock finished")
 				user << "<span class='notice'>You finish the airlock.</span>"
 				var/obj/machinery/door/airlock/door
 				if(mineral == "glass")
