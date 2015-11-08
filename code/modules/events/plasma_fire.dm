@@ -47,6 +47,7 @@
 		for(var/obj/machinery/atmospherics/components/unary/vent_pump/pump in range(epicentre,epiRange))
 			if (ventList.len < maxVents)
 				affectedArea = pump.loc.loc.name
+				message_admins("Plasma fire event - Affected area ([affectedArea] ([pump.loc.x],[pump.loc.y],[pump.loc.z]) <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[pump.loc.x];Y=[pump.loc.y];Z=[pump.loc.z]'>(JMP)</a>")
 				ventList += pump
 
 	molesToAdd = (totalToxinsMoles/endWhen) / ventList.len
