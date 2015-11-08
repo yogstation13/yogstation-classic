@@ -138,18 +138,21 @@
 	add_fingerprint(user)
 	if(istype(W, /obj/item/weapon/wirecutters))
 		if(!shock(user, 100))
+			adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): deconstructs")
 			playsound(loc, 'sound/items/Wirecutter.ogg', 100, 1)
 			Deconstruct()
 	else if((istype(W, /obj/item/weapon/screwdriver)) && (istype(loc, /turf/simulated) || anchored))
 		if(!shock(user, 90))
 			playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
 			anchored = !anchored
+			adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): [anchored ? "fastened" : "unfastened"]")
 			user.visible_message("<span class='notice'>[user] [anchored ? "fastens" : "unfastens"] [src].</span>", \
 								 "<span class='notice'>You [anchored ? "fasten [src] to" : "unfasten [src] from"] the floor.</span>")
 			return
 	else if(istype(W, /obj/item/stack/rods) && destroyed)
 		var/obj/item/stack/rods/R = W
 		if(!shock(user, 90))
+			adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): rebuilt broken grille")
 			user.visible_message("<span class='notice'>[user] rebuilds the broken grille.</span>", \
 								 "<span class='notice'>You rebuild the broken grille.</span>")
 			health = 10
@@ -191,6 +194,7 @@
 				WD.anchored = 0
 				WD.state = 0
 				ST.use(2)
+				adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [WD] - [src]): window placed")
 				user << "<span class='notice'>You place [WD] on [src].</span>"
 			return
 //window placing end
