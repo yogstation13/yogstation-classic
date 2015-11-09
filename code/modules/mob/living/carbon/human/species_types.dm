@@ -112,7 +112,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	say_mod = "intones"
 	roundstart = 1
 	attack_verb = "assault"
-	darksight = 3
+	darksight = 2
 	invis_sight = SEE_INVISIBLE_MINIMUM
 
 /datum/species/android/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
@@ -120,12 +120,14 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 		var/datum/reagent/consumable/food = chem
 		if (food.nutriment_factor)
 			food.nutriment_factor = food.nutriment_factor * 0.2
+			if (prob(1))
+				H << "<span class='info'>NOTICE: Digestive subroutines are inefficient. Seek sustenance via power-cell CONSUME induction.</span>"
 		return 1
 
 /datum/species/android/handle_vision(mob/living/carbon/human/H)
 	//custom override because darksight APPARENTLY DOESN"T WORK LIKE THIS BY DEFAULT??
 	..()
-	if (!H.glasses)
+	if (!H.glasses && H.nutrition > NUTRITION_LEVEL_STARVING) //yes, this means that wearing prescription glasses or goggles cancels the darksight.
 		H.see_in_dark = darksight
 		return 1
 /*
