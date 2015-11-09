@@ -2,7 +2,7 @@
 	name = "Plasma Fire"
 	typepath = /datum/round_event/plasma_fire
 	earliest_start = 6000
-	weight = 5
+	weight = 10
 	alertadmins = 1
 
 //this is an extremely lazy copy of electrical storm as a proof of concept more than anything else
@@ -13,7 +13,7 @@
 	var/totalToxinsMoles
 	var/list/ventList = list()
 	var/affectedArea
-	var/epiRange = 25
+	var/epiRange = 30
 	var/molesToAdd
 	var/maxVents = 3
 
@@ -23,12 +23,13 @@
 
 /datum/round_event/plasma_fire/setup()
 	startWhen = 10
-	endWhen = rand(startWhen+25, 35)
+	endWhen = rand(startWhen+25, 55)
 
 	totalToxinsMoles = rand(50, 150)
 
 	//choose an area and populate our affected vents with it
 	var/list/epicentreList = list()
+	var/list/possibleVents = list()
 
 	for(var/i=1, i <= maxVents, i++)
 		var/list/possibleEpicentres = list()
@@ -43,11 +44,22 @@
 	if(!epicentreList.len)
 		return
 
+	message_admins("Plasma leak event is spawning [totalToxinsMoles]mol plasma across [maxVents] vents over [endWhen] seconds.")
+
 	for(var/obj/effect/landmark/epicentre in epicentreList)
 		for(var/obj/machinery/atmospherics/components/unary/vent_pump/pump in range(epicentre,epiRange))
-			if (ventList.len < maxVents)
-				affectedArea = pump.loc.loc.name
-				ventList += pump
+			if (!pump.welded)
+				possibleVents += pump
+
+	if (possibleVents.len && possibleVents.len >= maxVents)
+		while (ventList.len < maxVents)
+			var/obj/machinery/atmospherics/components/unary/vent_pump/pump = pick(possibleVents)
+			ventList += pump
+			affectedArea = pump.loc.loc.name
+			message_admins("Plasma leak from event at [affectedArea] ([pump.loc.x],[pump.loc.y],[pump.loc.z] - <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[pump.loc.x];Y=[pump.loc.y];Z=[pump.loc.z]'>JMP</a>)")
+	else
+		message_admins("Attempted to start plasma leak event, but couldn't find enough viable vents.")
+		return kill()
 
 	molesToAdd = (totalToxinsMoles/endWhen) / ventList.len
 

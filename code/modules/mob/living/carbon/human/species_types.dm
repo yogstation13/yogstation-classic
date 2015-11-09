@@ -97,6 +97,59 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 		H.endTailWag()
 
 /*
+ ANDROIDS
+ */
+
+/datum/species/android
+	//augmented half-silicon, half-human hybrids
+	//ocular augmentations (they never asked for this) give them slightly improved nightsight (and permanent meson effect)
+	//take additional damage from emp
+	//can metabolize power cells
+	name = "Android"
+	id = "android"
+	default_color = "FFFFFF"
+	specflags = list(MUTCOLORS,EYECOLOR,HAIR,FACEHAIR,LIPS)
+	say_mod = "intones"
+	roundstart = 1
+	attack_verb = "assault"
+	darksight = 2
+	invis_sight = SEE_INVISIBLE_MINIMUM
+
+/datum/species/android/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
+	if (istype(chem, /datum/reagent/consumable)) //paranoia paranoia type casting is coming to get me
+		var/datum/reagent/consumable/food = chem
+		if (food.nutriment_factor)
+			food.nutriment_factor = food.nutriment_factor * 0.2
+			if (prob(1))
+				H << "<span class='info'>NOTICE: Digestive subroutines are inefficient. Seek sustenance via power-cell CONSUME induction.</span>"
+		return 1
+
+/datum/species/android/handle_vision(mob/living/carbon/human/H)
+	//custom override because darksight APPARENTLY DOESN"T WORK LIKE THIS BY DEFAULT??
+	..()
+	if (H.nutrition > NUTRITION_LEVEL_STARVING)
+		if (H.glasses) //yes, this means that wearing prescription glasses or goggles cancels the darksight.
+			var/obj/item/clothing/glasses/G = H.glasses
+			H.see_in_dark = G.darkness_view + darksight
+		else
+			H.see_in_dark = darksight
+		H.see_invisible = invis_sight
+		return 1
+	else
+		if(!H.glasses)
+			H.see_in_dark = 0
+			H.see_invisible = SEE_INVISIBLE_LIVING
+		else
+			var/obj/item/clothing/glasses/G = H.glasses
+			H.see_in_dark = G.darkness_view
+			H.see_invisible = SEE_INVISIBLE_LIVING
+
+/datum/species/android/before_equip_job(datum/job/J, mob/living/carbon/human/H)
+	H << "<span class='info'><b>You are an Android.</b> Possessing a set of advanced augmentations, you are different from other humans.</span>"
+	H << "<span class='info'>Powerful ocular implants afford you greater vision in the darkness, but draw large amounts of power from your biological body. Should your stores run out, they will deactivate and leave you blind.</span>"
+	H << "<span class='info'>Accordingly, normal food is worth only a fraction of its normal sustenance to you. You must instead draw your nourishment from power cells, tapping into the energy contained within. Beware electromagnetic pulses, for they would do grevious damage to your internal organs..</span>"
+	return ..()
+/*
  PLANTPEOPLE
 */
 
