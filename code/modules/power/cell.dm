@@ -81,28 +81,34 @@
 		if (maybedroid.dna.species.id == "android")
 			//BEGIN THE NUTRITION RECHARGEEEE
 			if (charge)
+				if (rigged)
+					//oh, shit.
+					explode()
 				var/drain = maxcharge/40
 				var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
-
+				var/ischarging = 1
 				spark_system.set_up(5, 0, maybedroid.loc)
-				visible_message("[maybedroid] deftly inserts [src] into a slot within their torso. A low hum begins to fill the air.", "<span class='info'>Extracutaneous implants detect viable power source in location: HANDS. Activating CONSUME protocol..</span>")
-				while (charge && maybedroid.nutrition < NUTRITION_LEVEL_WELL_FED && maybedroid.get_active_hand() == src)
+				maybedroid.visible_message("[maybedroid] deftly inserts [src] into a slot within their torso. A low hum begins to fill the air.", "<span class='info'>Extracutaneous implants detect viable power source in location: HANDS. Activating CONSUME protocol..</span>")
+				while (ischarging)
 					if (drain > charge)
 						drain = charge
 
-					if (prob(20))
+					if (prob(35))
 						var/nutpercents
 						nutpercents = (maybedroid.nutrition / NUTRITION_LEVEL_WELL_FED)*100
+
 						maybedroid << "<span class='info'>CONSUME protocol continues. Current satiety level: [nutpercents]%."
 					if (do_after(maybedroid, 10, target = src))
 						spark_system.start()
 						playsound(maybedroid.loc, "sparks", 35, 1)
-						charge -= drain
-						update_icon()
-						maybedroid.nutrition += drain/6
-					else
-						visible_message("A slight hiss emanates from [maybedroid] as [src] pops free from a slot in their torso.", "<span class='info>CONSUME protocol complete. Physical nourishment refreshed. Advise cell recharging.</span>")
-						break
+
+					charge -= drain
+					src.update_icon()
+					maybedroid.nutrition += drain/22
+
+					if (maybedroid.nutrition >= NUTRITION_LEVEL_WELL_FED || maybedroid.get_active_hand() != src || !charge)
+						maybedroid.visible_message("A slight hiss emanates from [maybedroid] as [src] pops free from a slot in their torso.", "<span class='info>CONSUME protocol complete. Physical nourishment refreshed. Advise cell recharging.</span>")
+						ischarging = 0
 			else
 				user << "<span class='info'>You currently surmise via ocular sensors that this cell does not possess enough charge to be of use to you.</span>"
 				return
