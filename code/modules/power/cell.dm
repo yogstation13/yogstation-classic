@@ -74,6 +74,41 @@
 	user.visible_message("<span class='suicide'>[user] is licking the electrodes of the [src.name]! It looks like \he's trying to commit suicide.</span>")
 	return (FIRELOSS)
 
+
+/obj/item/weapon/stock_parts/cell/attack_self(mob/user)
+	if (istype(user, /mob/living/carbon/human))
+		var/mob/living/carbon/human/maybedroid = user
+		if (maybedroid.dna.species.id == "android")
+			//BEGIN THE NUTRITION RECHARGEEEE
+			if (charge)
+				var/drain = maxcharge/40
+				var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
+
+				spark_system.set_up(5, 0, maybedroid.loc)
+				visible_message("[maybedroid] deftly inserts [src] into a slot within their torso. A low hum begins to fill the air.", "<span class='info'>Extracutaneous implants detect viable power source in location: HANDS. Activating CONSUME protocol..</span>")
+				while (charge && maybedroid.nutrition < NUTRITION_LEVEL_WELL_FED && maybedroid.get_active_hand() == src)
+					if (drain > charge)
+						drain = charge
+
+					if (prob(20))
+						var/nutpercents
+						nutpercents = (maybedroid.nutrition / NUTRITION_LEVEL_WELL_FED)*100
+						maybedroid << "<span class='info'>CONSUME protocol continues. Current satiety level: [nutpercents]%."
+					if (do_after(maybedroid, 10, target = src))
+						spark_system.start()
+						playsound(maybedroid.loc, "sparks", 35, 1)
+						charge -= drain
+						update_icon()
+						maybedroid.nutrition += drain/6
+					else
+						visible_message("A slight hiss emanates from [maybedroid] as [src] pops free from a slot in their torso.", "<span class='info>CONSUME protocol complete. Physical nourishment refreshed. Advise cell recharging.</span>")
+						break
+			else
+				user << "<span class='info'>You currently surmise via ocular sensors that this cell does not possess enough charge to be of use to you.</span>"
+				return
+		else
+			user << "<span class='info'>You turn the cell about in your hands, carefully avoiding the terminals on either end. Cyborgs and androids could probably use this.</span>"
+
 /obj/item/weapon/stock_parts/cell/attackby(obj/item/W, mob/user, params)
 	..()
 	if(istype(W, /obj/item/weapon/reagent_containers/syringe))

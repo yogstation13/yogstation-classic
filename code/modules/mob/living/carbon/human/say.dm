@@ -30,7 +30,7 @@
 	return message
 
 /mob/living/carbon/human/get_spans()
-	return ..() | dna.mutations_get_spans()
+	return ..() | dna.mutations_get_spans() | (dna.species == /datum/species/android) ? SPAN_ROBOT : 0
 
 /mob/living/carbon/human/GetVoice()
 	if(istype(wear_mask, /obj/item/clothing/mask/gas/voice))
