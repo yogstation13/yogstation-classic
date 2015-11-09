@@ -84,6 +84,11 @@
 				if (rigged)
 					//oh, shit.
 					explode()
+
+				if (maybedroid.nutrition > NUTRITION_LEVEL_FED)
+					maybedroid << "<span class='notice'>CONSUME protocol reports no need for additional power at this time.</span>"
+					return
+
 				var/drain = maxcharge/40
 				var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 				var/ischarging = 1
