@@ -97,9 +97,9 @@
 
 	name = "Hulk"
 	quality = POSITIVE
-	get_chance = 15
+	get_chance = 7
 	lowest_value = 256 * 12
-	text_gain_indication = "<span class='notice'>Your muscles hurt!</span>"
+	text_gain_indication = "<span class='notice'>Your muscles suddenly surge and expand in size, your skin taking on a greenish tint!</span>"
 
 /datum/mutation/human/hulk/New()
 	..()
