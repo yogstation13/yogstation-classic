@@ -105,7 +105,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	//ocular augmentations (they never asked for this) give them slightly improved nightsight (and permanent meson effect)
 	//take additional damage from emp
 	//can metabolize power cells
-	name = "Android"
+	name = "Preternis"
 	id = "android"
 	default_color = "FFFFFF"
 	specflags = list(MUTCOLORS,EYECOLOR,HAIR,FACEHAIR,LIPS)
@@ -113,6 +113,9 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	roundstart = 1
 	attack_verb = "assault"
 	darksight = 2
+	brutemod = 0.95
+	burnmod = 1.05
+	heatmod = 1.05
 	invis_sight = SEE_INVISIBLE_MINIMUM
 
 /datum/species/android/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
@@ -136,18 +139,18 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 		H.see_invisible = invis_sight
 		return 1
 	else
-		if(!H.glasses)
+		if(!H.glasses) //they aren't wearing goggles and they are starving so nix the innate darksight
 			H.see_in_dark = 0
 			H.see_invisible = SEE_INVISIBLE_LIVING
-		else
+		else //otherwise they are wearing goggles so just use that shit instead
 			var/obj/item/clothing/glasses/G = H.glasses
 			H.see_in_dark = G.darkness_view
 			H.see_invisible = SEE_INVISIBLE_LIVING
 
 /datum/species/android/before_equip_job(datum/job/J, mob/living/carbon/human/H)
-	H << "<span class='info'><b>You are an Android.</b> Possessing a set of advanced augmentations, you are different from other humans.</span>"
+	H << "<span class='info'><b>You are a Preternis.</b> Half-human, half-silicon, you lie in the nebulous between of the two lifeforms, neither one, nor the other.</span>"
 	H << "<span class='info'>Powerful ocular implants afford you greater vision in the darkness, but draw large amounts of power from your biological body. Should your stores run out, they will deactivate and leave you blind.</span>"
-	H << "<span class='info'>Accordingly, normal food is worth only a fraction of its normal sustenance to you. You must instead draw your nourishment from power cells, tapping into the energy contained within. Beware electromagnetic pulses, for they would do grevious damage to your internal organs..</span>"
+	H << "<span class='info'>Normal food is worth only a fraction of its normal sustenance to you. You must instead draw your nourishment from power cells, tapping into the energy contained within. Beware electromagnetic pulses, for they would do grevious damage to your internal organs..</span>"
 	return ..()
 /*
  PLANTPEOPLE
