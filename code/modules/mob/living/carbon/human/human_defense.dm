@@ -42,7 +42,10 @@ emp_act
 	return
 
 /mob/living/carbon/human/bullet_act(obj/item/projectile/P, def_zone)
+	if(istype(P, /obj/item/projectile/bullet))
+		lastbrutetype = "bullet"
 	if(istype(P, /obj/item/projectile/energy) || istype(P, /obj/item/projectile/beam))
+		lastburntype = "laser"
 		if(check_reflect(def_zone)) // Checks if you've passed a reflection% check
 			visible_message("<span class='danger'>The [P.name] gets reflected by [src]!</span>", \
 							"<span class='userdanger'>The [P.name] gets reflected by [src]!</span>")
@@ -132,6 +135,7 @@ emp_act
 	feedback_add_details("zone_targeted","[target_area]")
 
 	if(dna)	// allows your species to affect the attacked_by code
+		lastbrutetype = "melee"
 		return dna.species.spec_attacked_by(I,user,def_zone,affecting,hit_area,src.a_intent,target_limb,target_area,src)
 
 	else
@@ -234,6 +238,7 @@ emp_act
 
 	if (src.dna.species.id == "android")
 		//androids take significant damage from EMP
+		src.lastburntype = "electric"
 		switch(severity)
 			if(1)
 				src.adjustBruteLoss(10)
