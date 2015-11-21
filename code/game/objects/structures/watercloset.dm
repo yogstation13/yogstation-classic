@@ -417,6 +417,12 @@
 		user << "<span class='notice'>You wet [O] in [src].</span>"
 		playsound(loc, 'sound/effects/slosh.ogg', 25, 1)
 
+	if(istype(O, /obj/item/medical/bandage))
+		var/obj/item/medical/bandage/B = O
+		B.wash(src, user)
+		playsound(loc, 'sound/effects/slosh.ogg', 25, 1)
+		return
+
 	var/turf/location = user.loc
 	if(!isturf(location)) return
 

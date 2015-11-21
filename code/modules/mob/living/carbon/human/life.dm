@@ -45,6 +45,9 @@
 		//heart attack stuff
 		handle_heart()
 
+		if (bandaged) //handle bandage ticks
+			bandaged.handle_bandage(src)
+
 		//Stuff jammed in your limbs hurts
 		handle_embedded_objects()
 	//Update our name based on whether our face is obscured/disfigured
