@@ -137,7 +137,7 @@
 
 /obj/machinery/sleeper/proc/sleeperUI(mob/user)
 	var/dat
-	var/medstaff //is the person a human, and if they are, are they medical staff?
+	var/medstaff = 0 //is the person a human, and if they are, are they medical staff?
 
 	if (ishuman(user))
 		var/mob/living/carbon/human/H = user
@@ -165,7 +165,7 @@
 				if(C)
 					dat += "<BR><span class='linkOff'>Inject [C.name]</span>"
 	else
-		dat += "<br><font colour=red>ERROR: Not authorized to use advanced chemicals.</font>"
+		dat += "<br><font colour='red'>ERROR: Not authorized to use advanced chemicals.</font>"
 
 	dat += "<h3>Sleeper Status</h3>"
 	dat += "<A href='?src=\ref[src];refresh=1'>Scan</A>"

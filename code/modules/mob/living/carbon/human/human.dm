@@ -787,7 +787,7 @@
 
 			var/oxyd = C.getOxyLoss()
 
-			if (oxyd > 35)
+			if (oxyd < 35)
 				src.visible_message("[src] attempts to perform CPR on [C.name], but stops abruptly.", "<span class='notice'>You begin to perform CPR on [C.name] but stop as you feel their lungs fill slightly on their own.</span>")
 				C << "<span class='unconscious'>A faint trickle of coolness wafts throughout your chest.</span>"
 			else
