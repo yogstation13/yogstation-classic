@@ -12,6 +12,7 @@
 	density = 0
 	anchored = 1
 	state_open = 1
+	req_access = list(access_medical)
 	var/efficiency
 	var/initial_bin_rating = 1
 	var/min_health = 25
@@ -20,6 +21,7 @@
 								   list("morphine", "salbutamol", "bicaridine", "kelotane", "oculine"),
 								   list("morphine", "salbutamol", "bicaridine", "kelotane", "oculine", "antitoxin", "mutadone", "mannitol", "pen_acid"),
 								   list("morphine", "salbutamol", "bicaridine", "kelotane", "oculine", "antitoxin", "mutadone", "mannitol", "pen_acid", "omnizine"))
+
 /obj/machinery/sleeper/New()
 	..()
 	GenerateParts()
@@ -122,23 +124,48 @@
 
 	sleeperUI(user)
 
+/obj/machinery/sleeper/check_access(obj/item/weapon/card/id/I)
+	if(istype(I, /obj/item/device/pda))
+		var/obj/item/device/pda/pda = I
+		I = pda.id
+	if(!istype(I) || !I.access) //not ID or no access
+		return 0
+	for(var/req in req_access)
+		if(!(req in I.access)) //doesn't have this access
+			return 0
+	return 1
+
 /obj/machinery/sleeper/proc/sleeperUI(mob/user)
 	var/dat
+	var/medstaff //is the person a human, and if they are, are they medical staff?
+
+	if (ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if (src.allowed(H))
+			medstaff = 1
+
+	if (issilicon(user))
+		medstaff = 1
+
 	dat += "<h3>Injector</h3>"
 	if(occupant)
 		dat += "<A href='?src=\ref[src];inject=epinephrine'>Inject Epinephrine</A>"
 	else
 		dat += "<span class='linkOff'>Inject Epinephrine</span>"
-	if(occupant && occupant.health > min_health)
-		for(var/re in injection_chems)
-			var/datum/reagent/C = chemical_reagents_list[re]
-			if(C)
-				dat += "<BR><A href='?src=\ref[src];inject=[C.id]'>Inject [C.name]</A>"
+
+	if (medstaff)
+		if(occupant && occupant.health > min_health)
+			for(var/re in injection_chems)
+				var/datum/reagent/C = chemical_reagents_list[re]
+				if(C)
+					dat += "<BR><A href='?src=\ref[src];inject=[C.id]'>Inject [C.name]</A>"
+		else
+			for(var/re in injection_chems)
+				var/datum/reagent/C = chemical_reagents_list[re]
+				if(C)
+					dat += "<BR><span class='linkOff'>Inject [C.name]</span>"
 	else
-		for(var/re in injection_chems)
-			var/datum/reagent/C = chemical_reagents_list[re]
-			if(C)
-				dat += "<BR><span class='linkOff'>Inject [C.name]</span>"
+		dat += "<br><font colour=red>ERROR: Not authorized to use advanced chemicals.</font>"
 
 	dat += "<h3>Sleeper Status</h3>"
 	dat += "<A href='?src=\ref[src];refresh=1'>Scan</A>"
