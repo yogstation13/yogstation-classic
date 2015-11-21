@@ -316,7 +316,7 @@
 			beaker.reagents.trans_to(occupant, 1, 10)
 			beaker.reagents.reaction(occupant)
 	next_trans++
-	if(next_trans == 10)
+	if(next_trans == 7) //formerly 10
 		next_trans = 0
 
 
