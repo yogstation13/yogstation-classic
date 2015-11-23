@@ -122,6 +122,20 @@
 	duration = 120
 	staunch_bleeding = 120
 
+/obj/item/medical/bandage/normal
+	name = "standard NT-issue emergency bandage"
+	desc = "Does the job, and does it well. Wrap tightly around a wound. Smells like a pay docking."
+	healamount = 65
+	duration = 80
+	staunch_bleeding = 600
+
+/obj/item/medical/bandage/burn
+	name = "standard NT-issue burn dressing"
+	desc = "Does the job, but stings like all hell. Wrap tightly around the wound. Smells slightly worse than the burning flesh it is supposed to heal, probably because it's being docked from your pay."
+	healamount = 65
+	duration = 80
+	staunch_bleeding = 0
+
 /obj/item/medical/bandage/quality
 	name = "RB-ST brand medicinal bandages"
 	desc = "Quality bandages with a novel toolbox-icon weave. Comes with a polymer stabilizing agent built into the fabric to stiffen and secure broken limbs. Smells like cough syrup and pine needles."
