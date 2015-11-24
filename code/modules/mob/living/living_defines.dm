@@ -15,6 +15,10 @@
 	var/brainloss = 0	//'Retardation' damage caused by someone hitting you in the head with a bible or being infected with brainrot.
 	var/staminaloss = 0		//Stamina damage, or exhaustion. You recover it slowly naturally, and are stunned if it gets too high. Holodeck and hallucinations deal this.
 
+	//last damage vars for enhanced examine
+	var/lastburntype = 0
+	var/lastbrutetype = 0
+
 
 	var/hallucination = 0 //Directly affects how long a mob will hallucinate for
 

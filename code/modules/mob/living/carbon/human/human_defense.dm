@@ -42,7 +42,10 @@ emp_act
 	return
 
 /mob/living/carbon/human/bullet_act(obj/item/projectile/P, def_zone)
+	if(istype(P, /obj/item/projectile/bullet))
+		lastbrutetype = "bullet"
 	if(istype(P, /obj/item/projectile/energy) || istype(P, /obj/item/projectile/beam))
+		lastburntype = "laser"
 		if(check_reflect(def_zone)) // Checks if you've passed a reflection% check
 			visible_message("<span class='danger'>The [P.name] gets reflected by [src]!</span>", \
 							"<span class='userdanger'>The [P.name] gets reflected by [src]!</span>")
@@ -132,6 +135,7 @@ emp_act
 	feedback_add_details("zone_targeted","[target_area]")
 
 	if(dna)	// allows your species to affect the attacked_by code
+		lastbrutetype = "melee"
 		return dna.species.spec_attacked_by(I,user,def_zone,affecting,hit_area,src.a_intent,target_limb,target_area,src)
 
 	else
@@ -234,26 +238,30 @@ emp_act
 
 	if (src.dna.species.id == "android")
 		//androids take significant damage from EMP
+		src.lastburntype = "electric"
 		switch(severity)
 			if(1)
 				src.adjustBruteLoss(10)
 				src.adjustFireLoss(10)
 				src.Stun(5)
+				src.nutrition = src.nutrition * 0.4
 				visible_message("<span class='danger'>Electricity ripples over [src]'s subdermal implants, smoking profusely.</span>", \
-								"<span class='userdanger'>A surge of searing pain erupts throughout your very being!</span>")
+								"<span class='userdanger'>A surge of searing pain erupts throughout your very being! As the pain subsides, a terrible sensation of emptiness is left in its wake.</span>")
 				src.attack_log += "Was hit with a severity 3(severe) EMP as an android. Lost 20 health."
 			if(2)
 				src.adjustBruteLoss(5)
 				src.adjustFireLoss(5)
 				src.Stun(2)
+				src.nutrition = src.nutrition * 0.6
 				visible_message("<span class='danger'>A faint fizzling emanates from [src].</span>", \
-								"<span class='userdanger'>A fit of twitching overtakes you as your subdermal implants convulse violently from the electromagnetic disruption.</span>")
+								"<span class='userdanger'>A fit of twitching overtakes you as your subdermal implants convulse violently from the electromagnetic disruption. Your sustenance reserves have been partially depleted from the blast.</span>")
 				src.emote("twitch")
 				src.attack_log += "Was hit with a severity 2(medium) EMP as an android. Lost 10 health."
 			if(3)
 				src.adjustFireLoss(2)
 				src.adjustBruteLoss(3)
 				src.Stun(1)
+				src.nutrition = src.nutrition * 0.8
 				src.emote("scream")
 				src.attack_log += "Was hit with a severity 3(light) EMP as an android. Lost 5 health."
 	..()

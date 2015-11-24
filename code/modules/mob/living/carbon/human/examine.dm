@@ -11,12 +11,23 @@
 	var/t_him = "it"
 	var/t_has = "has"
 	var/t_is = "is"
+	var/t_His = "Its"
+
+	var/t_surface = "skin"
 
 	var/msg = "<span class='info'>*---------*\nThis is "
+
+	if (dna)
+		switch (dna.species.id)
+			if ("lizard")
+				t_surface = "scales"
+			if ("plant")
+				t_surface = "leaves"
 
 	if( slot_w_uniform in obscured && skipface ) //big suits/masks/helmets make it hard to tell their gender
 		t_He = "They"
 		t_his = "their"
+		t_His = "Their"
 		t_him = "them"
 		t_has = "have"
 		t_is = "are"
@@ -28,10 +39,12 @@
 				t_He = "He"
 				t_his = "his"
 				t_him = "him"
+				t_His = "His"
 			if(FEMALE)
 				t_He = "She"
 				t_his = "her"
 				t_him = "her"
+				t_His = "Her"
 
 	msg += "<EM>[src.name]</EM>!\n"
 
@@ -197,24 +210,72 @@
 	msg += "<span class='warning'>"
 
 	if(temp)
-		if(temp < 30)
-			msg += "[t_He] [t_has] minor bruising.\n"
+		if(temp < 45)
+			if (lastbrutetype)
+				switch (lastbrutetype)
+					if ("melee")
+						msg += "[t_He] [t_has] a number of minor cuts, scratches and bruises all over [t_his] body.\n"
+					if ("pressure")
+						msg += "[t_His] [t_surface] is wrinkled and swollen beneath the surface.\n"
+					if ("bullet")
+						msg += "[t_His] [t_surface] yields to a smattering of small bullet-holes, the [t_surface] around the wounds bruised.\n"
+			else
+				msg += "[t_He] [t_has] a number of minor wounds.\n"
 		else
-			msg += "<B>[t_He] [t_has] severe bruising!</B>\n"
+			if (lastbrutetype)
+				switch (lastbrutetype)
+					if ("melee")
+						msg += "<B>[t_He] [t_has] dozens of open cuts and gashes, severely wounded.</B>\n"
+					if ("pressure")
+						msg += "<B>[t_His] [t_surface] is severely swollen and bloated, some sections splitting open and bearing great blackened bruises.</B>\n"
+					if ("bullet")
+						msg += "<B>[t_His] body is devastated by numerous bullet wounds, bleeding profusely and badly bruised./B>\n"
+			else
+				msg += "<B>[t_He] [t_has] several severe wounds!</B>\n"
 
 	temp = getFireLoss()
 	if(temp)
-		if(temp < 30)
-			msg += "[t_He] [t_has] minor burns.\n"
+		if(temp < 45)
+			if (lastburntype)
+				switch (lastburntype)
+					if ("electric")
+						msg += "[t_He] [t_is] slightly charred in places, hair somewhat frazzled.\n"
+					if ("laser")
+						msg += "[t_He] [t_has] several pockmarked blisters.\n"
+					if ("coldburn")
+						msg += "[t_He] [t_is] covered in a faint rime of frost, reddened [t_surface] beneath.\n"
+					if ("hotburn")
+						msg += "[t_He] [t_has] patches of reddened [t_surface], slightly burnt in places.\n"
+			else
+				msg += "[t_He] [t_has] minor burns.\n"
 		else
-			msg += "<B>[t_He] [t_has] severe burns!</B>\n"
+			if (lastburntype)
+				switch (lastburntype)
+					if ("electric")
+						msg += "<B>[t_He] [t_has] a number of extremely severe burns with distinctive arc-like patterning, [t_his] [t_surface] burnt away and smoking in places.</B>\n"
+					if ("laser")
+						msg += "<B>[t_He] [t_has] an assortment of half-cauterized blisters, severely burned.</B>\n"
+					if ("coldburn")
+						msg += "<B>[t_His] [t_surface] is turgid and badly blistered, exposed fluids covered in ice crystals.</B>\n"
+					if ("hotburn")
+						msg += "<B>[t_His] [t_surface] is severely burned and sloughing off in places.</B>\n"
+			else
+				msg += "<B>[t_He] [t_has] severe burns!</B>\n"
 
 	temp = getCloneLoss()
 	if(temp)
-		if(temp < 30)
-			msg += "[t_He] [t_has] minor cellular damage.\n"
+		if(temp < 45)
+			msg += "[t_He] [t_has] appears slightly stunted and pale.\n"
 		else
-			msg += "<B>[t_He] [t_has] severe cellular damage.</B>\n"
+			msg += "<B>[t_He] [t_has] is severely deformed and bears a greyish pallor.</B>\n"
+
+	temp = getOxyLoss()
+	if (temp)
+		if (temp < 35)
+			msg += "[t_His] skin is bluish in hue, and [t_his] chest is not moving.\n"
+		else
+			msg += "<B>[t_His] skin is of a deep blue colour, their mouth open in an agonal gasp.</B>\n"
+
 
 
 	for(var/obj/item/organ/limb/L in organs)
@@ -223,9 +284,9 @@
 
 
 	if(fire_stacks > 0)
-		msg += "[t_He] [t_is] covered in something flammable.\n"
+		msg += "[t_He] [t_is] covered in some sort of liquid, creating haze-like fumes around [t_him].\n"
 	if(fire_stacks < 0)
-		msg += "[t_He] looks a little soaked.\n"
+		msg += "[t_He] appears to be soaked in something.\n"
 
 
 	if(nutrition < NUTRITION_LEVEL_STARVING - 50)
@@ -242,7 +303,15 @@
 	if(bleedsuppress)
 		msg += "[t_He] [t_is] bandaged with something.\n"
 	else if(blood_max)
-		msg += "<B>[t_He] [t_is] bleeding!</B>\n"
+		switch (blood_max)
+			if (0.5 to 1)
+				msg += "[t_He] [t_is] is slightly bloodied, bleeding from some wounds.\n"
+			if (1.5 to 3)
+				msg += "<B>[t_He] [t_is] is bleeding profusely from a great gash.</B>\n"
+			if (4 to 6)
+				msg += "<B>[t_He] [t_is] is bleeding terribly from a number of wounds.</B>\n"
+			if (6 to INFINITY)
+				msg += "<B>Blood streams in constant rivulets from several gaping, severe wounds upon [t_his] body.</B>\n"
 
 	msg += "</span>"
 
