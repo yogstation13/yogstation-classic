@@ -745,7 +745,7 @@
 
 /mob/living/carbon/human/proc/do_cpr(mob/living/carbon/C)
 	if(C.stat == DEAD)
-		src << "<span class='warning'>[C.name] is dead!</span>"
+		src << "<span class='warning'>[C.name] bears the grey pallor of death. CPR would be pointless.</span>"
 		return
 	if(is_mouth_covered())
 		src << "<span class='warning'>Remove your mask first!</span>"
@@ -753,6 +753,19 @@
 	if(C.is_mouth_covered())
 		src << "<span class='warning'>Remove their mask first!</span>"
 		return 0
+
+	var/candamage = 0 //will the CPR attempt cause damage?
+
+	if (ishuman(C))
+		var/mob/living/carbon/human/H = C
+		var/obj/item/organ/limb/victim_chest = H.get_organ("chest")
+
+		if (!victim_chest)
+			src << "<span class='warning'>As you go to perform CPR on [C.name], you notice that there's nothing resembling a chest to begin compressing. Oh dear.</span>"
+			return 0
+
+		if (victim_chest.brute_dam >= 80)
+			candamage = 1
 
 	if(C.cpr_time < world.time + 30)
 		visible_message("<span class='notice'>[src] is trying to perform CPR on [C.name]!</span>", \
@@ -763,11 +776,26 @@
 
 		if(C.health <= config.health_threshold_crit)
 			C.cpr_time = world.time
-			var/suff = min(C.getOxyLoss(), 7)
-			C.adjustOxyLoss(-suff)
-			C.updatehealth()
-			src.visible_message("[src] performs CPR on [C.name]!", "<span class='notice'>You perform CPR on [C.name].</span>")
-			C << "<span class='unconscious'>You feel a breath of fresh air enter your lungs... It feels good...</span>"
+			if (ishuman(C) && candamage)
+				var/mob/living/carbon/human/H = C
+				//cause minor damage instead
+				H.apply_damage(2, BRUTE, "chest")
+				src.visible_message("A terribly wet crunch and the sound of shifting breaking bones emanates from [C.name]'s chest as [src] compresses it.", "<span class='warning'>As you press down on [C.name]'s chest, you feel a rib shift beneath you and jostle about their insides. CPR clearly isn't helping.</span>", "The sound of cracking bones echoes throghout the air.")
+				H << "<span class='unconscious'>Terrible, searing pain rattles your dreamlike haze as it surges forth from your chest.</span>"
+				add_logs(src, H, "caused 2 brute damage via broken chest CPR")
+				return 0
+
+			var/oxyd = C.getOxyLoss()
+
+			if (oxyd < 35)
+				src.visible_message("[src] attempts to perform CPR on [C.name], but stops abruptly.", "<span class='notice'>You begin to perform CPR on [C.name] but stop as you feel their lungs fill slightly on their own.</span>")
+				C << "<span class='unconscious'>A faint trickle of coolness wafts throughout your chest.</span>"
+			else
+				var/suff = 4 //oxydamage removed from CPR attempt, used to be 7
+				C.adjustOxyLoss(-suff)
+				C.updatehealth()
+				src.visible_message("[src] performs CPR on [C.name]!", "<span class='notice'>You perform CPR on [C.name].</span>")
+				C << "<span class='unconscious'>You feel a breath of fresh air enter your lungs... It feels good...</span>"
 		add_logs(src, C, "CPRed")
 
 /mob/living/carbon/human/generateStaticOverlay()
