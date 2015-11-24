@@ -3,6 +3,9 @@
 	desc = "A generic bandage of unknown origin and use. What does it cover? Is it a trendy accessory? Will I ever know?."
 	icon = 'icons/obj/items.dmi'
 	icon_state = "improv_bandage"
+	w_class = 1
+	throw_speed = 3
+	throw_range = 7
 	var/healtype = "brute" //determines what damage type the item heals
 	var/healamount = 70 //determines how much it heals OVERALL (over duration)
 	var/staunch_bleeding = 600 //does it stop bleeding and if so, how much?
