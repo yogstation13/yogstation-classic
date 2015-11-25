@@ -45,8 +45,8 @@
 		//heart attack stuff
 		handle_heart()
 
-		if (bandaged) //handle bandage ticks
-			bandaged.handle_bandage(src)
+		//handle bandage healing
+		handle_bandaged_limbs()
 
 		//Stuff jammed in your limbs hurts
 		handle_embedded_objects()
@@ -63,6 +63,11 @@
 	else
 		return pressure
 
+/mob/living/carbon/human/proc/handle_bandaged_limbs()
+	for(var/obj/item/organ/limb/L in organs)
+		if (L.can_be_bandaged && L.bandaged)
+			var/obj/item/medical/bandage/B = L.bandaged
+			B.handle_bandage(src)
 
 /mob/living/carbon/human/handle_disabilities()
 	..()
