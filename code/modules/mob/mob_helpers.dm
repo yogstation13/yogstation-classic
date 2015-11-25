@@ -125,6 +125,11 @@
 		return 1
 	return 0
 
+/proc/isswarmer(A)
+	if(istype(A, /mob/living/simple_animal/hostile/swarmer))
+		return 1
+	return 0
+
 /proc/isovermind(A)
 	if(istype(A, /mob/camera/blob))
 		return 1
