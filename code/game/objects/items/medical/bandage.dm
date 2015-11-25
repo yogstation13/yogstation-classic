@@ -22,9 +22,17 @@
 			var/success = 0
 			switch (src.healtype)
 				if ("brute")
-					success = src.healing_limb.heal_damage(src.healamount/src.duration, 0, 0)
+					if (src.healing_limb.brute_dam)
+						success = src.healing_limb.heal_damage(src.healamount/src.duration, 0, 0)
+					else
+						H << "<span class='notice'>The wounds on your [src.healing_limb.getDisplayName()] have stopped bleeding and appear to be healed.</span>"
+						src.used = 1
 				if ("burn")
-					success = src.healing_limb.heal_damage(0, src.healamount/src.duration, 0)
+					if (src.healing_limb.burn_dam)
+						success = src.healing_limb.heal_damage(0, src.healamount/src.duration, 0)
+					else
+						src.used = 1
+						H << "<span class='notice'>The burns on your [src.healing_limb.getDisplayName()] feel much better, and seem to be completely healed.</span>"
 			if (success)
 				H.update_damage_overlays(0)
 			if (src.staunch_bleeding && !H.bleedsuppress)
@@ -35,12 +43,29 @@
 				src.used = 1
 	else
 		//eject the bandage onto the floor with
-		H << "You loosen the bandage around [healing_limb.name] and let it fall to the floor, its usefulness spent."
+		src.fall_off(H, src.healing_limb)
+
+/obj/item/medical/bandage/proc/unwrap(mob/living/M, mob/living/carbon/human/T)
+	//DUPLICATE CODE BUT I'M FUCKING LAZY
+	if (src.healing_limb.bandaged)
+		M.visible_message("<span class='warning'>[M] grabs and pulls at the [src] on [T]'s [src.healing_limb.name], unwrapping it instantly!</span>", "<span class='notice'>You deftly yank [src] off [T]'s [src.healing_limb.getDisplayName()].</span>")
 		src.name = "used [src.name]"
-		src.desc = "Bloodied and crusted, these bandages have clearly been used and aren't fit for much anymore."
+		src.desc = "Piled into a tangled, crusty mess, these bandages have obviously been used and then disposed of in great haste."
+		src.color = "red"
+		src.loc = T.loc
+		src.healing_limb.bandaged = 0
+		src.used = 1
+
+
+/obj/item/medical/bandage/proc/fall_off(mob/living/carbon/human/H, obj/item/organ/limb/L)
+	if (L.bandaged)
+		H << "You loosen the bandage around [L.getDisplayName()] and let it fall to the floor."
+		src.name = "used [src.name]"
+		src.desc = "Bloodied and crusted, these bandages have clearly been used and aren't fit for much anymore. Seems as if they were wrapped around someone's [L.getDisplayName()] last."
 		src.color = "red"
 		src.loc = H.loc
-		H.bandaged = 0
+		L.bandaged = 0
+		src.used = 1
 
 /obj/item/medical/bandage/proc/apply(mob/living/user, mob/tar, obj/item/organ/limb/lt)
 	var/mob/living/carbon/human/temphuman
@@ -50,18 +75,18 @@
 
 	if (ishuman(tar))
 		temphuman = tar
-		if (!temphuman.bandaged)
+		if (!lt.bandaged)
 			if (user == tar)
-				user.visible_message("<span class='notice'>[user] begins winding [src] about their [lt.name]..</span>", "<span class='notice'>You begin winding [src] around your [lt.name]..</span>")
+				user.visible_message("<span class='notice'>[user] begins winding [src] about their [lt.getDisplayName()]..</span>", "<span class='notice'>You begin winding [src] around your [lt.getDisplayName()]..</span>")
 			else
-				user.visible_message("<span class='notice'>[user] begins winding [src] about [tar]'s [lt.name]..</span>", "<span class='notice'>You begin winding [src] around [tar]'s [lt.name]..</span>")
+				user.visible_message("<span class='notice'>[user] begins winding [src] about [tar]'s [lt.getDisplayName()]..</span>", "<span class='notice'>You begin winding [src] around [tar]'s [lt.getDisplayName()]..</span>")
 
 			if (do_after(user, 50, target = tar))
 				if(!user.drop_item())
 					return 0
 				src.blood_DNA = temphuman.dna.unique_enzymes
 				src.healing_limb = lt
-				temphuman.bandaged = src
+				lt.bandaged = src
 				src.loc = temphuman
 				user.visible_message("[user] has applied [src] successfully.", "You have applied [src] successfully.")
 				return 1
@@ -93,16 +118,26 @@
 		user << "There's no real need to wash this - it's perfectly clean!"
 
 /obj/item/medical/bandage/attack(mob/living/carbon/human/T, mob/living/carbon/human/U)
-	if (T.bandaged)
-		U << "That person already has a bandage on them. Putting another on probably isn't a good idea."
-		return
-
 	if (src.used)
 		U << "These bandages have already been used. They're worthless as they are. Maybe if they had the blood washed out of them with running water?"
 		return
-	else
-		src.apply(U, T, T.get_organ(check_zone(U.zone_sel.selecting)))
+
+	var/obj/item/organ/limb/O =  T.get_organ(check_zone(U.zone_sel.selecting))
+
+	if (O.status == ORGAN_ROBOTIC)
+		U << "You don't have time to explain why there's no time to explain why you can't bandage this very obviously robotic limb."
 		return
+
+	if (O.can_be_bandaged && !O.bandaged)
+		src.apply(U, T, O)
+		return
+	else if (O.can_be_bandaged && O.bandaged)
+		U << "This limb has already been bandaged, so there's no point putting another one on. Your mummification fetish will have to wait for another day."
+		return
+	else if (!O.can_be_bandaged)
+		U << "Upon further examination, you conclusively determine that bandaging this would be an absolute waste of time."
+		return
+
 
 /obj/item/medical/bandage/improvised
 	name = "improvised bandage"
@@ -116,6 +151,7 @@
 	name = "soaked improvised bandage"
 	desc = "Primitive bandage thoroughly soaked in water, Probably decent for a burn wound, but definitely isn't sterile. Useless at stopping bleeding."
 	healtype = "burn"
+	color = "blue"
 	healamount = 40
 	duration = 120
 	staunch_bleeding = 0

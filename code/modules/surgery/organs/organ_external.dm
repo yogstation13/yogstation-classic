@@ -17,6 +17,8 @@
 	var/brute_dam = 0
 	var/burn_dam = 0
 	var/max_damage = 0
+	var/bandaged = 0
+	var/can_be_bandaged = 1
 	var/list/embedded_objects = list()
 
 
