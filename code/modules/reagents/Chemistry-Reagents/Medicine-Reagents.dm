@@ -108,10 +108,10 @@
 /datum/reagent/medicine/cryoxadone/on_mob_life(mob/living/M)
 	if(M.stat != DEAD && M.bodytemperature < 270)
 		M.adjustCloneLoss(-4)
-		M.adjustOxyLoss(-10)
-		M.adjustBruteLoss(-3)
-		M.adjustFireLoss(-3)
-		M.adjustToxLoss(-3)
+		M.adjustOxyLoss(-8)
+		M.adjustBruteLoss(-2)
+		M.adjustFireLoss(-2)
+		M.adjustToxLoss(-2)
 		M.status_flags &= ~DISFIGURED
 
 	..()

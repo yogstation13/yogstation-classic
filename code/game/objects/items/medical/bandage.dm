@@ -3,6 +3,9 @@
 	desc = "A generic bandage of unknown origin and use. What does it cover? Is it a trendy accessory? Will I ever know?."
 	icon = 'icons/obj/items.dmi'
 	icon_state = "improv_bandage"
+	w_class = 1
+	throw_speed = 3
+	throw_range = 7
 	var/healtype = "brute" //determines what damage type the item heals
 	var/healamount = 70 //determines how much it heals OVERALL (over duration)
 	var/staunch_bleeding = 600 //does it stop bleeding and if so, how much?
@@ -63,6 +66,8 @@
 				user.visible_message("[user] has applied [src] successfully.", "You have applied [src] successfully.")
 				return 1
 			else
+				if(!user.drop_item())
+					return 0
 				src.loc = temphuman.loc
 				user.visible_message("<span class='warning'>Interrupted, [user] fumbles and drops [src] to the floor!</span>", "<span class='warning'>Losing your concentration, you find yourself unable to apply [src] and let it slip through your fingers to pool upon the floor!</span>")
 				return 0
