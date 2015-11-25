@@ -66,6 +66,8 @@
 				user.visible_message("[user] has applied [src] successfully.", "You have applied [src] successfully.")
 				return 1
 			else
+				if(!user.drop_item())
+					return 0
 				src.loc = temphuman.loc
 				user.visible_message("<span class='warning'>Interrupted, [user] fumbles and drops [src] to the floor!</span>", "<span class='warning'>Losing your concentration, you find yourself unable to apply [src] and let it slip through your fingers to pool upon the floor!</span>")
 				return 0
