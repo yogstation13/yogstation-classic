@@ -25,6 +25,18 @@
 	..()
 	eatverb = pick("bite","chew","choke down","gnaw","swallow","chomp")
 
+/obj/item/weapon/reagent_containers/food/snacks/dolphinmeat
+	name = "dolphin fillet"
+	desc = "A fillet of spess dolphin meat."
+	icon_state = "fishfillet"
+	list_reagents = list("nutriment" = 3, "vitamin" = 2)
+	bitesize = 6
+	filling_color = "#FA8072"
+
+/obj/item/weapon/reagent_containers/food/snacks/dolphinmeat/New()
+	..()
+	eatverb = pick("bite","chew","choke down","gnaw","swallow","chomp")
+
 /obj/item/weapon/reagent_containers/food/snacks/carpmeat/imitation
 	name = "imitation carp fillet"
 	desc = "Almost just like the real thing, kinda."

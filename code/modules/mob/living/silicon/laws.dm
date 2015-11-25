@@ -41,12 +41,15 @@
 	laws.clear_ion_laws()
 
 /mob/living/silicon/proc/make_laws()
-	switch(config.default_laws)
-		if(0)	laws = new /datum/ai_laws/default/asimov()
-		if(1)	laws = new /datum/ai_laws/custom()
-		if(2)
-			var/datum/ai_laws/lawtype = pick(typesof(/datum/ai_laws/default) - /datum/ai_laws/default)
-			laws = new lawtype()
+	if(config)
+		switch(config.default_laws)
+			if(0)	laws = new /datum/ai_laws/default/asimov()
+			if(1)	laws = new /datum/ai_laws/custom()
+			if(2)
+				var/datum/ai_laws/lawtype = pick(typesof(/datum/ai_laws/default) - /datum/ai_laws/default)
+				laws = new lawtype()
+	else
+		laws = new /datum/ai_laws/default/asimov()
 	laws.associate(src)
 
 /mob/living/silicon/proc/clear_zeroth_law(force)

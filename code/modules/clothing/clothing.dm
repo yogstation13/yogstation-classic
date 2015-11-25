@@ -17,6 +17,7 @@
 	var/obj/item/device/flashlight/F = null
 	var/can_flashlight = 0
 	var/gang //Is this a gang outfit?
+	var/scan_reagents = 0 //this variable decides if the wearer can see reagents
 
 //Ears: currently only used for headsets and earmuffs
 /obj/item/clothing/ears

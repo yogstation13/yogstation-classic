@@ -27,10 +27,11 @@
 	hitsound = 'sound/weapons/bladeslice.ogg'
 
 /obj/item/clothing/glasses/science
-	name = "Science Goggles"
-	desc = "A pair of snazzy goggles used to protect against chemical spills."
+	name = "science goggles"
+	desc = "A pair of snazzy goggles used to protect against chemical spills. They have an apparatus fitted to allow it's wearer to scan reagents."
 	icon_state = "purple"
 	item_state = "glasses"
+	scan_reagents = 1 //you can indeed see reagents while wearing science goggles
 
 /obj/item/clothing/glasses/night
 	name = "Night Vision Goggles"
@@ -88,6 +89,12 @@
 	darkness_view = 1
 	flash_protect = 1
 	tint = 1
+
+/obj/item/clothing/glasses/sunglasses/reagent
+	name = "beer goggles"
+	desc = "A pair of sunglasses outfitted with an apparatus to scan reagents."
+	scan_reagents = 1 //to view reagents in beakers/glasses etc.
+
 
 /obj/item/clothing/glasses/sunglasses/garb
 	desc = "Go beyond impossible and kick reason to the curb!"

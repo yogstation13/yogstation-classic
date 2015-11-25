@@ -86,6 +86,7 @@
 			if (!istype(T, /turf/simulated/floor))
 				user << "<span class='warning'>[src] bolts must be tightened on the floor!</span>"
 				return
+			adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): bolts tightened")
 			user.visible_message("<span class='notice'>[user] tightens some bolts on the wall.</span>", "<span class='notice'>You tighten the bolts on the wall.</span>")
 			ChangeToWall()
 		if(istype(W, /obj/item/weapon/weldingtool))
@@ -104,6 +105,7 @@
 		dismantle(user)
 
 /obj/structure/falsewall/proc/dismantle(mob/user)
+	adm_action_log.enqueue("[gameTimestamp()] ([user] - [src]): dismantled")
 	user.visible_message("<span class='notice'>[user] dismantles the false wall.</span>", "<span class='notice'>You dismantle the false wall.</span>")
 	new /obj/structure/girder/displaced(loc)
 	if(mineral == "metal")

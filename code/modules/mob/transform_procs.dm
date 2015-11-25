@@ -108,6 +108,9 @@
 		return
 	//Handle items on mob
 
+	if(!istype(src, /mob/living/carbon/human))
+		return
+
 	drop_all()
 
 	src << "<h2><b>You have become a flesh eating zombie. Your sole purpose is to hunt for crew members to infect them.</b></h2>"

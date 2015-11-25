@@ -180,6 +180,35 @@ var/feedback_set = 0
 	// Note: all clients automatically connect to the world after it restarts
 	..(0)
 
+/world/proc/manage_fps()
+	var/count = player_list.len
+
+	var/oldTC = config.Tickcomp
+	var/oldFPS = world.fps
+
+	if(count < 50)
+		config.Tickcomp = 0
+		world.fps = 22
+	else if(count < 60)
+		config.Tickcomp = 0
+		world.fps = 21
+	else if(count < 70)
+		config.Tickcomp = 0
+		world.fps = 20
+	else if(count < 80)
+		config.Tickcomp = 0
+		world.fps = 19
+	else if(count < 90)
+		config.Tickcomp = 0
+		world.fps = 18
+	else
+		config.Tickcomp = 1
+		world.fps = 16
+
+	if(world.fps != oldFPS || config.Tickcomp != oldTC)
+		var/msg = "WORLD has modified world.fps to [world.fps] and config.Tickcomp to [config.Tickcomp] (player count reached [count])"
+		log_admin(msg, 0)
+		message_admins(msg, 0)
 
 /world/proc/load_mode()
 	var/list/Lines = file2list("data/mode.txt")

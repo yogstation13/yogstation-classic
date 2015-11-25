@@ -383,7 +383,7 @@ var/list/admin_verbs_hideable = list(
 		world.fps = 16
 		msg = "[key_name(src)] has modified world.fps to [world.fps] and config.Tickcomp to [config.Tickcomp]"
 	else if(fix == "High FPS")
-		config.Tickcomp = 1
+		config.Tickcomp = 0
 		world.fps = 20
 		msg = "[key_name(src)] has modified world.fps to [world.fps] and config.Tickcomp to [config.Tickcomp]"
 
@@ -642,7 +642,7 @@ var/list/admin_verbs_hideable = list(
 	O.say(message)
 	O.languages = templanguages
 	log_admin("[key_name(usr)] made [O] at [O.x], [O.y], [O.z] say \"[message]\"")
-	message_admins("<span class='adminnotice'>[key_name_admin(usr)] made [O] at [O.x], [O.y], [O.z]. say \"[message]\"</span>")
+	message_admins("<span class='adminnotice'>[key_name_admin(usr)] made [O]([O.x], [O.y], [O.z])<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[O.x];Y=[O.y];Z=[O.z]'>(JMP)</a> say \"[message]\"</span>")
 	feedback_add_details("admin_verb","OS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 /client/proc/togglebuildmodeself()
 	set name = "Toggle Build Mode Self"

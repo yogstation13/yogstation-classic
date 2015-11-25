@@ -175,6 +175,8 @@ Chemist
 	minimal_access = list(access_medical, access_chemistry, access_mineral_storeroom)
 
 /datum/job/chemist/equip_items(mob/living/carbon/human/H)
+
+	H.equip_to_slot_or_del(new /obj/item/clothing/glasses/science, slot_glasses) //for viewing reagents
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/chemist(H), slot_w_uniform)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/white(H), slot_shoes)
 	H.equip_to_slot_or_del(new /obj/item/clothing/suit/toggle/labcoat/chemist(H), slot_wear_suit)
