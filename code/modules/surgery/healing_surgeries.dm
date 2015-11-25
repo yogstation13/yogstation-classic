@@ -18,7 +18,7 @@
 
 //add dressing to wounds
 /datum/surgery_step/apply_dressing //brute
-	name = "apply compress dressing"
+	name = "apply gauze dressing"
 	implements = list(/obj/item/stack/medical/gauze = 100, /obj/item/stack/medical/gauze/improvised = 65, /obj/item/clothing/torncloth = 35)
 	time = 24
 	var/dressing_type = "brute"
