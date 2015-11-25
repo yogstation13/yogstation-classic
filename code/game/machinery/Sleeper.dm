@@ -147,6 +147,10 @@
 	if (issilicon(user))
 		medstaff = 1
 
+	if (security_level >= 2)
+		medstaff = 1
+		dat += "<B><font colour='red'>ALERT: Safety protocols disengaged medical-compliance safety locks. All crew may use this equipment.</B></font><BR>"
+
 	dat += "<h3>Injector</h3>"
 	if(occupant)
 		dat += "<A href='?src=\ref[src];inject=epinephrine'>Inject Epinephrine</A>"
