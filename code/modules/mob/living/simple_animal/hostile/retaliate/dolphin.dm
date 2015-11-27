@@ -41,3 +41,10 @@
 	if(ishuman(target))
 		var/mob/living/carbon/human/H = target
 		H.adjustStaminaLoss(8)
+
+/mob/living/simple_animal/hostile/retaliate/dolphin/attackby(obj/item/weapon/W, mob/user, params)
+	..()
+	if(istype(W, /obj/item/weapon/reagent_containers/food/snacks/grown/apple) && stat == DEAD)
+		new /obj/item/weapon/reagent_containers/food/snacks/youmonster(src.loc)
+		qdel(W)
+		qdel(src)
