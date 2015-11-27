@@ -492,7 +492,7 @@
 "jx" = (/obj/machinery/computer/crew,/turf/simulated/floor/plasteel{icon_state = "wood"},/area/space)
 "jy" = (/obj/structure/closet/secure_closet/hos,/turf/simulated/floor/plasteel{icon_state = "wood"},/area/space)
 "jz" = (/obj/structure/closet/secure_closet/hop,/turf/simulated/floor/plasteel{icon_state = "wood"},/area/space)
-"jA" = (/obj/structure/closet/secure_closet/captains,/turf/simulated/floor/plasteel{icon_state = "wood"},/area/space)
+"jA" = (/obj/structure/closet/secure_closet/captains_cc,/turf/simulated/floor/plasteel{icon_state = "wood"},/area/space)
 "jB" = (/obj/machinery/computer/secure_data,/turf/simulated/floor/plasteel{icon_state = "wood"},/area/centcom/control)
 "jC" = (/obj/structure/stool/bed/chair/office/dark,/turf/simulated/floor/plasteel{icon_state = "wood"},/area/centcom/control)
 "jD" = (/obj/structure/table/reinforced,/obj/item/weapon/clipboard,/turf/simulated/floor/plasteel{icon_state = "wood"},/area/centcom/control)
