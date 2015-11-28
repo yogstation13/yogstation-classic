@@ -79,7 +79,7 @@
 	return 1
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/MouseDrop_T(mob/target, mob/user)
-	if(user.stat || user.lying || !Adjacent(user) || !target.Adjacent(user) || !iscarbon(target))
+	if(user.stat || user.lying || !Adjacent(user) || !target.Adjacent(user) || !iscarbon(target) || !is_authorized(user))
 		return
 	close_machine(target)
 
@@ -137,11 +137,19 @@
   *
   * @return nothing
   */
+
+/obj/machinery/atmospherics/components/unary/cryo_cell/proc/is_authorized(mob/user)
+	if (security_level >= 2)
+		return 1
+	if (src.allowed(user))
+		return 1
+	return 0
+
 /obj/machinery/atmospherics/components/unary/cryo_cell/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null)
 	if(user == occupant || user.stat || panel_open)
 		return
 
-	if (!src.allowed(user) && security_level >= 2)
+	if (!src.is_authorized(user))
 		user << "<span class='warning'>ERROR: Medical safety protocols in effect. Seek out an experienced operator to use this equipment.</span>"
 		return
 
