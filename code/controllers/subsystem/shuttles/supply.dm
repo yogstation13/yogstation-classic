@@ -216,6 +216,10 @@
 		/obj/item/device/radio/beacon,
 		/obj/machinery/the_singularitygen,
 		/obj/singularity,
+		/obj/machinery/teleport/station,
+		/obj/machinery/teleport/hub,
+		/obj/machinery/telepad,
+		/obj/machinery/clonepod
 	)
 	if(A)
 		if(is_type_in_list(A, blacklist))

@@ -27,6 +27,34 @@
 	new /obj/item/weapon/card/id/captains_spare(src)
 	new /obj/item/weapon/disk/nuclear(src)
 
+/obj/structure/closet/secure_closet/captains_cc
+	name = "\proper captain's locker"
+	req_access = list(access_captain)
+	icon_state = "cap"
+
+/obj/structure/closet/secure_closet/captains_cc/New()
+	..()
+	new /obj/item/clothing/suit/hooded/wintercoat/captain(src)
+	if(prob(50))
+		new /obj/item/weapon/storage/backpack/captain(src)
+	else
+		new /obj/item/weapon/storage/backpack/satchel_cap(src)
+	new /obj/item/clothing/cloak/cap(src)
+	new /obj/item/weapon/storage/backpack/dufflebag/captain(src)
+	new /obj/item/clothing/suit/captunic(src)
+	new /obj/item/clothing/under/captainparade(src)
+	new /obj/item/clothing/head/caphat/parade(src)
+	new /obj/item/clothing/under/rank/captain(src)
+	new /obj/item/clothing/suit/armor/vest/capcarapace(src)
+	new /obj/item/weapon/cartridge/captain(src)
+	new /obj/item/clothing/shoes/sneakers/brown(src)
+	new /obj/item/device/radio/headset/heads/captain/alt(src)
+	new /obj/item/clothing/glasses/sunglasses/gar/supergar(src)
+	new /obj/item/clothing/gloves/color/captain(src)
+	new /obj/item/weapon/gun/energy/gun(src)
+	new /obj/item/device/radio/security(src)
+	new /obj/item/weapon/card/id/captains_spare(src)
+
 /obj/structure/closet/secure_closet/hop
 	name = "\proper head of personnel's locker"
 	req_access = list(access_hop)
@@ -199,7 +227,7 @@
 	name = "bomb collars"
 	desc = "Contains bomb collars and a detonator, for keeping prisoners in line."
 	req_access = list(access_hos)
-	
+
 /obj/structure/closet/secure_closet/collars/New()
 	..()
 	new /obj/item/clothing/head/bombCollar(src)

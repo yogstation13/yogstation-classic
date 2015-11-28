@@ -19,6 +19,7 @@
 	var/gang //Is this a gang outfit?
 	var/canbetorn //can this particular item be torn down to be used for cloth?
 	var/tearhealth = 100
+	var/scan_reagents = 0 //this variable decides if the wearer can see reagents
 
 //Ears: currently only used for headsets and earmuffs
 /obj/item/clothing/ears
