@@ -1304,19 +1304,25 @@
 			switch(breath.temperature)
 				if(-INFINITY to 120)
 					H.apply_damage(COLD_GAS_DAMAGE_LEVEL_3, BURN, "head")
+					H.lastburntype = "coldburn"
 				if(120 to 200)
 					H.apply_damage(COLD_GAS_DAMAGE_LEVEL_2, BURN, "head")
+					H.lastburntype = "coldburn"
 				if(200 to 260)
 					H.apply_damage(COLD_GAS_DAMAGE_LEVEL_1, BURN, "head")
+					H.lastburntype = "coldburn"
 
 		if(!(HEATRES in specflags)) // HEAT DAMAGE
 			switch(breath.temperature)
 				if(360 to 400)
 					H.apply_damage(HEAT_GAS_DAMAGE_LEVEL_1, BURN, "head")
+					H.lastburntype = "hotburn"
 				if(400 to 1000)
 					H.apply_damage(HEAT_GAS_DAMAGE_LEVEL_2, BURN, "head")
+					H.lastburntype = "hotburn"
 				if(1000 to INFINITY)
 					H.apply_damage(HEAT_GAS_DAMAGE_LEVEL_3, BURN, "head")
+					H.lastburntype = "hotburn"
 
 /datum/species/proc/handle_environment(datum/gas_mixture/environment, mob/living/carbon/human/H)
 	if(!environment)
@@ -1347,12 +1353,15 @@
 		switch(H.bodytemperature)
 			if(360 to 400)
 				H.throw_alert("temp","hot",1)
+				H.lastburntype = "hotburn"
 				H.apply_damage(HEAT_DAMAGE_LEVEL_1*heatmod, BURN)
 			if(400 to 460)
 				H.throw_alert("temp","hot",2)
+				H.lastburntype = "hotburn"
 				H.apply_damage(HEAT_DAMAGE_LEVEL_2*heatmod, BURN)
 			if(460 to INFINITY)
 				H.throw_alert("temp","hot",3)
+				H.lastburntype = "hotburn"
 				if(H.on_fire)
 					H.apply_damage(HEAT_DAMAGE_LEVEL_3*heatmod, BURN)
 				else
@@ -1363,12 +1372,15 @@
 			switch(H.bodytemperature)
 				if(200 to 260)
 					H.throw_alert("temp","cold",1)
+					H.lastburntype = "coldburn"
 					H.apply_damage(COLD_DAMAGE_LEVEL_1*coldmod, BURN)
 				if(120 to 200)
 					H.throw_alert("temp","cold",2)
+					H.lastburntype = "coldburn"
 					H.apply_damage(COLD_DAMAGE_LEVEL_2*coldmod, BURN)
 				if(-INFINITY to 120)
 					H.throw_alert("temp","cold",3)
+					H.lastburntype = "coldburn"
 					H.apply_damage(COLD_DAMAGE_LEVEL_3*coldmod, BURN)
 		else
 			H.clear_alert("temp")
@@ -1384,6 +1396,7 @@
 	switch(adjusted_pressure)
 		if(HAZARD_HIGH_PRESSURE to INFINITY)
 			if(!(HEATRES in specflags))
+				H.lastbrutetype = "pressure"
 				H.adjustBruteLoss( min( ( (adjusted_pressure / HAZARD_HIGH_PRESSURE) -1 )*PRESSURE_DAMAGE_COEFFICIENT , MAX_HIGH_PRESSURE_DAMAGE) )
 				H.throw_alert("pressure","highpressure",2)
 			else

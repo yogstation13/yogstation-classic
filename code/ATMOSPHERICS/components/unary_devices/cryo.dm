@@ -13,6 +13,7 @@
 	var/current_heat_capacity = 50
 	state_open = 0
 	var/efficiency
+	req_access = list(access_medical, access_genetics)
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/New()
 	..()
@@ -138,6 +139,10 @@
   */
 /obj/machinery/atmospherics/components/unary/cryo_cell/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null)
 	if(user == occupant || user.stat || panel_open)
+		return
+
+	if (!src.allowed(user) && security_level >= 2)
+		user << "<span class='warning'>ERROR: Medical safety protocols in effect. Seek out an experienced operator to use this equipment.</span>"
 		return
 
 	ui = SSnano.push_open_or_new_ui(user, src, ui_key, ui, "cryo.tmpl", "Cryo Cell Control System", 520, 410, 1)
@@ -316,7 +321,7 @@
 			beaker.reagents.trans_to(occupant, 1, 10)
 			beaker.reagents.reaction(occupant)
 	next_trans++
-	if(next_trans == 10)
+	if(next_trans == 7) //formerly 10
 		next_trans = 0
 
 
