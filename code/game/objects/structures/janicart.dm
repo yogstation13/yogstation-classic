@@ -325,3 +325,32 @@
 	if(buckled_mob)
 		buckled_mob.dir = dir
 		buckled_mob.pixel_y = 4
+
+//////////////////////////////////////
+//GLORIOUS KMC'S SPRITES BELOW HERE!//
+//////////////////////////////////////
+/obj/structure/stool/bed/chair/janicart/trabant
+	name = "trabant"
+	desc = "Glorious car made for glorious fun police, glory to ban-stotska."
+	icon = 'icons/obj/banmobile.dmi'
+	icon_state = "trabant"
+	callme = "glorious trabant"
+	keytype = /obj/item/key/security
+
+/obj/structure/stool/bed/chair/janicart/trabant/update_mob()
+	if(buckled_mob)
+		buckled_mob.dir = dir
+		buckled_mob.pixel_y = 4
+
+/obj/structure/stool/bed/chair/janicart/banmobile
+	name = "banmobile"
+	desc = "Ban man's sweet ride, if you see this, you ought to run away"
+	icon = 'icons/obj/banmobile.dmi'
+	icon_state = "ban mobile"
+	callme = "ban mobile"
+	keytype = /obj/item/key/security
+
+/obj/structure/stool/bed/chair/janicart/banmobile/update_mob()
+	if(buckled_mob)
+		buckled_mob.dir = dir
+		buckled_mob.pixel_y = 4
