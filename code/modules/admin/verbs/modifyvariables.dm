@@ -67,11 +67,9 @@ var/list/VVckey_edit = list("key", "ckey")
 			var_value = input("Select reference:","Reference") as null|mob in world
 
 		if("file")
-			if(!check_rights(R_UPLOAD)) return
 			var_value = input("Pick file:","File") as null|file
 
 		if("icon")
-			if(!check_rights(R_UPLOAD)) return
 			var_value = input("Pick icon:","Icon") as null|icon
 
 		if("marked datum")
@@ -129,11 +127,9 @@ var/list/VVckey_edit = list("key", "ckey")
 			var_value = input("Select reference:","Reference") as mob in world
 
 		if("file")
-			if(!check_rights(R_UPLOAD)) return
 			var_value = input("Pick file:","File") as file
 
 		if("icon")
-			if(!check_rights(R_UPLOAD)) return
 			var_value = input("Pick icon:","Icon") as icon
 
 		if("marked datum")
@@ -358,8 +354,6 @@ var/list/VVckey_edit = list("key", "ckey")
 				L[L.Find(variable)] = new_var
 
 		if("file")
-			if(!check_rights(R_UPLOAD)) return
-
 			new_var = input("Pick file:","File") as file
 			if(assoc)
 				L[assoc_key] = new_var
@@ -367,8 +361,6 @@ var/list/VVckey_edit = list("key", "ckey")
 				L[L.Find(variable)] = new_var
 
 		if("icon")
-			if(!check_rights(R_UPLOAD)) return
-
 			new_var = input("Pick icon:","Icon") as icon
 			if(assoc)
 				L[assoc_key] = new_var
@@ -625,13 +617,11 @@ var/list/VVckey_edit = list("key", "ckey")
 			O.vars[variable] = var_new
 
 		if("file")
-			if(!check_rights(R_UPLOAD)) return
 			var/var_new = input("Pick file:","File",O.vars[variable]) as null|file
 			if(var_new==null) return
 			O.vars[variable] = var_new
 
 		if("icon")
-			if(!check_rights(R_UPLOAD)) return
 			var/var_new = input("Pick icon:","Icon",O.vars[variable]) as null|icon
 			if(var_new==null) return
 			O.vars[variable] = var_new

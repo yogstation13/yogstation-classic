@@ -155,11 +155,9 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 				lst += input("Select reference:","Reference",usr) as mob in world
 
 			if("file")
-				if(!check_rights(R_UPLOAD)) return
 				lst += input("Pick file:","File") as file
 
 			if("icon")
-				if(!check_rights(R_UPLOAD)) return
 				lst += input("Pick icon:","Icon") as icon
 
 			if("client")
