@@ -13,16 +13,6 @@ em						{font-style: normal;	font-weight: bold;}
 	{color: #638500;}
 */
 
-
-.small {
-	font-size: 12px;
-}
-
-.important {
-	font-weight: bold;
-	color: #dd4400;
-}
-
 .italics				{					font-style: italic;}
 
 .prefix					{					font-weight: bold;}
