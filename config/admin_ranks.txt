@@ -37,7 +37,7 @@ Administrator		= +@ +SPAWN +VAREDIT +DEBUG +SERVER +FUN
 Primary Admin		= +@ +POSSESS +BUILDMODE
 #Senior Admin		= +@ +SOUND +PERMISSIONS
 Senior Admin		= +EVERYTHING
-Council				= +EVERYTHING
+Council	Member		= +EVERYTHING
 
 Retired Admin		= +ADMIN +STEALTH +REJUV +SERVER +BAN
 Retired Host		= +ADMIN +STEALTH +REJUV +SERVER +BAN
