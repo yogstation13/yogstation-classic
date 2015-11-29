@@ -124,6 +124,10 @@ var/const/SAFETY_COOLDOWN = 100
 			playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
 		return
 	qdel(I)
+
+	/* Kn0ss0s: As per council wishes. Grinder OP behaviour removed.
+		It will continue to work for antags (murder) and deleting unwanted items.
+
 	if(prob(15 + probability_mod))
 		var/obj/item/stack/sheet/metal/M = new /obj/item/stack/sheet/metal(loc)
 		M.amount = amount_produced
@@ -152,6 +156,8 @@ var/const/SAFETY_COOLDOWN = 100
 		if(prob(2))
 			var/obj/item/stack/sheet/mineral/diamond/D = new /obj/item/stack/sheet/mineral/diamond(loc)
 			D.amount = amount_produced
+	*/
+
 	if(sound)
 		playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
 

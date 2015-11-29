@@ -109,8 +109,6 @@
 			Updated rules 2.1.2 (Be active when playing a round defining antagonist) and 2.1.3 (Be a true revolutionary or gangster) to cover new gamemodes.<br>\
 			Expanded rule 2.3.2 (Know who is human).<br>\
 			Expanded rules 3.5.2 (Do not carry around harmful chemicals) and 3.5.3 (Do not misrepresent chemicals being given to people).<br>"
-		if(current_agree < 5)
-			output += "Disregard ALL previous rules. We have redesigned all rules to be shorter and more precise. Please read them all thoroughly."
 
 	output += "<br>Violation of server rules can lead to a ban from certain roles, a temporary ban, or a permanent ban.<br>"
 	output += "If you have trouble understanding some of the game mechanics, check out the wiki.<br>"
