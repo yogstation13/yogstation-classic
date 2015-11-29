@@ -34,6 +34,13 @@
 	else
 		..()
 
+/obj/machinery/computer/secure_data/deconstruction()
+	// If the machine has a card inserted, eject it automatically to the floor before destruction
+	if(scan)
+		scan.loc = loc
+		scan = null
+	..()
+
 //Someone needs to break down the dat += into chunks instead of long ass lines.
 /obj/machinery/computer/secure_data/attack_hand(mob/user)
 	if(..())

@@ -30,6 +30,13 @@
 	else
 		..()
 
+/obj/machinery/computer/med_data/deconstruction()
+	// If the machine has a card inserted, eject it automatically to the floor before destruction
+	if(scan)
+		scan.loc = loc
+		scan = null
+	..()
+
 /obj/machinery/computer/med_data/attack_hand(mob/user)
 	if(..())
 		return

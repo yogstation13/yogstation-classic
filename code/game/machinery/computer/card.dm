@@ -45,6 +45,13 @@ var/time_last_changed_position = 0
 	//Assoc array: "JobName" = (int)<Opened Positions>
 	var/list/opened_positions = list();
 
+/obj/machinery/computer/card/deconstruction()
+	// If the machine has a card inserted, eject it automatically to the floor before destruction
+	if(scan)
+		scan.loc = loc
+		scan = null
+	..()
+
 /obj/machinery/computer/card/attackby(obj/O, mob/user, params)//TODO:SANITY
 	if(istype(O, /obj/item/weapon/card/id))
 		var/obj/item/weapon/card/id/idcard = O
