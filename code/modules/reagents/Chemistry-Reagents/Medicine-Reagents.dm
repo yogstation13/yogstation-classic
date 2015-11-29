@@ -166,12 +166,12 @@
 /datum/reagent/medicine/silver_sulfadiazine/reaction_mob(mob/living/M, method=TOUCH, reac_volume, show_message = 1)
 	if(iscarbon(M) && M.stat != DEAD)
 		if(method == PATCH)
-			M.adjustFireLoss(-reac_volume)
+			M.adjustFireLoss(-reac_volume/2.5)
 			if(show_message)
 				M << "<span class='notice'>You feel your burns healing!</span>"
 			M.emote("scream")
 		if(method == INGEST)
-			M.adjustToxLoss(0.5*reac_volume)
+			M.adjustToxLoss(0.5*reac_volume/1.5)
 			if(show_message)
 				M << "<span class='notice'>You probably shouldn't have eaten that. Maybe you should of splashed it on, or applied a patch?</span>"
 	..()
@@ -190,12 +190,12 @@
 /datum/reagent/medicine/styptic_powder/reaction_mob(mob/living/M, method=TOUCH, reac_volume, show_message = 1)
 	if(iscarbon(M) && M.stat != DEAD)
 		if(method == PATCH)
-			M.adjustBruteLoss(-reac_volume)
+			M.adjustBruteLoss(-reac_volume/2.5)
 			if(show_message)
 				M << "<span class='notice'>You feel your wounds knitting back together!</span>"
 			M.emote("scream")
 		if(method == INGEST)
-			M.adjustToxLoss(0.5*reac_volume)
+			M.adjustToxLoss(0.5*reac_volume/1.5)
 			if(show_message)
 				M << "<span class='notice'>You feel kind of ill. Maybe you ate a medicine you shouldn't have?</span>"
 	..()
@@ -257,15 +257,15 @@
 /datum/reagent/medicine/synthflesh
 	name = "Synthflesh"
 	id = "synthflesh"
-	description = "Has a 100% chance of instantly healing brute and burn damage. One unit of the chemical will heal one point of damage. Touch application only."
+	description = "Has a 100% chance of instantly healing brute and burn damage. One unit of the chemical will heal a considerable amount of brute and fire damage. Touch application only."
 	reagent_state = LIQUID
 	color = "#C8A5DC"
 
 /datum/reagent/medicine/synthflesh/reaction_mob(mob/living/M, method=TOUCH, reac_volume,show_message = 1)
 	if(iscarbon(M) && M.stat != DEAD)
 		if(method == PATCH)
-			M.adjustBruteLoss(-1.5*reac_volume)
-			M.adjustFireLoss(-1.5*reac_volume)
+			M.adjustBruteLoss(-1.5*reac_volume/2.5)
+			M.adjustFireLoss(-1.5*reac_volume/2.5)
 			if(show_message)
 				M << "<span class='notice'>You feel your burns healing and your flesh knitting together!</span>"
 	..()
