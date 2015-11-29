@@ -78,6 +78,17 @@
 	updateDialog()
 	return 1
 
+/obj/machinery/atmospherics/components/unary/cryo_cell/check_access(obj/item/weapon/card/id/I)
+	if(istype(I, /obj/item/device/pda))
+		var/obj/item/device/pda/pda = I
+		I = pda.id
+	if(!istype(I) || !I.access) //not ID or no access
+		return 0
+	for(var/req in req_access)
+		if(!(req in I.access)) //doesn't have this access
+			return 0
+	return 1
+
 /obj/machinery/atmospherics/components/unary/cryo_cell/MouseDrop_T(mob/target, mob/user)
 	if(user.stat || user.lying || !Adjacent(user) || !target.Adjacent(user) || !iscarbon(target) || !is_authorized(user))
 		return
