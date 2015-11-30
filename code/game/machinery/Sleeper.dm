@@ -240,9 +240,94 @@
 /obj/machinery/sleeper/open_machine()
 	if(!state_open && !panel_open)
 		..()
+/obj/machinery/sleeper/proc/create_diagnostic_record(mob/target)
+	if (ishuman(target))
+		var/mob/living/carbon/human/H = target
+		//does the mob have dna to resolve?
+		if (H.dna)
+			var/datum/data/record/R = find_record("b_dna", H.dna.unique_enzymes, data_core.medical)
+			//is the mob in medical records?
+			if (R)
+				//it is, so we can add this shit to their notes. lets compose the line
+				var/records_line
+				records_line = "([worldtime2text()]): Patient presented to sleeper facility in [(H.health < 0) ? "critical" : "stable"] condition. "
+
+				//show physical(brute) wounds
+				records_line += "Displayed "
+				switch (H.getBruteLoss())
+					if (0)
+						records_line += "no"
+					if (5 to 9)
+						records_line += "negligible"
+					if (10 to 30)
+						records_line += "mild"
+					if (31 to 50)
+						records_line += "prominent"
+					if (51 to 70)
+						records_line += "severe"
+					if (71 to INFINITY)
+						records_line += "life threatening"
+				records_line += " physical wounds. "
+
+				//show fire wounds
+				records_line += "Skin substrate analysis revealed "
+				switch (H.getFireLoss())
+					if (0)
+						records_line += "no"
+					if (5 to 9)
+						records_line += "minor"
+					if (10 to 30)
+						records_line += "first-degree"
+					if (31 to 50)
+						records_line += "second-degree"
+					if (51 to 70)
+						records_line += "third-degree"
+					if (71 to INFINITY)
+						records_line += "life threatening"
+				records_line += " burns to the epidermis and subsequent layers. "
+
+				records_line += "Liver function and bloodwork revealed "
+				switch (H.getToxLoss())
+					if (0)
+						records_line += "no"
+					if (5 to 9)
+						records_line += "minor"
+					if (10 to 30)
+						records_line += "elevated"
+					if (31 to 50)
+						records_line += "severe"
+					if (51 to 70)
+						records_line += "extreme "
+					if (71 to INFINITY)
+						records_line += "life threatening"
+				records_line += " systemic toxin markers. "
+
+				records_line += "Blood oxygen level measured as "
+				switch (H.getOxyLoss())
+					if (0)
+						records_line += "satisfactory"
+					if (5 to 9)
+						records_line += "lower than average"
+					if (10 to 30)
+						records_line += "significantly lower than average"
+					if (31 to 50)
+						records_line += "critically low"
+					if (51 to 70)
+						records_line += "almost non-existant"
+					if (71 to INFINITY)
+						records_line += "entirely unconducive to aerobic life of any kind"
+				records_line += ". "
+
+				var/counter = 1
+				while(R.fields[text("com_[]", counter)])
+					counter++
+
+				R.fields[text("com_[]", counter)] = records_line
+
 
 /obj/machinery/sleeper/close_machine(mob/target)
 	if(state_open && !panel_open)
+		create_diagnostic_record(target)
 		..(target)
 
 /obj/machinery/sleeper/proc/inject_chem(mob/user, chem)

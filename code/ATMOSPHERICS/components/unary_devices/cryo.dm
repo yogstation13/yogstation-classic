@@ -12,7 +12,7 @@
 	var/next_trans = 0
 	var/current_heat_capacity = 50
 	state_open = 0
-	var/efficiency
+	var/efficiency = 1
 	req_access = list(access_medical, access_genetics)
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/New()
@@ -162,6 +162,8 @@
 
 	if (!src.is_authorized(user))
 		user << "<span class='warning'>ERROR: Medical safety protocols in effect. Seek out an experienced operator to use this equipment.</span>"
+		if (ui)
+			ui.close()
 		return
 
 	ui = SSnano.push_open_or_new_ui(user, src, ui_key, ui, "cryo.tmpl", "Cryo Cell Control System", 520, 410, 1)
@@ -251,6 +253,10 @@
 	if(istype(I, /obj/item/weapon/reagent_containers/glass))
 		if(isrobot(user))
 			return
+
+		if (!is_authorized(user))
+			src.visible_message("[src] squeals loudly and flashes a red warning light, summarily rejecting [I] from its input slot.", "<span class='notice'>You try to put [I] into [src], but frown in disapproval as the machine rejects your advances citing a lack of proper identification. Clever girl.</span>")
+			return
 		if(beaker)
 			user << "<span class='warning'>A beaker is already loaded into [src]!</span>"
 			return
@@ -323,8 +329,8 @@
 		occupant.bodytemperature += 2*(air_contents.temperature - occupant.bodytemperature) * current_heat_capacity / (current_heat_capacity + air_contents.heat_capacity())
 		occupant.bodytemperature = max(occupant.bodytemperature, air_contents.temperature) // this is so ugly i'm sorry for doing it i'll fix it later i promise //TODO: fix someone else's broken promise - duncathan
 		if(occupant.bodytemperature < T0C)
-//			occupant.sleeping = max(5/efficiency, (1 / occupant.bodytemperature)*2000/efficiency)
-//			occupant.Paralyse(max(5/efficiency, (1 / occupant.bodytemperature)*3000/efficiency))
+			occupant.sleeping = max(5/efficiency, (1 / occupant.bodytemperature)*2000/efficiency)
+			occupant.Paralyse(max(5/efficiency, (1 / occupant.bodytemperature)*3000/efficiency))
 			if(air_contents.oxygen > 2)
 				if(occupant.getOxyLoss()) occupant.adjustOxyLoss(-1)
 			else
