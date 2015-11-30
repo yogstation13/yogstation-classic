@@ -174,6 +174,7 @@
 	name = "standard NT-issue burn dressing"
 	desc = "Does the job, but stings like all hell. Wrap tightly around the wound. Smells slightly worse than the burning flesh it is supposed to heal, probably because it's being docked from your pay."
 	healamount = 65
+	healtype = "burn"
 	duration = 80
 	staunch_bleeding = 0
 
