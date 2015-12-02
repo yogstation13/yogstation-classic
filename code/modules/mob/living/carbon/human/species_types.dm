@@ -158,21 +158,30 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 
 /datum/species/plant
 	// Creatures made of leaves and plant matter.
-	name = "Plant"
+	name = "Phytosian"
 	id = "plant"
 	default_color = "59CE00"
 	specflags = list(MUTCOLORS,EYECOLOR)
-	attack_verb = "slash"
+	attack_verb = "slices"
 	attack_sound = 'sound/weapons/slice.ogg'
 	miss_sound = 'sound/weapons/slashmiss.ogg'
-	burnmod = 1.25
+	burnmod = 1.5
 	heatmod = 1.5
+	roundstart = 1
 	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/plant
+
+/datum/species/plant/before_equip_job(datum/job/J, mob/living/carbon/human/H)
+	H << "<span class='info'><b>You are a Phytosian.</b> Born on the core-worlds of G-D52, you are a distant relative of a vestige of humanity long discarded. Symbiotic plant-cells suffuse your skin and provide a protective layer that keeps you alive, and affords you regeneration unmatched by any other race.</span>"
+	H << "<span class='info'>Your physiology is similar, but fundamentally different to a normal carbon life form. The chlorophyll in your epidermis provides passive nourishment and regeneration in light, but your biological processes rely on some degree of light being present at all times.</span>"
+	H << "<span class='info'>Darkness is your greatest foe. Even the cold expanses of space are lit by neighbouring stars, but the darkest recesses of the station's interior may prove to be your greatest foe. Stripped of light, you will wither and die. Heat and flame are even greater foes, as your epidermis is combustible.</span>"
+	H << "<span class='info'>Be warned: you will perish quickly should you become so wounded that you lose consciousness in an area void of any meaningful light source.</span>"
 
 /datum/species/plant/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
 	if(chem.id == "plantbgone")
 		H.adjustToxLoss(3)
 		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
+		if (prob(5))
+			H << "<span class='warning'>Your skin rustles and wilts! You are dying!</span>"
 		return 1
 
 /datum/species/plant/on_hit(proj_type, mob/living/carbon/human/H)
@@ -195,6 +204,63 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 			H.nutrition = min(H.nutrition+30, NUTRITION_LEVEL_FULL)
 	return
 
+/datum/species/plant/spec_life(mob/living/carbon/human/H)
+	if(isturf(H.loc)) //else, there's considered to be no light
+		var/turf/T = H.loc
+		if (T.lighting_lumcount)
+			switch (T.lighting_lumcount)
+				if (0.1 to 3)
+					//very low light
+					H.nutrition -= T.lighting_lumcount/1.5
+					if (prob(10))
+						H << "<span class='warning'>There isn't enough light here, and you can feel your body protesting the fact violently.</span>"
+					H.adjustOxyLoss(3)
+				if (3.1 to 6)
+					//low light
+					H.nutrition -= T.lighting_lumcount/2
+					if (prob(3))
+						H << "<span class='warning'>The ambient light levels are too low. Your breath is coming more slowly as your insides struggle to keep up on their own.</span>"
+						H.adjustOxyLoss(6)
+				if (6.1 to 10)
+					//medium, average, doing nothing for now
+					H.nutrition += T.lighting_lumcount/10
+				if (10.1 to 22)
+					//high light, regen here
+					H.nutrition += T.lighting_lumcount/6
+					if (H.stat != UNCONSCIOUS && H.stat != DEAD)
+						H.adjustToxLoss(-0.5)
+						H.adjustOxyLoss(-0.5)
+						H.heal_overall_damage(1, 1)
+				if (22.1 to INFINITY)
+					//super high light
+					H.nutrition += T.lighting_lumcount/4
+					if (H.stat != UNCONSCIOUS && H.stat != DEAD)
+						H.adjustToxLoss(-1)
+						H.adjustOxyLoss(-0.5)
+						H.heal_overall_damage(1, 1)
+
+			if(H.nutrition > NUTRITION_LEVEL_FULL)
+				H.nutrition = NUTRITION_LEVEL_FULL
+		else
+			//no light, this is baaaaaad
+			H.nutrition -= 3
+			if (prob(8))
+				H << "<span class='userdanger'>Darkness! Your insides churn and your skin screams in pain!</span>"
+			H.adjustOxyLoss(3)
+			H.adjustToxLoss(1)
+	else
+		//inside a container or something else, inflict low-level light degen
+		H.nutrition -= 1.5
+		if (prob(3))
+			H << "<span class='warning'>There's not enough light reaching you in here. You start to feel very claustrophobic as your energy begins to drain away.</span>"
+			H.adjustOxyLoss(9)
+
+
+	if(H.nutrition < NUTRITION_LEVEL_STARVING + 50)
+		if (H.stat != UNCONSCIOUS && H.stat != DEAD)
+			if (prob(5))
+				H << "<span class='userdanger'>Your internal stores of light are depleted. Find a source to replenish your nourishment at once!</span>"
+			H.take_overall_damage(2,0)
 /*
  PODPEOPLE
 */
@@ -203,6 +269,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	// A mutation caused by a human being ressurected in a revival pod. These regain health in light, and begin to wither in darkness.
 	name = "Podperson"
 	id = "pod"
+	roundstart = 0
 	specflags = list(MUTCOLORS,EYECOLOR)
 
 /datum/species/plant/pod/spec_life(mob/living/carbon/human/H)
