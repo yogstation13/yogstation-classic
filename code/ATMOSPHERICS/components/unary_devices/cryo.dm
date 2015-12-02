@@ -80,7 +80,7 @@
 	return 1
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/MouseDrop_T(mob/target, mob/user)
-	if(user.stat || user.lying || !Adjacent(user) || !target.Adjacent(user) || !iscarbon(target) || !is_authorized(user))
+	if(user.stat || user.lying || !Adjacent(user) || !target.Adjacent(user) || !iscarbon(target))
 		return
 	close_machine(target)
 
@@ -140,11 +140,13 @@
   */
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/proc/is_authorized(mob/user)
-	if (security_level >= 2)
+	/*if (security_level >= 2)
 		return 1
 	if (src.allowed(user))
-		return 1
-	return 0
+		return 1*/
+
+	//this is fucked on non-skeleton crew rounds for reasons i cant actually figure out, so whatever
+	return 1
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null)
 	if(user == occupant || user.stat || panel_open)

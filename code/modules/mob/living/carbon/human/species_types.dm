@@ -101,9 +101,8 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 /datum/species/lizard/handle_speech(message)
 	// jesus christ why
 	if(copytext(message, 1, 2) != "*")
-		message = replacetext(message, "s", "sss")
-		message = replacetext(message, "S", "SSS") //LOUD HISSING NOISES
-
+		message = replacetextEx(message, "s", "sss")
+		message = replacetextEx(message, "S", "SSS")
 	return message
 
 //I wag in death
@@ -177,7 +176,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	id = "plant"
 	default_color = "59CE00"
 	specflags = list(MUTCOLORS,EYECOLOR)
-	attack_verb = "slices"
+	attack_verb = "slice"
 	attack_sound = 'sound/weapons/slice.ogg'
 	miss_sound = 'sound/weapons/slashmiss.ogg'
 	burnmod = 1.5
