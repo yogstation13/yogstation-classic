@@ -55,7 +55,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 
 /datum/species/lizard
 	// Reptilian humanoids with scaled skin and tails.
-	name = "Lizardperson"
+	name = "Unathi"
 	id = "lizard"
 	say_mod = "hisses"
 	default_color = "00FF00"
@@ -65,8 +65,17 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	default_features = list("mcolor" = "0F0", "tail" = "Smooth", "snout" = "Round", "horns" = "None", "frills" = "None", "spines" = "None", "body_markings" = "None")
 	attack_verb = "slash"
 	attack_sound = 'sound/weapons/slash.ogg'
+	burnmod = 0.95
+	heatmod = 0.85
+	coldmod = 1.15
+	punchmod = 1.10
 	miss_sound = 'sound/weapons/slashmiss.ogg'
 	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/lizard
+
+/datum/species/lizard/before_equip_job(datum/job/J, mob/living/carbon/human/H)
+	H << "<span class='notice'><b>You are Unathi.</b> Hailing from the homeworld of Moghes, your people are descended from an older race lost to the sands of time. Thick scales afford you protection from heat, but your cold-blooded nature is not exactly advantageous in a metal vessel surrounded by the cold depths of space.</span>"
+	H << "<span class='notice'>You possess sharp claws that rend flesh easily, though NT obviously does not sanction their use against the crew.</span>"
+	H << "<span class='notice'>Beware all things cold, for your metabolism cannot mitigate their effects as well as other warm-blooded creatures.</span>"
 
 /datum/species/lizard/random_name(gender,unique,lastname)
 	if(unique)
@@ -88,6 +97,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	// jesus christ why
 	if(copytext(message, 1, 2) != "*")
 		message = replacetext(message, "s", "sss")
+		message = replacetext(message, "S", "SSS") //LOUD HISSING NOISES
 
 	return message
 
