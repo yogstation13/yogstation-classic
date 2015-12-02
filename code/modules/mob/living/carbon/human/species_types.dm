@@ -12,6 +12,11 @@
 	default_features = list("mcolor" = "FFF", "tail_human" = "None", "ears" = "None")
 	use_skintones = 1
 
+/datum/species/human/before_equip_job(datum/job/J, mob/living/carbon/human/H)
+	H << "<span class='notice'><b>You are a Human.</b> Tenacious and ambitious, humanity surged to the stars on the back of technological advancement nearly five hundred years ago.</span>"
+	H << "<span class='notice'>Originally hailing from Earth in the Sol system, humans possesses no remarkable physical traits other than their cunning intellect and ability to adapt to many different environments with relative ease.</span>"
+	H << "<span class='notice'>The station AI and its Cyborgs intrinsically consider you as 'above' them as per their default lawset - a privilege not afforded to the other races aboard the station.</span>"
+
 /datum/species/human/qualifies_for_rank(rank, list/features)
 	if(!config.mutant_humans) //No mutie scum here
 		return 1
