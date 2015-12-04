@@ -208,6 +208,13 @@
 		usr << "<span class='danger'>This target is valid. You begin the enthralling.</span>"
 		target << "<span class='userdanger'>[usr] stares at you. You feel your head begin to pulse.</span>"
 
+		if (target.dna.species.id == "plant")
+			//ugh this is the hackiest fix ever but who cares
+			target.reagents.add_reagent("salbutamol", 25)
+			target.reagents.add_reagent("charcoal", 25)
+			usr << "<span class='danger'>You watch as [target]'s foilage begins to wilt under your influence. You drive a thorned lance into their neck, injecting them with a slew of preserving chemicals. They must survive the process.</span>"
+			target << "<span class='userdanger'>Held rapt by [usr]'s fell gaze, you are unable to react as they strike out at your neck with a barbed lance, sending a soothing sensation throughout your wilting leaves.</span>"
+
 		for(var/progress = 0, progress <= 3, progress++)
 			switch(progress)
 				if(1)
@@ -234,6 +241,8 @@
 					usr << "<span class='notice'>You begin rearranging [target]'s memories.</span>"
 					usr.visible_message("<span class='danger'>[usr]'s eyes flare brightly.</span>")
 					target << "<span class='boldannounce'>Your head cries out. The veil of reality begins to crumple and something evil bleeds through.</span>" //Ow the edge
+					if (target.dna.species.id == "plant")
+						target << "<span class='boldannounce'>Primeval memories suddenly surge throughout your consciousness. The Other, the kind of your own shunned by the light of the binary stars. This creature is one of them.</span>"
 			if(!do_mob(usr, target, 100)) //around 30 seconds total for enthralling, 45 for someone with a loyalty implant
 				usr << "<span class='warning'>The enthralling has been interrupted - your target's mind returns to its previous state.</span>"
 				target << "<span class='userdanger'>A spike of pain drives into your head, wiping your memory. You aren't sure what's happened, but you feel a faint sense of revulsion.</span>"
@@ -244,6 +253,8 @@
 		usr << "<span class='shadowling'>You have enthralled <b>[target]</b>!</span>"
 		target.visible_message("<span class='big'>[target] looks to have experienced a revelation!</span>", \
 							   "<span class='warning'>False faces all d<b>ark not real not real not--</b></span>")
+		if (target.dna.species.id == "plant")
+			target << "<span class='boldannounce'>You suddenly understand. This is the natural order of things. The light must be shunned. Your insides shift and twist as the influence of the Other takes effect. Darkness is no longer lethal to you.</span>"
 		target.setOxyLoss(0) //In case the shadowling was choking them out
 		ticker.mode.add_thrall(target.mind)
 		target.mind.special_role = "thrall"

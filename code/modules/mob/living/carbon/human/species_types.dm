@@ -221,6 +221,24 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 /datum/species/plant/spec_life(mob/living/carbon/human/H)
 	if(isturf(H.loc)) //else, there's considered to be no light
 		var/turf/T = H.loc
+		var/area/A = H.loc.loc
+
+		if (H.mind)
+			if (H.mind.special_role == "thrall")
+				//thralled phytosians have their natural regeneration massively stunted, but their weakness to darkness removed
+				if (H.stat != UNCONSCIOUS && H.stat != DEAD)
+					H.adjustToxLoss(-0.1)
+					H.adjustOxyLoss(-0.1)
+					H.heal_overall_damage(0.2, 0.2)
+					return
+
+		if (istype(A, /area/shuttle) || istype(A, /area/syndicate_mothership) || istype(A, /area/centcom))
+			//assess first if they're in a problematic area with dodgy lumcount variables, which all of these areas are
+			H.nutrition += 0.45
+			if(H.nutrition > NUTRITION_LEVEL_FULL)
+				H.nutrition = NUTRITION_LEVEL_FULL
+			return
+
 		if (T.lighting_lumcount)
 			switch (T.lighting_lumcount)
 				if (0.1 to 3)
