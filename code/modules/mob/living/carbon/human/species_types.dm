@@ -181,6 +181,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	miss_sound = 'sound/weapons/slashmiss.ogg'
 	burnmod = 1.5
 	heatmod = 1.5
+	coldmod = 1.5
 	roundstart = 1
 	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/plant
 
