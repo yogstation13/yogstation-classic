@@ -232,13 +232,6 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 					H.heal_overall_damage(0.2, 0.2)
 					return
 
-		if (istype(A, /area/shuttle) || istype(A, /area/syndicate_mothership) || istype(A, /area/centcom))
-			//assess first if they're in a problematic area with dodgy lumcount variables, which all of these areas are
-			H.nutrition += 0.45
-			if(H.nutrition > NUTRITION_LEVEL_FULL)
-				H.nutrition = NUTRITION_LEVEL_FULL
-			return
-
 		if (T.lighting_lumcount)
 			switch (T.lighting_lumcount)
 				if (0.1 to 3)
@@ -269,10 +262,13 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 					if (H.stat != UNCONSCIOUS && H.stat != DEAD)
 						H.adjustToxLoss(-1)
 						H.adjustOxyLoss(-0.5)
-						H.heal_overall_damage(1, 1)
-
-			if(H.nutrition > NUTRITION_LEVEL_FULL)
-				H.nutrition = NUTRITION_LEVEL_FULL
+						H.heal_overall_damage(1.5, 1.5)
+		else if(T.loc.luminosity == 1 || A.lighting_use_dynamic == 0)
+			H.nutrition += 1.4
+			if (H.stat != UNCONSCIOUS && H.stat != DEAD)
+				H.adjustToxLoss(-1)
+				H.adjustOxyLoss(-0.5)
+				H.heal_overall_damage(1.5, 1.5)
 		else
 			//no light, this is baaaaaad
 			H.nutrition -= 3
@@ -286,7 +282,10 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 		if (prob(3))
 			H << "<span class='warning'>There's not enough light reaching you in here. You start to feel very claustrophobic as your energy begins to drain away.</span>"
 			H.adjustOxyLoss(9)
+			H.adjustToxLoss(3)
 
+	if(H.nutrition > NUTRITION_LEVEL_FULL)
+		H.nutrition = NUTRITION_LEVEL_FULL
 
 	if(H.nutrition < NUTRITION_LEVEL_STARVING + 50)
 		if (H.stat != UNCONSCIOUS && H.stat != DEAD)
