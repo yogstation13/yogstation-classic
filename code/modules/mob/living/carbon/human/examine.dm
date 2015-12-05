@@ -218,18 +218,18 @@
 					if ("pressure")
 						msg += "[t_His] [t_surface] is wrinkled and swollen beneath the surface.\n"
 					if ("bullet")
-						msg += "[t_His] [t_surface] yields to a smattering of small bullet-holes, the [t_surface] around the wounds bruised.\n"
+						msg += "[t_His] [t_surface] yields to a smattering of small bullet-holes, the area around the wounds bruised.\n"
 			else
 				msg += "[t_He] [t_has] a number of minor wounds.\n"
 		else
 			if (lastbrutetype)
 				switch (lastbrutetype)
 					if ("melee")
-						msg += "<B>[t_He] [t_has] dozens of open cuts and gashes, severely wounded.</B>\n"
+						msg += "<B>[t_He] [t_has] dozens of open cuts, gashes and bruises, some severe.</B>\n"
 					if ("pressure")
-						msg += "<B>[t_His] [t_surface] is severely swollen and bloated, some sections splitting open and bearing great blackened bruises.</B>\n"
+						msg += "<B>[t_His] [t_surface] is severely swollen and bloated, bearing great blackened bruises.</B>\n"
 					if ("bullet")
-						msg += "<B>[t_His] body is devastated by numerous bullet wounds, bleeding profusely and badly bruised./B>\n"
+						msg += "<B>[t_His] body is devastated by numerous bullet wounds.</B>\n"
 			else
 				msg += "<B>[t_He] [t_has] several severe wounds!</B>\n"
 
@@ -254,9 +254,9 @@
 					if ("electric")
 						msg += "<B>[t_He] [t_has] a number of extremely severe burns with distinctive arc-like patterning, [t_his] [t_surface] burnt away and smoking in places.</B>\n"
 					if ("laser")
-						msg += "<B>[t_He] [t_has] an assortment of half-cauterized blisters, severely burned.</B>\n"
+						msg += "<B>[t_He] [t_has] an assortment of half-cauterized bullseye blisters, the [t_surface] charred and blackened.</B>\n"
 					if ("coldburn")
-						msg += "<B>[t_His] [t_surface] is turgid and badly blistered, exposed fluids covered in ice crystals.</B>\n"
+						msg += "<B>[t_His] [t_surface] is turgid and blistered, exposed fluids covered in ice crystals.</B>\n"
 					if ("hotburn")
 						msg += "<B>[t_His] [t_surface] is severely burned and sloughing off in places.</B>\n"
 			else
@@ -272,7 +272,7 @@
 	temp = getOxyLoss()
 	if (temp)
 		if (temp < 35)
-			msg += "[t_His] skin is bluish in hue, and [t_his] chest is not moving.\n"
+			msg += "[t_His] skin is bluish in hue.\n"
 		else
 			msg += "<B>[t_His] skin is of a deep blue colour, their mouth open in an agonal gasp.</B>\n"
 
