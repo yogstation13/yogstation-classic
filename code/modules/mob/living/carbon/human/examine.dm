@@ -11,6 +11,7 @@
 	var/t_him = "it"
 	var/t_has = "has"
 	var/t_is = "is"
+	var/t_is2 = "is"
 	var/t_His = "Its"
 
 	var/t_surface = "skin"
@@ -21,8 +22,10 @@
 		switch (dna.species.id)
 			if ("lizard")
 				t_surface = "scales"
+				t_is2 = "are"
 			if ("plant")
 				t_surface = "leaves"
+				t_is2 = "are"
 
 	if( slot_w_uniform in obscured && skipface ) //big suits/masks/helmets make it hard to tell their gender
 		t_He = "They"
@@ -214,22 +217,22 @@
 			if (lastbrutetype)
 				switch (lastbrutetype)
 					if ("melee")
-						msg += "[t_He] [t_has] a number of minor cuts, scratches and bruises all over [t_his] body.\n"
+						msg += "[t_He] [t_has] a number of minor wounds.\n"
 					if ("pressure")
-						msg += "[t_His] [t_surface] is wrinkled and swollen beneath the surface.\n"
+						msg += "[t_His] [t_surface] [t_is2] slightly swollen and cracked.\n"
 					if ("bullet")
-						msg += "[t_His] [t_surface] yields to a smattering of small bullet-holes, the area around the wounds bruised.\n"
+						msg += "[t_He] [t_has] a few bullet grazes upon their outer limbs.\n"
 			else
 				msg += "[t_He] [t_has] a number of minor wounds.\n"
 		else
 			if (lastbrutetype)
 				switch (lastbrutetype)
 					if ("melee")
-						msg += "<B>[t_He] [t_has] dozens of open cuts, gashes and bruises, some severe.</B>\n"
+						msg += "<B>[t_He] [t_has] many open cuts, gashes and bruises!</B>\n"
 					if ("pressure")
-						msg += "<B>[t_His] [t_surface] is severely swollen and bloated, bearing great blackened bruises.</B>\n"
+						msg += "<B>[t_His] [t_surface] [t_is2] severely swollen and bloated!</B>\n"
 					if ("bullet")
-						msg += "<B>[t_His] body is devastated by numerous bullet wounds.</B>\n"
+						msg += "<B>[t_His] body is devastated by multiple bullet wounds!</B>\n"
 			else
 				msg += "<B>[t_He] [t_has] several severe wounds!</B>\n"
 
@@ -239,26 +242,26 @@
 			if (lastburntype)
 				switch (lastburntype)
 					if ("electric")
-						msg += "[t_He] [t_is] slightly charred in places, hair somewhat frazzled.\n"
+						msg += "[t_He] [t_is] slightly charred in places.\n"
 					if ("laser")
 						msg += "[t_He] [t_has] several pockmarked blisters.\n"
 					if ("coldburn")
-						msg += "[t_He] [t_is] covered in a faint rime of frost, reddened [t_surface] beneath.\n"
+						msg += "[t_He] [t_is] covered in a faint coating of frost.\n"
 					if ("hotburn")
-						msg += "[t_He] [t_has] patches of reddened [t_surface], slightly burnt in places.\n"
+						msg += "[t_He] [t_has] patches of red burns.\n"
 			else
 				msg += "[t_He] [t_has] minor burns.\n"
 		else
 			if (lastburntype)
 				switch (lastburntype)
 					if ("electric")
-						msg += "<B>[t_He] [t_has] a number of extremely severe burns with distinctive arc-like patterning, [t_his] [t_surface] burnt away and smoking in places.</B>\n"
+						msg += "<B>[t_His] [t_surface] [t_is2] charred and smoking, arc-like patterns clearly visible!</B>\n"
 					if ("laser")
-						msg += "<B>[t_He] [t_has] an assortment of half-cauterized bullseye blisters, the [t_surface] charred and blackened.</B>\n"
+						msg += "<B>[t_He] [t_has] several extremely severe blistered burns!</B>\n"
 					if ("coldburn")
-						msg += "<B>[t_His] [t_surface] is turgid and blistered, exposed fluids covered in ice crystals.</B>\n"
+						msg += "<B>[t_His] [t_surface] [t_is2] badly frostbitten, cracking away in places!</B>\n"
 					if ("hotburn")
-						msg += "<B>[t_His] [t_surface] is severely burned and sloughing off in places.</B>\n"
+						msg += "<B>[t_His] [t_surface] [t_is2] severely burned and sloughing off with the slightest movement!</B>\n"
 			else
 				msg += "<B>[t_He] [t_has] severe burns!</B>\n"
 
@@ -272,9 +275,9 @@
 	temp = getOxyLoss()
 	if (temp)
 		if (temp < 35)
-			msg += "[t_His] skin is bluish in hue.\n"
+			msg += "[t_His] [t_surface] and lips are bluish in colour.\n"
 		else
-			msg += "<B>[t_His] skin is of a deep blue colour, their mouth open in an agonal gasp.</B>\n"
+			msg += "<B>[t_His] [t_surface] [t_is2] of a deep blue colour, mouth open in an desperate gasp for air!</B>\n"
 
 
 
@@ -304,14 +307,14 @@
 		msg += "[t_He] [t_is] bandaged with something.\n"
 	else if(blood_max)
 		switch (blood_max)
-			if (0.5 to 1)
-				msg += "[t_He] [t_is] is slightly bloodied, bleeding from some wounds.\n"
+			if (0.05 to 1)
+				msg += "[t_He] [t_is] bleeding very slightly.\n"
 			if (1.5 to 3)
-				msg += "<B>[t_He] [t_is] is bleeding profusely from a great gash.</B>\n"
+				msg += "<B>[t_He] [t_is] bleeding significantly!</B>\n"
 			if (4 to 6)
-				msg += "<B>[t_He] [t_is] is bleeding terribly from a number of wounds.</B>\n"
+				msg += "<B>[t_He] [t_is] bleeding severely!</B>\n"
 			if (6 to INFINITY)
-				msg += "<B>Blood streams in constant rivulets from several gaping, severe wounds upon [t_his] body.</B>\n"
+				msg += "<B>[t_He] [t_is] bleeding out quickly!</B>\n"
 
 	msg += "</span>"
 
