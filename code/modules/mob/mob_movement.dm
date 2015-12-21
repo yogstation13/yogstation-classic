@@ -198,6 +198,10 @@
 			var/tickcomp = (1 / (world.tick_lag)) * 1.3
 			move_delay = move_delay + tickcomp
 
+		if(mob.shadow_walk)
+			if (Process_ShadowWalk(direct))
+				return
+
 		//We are now going to move
 		moving = 1
 		//Something with pulling things
@@ -243,6 +247,35 @@
 
 		return .
 
+/client/proc/Process_ShadowWalk(direct)
+	var/turf/target = get_step(mob, direct)
+	var/turf/mobloc = get_turf(mob)
+
+	if (istype(mob.pulling))
+		var/doPull = 1
+		if (mob.pulling.anchored)
+			mob.stop_pulling()
+			doPull = 0
+		if (mob.pulling == mob.loc && mob.pulling.density)
+			mob.stop_pulling()
+			doPull = 0
+		if (istype(mob.pulling, /mob/))
+			var/mob/M = mob.pulling
+
+			M.stop_pulling()
+			if (M.buckled)
+				mob.stop_pulling()
+				doPull = 0
+		if (doPull)
+			var/turf/pullloc = get_turf(mob.pulling)
+
+			if(mobloc.lighting_lumcount==null || mobloc.lighting_lumcount <= 0.3 || pullloc.lighting_lumcount==null || pullloc.lighting_lumcount <= 0.3 || target.lighting_lumcount==null || target.lighting_lumcount <= 0.3)
+				mob.pulling.loc = mob.loc
+
+	if (target.lighting_lumcount==null || target.lighting_lumcount <= 0.3)
+		mob.loc = target
+		mob.dir = direct
+		return 0;
 
 ///Process_Grab()
 ///Called by client/Move()

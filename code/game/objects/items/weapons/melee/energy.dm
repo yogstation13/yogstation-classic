@@ -6,6 +6,7 @@
 	var/list/attack_verb_on = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	w_class = 2
 	var/w_class_on = 4
+	var/blockchance = 1 // This is a funny variable that I don't feel like explaining in one comment.
 
 /obj/item/weapon/melee/energy/suicide_act(mob/user)
 	user.visible_message(pick("<span class='suicide'>[user] is slitting \his stomach open with the [src.name]! It looks like \he's trying to commit seppuku.</span>", \
@@ -58,6 +59,28 @@
 	if(active)
 		return 1
 	return 0
+
+/obj/item/weapon/melee/energy/sword/attack(mob/vict, mob/usr)
+	if (istype(vict, /mob/living/carbon))
+		var/blockable = 0
+		var/blockitem = null
+		if (istype(vict.get_active_hand(), /obj/item/weapon/melee/energy))
+			var/obj/item/weapon/melee/energy/blocktool = vict.get_active_hand()
+			if (blocktool.active)
+				blockable = blockable + blockchance
+				blockitem = blocktool
+		if(istype(vict.get_inactive_hand(), /obj/item/weapon/melee/energy))
+			var/obj/item/weapon/melee/energy/blocktool = vict.get_inactive_hand()
+			if (blocktool.active)
+				blockable = blockable + blockchance * 0.75
+				if (blockitem==null || rand(1, 3)<=1)
+					blockitem = vict.get_inactive_hand()
+
+		if ((rand(0, blockable*100)/100)>0.5)
+			vict.visible_message("<span class='warning'>[vict] expertly blocks [src] with [blockitem]!</span>", "<span class='notice'>You block [src] with [blockitem] with amazing skill!</span>")
+			playsound(vict, 'sound/weapons/blade1.ogg', 35, 1)
+			return 0
+	..()
 
 /obj/item/weapon/melee/energy/attack_self(mob/living/carbon/user)
 	if(user.disabilities & CLUMSY && prob(50))

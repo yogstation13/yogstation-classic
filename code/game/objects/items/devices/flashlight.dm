@@ -11,6 +11,7 @@
 	action_button_name = "Toggle Light"
 	var/on = 0
 	var/brightness_on = 4 //luminosity when on
+	var/broken = 0
 
 /obj/item/device/flashlight/initialize()
 	..()
@@ -40,6 +41,9 @@
 		user << "<span class='warning'>You cannot turn the light on while in this [user.loc]!</span>" //To prevent some lighting anomalities.
 		return 0
 	on = !on
+	if (broken)
+		on = 0
+		user << "<spawn class='warning'>The [src] refuses to turn on!</span>"
 	update_brightness(user)
 	return 1
 

@@ -154,3 +154,6 @@
 	var/permanent_sight_flags = 0
 
 	var/resize = 1 //Badminnery resize
+
+	//Spooky shadow walking. For Spooks.
+	var/shadow_walk = 0
