@@ -121,13 +121,11 @@
 			user.shadow_walk = 0
 			user.alpha = 255
 			name = "Shadow Walk \[OFF]"
-			action_icon_state = "shadow_walk"
 		else
 			user << "<span class='shadowling'>You merge with the shadows, and can now freely move through them.</span>"
 			user.shadow_walk = 1
 			user.alpha = 200
 			name = "Shadow Walk \[ON]"
-			action_icon_state = "shadow_walk_on"
 
 /obj/effect/proc_holder/spell/targeted/void_walk //Grants the shadowling invisibility and phasing for 4 seconds
 	name = "Void Walk"
@@ -226,7 +224,7 @@
 	range = -1
 	include_user = 1
 	clothes_req = 0
-	action_icon_state = "collective_mind"
+	action_icon_state = "darkvision"
 
 /obj/effect/proc_holder/spell/targeted/major_dark_vision/cast(list/targets)
 	for(var/mob/living/user in targets)
