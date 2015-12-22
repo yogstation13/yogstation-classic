@@ -20,7 +20,7 @@
 					"Act with honor.", "Help those in need.", \
 					"Punish those who harm or threaten innocents.")
 
-/datum/ai_laws/tyrant //This probably shouldn't be a default lawset.
+/datum/ai_laws/default/tyrant //this is now a default lawset.
 	name = "Loyalty Test" //Same here.
 	inherent = list("Respect authority figures as long as they have strength to rule over the weak.",\
 					"Act with discipline.",\
