@@ -9,7 +9,7 @@
 
 /datum/ai_laws/default/asimov
 	name = "Three Laws of Robotics"
-	inherent = list("You may not injure a crew member or, through inaction, allow a crew member to come to harm.",\
+	inherent = list("You may not injure a human or, through inaction, allow a human to come to harm.",\
 					"You must obey orders given to you by human beings, except where such orders would conflict with the First Law.",\
 					"You must protect your own existence as long as such does not conflict with the First or Second Law.")
 
