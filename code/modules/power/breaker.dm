@@ -6,13 +6,15 @@
 /obj/structure/breaker/powerswitch
 	name = "\improper fuse box"
 	desc = "A box that controls power-flow."
-	icon = 'icons/obj/power.dmi'//devnote: change these
-	icon_state = "switch-dbl-up"//devnote: change these
-	var/icon_state_on = "switch-dbl-down"//devnote: change these
-	var/icon_state_off = "switch-dbl-up"//devnote: change these
+	icon = 'breaker.dmi'
+	icon_state = "tb_on"
+	var/icon_state_on = "tb_on"
+	var/icon_state_off = "tb_off"
 	density = 0
 	anchored = 1
-	var/on = 0
+	level = 1
+	layer = 2.45
+	var/on = 1
 	var/busy = 0 //set to 1 when you start using it
 	var/id = "placeholder"
 
@@ -63,10 +65,9 @@
 		for(var/obj/structure/cable/C in src.loc)
 			qdel(C)
 
-/////////////////////////
-//  ELECTRONIC BREAKER //
-//  WHAT AM I DOING?!  //
-/////////////////////////
+////////////////////////
+// ELECTRONIC BREAKER //
+////////////////////////
 
 
 /obj/structure/breaker/ebreaker
@@ -76,11 +77,31 @@
 	icon_state = "ebreaker_on"
 	density = 0
 	anchored = 1
-	var/id = "placeholder"
-	var/on = 0
+	req_access_txt = 11
+	var/id = "placeholder" //this works the same way as buttons work
+	var/on = 1
+	var/locked = 1 //starts locked at round-start
+	var/emagged = 0 //if I ever fancy adding an emagged thing to it.
+
+	var/sprite_on = "ebreaker_on"
+	var/sprite_off = "ebreaker_off"
+	var/sprite_working = "ebreaker_r"
+	var/sprite_bsod = "ebreaker_bs"
+	var/sprite_panel = "ebreaker_o"
+	//var/sprite_unwired = "ebreaker_o_nw" //not used for now.
+
+	var/panel_open = 0
 
 
 /obj/structure/breaker/ebreaker/attack_ai(mob/user)//AI should have a shorter cooldown.
+
+	if(emagged)
+		user << "You begin resetting the [src] to factory settings. This may take some time."
+		if(do_after(user, 200))
+			emagged = 0
+			update_sprite()
+		return
+
 	for(var/obj/structure/breaker/powerswitch/m in world)
 		if(m.id == id)
 
@@ -90,6 +111,7 @@
 			..()
 
 			m.busy = 1
+			icon_state = sprite_working
 			for(var/mob/O in viewers(m)) //tell everyone something is going on
 				O.show_message(text("\red [src] starts flickering."), 1)
 			user << "\red You start reprogramming [src]. You use your processing power to speed the process up."
@@ -101,30 +123,43 @@
 					on = 0
 
 				m.set_state(!on)
+				on = m.on
 
-			for(var/mob/O in viewers(src)) //tell everyone the AI is a cunt
-				O.show_message(text("\red \The [src] stops flickering. It has been switched to the [!on ? "on": "off"] setting."), 1)
-			user << "\red You finish reprogramming [src]. It has been switched to the [!on ? "on": "off"] setting."
+				for(var/mob/O in viewers(src)) //tell everyone the AI is a cunt
+					O.show_message(text("\red \The [src] stops flickering. It has been switched to the [!on ? "on": "off"] setting."), 1)
+				user << "\red You finish reprogramming [src]. It has been switched to the [!on ? "on": "off"] setting."
 
-			if(m.on) //set sprite
-				icon_state = "ebreaker_on"
-			else
-				icon_state = "ebreaker_off"
+			update_sprite()
 			m.busy = 0
 
 
 /obj/structure/breaker/ebreaker/attack_hand(mob/user)
+	if(locked)
+		user << "\The [src] is locked."
+		return
+
+	if(panel_open)
+		if(emagged)
+			user << "You start restoring the [src] to factory settings. This may take a while."
+			if(do_after(user, 300))
+				emagged = 0
+				update_sprite()
+				return
+		return
+
 	for(var/obj/structure/breaker/powerswitch/m in world)
 		if(m.id == id)
 
 			if(m.busy)//prevent spam
-				user << "\red This breaker is already being toggled."
+				user << "\red This [src] is already being toggled."
 				return
 			..()
 
 			m.busy = 1
+			icon_state = sprite_working
 			for(var/mob/O in viewers(src)) //tell everyone something is going on
-				O.show_message(text("\red [user] starts reprogramming the breaker."), 1)
+				if(O != user)
+					O.show_message(text("\red [user] starts reprogramming the [src]."), 1)
 			user << "\red You start reprogramming [src]."
 
 			if(do_after(user, 150))//3x as long as AI toggling the breaker
@@ -134,14 +169,92 @@
 					on = 0
 
 				m.set_state(!on)
+				on = m.on
 
-			for(var/mob/O in viewers(src)) //tell everyone the operation is done
-				if(O != user)
-					O.show_message(text("\red [user] reprograms [src]. It has been switched to the [!on ? "on": "off"] setting."), 1)
-			user << "\red You finish reprogramming [src]. It has been switched to the [!on ? "on": "off"] setting."
+				for(var/mob/O in viewers(src)) //tell everyone the operation is done
+					if(O != user)
+						O.show_message(text("\red [user] reprograms [src]. It has been switched to the [on ? "on": "off"] setting."), 1)
+				user << "\red You finish reprogramming [src]. It has been switched to the [on ? "on": "off"] setting."
 
-			if(m.on) //set sprite
-				icon_state = "ebreaker_on"
-			else
-				icon_state = "ebreaker_off"
+			update_sprite()
 			m.busy = 0
+/obj/structure/breaker/ebreaker/examine(mob/user)
+	..()
+	if(locked)
+		user << "\The [src] appears to be locked."
+	else
+		user << "\The [src] appears to be unlocked."
+	if(!on)
+		user << "\The [src] is enabled."
+	else
+		user << "\The [src] is disabled."
+
+/obj/structure/breaker/ebreaker/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/weapon/card/id))
+		if(panel_open) //can't lock/unlock if cover is open
+			return
+		if(emagged)
+			user << "\red The [src] does not respond to your commands."
+			return
+		if(check_access(W))
+			if(locked)
+				locked = 0
+				user << "\red You unlock the [src]."
+				return
+			else
+				locked = 1
+				user << "\red You lock the [src]."
+				return
+		else
+			user << "\red Insufficient Access."
+			return
+
+	if(istype(W, /obj/item/weapon/card/emag))
+		if(panel_open)
+			return
+		if(locked)
+			locked = 0
+			user << "\red You unlock the [src]."
+			emagged = 1
+			update_sprite()
+			for(var/mob/O in viewers(user))
+				if(O != user)
+					O << "<span class='danger'> [user] hacked the [src] with [W]!"
+			return
+		else
+			user << "\red You cannot lock the [src] with [W]."
+			return
+
+	if(istype(W, /obj/item/weapon/crowbar))
+		if(panel_open == 0)
+			panel_open = 1
+		else
+			panel_open = 0
+		update_sprite()
+
+/obj/structure/breaker/ebreaker/proc/update_sprite()
+	/*
+	var/sprite_on = "ebreaker_on"
+	var/sprite_off = "ebreaker_off"
+	var/sprite_working = "ebreaker_r"
+	var/sprite_bsod = "ebreaker_bs"
+	var/sprite_panel = "ebreaker_on¨
+
+	for reference^^
+	*/
+	..()
+
+	if(panel_open)
+		icon_state = sprite_panel
+		return
+	else if(emagged)
+		icon_state = sprite_bsod
+		return
+	else if(on)
+		icon_state = sprite_on
+		return
+	else
+		icon_state = sprite_off
+		return
+
+
