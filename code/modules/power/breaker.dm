@@ -92,7 +92,6 @@
 
 	var/panel_open = 0
 
-
 /obj/structure/breaker/ebreaker/attack_ai(mob/user)//AI should have a shorter cooldown.
 
 	if(emagged)
@@ -100,6 +99,7 @@
 		if(do_after(user, 200))
 			emagged = 0
 			update_sprite()
+			user << "You finish restoring [src] to factory settings."
 		return
 
 	for(var/obj/structure/breaker/powerswitch/m in world)
@@ -117,11 +117,7 @@
 			user << "\red You start reprogramming [src]. You use your processing power to speed the process up."
 
 			if(do_after(user, 50))//do the stuff
-				if(m.on == 1)
-					on = 1
-				else
-					on = 0
-
+				on = m.on
 				m.set_state(!on)
 				on = m.on
 
@@ -140,10 +136,11 @@
 
 	if(panel_open)
 		if(emagged)
-			user << "You start restoring the [src] to factory settings. This may take a while."
+			user << "You start restoring [src] to factory settings. This may take a while."
 			if(do_after(user, 300))
 				emagged = 0
 				update_sprite()
+				user << "You finish restoring [src] to factory settings."
 				return
 		return
 
@@ -163,11 +160,7 @@
 			user << "\red You start reprogramming [src]."
 
 			if(do_after(user, 150))//3x as long as AI toggling the breaker
-				if(m.on == 1)
-					on = 1
-				else
-					on = 0
-
+				on = m.on
 				m.set_state(!on)
 				on = m.on
 
@@ -178,23 +171,24 @@
 
 			update_sprite()
 			m.busy = 0
+
 /obj/structure/breaker/ebreaker/examine(mob/user)
 	..()
 	if(locked)
 		user << "\The [src] appears to be locked."
 	else
 		user << "\The [src] appears to be unlocked."
-	if(!on)
-		user << "\The [src] is enabled."
+	if(on)
+		user << "\The [src] is flowing power freely."
 	else
-		user << "\The [src] is disabled."
+		user << "Power-flow is cut off."
 
 /obj/structure/breaker/ebreaker/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/weapon/card/id))
 		if(panel_open) //can't lock/unlock if cover is open
 			return
 		if(emagged)
-			user << "\red The [src] does not respond to your commands."
+			user << "\red \The [src] does not respond to your commands."
 			return
 		if(check_access(W))
 			if(locked)
@@ -219,13 +213,16 @@
 			update_sprite()
 			for(var/mob/O in viewers(user))
 				if(O != user)
-					O << "<span class='danger'> [user] hacked the [src] with [W]!"
+					O << "<span class='danger'> [user] hacked [src] with [W]!"
 			return
 		else
-			user << "\red You cannot lock the [src] with [W]."
+			user << "\red You cannot lock [src] with [W]."
 			return
 
 	if(istype(W, /obj/item/weapon/crowbar))
+		if(locked)
+			user << "\red The cover does not come off."
+			return
 		if(panel_open == 0)
 			panel_open = 1
 		else
@@ -256,5 +253,3 @@
 	else
 		icon_state = sprite_off
 		return
-
-
