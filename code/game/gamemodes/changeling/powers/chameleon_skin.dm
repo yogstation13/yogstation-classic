@@ -10,6 +10,10 @@
 
 
 /obj/effect/proc_holder/changeling/chameleon_skin/sting_action(mob/user)
+	//whichever dumbfuck thought this was a good idea forgot the fact that
+	//CHANGING A MOB'S DNA HAPPENS VIA TRANSFORM SO GIVING MUTATIONS WHICH APPLY STATIC EFFECTS
+	//AND THEN PROVIDING A MEANS TO HARD SWAP DNA WITHOUT REVERSING THESE EFFECTS
+	//MEANS DUMB SHIT HAPPENS
 	var/mob/living/carbon/human/H = user //SHOULD always be human, because req_human = 1
 	if(!istype(H))
 		return
