@@ -496,6 +496,10 @@
 		return
 	..()
 
+/mob/living/simple_animal/pet/dog/corgi/puppy/Yappers
+	name = "Yappers"
+	desc = "It's yappers, the Corgi of the gods!"
+
 
 //LISA! SQUEEEEEEEEE~
 /mob/living/simple_animal/pet/dog/corgi/Lisa
