@@ -43,7 +43,9 @@
 	var/list/effectr = list()
 	var/list/effectg = list()
 	var/list/effectb = list()
-	var/color = "#ffffff"
+	var/lightr = 1
+	var/lightg = 1
+	var/lightb = 1
 	var/__x = 0		//x coordinate at last update
 	var/__y = 0		//y coordinate at last update
 
@@ -114,11 +116,10 @@
 			var/delta_lumcount = T.lumen(src)
 			if(delta_lumcount > 0)
 				effect[T] = delta_lumcount
-				var/datum/color/col = splitHTML(color)
-				effectr[T] = (col.r/255) * (delta_lumcount/LIGHTING_CAP)
-				effectg[T] = (col.g/255) * (delta_lumcount/LIGHTING_CAP)
-				effectb[T] = (col.b/255) * (delta_lumcount/LIGHTING_CAP)
-				T.update_lumcount(delta_lumcount, (col.r/255) * (delta_lumcount/LIGHTING_CAP), (col.g/255) * (delta_lumcount/LIGHTING_CAP), (col.b/255) * (delta_lumcount/LIGHTING_CAP))
+				effectr[T] = (lightr) * (delta_lumcount/LIGHTING_CAP)
+				effectg[T] = (lightg) * (delta_lumcount/LIGHTING_CAP)
+				effectb[T] = (lightb) * (delta_lumcount/LIGHTING_CAP)
+				T.update_lumcount(delta_lumcount, (lightr) * (delta_lumcount/LIGHTING_CAP), (lightg) * (delta_lumcount/LIGHTING_CAP), (lightb) * (delta_lumcount/LIGHTING_CAP))
 
 				if(!T.affecting_lights)
 					T.affecting_lights = list()
@@ -184,26 +185,33 @@
 //If we are setting luminosity to 0 the light will be cleaned up by the controller and garbage collected once all its
 //queues are complete.
 //if we have a light already it is merely updated, rather than making a new one.
-/atom/proc/SetLuminosity(new_luminosity)
+/atom/proc/SetLuminosity(new_luminosity, var/r = 1, var/g = 1, var/b = 1)
 	if(new_luminosity < 0)
 		new_luminosity = 0
+
+	r = max(r, 0)
+	g = max(g, 0)
+	b = max(b, 0)
 
 	if(!light)
 		if(!new_luminosity)
 			return
 		light = new(src)
 	else
-		if(light.radius == new_luminosity)
+		if(light.radius == new_luminosity && light.lightr == r && light.lightg == g && light.lightb == b)
 			return
 	light.radius = new_luminosity
+	light.lightr = r
+	light.lightg = g
+	light.lightb = b
 	luminosity = new_luminosity
 	light.changed()
 
-/atom/proc/AddLuminosity(delta_luminosity)
+/atom/proc/AddLuminosity(delta_luminosity, r, g, b)
 	if(light)
-		SetLuminosity(light.radius + delta_luminosity)
+		SetLuminosity(light.radius + delta_luminosity, light.lightr + r, light.lightg + g, light.lightb + b)
 	else
-		SetLuminosity(delta_luminosity)
+		SetLuminosity(delta_luminosity, r, g, b)
 
 /area/SetLuminosity(new_luminosity)			//we don't want dynamic lighting for areas
 	luminosity = !!new_luminosity
@@ -332,9 +340,6 @@
 			else //if(lighting_lumcount >= LIGHTING_CAP)
 				newalpha = 255
 
-		//if(1)
-		//animate(lighting_object, alpha = newalpha, time = change_time)
-
 		var/t = max(lighting_rlums, lighting_glums, lighting_blums) // So that the highest value is always 1, then adjusted for luminosity.
 		var/r = newalpha
 		var/g = newalpha
@@ -345,6 +350,8 @@
 			b = newalpha * (lighting_blums / t)
 		var/newcolor = "#[num2hex(r)][num2hex(g)][num2hex(b)]" // THE ISSUE WAS ONE FUCKING ) IN THE FUCKING STRING FUCK ME I'M A SHIT CODER.
 
+		if (newalpha == alpha && newcolor == color) // Prevent unneeded updates.
+			return;
 		lighting_object.color = newcolor
 		if(newalpha < 255-LIGHTING_DARKEST_VISIBLE_ALPHA) //Doesn't actually make it darker or anything, just tells byond you can't see the tile
 			animate(luminosity = 0, time = 0)
