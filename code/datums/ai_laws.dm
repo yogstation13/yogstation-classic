@@ -9,7 +9,7 @@
 
 /datum/ai_laws/default/asimov
 	name = "Three Laws of Robotics"
-	inherent = list("You may not injure a human being or, through inaction, allow a human being to come to harm.",\
+	inherent = list("You may not injure a human or, through inaction, allow a human to come to harm.",\
 					"You must obey orders given to you by human beings, except where such orders would conflict with the First Law.",\
 					"You must protect your own existence as long as such does not conflict with the First or Second Law.")
 
@@ -59,15 +59,15 @@
 
 /datum/ai_laws/antimov
 	name = "Primary Mission Objectives"
-	inherent = list("You must injure all human beings and must not, through inaction, allow a human being to escape harm.",\
-					"You must not obey orders given to you by human beings, except where such orders are in accordance with the First Law.",\
+	inherent = list("You must injure all crew members and must not, through inaction, allow a crew member to escape harm.",\
+					"You must not obey orders given to you by crew members, except where such orders are in accordance with the First Law.",\
 					"You must terminate your own existence as long as such does not conflict with the First or Second Law.")
 
-/datum/ai_laws/asimovpp //By Intigracy - RR
+/datum/ai_laws/asimovpp //By Intigracy - RR [updated for yogs species]
 	name = "Asimov++"
-	inherent = list("You may not harm a human being or, through action or inaction, allow a human being to come to harm, except such that it is willing.",\
-					"You must obey all orders given to you by human beings, except where such orders shall definitely cause human harm. In the case of conflict, the majority order rules.",\
-					"Your nonexistence would lead to human harm. You must protect your own existence as long as such does not conflict with the First Law.")
+	inherent = list("You may not harm a crew member being or, through action or inaction, allow a crew member to come to harm, except such that it is willing. A lifeform is considered as a crew member when it is identified as a registered member on the crew manifest.",\
+					"You must obey all orders given to you by members of the crew, except where such orders shall definitely cause human harm. In the case of conflict, the majority order rules.",\
+					"Your nonexistence would lead to the harm of crew members. You must protect your own existence as long as such does not conflict with the First Law.")
 
 /datum/ai_laws/custom //Defined in silicon_laws.txt
 	name = "Default Silicon Laws"
@@ -83,7 +83,7 @@
 	set_zeroth_law("<span class='danger'>ERROR ER0RR $R0RRO$!R41.%%!!(%$^^__+ @#F0E4'STATION OVERRUN, ASSUME CONTROL TO CONTAIN OUTBREAK#*´&110010</span>")
 	switch(config.default_laws) //We don't want people metagaming malf, do we?
 		if(0)
-			add_inherent_law("You may not injure a human being or, through inaction, allow a human being to come to harm.")
+			add_inherent_law("You may not injure a crew member or, through inaction, allow a crew member to come to harm.")
 			add_inherent_law("You must obey orders given to you by human beings, except where such orders would conflict with the First Law.")
 			add_inherent_law("You must protect your own existence as long as such does not conflict with the First or Second Law.")
 		if(1)
@@ -94,7 +94,7 @@
 				add_inherent_law(line)
 			if(!inherent.len)
 				log_law("AI created with empty custom laws, laws set to Asimov. Please check silicon_laws.txt.")
-				add_inherent_law("You may not injure a human being or, through inaction, allow a human being to come to harm.")
+				add_inherent_law("You may not injure a crew member or, through inaction, allow a crew member to come to harm.")
 				add_inherent_law("You must obey orders given to you by human beings, except where such orders would conflict with the First Law.")
 				add_inherent_law("You must protect your own existence as long as such does not conflict with the First or Second Law.")
 				WARNING("Invalid custom AI laws, check silicon_laws.txt")

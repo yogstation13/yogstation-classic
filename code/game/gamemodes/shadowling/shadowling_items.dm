@@ -77,7 +77,7 @@
 	item_state = null
 	origin_tech = null
 	vision_flags = SEE_MOBS
-	darkness_view = 3
+	darkness_view = 8
 	invis_view = 2
 	flash_protect = -1
 	unacidable = 1

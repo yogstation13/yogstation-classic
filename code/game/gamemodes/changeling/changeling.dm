@@ -405,6 +405,14 @@ var/list/slot2type = list("head" = /obj/item/clothing/head/changeling, "wear_mas
 
 /proc/changeling_transform(var/mob/living/carbon/human/user, var/datum/changelingprofile/chosen_prof)
 	var/datum/dna/chosen_dna = chosen_prof.dna
+
+	//check for chameleon effect and revert it before the transform
+	if (user.dna && user.dna.mutations)
+		var/datum/mutation/human/HM = mutations_list[CHAMELEON]
+		if (HM in user.dna.mutations)
+			HM.force_lose(user)
+			user.alpha = 255 //just to be safe
+
 	user.real_name = chosen_prof.name
 	user.dna = chosen_dna
 	hardset_dna(user, null, null, null, null, chosen_dna.species.type, chosen_dna.features)

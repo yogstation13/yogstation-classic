@@ -59,6 +59,9 @@
 				I.visible_message("<span class='danger'>[I] dims slightly before scattering the shadows around it.</span>")
 				return F.brightness_on //Necessary because flashlights become 0-luminosity when held.  I don't make the rules of lightcode.
 			F.on = 0
+			F.broken = 1
+			spawn(100)
+				F.broken = 0
 			F.update_brightness()
 	else if(istype(I, /obj/item/device/pda))
 		var/obj/item/device/pda/P = I
@@ -96,8 +99,36 @@
 			borgie.update_headlamp(1)
 
 
-/obj/effect/proc_holder/spell/targeted/shadow_walk //Grants the shadowling invisibility and phasing for 4 seconds
-	name = "Shadow Walk"
+/obj/effect/proc_holder/spell/targeted/shadow_walk //Ability to walk through darkness like it's nothing but floor. Better then the old Shadow Walk.
+	name = "Shadow Walk \[OFF]"
+	desc = "Merges you with the shadows, letting you move freely though dark spaces."
+	panel = "Shadowling Abilities"
+	charge_max = 10
+	clothes_req = 0
+	range = -1
+	include_user = 1
+	action_icon_state = "shadow_walk"
+	sound = 'sound/effects/bamf.ogg'
+
+/obj/effect/proc_holder/spell/targeted/shadow_walk/cast(list/targets)
+	for(var/mob/living/user in targets)
+		if(!shadowling_check(usr))
+			charge_counter = charge_max
+			return
+		playMagSound()
+		if (user.shadow_walk)
+			user << "<span class='shadowling'>You split once more from the shadows, cemented in space.</span>"
+			user.shadow_walk = 0
+			user.alpha = 255
+			name = "Shadow Walk \[OFF]"
+		else
+			user << "<span class='shadowling'>You merge with the shadows, and can now freely move through them.</span>"
+			user.shadow_walk = 1
+			user.alpha = 200
+			name = "Shadow Walk \[ON]"
+
+/obj/effect/proc_holder/spell/targeted/void_walk //Grants the shadowling invisibility and phasing for 4 seconds
+	name = "Void Walk"
 	desc = "Phases you into the space between worlds for a short time, allowing movement through walls and invisbility."
 	panel = "Shadowling Abilities"
 	charge_max = 600
@@ -107,7 +138,7 @@
 	action_icon_state = "shadow_walk"
 	sound = 'sound/effects/bamf.ogg'
 
-/obj/effect/proc_holder/spell/targeted/shadow_walk/cast(list/targets)
+/obj/effect/proc_holder/spell/targeted/void_walk/cast(list/targets)
 	for(var/mob/living/user in targets)
 		if(!shadowling_check(usr))
 			charge_counter = charge_max
@@ -126,6 +157,7 @@
 		user.alpha = 255
 
 
+
 /obj/effect/proc_holder/spell/aoe_turf/flashfreeze //Stuns and freezes nearby people - a bit more effective than a changeling's cryosting
 	name = "Icy Veins"
 	desc = "Instantly freezes the blood of nearby people, stunning them and causing burn damage."
@@ -135,6 +167,28 @@
 	clothes_req = 0
 	action_icon_state = "icy_veins"
 	sound = 'sound/effects/ghost2.ogg'
+	var/whitelisted_lights = list(/obj/item/device/flashlight/flare)
+
+/obj/effect/proc_holder/spell/aoe_turf/flashfreeze/proc/extinguishItem(obj/item/I) //Does not darken items held by mobs due to mobs having separate luminosity, use extinguishMob() or write your own proc.
+	if(istype(I, /obj/item/device/flashlight))
+		var/obj/item/device/flashlight/F = I
+		if(F.on)
+			if(!is_type_in_list(I, whitelisted_lights))
+				return F.brightness_on //Necessary because flashlights become 0-luminosity when held.  I don't make the rules of lightcode.
+			F.visible_message("<span class='warning'>An icy wind kills [F]'s flame.</span>")
+			F.on = 0
+			F.broken = 1
+			spawn(100)
+				F.broken = 0
+			F.update_brightness()
+	I.SetLuminosity(0)
+	return I.luminosity
+
+/obj/effect/proc_holder/spell/aoe_turf/flashfreeze/proc/extinguishMob(mob/living/H)
+	var/blacklistLuminosity = 0
+	for(var/obj/item/F in H)
+		blacklistLuminosity += extinguishItem(F)
+	H.SetLuminosity(blacklistLuminosity) //I hate lightcode for making me do it this way
 
 /obj/effect/proc_holder/spell/aoe_turf/flashfreeze/cast(list/targets)
 	if(!shadowling_check(usr))
@@ -143,6 +197,10 @@
 	usr << "<span class='shadowling'>You freeze the nearby air.</span>"
 	playMagSound()
 	for(var/turf/T in targets)
+		for(var/obj/item/F in T.contents)
+			extinguishItem(F)
+		for(var/mob/living/H in T.contents)
+			extinguishMob(H)
 		for(var/mob/living/carbon/M in T.contents)
 			if(is_shadow_or_thrall(M))
 				if(M == usr) //No message for the user, of course
@@ -156,6 +214,31 @@
 				M.bodytemperature -= 200 //Extreme amount of initial cold
 			if(M.reagents)
 				M.reagents.add_reagent("frostoil", 15) //Half of a cryosting
+
+
+/obj/effect/proc_holder/spell/targeted/major_dark_vision //Toggleable night vision for thralls
+	name = "Darksight"
+	desc = "Toggles your night vision."
+	panel = "Thrall Abilities"
+	charge_max = 0
+	range = -1
+	include_user = 1
+	clothes_req = 0
+	action_icon_state = "darkvision"
+
+/obj/effect/proc_holder/spell/targeted/major_dark_vision/cast(list/targets)
+	for(var/mob/living/user in targets)
+		if(!istype(user) || !ishuman(user)) return
+		var/mob/living/carbon/human/H = user
+		if(istype(H.glasses, /obj/item/clothing/glasses/night/shadowling))
+			var/obj/item/clothing/glasses/night/shadowling/eyes = H.glasses
+			if (eyes.darkness_view == 0)
+				user << "<span class='notice'>You shift the nerves in your eyes, allowing you to see in the dark.</span>"
+				eyes.darkness_view = 8
+			else
+				user << "<span class='notice'>You return your vision to normal.</span>"
+				eyes.darkness_view = 0
+
 
 
 /obj/effect/proc_holder/spell/targeted/enthrall //Turns a target into the shadowling's slave. This overrides all previous loyalties
@@ -208,6 +291,13 @@
 		usr << "<span class='danger'>This target is valid. You begin the enthralling.</span>"
 		target << "<span class='userdanger'>[usr] stares at you. You feel your head begin to pulse.</span>"
 
+		if (target.dna.species.id == "plant")
+			//ugh this is the hackiest fix ever but who cares
+			target.reagents.add_reagent("salbutamol", 25)
+			target.reagents.add_reagent("charcoal", 25)
+			usr << "<span class='danger'>You watch as [target]'s foilage begins to wilt under your influence. You drive a thorned lance into their neck, injecting them with a slew of preserving chemicals. They must survive the process.</span>"
+			target << "<span class='userdanger'>Held rapt by [usr]'s fell gaze, you are unable to react as they strike out at your neck with a barbed lance, sending a soothing sensation throughout your wilting leaves.</span>"
+
 		for(var/progress = 0, progress <= 3, progress++)
 			switch(progress)
 				if(1)
@@ -234,6 +324,8 @@
 					usr << "<span class='notice'>You begin rearranging [target]'s memories.</span>"
 					usr.visible_message("<span class='danger'>[usr]'s eyes flare brightly.</span>")
 					target << "<span class='boldannounce'>Your head cries out. The veil of reality begins to crumple and something evil bleeds through.</span>" //Ow the edge
+					if (target.dna.species.id == "plant")
+						target << "<span class='boldannounce'>Primeval memories suddenly surge throughout your consciousness. The Other, the kind of your own shunned by the light of the binary stars. This creature is one of them.</span>"
 			if(!do_mob(usr, target, 100)) //around 30 seconds total for enthralling, 45 for someone with a loyalty implant
 				usr << "<span class='warning'>The enthralling has been interrupted - your target's mind returns to its previous state.</span>"
 				target << "<span class='userdanger'>A spike of pain drives into your head, wiping your memory. You aren't sure what's happened, but you feel a faint sense of revulsion.</span>"
@@ -244,6 +336,8 @@
 		usr << "<span class='shadowling'>You have enthralled <b>[target]</b>!</span>"
 		target.visible_message("<span class='big'>[target] looks to have experienced a revelation!</span>", \
 							   "<span class='warning'>False faces all d<b>ark not real not real not--</b></span>")
+		if (target.dna.species.id == "plant")
+			target << "<span class='boldannounce'>You suddenly understand. This is the natural order of things. The light must be shunned. Your insides shift and twist as the influence of the Other takes effect. Darkness is no longer lethal to you.</span>"
 		target.setOxyLoss(0) //In case the shadowling was choking them out
 		ticker.mode.add_thrall(target.mind)
 		target.mind.special_role = "thrall"

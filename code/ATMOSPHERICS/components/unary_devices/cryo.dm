@@ -14,6 +14,7 @@
 	state_open = 0
 	var/efficiency = 1
 	req_access = list(access_medical, access_genetics)
+	req_access_txt = "5;9"
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/New()
 	..()
@@ -78,19 +79,8 @@
 	updateDialog()
 	return 1
 
-/obj/machinery/atmospherics/components/unary/cryo_cell/check_access(obj/item/weapon/card/id/I)
-	if(istype(I, /obj/item/device/pda))
-		var/obj/item/device/pda/pda = I
-		I = pda.id
-	if(!istype(I) || !I.access) //not ID or no access
-		return 0
-	for(var/req in req_access)
-		if(!(req in I.access)) //doesn't have this access
-			return 0
-	return 1
-
 /obj/machinery/atmospherics/components/unary/cryo_cell/MouseDrop_T(mob/target, mob/user)
-	if(user.stat || user.lying || !Adjacent(user) || !target.Adjacent(user) || !iscarbon(target) || !is_authorized(user))
+	if(user.stat || user.lying || !Adjacent(user) || !target.Adjacent(user) || !iscarbon(target))
 		return
 	close_machine(target)
 
@@ -150,11 +140,13 @@
   */
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/proc/is_authorized(mob/user)
-	if (security_level >= 2)
+	/*if (security_level >= 2)
 		return 1
 	if (src.allowed(user))
-		return 1
-	return 0
+		return 1*/
+
+	//this is fucked on non-skeleton crew rounds for reasons i cant actually figure out, so whatever
+	return 1
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null)
 	if(user == occupant || user.stat || panel_open)

@@ -11,35 +11,42 @@
 	action_button_name = "Toggle Light"
 	var/on = 0
 	var/brightness_on = 4 //luminosity when on
+	var/broken = 0
+	var/lightcolor = "#ffffAA" // Mildly yellow, because reasons.
 
 /obj/item/device/flashlight/initialize()
 	..()
+	var/datum/color/col = splitHTML(lightcolor)
 	if(on)
 		icon_state = "[initial(icon_state)]-on"
-		SetLuminosity(brightness_on)
+		SetLuminosity(brightness_on, col.r/255, col.g/255, col.b/255)
 	else
 		icon_state = initial(icon_state)
 		SetLuminosity(0)
 
 /obj/item/device/flashlight/proc/update_brightness(mob/user = null)
+	var/datum/color/col = splitHTML(lightcolor)
 	if(on)
 		icon_state = "[initial(icon_state)]-on"
 		if(loc == user)
-			user.AddLuminosity(brightness_on)
+			user.AddLuminosity(brightness_on, col.r/255, col.g/255, col.b/255)
 		else if(isturf(loc))
-			SetLuminosity(brightness_on)
+			SetLuminosity(brightness_on, col.r/255, col.g/255, col.b/255)
 	else
 		icon_state = initial(icon_state)
 		if(loc == user)
-			user.AddLuminosity(-brightness_on)
+			user.AddLuminosity(-brightness_on, -col.r/255, -col.g/255, -col.b/255)
 		else if(isturf(loc))
-			SetLuminosity(0)
+			SetLuminosity(0, 0, 0, 0)
 
 /obj/item/device/flashlight/attack_self(mob/user)
 	if(!isturf(user.loc))
 		user << "<span class='warning'>You cannot turn the light on while in this [user.loc]!</span>" //To prevent some lighting anomalities.
 		return 0
 	on = !on
+	if (broken)
+		on = 0
+		user << "<spawn class='warning'>The [src] refuses to turn on!</span>"
 	update_brightness(user)
 	return 1
 
@@ -88,15 +95,17 @@
 
 
 /obj/item/device/flashlight/pickup(mob/user)
+	var/datum/color/col = splitHTML(lightcolor)
 	if(on)
-		user.AddLuminosity(brightness_on)
-		SetLuminosity(0)
+		user.AddLuminosity(brightness_on, col.r/255, col.g/255, col.b/255)
+		SetLuminosity(0, 0, 0, 0)
 
 
 /obj/item/device/flashlight/dropped(mob/user)
+	var/datum/color/col = splitHTML(lightcolor)
 	if(on)
-		user.AddLuminosity(-brightness_on)
-		SetLuminosity(brightness_on)
+		user.AddLuminosity(-brightness_on, -col.r/255, -col.g/255, -col.b/255)
+		SetLuminosity(brightness_on, col.r/255, col.g/255, col.b/255)
 
 
 /obj/item/device/flashlight/pen
@@ -196,6 +205,7 @@ obj/item/device/flashlight/lamp/bananalamp
 	icon_state = "flare"
 	item_state = "flare"
 	action_button_name = null	//just pull it manually, neckbeard.
+	lightcolor = "#FF0000" // Bright red light.
 	var/fuel = 0
 	var/on_damage = 7
 	var/produce_heat = 1500
@@ -256,6 +266,7 @@ obj/item/device/flashlight/lamp/bananalamp
 	brightness_on = 7
 	icon_state = "torch"
 	item_state = "torch"
+	lightcolor = "#FFFF00" // Not as red.
 	on_damage = 10
 
 /obj/item/device/flashlight/lantern
@@ -263,6 +274,7 @@ obj/item/device/flashlight/lamp/bananalamp
 	icon_state = "lantern"
 	desc = "A mining lantern."
 	brightness_on = 6			// luminosity when on
+	lightcolor = "#FFFF00"
 
 
 /obj/item/device/flashlight/slime
@@ -276,6 +288,7 @@ obj/item/device/flashlight/lamp/bananalamp
 	slot_flags = SLOT_BELT
 	materials = list()
 	brightness_on = 6 //luminosity when on
+	lightcolor = "#FFFF00"
 
 /obj/item/device/flashlight/emp
 	origin_tech = "magnets=4;syndicate=5"
