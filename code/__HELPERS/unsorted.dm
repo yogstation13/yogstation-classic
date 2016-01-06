@@ -26,6 +26,36 @@
 	return text("#[][][]", textr, textg, textb)
 	return
 
+/proc/splitHTML(HTMLstring)
+	if (!( istext(HTMLstring) ))
+		CRASH("Given non-text argument!")
+		return
+	else
+		if (length(HTMLstring) != 7)
+			CRASH("Given non-HTML argument!")
+			return
+	var/textr = copytext(HTMLstring, 2, 4)
+	var/textg = copytext(HTMLstring, 4, 6)
+	var/textb = copytext(HTMLstring, 6, 8)
+	var/r = hex2num(textr)
+	var/g = hex2num(textg)
+	var/b = hex2num(textb)
+	var/datum/color/col = new/datum/color()
+	col.r = r
+	col.g = g
+	col.b = b
+	return col;
+
+/datum/color
+	var/r = 0
+	var/g = 0
+	var/b = 0
+	New(var/rr, var/gg, var/bb)
+		..()
+		r = rr
+		g = gg
+		b = bb
+
 //Returns the middle-most value
 /proc/dd_range(low, high, num)
 	return max(low,min(high,num))
