@@ -46,10 +46,11 @@
 	var/lightr = 1
 	var/lightg = 1
 	var/lightb = 1
+	var/lighta = 1
 	var/__x = 0		//x coordinate at last update
 	var/__y = 0		//y coordinate at last update
 
-/datum/light_source/New(atom/A)
+/datum/light_source/New(atom/A, var/defaulto = 0)
 	if(!istype(A))
 		CRASH("The first argument to the light object's constructor must be the atom that is the light source. Expected atom, received '[A]' instead.")
 	..()
@@ -57,6 +58,10 @@
 	radius = A.luminosity
 	__x = owner.x
 	__y = owner.y
+	if (defaulto)
+		lightr = 0
+		lightg = 0
+		lightb = 0
 	SSlighting.changed_lights |= src
 
 /datum/light_source/Destroy()
@@ -115,11 +120,11 @@
 		for(var/turf/T in view(range, To))
 			var/delta_lumcount = T.lumen(src)
 			if(delta_lumcount > 0)
-				effect[T] = delta_lumcount
-				effectr[T] = (lightr) * (delta_lumcount/LIGHTING_CAP)
-				effectg[T] = (lightg) * (delta_lumcount/LIGHTING_CAP)
-				effectb[T] = (lightb) * (delta_lumcount/LIGHTING_CAP)
-				T.update_lumcount(delta_lumcount, (lightr) * (delta_lumcount/LIGHTING_CAP), (lightg) * (delta_lumcount/LIGHTING_CAP), (lightb) * (delta_lumcount/LIGHTING_CAP))
+				effect[T] = delta_lumcount * lighta
+				effectr[T] = (lightr) * (delta_lumcount/LIGHTING_CAP) * lighta
+				effectg[T] = (lightg) * (delta_lumcount/LIGHTING_CAP) * lighta
+				effectb[T] = (lightb) * (delta_lumcount/LIGHTING_CAP) * lighta
+				T.update_lumcount(delta_lumcount * lighta, (lightr) * (delta_lumcount/LIGHTING_CAP), (lightg) * (delta_lumcount/LIGHTING_CAP), (lightb) * (delta_lumcount/LIGHTING_CAP))
 
 				if(!T.affecting_lights)
 					T.affecting_lights = list()
@@ -196,7 +201,7 @@
 	if(!light)
 		if(!new_luminosity)
 			return
-		light = new(src)
+		light = new(src, 1)
 	else
 		if(light.radius == new_luminosity && light.lightr == r && light.lightg == g && light.lightb == b)
 			return
@@ -207,7 +212,13 @@
 	luminosity = new_luminosity
 	light.changed()
 
-/atom/proc/AddLuminosity(delta_luminosity, r, g, b)
+/atom/proc/AddLuminosity(delta_luminosity, var/r, var/g , var/b)
+	if (r == null)
+		r = (delta_luminosity >= 0 ? 1 : -1)
+	if (g == null)
+		g = (delta_luminosity >= 0 ? 1 : -1)
+	if (b == null)
+		b = (delta_luminosity >= 0 ? 1 : -1)
 	if(light)
 		SetLuminosity(light.radius + delta_luminosity, light.lightr + r, light.lightg + g, light.lightb + b)
 	else

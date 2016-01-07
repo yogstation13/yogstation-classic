@@ -1,4 +1,7 @@
 #define CANDLE_LUMINOSITY	2
+#define CANDLE_RLUMS        1
+#define CANDLE_GLUMS        1
+#define CANDLE_BLUMS        0.7
 /obj/item/candle
 	name = "red candle"
 	desc = "a candle"
@@ -56,7 +59,7 @@
 		//src.damtype = "fire"
 		for(var/mob/O in viewers(usr, null))
 			O.show_message(flavor_text, 1)
-		SetLuminosity(CANDLE_LUMINOSITY)
+		SetLuminosity(CANDLE_LUMINOSITY, CANDLE_RLUMS, CANDLE_GLUMS, CANDLE_BLUMS)
 		SSobj.processing |= src
 
 
