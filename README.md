@@ -88,10 +88,3 @@ at the bottom, so that it looks like this:
 Recompile the codebase afterwards.
 
 
-##UPDATING
-
-##DOWNLOADING
-This source code is available upon request. Please submit a support ticket on the Yogstation forums.
-
-
-
