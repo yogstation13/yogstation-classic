@@ -310,7 +310,6 @@
 		if(BE_CULTIST)		roletext="cultist"
 		if(BE_MONKEY)		roletext="monkey"
 		if(BE_ABDUCTOR)		roletext="abductor"
-		if(BE_CYBERMAN)		roletext="cyberman"
 
 
 	// Ultimate randomizing code right here
