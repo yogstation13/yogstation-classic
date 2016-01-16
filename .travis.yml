@@ -1,11 +1,11 @@
 #pretending we're C because otherwise ruby will initialize, even with "language: dm".
-language: c
+language: generic
 sudo: false
 
 env:
     global:
     - BYOND_MAJOR="508"
-    - BYOND_MINOR="1293"
+    - BYOND_MINOR="1319"
     matrix:
     - DM_MAPFILE="tgstation2"
     - DM_MAPFILE="metastation"
