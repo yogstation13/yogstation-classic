@@ -57,6 +57,9 @@
 /obj/effect/hotspot/New()
 	..()
 	SSair.hotspots += src
+	light.lightr = 1
+	light.lightg = 1
+	light.lightb = 0
 	perform_exposure()
 
 /obj/effect/hotspot/proc/perform_exposure()

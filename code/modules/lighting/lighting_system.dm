@@ -23,7 +23,6 @@
 		Shuttles still do not have support for dynamic lighting (I hope to fix this at some point) -probably trivial now
 		No directional lighting support. (prototype looked ugly)
 		Allow lights to be weaker than 'cap' radius
-		Colored lights
 */
 
 #define LIGHTING_CIRCULAR 1									//comment this out to use old square lighting effects.
@@ -363,7 +362,13 @@
 
 		if (newalpha == alpha && newcolor == color) // Prevent unneeded updates.
 			return;
-		lighting_object.color = newcolor
+
+		var/change_time = LIGHTING_TIME
+
+		if(instantly)
+			change_time = 0
+
+		animate(lighting_object, color = newcolor, time = change_time) // Animated lights, look smoother and things.
 		if(newalpha < 255-LIGHTING_DARKEST_VISIBLE_ALPHA) //Doesn't actually make it darker or anything, just tells byond you can't see the tile
 			animate(luminosity = 0, time = 0)
 
