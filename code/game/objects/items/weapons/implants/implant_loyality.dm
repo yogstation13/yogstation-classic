@@ -30,6 +30,8 @@
 			ticker.mode.remove_revolutionary(target.mind)
 		if(target.mind in ticker.mode.cult)
 			target << "<span class='warning'>You feel the corporate tendrils of Nanotrasen try to invade your mind!</span>"
+		if(ticker.mode.is_cyberman(target.mind))
+			target << "<span class='notice'>Your cyberman body silenty disables the Nanotrasen nanobots as they enter your bloodstream. You appear to be implanted, but the implant has no effect.</span>"
 		else
 			target << "<span class='notice'>You feel a surge of loyalty towards Nanotrasen.</span>"
 		return 1
