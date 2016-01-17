@@ -171,6 +171,7 @@
 	var/move_delay = 0
 	var/floorbuffer = 0
 	var/keytype = /obj/item/key/janitor
+	var/needsKey = 1
 
 /obj/structure/stool/bed/chair/janicart/New()
 	handle_rotation()
@@ -232,7 +233,7 @@
 /obj/structure/stool/bed/chair/janicart/relaymove(mob/user, direction)
 	if(user.stat || user.stunned || user.weakened || user.paralysis)
 		unbuckle_mob()
-	if(istype(user.l_hand, keytype) || istype(user.r_hand, keytype))
+	if(istype(user.l_hand, keytype) || istype(user.r_hand, keytype) || !needsKey)
 		if(!Process_Spacemove(direction) || !has_gravity(src.loc) || move_delay || !isturf(loc))
 			return
 		step(src, direction)
@@ -335,12 +336,18 @@
 	icon = 'icons/obj/banmobile.dmi'
 	icon_state = "trabant"
 	callme = "glorious trabant"
-	keytype = /obj/item/key/security
+	needsKey = 0
 
 /obj/structure/stool/bed/chair/janicart/trabant/update_mob()
 	if(buckled_mob)
 		buckled_mob.dir = dir
 		buckled_mob.pixel_y = 4
+		buckled_mob.alpha = 0
+
+/obj/structure/stool/bed/chair/janicart/trabant/unbuckle_mob()
+	if(buckled_mob)
+		buckled_mob.alpha = 255
+	..()
 
 /obj/structure/stool/bed/chair/janicart/banmobile
 	name = "banmobile"
@@ -348,9 +355,15 @@
 	icon = 'icons/obj/banmobile.dmi'
 	icon_state = "ban mobile"
 	callme = "ban mobile"
-	keytype = /obj/item/key/security
+	needsKey = 0
 
 /obj/structure/stool/bed/chair/janicart/banmobile/update_mob()
 	if(buckled_mob)
 		buckled_mob.dir = dir
 		buckled_mob.pixel_y = 4
+		buckled_mob.alpha = 0
+
+/obj/structure/stool/bed/chair/janicart/banmobile/unbuckle_mob()
+	if(buckled_mob)
+		buckled_mob.alpha = 255
+	..()

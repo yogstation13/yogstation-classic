@@ -1,5 +1,6 @@
 ##Yogstation
 
+[![Build Status](https://travis-ci.org/yogstation13/yogstation.svg?branch=master)](https://travis-ci.org/yogstation13/yogstation)
 Copyright (C) Yogstation 2013-2015
 
 This program is free software: you can redistribute it and/or modify
@@ -86,12 +87,5 @@ Otherwise, edit the file `code/_compile_options.dm`, and comment out:
 at the bottom, so that it looks like this:
 `//#define USE_BYGEX`
 Recompile the codebase afterwards.
-
-
-##UPDATING
-
-##DOWNLOADING
-This source code is available upon request. Please submit a support ticket on the Yogstation forums.
-
 
 
