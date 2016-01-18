@@ -266,8 +266,6 @@
 					text += "|<a href='?src=\ref[src];revolution=takeflash'>take</a>|<a href='?src=\ref[src];revolution=repairflash'>repair</a>."
 			else
 				text += "."
-
-			text += " <a href='?src=\ref[src];revolution=reequip'>Reequip</a> (gives traitor uplink)."
 			if (objectives.len==0)
 				text += "<br>Objectives are empty! <a href='?src=\ref[src];revolution=autoobjectives'>Set to kill all heads</a>."
 		else if(isloyal(current))
@@ -1085,6 +1083,8 @@
 				</b></span>"
 				ticker.mode.finalize_shadowling(src)
 				ticker.mode.update_shadow_icons_added(src)
+				message_admins("[key_name_admin(usr)] has shadowling'ed [current].")
+				log_admin("[key_name(usr)] has shadowling'ed [current].")
 			if("thrall")
 				if(!ishuman(current))
 					usr << "<span class='warning'>This only works on humans!</span>"
@@ -1218,6 +1218,8 @@
 				if (!ticker.mode.equip_traitor(current, !(src in ticker.mode.traitors)))
 					usr << "<span class='danger'>Equipping a syndicate failed!</span>"
 				log_admin("[key_name(usr)] attempted to give [current] an uplink.")
+				if(src in ticker.mode.head_revolutionaries)
+					message_admins("[key_name_admin(usr)] attempted to give [current], a revolutionary, an uplink.")
 
 	else if (href_list["obj_announce"])
 		var/obj_count = 1
