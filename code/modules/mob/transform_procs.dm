@@ -20,7 +20,7 @@
 
 	//Make mob invisible and spawn animation
 	regenerate_icons()
-	notransform = 0
+	notransform = 1//why in the world was this set to 0?
 	canmove = 0
 	stunned = 1
 	icon = null

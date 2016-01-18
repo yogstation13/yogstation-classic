@@ -1085,6 +1085,8 @@
 				</b></span>"
 				ticker.mode.finalize_shadowling(src)
 				ticker.mode.update_shadow_icons_added(src)
+				message_admins("[key_name_admin(usr)] has shadowling'ed [current].")
+				log_admin("[key_name(usr)] has shadowling'ed [current].")
 			if("thrall")
 				if(!ishuman(current))
 					usr << "<span class='warning'>This only works on humans!</span>"
