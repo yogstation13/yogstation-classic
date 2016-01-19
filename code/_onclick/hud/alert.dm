@@ -259,7 +259,7 @@ so as to remain in compliance with the most up-to-date laws."
 		var/obj/screen/alert/alert = alerts[alerts[i]]
 		if(alert.icon_state == "template")
 			if(!icon_pref)
-				icon_pref = ui_style2icon(mymob.client.prefs.UI_style)
+				icon_pref = ui_style2icon_carbon(mymob.client.prefs.UI_style_carbon)
 			alert.icon = icon_pref
 		switch(i)
 			if(1)
