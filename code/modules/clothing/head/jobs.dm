@@ -63,6 +63,10 @@
 	desc = "There's only one man who can sniff out the dirty stench of crime, and he's likely wearing this hat."
 	icon_state = "detective"
 	armor = list(melee = 25, bullet = 5, laser = 25, energy = 10, bomb = 0, bio = 0, rad = 0)
+/obj/item/clothing/head/det_hat/suicide_act(mob/user) //Bekons wanted this.<3 B1g
+	user.visible_message("<span class='suicide'>[user] appears to be tipping themself off with the detective's fedora! It seems like they're trying to commit suicide!</span>")
+	user.say("I never could get to your heart, Mi'lady.")
+	return (BRUTELOSS)
 
 //Mime
 /obj/item/clothing/head/beret
