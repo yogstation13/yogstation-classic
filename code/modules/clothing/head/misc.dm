@@ -286,6 +286,9 @@
 	if(src.locked==1 && flags & NODROP)
 		flags -= NODROP
 		user << "<span class='notice'>The bomb collar appears to loosen in your grip.</span>"
+		if(flags & BLOCKHAIR) // ignore this. it is just to fix an error where the bomb collar would block your hair.
+			flags -= BLOCKHAIR
+		return
 
 /obj/item/device/collarDetonator
 	name = "remote collar detonator"
