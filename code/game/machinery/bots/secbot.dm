@@ -33,6 +33,21 @@
 	idcheck = 0
 	weaponscheck = 0
 	auto_patrol = 1
+	var/flashing_timer = 0
+
+/obj/machinery/bot/secbot/beepsky/bot_process()
+	..()
+	if(on && (mode == BOT_PREP_ARREST || mode == BOT_HUNT || mode == BOT_ARREST || mode == BOT_SUMMON))
+		icon_state = "secbot_flashing"
+		if(flashing_timer % 2 == 0)
+			SetLuminosity(luminosity, 1, 0, 0)//red
+		else
+			SetLuminosity(luminosity, 0, 0, 1)//blue
+		flashing_timer++
+	else
+		SetLuminosity(luminosity)
+		icon_state = "secbot[on]"
+	return
 
 /obj/machinery/bot/secbot/pingsky
 	name = "Officer Pingsky"
