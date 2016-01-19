@@ -234,7 +234,7 @@
 	name = "jester hat"
 	desc = "A hat with bells, to add some merryness to the suit."
 	icon_state = "jester_hat"
-	
+
 /obj/item/clothing/head/bombCollar
 	name = "bomb collar"
 	desc = "A metal collar with electronic locks designed to be worn around the neck. Can be triggered with a remote detonator."
@@ -282,6 +282,10 @@
 		locked = 0
 		qdel(src)
 		return
+/obj/item/clothing/head/bombCollar/pickup(mob/living/carbon/user)
+	if(src.locked==1 && flags & NODROP)
+		flags -= NODROP
+		user << "<span class='notice'>The bomb collar appears to loosen in your grip.</span>"
 
 /obj/item/device/collarDetonator
 	name = "remote collar detonator"
@@ -371,7 +375,6 @@
 				var/turf/T = get_turf(C)
 				user << "<b>[C]:</b> [iscarbon(C.loc) ? "Worn by [C.loc], " : ""][get_area(C)], [T.loc.x], [T.loc.y], [C.locked ? "<span class='boldannounce'>Locked</span>" : "<font color='green'><b>Unlocked</b></font>"]"
 			return
-
 /obj/item/clothing/head/rice_hat
 	name = "rice hat"
 	desc = "Welcome to the rice fields, motherfucker."
