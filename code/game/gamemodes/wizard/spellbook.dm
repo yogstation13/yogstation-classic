@@ -103,10 +103,10 @@
 	spell_type = /obj/effect/proc_holder/spell/targeted/projectile/magic_missile
 	log_name = "MM"
 
-/datum/spellbook_entry/disintegrate
+/*/datum/spellbook_entry/disintegrate
 	name = "Disintegrate"
 	spell_type = /obj/effect/proc_holder/spell/targeted/touch/disintegrate
-	log_name = "DG"
+	log_name = "DG"*/	//Removed for being OP as fuck.
 
 /datum/spellbook_entry/disabletech
 	name = "Disable Tech"
