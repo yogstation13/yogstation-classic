@@ -428,6 +428,7 @@ var/const/PATCH = 4 //patches
 	return 0
 
 /datum/reagents/proc/reaction(atom/A, method=TOUCH, volume_modifier=1,show_message=1)
+	if(istype(A, /atom/movable/light)) return	//Stop water, and other reagents, colouring lights.
 	if(isliving(A))
 		var/mob/living/L = A
 		var/touch_protection = 0

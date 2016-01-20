@@ -40,15 +40,15 @@
 			switch(L.name)
 				if("revenantspawn")
 					spawn_locs += L.loc
-	if(!spawn_locs) //If we can't find any revenant spawns, try the carp spawns
+	if(!spawn_locs.len) //If we can't find any revenant spawns, try the carp spawns
 		for(var/obj/effect/landmark/L in landmarks_list)
 			if(isturf(L.loc))
 				switch(L.name)
 					if("carpspawn")
 						spawn_locs += L.loc
-	if(!spawn_locs) //If we can't find either, just spawn the revenant at the player's location
+	if(!spawn_locs.len) //If we can't find either, just spawn the revenant at the player's ghost location
 		spawn_locs += get_turf(player_mind.current)
-	if(!spawn_locs) //If we can't find THAT, then just retry
+	if(!spawn_locs.len) //If we can't find THAT, then just retry
 		return find_revenant()
 	var/mob/living/simple_animal/revenant/revvie = new /mob/living/simple_animal/revenant/(pick(spawn_locs))
 	player_mind.transfer_to(revvie)
