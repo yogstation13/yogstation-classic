@@ -33,6 +33,44 @@
 	idcheck = 0
 	weaponscheck = 0
 	auto_patrol = 1
+	var/siren = 1
+	var/flashing = 0
+	var/flashing_red = 0
+	var/sleeptime_sound = 15
+	var/sleeptime_light = 5
+
+/obj/machinery/bot/secbot/beepsky/get_additional_interact_options()
+	return "<br>Siren<A href='?src=\ref[src];operation=siren'>[siren ? "On" : "Off"]</A>"
+
+/obj/machinery/bot/secbot/beepsky/Topic(href, href_list)
+	..()
+	if(href_list["operation"] == "siren")
+		siren = !siren
+		updateUsrDialog()
+
+/obj/machinery/bot/secbot/beepsky/bot_process()
+	..()
+	if(siren && on && (mode == BOT_PREP_ARREST || mode == BOT_HUNT || mode == BOT_ARREST || mode == BOT_SUMMON || mode == BOT_RESPONDING))
+		if(!flashing)
+			flashing = 1
+			icon_state = "secbot_flashing"
+			spawn(0)
+				while(flashing)
+					playsound(src.loc, 'sound/items/WEEOO1.ogg', 100, 0, 4)
+					sleep(sleeptime_sound)
+			spawn(0)
+				while(flashing)
+					if(flashing_red)
+						SetLuminosity(luminosity, 1, 0, 0)//red
+					else
+						SetLuminosity(luminosity, 0, 0, 1)//blue
+					flashing_red = !flashing_red
+					sleep(sleeptime_light)
+	else
+		flashing = 0
+		SetLuminosity(luminosity)
+		icon_state = "secbot[on]"
+	return
 
 /obj/machinery/bot/secbot/pingsky
 	name = "Officer Pingsky"
@@ -91,6 +129,10 @@
 	usr.set_machine(src)
 	interact(user)
 
+
+/obj/machinery/bot/secbot/proc/get_additional_interact_options()
+	return ""
+
 /obj/machinery/bot/secbot/interact(mob/user)
 	var/dat
 	dat += hack(user)
@@ -117,6 +159,8 @@ Auto Patrol: []"},
 "<A href='?src=\ref[src];operation=switchmode'>[arrest_type ? "Detain" : "Arrest"]</A>",
 "<A href='?src=\ref[src];operation=declarearrests'>[declare_arrests ? "Yes" : "No"]</A>",
 "<A href='?src=\ref[src];operation=patrol'>[auto_patrol ? "On" : "Off"]</A>" )
+
+	dat += get_additional_interact_options()
 
 	var/datum/browser/popup = new(user, "autosec", "Automatic Security Unit v1.6")
 	popup.set_content(dat)
