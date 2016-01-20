@@ -480,3 +480,11 @@
 	item_state = "gy_suit"
 	item_color = "tourist"
 	can_adjust = 0
+
+/obj/item/clothing/under/ronaldmcdonald
+	name = "ronald mcdonald uniform"
+	desc = "An old uniform that was used for a mascot which was used for making children smile in commercial advertising while in other places slaughtering children."
+	icon_state = "ronald"
+	item_state = "ronald"
+	item_color = "ronald"
+	can_adjust = 0
