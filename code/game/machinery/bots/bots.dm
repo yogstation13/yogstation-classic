@@ -306,9 +306,8 @@
 			var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 			s.set_up(5, 1, src)
 			s.start()
-		..()
 		healthcheck()
-		return 1
+	..()
 	return
 
 /obj/machinery/bot/blob_act()
