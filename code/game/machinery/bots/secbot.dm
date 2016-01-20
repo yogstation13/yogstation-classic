@@ -43,7 +43,8 @@
 	return "<br>Siren<A href='?src=\ref[src];operation=siren'>[siren ? "On" : "Off"]</A>"
 
 /obj/machinery/bot/secbot/beepsky/Topic(href, href_list)
-	..()
+	if(..())
+		return 1
 	if(href_list["operation"] == "siren")
 		siren = !siren
 		updateUsrDialog()
@@ -160,7 +161,7 @@ Auto Patrol: []"},
 "<A href='?src=\ref[src];operation=declarearrests'>[declare_arrests ? "Yes" : "No"]</A>",
 "<A href='?src=\ref[src];operation=patrol'>[auto_patrol ? "On" : "Off"]</A>" )
 
-	dat += get_additional_interact_options()
+		dat += get_additional_interact_options()
 
 	var/datum/browser/popup = new(user, "autosec", "Automatic Security Unit v1.6")
 	popup.set_content(dat)
@@ -168,8 +169,8 @@ Auto Patrol: []"},
 	return
 
 /obj/machinery/bot/secbot/Topic(href, href_list)
-
-	..()
+	if(..())
+		return 1
 
 	switch(href_list["operation"])
 		if("idcheck")
