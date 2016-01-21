@@ -160,13 +160,13 @@ obj/machinery/bot/mulebot/bot_reset()
 	return
 
 /obj/machinery/bot/mulebot/bullet_act(obj/item/projectile/Proj)
-	if(..())
+	..()
+	if(Proj.damage && (Proj.damage_type == BRUTE || Proj.damage_type == BURN))
 		if(prob(50) && !isnull(load))
 			unload(0)
 		if(prob(25))
 			visible_message("<span class='danger'>Something shorts out inside [src]!</span>")
 			wires.RandomCut()
-
 
 /obj/machinery/bot/mulebot/attack_ai(mob/user)
 	user.set_machine(src)
