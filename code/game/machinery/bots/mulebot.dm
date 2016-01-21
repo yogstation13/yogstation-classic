@@ -260,9 +260,9 @@ obj/machinery/bot/mulebot/bot_reset()
 
 /obj/machinery/bot/mulebot/Topic(href, href_list)
 	if(..())
-		return
+		return 1
 	if (usr.stat)
-		return
+		return 1
 	if ((in_range(src, usr) && istype(loc, /turf)) || (istype(usr, /mob/living/silicon)))
 		usr.set_machine(src)
 
