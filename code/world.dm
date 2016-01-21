@@ -1,3 +1,5 @@
+/var/yog_round_number = 0
+
 /world
 	mob = /mob/new_player
 	turf = /turf/space
@@ -26,6 +28,15 @@
 	admindiary << "\n\nStarting up. [time2text(world.timeofday, "hh:mm.ss")]\n---------------------"
 	diaryofmeanpeople << "\n\nStarting up. [time2text(world.timeofday, "hh:mm.ss")]\n---------------------"
 	changelog_hash = md5('html/changelog.html')					//used for telling if the changelog has changed recently
+
+	var/roundfile = file("data/roundcount.txt")
+	yog_round_number = text2num(file2text(roundfile))
+	if(yog_round_number == null || yog_round_number == "" || yog_round_number == 0)
+		yog_round_number = 1
+	else
+		yog_round_number++
+	fdel(roundfile)
+	text2file(num2text(yog_round_number), roundfile)
 
 	make_datum_references_lists()	//initialises global lists for referencing frequently used datums (so that we only ever do it once)
 
