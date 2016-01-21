@@ -562,6 +562,7 @@
 #include "code\game\objects\effects\decals\decal.dm"
 #include "code\game\objects\effects\decals\misc.dm"
 #include "code\game\objects\effects\decals\remains.dm"
+#include "code\game\objects\effects\decals\wanted_poster.dm"
 #include "code\game\objects\effects\decals\Cleanable\aliens.dm"
 #include "code\game\objects\effects\decals\Cleanable\humans.dm"
 #include "code\game\objects\effects\decals\Cleanable\misc.dm"
