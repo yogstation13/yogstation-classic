@@ -273,7 +273,7 @@
 				mob.pulling.dir = get_dir(mob.pulling, mob)
 				mob.pulling.loc = mob.loc
 
-	if (target.lighting_lumcount==null || target.lighting_lumcount <= 0.3)
+	if (target.get_lumcount() == null || target.get_lumcount() <= 0.3)
 		mob.loc = target
 		mob.dir = direct
 		return 0;

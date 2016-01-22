@@ -219,7 +219,7 @@
 	if (b == null)
 		b = (delta_luminosity >= 0 ? 1 : -1)
 	if(light)
-		SetLuminosity(light.radius + delta_luminosity, light.lightr + r, light.lightg + g, light.lightb + b)
+		SetLuminosity(light.radius + delta_luminosity, light.lightr + (r * delta_luminosity), light.lightg + (g * delta_luminosity), light.lightb + (b * delta_luminosity))
 	else
 		SetLuminosity(delta_luminosity, r, g, b)
 
@@ -354,7 +354,10 @@
 		else
 			lighting_object.luminosity = 1
 			if(lighting_lumcount < LIGHTING_CAP)
-				var/num = Clamp(lighting_lumcount * LIGHTING_CAP_FRAC, 0, 255)
+				var/area/A = loc
+				if (!istype(A))
+					return; // Noidea if this will ever happen, but meh.
+				var/num = Clamp(lighting_lumcount * LIGHTING_CAP_FRAC, A.min_lumcount, 255)
 				newalpha = num
 			else //if(lighting_lumcount >= LIGHTING_CAP)
 				newalpha = 255
@@ -386,6 +389,7 @@
 
 /area
 	var/lighting_use_dynamic = 1	//Turn this flag off to make the area fullbright
+	var/min_lumcount = 0 // Used in areas like the wizard shuttle to prevent them from walking around like they own the place.
 
 /area/New()
 	. = ..()
