@@ -198,7 +198,7 @@
 			var/tickcomp = (1 / (world.tick_lag)) * 1.3
 			move_delay = move_delay + tickcomp
 
-		if(mob.shadow_walk)
+		if(CanShadowWalk(mob))
 			if (Process_ShadowWalk(direct))
 				return
 
@@ -269,7 +269,8 @@
 		if (doPull)
 			var/turf/pullloc = get_turf(mob.pulling)
 
-			if(mobloc.lighting_lumcount==null || mobloc.lighting_lumcount <= 0.3 || pullloc.lighting_lumcount==null || pullloc.lighting_lumcount <= 0.3 || target.lighting_lumcount==null || target.lighting_lumcount <= 0.3)
+			if(mobloc.get_lumcount()==null || mobloc.get_lumcount() <= 0.3 || pullloc.get_lumcount()==null || pullloc.get_lumcount() <= 0.3 || target.get_lumcount()==null || target.get_lumcount() <= 0.3)
+				mob.pulling.dir = get_dir(mob.pulling, mob)
 				mob.pulling.loc = mob.loc
 
 	if (target.lighting_lumcount==null || target.lighting_lumcount <= 0.3)
@@ -453,3 +454,11 @@
 
 /mob/proc/update_gravity()
 	return
+
+proc/CanShadowWalk(var/mob/M)
+	if (M.shadow_walk)
+		return 1
+	if (istype(M,/mob/living/carbon/human))
+		var/mob/living/carbon/human/H = M
+		if(istype(H.dna.species, /datum/species/shadow/ling))
+			return 1

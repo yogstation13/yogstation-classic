@@ -252,6 +252,12 @@
 	var/light_g = 0
 	var/light_b = 0
 
+/atom/movable/light/dim
+	color = "#444" // Always half bright.
+	alpha = 0 // Only visible when the tile it's on is ~pure black.
+	invisibility = 0 // Never invisible. Might be a bit annoying for observers. Might.
+	layer = TURF_LAYER // Don't darken things on top of the turf.
+
 /atom/movable/light/Destroy()
 	return QDEL_HINT_LETMELIVE
 
@@ -265,6 +271,7 @@
 	var/lighting_blums = 0
 	var/lighting_changed = 0
 	var/atom/movable/light/lighting_object //Will be null for space turfs and anything in a static lighting area
+	var/atom/movable/light/dim/light_dim // Used for shadowlings and night vision and stuffs, to show pure black areas, but make them still visible... So to speak...
 	var/list/affecting_lights			//not initialised until used (even empty lists reserve a fair bit of memory)
 
 /turf/ChangeTurf(path)
@@ -329,6 +336,8 @@
 	else
 		if(!lighting_object)
 			lighting_object = new (src)
+		if(!light_dim)
+			light_dim = new (src)
 		redraw_lighting(1)
 
 /turf/space/init_lighting()
@@ -371,6 +380,7 @@
 		animate(lighting_object, color = newcolor, time = change_time) // Animated lights, look smoother and things.
 		if(newalpha < 255-LIGHTING_DARKEST_VISIBLE_ALPHA) //Doesn't actually make it darker or anything, just tells byond you can't see the tile
 			animate(luminosity = 0, time = 0)
+		light_dim.alpha = (get_lumcount() <= 0.3) * 255 // We're only visible if the lighting lumcount is less than what shadowlings can walk through.
 
 	lighting_changed = 0
 
