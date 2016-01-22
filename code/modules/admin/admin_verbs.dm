@@ -66,6 +66,8 @@ var/list/admin_verbs_admin = list(
 	/client/proc/cmd_admin_direct_narrate,	/*send text directly to a player with no padding. Useful for narratives and fluff-text*/
 	/client/proc/cmd_admin_world_narrate,	/*sends text to all players with no padding*/
 	/client/proc/cmd_admin_local_narrate,	//sends text to all mobs within view of atmo
+	/client/proc/DB_ban_panel,
+	/client/proc/stickybanpanel,
 	/client/proc/cmd_admin_create_faction_announcements,
 	/client/proc/list_pretty_filters,
 	/client/proc/test_pretty_filters,
