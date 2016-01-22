@@ -1,6 +1,6 @@
 /obj/machinery/door
 	name = "door"
-	desc = "It opens and closes. On the bottom of it you see a small drone doggy door. It's big enough for Ian to pass through...somehow..."
+	desc = "It opens and closes. On the bottom is a small hatch for drones."
 	icon = 'icons/obj/doors/Doorint.dmi'
 	icon_state = "door1"
 	anchored = 1
