@@ -262,8 +262,8 @@ var/list/teleportlocs = list()
 /area/wizard_station
 	name = "\improper Wizard's Den"
 	icon_state = "yellow"
-	requires_power = 0
 	has_gravity = 1
+	min_lumcount = 0.4 // Shadowlng proof.
 
 //Abductors
 /area/abductor_ship
