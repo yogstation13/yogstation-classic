@@ -388,6 +388,7 @@
 	response_help  = "pets"
 	response_disarm = "bops"
 	response_harm   = "kicks"
+	pass_flags = PASSDOOR
 
 /mob/living/simple_animal/pet/dog/corgi/Ian/Life()
 	..()

@@ -65,7 +65,7 @@
 			var/objective = "Free Objective"
 			switch(rand(1,100))
 				if(1 to 50)
-					objective = "Steal [pick("a hand teleporter", "the Captain's antique laser gun", "a jetpack", "the Captain's ID", "the Captain's jumpsuit")]."
+					objective = "Steal [pick("a hand teleporter", "the Captain's antique laser gun", "The Captain's jetpack", "the Captain's ID", "the Captain's jumpsuit")]."
 				if(51 to 60)
 					objective = "Destroy 70% or more of the station's plasma tanks."
 				if(61 to 70)
