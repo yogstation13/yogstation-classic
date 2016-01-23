@@ -253,6 +253,12 @@ var/next_external_rsc = 0
 		else
 			winset(src, "rpane.changelogb", "background-color=#eaeaea;font-style=bold")
 
+	if (ckey in clientmessages)
+		for (var/message in clientmessages[ckey])
+			src << message
+		clientmessages.Remove(ckey)
+
+
 	if(holder || !config.admin_who_blocked)
 		verbs += /client/proc/adminwho
 
@@ -264,6 +270,7 @@ var/next_external_rsc = 0
 	//////////////
 	//DISCONNECT//
 	//////////////
+
 /client/Del()
 	for(var/datum/admin_ticket/T in tickets_list)
 		if(compare_ckey(T.owner_ckey, usr) && !T.resolved)
