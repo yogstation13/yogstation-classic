@@ -365,15 +365,15 @@
 /obj/item/weapon/storage/backpack/dufflebag/syndie/professional/New()
 	..()
 	contents = list()
-	new /obj/item/ammo_box/magazine/m10mm
-	new /obj/item/ammo_box/magazine/m10mm
-	new /obj/item/ammo_box/magazine/m10mm
-	new /obj/item/bodybag
-	new /obj/item/bodybag
-	new /obj/item/bodybag
-	new /datum/uplink_item/device_tools/c4
-	new /datum/uplink_item/device_tools/c4
-	new /datum/uplink_item/device_tools/c4
+	new /obj/item/ammo_box/magazine/m10mm(src)
+	new /obj/item/ammo_box/magazine/m10mm(src)
+	new /obj/item/ammo_box/magazine/m10mm(src)
+	new /obj/item/bodybag(src)
+	new /obj/item/bodybag(src)
+	new /obj/item/bodybag(src)
+	new /datum/uplink_item/device_tools/c4(src)
+	new /datum/uplink_item/device_tools/c4(src)
+	new /datum/uplink_item/device_tools/c4(src)
 	return
 
 /obj/item/weapon/storage/backpack/dufflebag/captain
