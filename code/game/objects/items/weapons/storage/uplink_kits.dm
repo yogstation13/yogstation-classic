@@ -96,7 +96,7 @@
 			new /obj/item/clothing/gloves/color/latex/nitrile(src)
 			new /obj/item/weapon/gun/projectile/automatic/pistol(src)
 			new /datum/uplink_item/stealthy_weapons/suppressor(src)
-			new /obj/item/weapon/storage/backpack/duffeblag/syndie/professional(src) //has the goods
+			new /obj/item/weapon/storage/backpack/dufflebag/syndie/professional(src) //has the goods
 			return
 /obj/item/weapon/storage/box/syndie_kit
 	name = "box"
