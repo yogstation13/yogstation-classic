@@ -356,13 +356,13 @@
 	new /obj/item/device/mmi/syndie(src)
 	return
 
-/obj/item/weapon/storage/backpack/duffeblag/syndie/professional // for the traitor bundle "professional"
+/obj/item/weapon/storage/backpack/dufflebag/syndie/professional // for the traitor bundle "professional"
 	name = "blood-red duffelbag"
 	desc = "A suspecious looking duffelbag. It also has a a strong smell of iron which is unnerving..."
 	icon_state = "duffle-syndieammo"
 	item_state = "duffle-syndieammo"
 
-/obj/item/weapon/storage/backpack/duffelbag/syndie/professional/New()
+/obj/item/weapon/storage/backpack/dufflebag/syndie/professional/New()
 	..()
 	contents = list()
 	new /obj/item/ammo_box/magazine/m10mm
