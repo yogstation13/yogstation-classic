@@ -255,7 +255,7 @@
 /atom/movable/light/dim
 	color = "#444" // Always half bright.
 	alpha = 0 // Only visible when the tile it's on is ~pure black.
-	invisibility = 0 // Never invisible. Might be a bit annoying for observers. Might.
+	invisibility = SEE_INVISIBLE_MINIMUM + 1 // Rarely invisible. Hidden for things like mesons.
 	layer = TURF_LAYER // Don't darken things on top of the turf.
 
 /atom/movable/light/Destroy()
