@@ -2,7 +2,7 @@
 
 /obj/item/weapon/storage/box/syndicate/New()
 	..()
-	switch (pickweight(list("bloodyspai" = 1, "stealth" = 1, "bond" = 1, "screwed" = 1, "guns" = 1, "murder" = 1, "implant" = 1, "hacker" = 1, "lordsingulo" = 1, "darklord" = 1)))
+	switch (pickweight(list("bloodyspai" = 1, "stealth" = 1, "bond" = 1, "screwed" = 1, "guns" = 1, "murder" = 1, "implant" = 1, "hacker" = 1, "lordsingulo" = 1, "darklord" = 1, "professional" = 1)))
 		if("bloodyspai")
 			new /obj/item/clothing/under/chameleon(src)
 			new /obj/item/clothing/mask/gas/voice(src)
@@ -90,7 +90,14 @@
 			new /obj/item/clothing/suit/hooded/chaplain_hoodie(src)
 			new /obj/item/weapon/card/id/syndicate(src)
 			return
-
+		if("professional")
+			new /obj/item/clothing/under/syndicate/professional(src)
+			new /obj/item/clothing/mask/gas(src) //NORMAL gas mask. not voicechanger.
+			new /obj/item/clothing/gloves/color/latex/nitrile(src)
+			new /obj/item/weapon/gun/projectile/automatic/pistol(src)
+			new /datum/uplink_item/stealthy_weapons/suppressor(src)
+			new /obj/item/weapon/storage/backpack/duffeblag/syndie/professional(src) //has the goods
+			return
 /obj/item/weapon/storage/box/syndie_kit
 	name = "box"
 	desc = "A sleek, sturdy box"

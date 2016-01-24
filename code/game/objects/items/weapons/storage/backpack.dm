@@ -356,6 +356,26 @@
 	new /obj/item/device/mmi/syndie(src)
 	return
 
+/obj/item/weapon/storage/backpack/duffeblag/syndie/professional // for the traitor bundle "professional"
+	name = "blood-red duffelbag"
+	desc = "A suspecious looking duffelbag. It also has a a strong smell of iron which is unnerving..."
+	icon_state = "duffle-syndieammo"
+	item_state = "duffle-syndieammo"
+
+/obj/item/weapon/storage/backpack/duffelbag/syndie/professional/New()
+	..()
+	contents = list()
+	new /obj/item/ammo_box/magazine/m10mm
+	new /obj/item/ammo_box/magazine/m10mm
+	new /obj/item/ammo_box/magazine/m10mm
+	new /obj/item/bodybag
+	new /obj/item/bodybag
+	new /obj/item/bodybag
+	new /datum/uplink_item/device_tools/c4
+	new /datum/uplink_item/device_tools/c4
+	new /datum/uplink_item/device_tools/c4
+	return
+
 /obj/item/weapon/storage/backpack/dufflebag/captain
 	name = "captain's dufflebag"
 	desc = "A large dufflebag for holding extra captainly goods."
