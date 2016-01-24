@@ -20,6 +20,5 @@
 	icon_state = "really_black_suit"
 	item_state = "bl_suit"
 	item_color = "black_suit"
-	can_adjust = 0
 	has_sensor = 0
-	armor = list(melee = 15, bullet = 25, laser = 10, energy = 5, bomb = 10, bio = 0, rad = 0))
+	armor = list(melee = 15, bullet = 25, laser = 10, energy = 5, bomb = 10, bio = 0, rad = 0)
