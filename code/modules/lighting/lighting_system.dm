@@ -33,6 +33,7 @@
 #define LIGHTING_ICON_STATE "white"
 #define LIGHTING_TIME 1.2									//Time to do any lighting change. Actual number pulled out of my ass
 #define LIGHTING_DARKEST_VISIBLE_ALPHA 230					//Anything darker than this is so dark, we'll just consider the whole tile unlit
+//#define USE_COLOURED_LIGHTING 1
 
 /datum/light_source
 	var/atom/owner
@@ -242,7 +243,11 @@
 	icon_state = LIGHTING_ICON_STATE
 	layer = LIGHTING_LAYER
 	mouse_opacity = 0
+#ifdef USE_COLOURED_LIGHTING
 	blend_mode = BLEND_MULTIPLY // Overlay is for nerds, We have new toys now~
+#else
+	blend_mode = BLEND_OVERLAY
+#endif
 	invisibility = INVISIBILITY_LIGHTING
 	color = "#000"
 	luminosity = 0
@@ -253,7 +258,11 @@
 	var/light_b = 0
 
 /atom/movable/light/dim
+#ifdef USE_COLOURED_LIGHTING
 	color = "#444" // Always half bright.
+#else
+	color = "#000"
+#endif
 	alpha = 0 // Only visible when the tile it's on is ~pure black.
 	invisibility = SEE_INVISIBLE_MINIMUM + 1 // Rarely invisible. Hidden for things like mesons.
 	layer = TURF_LAYER // Don't darken things on top of the turf.
@@ -361,7 +370,7 @@
 				newalpha = num
 			else //if(lighting_lumcount >= LIGHTING_CAP)
 				newalpha = 255
-
+#ifdef USE_COLOURED_LIGHTING
 		var/t = max(lighting_rlums, lighting_glums, lighting_blums) // So that the highest value is always 1, then adjusted for luminosity.
 		var/r = newalpha
 		var/g = newalpha
@@ -374,16 +383,27 @@
 
 		if (newalpha == alpha && newcolor == color) // Prevent unneeded updates.
 			return;
-
+#else
+		newalpha = 255-newalpha
+		if (newalpha == alpha)
+			return;
+#endif
 		var/change_time = LIGHTING_TIME
 
 		if(instantly)
 			change_time = 0
-
+#ifdef USE_COLOURED_LIGHTING
 		animate(lighting_object, color = newcolor, time = change_time) // Animated lights, look smoother and things.
+#else
+		animate(lighting_object, alpha = newalpha, time = change_time)
+#endif
 		if(newalpha < 255-LIGHTING_DARKEST_VISIBLE_ALPHA) //Doesn't actually make it darker or anything, just tells byond you can't see the tile
 			animate(luminosity = 0, time = 0)
+#ifdef USE_COLOURED_LIGHTING
 		light_dim.alpha = (get_lumcount() <= 0.3) * 255 // We're only visible if the lighting lumcount is less than what shadowlings can walk through.
+#else
+		light_dim.alpha = (get_lumcount() <= 0.3) * 128 // See above
+#endif
 
 	lighting_changed = 0
 
