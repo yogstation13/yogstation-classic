@@ -2,7 +2,7 @@
 #define SAVEFILE_VERSION_MIN	8
 
 //This is the current version, anything below this will attempt to update (if it's not obsolete)
-#define SAVEFILE_VERSION_MAX	13
+#define SAVEFILE_VERSION_MAX	14
 /*
 SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Carn
 	This proc checks if the current directory of the savefile S needs updating
@@ -40,6 +40,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	if(current_version < 13)
 		chat_toggles = TOGGLES_DEFAULT_CHAT
 		toggles = TOGGLES_DEFAULT
+	if(current_version < 14)
+		donor_pda = 0
 	return
 
 //should this proc get fairly long (say 3 versions long),
@@ -232,6 +234,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	S["job_engsec_low"]		>> job_engsec_low
 
 	S["donor_hat"]			>> donor_hat
+	S["donor_pda"]			>> donor_pda
 
 	//try to fix any outdated data if necessary
 	if(needs_update >= 0)
@@ -343,6 +346,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	S["job_engsec_low"]		<< job_engsec_low
 
 	S["donor_hat"]			<< donor_hat
+	S["donor_pda"]			<< donor_pda
 
 	return 1
 
