@@ -154,4 +154,6 @@
 /mob/living/carbon/human/CanContractDisease(datum/disease/D)
 	if(dna && VIRUSIMMUNE in dna.species.specflags)
 		return 0
+	if(src.mind && src.mind.changeling && istype(D, /datum/disease/transformation/rage_virus))
+		return 0
 	return ..()
