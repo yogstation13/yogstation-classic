@@ -343,7 +343,7 @@ var/list/sting_paths
 		return
 	if(canrespec)
 		user << "<span class='notice'>We have removed our evolutions from this form, and are now ready to readapt.</span>"
-		user.remove_changeling_powers(1)
+		user.remove_changeling_powers(1, 1)//isn't this redundant?
 		canrespec = 0
 		user.make_changeling()
 		return 1
@@ -361,7 +361,7 @@ var/list/sting_paths
 	if(!sting_paths)
 		sting_paths = init_paths(/obj/effect/proc_holder/changeling)
 	if(mind.changeling.purchasedpowers)
-		remove_changeling_powers(1)
+		remove_changeling_powers(1, 1)
 	// purchase free powers.
 	for(var/path in sting_paths)
 		var/obj/effect/proc_holder/changeling/S = new path()
@@ -369,6 +369,13 @@ var/list/sting_paths
 			if(!mind.changeling.has_sting(S))
 				mind.changeling.purchasedpowers+=S
 			S.on_purchase(src)
+	//move any revive abilities to the bottom of the list, like people are used to.
+	var/revive_abilities = list()//there is only one regenerate abiliy at the moment, but there may be more in the future. Hence the list. Hopefully if more are added, the coders extend the current revive ability or add to this proc.
+	for(var/obj/effect/proc_holder/changeling/p in mind.changeling.purchasedpowers)
+		if(istype(p, /obj/effect/proc_holder/changeling/revive))
+			revive_abilities += p
+			mind.changeling.purchasedpowers -= p
+	mind.changeling.purchasedpowers += revive_abilities
 
 	var/mob/living/carbon/C = src		//only carbons have dna now, so we have to typecaste
 	var/datum/changelingprofile/prof = mind.changeling.add_profile(C) //not really a point in typecasting here but somebody will probably get mad at me if i dont
@@ -385,14 +392,14 @@ var/list/sting_paths
 	chem_recharge_slowdown = initial(chem_recharge_slowdown)
 	mimicing = ""
 
-/mob/proc/remove_changeling_powers(keep_free_powers=0)
+/mob/proc/remove_changeling_powers(keep_free_powers=0, keep_revive_powers=0)
 	if(ishuman(src) || ismonkey(src))
 		if(mind && mind.changeling)
 			digitalcamo = 0
 			mind.changeling.changeling_speak = 0
 			mind.changeling.reset()
 			for(var/obj/effect/proc_holder/changeling/p in mind.changeling.purchasedpowers)
-				if(!(p.dna_cost == 0 && keep_free_powers))
+				if(!((p.dna_cost == 0 && keep_free_powers) || (istype(p, /obj/effect/proc_holder/changeling/revive) && keep_revive_powers)) )
 					mind.changeling.purchasedpowers -= p
 				if(istype(p,/obj/effect/proc_holder/changeling/augmented_eyesight))
 					permanent_sight_flags -= SEE_MOBS
