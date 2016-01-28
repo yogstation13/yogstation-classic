@@ -227,11 +227,11 @@ Class Procs:
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 /mob/proc/canUseTopic() //TODO: once finished, place these procs on the respective mob files
-	return
+	return 0
 
 /mob/dead/observer/canUseTopic()
 	if(check_rights(R_ADMIN, 0))
-		return
+		return 0
 
 /mob/living/canUseTopic(atom/movable/M, be_close = 0, no_dextery = 0)
 	if(no_dextery)
@@ -243,40 +243,40 @@ Class Procs:
 
 /mob/living/carbon/human/canUseTopic(atom/movable/M, be_close = 0)
 	if(incapacitated() || lying )
-		return
+		return 0
 	if(!Adjacent(M))
 		if((be_close == 0) && (dna.check_mutation(TK)))
 			if(tkMaxRangeCheck(src, M))
 				return 1
-		return
+		return 0
 	if(!isturf(M.loc) && M.loc != src)
 		return
 	return 1
 
 /mob/living/silicon/ai/canUseTopic(atom/movable/M, be_close = 0)
 	if(stat)
-		return
+		return 0
 	if(be_close && !in_range(M, src))
-		return
+		return 0
 	//stop AIs from leaving windows open and using then after they lose vision
 	//apc_override is needed here because AIs use their own APC when powerless
 	//get_turf_pixel() is because APCs in maint aren't actually in view of the inner camera
 	if(cameranet && !cameranet.checkTurfVis(get_turf_pixel(M)) && !apc_override)
-		return
+		return 0
 	return 1
 
 /mob/living/silicon/pai/canUseTopic(atom/movable/M, be_close = 0)
 	if(stat)
-		return
+		return 0
 	if(be_close && !in_range(M, src) && !(paired == M))
-		return
+		return 0
 	return 1
 
 /mob/living/silicon/robot/canUseTopic(atom/movable/M, be_close = 0)
 	if(stat || lockcharge || stunned || weakened)
-		return
+		return 0
 	if(be_close && !in_range(M, src))
-		return
+		return 0
 	return 1
 
 /obj/machinery/attack_ai(mob/user)

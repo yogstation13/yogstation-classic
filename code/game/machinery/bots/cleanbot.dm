@@ -97,8 +97,8 @@ text("<A href='?src=\ref[src];power=1'>[on ? "On" : "Off"]</A>"))
 	return
 
 /obj/machinery/bot/cleanbot/Topic(href, href_list)
-
-	..()
+	if(..())
+		return 1
 	switch(href_list["operation"])
 		if("blood")
 			blood =!blood

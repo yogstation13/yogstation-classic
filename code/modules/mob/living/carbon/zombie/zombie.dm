@@ -61,7 +61,7 @@
 /mob/living/carbon/human/zombie/Move(NewLoc, direct)
 	..(NewLoc, direct)
 
-	if(rand(1,20) == 1)
+	if(stat != DEAD && rand(1,20) == 1)
 		say("This message will be turned into urrs.")
 
 /mob/living/carbon/human/zombie/movement_delay()
@@ -148,8 +148,8 @@
 					selfMessage = "You bite a chunk out of [name]! It would be tasty, if that part of your brain still worked."
 					localMessage = "[M.name] bites [name] ferociously!"
 
-				visible_message("<span class='danger'>[selfMessage]</span>", \
-						"<span class='userdanger'>[localMessage]</span>")
+				visible_message("<span class='userdanger'>[localMessage]</span>", \
+						"<span class='danger'>[selfMessage]</span>")
 
 				if(allowDamage)
 					var/damage = rand(20, 30)
