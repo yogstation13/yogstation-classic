@@ -7,7 +7,6 @@
 
 /datum/reagent/blood/reaction_mob(mob/M, method=TOUCH, reac_volume)
 	var/datum/reagent/blood/self = src
-	src = null
 	if(self.data && self.data["viruses"])
 		for(var/datum/disease/D in self.data["viruses"])
 
@@ -52,7 +51,6 @@
 	if(!istype(T))
 		return
 	var/datum/reagent/blood/self = src
-	src = null
 	if(reac_volume < 3)
 		return
 	//var/datum/disease/D = self.data["virus"]
@@ -97,7 +95,6 @@
 
 /datum/reagent/vaccine/reaction_mob(mob/M, method=TOUCH, reac_volume)
 	var/datum/reagent/vaccine/self = src
-	src = null
 	if(islist(self.data) && method == INGEST)
 		for(var/datum/disease/D in M.viruses)
 			if(D.GetDiseaseID() in self.data)
@@ -131,7 +128,6 @@
 			F.dirt = 0
 
 	var/CT = cooling_temperature
-	src = null
 	if(reac_volume >= 10)
 		T.MakeSlippery()
 
@@ -153,7 +149,6 @@
  */
 
 /datum/reagent/water/reaction_obj(obj/O, reac_volume)
-	src = null
 	O.color = initial(O.color)
 
 	if(istype(O,/obj/item))
@@ -262,7 +257,6 @@
 
 /datum/reagent/lube/reaction_turf(turf/simulated/T, reac_volume)
 	if (!istype(T)) return
-	src = null
 	if(reac_volume >= 1)
 		T.MakeSlippery(2)
 
@@ -396,7 +390,6 @@
 	color = "#13BC5E" // rgb: 19, 188, 94
 
 /datum/reagent/aslimetoxin/reaction_mob(mob/M, method=TOUCH, reac_volume)
-	src = null
 	if(method != TOUCH)
 		M.ForceContractDisease(new /datum/disease/transformation/slime(0))
 
@@ -478,7 +471,6 @@
 	color = "#1C1300" // rgb: 30, 20, 0
 
 /datum/reagent/carbon/reaction_turf(turf/T, reac_volume)
-	src = null
 	if(!istype(T, /turf/space))
 		new /obj/effect/decal/cleanable/dirt(T)
 
@@ -554,7 +546,6 @@
 	return
 
 /datum/reagent/radium/reaction_turf(turf/T, reac_volume)
-	src = null
 	if(reac_volume >= 3)
 		if(!istype(T, /turf/space))
 			var/obj/effect/decal/cleanable/reagentdecal = new/obj/effect/decal/cleanable/greenglow(T)
@@ -599,7 +590,6 @@
 	..()
 
 /datum/reagent/uranium/reaction_turf(turf/T, reac_volume)
-	src = null
 	if(reac_volume >= 3)
 		if(!istype(T, /turf/space))
 			var/obj/effect/decal/cleanable/reagentdecal = new/obj/effect/decal/cleanable/greenglow(T)
@@ -733,7 +723,6 @@
 	color = "#535E66" // rgb: 83, 94, 102
 
 /datum/reagent/nanites/reaction_mob(mob/M, method=TOUCH, reac_volume, show_message = 1, touch_protection = 0)
-	src = null
 	if(method==PATCH || method==INGEST || (method == VAPOR && prob(min(reac_volume,100)*(1 - touch_protection))))
 		M.ForceContractDisease(new /datum/disease/transformation/robot(0))
 
@@ -744,7 +733,6 @@
 	color = "#535E66" // rgb: 83, 94, 102
 
 /datum/reagent/xenomicrobes/reaction_mob(mob/M, method=TOUCH, reac_volume, show_message = 1, touch_protection = 0)
-	src = null
 	if(method==PATCH || method==INGEST || (method == VAPOR && prob(min(reac_volume,100)*(1 - touch_protection))))
 		M.ContractDisease(new /datum/disease/transformation/xeno(0))
 
