@@ -30,6 +30,7 @@
 	var/list/damage_absorption = list("brute"=0.8,"fire"=1.2,"bullet"=0.9,"laser"=1,"energy"=1,"bomb"=1)
 	var/obj/item/weapon/stock_parts/cell/cell
 	var/state = 0
+	var/powerleft = 1 //determines how much % battery we get when we replace it
 	var/list/log = new
 	var/last_message = 0
 	var/add_req_access = 1
@@ -158,9 +159,9 @@
 		C.forceMove(src)
 		cell = C
 		return
-	cell = new(src)
-	cell.charge = 15000
-	cell.maxcharge = 15000
+	cell = new /obj/item/weapon/stock_parts/cell/super(src)
+	//cell.charge = 15000
+	//cell.maxcharge = 15000
 
 /obj/mecha/proc/add_cabin()
 	cabin_air = new
