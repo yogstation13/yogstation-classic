@@ -19,8 +19,17 @@
 /obj/effect/glowshroom/single
 	yield = 0
 
-/obj/effect/glowshroom/New()
-	..()
+/obj/effect/glowshroom/New(var/newLoc, var/newPotency = -1, var/newYield = -1, var/newDelay = -1, var/newEndurance = -1)
+	..(newLoc)
+	if(newPotency != -1)
+		potency = newPotency
+	if(newYield != -1)
+		yield = newYield
+	if(newDelay != -1)
+		delay = newDelay
+	if(newEndurance != -1)
+		endurance = newEndurance
+
 	SetLuminosity(round(potency/10))
 	dir = CalcDir()
 	if(!floor)
@@ -36,9 +45,9 @@
 		icon_state = "glowshroom[rand(1,3)]"
 	else //if on the floor, glowshroom on-floor sprite
 		icon_state = "glowshroomf"
-
-	spawn(delay)
-		Spread()
+	if(yield > 0)
+		spawn(delay)
+			Spread()
 
 /obj/effect/glowshroom/proc/Spread()
 	set background = BACKGROUND_ENABLED
@@ -71,11 +80,7 @@
 			if(shroomCount >= placeCount)
 				continue
 
-			var/obj/effect/glowshroom/child = new /obj/effect/glowshroom(newLoc)//The baby mushrooms have different stats :3
-			child.potency = max(potency+rand(-3,6), 0)
-			child.yield = max(yield+rand(-1,2), 0)
-			child.delay = max(delay+rand(-30,60), 0)
-			child.endurance = max(endurance+rand(-3,6), 1)
+			var/obj/effect/glowshroom/child = new /obj/effect/glowshroom(newLoc, max(potency+rand(-3,6), 0), max(yield+rand(-1,0), 0), max(delay+rand(-30,60), 0), max(endurance+rand(-3,6), 1))
 			child.generation = generation+1
 			child.desc = "This is a [child.generation]\th generation glowshroom!"//I added this for testing, but I figure I'll leave it in.
 
