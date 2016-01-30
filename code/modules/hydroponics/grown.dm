@@ -71,6 +71,28 @@
 		msg += "*---------*</span>"
 		usr << msg
 		return
+	if (istype(O, /obj/item/device/pda))
+		var/obj/item/device/pda/A = O
+		if(A.scanmode == 6)
+			var/msg
+			msg = "<span class='info'>*---------*\n This is \a <span class='name'>[src]</span>\n"
+			switch(plant_type)
+				if(0)
+					msg += "- Plant type: <i>Normal plant</i>\n"
+				if(1)
+					msg += "- Plant type: <i>Weed</i>.  Can grow in nutrient-poor soil.\n"
+				if(2)
+					msg += "- Plant type: <i>Mushroom</i>.  Can grow in dry soil.\n"
+			msg += "- Potency: <i>[potency]</i>\n"
+			msg += "- Yield: <i>[yield]</i>\n"
+			msg += "- Maturation speed: <i>[maturation]</i>\n"
+			msg += "- Production speed: <i>[production]</i>\n"
+			msg += "- Endurance: <i>[endurance]</i>\n"
+			msg += "- Nutritional value: <i>[reagents.get_reagent_amount("nutriment")]</i>\n"
+			msg += "- Other substances: <i>[reagents.total_volume-reagents.get_reagent_amount("nutriment")]</i>\n"
+			msg += "*---------*</span>"
+			usr << msg
+			return
 	return
 
 /obj/item/weapon/grown/attackby(obj/item/O, mob/user, params)
