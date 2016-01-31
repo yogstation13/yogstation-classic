@@ -261,6 +261,9 @@ var/next_external_rsc = 0
 
 	world.manage_fps()
 
+	if(!tooltips)
+		tooltips = new /datum/tooltip(src)
+
 	//////////////
 	//DISCONNECT//
 	//////////////
