@@ -185,8 +185,11 @@
 
 /obj/effect/proc_holder/changeling/sting/extract_dna/sting_action(mob/user, mob/living/carbon/human/target)
 	add_logs(user, target, "stung", "extraction sting")
-	if(!(user.mind.changeling.has_dna(target.dna)))
-		user.mind.changeling.add_profile(target, user)
+	if((user.mind.changeling.has_dna(target.dna)))
+		world << "About to refresh the current DNA"
+		user.mind.changeling.remove_profile(target)
+		user.mind.changeling.absorbedcount--
+	user.mind.changeling.add_profile(target, user)
 	feedback_add_details("changeling_powers","ED")
 	return 1
 
