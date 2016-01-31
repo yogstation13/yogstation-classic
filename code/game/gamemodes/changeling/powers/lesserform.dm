@@ -11,7 +11,12 @@
 	if(!user || user.notransform)
 		return 0
 	user << "<span class='warning'>Our genes cry out!</span>"
-
+	
+	//Delete "flesh" items before monkeyizing
+	for(var/slot in slots)
+		if(istype(user.vars[slot], slot2type[slot]))
+			qdel(user.vars[slot])
+				
 	user.monkeyize(TR_KEEPITEMS | TR_KEEPIMPLANTS | TR_KEEPORGANS | TR_KEEPDAMAGE | TR_KEEPSE | TR_KEEPSRC)
 
 	// Human-form power now handled in monkeyize()

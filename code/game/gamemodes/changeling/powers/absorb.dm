@@ -53,8 +53,10 @@
 	user.visible_message("<span class='danger'>[user] sucks the fluids from [target]!</span>", "<span class='notice'>We have absorbed [target].</span>")
 	target << "<span class='userdanger'>You are absorbed by the changeling!</span>"
 
-	if(!changeling.has_dna(target.dna))
-		changeling.add_profile(target, user)
+	if(changeling.has_dna(target.dna))
+		changeling.remove_profile(target)
+		changeling.absorbedcount--
+	changeling.add_profile(target, user)
 
 	if(user.nutrition < NUTRITION_LEVEL_WELL_FED)
 		user.nutrition = min((user.nutrition + target.nutrition), NUTRITION_LEVEL_WELL_FED)
