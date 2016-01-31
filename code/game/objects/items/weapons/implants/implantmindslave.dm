@@ -1,7 +1,7 @@
 /obj/item/weapon/implant/mindslave
 	name = "mindslave implant"
 	desc = "Turn a crewmate into your eternal slave"
-	icon_state = "zombie"
+	activated = 0
 
 /obj/item/weapon/implant/mindslave/get_data()
 	var/dat = {"
@@ -71,5 +71,4 @@
 	..()
 
 /datum/objective/mindslave
-	dangerrating = 10
 	martyr_compatible = 1
