@@ -826,3 +826,70 @@ var/global/floorIsLava = 0
 	qdel(frommob)
 
 	return 1
+
+///////////////////////////////////////////////////
+/////////////////CYBERMEN//////////////////////////
+///////////////////////////////////////////////////
+
+datum/admins/proc/cybermen_panel()
+	set name = "Cybermen Panel"
+	set category = "Admin"
+
+	if(!check_rights(0))	return
+
+	var/dat = {"
+		<A href='?_src_=holder;cybermen=1'>Refresh</A><br>
+		<center><B>Cybermen Panel</B></center><hr><BR><BR>
+		"}
+	if(!istype(ticker.mode, /datum/game_mode/cybermen))
+		dat += "The gamemode is not currently cybermen, or the round has not started."
+	else
+		dat += {"
+			<A href='?_src_=holder;cybermen=2'>Force Complete Current Objective</A>(automatically displays to all cybermen)<br>
+			<A href='?_src_=holder;cybermen=6'>Set Random Current Objective</A>(automatically displays to all cybermen)<br>
+			<A href='?_src_=holder;cybermen=4'>Display Current Objective to all Cybermen</A><br>
+			<A href='?_src_=holder;cybermen=5'>Message All Cybermen</A><br>
+			"}
+
+		//<A href='?_src_=holder;cybermen=3'>Set Current Objective</A><br> //does not work at the moment.
+
+		dat += "<BR>Current Cybermen:<BR>"
+		for(var/datum/mind/M in ticker.mode.cybermen)
+			if(M)
+				dat += "[M] "
+				if(M.current)
+					dat += "([M.current])(<a href='?_src_=holder;adminmoreinfo=\ref[M.current]'>???</a> | <a href='?_src_=holder;adminplayerobservefollow=\ref[M.current]'>FLW</A>)"
+				else
+					dat += "(has no body)"
+			else
+				dat += "ERROR - null in the cybermen mind list"
+			dat += "<BR>"
+
+		dat += "<BR>Cybermen objectives:<BR>"
+		for(var/i = 1 to ticker.mode.cybermen_objectives.len)
+			var/datum/objective/cybermen/O = ticker.mode.cybermen_objectives[i]
+			if(O)
+				dat += "Phase [i]:[O.phase]<BR>[O.explanation_text]<BR><BR>"
+			else
+				dat += "ERROR - null in the objective list<BR>"
+
+		dat += "<BR>Current Active Hacks:<BR>"
+		for(var/obj/effect/cyberman_hack/H in ticker.mode.active_cybermen_hacks)
+			if(H)
+				dat += "[H.target_name] ([H.progress]/[H.cost])"
+				if(istype(H, /obj/effect/cyberman_hack/multiple_vector))
+					var/obj/effect/cyberman_hack/multiple_vector/MVH = H
+					for(var/obj/effect/cyberman_hack/CH in MVH.component_hacks)
+						dat += "<BR>:[CH.target_name]"
+				dat += "<BR>"
+			else
+				dat += "ERROR - null in the hack list<BR>"
+		dat += "<BR>Objects Hacked:<BR>"
+		for(var/O in ticker.mode.cybermen_hacked_objects)
+			if(O)
+				dat += "[O]"
+			else
+				dat += "ERROR - null in the hacked items list."
+			dat += "<BR>"
+	usr << browse(dat, "window=admin2;size=400x600")
+	return

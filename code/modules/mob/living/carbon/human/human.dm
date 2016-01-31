@@ -78,7 +78,7 @@
 				stat("Chemical Storage", "[mind.changeling.chem_charges]/[mind.changeling.chem_storage]")
 				stat("Absorbed DNA", mind.changeling.absorbedcount)
 			if(mind.cyberman)
-				stat("Hacking Module: [mind.cyberman.quickhack ? "Enabled" : "Disabled"]")
+				stat("Hacking Module: [mind.cyberman.quickhack ? "Enabled" : "Disabled"] [mind.cyberman.emp_hit ? "%$&ERROR EMP DAMAGE [mind.cyberman.emp_hit]% #?@": ""]")
 				if(mind.cyberman.selected_hack)
 					var/manual_selected = mind.cyberman.manual_selected_hack ? "(manual)" : "(auto)"
 					mind.cyberman.selected_hack.name = "Currently Processing Hack[manual_selected]: [mind.cyberman.selected_hack.get_status(src)]"//Could make this the line label, but it would push ALL the stat things to the right very, very far. \

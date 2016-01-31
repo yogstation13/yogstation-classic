@@ -16,7 +16,8 @@
 							/obj/machinery/computer/card/ = "an identification console",
 							/obj/machinery/r_n_d/server/ = "the station's RnD server",//might already be hacked due to a previous objective
 							/obj/machinery/telecomms/hub/ = "a telecomminications hub",//hopefully these haven't all been deconstructed yet
-							/mob/living/silicon/robot/ = "a cyborg")
+							// /mob/living/silicon/robot/ = "a cyborg"//needs a check in is_valid(). Removed because of overlap with hacking the AI
+							)
 
 
 /datum/objective/cybermen
@@ -44,7 +45,7 @@
 
 /datum/objective/cybermen/explore/get_research_levels/New()
 	..()
-	target_research_levels = rand(8, 14)
+	target_research_levels = rand(8, 10)
 	explanation_text = "Download [target_research_levels] research level\s by hacking the station's RnD server, the server controller, or technology disks."
 
 /datum/objective/cybermen/explore/get_research_levels/check_completion()//yes, I copy-pasted from ninjacode.
@@ -184,7 +185,8 @@
 
 //ANALYZE AND HACK SOME RANDOM THINGS
 /datum/objective/cybermen/exploit/analyze_and_hack
-	var/list/targets = list()
+	var/list/targets = list()//these two lists must remain in synch.
+	var/descriptions = list()
 	var/num_analyze_targets = 2//change explanation_text if you change either of these
 	var/num_hack_targets = 1
 
@@ -193,7 +195,6 @@
 	var/list/analyze_target_candidates = ticker.mode.cybermen_analyze_targets.Copy()
 	var/list/hack_target_candidates = ticker.mode.cybermen_hack_targets.Copy()
 	var/remaining = num_analyze_targets
-	var/descriptions = list()
 	while(remaining)
 		var/candidate = pick(analyze_target_candidates)
 		if(candidate)
@@ -209,8 +210,7 @@
 			hack_target_candidates -= candidate
 			targets += candidate
 		remaining--
-	explanation_text = "Obtain and analyze [descriptions[1]] and [descriptions[2]], and hack [descriptions[3]]."
-
+	check_completion()//takes care of explanation text.
 
 /datum/objective/cybermen/exploit/analyze_and_hack/is_valid()
 	//everything on the analyze list is a high-risk item, so we'll assume they haven't been spaced or destroyed.
@@ -224,11 +224,17 @@
 	if(..())
 		return 1
 	var/list/targets_copy = targets.Copy()
-	for(var/current in ticker.mode.cybermen_hacked_objects)
-		for(var/current2 in targets_copy)
+	var/list/done_indicators = list()
+	for(var/current2 in targets_copy)
+		var/done_indicator = "(<font color='red'>Not Completed</font>)"
+		for(var/current in ticker.mode.cybermen_hacked_objects)
 			if(istype(current, current2))
 				targets_copy -= current2
+				done_indicator = "(<font color='green'>Completed</font>)"
 				break
+		done_indicators += done_indicator
+
+	explanation_text = "Obtain and analyze [descriptions[1]][done_indicators[1]] and [descriptions[2]][done_indicators[2]], and hack [descriptions[3]][done_indicators[3]]."
 	return targets_copy.len == 0
 
 
@@ -275,7 +281,7 @@
 
 /datum/objective/cybermen/exterminate/hijack_shuttle/New()
 	..()
-	required_escaped_cybermen = min(10, ticker.mode.cybermen.len)
+	required_escaped_cybermen = min(6, ticker.mode.cybermen.len)
 	explanation_text = "Hijack the escape shuttle, ensuring that no non-cybermen escape on it. At least [required_escaped_cybermen] Cybermen must escape on the shuttle. The escape pods may be ignored."
 
 /datum/objective/cybermen/exterminate/hijack_shuttle/check_completion()//some copy-pasting from objective.dm

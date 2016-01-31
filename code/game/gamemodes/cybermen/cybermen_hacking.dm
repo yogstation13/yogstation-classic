@@ -268,7 +268,7 @@
 	return get_dist(H, target) <= H.mind.cyberman.hack_max_maintain_dist
 
 /obj/effect/cyberman_hack/proc/complete()//you don't need to check for null or qdeleted here, because complete is always called by process(), which already does that. Unless someone cheats and calls complete() when they're not supposed to.
-	if(!(target in ticker.mode.cybermen_hacked_objects))//no repeats, hopefully.
+	if(target && !(target in ticker.mode.cybermen_hacked_objects))//no repeats, hopefully.
 		ticker.mode.cybermen_hacked_objects += target
 	outputMessage("<span class='notice'>[display_verb] of \the [target_name] has successfully completed.</span>")
 	qdel(src)
