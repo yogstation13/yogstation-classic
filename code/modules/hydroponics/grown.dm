@@ -1219,11 +1219,7 @@ obj/item/weapon/reagent_containers/food/snacks/grown/shell/eggy/add_juice()
 /obj/item/weapon/reagent_containers/food/snacks/grown/mushroom/glowshroom/attack_self(mob/user)
 	if(istype(user.loc,/turf/space))
 		return
-	var/obj/effect/glowshroom/planted = new /obj/effect/glowshroom(user.loc)
-	planted.delay = planted.delay - production * 100 //So the delay goes DOWN with better stats instead of up. :I
-	planted.endurance = endurance
-	planted.yield = yield
-	planted.potency = potency
+	new /obj/effect/glowshroom(user.loc, potency, yield, max(1200 - production * 100, 0), endurance)
 	qdel(src)
 	user << "<span class='notice'>You plant the glowshroom.</span>"
 

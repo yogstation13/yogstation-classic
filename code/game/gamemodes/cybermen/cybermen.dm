@@ -178,6 +178,7 @@
 	for(var/i = 1 to cybermen_objectives.len-1)
 		O = cybermen_objectives[i]
 		if(O)
+			O.check_completion()//needed for updating explanation text.
 			M.current << "Phase [i]:[O.phase]"
 			M.current << "[O.explanation_text]"
 			M.current << "<font color='green'><b>Complete</b></font><br>"
@@ -189,6 +190,7 @@
 /datum/game_mode/proc/display_current_cybermen_objective()
 	if(cybermen_objectives.len > 0)
 		var/datum/objective/cybermen/O = cybermen_objectives[cybermen_objectives.len]
+		O.check_completion()//needed for updating explanation text.
 		message_all_cybermen("<span class='notice'>Cybermen objectives have advanced to stage [cybermen_objectives.len]:[O.phase].Your new objective is: </span>")
 		message_all_cybermen(O.explanation_text)
 	else
@@ -235,7 +237,8 @@
 		H << "<span class='notice'>Your loyalty implant has been deactivated, but not destroyed. While scanners will show that it is still active, you are no longer loyal to Nanotrasen.</span>"//I personnally am not a fan of this, but Alblaka said it so that's what I've done.
 
 	cyberman.current << "<span class='notice'>As a Cyberman, hacking is your most valuable ability. Click on \'Prepare Hacking\' in the Cybermen tab to use it.</span>"
-	cyberman.current << "<span class='notice'>\n\"Cybermen\" is an experimental gamemode. If you find any bugs, please submit a bug report on the forums. If a bug prevents you from completing an objective, or you are not properly assigned an objective, contact an admin via ahelp.</span>"
+	cyberman.current << "<span class='notice'>You can use the Cyberman Broadcast to undetectably communicate with your fellow Cybermen. You can also use robot talk with .b, but this will alert any unhacked cyborgs or AIs to your presence.</span>"
+	cyberman.current << "<span class='notice'>\n\"Cybermen\" is an experimental gamemode. If you find any bugs, please submit an issue on the server's github. If a bug prevents you from completing an objective, or you are not properly assigned an objective, contact an admin via ahelp.</span>"
 	display_all_cybermen_objectives(cyberman)
 
 /datum/game_mode/proc/remove_cyberman(datum/mind/cyberman, var/message_override)
@@ -297,7 +300,6 @@
 		text += "<br><span class='big'><b>The Cybermen were:</b></span>"
 		for(var/datum/mind/cyberman in ticker.mode.cybermen)
 			text += printplayer(cyberman)
-			text += "<br>"
 		world << text
 
 datum/game_mode/proc/update_cybermen_icons_add(datum/mind/cyberman)

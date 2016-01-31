@@ -2199,3 +2199,19 @@
 			log_admin("[key_name(usr)] has kicked [afkonly ? "all AFK" : "all"] clients from the lobby. [length(listkicked)] clients kicked: [strkicked ? strkicked : "--"]")
 		else
 			usr << "You may only use this when the game is running"
+	else if(href_list["cybermen"])
+		if(!check_rights(R_ADMIN))
+			return
+		switch(href_list["cybermen"])
+			if("1")//refresh
+				cybermen_panel()
+			if("2")//force complete objective
+				force_complete_cybermen_objective()
+			if("3")//set objective
+				set_cybermen_objective()
+			if("4")//display objective
+				ticker.mode.display_current_cybermen_objective()
+			if("5")//message all cybermen
+				cybermen_collective_broadcast()
+			if("6")//set random objective
+				reroll_cybermen_objective()

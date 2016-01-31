@@ -34,7 +34,7 @@
 				if(cyberman.cyberman.emp_hit)
 					distorted_message = Gibberish2(input, cyberman.cyberman.emp_hit*1.6)
 				cyberman.current << "<span class='cyberman'>Cyberman Broadcast: [distorted_message]</span>"
-			for(var/datum/mind/dead in dead_mob_list)
+			for(var/mob/dead in dead_mob_list)
 				dead << "<span class='cyberman'>Cyberman Broadcast: [input]</span>"
 		return 1
 	else
@@ -96,16 +96,25 @@
 /////////////////////////////////////////////
 ///////////////DEBUG/ADMIN///////////////////
 /////////////////////////////////////////////
-#ifdef CYBERMEN_DEBUG
 
-/mob/living/verb/become_cyberman()
+var/list/cybermen_debug_abilities = list(/datum/admins/proc/become_cyberman,
+										 /datum/admins/proc/become_cyberman_instant,
+										 /datum/admins/proc/cyberman_defect,
+										 /datum/admins/proc/reroll_cybermen_objective,
+										 /datum/admins/proc/force_complete_cybermen_objective,
+										 // /datum/admins/proc/set_cybermen_objective
+										 /datum/admins/proc/start_auto_hack,
+										 /datum/admins/proc/cybermen_collective_broadcast
+										    )
+
+/datum/admins/proc/become_cyberman()
 	set category = "Cyberman Debug"
 	set name = "Become Cyberman"
 
 	if(ticker.mode.is_cyberman(usr.mind))
 		usr << "You are already a Cyberman!"
 	else
-		var/obj/effect/cyberman_hack/newHack = src.get_cybermen_hack()
+		var/obj/effect/cyberman_hack/newHack = usr.get_cybermen_hack()
 		newHack.innate_processing = 10
 		if(newHack)
 			if(newHack.start())
@@ -113,7 +122,7 @@
 			else
 				usr << "Cyberman conversion failed."
 
-/mob/living/verb/become_cyberman_instant()
+/datum/admins/proc/become_cyberman_instant()
 	set category = "Cyberman Debug"
 	set name = "Become Cyberman (Instant)"
 
@@ -123,14 +132,14 @@
 		ticker.mode.add_cyberman(usr.mind)
 
 
-/mob/living/verb/cyberman_defect()
+/datum/admins/proc/cyberman_defect()
 	set category = "Cyberman Debug"
 	set name = "Quit being a Cyberman"
 	src << "Removing cyberman status..."
 	ticker.mode.remove_cyberman(usr.mind)
 
 
-/mob/living/verb/reroll_cybermen_objective()
+/datum/admins/proc/reroll_cybermen_objective()
 	set category = "Cyberman Debug"
 	set name = "Reroll Objective"
 	ticker.mode.message_all_cybermen("Re-assigning current objective...")
@@ -138,21 +147,28 @@
 	ticker.mode.generate_cybermen_objective(ticker.mode.cybermen_objectives.len+1)
 	ticker.mode.display_current_cybermen_objective()
 
-/*
-/mob/living/verb/select_new_cybermen_objective()
-
-
-/mob/living/verb/select_next_cybermen_objective()
-
-*/
-
-/mob/living/verb/force_complete_cybermen_objective()
+/datum/admins/proc/force_complete_cybermen_objective()
 	set category = "Cyberman Debug"
 	set name = "Force Complete Objective"
-	var/datum/objective/cybermen/O = ticker.mode.cybermen_objectives[ticker.mode.cybermen_objectives.len]
-	O.completed = 1
 
-/mob/living/verb/start_auto_hack(var/atom/target in world)
+	if(ticker.mode.cybermen_objectives.len)
+		var/datum/objective/cybermen/O = ticker.mode.cybermen_objectives[ticker.mode.cybermen_objectives.len]
+		if(O)
+			O.completed = 1
+			message_admins("[key_name_admin(usr)] has force-completed the cyberman objective: \"[O.explanation_text]\".")
+			log_admin("[key_name(usr)] has force-completed the cyberman objective: \"[O.explanation_text]\".")
+		else
+			usr << "<span class='warning'>ERROR - Current Cyberman objective is null.</span>"
+	else
+		usr << "<span class='warning'>ERROR - No cyberman objective to force-complete.</span>"
+
+/datum/admins/proc/set_cybermen_objective()
+	set category = "Cyberman Debug"
+	set name = "Set Current Objective"
+
+	usr << "<span class='warning'>This operation is not functional at this time.</span>"
+
+/datum/admins/proc/start_auto_hack(var/atom/target in world)
 	set category = "Cyberman Debug"
 	set name = "Start Automatic Hack"
 	var/obj/effect/cyberman_hack/newHack = target.get_cybermen_hack()
@@ -164,14 +180,13 @@
 	else
 		usr << "[target] cannot be hacked."
 
-/mob/living/verb/cybermen_collective_broadcast()
+/datum/admins/proc/cybermen_collective_broadcast()
 	set category = "Cyberman Debug"
 	set name = "Cyberman Collective Broadcast"
+
 	var/input = stripped_input(usr, "Enter a message to share with all other Cybermen. This message will not be distorted by EMP effects.", "Cybermen Collective Broadcast", "")
 	if(input)
 		for(var/datum/mind/cyberman in ticker.mode.cybermen)
-			cyberman.current << "<span class='cyberman'>Cyberman Collective: [input]</span>"//need to find or make a better span class
-	for(var/datum/mind/dead in dead_mob_list)
-		dead << "<span class='cyberman'>Cyberman Collective: [input]</span>"
-
-#endif
+			cyberman.current << "<span class='cybermancollective'>Cyberman Collective: [input]</span>"
+	for(var/mob/dead in dead_mob_list)
+		dead << "<span class='cybermancollective'>Cyberman Collective: [input]</span>"
