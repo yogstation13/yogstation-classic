@@ -79,7 +79,7 @@
 	anchored = 1
 	var/serial_number	//Will hold the value of src.loc if nobody initialises it
 	var/ruined = 0
-	var/subtype = 0
+	var/subtype
 
 /obj/structure/sign/poster/New(serial,subtype)
 	serial_number = serial
@@ -337,7 +337,11 @@
 	P.resulting_poster = src
 	P.loc = location
 	loc = P
-
+/obj/structure/sign/poster/proc/roll_and_drop_legit(turf/location)
+	var/obj/item/weapon/contraband/poster/legit/P = new(src, serial_number)
+	P.resulting_poster = src
+	P.loc = location
+	loc = P
 
 //seperated to reduce code duplication. Moved here for ease of reference and to unclutter r_wall/attackby()
 /turf/simulated/wall/proc/place_poster(obj/item/weapon/contraband/poster/P, mob/user)
@@ -361,7 +365,6 @@
 	var/temp_loc = user.loc
 	flick("poster_being_set",D)
 	D.loc = src
-	qdel(P)	//delete it now to cut down on sanity checks afterwards. Agouri's code supports rerolling it anyway
 	playsound(D.loc, 'sound/items/poster_being_created.ogg', 100, 1)
 
 	sleep(17)
@@ -369,8 +372,11 @@
 
 	if(istype(src,/turf/simulated/wall) && user && user.loc == temp_loc)	//Let's check if everything is still there
 		user << "<span class='notice'>You place the poster!</span>"
+	else if(istype(P, /obj/item/weapon/contraband/poster/legit))
+		D.roll_and_drop_legit(temp_loc)
 	else
 		D.roll_and_drop(temp_loc)
+	qdel(P)	//delete it now to cut down on sanity checks afterwards. Agouri's code supports rerolling it anyway //moved by Groxic to fix bug and check type
 	return
 
 //Putting non-contraband posters here because everything else here is related to posters anyway. -JS
