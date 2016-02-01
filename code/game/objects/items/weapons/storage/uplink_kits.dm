@@ -138,8 +138,11 @@
 /obj/item/weapon/storage/box/syndie_kit/imp_mindslave/New()
 	..()
 	var/obj/item/weapon/implanter/O = new(src)
-	O.imp = new /obj/item/weapon/implant/mindslave(O)
+	var/obj/item/weapon/implant/mindslave/imp = new /obj/item/weapon/implant/mindslave(O)
+	O.imp = imp
 	O.update_icon()
+	var/obj/item/weapon/cartridge/slavemaster = new(src)
+	slavemaster.imp = imp
 	return
 
 /*/obj/item/weapon/storage/box/syndie_kit/imp_compress
