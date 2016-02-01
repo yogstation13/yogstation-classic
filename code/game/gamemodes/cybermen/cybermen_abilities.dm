@@ -4,7 +4,7 @@
 
 /obj/effect/proc_holder/cyberman/proc/get_user_selected_hack(var/mob/living/carbon/human/user = usr, var/null_option)
 	var/list/hacks = list()
-	for(var/obj/effect/cyberman_hack/hack in ticker.mode.active_cybermen_hacks)
+	for(var/obj/effect/cyberman_hack/hack in cyberman_network.active_cybermen_hacks)
 		hacks += hack.target_name
 	if(null_option)
 		hacks += null_option
@@ -12,7 +12,7 @@
 	if(!target_hack_name || target_hack_name == null_option)
 		return null
 	var/obj/effect/cyberman_hack/target_hack = null
-	for(var/obj/effect/cyberman_hack/hack in ticker.mode.active_cybermen_hacks)//this will have issues if two different hacked objects have the same name.
+	for(var/obj/effect/cyberman_hack/hack in cyberman_network.active_cybermen_hacks)//this will have issues if two different hacked objects have the same name.
 		if(hack.target_name == target_hack_name)
 			target_hack = hack
 			break
@@ -29,7 +29,8 @@
 	if(!usr.mind.cyberman.emp_hit)
 		var/input = stripped_input(usr, "Enter a message to share with all other Cybermen.", "Cybermen Broadcast", "")
 		if(input)
-			for(var/datum/mind/cyberman in ticker.mode.cybermen)
+			cyberman_network.log_broadcast("[usr] Sent a Cyberman Broadcast: [input]")
+			for(var/datum/mind/cyberman in cyberman_network.cybermen)
 				var/distorted_message = input
 				if(cyberman.cyberman.emp_hit)
 					distorted_message = Gibberish2(input, cyberman.cyberman.emp_hit*1.6)
@@ -90,7 +91,7 @@
 	desc = "Display all cyberman objectives that have been assigned so far."
 
 /obj/effect/proc_holder/cyberman/cyberman_disp_objectives/Click()
-	ticker.mode.display_all_cybermen_objectives(usr.mind)
+	cyberman_network.display_all_cybermen_objectives(usr.mind)
 
 
 /////////////////////////////////////////////
@@ -142,17 +143,23 @@ var/list/cybermen_debug_abilities = list(/datum/admins/proc/become_cyberman,
 /datum/admins/proc/reroll_cybermen_objective()
 	set category = "Cyberman Debug"
 	set name = "Reroll Objective"
-	ticker.mode.message_all_cybermen("Re-assigning current objective...")
-	ticker.mode.cybermen_objectives -= ticker.mode.cybermen_objectives[ticker.mode.cybermen_objectives.len]
-	ticker.mode.generate_cybermen_objective(ticker.mode.cybermen_objectives.len+1)
-	ticker.mode.display_current_cybermen_objective()
+	if(!cyberman_network)
+		usr << "There is no Cyberman network to change the objective of."
+		return
+	cyberman_network.message_all_cybermen("Re-assigning current objective...")
+	cyberman_network.cybermen_objectives -= cyberman_network.cybermen_objectives[cyberman_network.cybermen_objectives.len]
+	cyberman_network.generate_cybermen_objective(cyberman_network.cybermen_objectives.len+1)
+	cyberman_network.display_current_cybermen_objective()
 
 /datum/admins/proc/force_complete_cybermen_objective()
 	set category = "Cyberman Debug"
 	set name = "Force Complete Objective"
 
-	if(ticker.mode.cybermen_objectives.len)
-		var/datum/objective/cybermen/O = ticker.mode.cybermen_objectives[ticker.mode.cybermen_objectives.len]
+	if(!cyberman_network)
+		usr << "There is no Cyberman network to complete the objective of."
+		return
+	if(cyberman_network.cybermen_objectives.len)
+		var/datum/objective/cybermen/O = cyberman_network.cybermen_objectives[cyberman_network.cybermen_objectives.len]
 		if(O)
 			O.completed = 1
 			message_admins("[key_name_admin(usr)] has force-completed the cyberman objective: \"[O.explanation_text]\".")
@@ -184,9 +191,13 @@ var/list/cybermen_debug_abilities = list(/datum/admins/proc/become_cyberman,
 	set category = "Cyberman Debug"
 	set name = "Cyberman Collective Broadcast"
 
+	if(!cyberman_network)
+		usr << "You cannot make a Cyberman Collective Broadcast, there are no cybermen to hear it."
+		return
 	var/input = stripped_input(usr, "Enter a message to share with all other Cybermen. This message will not be distorted by EMP effects.", "Cybermen Collective Broadcast", "")
 	if(input)
-		for(var/datum/mind/cyberman in ticker.mode.cybermen)
+		cyberman_network.log_broadcast("[usr] Sent a Cyberman Collective Broadcast: [input]", 1)
+		for(var/datum/mind/cyberman in cyberman_network.cybermen)
 			cyberman.current << "<span class='cybermancollective'>Cyberman Collective: [input]</span>"
-	for(var/mob/dead in dead_mob_list)
-		dead << "<span class='cybermancollective'>Cyberman Collective: [input]</span>"
+		for(var/mob/dead in dead_mob_list)
+			dead << "<span class='cybermancollective'>Cyberman Collective: [input]</span>"

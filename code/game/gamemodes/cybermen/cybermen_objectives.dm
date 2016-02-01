@@ -1,4 +1,4 @@
-/datum/game_mode
+/datum/cyberman_network
 	var/list/cybermen_analyze_targets = list(/obj/item/weapon/gun/energy/laser/captain = "the captain's antique laser gun", //stolen from objective_items.dm. Could just use the objective datums instead.
 								/obj/item/weapon/gun/energy/gun/hos = "the head of security's personal laser gun",
 								/obj/item/weapon/hand_tele = "a hand teleporter",
@@ -52,7 +52,7 @@
 	if(..())
 		return 1
 	var/current_amount = 0
-	for(var/datum/tech/current_data in ticker.mode.cybermen_research_downloaded)
+	for(var/datum/tech/current_data in cyberman_network.cybermen_research_downloaded)
 		if(current_data.level)
 			current_amount += (current_data.level-1)//can't let that level 1 junk give us points
 	return current_amount >= target_research_levels
@@ -64,7 +64,7 @@
 /datum/objective/cybermen/explore/get_secret_documents/check_completion()
 	if(..())
 		return 1
-	for(var/obj/item/documents/nanotrasen/D in ticker.mode.cybermen_hacked_objects)
+	for(var/obj/item/documents/nanotrasen/D in cyberman_network.cybermen_hacked_objects)
 		return 1
 	return 0
 
@@ -75,7 +75,7 @@
 /datum/objective/cybermen/explore/get_access/check_completion()
 	if(..())
 		return 1
-	return (access_captain in ticker.mode.cybermen_access_downloaded)
+	return (access_captain in cyberman_network.cybermen_access_downloaded)
 
 //////////////////////////////
 //////////EXPAND//////////////
@@ -106,7 +106,7 @@
 			humans_on_station++
 	if(humans_on_station > 3)//needs a somewhat sane lozer limit
 		target_cybermen_num = humans_on_station
-		ticker.mode.message_all_cybermen("<span class='notice'>Too few humans detected aboard the station. Number of required cybermen reduced to [target_cybermen_num].</span>")
+		cyberman_network.message_all_cybermen("<span class='notice'>Too few humans detected aboard the station. Number of required cybermen reduced to [target_cybermen_num].</span>")
 		explanation_text = "Convert crewmembers until there are [target_cybermen_num] living cybermen on the station."
 		return 1
 	else
@@ -116,7 +116,7 @@
 	if(..())
 		return 1
 	var/living_cybermen = 0
-	for(var/datum/mind/M in ticker.mode.cybermen)
+	for(var/datum/mind/M in cyberman_network.cybermen)
 		if(M.current && !(M.current.stat | DEAD))
 			living_cybermen++
 	return living_cybermen >= target_cybermen_num
@@ -141,14 +141,14 @@
 		if(targetAI && targetAI.current != null && !qdeleted(targetAI.current) && targetAI.key && targetAI.client)
 			targetAI = new_ai
 			explanation_text = "Hack [targetAI.current.name], the AI."
-			ticker.mode.message_all_cybermen("Cybermen AI hack target changed. New AI hack target is [targetAI.current.name].")
+			cyberman_network.message_all_cybermen("Cybermen AI hack target changed. New AI hack target is [targetAI.current.name].")
 			return 1
 	return 0
 
 /datum/objective/cybermen/expand/hack_ai/check_completion()
 	if(..())
 		return 1
-	return targetAI in ticker.mode.cybermen_hacked_objects
+	return targetAI in cyberman_network.cybermen_hacked_objects
 
 //CONVERT HEADS
 /datum/objective/cybermen/expand/convert_heads
@@ -170,7 +170,7 @@
 		var/name = t.fields["name"]
 		var/rank = t.fields["rank"]
 		if(rank in command_positions)
-			for(var/datum/mind/M in ticker.mode.cybermen)
+			for(var/datum/mind/M in cyberman_network.cybermen)
 				if(M.current.real_name == name)//possible issues with duplicate names
 					num++
 					break
@@ -192,8 +192,8 @@
 
 /datum/objective/cybermen/exploit/analyze_and_hack/New()
 	..()
-	var/list/analyze_target_candidates = ticker.mode.cybermen_analyze_targets.Copy()
-	var/list/hack_target_candidates = ticker.mode.cybermen_hack_targets.Copy()
+	var/list/analyze_target_candidates = cyberman_network.cybermen_analyze_targets.Copy()
+	var/list/hack_target_candidates = cyberman_network.cybermen_hack_targets.Copy()
 	var/remaining = num_analyze_targets
 	while(remaining)
 		var/candidate = pick(analyze_target_candidates)
@@ -227,7 +227,7 @@
 	var/list/done_indicators = list()
 	for(var/current2 in targets_copy)
 		var/done_indicator = "(<font color='red'>Not Completed</font>)"
-		for(var/current in ticker.mode.cybermen_hacked_objects)
+		for(var/current in cyberman_network.cybermen_hacked_objects)
 			if(istype(current, current2))
 				targets_copy -= current2
 				done_indicator = "(<font color='green'>Completed</font>)"
@@ -281,7 +281,7 @@
 
 /datum/objective/cybermen/exterminate/hijack_shuttle/New()
 	..()
-	required_escaped_cybermen = min(6, ticker.mode.cybermen.len)
+	required_escaped_cybermen = min(6, cyberman_network.cybermen.len)
 	explanation_text = "Hijack the escape shuttle, ensuring that no non-cybermen escape on it. At least [required_escaped_cybermen] Cybermen must escape on the shuttle. The escape pods may be ignored."
 
 /datum/objective/cybermen/exterminate/hijack_shuttle/check_completion()//some copy-pasting from objective.dm
@@ -319,4 +319,4 @@
 				cybermen_num++
 			else
 				non_cybermen_num++
-	return (cybermen_num / (cybermen_num + non_cybermen_num))*100 >= target_percent
+	return (cybermen_num + non_cybermen_num > 0) && (cybermen_num / (cybermen_num + non_cybermen_num))*100 >= target_percent
