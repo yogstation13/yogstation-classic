@@ -141,7 +141,7 @@
 	var/obj/item/weapon/implant/mindslave/imp = new /obj/item/weapon/implant/mindslave(O)
 	O.imp = imp
 	O.update_icon()
-	var/obj/item/weapon/cartridge/slavemaster = new(src)
+	var/obj/item/weapon/cartridge/slavemaster/slavemaster = new(src)
 	slavemaster.imp = imp
 	return
 
