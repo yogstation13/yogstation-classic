@@ -61,8 +61,7 @@
 			ticker.mode.traitors -= target.mind
 
 		if(target.stat != DEAD)
-			target << "<span class='boldnotice'>You feel as if you have just been released from eternal slavery. Yet you cant seem to remember anything at all!</span>"
-
+			target.visible_message("<span class='notice'>[target] looks like they have just been released from slavery!</span>", "<span class='boldnotice'>You feel as if you have just been released from eternal slavery. Yet you cant seem to remember anything at all!</span>")
 		return 1
 
 /obj/item/weapon/implant/mindslave/activate()
