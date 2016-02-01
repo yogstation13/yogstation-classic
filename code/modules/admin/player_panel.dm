@@ -520,6 +520,16 @@
 					dat += "<tr><td><i>Monkey not found!</i></td></tr>"
 			dat += "</table>"
 
+		if(ticker.mode.cybermen.len > 0)
+			dat += "<br><table cellspacing=5><tr><td><B>Cybermen</B></td><td></td><td></td></tr>"
+			for(var/datum/mind/cyberman in ticker.mode.cybermen)
+				var/mob/M = cyberman.current
+				if(M)
+					dat += "<tr><td><a href='?_src_=holder;adminplayeropts=\ref[M]'>[M.real_name]</a>[M.client ? "" : " <i>(ghost)</i>"][M.stat == 2 ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"
+					dat += "<td><A href='?priv_msg=[M.ckey]'>PM</A></td>"
+				else
+					dat += "<tr><td><i>Cyberman not found!</i></td></tr>"
+			dat += "</table>"
 
 		dat += "</body></html>"
 		usr << browse(dat, "window=roundstatus;size=420x500")

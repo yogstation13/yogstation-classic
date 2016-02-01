@@ -264,6 +264,14 @@ emp_act
 				src.nutrition = src.nutrition * 0.8
 				src.emote("scream")
 				src.attack_log += "Was hit with a severity 3(light) EMP as an android. Lost 5 health."
+	//CYBERMEN STUFF
+	//I'd prefer to have a event-listener system set up for this, but for now this will do.
+	if(ticker.mode.is_cyberman(src.mind))
+		src.mind.cyberman.emp_act(src, severity)
+	else
+		for(var/obj/effect/cyberman_hack/human/H in ticker.mode.active_cybermen_hacks)
+			if(H.target == src)
+				H.emp_act(severity)
 	..()
 
 /mob/living/carbon/human/acid_act(acidpwr, toxpwr, acid_volume)
