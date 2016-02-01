@@ -157,7 +157,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	ttone = "objection"
 
 /obj/item/device/pda/botanist
-	//default_cartridge = /obj/item/weapon/cartridge/botanist
+	default_cartridge = /obj/item/weapon/cartridge/botanist
 	icon_state = "pda-hydro"
 
 /obj/item/device/pda/roboticist
@@ -327,6 +327,11 @@ var/global/list/obj/item/device/pda/PDAs = list()
 						dat += "<ul>"
 						dat += "<li><a href='byond://?src=\ref[src];choice=44'><img src=pda_medical.png> Medical Records</a></li>"
 						dat += "<li><a href='byond://?src=\ref[src];choice=Medical Scan'><img src=pda_scanner.png> [scanmode == 1 ? "Disable" : "Enable"] Medical Scanner</a></li>"
+						dat += "</ul>"
+					if (cartridge.access_flora)
+						dat += "<h4>Botanist Functions</h4>"
+						dat += "<ul>"
+						dat += "<li><a href='byond://?src=\ref[src];choice=Plant Analyze'><img src=pda_botany.png> [scanmode == 6 ? "Disable" : "Enable"] Plant Analyzer</a></li>"
 						dat += "</ul>"
 					if (cartridge.access_security)
 						dat += "<h4>Security Functions</h4>"
@@ -549,6 +554,11 @@ var/global/list/obj/item/device/pda/PDAs = list()
 					scanmode = 0
 				else if((!isnull(cartridge)) && (cartridge.access_medical))
 					scanmode = 1
+			if("Plant Analyze")
+				if(scanmode == 6)
+					scanmode = 0
+				else if ((!isnull(cartridge)) && (cartridge.access_flora))
+					scanmode = 6
 			if("Reagent Scan")
 				if(scanmode == 3)
 					scanmode = 0
@@ -845,7 +855,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 
 		log_pda("[usr] (PDA: [src.name]) sent \"[t]\" to [P.name]")
 		photo = null
-		investigate_log("[usr]([usr.ckey]) (PDA: [src.name]) sent \"[t]\"[photo_ref] to [P.name]", "pda")		
+		investigate_log("[usr]([usr.ckey]) (PDA: [src.name]) sent \"[t]\"[photo_ref] to [P.name]", "pda")
 		P.overlays.Cut()
 		P.overlays += image('icons/obj/pda.dmi', "pda-r")
 	else
