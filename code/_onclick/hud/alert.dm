@@ -98,6 +98,12 @@
 	desc = "Something seems to have gone wrong with this alert, so report this bug please"
 	var/timeout = 0 //If set to a number, this alert will clear itself after that many deciseconds
 
+/obj/screen/alert/MouseEntered(location,control,params)
+	openToolTip(usr,src,params,title = name,content = desc)
+
+
+/obj/screen/alert/MouseExited()
+	closeToolTip(usr)
 
 //Gas alerts
 /obj/screen/alert/oxy
