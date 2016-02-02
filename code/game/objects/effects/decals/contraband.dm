@@ -79,7 +79,7 @@
 	anchored = 1
 	var/serial_number	//Will hold the value of src.loc if nobody initialises it
 	var/ruined = 0
-	var/subtype
+	var/subtype = 0
 
 /obj/structure/sign/poster/New(serial,subtype)
 	serial_number = serial
@@ -358,9 +358,10 @@
 			return
 
 	user << "<span class='notice'>You start placing the poster on the wall...</span>"	//Looks like it's uncluttered enough. Place the poster.
-
+	var/legit = istype(P, /obj/item/weapon/contraband/poster/legit)
 	//declaring D because otherwise if P gets 'deconstructed' we lose our reference to P.resulting_poster
 	var/obj/structure/sign/poster/D = P.resulting_poster
+	qdel(P)	//delete it now to cut down on sanity checks afterwards. Agouri's code supports rerolling it anyway
 
 	var/temp_loc = user.loc
 	flick("poster_being_set",D)
@@ -372,11 +373,10 @@
 
 	if(istype(src,/turf/simulated/wall) && user && user.loc == temp_loc)	//Let's check if everything is still there
 		user << "<span class='notice'>You place the poster!</span>"
-	else if(istype(P, /obj/item/weapon/contraband/poster/legit))
+	else if(legit)
 		D.roll_and_drop_legit(temp_loc)
 	else
 		D.roll_and_drop(temp_loc)
-	qdel(P)	//delete it now to cut down on sanity checks afterwards. Agouri's code supports rerolling it anyway //moved by Groxic to fix bug and check type
 	return
 
 //Putting non-contraband posters here because everything else here is related to posters anyway. -JS

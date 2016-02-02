@@ -12,14 +12,6 @@
 	var/disease_amount = 20
 	var/spillable = 0
 
-/obj/item/weapon/reagent_containers/attack_self()
-	set src in range(0)
-	if(usr.stat || !usr.canmove || usr.restrained())
-		return
-	var/N = input("Amount per transfer from this:","[src]") as null|anything in possible_transfer_amounts
-	if (N)
-		amount_per_transfer_from_this = N
-
 /obj/item/weapon/reagent_containers/verb/set_APTFT() //set amount_per_transfer_from_this
 	set name = "Set transfer amount"
 	set category = "Object"
@@ -45,7 +37,7 @@
 		reagents.add_reagent_list(list_reagents)
 
 /obj/item/weapon/reagent_containers/attack_self(mob/user)
-	..()//must do this so setting transfer amount with hotkey 'z' works.
+	set_APTFT()
 
 /obj/item/weapon/reagent_containers/attack(mob/M, mob/user, def_zone)
 	return
