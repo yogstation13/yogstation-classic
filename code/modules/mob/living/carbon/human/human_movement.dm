@@ -25,13 +25,15 @@
 
 
 /mob/living/carbon/human/slip(s_amount, w_amount, obj/O, lube)
+	if(isobj(shoes) && shoes.flags&SUPERNOSLIP)
+		return 0
 	if(isobj(shoes) && (shoes.flags&NOSLIP) && !(lube&GALOSHES_DONT_HELP))
 		return 0
 	.=..()
 
 /mob/living/carbon/human/experience_pressure_difference()
 	playsound(src, 'sound/effects/space_wind.ogg', 50, 1)
-	if(shoes && shoes.flags&NOSLIP)
+	if(shoes && (shoes.flags&NOSLIP || shoes.flags&SUPERNOSLIP))
 		return 0
 	. = ..()
 

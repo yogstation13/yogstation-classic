@@ -72,7 +72,8 @@ var/list/admin_verbs_admin = list(
 	/client/proc/add_pretty_filter,
 	/client/proc/reset_pretty_filter,
 	/client/proc/check_words,			/*displays cult-words*/
-	/client/proc/reset_all_tcs			/*resets all telecomms scripts*/
+	/client/proc/reset_all_tcs,		/*resets all telecomms scripts*/
+	/datum/admins/proc/cybermen_panel   //lots of cybermen options
 	)
 var/list/admin_verbs_ban = list(
 	/client/proc/unban_panel,
@@ -237,6 +238,9 @@ var/list/admin_verbs_hideable = list(
 
 		var/rights = holder.rank.rights
 		verbs += admin_verbs_default
+		#ifdef CYBERMEN_DEBUG
+		verbs += cybermen_debug_abilities
+		#endif
 		if(rights & R_BUILDMODE)	verbs += /client/proc/togglebuildmodeself
 		if(rights & R_ADMIN)		verbs += admin_verbs_admin
 		if(rights & R_BAN)			verbs += admin_verbs_ban
