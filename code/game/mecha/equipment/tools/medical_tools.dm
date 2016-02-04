@@ -466,6 +466,22 @@
 	if(get_dist(src,A) >= 4)
 		occupant_message("The object is too far away.")
 		return 0
+	if(istype(A, /obj/machinery/sleeper))
+		var/obj/item/mecha_parts/mecha_equipment/sleeper/SLPR = locate(/obj/item/mecha_parts/mecha_equipment/sleeper) in chassis
+		if(SLPR)
+			var/obj/machinery/sleeper/target = A
+			for(var/IC in target.injection_chems)
+				var/datum/reagent/C = chemical_reagents_list[IC]
+				if(C)
+					if(C.can_synth && add_known_reagent(C.id, C.name))
+						occupant_message("Reagent analyzed, identified as [C.name] and added to database.")
+						send_byjax(chassis.occupant,"msyringegun.browser","reagents_form",get_reagents_form())
+				else
+					occupant_message("Error analyzing reagent from sleeper.")
+			return 1
+		else
+			occupant_message("<span class=\"alert\">Error, your require an installed mounted sleeper to interface with this device.</span>")
+			return 0
 	if(!A.reagents || istype(A,/mob))
 		occupant_message("<span class=\"alert\">No reagent info gained from [A].</span>")
 		return 0
