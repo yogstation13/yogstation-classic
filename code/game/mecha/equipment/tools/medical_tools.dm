@@ -104,7 +104,9 @@
 		onclose(chassis.occupant, "msleeper")
 		return
 	if(filter.get("inject"))
-		inject_reagent(filter.getType("inject",/datum/reagent),filter.getObj("source"))
+		var/injection = filter.getNum("injection")
+		if(injection)
+			inject_reagent(filter.getType("inject",/datum/reagent),filter.getObj("source"), injection)
 	return
 
 /obj/item/mecha_parts/mecha_equipment/sleeper/proc/get_patient_stats()
@@ -170,14 +172,16 @@
 	if(SG && SG.reagents && islist(SG.reagents.reagent_list))
 		for(var/datum/reagent/R in SG.reagents.reagent_list)
 			if(R.volume > 0)
-				output += "<a href=\"?src=\ref[src];inject=\ref[R];source=\ref[SG]\">Inject [R.name]</a><br />"
+				output += "<a href=\"?src=\ref[src];inject=\ref[R];source=\ref[SG];injection=10\">Inject [R.name] 10u</a>"
+				output += " <a href=\"?src=\ref[src];inject=\ref[R];source=\ref[SG];injection=1\">1u</a>"
+				output += " <a href=\"?src=\ref[src];inject=\ref[R];source=\ref[SG];injection=5\">5u</a><br />"
 	return output
 
 
-/obj/item/mecha_parts/mecha_equipment/sleeper/proc/inject_reagent(datum/reagent/R,obj/item/mecha_parts/mecha_equipment/syringe_gun/SG)
+/obj/item/mecha_parts/mecha_equipment/sleeper/proc/inject_reagent(datum/reagent/R,obj/item/mecha_parts/mecha_equipment/syringe_gun/SG, amount)
 	if(!R || !patient || !SG || !(SG in chassis.equipment))
 		return 0
-	var/to_inject = min(R.volume, inject_amount)
+	var/to_inject = min(R.volume, amount)
 	if(to_inject && patient.reagents.get_reagent_amount(R.id) + to_inject <= inject_amount*2)
 		occupant_message("Injecting [patient] with [to_inject] units of [R.name].")
 		log_message("Injecting [patient] with [to_inject] units of [R.name].")
