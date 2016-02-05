@@ -78,10 +78,20 @@
 	origin_tech = null
 	vision_flags = SEE_MOBS
 	darkness_view = 8
-	invis_view = 2
+	invis_view = 6
 	flash_protect = -1
 	unacidable = 1
 	flags = ABSTRACT | NODROP
+
+	New()
+		..()
+		SSobj.processing |= src
+
+	process()
+		if (istype(loc, /mob/living/carbon/human))
+			var/mob/living/carbon/human/H = loc
+			if (!istype(H.dna.species, /datum/species/shadow/ling))
+				del(src) // If we're being worn by someone who isn't a shadowling.
 
 
 /obj/structure/shadow_vortex

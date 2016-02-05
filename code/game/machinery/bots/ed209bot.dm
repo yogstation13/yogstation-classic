@@ -135,13 +135,14 @@ Auto Patrol[]"},
 	return
 
 /obj/machinery/bot/ed209/Topic(href, href_list)
+	if(..())
+		return 1
 	if(lasercolor && (istype(usr,/mob/living/carbon/human)))
 		var/mob/living/carbon/human/H = usr
 		if((lasercolor == "b") && (istype(H.wear_suit, /obj/item/clothing/suit/redtag)))//Opposing team cannot operate it
-			return
+			return 1
 		else if((lasercolor == "r") && (istype(H.wear_suit, /obj/item/clothing/suit/bluetag)))
-			return
-	..()
+			return 1
 
 	switch(href_list["operation"])
 		if ("idcheck")

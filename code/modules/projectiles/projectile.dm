@@ -139,7 +139,9 @@
 				kill_count--
 				if((!( current ) || loc == current))
 					current = locate(Clamp(x+xo,1,world.maxx),Clamp(y+yo,1,world.maxy),z)
+				var/saveddir = get_dir(src.loc, current)
 				step_towards(src, current)
+				dir = saveddir
 				if(original && (original.layer>=2.75) || ismob(original))
 					if(loc == get_turf(original))
 						if(!(original in permutated))

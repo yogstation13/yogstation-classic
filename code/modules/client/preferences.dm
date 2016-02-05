@@ -18,7 +18,8 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 	"monkey" = /datum/game_mode/monkey,				//11
 	"gangster" = /datum/game_mode/gang,				//12
 	"shadowling" = /datum/game_mode/shadowling,		//13
-	"abductor" = /datum/game_mode/abduction			//14
+	"abductor" = /datum/game_mode/abduction,		//14
+	"cyberman" = /datum/game_mode/cybermen
 )
 
 
@@ -99,6 +100,7 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 	var/agree = 0
 
 	var/donor_hat = null
+	var/donor_pda = null
 	var/quiet_round = 0
 
 /datum/preferences/New(client/C)
@@ -173,10 +175,12 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 					dat += "<h2>Donator</h2>"
 					dat += "<b>Fancy Hat:</b> "
 					dat += "<a href='?_src_=prefs;preference=donor;task=hat'>Pick</a> [donor_hat ? "\"[donor_hat]\"" : "None selected"]<BR>"
+					dat += "<b>Fancy PDA:</b> "
+					dat += "<a href='?_src_=prefs;preference=donor;task=pda'>[donor_pda ? "Transparent PDA" : "Normal"]</a><BR>"
 				else
 					dat += "<h2>Donator</h2>"
 					dat += "<b>Fancy Hat:</b> "
-					dat += "Become a <a href='http://www.yogstation.net/index.php?do=donate'>donator for fancy hats</a>!<BR>"
+					dat += "Become a <a href='http://www.yogstation.net/index.php?do=donate'>donator for fancy hats and PDAs</a>!<BR>"
 
 				dat += "<h2>Identity</h2>"
 				dat += "<table width='100%'><tr><td width='75%' valign='top'>"
@@ -809,7 +813,8 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 							donor_hat = null
 					if("quiet_round")
 						toggles ^= QUIET_ROUND
-
+					if("pda")
+						donor_pda = !donor_pda
 			else
 				message_admins("EXPLOIT \[donor\]: [user] tried to access donor only functions (as a non-donor). Attempt made on \"[href_list["preference"]]\" -> \"[href_list["task"]]\".")
 

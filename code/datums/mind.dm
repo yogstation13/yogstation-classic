@@ -267,7 +267,6 @@
 			else
 				text += "."
 
-			text += " <a href='?src=\ref[src];revolution=reequip'>Reequip</a> (gives traitor uplink)."
 			if (objectives.len==0)
 				text += "<br>Objectives are empty! <a href='?src=\ref[src];revolution=autoobjectives'>Set to kill all heads</a>."
 		else if(isloyal(current))
@@ -474,6 +473,24 @@
 		text += "|Disabled in Prefs"
 
 	sections["abductor"] = text
+
+	/** CYBERMAN **/
+	text = "cyberman"
+	if(ticker.mode.config_tag == "cybermen")
+		text = uppertext(text)
+	text = "<i><b>[text]</b></i>: "
+	if(ticker.mode.is_cyberman(src) )
+		text += "<b>CYBERMAN</b>|<a href='?src=\ref[src];cyberman=clear'>human</a>"
+	else
+		text += "<a href='?src=\ref[src];cyberman=cyberman'>cyberman</a>|<b>HUMAN</b>"
+	text += "|Pref unknown"
+/*
+	if(current && current.client/* && current.client.prefs.be_special & BE_CYBERMAN*/)//the pref doesn't work because the number is too big for the & operator.
+		text += "|Enabled in Prefs"
+	else
+		text += "|Disabled in Prefs"
+*/
+	sections["cyberman"] = text
 
 	/** MONKEY ***/
 	if (istype(current, /mob/living/carbon))
@@ -1085,6 +1102,8 @@
 				</b></span>"
 				ticker.mode.finalize_shadowling(src)
 				ticker.mode.update_shadow_icons_added(src)
+				message_admins("[key_name_admin(usr)] has shadowling'ed [current].")
+				log_admin("[key_name(usr)] has shadowling'ed [current].")
 			if("thrall")
 				if(!ishuman(current))
 					usr << "<span class='warning'>This only works on humans!</span>"
@@ -1193,6 +1212,21 @@
 					message_admins("[key_name_admin(usr)] has unemag'ed [ai]'s Cyborgs.")
 					log_admin("[key_name(usr)] has unemag'ed [ai]'s Cyborgs.")
 
+	else if(href_list["cyberman"])
+		switch(href_list["cyberman"])
+			if("clear")
+				if(ticker.mode.is_cyberman(src))
+					ticker.mode.remove_cyberman(src ,"<span class='userdanger'>Your cyberman implants have dissolved! You are no longer a cyberman!</span>")
+					message_admins("[key_name_admin(usr)] has de-cyberman'ed [current].")
+					log_admin("[key_name(usr)] has de-cyberman'ed [current].")
+			if("cyberman")
+				if(!ishuman(current))
+					usr << "<span class='warning'>This only works on humans!</span>"
+					return
+				ticker.mode.add_cyberman(src, "<span class='userdanger'>Suddenly, you feel new, digital senses in your mind. You are now a cyberman!</span>")
+				message_admins("[key_name_admin(usr)] has cyberman'ed [current].")
+				log_admin("[key_name(usr)] has cyberman'ed [current].")
+
 	else if (href_list["common"])
 		switch(href_list["common"])
 			if("undress")
@@ -1217,7 +1251,11 @@
 			if("uplink")
 				if (!ticker.mode.equip_traitor(current, !(src in ticker.mode.traitors)))
 					usr << "<span class='danger'>Equipping a syndicate failed!</span>"
-				log_admin("[key_name(usr)] attempted to give [current] an uplink.")
+				if(src in ticker.mode.head_revolutionaries)
+					message_admins("[key_name(usr)] attempted to give [current], a head revolutionary, an uplink.")
+					log_admin("[key_name(usr)] attempted to give [current], a head revolutionary, an uplink.")
+				else
+					log_admin("[key_name(usr)] attempted to give [current] an uplink.")
 
 	else if (href_list["obj_announce"])
 		var/obj_count = 1

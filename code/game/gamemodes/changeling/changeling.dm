@@ -346,7 +346,7 @@ var/list/slot2type = list("head" = /obj/item/clothing/head/changeling, "wear_mas
 		user << "<span class='warning'>We could gain no benefit from absorbing a lesser creature.</span>"
 		return
 	if(has_dna(target.dna))
-		user << "<span class='warning'>We already have this DNA in storage!</span>"
+		user << "<span class='warning'>We refresh this DNA with new information!</span>"
 	if(!check_dna_integrity(target))
 		user << "<span class='warning'>[target] is not compatible with our biology.</span>"
 		return
@@ -365,6 +365,14 @@ var/list/slot2type = list("head" = /obj/item/clothing/head/changeling, "wear_mas
 	prof.dna = new_dna
 	prof.name = H.real_name
 	prof.protected = protect
+	prof.gender = H.gender
+	prof.skin_tone = H.skin_tone
+	prof.hair_color = H.hair_color
+	prof.hair_style = H.hair_style
+	prof.facial_hair_color = H.facial_hair_color
+	prof.facial_hair_style = H.facial_hair_style
+	prof.eye_color = H.eye_color
+	prof.features = H.features
 
 	var/list/slots = list("head", "wear_mask", "back", "wear_suit", "w_uniform", "shoes", "belt", "gloves", "glasses", "ears", "wear_id", "s_store")
 	for(var/slot in slots)
@@ -416,8 +424,18 @@ var/list/slot2type = list("head" = /obj/item/clothing/head/changeling, "wear_mas
 	user.real_name = chosen_prof.name
 	user.dna = chosen_dna
 	hardset_dna(user, null, null, null, null, chosen_dna.species.type, chosen_dna.features)
+	user.gender = chosen_prof.gender
+	user.skin_tone = chosen_prof.skin_tone
+	user.hair_color = chosen_prof.hair_color
+	user.hair_style = chosen_prof.hair_style
+	user.facial_hair_color = chosen_prof.facial_hair_color
+	user.facial_hair_style = chosen_prof.facial_hair_style
+	user.eye_color = chosen_prof.eye_color
+	user.features = chosen_prof.features
+	
 	domutcheck(user)
-	updateappearance(user)
+	user.update_body()
+	user.update_hair()
 
 	//vars hackery. not pretty, but better than the alternative.
 	for(var/slot in slots)
@@ -460,6 +478,15 @@ var/list/slot2type = list("head" = /obj/item/clothing/head/changeling, "wear_mas
 	var/list/exists_list = list()
 	var/list/item_color_list = list()
 	var/list/item_state_list = list()
+	
+	var/gender = null
+	var/skin_tone = null
+	var/hair_color = null
+	var/hair_style = null
+	var/facial_hair_color = null
+	var/facial_hair_style = null
+	var/list/features = list()
+	var/eye_color = null
 
 /datum/changelingprofile/Destroy()
 	qdel(dna)

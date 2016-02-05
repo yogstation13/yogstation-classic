@@ -77,7 +77,10 @@
 			if(mind.changeling)
 				stat("Chemical Storage", "[mind.changeling.chem_charges]/[mind.changeling.chem_storage]")
 				stat("Absorbed DNA", mind.changeling.absorbedcount)
-
+			if(mind.cyberman)
+				stat("Hacking Module: [mind.cyberman.quickhack ? "Enabled" : "Disabled"] [mind.cyberman.emp_hit ? "%$&ERROR EMP DAMAGE [mind.cyberman.emp_hit]% #?@": ""]")
+				for(var/obj/status_obj in mind.cyberman.get_status_objs(src))
+					stat("", status_obj)
 
 	//NINJACODE
 	if(istype(wear_suit, /obj/item/clothing/suit/space/space_ninja)) //Only display if actually a ninja.
@@ -234,7 +237,7 @@
 	else
 		dat += "<tr><td><B>Uniform:</B></td><td><A href='?src=\ref[src];item=[slot_w_uniform]'>[(w_uniform && !(w_uniform.flags&ABSTRACT)) ? w_uniform : "<font color=grey>Empty</font>"]</A></td></tr>"
 
-	if(w_uniform == null || (slot_w_uniform in obscured) || (dna && dna.species.nojumpsuit))
+	if((w_uniform == null || (slot_w_uniform in obscured)) && !(dna && dna.species.nojumpsuit))
 		dat += "<tr><td><font color=grey>&nbsp;&#8627;<B>Pockets:</B></font></td></tr>"
 		dat += "<tr><td><font color=grey>&nbsp;&#8627;<B>ID:</B></font></td></tr>"
 		dat += "<tr><td><font color=grey>&nbsp;&#8627;<B>Belt:</B></font></td></tr>"
@@ -285,6 +288,13 @@
 			heart_attack = 0
 			if(stat == CONSCIOUS)
 				src << "<span class='notice'>You feel your heart beating again!</span>"
+	//CYBERMEN STUFF
+	//I'd prefer to have an event-listener setup. see emp_act in human_defense.
+	if(cyberman_network)
+		for(var/obj/effect/cyberman_hack/human/H in cyberman_network.active_cybermen_hacks)
+			if(H.target == src)
+				H.electrocute_act()
+				break
 	return ..(shock_damage,source,siemens_coeff,override)
 
 /mob/living/carbon/human/Topic(href, href_list)

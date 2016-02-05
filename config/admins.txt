@@ -12,11 +12,11 @@ Aranclanos = TGCoder
 
 Ephemeralis = HeadCoder
 
-05rhardy = Council
-Xantam = Council
-AsV9 = Council
-Blukey = Council
-Johncena1469 = Council
+05rhardy = Council Member
+Xantam = Council Member
+AsV9 = Council Member
+Blukey = Council Member
+Johncena1469 = Council Member
 
 Joseph Frost = Senior Admin
 Chuggachar = Senior Admin
