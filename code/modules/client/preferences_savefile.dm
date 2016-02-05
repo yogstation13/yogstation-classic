@@ -42,6 +42,10 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		toggles = TOGGLES_DEFAULT
 	if(current_version < 14)
 		donor_pda = 0
+	if(current_version < 15)
+		UI_style_carbon = DEFAULT_CARBON_UI
+		UI_style_borg = DEFAULT_BORG_UI
+		UI_style_ai = DEFAULT_AI_UI
 	return
 
 //should this proc get fairly long (say 3 versions long),
