@@ -126,7 +126,7 @@ MASS SPECTROMETER
 		var/mob/living/carbon/human/H = M
 		if(H.heart_attack)
 			user << "<span class='danger'>Subject suffering from heart attack: Apply defibrillator immediately!</span>"
-		for(var/obj/effect/cyberman_hack/human/hack in ticker.mode.active_cybermen_hacks)
+		for(var/obj/effect/cyberman_hack/human/hack in cyberman_network.active_cybermen_hacks)
 			if(hack.target == H)
 				user << "<span class='danger'>Unknown harmful microscopic machines detected in subject's bloodstream: Recommend treatment via Electro Magnetic Pulse or Strong Electric Shock immediately!</span>"
 				break
