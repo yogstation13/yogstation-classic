@@ -269,9 +269,10 @@ emp_act
 	if(ticker.mode.is_cyberman(src.mind))
 		src.mind.cyberman.emp_act(src, severity)
 	else
-		for(var/obj/effect/cyberman_hack/human/H in ticker.mode.active_cybermen_hacks)
-			if(H.target == src)
-				H.emp_act(severity)
+		if(cyberman_network)
+			for(var/obj/effect/cyberman_hack/human/H in cyberman_network.active_cybermen_hacks)
+				if(H.target == src)
+					H.emp_act(severity)
 	..()
 
 /mob/living/carbon/human/acid_act(acidpwr, toxpwr, acid_volume)
