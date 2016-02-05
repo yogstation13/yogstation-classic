@@ -79,20 +79,8 @@
 				stat("Absorbed DNA", mind.changeling.absorbedcount)
 			if(mind.cyberman)
 				stat("Hacking Module: [mind.cyberman.quickhack ? "Enabled" : "Disabled"] [mind.cyberman.emp_hit ? "%$&ERROR EMP DAMAGE [mind.cyberman.emp_hit]% #?@": ""]")
-				if(mind.cyberman.selected_hack)
-					var/manual_selected = mind.cyberman.manual_selected_hack ? "(manual)" : "(auto)"
-					mind.cyberman.selected_hack.name = "Currently Processing Hack[manual_selected]: [mind.cyberman.selected_hack.get_status(src)]"//Could make this the line label, but it would push ALL the stat things to the right very, very far. \
-																																					I'm a bit concerned about changing the name of the hack itself, but it seems to work pretty well, even with multiple people.\
-																																					Also allows the use of verbs, including varedit, through the statpanel, which is very nice.\
-																																					I have plans to change this in the future, but it's convenient for now.
-					stat("", mind.cyberman.selected_hack)
-				else
-					stat("Currently Processing Hack(auto): none")
-				if(cyberman_network)
-					for(var/obj/effect/cyberman_hack/hack in cyberman_network.active_cybermen_hacks)
-						if(hack != mind.cyberman.selected_hack)
-							hack.name = hack.get_status(src)
-							stat("", hack)
+				for(var/obj/status_obj in mind.cyberman.get_status_objs(src))
+					stat("", status_obj)
 
 	//NINJACODE
 	if(istype(wear_suit, /obj/item/clothing/suit/space/space_ninja)) //Only display if actually a ninja.

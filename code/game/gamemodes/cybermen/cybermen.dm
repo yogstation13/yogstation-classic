@@ -4,8 +4,6 @@
  * see http://forums.yogstation.net/index.php?threads/mode-cybermen.8096/ for gamemode details
  *********************************************************************************************
 */
-
-#define CYBERMEN_HACK_NOISE_DIST 3
 #define CYBERMEN_BASE_HACK_POWER_1 20
 #define CYBERMEN_BASE_HACK_POWER_2 10
 #define CYBERMEN_BASE_HACK_POWER_3 5
@@ -137,6 +135,7 @@ var/datum/cyberman_network/cyberman_network
 
 	update_cybermen_icons_remove(cyberman)
 	var/mob/living/carbon/human/H = cyberman.current
+
 	if(issilicon(H))
 		H.audible_message("<span class='notice'>[H] lets out a short blip.</span>", "<span class='userdanger'>You have been turned into a robot! You are no longer a cyberman! Though you try, you cannot remember anything about the cybermen or your time as one...</span>")
 	else
@@ -367,14 +366,12 @@ datum/game_mode/proc/update_cybermen_icons_remove(datum/mind/cyberman)
 	var/hack_max_start_dist = 1
 	var/hack_max_maintain_dist = CYBERMEN_BASE_HACK_MAINTAIN_RANGE
 	var/list/upgrades_installed = list()
-	var/list/obj/effect/proc_holder/cyberman/abilities = list(new /obj/effect/proc_holder/cyberman/commune(), new /obj/effect/proc_holder/cyberman/cyberman_toggle_quickhack(), new /obj/effect/proc_holder/cyberman/cyberman_cancel_hack(), new /obj/effect/proc_holder/cyberman/cyberman_cancel_component_hack(), new /obj/effect/proc_holder/cyberman/cyberman_disp_objectives(), new /obj/effect/proc_holder/cyberman/cyberman_manual_select_hack() )
+	var/list/obj/effect/proc_holder/cyberman/abilities = list(new /obj/effect/proc_holder/cyberman/commune(), new /obj/effect/proc_holder/cyberman/cyberman_toggle_quickhack(), new /obj/effect/proc_holder/cyberman/cyberman_disp_objectives(), new /obj/effect/proc_holder/cyberman/cyberman_cancel_hack(), new /obj/effect/proc_holder/cyberman/cyberman_manual_select_hack())
 
 /datum/cyberman_datum/proc/validate(var/mob/living/carbon/human/user = usr)
 	if(!user)
 		return 0
-	if(!istype(user, /mob/living/carbon/human))//cybermen need to be human.
-		ticker.mode.remove_cyberman(user.mind)
-		log_game("[user] was detected as a non-human cyberman. They have been un-cyberman'ed.")
+	if(!ishuman(user))//cybermen need to be human.
 		return 0
 	if(!ticker.mode.is_cyberman(user.mind) )
 		return 0
@@ -383,61 +380,11 @@ datum/game_mode/proc/update_cybermen_icons_remove(datum/mind/cyberman)
 		return 0
 	return 1
 
-/datum/cyberman_datum/proc/add_cyberman_abilities_to_statpanel()
-	for(var/obj/effect/proc_holder/cyberman/A in abilities)
-		statpanel("[A.panel]", "", A)
-
-/datum/cyberman_datum/proc/initiate_hack(atom/target)
-	if(!validate(usr) )
-		usr << "<span class='warning'>You are not a Cyberman, you cannot initiate a hack.</span>"
-		return
-	if(emp_hit)
-		usr << "<span class='warning'>You were recently hit by an EMP, you cannot hack right now!</span>"
-	else if(get_dist(usr, target) > hack_max_start_dist)
-		usr << "<span class='warning'>You are to far away to hack \the [target].</span>"
-	else
-		var/obj/effect/cyberman_hack/newHack = target.get_cybermen_hack()
-		if(newHack)
-			usr.audible_message("<span class='notice'>You hear a faint sound of static.</span>", CYBERMEN_HACK_NOISE_DIST )
-			if(istype(target, /mob/living/carbon/human))
-				var/mob/living/carbon/human/H = target
-				H << "<span class='warning'>You feel a tiny prick!</span>"
-			cyberman_network.message_all_cybermen("<span class='notice>[newHack.display_verb] of [newHack.target_name] started by [usr].</span>")
-			newHack.start()
-		else
-			usr << "<span class='warning'>\The [target] cannot be hacked.</span>"
-
-
-/datum/cyberman_datum/proc/cancel_hack(var/mob/living/carbon/human/user = usr, var/obj/effect/cyberman_hack/hack)
-	if(!validate(user) || !hack)
-		return
-	if(hack.can_cancel(user) )
-		hack.drop("<span class='warning'>[hack.display_verb] of \the [hack.target_name] canceled by [user].<span>")
-	else
-		user << "<span class='warning'>You cannot cancel a hack unless you are close enough to maintain it!</span>"
-
-/datum/cyberman_datum/proc/cancel_closest_component_hack(var/mob/living/carbon/human/user = usr, var/obj/effect/cyberman_hack/multiple_vector/hack)
-	if(!validate(user) || !hack || !istype(hack, /obj/effect/cyberman_hack/multiple_vector))
-		return
-	hack.do_tick_calculations_if_required(user)
-	if(!hack.tick_best_hack)
-		user << "<span class='warning'>Error: No component hacks of [hack.target_name] detected.</span>"
-		return
-	if(!hack.tick_best_hack.can_cancel(user) )
-		user << "<span class='warning'>You are not close enough to cancel the [hack.tick_best_hack.display_verb] of \the [hack.tick_best_hack.target_name], the closest component hack of \the [hack.target_name].</span>"
-		return
-	if(hack.component_hacks.len == 1 && !hack.innate_processing)//safeguard in case they don't realise that they are the last one hacking the ai/tcomms network/etc. If it is a magic admin/debug hack, though, you can always stop contributing.
-		user << "<span class='warning'>The [hack.tick_best_hack.display_verb] of \the [hack.tick_best_hack.target_name] is the only remaining component hack of \the [hack.target_name]. If you want to cancel it, you must cancel the whole hack.</span>"
-		return
-	hack.tick_best_hack.drop("<span class='notice'>The [hack.tick_best_hack.display_verb] of \the [hack.tick_best_hack.target_name], which was contributing to the [hack.display_verb] of \the [hack.target_name], was canceled by [user].<span>")
-
-/datum/cyberman_datum/proc/select_hack(var/mob/living/carbon/human/user = usr, var/obj/effect/cyberman_hack/hack)
+/datum/cyberman_datum/proc/add_cyberman_abilities_to_statpanel(var/mob/user)
 	if(!validate(user))
 		return
-	if(hack == user.mind.cyberman.manual_selected_hack)
-		user.mind.cyberman.manual_selected_hack = null
-	else
-		user.mind.cyberman.manual_selected_hack = hack
+	for(var/obj/effect/proc_holder/cyberman/A in abilities)
+		statpanel("[A.panel]", "", A)
 
 /datum/cyberman_datum/proc/update_processing_power(mob/living/carbon/human/user = usr)
 	if(!validate(user) )
@@ -495,3 +442,37 @@ datum/game_mode/proc/update_cybermen_icons_remove(datum/mind/cyberman)
 	mob.adjustBrainLoss(40)
 	mob.visible_message("<span class='danger'>[mob] clutches their head, writhing in pain!</span>")
 	emp_hit = max(60, emp_hit)
+
+/datum/cyberman_datum/proc/get_status_objs(var/mob/living/carbon/human/user)
+	var/list/obj/status_obj/status_objs = list()
+	var/obj/status_obj/temp = new /obj/status_obj()
+	if(selected_hack)
+		var/manual_selected = manual_selected_hack ? "(manual)" : "(auto)"
+		temp.assign_obj(selected_hack, "Currently Processing Hack[manual_selected]: [selected_hack.get_status(user)]")
+	else
+		temp.assign_obj(null, "Currently Processing Hack(auto): none")
+	status_objs += temp
+	for(var/obj/effect/cyberman_hack/hack in cyberman_network.active_cybermen_hacks)
+		if(hack && hack != selected_hack)
+			temp = new /obj/status_obj()
+			temp.assign_obj(hack, hack.get_status(user))
+			status_objs += temp
+	return status_objs
+
+//these are so you can click on objects in the statpanel with a special name, without messing with the name of the object.
+/obj/status_obj/
+	var/obj/obj
+
+/obj/status_obj/proc/assign_obj(var/obj/newObj, var/newName)
+	obj = newObj
+	name = newName
+
+/obj/status_obj/DblClick()
+	if(!obj)
+		return
+	return obj.DblClick()
+
+/obj/status_obj/Click()
+	if(!obj)
+		return
+	return obj.Click()

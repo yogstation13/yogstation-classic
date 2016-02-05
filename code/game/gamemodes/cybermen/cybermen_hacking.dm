@@ -9,7 +9,7 @@
 #define CYBERMEN_HACK_ID_CARD_COST 100
 #define CYBERMEN_HACK_ANALYZE_COST 100
 #define CYBERMEN_HACK_BUTTON_COST 200
-#define CYBERMEN_HACK_RND_SERVER_COST 500
+#define CYBERMEN_HACK_RND_SERVER_COST 300
 #define CYBERMEN_HACK_TECH_DISK_COST 100
 #define CYBERMEN_HACK_COMMS_CONSOLE_COST 400
 #define CYBERMEN_HACK_NUKE_COST 1000
@@ -162,6 +162,7 @@
 	var/tick_same_z_level
 
 /obj/effect/cyberman_hack/New(var/atom/target, var/mob/living/carbon/human/user = usr)
+	name = "[display_verb] of \the [target_name]"
 	if(!cyberman_network)
 		new /datum/cyberman_network()
 	src.target = target
@@ -457,7 +458,8 @@
 	return ..()
 
 //procs and verbs for managing hacks in the stat panel through the context menu.
-/obj/effect/cyberman_hack/verb/cancel()
+/*
+/obj/effect/cyberman_hack/verb/cancel(/obj/effect/)
 	set src in world
 	set name = "Cancel Hack"
 	if(usr && usr.mind && usr.mind.cyberman)
@@ -474,9 +476,11 @@
 	set name = "Contribute to Hack"
 	if(usr && usr.mind && usr.mind.cyberman)
 		usr.mind.cyberman.select_hack(usr, src)
-
+*/
 /obj/effect/cyberman_hack/DblClick()
-	select()
+	if(!usr.mind || !usr.mind.cyberman)
+		return
+	usr.mind.cyberman.select_hack(usr, src)
 
 //add control_click to cancel?
 
@@ -493,6 +497,7 @@
 /obj/effect/cyberman_hack/machinery/airlock/New()
 	..()
 	target_name += " airlock"
+	name = "[display_verb] of \the [target_name]"
 
 /obj/effect/cyberman_hack/machinery/airlock/start_helper()
 	if(!..() )
@@ -532,6 +537,7 @@
 /obj/effect/cyberman_hack/machinery/windoor/New()
 	..()
 	target_name += " windoor"
+	name = "[display_verb] of \the [target_name]"
 
 /obj/effect/cyberman_hack/machinery/windoor/start_helper()
 	if(!..() )
@@ -645,6 +651,7 @@
 /obj/effect/cyberman_hack/cyborg/New()
 	..()
 	target_name += " (Cyborg)"
+	name = "[display_verb] of \the [target_name]"
 
 /obj/effect/cyberman_hack/cyborg/start_helper()
 	if(!..())
@@ -715,6 +722,7 @@
 /obj/effect/cyberman_hack/multiple_vector/ai/New()
 	..()
 	target_name += " (AI)"
+	name = "[display_verb] of \the [target_name]"
 
 /obj/effect/cyberman_hack/multiple_vector/ai/start_helper()
 	if(!..())
@@ -802,7 +810,8 @@
 	required_type = /obj/machinery/computer/upload/ai/
 
 /obj/effect/cyberman_hack/machinery/ai_upload/start()
-	return component_hack_start(/obj/effect/cyberman_hack/multiple_vector/ai/, target)
+	var/obj/machinery/computer/upload/ai/the_upload = target
+	return component_hack_start(/obj/effect/cyberman_hack/multiple_vector/ai/, the_upload.current)
 
 ////////////////////////////////////////////////////////
 //ANALYZE OBJECT
@@ -847,6 +856,7 @@
 /obj/effect/cyberman_hack/machinery/button/New()
 	..()
 	target_name += " button"
+	name = "[display_verb] of \the [target_name]"
 
 /obj/effect/cyberman_hack/machinery/button/complete()
 	var/obj/machinery/button/B = target
@@ -960,6 +970,8 @@
 	..()
 	var/mob/living/carbon/human/H = target
 	cost = 200 + 400*cyberman_network.cybermen.len//you can just convert a bunch of people at once to keep the cost down. Possible expoit, but won't worry about it now.
+	if(istype(cyberman_network.cybermen_objectives[cyberman_network.cybermen_objectives.len], /datum/objective/cybermen/exterminate/eliminate_humans/))//discourages murderboning. Hopefully.
+		cost = min(cost, 3000)
 	if(isloyal(H))
 		cost = cost*2
 	for(var/obj/item/organ/limb/L in H.organs)
@@ -977,6 +989,9 @@
 	else if(!H.mind || !H.key || !H.client)
 		drop("<span class='warning'>[display_verb] of [target_name] failed, \he is catatonic.</span>")
 		return 0
+	else if(H.stat == DEAD)
+		drop("<span class='warning'>[display_verb] of [target_name] failed, \he is dead.</span>")
+		return 0
 	hallucination = new /obj/effect/hallucination/cybermen_conversion(H.loc, H)
 	return 1
 
@@ -988,6 +1003,8 @@
 	if(ticker.mode.is_cyberman(H.mind))
 		drop("<span class='warning'>[target_name] has become cyberman through other means, [display_verb] canceled.</span>")
 		return
+	if(H.stat == DEAD)
+		drop("<span class='warning'>[display_verb] of [target_name] failed, \he is dead.</span>")
 	if(!hallucination)
 		hallucination = new /obj/effect/hallucination/cybermen_conversion(H.loc, H)
 	hallucination.percent_complete = (progress/cost)*100
@@ -1168,6 +1185,7 @@
 /obj/effect/cyberman_hack/barsign/New()
 	..()
 	target_name = "bar sign"
+	name = "[display_verb] of \the [target_name]"
 
 /obj/effect/cyberman_hack/barsign/start_helper()
 	if(!..())
@@ -1228,6 +1246,7 @@
 /obj/effect/cyberman_hack/machinery/vending_machine/New()
 	..()
 	target_name += " vendor"
+	name = "[display_verb] of \the [target_name]"
 
 /obj/effect/cyberman_hack/machinery/vending_machine/complete()
 	var/obj/machinery/vending/T = target
@@ -1289,6 +1308,7 @@
 /obj/effect/cyberman_hack/multiple_vector/telecomms/New()
 	..()
 	target_name = "telecomms network"
+	name = "[display_verb] of \the [target_name]"
 
 /obj/effect/cyberman_hack/multiple_vector/telecomms/start_helper()
 	if(!..())
