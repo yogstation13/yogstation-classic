@@ -330,7 +330,7 @@
 		if(instantly)
 			change_time = 0
 		animate(lighting_object, alpha = newalpha, time = change_time)
-		if(newalpha < 255-LIGHTING_DARKEST_VISIBLE_ALPHA) //Doesn't actually make it darker or anything, just tells byond you can't see the tile
+		if(newalpha > LIGHTING_DARKEST_VISIBLE_ALPHA) //Doesn't actually make it darker or anything, just tells byond you can't see the tile
 			animate(luminosity = 0, time = 0)
 		light_dim.alpha = (get_lumcount() <= 0.3) * 128 // See above
 
