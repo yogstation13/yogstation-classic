@@ -2,7 +2,7 @@
 #define SAVEFILE_VERSION_MIN	8
 
 //This is the current version, anything below this will attempt to update (if it's not obsolete)
-#define SAVEFILE_VERSION_MAX	14
+#define SAVEFILE_VERSION_MAX	15
 /*
 SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Carn
 	This proc checks if the current directory of the savefile S needs updating
@@ -41,6 +41,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		chat_toggles = TOGGLES_DEFAULT_CHAT
 		toggles = TOGGLES_DEFAULT
 	if(current_version < 14)
+		donor_pda = 0
+	if(current_version < 15)
 		UI_style_carbon = DEFAULT_CARBON_UI
 		UI_style_borg = DEFAULT_BORG_UI
 		UI_style_ai = DEFAULT_AI_UI
