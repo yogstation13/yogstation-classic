@@ -15,7 +15,7 @@
 	var/access_clown = 0
 	var/access_mime = 0
 	var/access_janitor = 0
-//	var/access_flora = 0
+	var/access_flora = 0
 	var/access_reagent_scanner = 0
 	var/access_newscaster = 0
 	var/access_remote_door = 0 //Control some blast doors remotely!!
@@ -107,12 +107,12 @@
 	icon_state = "cart-s"
 	access_newscaster = 1
 
-/*
+
 /obj/item/weapon/cartridge/botanist
 	name = "\improper Green Thumb v4.20 cartridge"
 	icon_state = "cart-b"
 	access_flora = 1
-*/
+
 
 /obj/item/weapon/cartridge/roboticist
 	name = "\improper B.O.O.P. Remote Control cartridge"
