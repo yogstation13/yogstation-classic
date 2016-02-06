@@ -1,4 +1,5 @@
 //This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:33
+#define DONOR_CHARACTER_SLOTS 6
 
 var/list/preferences_datums = list()
 
@@ -113,6 +114,8 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 			unlock_content |= C.IsByondMember()
 			if(unlock_content)
 				max_save_slots = 8
+			else if(is_donator(C))
+				max_save_slots = DONOR_CHARACTER_SLOTS
 	var/loaded_preferences_successfully = load_preferences()
 	if(loaded_preferences_successfully)
 		if(load_character())
@@ -1199,3 +1202,5 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 		else
 			character.update_body()
 			character.update_hair()
+			
+#define DONOR_CHARACTER_SLOTS
