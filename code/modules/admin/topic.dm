@@ -138,7 +138,13 @@
 				else
 					message_admins("[key_name_admin(usr)] tried to create a shadowling. Unfortunately, there were no candidates available.")
 					log_admin("[key_name(usr)] failed to create a shadowling.")
-
+			if("17")
+				if(src.makeCyberman())
+					message_admins("[key_name(usr)] created a cyberman.")
+					log_admin("[key_name(usr)] created a cyberman.")
+				else
+					message_admins("[key_name_admin(usr)] tried to create a cyberman. Unfortunately, there were no candidates available.")
+					log_admin("[key_name(usr)] failed to create a cyberman.")
 	else if(href_list["forceevent"])
 		if(!check_rights(R_FUN))	return
 		var/datum/round_event_control/E = locate(href_list["forceevent"]) in SSevent.control
@@ -2210,8 +2216,16 @@
 			if("3")//set objective
 				set_cybermen_objective()
 			if("4")//display objective
-				ticker.mode.display_current_cybermen_objective()
+				cyberman_network.display_current_cybermen_objective()
 			if("5")//message all cybermen
 				cybermen_collective_broadcast()
 			if("6")//set random objective
 				reroll_cybermen_objective()
+			if("7")//initialize network
+				if(!cyberman_network)
+					message_admins("[key_name_admin(usr)] attempted to initialize a Cyberman Network without any Cybermen.")
+					new /datum/cyberman_network()
+			if("8")//broadcast log
+				cyberman_broadcast_log()
+			if("9")//hacking log
+				cyberman_hacking_log()
