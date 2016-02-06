@@ -483,12 +483,13 @@
 		text += "<b>CYBERMAN</b>|<a href='?src=\ref[src];cyberman=clear'>human</a>"
 	else
 		text += "<a href='?src=\ref[src];cyberman=cyberman'>cyberman</a>|<b>HUMAN</b>"
-
-	if(current && current.client && (BE_CYBERMAN in current.client.prefs.be_special))
+	text += "|Pref unknown"
+/*
+	if(current && current.client/* && current.client.prefs.be_special & BE_CYBERMAN*/)//the pref doesn't work because the number is too big for the & operator.
 		text += "|Enabled in Prefs"
 	else
 		text += "|Disabled in Prefs"
-
+*/
 	sections["cyberman"] = text
 
 	/** MONKEY ***/

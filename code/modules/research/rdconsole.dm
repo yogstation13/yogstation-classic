@@ -252,8 +252,14 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			if(linked_destroy.busy)
 				usr << "<span class='danger'>The destructive analyzer is busy at the moment.</span>"
 			else
-				var/choice = input("Proceeding will destroy loaded item.") in list("Proceed", "Cancel")
-				if(choice == "Cancel" || !linked_destroy) return
+				var/list/temp_tech = linked_destroy.ConvertReqString2List(linked_destroy.loaded_item.origin_tech)
+				var/waste = 1
+				for(var/T in temp_tech)
+					if(files.WillUpdateTech(T, temp_tech[T]))
+						waste = 0
+				if(waste)
+					var/choice = input("This item wont provide any tech value. Are you sure you want to deconstruct it?") in list("Proceed", "Cancel")
+					if(choice == "Cancel" || !linked_destroy) return
 				linked_destroy.busy = 1
 				screen = 0.1
 				updateUsrDialog()
@@ -266,8 +272,9 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 								usr <<"<span class='danger'>The destructive analyzer appears to be empty.</span>"
 								screen = 1.0
 								return
+
 							if((linked_destroy.loaded_item.reliability >= 99 - (linked_destroy.decon_mod * 3)) || linked_destroy.loaded_item.crit_fail)
-								var/list/temp_tech = linked_destroy.ConvertReqString2List(linked_destroy.loaded_item.origin_tech)
+								temp_tech = linked_destroy.ConvertReqString2List(linked_destroy.loaded_item.origin_tech)
 								for(var/T in temp_tech)
 									if(prob(linked_destroy.loaded_item.reliability))               //If deconstructed item is not reliable enough its just being wasted, else it is pocessed
 										files.UpdateTech(T, temp_tech[T])                          //Check if deconstructed item has research levels higher/same/one less than current ones
