@@ -537,7 +537,9 @@
 				user << "<span class='notice'>You tagged [territory] for your gang!</span>"
 
 			else
-				new /obj/effect/decal/cleanable/crayon(target,colour,drawtype,temp,graf_rot)
+				var/obj/effect/decal/cleanable/crayon/crayon = new(target,colour,drawtype,temp,graf_rot)
+				crayon.owner = user.ckey
+				log_game("[user.ckey]/([user]) has drawn a new tag at ([target.x],[target.y],[target.z])")
 
 			user << "<span class='notice'>You finish [instant ? "spraying" : "drawing"] [temp].</span>"
 			if(instant<0)
