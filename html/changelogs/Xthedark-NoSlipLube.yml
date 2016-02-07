@@ -5,5 +5,5 @@ author: Xthedark
 delete-after: true
 
 changes: 
-  - tweak: "Syndicate have upgraded their NoSlip Shoes, they now don't slip on anything (Space Lube/Banana Peels/etc)."
-  - tweak: "Nanotrasen have upgraded their Magboots with a better magnetizing module. They now share the same properties as NoSlip Shoes (don't slip on anything) when they are activated."
+  - tweak: "Syndicate have upgraded their NoSlip Shoes, they now do not slip on anything."
+  - tweak: "Nanotrasen have upgraded their Magboots with a better magnetizing module. They now share the same properties as NoSlip Shoes when activated."

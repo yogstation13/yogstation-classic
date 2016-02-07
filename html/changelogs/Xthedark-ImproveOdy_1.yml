@@ -5,4 +5,4 @@ author: Xthedark
 delete-after: true
 
 changes: 
-  - rscadd: "Odysseus can now interface with Sleepers (the kind medbay has) if it has a Mounter Sleeper installed. This allows Odysseus to scan reagens that the Sleeper dispenses and add it to it's database. Simply use the Syringe Gun on Analyze mode on the Sleeper."
+  - rscadd: "Odysseus can now interface with Sleepers if it has a Mounted Sleeper installed. This allows Odysseus to scan reagens that the Sleeper dispenses and add it to it's database. Simply use the Syringe Gun on Analyze mode on the Sleeper."
