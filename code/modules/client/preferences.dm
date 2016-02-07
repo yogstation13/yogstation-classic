@@ -1203,4 +1203,4 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 			character.update_body()
 			character.update_hair()
 			
-#define DONOR_CHARACTER_SLOTS
+#undef DONOR_CHARACTER_SLOTS
