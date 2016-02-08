@@ -1,0 +1,8 @@
+# Your name.  
+author: Xthedark
+
+# Optional: Remove this file after generating master changelog.  Useful for PR changelogs that won't get used again.
+delete-after: true
+
+changes: 
+  - rscadd: "Nanotrasen has outfitted it's airlocks with doors for drones to pass through without requiring opening the airlock."
