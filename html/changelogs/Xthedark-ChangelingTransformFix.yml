@@ -1,0 +1,10 @@
+# Your name.  
+author: Xthedark
+
+# Optional: Remove this file after generating master changelog.  Useful for PR changelogs that won't get used again.
+delete-after: true
+
+changes: 
+  - bugfix: "Changelings no longer drop their flesh (disguise) items when they monkeyize."
+  - bugfix: "Transformation now correctly applies body features (hair color, etc). Not underwear, though."
+  - tweak: "Absorbing (or DNA Stringing) existing DNA will update the profile with current target's clothes."
