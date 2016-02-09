@@ -142,9 +142,90 @@
 
 /obj/item/weapon/storage/belt/military
 	name = "military belt"
-	desc = "A syndicate belt designed to be used by boarding parties.  Its style is modeled after the hardsuits they wear."
+	desc = "A syndicate belt designed to be used by boarding parties. Its style is modeled after the hardsuits they wear."
 	icon_state = "militarybelt"
 	item_state = "military"
+
+//CHAMELEON BELT
+
+/obj/item/weapon/storage/belt/military/chameleon
+	name = "military belt"
+	desc = "A syndicate belt designed to be used by boarding parties. Its style is modeled after the hardsuits they wear."
+	icon_state = "militarybelt"
+	item_state = "military"
+	burn_state = -1 //Won't burn in fires
+	var/list/clothing_choices = list(
+		new /obj/item/weapon/storage/belt/military(),
+		new /obj/item/weapon/storage/belt/janitor(),
+		new /obj/item/weapon/storage/belt/utility(),
+		new /obj/item/weapon/storage/belt/medical(),
+		new /obj/item/weapon/storage/belt/security(),
+		new /obj/item/weapon/storage/belt/fannypack(),
+		//Colors of fannypacks? For now you have to add them via attackby().
+		)
+	var/malfunctioning = 0
+
+/obj/item/weapon/storage/belt/military/chameleon/attackby(obj/item/clothing/under/U, mob/user, params)
+	..()
+	if(istype(U, /obj/item/weapon/storage/belt/military/chameleon))
+		user << "<span class='notice'>Nothing happens.</span>"
+		return
+	if(istype(U, /obj/item/weapon/storage/belt))
+		if(src.clothing_choices.Find(U))
+			user << "<span class='notice'>Pattern is already recognised by the belt.</span>"
+			return
+		src.clothing_choices += U
+		user << "<span class='notice'>Pattern absorbed by the belt.</span>"
+
+
+/obj/item/weapon/storage/belt/military/chameleon/emp_act(severity)
+	name = "psychedelic"
+	desc = "Groovy!"
+	icon_state = "psyche"
+	item_color = "psyche"
+	malfunctioning = 1
+	if(ismob(loc))
+		var/mob/M = loc
+		M.update_inv_belt()
+		M << "<span class='danger'>Your belt malfunctions!</span>"
+	spawn(200)
+		name = "military belt"
+		desc = "A syndicate belt designed to be used by boarding parties. Its style is modeled after the hardsuits they wear."
+		icon_state = "militarybelt"
+		item_state = "military"
+		malfunctioning = 0
+		if(ismob(loc))
+			var/mob/M = loc
+			M.update_inv_belt()
+			M << "<span class='notice'>Your belt is functioning normally again.</span>"
+	..()
+
+/obj/item/weapon/storage/belt/military/chameleon/attack_self()
+	set src in usr
+
+	var/obj/item/clothing/under/A
+	A = input("Select Colour to change it to", "BOOYEA", A) in clothing_choices
+	if(!A)
+		return
+
+	if(usr.stat != CONSCIOUS)
+		return
+
+	if(malfunctioning)
+		usr << "<span class='danger'>Your belt is malfunctioning!</span>"
+		return
+
+	desc = null
+	permeability_coefficient = 0.90
+
+	desc = A.desc
+	name = A.name
+	icon_state = A.icon_state
+	item_state = A.item_state
+	item_color = A.item_color
+	usr.update_inv_belt()	//so our overlays update.
+
+//END CHAMELEON BELT
 
 /obj/item/weapon/storage/belt/wands
 	name = "wand belt"
