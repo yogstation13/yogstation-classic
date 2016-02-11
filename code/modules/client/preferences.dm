@@ -721,15 +721,16 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 					UI_style_ai = ui
 			user.client.select_ui()//refresh the page
 			if(user.hud_used && ((istype(user, /mob/living/silicon/robot) && domain == "borg") || (istype(user, /mob/living/silicon/ai) && domain == "ai") || (domain == "carbon")) )//remake the hud if we have to. Currently doesn't test if the user is carbon because there are so many things that use that UI, and not just carbons. Feel free to upgrade the logic.
+
 				var/old_zone_sel = 0//to carry over the selected attack zone.
 				var/throw_icon_state = null//to carry over the throw icon's state
 				if(user.zone_sel)
 					old_zone_sel = user.zone_sel.selecting
 				if(user.throw_icon)
 					throw_icon_state = user.throw_icon.icon_state
-				qdel(user.hud_used)
-				user.hud_used = new /datum/hud(user)
+				user.hud_used.instantiate(1)
 				user.update_hud()
+
 				if(user.zone_sel)
 					user.zone_sel.selecting = old_zone_sel
 					user.zone_sel.update_icon()

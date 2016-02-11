@@ -1,4 +1,4 @@
-/datum/hud/proc/drone_hud(ui_style = 'icons/mob/screen_midnight.dmi')
+/datum/hud/proc/drone_hud(ui_style = 'icons/mob/screen_midnight.dmi', only_do_style_updates = 0)
 	adding = list()
 
 	var/obj/screen/using

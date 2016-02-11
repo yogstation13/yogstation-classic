@@ -2,7 +2,7 @@
 	set name = "Select UI Style"
 	set category = "Preferences"
 
-	var/datum/browser/popup = new /datum/browser(mob, "ui_select", "UI Select", 220, 265)
+	var/datum/browser/popup = new /datum/browser(mob, "ui_select", "UI Select", 220, 400)
 	var/content = ""
 	content += "<h2>Human/Monkey UI</h2>"
 	for(var/carbon_ui in everyone_carbon_uis)
