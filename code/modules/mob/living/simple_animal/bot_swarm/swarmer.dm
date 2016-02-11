@@ -567,34 +567,35 @@
 		var/mob/living/simple_animal/hostile/swarmer/S = usr
 		S.ContactSwarmers()
 
-/datum/hud/proc/swarmer_hud(ui_style = 'icons/mob/screen_midnight.dmi')
+/datum/hud/proc/swarmer_hud(ui_style = 'icons/mob/screen_midnight.dmi', only_do_style_updates = 0)
 	adding = list()
 
 	var/obj/screen/using
 
-	using = new /obj/screen/swarmer/FabricateTrap()
-	using.screen_loc = ui_rhand
-	adding += using
+	if(!only_do_style_updates)
+		using = new /obj/screen/swarmer/FabricateTrap()
+		using.screen_loc = ui_rhand
+		adding += using
 
-	using = new /obj/screen/swarmer/Barricade()
-	using.screen_loc = ui_lhand
-	adding += using
+		using = new /obj/screen/swarmer/Barricade()
+		using.screen_loc = ui_lhand
+		adding += using
 
-	using = new /obj/screen/swarmer/Replicate()
-	using.screen_loc = ui_zonesel
-	adding += using
+		using = new /obj/screen/swarmer/Replicate()
+		using.screen_loc = ui_zonesel
+		adding += using
 
-	using = new /obj/screen/swarmer/RepairSelf()
-	using.screen_loc = ui_storage1
-	adding += using
+		using = new /obj/screen/swarmer/RepairSelf()
+		using.screen_loc = ui_storage1
+		adding += using
 
-	using = new /obj/screen/swarmer/ToggleLight()
-	using.screen_loc = ui_back
-	adding += using
+		using = new /obj/screen/swarmer/ToggleLight()
+		using.screen_loc = ui_back
+		adding += using
 
-	using = new /obj/screen/swarmer/ContactSwarmers()
-	using.screen_loc = ui_inventory
-	adding += using
+		using = new /obj/screen/swarmer/ContactSwarmers()
+		using.screen_loc = ui_inventory
+		adding += using
 
 	mymob.client.screen = list()
 	mymob.client.screen += mymob.client.void
