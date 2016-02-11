@@ -21,14 +21,19 @@
 		return
 	if(owner && !(owner.stat & DEAD))//don't decay if you are inside a living person.
 		return
-	var/datum/gas_mixture/environment = null
+
+	var/temperature
 	if(owner)
-		environment = owner.return_air()
+		temperature = owner.bodytemperature
 	else if(loc)
-		environment = loc.return_air()
-	if(!environment)
+		var/datum/gas_mixture/environment = loc.return_air()
+		if(!environment)
+			return
+		temperature = environment.temperature
+	else
 		return
-	if(environment.temperature > decay_above_temp)
+
+	if(temperature > decay_above_temp)
 		decay = max(0, decay-1)
 	if(!decay)
 		on_decay()
