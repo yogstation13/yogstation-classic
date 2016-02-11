@@ -40,7 +40,7 @@
 	icon_state = "power_display"
 
 
-/datum/hud/proc/human_hud(ui_style = 'icons/mob/screen_midnight.dmi')
+/datum/hud/proc/human_hud(ui_style = 'icons/mob/screen_midnight.dmi', only_do_style_updates = 0)
 	adding = list()
 	other = list()
 	hotkeybuttons = list()	//These can be disabled for hotkey users
@@ -252,58 +252,57 @@
 	mymob.throw_icon.screen_loc = ui_drop_throw
 	hotkeybuttons += mymob.throw_icon
 
-
-	mymob.internals = new /obj/screen/internals()
-	mymob.internals.screen_loc = ui_internal
-
-	mymob.healths = new /obj/screen()
-	mymob.healths.icon_state = "health0"
-	mymob.healths.name = "health"
-	mymob.healths.screen_loc = ui_health
-
-	mymob.healthdoll = new /obj/screen()
-	mymob.healthdoll.name = "health doll"
-	mymob.healthdoll.screen_loc = ui_healthdoll
-
 	mymob.pullin = new /obj/screen/pull()
 	mymob.pullin.icon = ui_style
 	mymob.pullin.update_icon(mymob)
 	mymob.pullin.screen_loc = ui_pull_resist
 	hotkeybuttons += mymob.pullin
 
-	lingchemdisplay = new /obj/screen/ling/chems()
-	lingchemdisplay.screen_loc = ui_lingchemdisplay
-
-	lingstingdisplay = new /obj/screen/ling/sting()
-	lingstingdisplay.screen_loc = ui_lingstingdisplay
-
-	mymob.blind = new /obj/screen()
-	mymob.blind.icon = 'icons/mob/screen_full.dmi'
-	mymob.blind.icon_state = "blackimageoverlay"
-	mymob.blind.name = " "
-	mymob.blind.screen_loc = "CENTER-7,CENTER-7"
-	mymob.blind.mouse_opacity = 0
-	mymob.blind.layer = 0
-
-	mymob.damageoverlay = new /obj/screen()
-	mymob.damageoverlay.icon = 'icons/mob/screen_full.dmi'
-	mymob.damageoverlay.icon_state = "oxydamageoverlay0"
-	mymob.damageoverlay.name = "dmg"
-	mymob.damageoverlay.blend_mode = BLEND_MULTIPLY
-	mymob.damageoverlay.screen_loc = "CENTER-7,CENTER-7"
-	mymob.damageoverlay.mouse_opacity = 0
-	mymob.damageoverlay.layer = 18.1 //The black screen overlay sets layer to 18 to display it, this one has to be just on top.
-
-	mymob.flash = new /obj/screen()
-	mymob.flash.icon_state = "blank"
-	mymob.flash.name = "flash"
-	mymob.flash.blend_mode = BLEND_ADD
-	mymob.flash.screen_loc = "WEST,SOUTH to EAST,NORTH"
-	mymob.flash.layer = 17
-
 	mymob.zone_sel = new /obj/screen/zone_sel()
 	mymob.zone_sel.icon = ui_style
 	mymob.zone_sel.update_icon()
+
+	if(!only_do_style_updates)
+		mymob.internals = new /obj/screen/internals()
+		mymob.internals.screen_loc = ui_internal
+
+		mymob.healths = new /obj/screen()
+		mymob.healths.icon_state = "health0"
+		mymob.healths.name = "health"
+		mymob.healths.screen_loc = ui_health
+
+		mymob.healthdoll = new /obj/screen()
+		mymob.healthdoll.name = "health doll"
+		mymob.healthdoll.screen_loc = ui_healthdoll
+		lingchemdisplay = new /obj/screen/ling/chems()
+		lingchemdisplay.screen_loc = ui_lingchemdisplay
+
+		lingstingdisplay = new /obj/screen/ling/sting()
+		lingstingdisplay.screen_loc = ui_lingstingdisplay
+
+		mymob.blind = new /obj/screen()
+		mymob.blind.icon = 'icons/mob/screen_full.dmi'
+		mymob.blind.icon_state = "blackimageoverlay"
+		mymob.blind.name = " "
+		mymob.blind.screen_loc = "CENTER-7,CENTER-7"
+		mymob.blind.mouse_opacity = 0
+		mymob.blind.layer = 0
+
+		mymob.damageoverlay = new /obj/screen()
+		mymob.damageoverlay.icon = 'icons/mob/screen_full.dmi'
+		mymob.damageoverlay.icon_state = "oxydamageoverlay0"
+		mymob.damageoverlay.name = "dmg"
+		mymob.damageoverlay.blend_mode = BLEND_MULTIPLY
+		mymob.damageoverlay.screen_loc = "CENTER-7,CENTER-7"
+		mymob.damageoverlay.mouse_opacity = 0
+		mymob.damageoverlay.layer = 18.1 //The black screen overlay sets layer to 18 to display it, this one has to be just on top.
+
+		mymob.flash = new /obj/screen()
+		mymob.flash.icon_state = "blank"
+		mymob.flash.name = "flash"
+		mymob.flash.blend_mode = BLEND_ADD
+		mymob.flash.screen_loc = "WEST,SOUTH to EAST,NORTH"
+		mymob.flash.layer = 17
 
 	mymob.client.screen = list()
 
@@ -324,3 +323,4 @@
 	else
 		client.screen -= hud_used.hotkeybuttons
 		hud_used.hotkey_ui_hidden = 1
+

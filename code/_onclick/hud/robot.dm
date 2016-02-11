@@ -62,7 +62,7 @@
 	R.control_headlamp()
 
 
-/datum/hud/proc/robot_hud()
+/datum/hud/proc/robot_hud(ui_style = 'icons/mob/screen_cyborg.dmi', only_do_style_updates = 0)
 	adding = list()
 	other = list()
 
@@ -72,6 +72,7 @@
 //Radio
 	using = new /obj/screen/robot/radio()
 	using.screen_loc = ui_borg_radio
+	using.icon = ui_style
 	adding += using
 
 //Module select
@@ -80,16 +81,19 @@
 
 	using = new /obj/screen/robot/module1()
 	using.screen_loc = ui_inv1
+	using.icon = ui_style
 	adding += using
 	mymobR.inv1 = using
 
 	using = new /obj/screen/robot/module2()
 	using.screen_loc = ui_inv2
+	using.icon = ui_style
 	adding += using
 	mymobR.inv2 = using
 
 	using = new /obj/screen/robot/module3()
 	using.screen_loc = ui_inv3
+	using.icon = ui_style
 	adding += using
 	mymobR.inv3 = using
 
@@ -99,26 +103,30 @@
 
 	using = new /obj/screen/ai/image_take()
 	using.screen_loc = ui_borg_camera
+	using.icon = ui_style
 	adding += using
 
 	using = new /obj/screen/ai/image_view()
 	using.screen_loc = ui_borg_album
+	using.icon = ui_style
 	adding += using
 
 //Sec/Med HUDs
 	using = new /obj/screen/ai/sensors()
 	using.screen_loc = ui_borg_sensor
+	using.icon = ui_style
 	adding += using
 
 //Headlamp control
 	using = new /obj/screen/robot/lamp()
 	using.screen_loc = ui_borg_lamp
+	using.icon = ui_style
 	adding += using
 	mymobR.lamp_button = using
 
 //Intent
 	using = new /obj/screen/act_intent()
-	using.icon = 'icons/mob/screen_cyborg.dmi'
+	using.icon = ui_style
 	using.icon_state = mymob.a_intent
 	using.screen_loc = ui_borg_intents
 	adding += using
@@ -126,7 +134,7 @@
 
 //Health
 	mymob.healths = new /obj/screen()
-	mymob.healths.icon = 'icons/mob/screen_cyborg.dmi'
+	mymob.healths.icon = ui_style
 	mymob.healths.icon_state = "health0"
 	mymob.healths.name = "health"
 	mymob.healths.screen_loc = ui_borg_health
@@ -134,34 +142,37 @@
 //Installed Module
 	mymob.hands = new /obj/screen/robot/module()
 	mymob.hands.screen_loc = ui_borg_module
+	mymob.hands.icon = ui_style
 
 //Store
 	mymob.throw_icon = new /obj/screen/robot/store()
 	mymob.throw_icon.screen_loc = ui_borg_store
+	mymob.throw_icon.icon = ui_style
 
 	mymob.pullin = new /obj/screen/pull()
-	mymob.pullin.icon = 'icons/mob/screen_cyborg.dmi'
+	mymob.pullin.icon = ui_style
 	mymob.pullin.update_icon(mymob)
 	mymob.pullin.screen_loc = ui_borg_pull
 
-	mymob.blind = new /obj/screen()
-	mymob.blind.icon = 'icons/mob/screen_full.dmi'
-	mymob.blind.icon_state = "blackimageoverlay"
-	mymob.blind.name = " "
-	mymob.blind.screen_loc = "CENTER-7,CENTER-7"
-	mymob.blind.layer = 0
-	mymob.blind.mouse_opacity = 0
-
-	mymob.flash = new /obj/screen()
-	mymob.flash.icon = 'icons/mob/screen_gen.dmi'
-	mymob.flash.icon_state = "blank"
-	mymob.flash.name = "flash"
-	mymob.flash.screen_loc = "WEST,SOUTH to EAST,NORTH"
-	mymob.flash.layer = 17
-
 	mymob.zone_sel = new /obj/screen/zone_sel()
-	mymob.zone_sel.icon = 'icons/mob/screen_cyborg.dmi'
+	mymob.zone_sel.icon = ui_style
 	mymob.zone_sel.update_icon()
+
+	if(!only_do_style_updates)
+		mymob.blind = new /obj/screen()
+		mymob.blind.icon = 'icons/mob/screen_full.dmi'
+		mymob.blind.icon_state = "blackimageoverlay"
+		mymob.blind.name = " "
+		mymob.blind.screen_loc = "CENTER-7,CENTER-7"
+		mymob.blind.layer = 0
+		mymob.blind.mouse_opacity = 0
+
+		mymob.flash = new /obj/screen()
+		mymob.flash.icon = 'icons/mob/screen_gen.dmi'
+		mymob.flash.icon_state = "blank"
+		mymob.flash.name = "flash"
+		mymob.flash.screen_loc = "WEST,SOUTH to EAST,NORTH"
+		mymob.flash.layer = 17
 
 	mymob.client.screen = list()
 

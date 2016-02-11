@@ -1,24 +1,24 @@
-
 /datum/hud/proc/unplayer_hud()
 	return
 
 /datum/hud/proc/ghost_hud()
 	return
 
-/datum/hud/proc/brain_hud(ui_style = 'icons/mob/screen_midnight.dmi')
-	mymob.blind = new /obj/screen()
-	mymob.blind.icon = 'icons/mob/screen_full.dmi'
-	mymob.blind.icon_state = "blackimageoverlay"
-	mymob.blind.name = " "
-	mymob.blind.screen_loc = "CENTER-7,CENTER-7"
-	mymob.blind.layer = 0
-	mymob.blind.mouse_opacity = 0
+/datum/hud/proc/brain_hud(ui_style = 'icons/mob/screen_midnight.dmi', only_do_style_updates = 0)
+	if(!only_do_style_updates)
+		mymob.blind = new /obj/screen()
+		mymob.blind.icon = 'icons/mob/screen_full.dmi'
+		mymob.blind.icon_state = "blackimageoverlay"
+		mymob.blind.name = " "
+		mymob.blind.screen_loc = "CENTER-7,CENTER-7"
+		mymob.blind.layer = 0
+		mymob.blind.mouse_opacity = 0
 
 	mymob.client.screen = list()
 	mymob.client.screen += list(mymob.blind)
 	mymob.client.screen += mymob.client.void
 
-/datum/hud/proc/blob_hud(ui_style = 'icons/mob/screen_midnight.dmi')
+/datum/hud/proc/blob_hud(ui_style = 'icons/mob/screen_midnight.dmi', only_do_style_updates = 0)
 
 	blobpwrdisplay = new /obj/screen()
 	blobpwrdisplay.name = "blob power"
