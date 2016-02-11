@@ -1,0 +1,9 @@
+# Your name.  
+author: Xthedark
+
+# Optional: Remove this file after generating master changelog.  Useful for PR changelogs that won't get used again.
+delete-after: true
+
+changes: 
+  - tweak: "Entering a mech no longer minimizes your HUD, making the icons appear when you enter."
+  - tweak: "Create Object/Mob commands no longer open a populated window. This should increase the commands response time."
