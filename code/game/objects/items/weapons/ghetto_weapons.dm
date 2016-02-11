@@ -78,7 +78,7 @@
 	name = "spear"
 	desc = "A spear with a canister of tank of gas ductaped to it to allow extra thrust."
 	slot_flags = SLOT_BACK
-	throwforce = 15 // The oxygen tank makes it slower so it doesent do as much damage whilst the tank is off.
+	throwforce = 20
 	throw_speed = 3 // Same goes here.
 	flags = NOSHIELD
 
@@ -110,7 +110,7 @@
 		throw_speed = old_throw_speed+tank.air_contents.return_pressure()/100
 		throwforce = old_throw_force+tank.air_contents.return_pressure()/50
 
-		if(throwforce > 21) throwforce=21
+		if(throwforce > 30) throwforce=30
 
 		item_state = "spear_on"
 
