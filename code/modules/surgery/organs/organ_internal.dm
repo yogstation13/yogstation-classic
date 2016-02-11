@@ -7,6 +7,45 @@
 	var/slot
 	var/vital = 0
 	var/organ_action_name = null
+	var/decay_time = 0//Measured in BYOND seconds. By default, organs do not decay.
+	var/decay = 0
+	var/decay_above_temp = T0C
+
+/obj/item/organ/internal/New()
+	decay = decay_time
+	if(decay_time)
+		SSobj.processing |= src
+
+/obj/item/organ/internal/process()
+	if(!decay_time || decay == -1)
+		return
+	if(owner && !(owner.stat & DEAD))//don't decay if you are inside a living person.
+		return
+	var/datum/gas_mixture/environment = null
+	if(owner)
+		environment = owner.return_air()
+	else if(loc)
+		environment = loc.return_air()
+	if(!environment)
+		return
+	if(environment.temperature > decay_above_temp)
+		decay = max(0, decay-1)
+	if(!decay)
+		on_decay()
+
+/obj/item/organ/internal/proc/on_decay()
+	decay = -1
+	SSobj.processing.Remove(src)
+
+/obj/item/organ/internal/attackby(obj/item/I, mob/user, params)
+	if(istype(I, /obj/item/device/healthanalyzer))//perhaps also the PDA cartridge?
+		user.visible_message("<span class='notice'>[user] has analyzed \the [src].</span>")
+		if(!decay_time)
+			user << "<span class='danger'>\The [src] will not decay.</span>"
+		else if(decay == -1)
+			user << "<span class='danger'>\The [src] is decayed beyond the point of no return.</span>"
+		else
+			user << "<span class='danger'>\The [src]'s tissue is [round(100-(100*decay/decay_time), 0.1)]% decayed.</span>"
 
 /obj/item/organ/internal/proc/Insert(mob/living/carbon/M, special = 0)
 	if(!iscarbon(M) || owner == M)
@@ -37,6 +76,7 @@
 	return
 
 /obj/item/organ/internal/proc/on_life()
+	decay = min(decay_time, decay+1)
 	return
 
 /obj/item/organ/internal/proc/prepare_eat()
@@ -81,7 +121,13 @@
 	slot = "heart"
 	origin_tech = "biotech=3"
 	vital = 1
+	decay_time = 600//10 BYOND minutes, same as the old defib time limit.
 	var/beating = 1
+
+/obj/item/organ/internal/heart/on_decay()
+	..()
+	beating = 0
+	update_icon()
 
 /obj/item/organ/internal/heart/update_icon()
 	if(beating)
@@ -96,9 +142,11 @@
 
 /obj/item/organ/internal/heart/Remove(mob/living/carbon/M, special = 0)
 	..()
+	/*//unnecessary with the new decay system.
 	spawn(120)
 		beating = 0
 		update_icon()
+	*/
 
 /obj/item/organ/internal/heart/prepare_eat()
 	var/obj/S = ..()
