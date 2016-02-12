@@ -29,7 +29,9 @@
 				qdel(src)
 				if(istype(target, /mob/living/carbon/human))
 					var/mob/living/carbon/human/H = target
-					if(prob(20))
+					if(prob(60))
+						H.blood_max += rand(0.5, 3)
+					if(prob(10))
 						H.throw_alert("embeddedobject")
 						var/obj/item/organ/limb/L = pick(H.organs)
 						var/obj/item/weapon/shard/shard = new
@@ -50,9 +52,9 @@
 	name = "glass sword"
 	icon_state = "glass_sword"
 	desc = "A sword made out of shiny glass. Perfect for slashing."
-	force = 15.0
+	force = 13.0
 	w_class = 4.0
-	throwforce = 12.0
+	throwforce = 10.0
 	hitsound = 'sound/weapons/bladeslice.ogg'
 
 /obj/item/weapon/ghetto/glass/sword/black
@@ -68,8 +70,8 @@
 	r_item_state = "right"
 	icon_state = "glass_refined"
 	desc = "A sword made out of refined black glass. Can be placed on your back and its perfect for slashing."
-	force = 17.0
-	throwforce = 15.0
+	force = 16.0
+	throwforce = 12.0
 	slot_flags = SLOT_BACK
 	smashable = 0
 
@@ -78,8 +80,8 @@
 	name = "spear"
 	desc = "A spear with a canister of tank of gas ductaped to it to allow extra thrust."
 	slot_flags = SLOT_BACK
-	throwforce = 20
-	throw_speed = 3 // Same goes here.
+	throwforce = 19
+	throw_speed = 3
 	flags = NOSHIELD
 
 	l_item_state = "spearglass0"
@@ -89,8 +91,8 @@
 
 	var/obj/item/weapon/tank/tank = null
 
-	var/old_throw_speed = 15
-	var/old_throw_force = 3
+	var/old_throw_speed = 3
+	var/old_throw_force = 19
 
 /obj/item/weapon/ghetto/airspear/attackby(obj/item/weapon/W, mob/user, params)
 	if(istype(W, /obj/item/weapon/tank))
@@ -110,14 +112,17 @@
 		throw_speed = old_throw_speed+tank.air_contents.return_pressure()/100
 		throwforce = old_throw_force+tank.air_contents.return_pressure()/50
 
-		if(throwforce > 30) throwforce=30
+		if(throwforce > 24) throwforce=24
 
-		item_state = "spear_on"
+		icon_state = "spear_on"
 
-		//TODO: Eject air contents of tank into atmosphere.
+		var/datum/gas_mixture/removed = tank.air_contents.remove(tank.air_contents.total_moles()/7)
+		loc.assume_air(removed)
+		air_update_turf()
 
 		spawn(40)
-			icon_state = "spear_off"
+			if(tank)
+				icon_state = "spear_off"
 			throw_speed = old_throw_speed
 			throwforce = old_throw_force
 	..()
@@ -142,7 +147,7 @@
 	item_state = "coat"
 	burn_state = -1
 	allowed = list(/obj/item/device/flashlight,/obj/item/weapon/tank/internals/emergency_oxygen,/obj/item/toy,/obj/item/weapon/storage/fancy/cigarettes,/obj/item/weapon/lighter,/obj/item/weapon/gun/projectile/automatic/pistol,/obj/item/weapon/gun/projectile/revolver,/obj/item/weapon/gun/projectile/revolver/detective)
-	armor = list(melee = 25, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 9, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
 
 /obj/item/clothing/under/armouredjumpsuit
 	name = "armoured jumpsuit"
@@ -152,5 +157,5 @@
 	item_state = "armoured_suit"
 	item_color = "armoured_suit"
 	icon_state = "suit_icon"
-	armor = list(melee = 10, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 5, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
 	strip_delay = 40
