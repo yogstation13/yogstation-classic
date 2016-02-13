@@ -34,7 +34,7 @@
 	if(usr.stat || !usr.canmove || usr.restrained())
 		return
 	on = !on
-	var/mob/living/carbon/human/C = usr
+	var/mob/living/C = usr
 	if(on)
 		icon_state = "[icon_state]-on"
 	//	item_state = "[item_state]-on"
@@ -51,7 +51,7 @@
 	return
 
 /obj/item/weapon/tank/jetpack/proc/allow_thrust(num, mob/living/user)
-	var/mob/living/carbon/human/C = usr
+	var/mob/living/C = usr
 	if(!(src.on))
 		return 0
 	if((num < 0.005 || src.air_contents.total_moles() < num))
