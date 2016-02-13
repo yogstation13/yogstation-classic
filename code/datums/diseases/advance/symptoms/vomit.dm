@@ -92,6 +92,9 @@ Bonus
 	var/brute_dam = M.getBruteLoss()
 	if(brute_dam < 50)
 		M.adjustBruteLoss(3)
+		if(istype(M, /mob/living/carbon/human))
+			var/mob/living/carbon/human/H
+			H.drip(3)
 
 	var/turf/pos = get_turf(M)
 	pos.add_blood_floor(M)
