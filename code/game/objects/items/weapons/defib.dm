@@ -410,7 +410,7 @@
 				user.visible_message("<span class='notice'>[user] places [src] on [M.name]'s chest.</span>", "<span class='warning'>You place [src] on [M.name]'s chest.</span>")
 				playsound(get_turf(src), 'sound/machines/defib_charge.ogg', 50, 0)
 				var/tplus = world.time - H.timeofdeath
-				var/tlimit = 6000 //past this much time the patient is unrecoverable (in deciseconds)
+				var/tlimit = 6000 //Marker for how much brain damage a person will take.
 				var/tloss = 3000 //brain damage starts setting in on the patient after some time left rotting
 				var/total_burn	= 0
 				var/total_brute	= 0
@@ -431,10 +431,10 @@
 						total_burn	= H.getFireLoss()
 
 						var/failed = null
-
+						var/obj/item/organ/internal/heart/the_heart = H.getorgan(/obj/item/organ/internal/heart)
 						if (H.suiciding || (NOCLONE in H.mutations))
 							failed = "<span class='warning'>[defib] buzzes: Resuscitation failed - Recovery of patient impossible. Further attempts futile.</span>"
-						else if ((tplus > tlimit) || !H.getorgan(/obj/item/organ/internal/heart))
+						else if (!the_heart || the_heart.decay == -1)
 							failed = "<span class='warning'>[defib] buzzes: Resuscitation failed - Heart tissue damage beyond point of no return. Further attempts futile.</span>"
 						else if(total_burn >= 180 || total_brute >= 180)
 							failed = "<span class='warning'>[defib] buzzes: Resuscitation failed - Severe tissue damage makes recovery of patient impossible via defibrillator. Further attempts futile.</span>"

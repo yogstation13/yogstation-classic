@@ -935,7 +935,7 @@ var/list/sacrificed = list()
 
 			if(iscarbon(L))
 				var/mob/living/carbon/C = L
-				flick("e_flash", C.flash)
+				C.flash_eyes()
 				C.stuttering = 1
 				C.Weaken(1)
 				C.Stun(1)
@@ -961,7 +961,7 @@ var/list/sacrificed = list()
 
 			else if(iscarbon(T))
 				var/mob/living/carbon/C = T
-				flick("e_flash", C.flash)
+				C.flash_eyes()
 				C.silent += 15
 				C.Weaken(10)
 				C.Stun(10)

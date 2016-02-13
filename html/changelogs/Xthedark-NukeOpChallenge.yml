@@ -1,8 +1,0 @@
-# Your name.  
-author: Xthedark
-
-# Optional: Remove this file after generating master changelog.  Useful for PR changelogs that won't get used again.
-delete-after: true
-
-changes: 
-  - rscadd: "Ported Nuclear Challenge Mode from /tg/ by KorPhareon. Nuclear Operative Leaders now get a Declaration of War item in their right hand. When activated, it announces Nuclear Operative desire to blow the station with the nuclear device, delays the departure of their shuttle to 20 minutes after roundstart, but gives them 5.6 TC per player on the server and delays Nanotrasen shuttle call to 25 minutes after roundstart. Can only be used during first 5 minutes of the round (until intercept message)."

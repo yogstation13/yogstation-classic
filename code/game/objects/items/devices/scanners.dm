@@ -121,6 +121,17 @@ MASS SPECTROMETER
 	if(M.status_flags & FAKEDEATH)
 		mob_status = "<span class='alert'>Deceased</span>"
 		oxy_loss = max(rand(1, 40), oxy_loss, (300 - (tox_loss + fire_loss + brute_loss))) // Random oxygen loss
+		user << "<span class='danger'>Subject's heart tissue has decayed beyond the point of no return.</span>"//perhaps make this random too?
+	else
+		var/obj/item/organ/internal/heart/heart = M.getorgan(/obj/item/organ/internal/heart)
+		if(!heart)
+			user << "<span class='danger'>Subject does not have a heart.</span>"
+		else
+			if(heart.decay_time && (heart.decay != heart.decay_time))
+				if(heart.decay == -1)
+					user << "<span class='danger'>Subject's heart tissue has decayed beyond the point of no return.</span>"
+				else
+					user << "<span class='danger'>Subject's heart tissue is [round(100-(100*heart.decay/heart.decay_time), 0.1)]% decayed.</span>"
 
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
