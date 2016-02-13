@@ -28,7 +28,7 @@
 /obj/item/clothing/under/chameleon/attackby(obj/item/clothing/under/U, mob/user, params)
 	..()
 	if(istype(U, /obj/item/clothing/under/chameleon))
-		user << "\<span class='notice'>Nothing happens.</span>"
+		user << "<span class='notice'>Nothing happens.</span>"
 		return
 	if(istype(U, /obj/item/clothing/under))
 		if(src.clothing_choices.Find(U))
