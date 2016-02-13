@@ -740,7 +740,7 @@
 		var/obj/item/device/pda/A = O
 		if(A.scanmode == 6)
 			if(planted && myseed)
-				visible_message("<span class='notice'>[user] scans the plants in the hydroponic tray!</span>")
+				visible_message("<span class='notice'[user] scans the plants in the hydroponic tray!</span>")
 				user << "*** <B>[myseed.plantname]</B> ***" //Carn: now reports the plants growing, not the seeds.
 				user << "-Plant Age: <span class='notice'>[age]</span>"
 				user << "-Plant Endurance: <span class='notice'>[myseed.endurance]</span>"
