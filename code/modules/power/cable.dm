@@ -130,6 +130,11 @@ By design, d1 is the smallest direction and d2 is the highest
 //
 /obj/structure/cable/attackby(obj/item/W, mob/user, params)
 	var/turf/T = src.loc
+	var/is_pda_multitool = 0
+	if(istype(W, /obj/item/device/pda/))
+		var/obj/item/device/pda/pda = W
+		if(pda.scanmode == PDA_SCAN_POWER)
+			is_pda_multitool = 1
 	if(T.intact)
 		return
 	if(istype(W, /obj/item/weapon/wirecutters))
@@ -148,13 +153,12 @@ By design, d1 is the smallest direction and d2 is the highest
 			return
 		coil.cable_join(src, user)
 
-	else if(istype(W, /obj/item/device/multitool))
+	else if(is_pda_multitool || istype(W, /obj/item/device/multitool))
 		if(powernet && (powernet.avail > 0))		// is it powered?
 			user << "<span class='danger'>[powernet.avail]W in power network.</span>"
 		else
 			user << "<span class='danger'>The cable is not powered.</span>"
 		shock(user, 5, 0.2)
-
 	else
 		if (W.flags & CONDUCT)
 			shock(user, 50, 0.7)

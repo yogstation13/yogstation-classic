@@ -1,0 +1,7 @@
+author: Cruix
+
+delete-after: true
+
+changes: 
+  - rscadd: "Nanotrasen has updated the PDA cartridges of the engineering department. Atmospheric technician PDAs now have remote access to all atmospheric monitoring consoles, and can be toggled to receive a notification of all fire and air alerts on the station. Engineer PDAs can now be toggled to recieve a notification of all power alerts on the station, and can activate a power meter function to measure the power contained in a wire on the ground, just like a multitool. Naturally, the Captain and CE's PDA cartridges have been upgraded with all these functions as well. As a result, the Captain's Value-PAK cartridge now contains 100% more value. In addition, some PDA functions have been moved from the 'utilities' menu to their own categories."
+  - bugfix: "Fixed some cases where the botanist's PDA cartridge would not make the PDA properly act like a plant analyzer."
