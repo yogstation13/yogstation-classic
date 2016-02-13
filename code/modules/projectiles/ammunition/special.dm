@@ -40,4 +40,4 @@
 	projectile_type = /obj/item/projectile/bullet/midbullet3
 	select_name = "spraydown"
 	fire_sound = 'sound/weapons/gunshot_smg.ogg'
-	e_cost = 20
+	e_cost = 40

@@ -36,7 +36,6 @@
 	update_icon()
 	return
 
-
 /obj/item/weapon/gun/energy/afterattack(atom/target as mob|obj|turf, mob/living/user as mob|obj, params)
 	newshot() //prepare a new shot
 	..()
