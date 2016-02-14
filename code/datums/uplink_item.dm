@@ -700,7 +700,7 @@ var/list/uplink_items = list()
 	name = "Mindslave Implant"
 	desc = "An implant injected into a targets body. Will cause the target to obey your every command whilst the target is implanted. Implant can be removed by surgery!"
 	item = /obj/item/weapon/storage/box/syndie_kit/imp_mindslave
-	cost = 12
+	cost = 10
 
 
 //CYBERNETIC IMPLANTS
