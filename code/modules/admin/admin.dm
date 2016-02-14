@@ -43,6 +43,10 @@ var/global/floorIsLava = 0
 
 	body += "<b>Mob type</b> = [M.type]<br><br>"
 
+	var/client/C = get_client(M)
+	if(C)
+		body += "<b>Antag Tokens</b> = [C.antag_tokens] \[ <a href='?_src_=holder;antag_token_decrease=\ref[M]'>- Less -</a> | <a href='?_src_=holder;antag_token_increase=\ref[M]'>+ More +</a> \]<br><br>"
+
 	body += "<A href='?_src_=holder;boot2=\ref[M]'>Kick</A> | "
 	body += "<A href='?_src_=holder;newban=\ref[M]'>Ban</A> | "
 	body += "<A href='?_src_=holder;jobban2=\ref[M]'>Jobban</A> | "
