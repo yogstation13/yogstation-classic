@@ -49,6 +49,9 @@
 
 	log_game("[holder] enslaved [target] with a Mindslave implant")
 
+	spawn(12000)
+		activate()
+
 	return ..()
 
 /obj/item/weapon/implant/mindslave/removed(mob/target)
