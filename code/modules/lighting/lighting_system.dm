@@ -23,9 +23,10 @@
 		Shuttles still do not have support for dynamic lighting (I hope to fix this at some point) -probably trivial now
 		No directional lighting support. (prototype looked ugly)
 		Allow lights to be weaker than 'cap' radius
+		Colored lights
 */
 
-#define LIGHTING_CIRCULAR 1									//comment this out to use old square lighting effects.
+#define LIGHTING_CIRCULAR 1									//Comment this out to use old square lighting effects.
 #define LIGHTING_LAYER 15									//Drawing layer for lighting
 #define LIGHTING_CAP 10										//The lumcount level at which alpha is 0 and we're fully lit.
 #define LIGHTING_CAP_FRAC (255/LIGHTING_CAP)				//A precal'd variable we'll use in turf/redraw_lighting()
@@ -33,43 +34,50 @@
 #define LIGHTING_ICON_STATE "white"
 #define LIGHTING_TIME 1.2									//Time to do any lighting change. Actual number pulled out of my ass
 #define LIGHTING_DARKEST_VISIBLE_ALPHA 230					//Anything darker than this is so dark, we'll just consider the whole tile unlit
-//#define USE_COLOURED_LIGHTING 1
+#define LIGHTING_MIN_RADIUS 4								//Lowest radius a light source can effect.  (The fuq TG?)
+#define LIGHTING_LUM_FOR_FULL_BRIGHT 6						//Anything who's lum is lower then this starts off less bright.
 
 /datum/light_source
 	var/atom/owner
 	var/radius = 0
-	var/changed = 1
+	var/luminosity = 0
+	var/cap = 0
+	var/changed = 0
 	var/list/effect = list()
-	var/list/effectr = list()
-	var/list/effectg = list()
-	var/list/effectb = list()
-	var/lightr = 1
-	var/lightg = 1
-	var/lightb = 1
-	var/lighta = 1
 	var/__x = 0		//x coordinate at last update
 	var/__y = 0		//y coordinate at last update
 
-/datum/light_source/New(atom/A, var/defaulto = 0)
+/datum/light_source/New(atom/A)
 	if(!istype(A))
 		CRASH("The first argument to the light object's constructor must be the atom that is the light source. Expected atom, received '[A]' instead.")
 	..()
 	owner = A
-	radius = A.luminosity
-	__x = owner.x
-	__y = owner.y
-	if (defaulto)
-		lightr = 0
-		lightg = 0
-		lightb = 0
-	SSlighting.changed_lights |= src
+	UpdateLuminosity(A.luminosity)
 
 /datum/light_source/Destroy()
 	if(owner && owner.light == src)
 		remove_effect()
 		owner.light = null
+		owner.luminosity = 0
 		owner = null
+	if(changed)
+		SSlighting.changed_lights -= src
 	return ..()
+
+/datum/light_source/proc/UpdateLuminosity(new_luminosity, new_cap)
+	if(new_luminosity < 0)
+		new_luminosity = 0
+
+	if(luminosity == new_luminosity && (new_cap == null || cap == new_cap))
+		return
+
+	radius = max(LIGHTING_MIN_RADIUS, new_luminosity)
+	luminosity = new_luminosity
+	if (new_cap != null)
+		cap = new_cap
+
+	changed()
+
 
 //Check a light to see if its effect needs reprocessing. If it does, remove any old effect and create a new one
 /datum/light_source/proc/check()
@@ -96,55 +104,62 @@
 //Remove current effect
 /datum/light_source/proc/remove_effect().
 	for(var/turf/T in effect)
-		T.update_lumcount(-effect[T], -effectr[T], -effectg[T], -effectb[T])
+		T.update_lumcount(-effect[T])
 
 		if(T.affecting_lights && T.affecting_lights.len)
 			T.affecting_lights -= src
 
 	effect.Cut()
 
-//Apply a new effect
+//Apply a new effect.
 /datum/light_source/proc/add_effect()
 	// only do this if the light is turned on and is on the map
-	if(owner && owner.loc && radius > 0)
-		effect = list()
-		var/turf/To = get_turf(owner)
-		var/range = owner.get_light_range(radius)
-		for(var/atom/movable/AM in To)
-			if(AM == owner)
-				continue
-			if(AM.opacity)
-				range = 0
-				break
-
-		for(var/turf/T in view(range, To))
-			var/delta_lumcount = T.lumen(src)
-			if(delta_lumcount > 0)
-				effect[T] = delta_lumcount * lighta
-				effectr[T] = (lightr) * (delta_lumcount/LIGHTING_CAP) * lighta
-				effectg[T] = (lightg) * (delta_lumcount/LIGHTING_CAP) * lighta
-				effectb[T] = (lightb) * (delta_lumcount/LIGHTING_CAP) * lighta
-				T.update_lumcount(delta_lumcount * lighta, (lightr) * (delta_lumcount/LIGHTING_CAP), (lightg) * (delta_lumcount/LIGHTING_CAP), (lightb) * (delta_lumcount/LIGHTING_CAP))
-
-				if(!T.affecting_lights)
-					T.affecting_lights = list()
-				T.affecting_lights |= src
-
-		return 1
-	else
+	if(!owner || !owner.loc)
+		return 0
+	var/range = owner.get_light_range(radius)
+	if(range <= 0 || luminosity <= 0)
+		owner.luminosity = 0
 		return 0
 
-//How much light light_source L should apply to src
-/turf/proc/lumen(datum/light_source/L)
-	var/distance = 0
-#ifdef LIGHTING_CIRCULAR
-	distance = cheap_hypotenuse(x, y, L.__x, L.__y)
-#else
-	distance = max(abs(x - L.__x), abs(y - L.__y))
-#endif
-	return LIGHTING_CAP * (L.radius - distance) / L.radius
-//LIGHTING_CAP == strength for now
+	effect = list()
+	var/turf/To = get_turf(owner)
 
+
+	for(var/atom/movable/AM in To)
+		if(AM == owner)
+			continue
+		if(AM.opacity)
+			range = 0
+			break
+
+	owner.luminosity = range
+	if (!range)
+		return 0
+	var/center_strength = 0
+	if (cap <= 0)
+		center_strength = LIGHTING_CAP/LIGHTING_LUM_FOR_FULL_BRIGHT*(luminosity)
+	else
+		center_strength = cap
+
+	for(var/turf/T in view(range+1, To))
+
+#ifdef LIGHTING_CIRCULAR
+		var/distance = cheap_hypotenuse(T.x, T.y, __x, __y)
+#else
+		var/distance = max(abs(T,x - __x), abs(T.y - __y))
+#endif
+
+		var/delta_lumcount = Clamp(center_strength * (range - distance) / range, 0, LIGHTING_CAP)
+
+		if(delta_lumcount > 0)
+			effect[T] = delta_lumcount
+			T.update_lumcount(delta_lumcount)
+
+			if(!T.affecting_lights)
+				T.affecting_lights = list()
+			T.affecting_lights |= src
+
+	return 1
 
 /atom
 	var/datum/light_source/light
@@ -156,7 +171,6 @@
 	..()
 	if(luminosity)
 		light = new(src)
-//		luminosity = 0
 
 //Movable atoms with opacity when they are constructed will trigger nearby lights to update
 //Movable atoms with luminosity when they are constructed will create a light_source automatically
@@ -166,7 +180,6 @@
 		UpdateAffectingLights()
 	if(luminosity)
 		light = new(src)
-//		luminosity = 0
 
 //Objects with opacity will trigger nearby lights to update at next SSlighting fire
 /atom/movable/Destroy()
@@ -190,39 +203,21 @@
 //If we are setting luminosity to 0 the light will be cleaned up by the controller and garbage collected once all its
 //queues are complete.
 //if we have a light already it is merely updated, rather than making a new one.
-/atom/proc/SetLuminosity(new_luminosity, var/r = 1, var/g = 1, var/b = 1)
-	if(new_luminosity < 0)
-		new_luminosity = 0
+//The second arg allows you to scale the light cap for calculating falloff.
 
-	r = max(r, 0)
-	g = max(g, 0)
-	b = max(b, 0)
-
-	if(!light)
-		if(!new_luminosity)
+/atom/proc/SetLuminosity(new_luminosity, new_cap)
+	if (!light)
+		if (new_luminosity <= 0)
 			return
-		light = new(src, 1)
-	else
-		if(light.radius == new_luminosity && light.lightr == r && light.lightg == g && light.lightb == b)
-			return
-	light.radius = new_luminosity
-	light.lightr = r
-	light.lightg = g
-	light.lightb = b
-	luminosity = new_luminosity
-	light.changed()
+		light = new(src)
 
-/atom/proc/AddLuminosity(delta_luminosity, var/r, var/g , var/b)
-	if (r == null)
-		r = (delta_luminosity >= 0 ? 1 : -1)
-	if (g == null)
-		g = (delta_luminosity >= 0 ? 1 : -1)
-	if (b == null)
-		b = (delta_luminosity >= 0 ? 1 : -1)
+	light.UpdateLuminosity(new_luminosity, new_cap)
+
+/atom/proc/AddLuminosity(delta_luminosity)
 	if(light)
-		SetLuminosity(light.radius + delta_luminosity, light.lightr + (r * delta_luminosity), light.lightg + (g * delta_luminosity), light.lightb + (b * delta_luminosity))
+		SetLuminosity(light.luminosity + delta_luminosity)
 	else
-		SetLuminosity(delta_luminosity, r, g, b)
+		SetLuminosity(delta_luminosity)
 
 /area/SetLuminosity(new_luminosity)			//we don't want dynamic lighting for areas
 	luminosity = !!new_luminosity
@@ -243,26 +238,15 @@
 	icon_state = LIGHTING_ICON_STATE
 	layer = LIGHTING_LAYER
 	mouse_opacity = 0
-#ifdef USE_COLOURED_LIGHTING
-	blend_mode = BLEND_MULTIPLY // Overlay is for nerds, We have new toys now~
-#else
 	blend_mode = BLEND_OVERLAY
-#endif
 	invisibility = INVISIBILITY_LIGHTING
 	color = "#000"
 	luminosity = 0
 	infra_luminosity = 1
 	anchored = 1
-	var/light_r = 0
-	var/light_g = 0
-	var/light_b = 0
 
 /atom/movable/light/dim
-#ifdef USE_COLOURED_LIGHTING
-	color = "#444" // Always half bright.
-#else
 	color = "#000"
-#endif
 	alpha = 0 // Only visible when the tile it's on is ~pure black.
 	invisibility = SEE_INVISIBLE_MINIMUM + 1 // Rarely invisible. Hidden for things like mesons.
 	layer = TURF_LAYER // Don't darken things on top of the turf.
@@ -275,12 +259,9 @@
 
 /turf
 	var/lighting_lumcount = 0
-	var/lighting_rlums = 0
-	var/lighting_glums = 0
-	var/lighting_blums = 0
 	var/lighting_changed = 0
 	var/atom/movable/light/lighting_object //Will be null for space turfs and anything in a static lighting area
-	var/atom/movable/light/dim/light_dim // Used for shadowlings and night vision and stuffs, to show pure black areas, but make them still visible... So to speak...
+	var/atom/movable/light/dim/light_dim // ^^
 	var/list/affecting_lights			//not initialised until used (even empty lists reserve a fair bit of memory)
 
 /turf/ChangeTurf(path)
@@ -294,9 +275,6 @@
 		qdel(light)
 
 	var/old_lumcount = lighting_lumcount - initial(lighting_lumcount)
-	var/oldrlums = lighting_rlums - initial(lighting_rlums)
-	var/oldglums = lighting_glums - initial(lighting_glums)
-	var/oldblums = lighting_blums - initial(lighting_blums)
 	var/oldbaseturf = baseturf
 
 	var/list/our_lights //reset affecting_lights if needed
@@ -311,33 +289,26 @@
 	affecting_lights = our_lights
 
 	lighting_changed = 1 //Don't add ourself to SSlighting.changed_turfs
-	update_lumcount(old_lumcount, oldrlums, oldglums, oldblums)
+	update_lumcount(old_lumcount)
 	baseturf = oldbaseturf
 	lighting_object = locate() in src
 	init_lighting()
 
-	for(var/turf/space/S in orange(src,1))
+	for(var/turf/space/S in RANGE_TURFS(1,src)) //RANGE_TURFS is in code\__HELPERS\game.dm
 		S.update_starlight()
 
-
-/turf/proc/update_lumcount(amount, rlums, glums, blums)
+/turf/proc/update_lumcount(amount)
 	lighting_lumcount += amount
-	lighting_rlums += rlums
-	lighting_glums += glums
-	lighting_blums += blums
 	if(!lighting_changed)
 		SSlighting.changed_turfs += src
 		lighting_changed = 1
 
-/turf/space/update_lumcount(amount, rlums, glums, blums) //Keep track in case the turf becomes a floor at some point, but don't process.
+/turf/space/update_lumcount(amount) //Keep track in case the turf becomes a floor at some point, but don't process.
 	lighting_lumcount += amount
-	lighting_rlums += rlums
-	lighting_glums += glums
-	lighting_blums += blums
 
 /turf/proc/init_lighting()
 	var/area/A = loc
-	if(!A.lighting_use_dynamic || istype(src, /turf/space))
+	if(!(A.lighting_use_dynamic) || istype(src, /turf/space))
 		lighting_changed = 0
 		if(lighting_object)
 			lighting_object.alpha = 0
@@ -357,59 +328,31 @@
 /turf/proc/redraw_lighting(instantly = 0)
 	if(lighting_object)
 		var/newalpha
-
 		if(lighting_lumcount <= 0)
-			newalpha = 0
+			newalpha = 255
 		else
 			lighting_object.luminosity = 1
 			if(lighting_lumcount < LIGHTING_CAP)
-				var/area/A = loc
-				if (!istype(A))
-					return; // Noidea if this will ever happen, but meh.
-				var/num = Clamp(lighting_lumcount * LIGHTING_CAP_FRAC, A.min_lumcount, 255)
-				newalpha = num
+				var/num = Clamp(lighting_lumcount * LIGHTING_CAP_FRAC, 0, 255)
+				newalpha = 255-num
 			else //if(lighting_lumcount >= LIGHTING_CAP)
-				newalpha = 255
-#ifdef USE_COLOURED_LIGHTING
-		var/t = max(lighting_rlums, lighting_glums, lighting_blums) // So that the highest value is always 1, then adjusted for luminosity.
-		var/r = newalpha
-		var/g = newalpha
-		var/b = newalpha
-		if (t != 0)
-			r = newalpha * (lighting_rlums / t)
-			g = newalpha * (lighting_glums / t)
-			b = newalpha * (lighting_blums / t)
-		var/newcolor = "#[num2hex(r)][num2hex(g)][num2hex(b)]" // THE ISSUE WAS ONE FUCKING ) IN THE FUCKING STRING FUCK ME I'M A SHIT CODER.
-
-		if (newalpha == alpha && newcolor == color) // Prevent unneeded updates.
-			return;
-#else
-		newalpha = 255-newalpha
-		if (newalpha == alpha)
-			return;
-#endif
-		var/change_time = LIGHTING_TIME
-
-		if(instantly)
-			change_time = 0
-#ifdef USE_COLOURED_LIGHTING
-		animate(lighting_object, color = newcolor, time = change_time) // Animated lights, look smoother and things.
-#else
-		animate(lighting_object, alpha = newalpha, time = change_time)
-#endif
-		if(newalpha < 255-LIGHTING_DARKEST_VISIBLE_ALPHA) //Doesn't actually make it darker or anything, just tells byond you can't see the tile
-			animate(luminosity = 0, time = 0)
-#ifdef USE_COLOURED_LIGHTING
-		light_dim.alpha = (get_lumcount() <= 0.3) * 255 // We're only visible if the lighting lumcount is less than what shadowlings can walk through.
-#else
-		light_dim.alpha = (get_lumcount() <= 0.3) * 128 // See above
-#endif
-
+				newalpha = 0
+		if(newalpha >= LIGHTING_DARKEST_VISIBLE_ALPHA)
+			newalpha = 255
+		if(lighting_object.alpha != newalpha)
+			if(instantly)
+				lighting_object.alpha = newalpha
+			else
+				animate(lighting_object, alpha = newalpha, time = LIGHTING_TIME)
+			if(newalpha >= LIGHTING_DARKEST_VISIBLE_ALPHA)
+				luminosity = 0
+				lighting_object.luminosity = 0
+		light_dim.alpha = (get_lumcount() <= 0.3) * 128 // If the lighting lumcount <= 0.3 then it's got an alpha of 128, Else, 0.
 	lighting_changed = 0
 
 /area
 	var/lighting_use_dynamic = 1	//Turn this flag off to make the area fullbright
-	var/min_lumcount = 0 // Used in areas like the wizard shuttle to prevent them from walking around like they own the place.
+	var/min_lumcount = 0;
 
 /area/New()
 	. = ..()
@@ -417,11 +360,12 @@
 		luminosity = 1
 
 /area/proc/SetDynamicLighting()
-	lighting_use_dynamic = 1
+	if (!lighting_use_dynamic)
+		lighting_use_dynamic = 1
 	luminosity = 0
 	for(var/turf/T in src.contents)
 		T.init_lighting()
-		T.update_lumcount(0, 0, 0, 0)
+		T.update_lumcount(0)
 
 #undef LIGHTING_LAYER
 #undef LIGHTING_CIRCULAR
@@ -431,6 +375,8 @@
 #undef LIGHTING_CAP
 #undef LIGHTING_CAP_FRAC
 #undef LIGHTING_DARKEST_VISIBLE_ALPHA
+#undef LIGHTING_LUM_FOR_FULL_BRIGHT
+#undef LIGHTING_MIN_RADIUS
 
 
 //set the changed status of all lights which could have possibly lit this atom.
@@ -449,8 +395,8 @@
 
 
 #define LIGHTING_MAX_LUMINOSITY_STATIC	8	//Maximum luminosity to reduce lag.
-#define LIGHTING_MAX_LUMINOSITY_MOBILE	5	//Moving objects have a lower max luminosity since these update more often. (lag reduction)
-#define LIGHTING_MAX_LUMINOSITY_MOB		5
+#define LIGHTING_MAX_LUMINOSITY_MOBILE	7	//Moving objects have a lower max luminosity since these update more often. (lag reduction)
+#define LIGHTING_MAX_LUMINOSITY_MOB		6
 #define LIGHTING_MAX_LUMINOSITY_TURF	8	//turfs are static too, why was this 1?!
 
 //caps luminosity effects max-range based on what type the light's owner is.

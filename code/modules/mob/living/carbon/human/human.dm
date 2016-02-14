@@ -78,20 +78,9 @@
 				stat("Chemical Storage", "[mind.changeling.chem_charges]/[mind.changeling.chem_storage]")
 				stat("Absorbed DNA", mind.changeling.absorbedcount)
 			if(mind.cyberman)
-				stat("Hacking Module: [mind.cyberman.quickhack ? "Enabled" : "Disabled"]")
-				if(mind.cyberman.selected_hack)
-					var/manual_selected = mind.cyberman.manual_selected_hack ? "(manual)" : "(auto)"
-					mind.cyberman.selected_hack.name = "Currently Processing Hack[manual_selected]: [mind.cyberman.selected_hack.get_status(src)]"//Could make this the line label, but it would push ALL the stat things to the right very, very far. \
-																																					I'm a bit concerned about changing the name of the hack itself, but it seems to work pretty well, even with multiple people.\
-																																					Also allows the use of verbs, including varedit, through the statpanel, which is very nice.\
-																																					I have plans to change this in the future, but it's convenient for now.
-					stat("", mind.cyberman.selected_hack)
-				else
-					stat("Currently Processing Hack(auto): none")
-				for(var/obj/effect/cyberman_hack/hack in ticker.mode.active_cybermen_hacks)
-					if(hack != mind.cyberman.selected_hack)
-						hack.name = hack.get_status(src)
-						stat("", hack)
+				stat("Hacking Module: [mind.cyberman.quickhack ? "Enabled" : "Disabled"] [mind.cyberman.emp_hit ? "%$&ERROR EMP DAMAGE [mind.cyberman.emp_hit]% #?@": ""]")
+				for(var/obj/status_obj in mind.cyberman.get_status_objs(src))
+					stat("", status_obj)
 
 	//NINJACODE
 	if(istype(wear_suit, /obj/item/clothing/suit/space/space_ninja)) //Only display if actually a ninja.
@@ -247,7 +236,7 @@
 		dat += "<tr><td><font color=grey><B>Uniform:</B></font></td><td><font color=grey>Obscured</font></td></tr>"
 	else
 		dat += "<tr><td><B>Uniform:</B></td><td><A href='?src=\ref[src];item=[slot_w_uniform]'>[(w_uniform && !(w_uniform.flags&ABSTRACT)) ? w_uniform : "<font color=grey>Empty</font>"]</A></td></tr>"
-	
+
 	if((w_uniform == null || (slot_w_uniform in obscured)) && !(dna && dna.species.nojumpsuit))
 		dat += "<tr><td><font color=grey>&nbsp;&#8627;<B>Pockets:</B></font></td></tr>"
 		dat += "<tr><td><font color=grey>&nbsp;&#8627;<B>ID:</B></font></td></tr>"
@@ -301,10 +290,11 @@
 				src << "<span class='notice'>You feel your heart beating again!</span>"
 	//CYBERMEN STUFF
 	//I'd prefer to have an event-listener setup. see emp_act in human_defense.
-	for(var/obj/effect/cyberman_hack/human/H in ticker.mode.active_cybermen_hacks)
-		if(H.target == src)
-			H.electrocute_act()
-			break
+	if(cyberman_network)
+		for(var/obj/effect/cyberman_hack/human/H in cyberman_network.active_cybermen_hacks)
+			if(H.target == src)
+				H.electrocute_act()
+				break
 	return ..(shock_damage,source,siemens_coeff,override)
 
 /mob/living/carbon/human/Topic(href, href_list)

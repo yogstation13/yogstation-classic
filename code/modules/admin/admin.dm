@@ -826,3 +826,90 @@ var/global/floorIsLava = 0
 	qdel(frommob)
 
 	return 1
+
+///////////////////////////////////////////////////
+/////////////////CYBERMEN//////////////////////////
+///////////////////////////////////////////////////
+
+datum/admins/proc/cybermen_panel()
+	set name = "Cybermen Panel"
+	set category = "Admin"
+
+	if(!check_rights(0))	return
+
+	var/dat = {"
+		<A href='?_src_=holder;cybermen=1'>Refresh</A><br>
+		<center><B>Cybermen Panel</B></center><hr><BR><BR>
+		"}
+	if(!cyberman_network)
+		dat += "There is no Cyberman Network at this time. Creating a cyberman will automatically initialize a new network.<BR><A href='?_src_=holder;cybermen=7'>Initialize Network</A>"
+	else
+		dat += {"
+			<A href='?_src_=holder;cybermen=2'>Force Complete Current Objective</A>(automatically displays to all cybermen)<br>
+			<A href='?_src_=holder;cybermen=6'>Set Random Current Objective</A>(automatically displays to all cybermen)<br>
+			<A href='?_src_=holder;cybermen=4'>Display Current Objective to all Cybermen</A><br>
+			<A href='?_src_=holder;cybermen=5'>Message All Cybermen</A><br>
+			<A href='?_src_=holder;cybermen=8'>Show Broadcast Log</A><br>
+			<A href='?_src_=holder;cybermen=9'>Show Hacking Log</A><br>
+			"}
+
+		//<A href='?_src_=holder;cybermen=3'>Set Current Objective</A><br> //does not work at the moment.
+
+		dat += "<BR>Current Cybermen:<BR>"
+		for(var/datum/mind/M in cyberman_network.cybermen)
+			if(M)
+				dat += "[M] "
+				if(M.current)
+					dat += "([M.current])(<a href='?_src_=holder;adminmoreinfo=\ref[M.current]'>???</a> | <a href='?_src_=holder;adminplayerobservefollow=\ref[M.current]'>FLW</A>)"
+				else
+					dat += "(has no body)"
+			else
+				dat += "ERROR - null in the cybermen mind list"
+			dat += "<BR>"
+
+		dat += "<BR>Cybermen objectives:<BR>"
+		for(var/i = 1 to cyberman_network.cybermen_objectives.len)
+			var/datum/objective/cybermen/O = cyberman_network.cybermen_objectives[i]
+			if(O)
+				dat += "Phase [i]:[O.phase]<BR>[O.explanation_text]<BR><BR>"
+			else
+				dat += "ERROR - null in the objective list<BR>"
+
+		dat += "<BR>Current Active Hacks:<BR>"
+		for(var/obj/effect/cyberman_hack/H in cyberman_network.active_cybermen_hacks)
+			if(H)
+				dat += "[H.target_name] ([H.progress]/[H.cost])"
+				if(istype(H, /obj/effect/cyberman_hack/multiple_vector))
+					var/obj/effect/cyberman_hack/multiple_vector/MVH = H
+					for(var/obj/effect/cyberman_hack/CH in MVH.component_hacks)
+						dat += "<BR>:[CH.target_name]"
+				dat += "<BR>"
+			else
+				dat += "ERROR - null in the hack list<BR>"
+		dat += "<BR>Objects Hacked:<BR>"
+		for(var/O in cyberman_network.cybermen_hacked_objects)
+			if(O)
+				dat += "[O]"
+			else
+				dat += "ERROR - null in the hacked items list."
+			dat += "<BR>"
+	usr << browse(dat, "window=cybermen;size=400x600")
+	return
+
+datum/admins/proc/cyberman_broadcast_log()
+	var/dat = {"
+			<A href='?_src_=holder;cybermen=8'>Refresh</A><br><br>
+			<center>Cybermen Hacking Log</center><hr>
+			"}
+	for(var/entry in cyberman_network.cyberman_broadcast_log)
+		dat += "[entry]<BR>"
+	usr << browse(dat, "window=cybermen_broadcast;size=400x600")
+
+datum/admins/proc/cyberman_hacking_log()
+	var/dat = {"
+			<A href='?_src_=holder;cybermen=9'>Refresh</A><br><br>
+			<center>Cybermen Hacking Log</center><hr>
+			"}
+	for(var/entry in cyberman_network.hacking_log)
+		dat += "[entry]<BR>"
+	usr << browse(dat, "window=cybermen_hacking;size=400x600")

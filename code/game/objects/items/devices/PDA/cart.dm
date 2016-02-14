@@ -15,7 +15,7 @@
 	var/access_clown = 0
 	var/access_mime = 0
 	var/access_janitor = 0
-//	var/access_flora = 0
+	var/access_flora = 0
 	var/access_reagent_scanner = 0
 	var/access_newscaster = 0
 	var/access_remote_door = 0 //Control some blast doors remotely!!
@@ -107,12 +107,12 @@
 	icon_state = "cart-s"
 	access_newscaster = 1
 
-/*
+
 /obj/item/weapon/cartridge/botanist
 	name = "\improper Green Thumb v4.20 cartridge"
 	icon_state = "cart-b"
 	access_flora = 1
-*/
+
 
 /obj/item/weapon/cartridge/roboticist
 	name = "\improper B.O.O.P. Remote Control cartridge"
@@ -225,6 +225,11 @@
 	access_remote_door = 1
 	remote_door_id = "smindicate" //Make sure this matches the syndicate shuttle's shield/door id!!	//don't ask about the name, testing.
 	var/shock_charges = 4
+
+/obj/item/weapon/cartridge/slavemaster
+	name = "\improper Slavemaster-2000 cartridge"
+	icon_state = "cart"
+	var/obj/item/weapon/implant/mindslave/imp = null
 
 /obj/item/weapon/cartridge/proc/unlock()
 	if (!istype(loc, /obj/item/device/pda))
@@ -503,7 +508,14 @@ Code:
 				var/datum/supply_order/SO = S
 				menu += "<li>#[SO.ordernum] - [SO.object.name] requested by [SO.orderedby]</li>"
 			menu += "</ol><font size=\"-3\">Upgrade NOW to Space Parts & Space Vendors PLUS for full remote order control and inventory management."
+		if (48) //Slavermaster 2000 //Whoever came up with the idea of making menu choices numerical is a idiot.
+			menu = "<h4><img src=pda_signaller.png> Slave Controller</h4>"
 
+			menu += "<BR><B>Available Slaves: </B><BR>"
+			if(src:imp.imp_in)
+				menu += "<ul><li>[src:imp.imp_in]<A href='byond://?src=\ref[src];choice=Detonate Slave'> *Detonate*</a></li></ul>"
+			else
+				menu += "No slaves detected."
 		if (49) //janitorial locator
 			menu = "<h4><img src=pda_bucket.png> Persistent Custodial Object Locator</h4>"
 
@@ -678,6 +690,16 @@ Code:
 			current_channel = pda.msg_input()
 			pda.Topic(null,list("choice"=num2text(mode)))
 			return
+
+		if("Detonate Slave")
+			if(istype(src, /obj/item/weapon/cartridge/slavemaster))
+				if(src:imp)
+					if (ismob(src.loc))
+						var/mob/detonator = src.loc
+						if(ismob(src:imp.loc))
+							var/mob/detonated = src:imp.loc
+							log_game("[detonator.ckey]/([detonator] has detonated [detonated.ckey]/([detonated]) with a mindslave implant");
+					src:imp.activate()
 
 	//Bot control section! Viciously ripped from radios for being laggy and terrible.
 	if(href_list["op"])
