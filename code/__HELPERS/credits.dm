@@ -92,8 +92,8 @@
 	return L
 
 /*
-	Reduce the clients credits in the database
-	The return value is the new number of credits after spending
+	Increase the clients credits in the database
+	The return value is the new number of credits after earning
 
 	Possible values
 		NO_DB_CONNECTION: No MySQL connection - do not work with credits for the current round - disable functions
@@ -108,17 +108,18 @@
 	if(currentCredits < 0)
 		return currentCredits
 
-	currentCredits = currentCredits + text2num(credits)
+	var/client/C = get_client(M)
+	C.credits = currentCredits + text2num(credits)
 
 	// Not necessary to prove this is safe, as it was already checked in credits_reload_from_db
 	var ckey = get_ckey(M)
 
-	var/DBQuery/query_credits = dbcon.NewQuery("UPDATE [format_table_name("player")] SET `credits`=[currentCredits] WHERE `ckey`='[ckey]'")
+	var/DBQuery/query_credits = dbcon.NewQuery("UPDATE [format_table_name("player")] SET `credits`=[C.credits] WHERE `ckey`='[ckey]'")
 
 	if(!query_credits.Execute())
 		return FAILED_QUERY
 
-	return currentCredits
+	return C.credits
 
 /*
 	Reduce the clients credits in the database
@@ -143,18 +144,21 @@
 	if(currentCredits < 0)
 		return INSUFFICIENT_CREDITS
 
+	var/client/C = get_client(M)
+	C.credits = currentCredits
+
 	// Not necessary to prove this is safe, as it was already checked in credits_reload_from_db
 	var ckey = get_ckey(M)
 
-	var/DBQuery/query_credits = dbcon.NewQuery("UPDATE [format_table_name("player")] SET `credits`=[currentCredits] WHERE `ckey`='[ckey]'")
+	var/DBQuery/query_credits = dbcon.NewQuery("UPDATE [format_table_name("player")] SET `credits`=[C.credits] WHERE `ckey`='[ckey]'")
 
 	if(!query_credits.Execute())
 		return FAILED_QUERY
 
-	return currentCredits
+	return C.credits
 
 /*
-	Reduce the clients credits in the database
+	Set the clients credits in the database
 
 	Possible values
 		NO_DB_CONNECTION: No MySQL connection - do not work with credits for the current round - disable functions
@@ -179,6 +183,8 @@
 
 	if(!query_credits.Execute())
 		return FAILED_QUERY
+
+	C.credits = credits
 
 	return QUERY_OK
 
