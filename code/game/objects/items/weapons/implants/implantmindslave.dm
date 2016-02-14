@@ -37,6 +37,23 @@
 		holder << "<span class='warning'>[target] seems to resist the implant!</span>"
 		return 0
 
+	var/list/candidates = get_candidates(BE_TRAITOR)
+	if(candidates.len)
+		var/mob/dead/observer/ghost = new/mob/dead/observer(target,1)
+		ghost.ckey = target.ckey
+		var/client/C = pick(candidates)
+		target.key = C.key
+
+		var/mob/obsmob = C.mob
+
+		message_admins("<span class='adminnotice'>[C.ckey] assumed direct control of [target]/([target.ckey]) using a mindslave implant.</span>")
+		log_admin("[C.ckey] assumed direct control of [target]/([target.ckey]) using a mindslave implant.")
+
+		target.ckey = C.ckey
+		if(isobserver(obsmob) )
+			qdel(obsmob)
+
+
 	target << "<span class='userdanger'><FONT size = 3>You feel a strange urge to serve [holder]. A simple thought about disobeying his/her commands makes your head feel like it is going to explode. You feel like you dont want to know what will happen if you actually disobey your new master.</FONT></span>"
 
 	var/datum/objective/mindslave/serve_objective = new
