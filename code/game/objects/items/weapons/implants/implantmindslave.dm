@@ -47,6 +47,8 @@
 	if(!ticker.mode.traitors.Find(source.mind))
 		ticker.mode.traitors += source.mind
 
+	log_game("[holder] enslaved [target] with a Mindslave implant")
+
 	return ..()
 
 /obj/item/weapon/implant/mindslave/removed(mob/target)
@@ -59,9 +61,23 @@
 			ticker.mode.traitors -= target.mind
 
 		if(target.stat != DEAD)
-			target << "<span class='boldnotice'>You feel as if you have just been released from eternal slavery. Yet you cant seem to remember anything at all!</span>"
-
+			target.visible_message("<span class='notice'>[target] looks like they have just been released from slavery!</span>", "<span class='boldnotice'>You feel as if you have just been released from eternal slavery. Yet you cant seem to remember anything at all!</span>")
 		return 1
+
+/obj/item/weapon/implant/mindslave/activate()
+	var/turf/T = get_turf(src.loc)
+
+	if (ismob(loc))
+		var/mob/M = loc
+		M << "<span class='danger'>Your master has decided to detonate you!</span>"
+
+	if(T)
+		T.hotspot_expose(1200,240)
+
+		explosion(T, 1, 2, 3, 3)
+
+	qdel(src)
+	return
 
 /obj/item/weapon/implanter/mindslave
 	name = "implanter (freedom)"

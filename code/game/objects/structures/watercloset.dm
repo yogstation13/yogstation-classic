@@ -115,6 +115,7 @@
 
 /obj/structure/urinal/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/weapon/grab))
+		user.changeNext_move(CLICK_CD_MELEE)
 		var/obj/item/weapon/grab/G = I
 		if(!G.confirm())
 			return

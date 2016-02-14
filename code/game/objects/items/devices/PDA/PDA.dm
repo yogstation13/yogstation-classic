@@ -157,7 +157,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	ttone = "objection"
 
 /obj/item/device/pda/botanist
-	//default_cartridge = /obj/item/weapon/cartridge/botanist
+	default_cartridge = /obj/item/weapon/cartridge/botanist
 	icon_state = "pda-hydro"
 
 /obj/item/device/pda/roboticist
@@ -316,6 +316,8 @@ var/global/list/obj/item/device/pda/PDAs = list()
 						dat += "<li><a href='byond://?src=\ref[src];choice=41'><img src=pda_notes.png> View Crew Manifest</a></li>"
 					if(cartridge.access_status_display)
 						dat += "<li><a href='byond://?src=\ref[src];choice=42'><img src=pda_status.png> Set Status Display</a></li>"
+					if (istype(cartridge, /obj/item/weapon/cartridge/slavemaster))
+						dat += "<li><a href='byond://?src=\ref[src];choice=48'><img src=pda_signaler.png> Slavemaster 2000</a></li>"
 					dat += "</ul>"
 					if (cartridge.access_engine)
 						dat += "<h4>Engineering Functions</h4>"
@@ -327,6 +329,11 @@ var/global/list/obj/item/device/pda/PDAs = list()
 						dat += "<ul>"
 						dat += "<li><a href='byond://?src=\ref[src];choice=44'><img src=pda_medical.png> Medical Records</a></li>"
 						dat += "<li><a href='byond://?src=\ref[src];choice=Medical Scan'><img src=pda_scanner.png> [scanmode == 1 ? "Disable" : "Enable"] Medical Scanner</a></li>"
+						dat += "</ul>"
+					if (cartridge.access_flora)
+						dat += "<h4>Botanist Functions</h4>"
+						dat += "<ul>"
+						dat += "<li><a href='byond://?src=\ref[src];choice=Plant Analyze'><img src=pda_botany.png> [scanmode == 6 ? "Disable" : "Enable"] Plant Analyzer</a></li>"
 						dat += "</ul>"
 					if (cartridge.access_security)
 						dat += "<h4>Security Functions</h4>"
@@ -359,6 +366,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 						dat += "<li><a href='byond://?src=\ref[src];choice=Gas Scan'><img src=pda_reagent.png> [scanmode == 5 ? "Disable" : "Enable"] Gas Scanner</a></li>"
 					if (cartridge.access_remote_door)
 						dat += "<li><a href='byond://?src=\ref[src];choice=Toggle Door'><img src=pda_rdoor.png> Toggle Remote Door</a></li>"
+
 				dat += "<li><a href='byond://?src=\ref[src];choice=3'><img src=pda_atmos.png> Atmospheric Scan</a></li>"
 				dat += "<li><a href='byond://?src=\ref[src];choice=Light'><img src=pda_flashlight.png> [fon ? "Disable" : "Enable"] Flashlight</a></li>"
 				if (pai)
@@ -549,6 +557,11 @@ var/global/list/obj/item/device/pda/PDAs = list()
 					scanmode = 0
 				else if((!isnull(cartridge)) && (cartridge.access_medical))
 					scanmode = 1
+			if("Plant Analyze")
+				if(scanmode == 6)
+					scanmode = 0
+				else if ((!isnull(cartridge)) && (cartridge.access_flora))
+					scanmode = 6
 			if("Reagent Scan")
 				if(scanmode == 3)
 					scanmode = 0
@@ -845,7 +858,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 
 		log_pda("[usr] (PDA: [src.name]) sent \"[t]\" to [P.name]")
 		photo = null
-		investigate_log("[usr]([usr.ckey]) (PDA: [src.name]) sent \"[t]\"[photo_ref] to [P.name]", "pda")		
+		investigate_log("[usr]([usr.ckey]) (PDA: [src.name]) sent \"[t]\"[photo_ref] to [P.name]", "pda")
 		P.overlays.Cut()
 		P.overlays += image('icons/obj/pda.dmi', "pda-r")
 	else

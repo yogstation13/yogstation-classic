@@ -265,6 +265,8 @@ var/list/crit_allowed_modes = list(MODE_WHISPER,MODE_CHANGELING,MODE_ALIEN)
 		if(MODE_BINARY)
 			if(binarycheck())
 				robot_talk(message)
+			if(mind && ticker.mode.is_cyberman(mind))//Cybermen don't speak out loud to talk on binary.
+				return NOPASS
 			return ITALICS | REDUCE_RANGE //Does not return 0 since this is only reached by humans, not borgs or AIs.
 
 		if(MODE_WHISPER)
