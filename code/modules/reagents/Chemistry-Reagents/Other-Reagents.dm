@@ -653,6 +653,10 @@
 		var/turf/simulated/floor/F = T
 		if(reac_volume >= 1)
 			F.dirt = 0
+			if(F.wet == 2)
+				F.wet = 0
+				if(F.wet_overlay)
+					F.overlays -= F.wet_overlay
 
 /datum/reagent/space_cleaner/reaction_mob(mob/M, method=TOUCH, reac_volume)
 	if(method == TOUCH || VAPOR)
