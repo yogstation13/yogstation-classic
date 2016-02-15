@@ -288,22 +288,22 @@
 	icon = 'icons/obj/guns/projectile.dmi'
 	cell_type = "/obj/item/weapon/stock_parts/cell/secborg"
 	ammo_type = list(/obj/item/ammo_casing/energy/c3dbullet)
-	burst_size = 5
-	fire_delay = 3
+	burst_size = 3
 
 /obj/item/weapon/gun/energy/printer/update_icon()
 	return
 
-/obj/item/weapon/gun/energy/printer/process_fire(atom/target as mob|obj|turf, mob/living/user as mob|obj, message = 1, params)
-	if(isrobot(user))
-		var/mob/living/silicon/robot/R = user
+/obj/item/weapon/gun/energy/printer/newshot()
+	if(isrobot(src.loc))
+		var/mob/living/silicon/robot/R = src.loc
 		if(R && R.cell)
 			var/obj/item/ammo_casing/energy/shot = ammo_type[select] //Necessary to find cost of shot
-			if(R.cell.use(shot.e_cost*burst_size)) 		 //Take power from the borg...
-				power_supply.give(shot.e_cost*burst_size) //Give it to printer so it can fire
-				..()
+			if(R.cell.use(shot.e_cost))
+				power_supply.give(shot.e_cost)
+				chambered = shot
+				chambered.newshot()
 			else
-				user << "<span class='warning'>You don't have enough energy to fire this weapon!</span>"
+				usr << "<span class='warning'>You don't have enough energy to fire this weapon!</span>"
 	return
 
 /obj/item/weapon/gun/energy/temperature

@@ -40,4 +40,5 @@
 	projectile_type = /obj/item/projectile/bullet/midbullet3
 	select_name = "spraydown"
 	fire_sound = 'sound/weapons/gunshot_smg.ogg'
-	e_cost = 40
+	e_cost = 100
+	delay = 3

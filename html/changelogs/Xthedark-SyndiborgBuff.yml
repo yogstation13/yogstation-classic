@@ -1,0 +1,13 @@
+# Your name.  
+author: Xthedark
+
+# Optional: Remove this file after generating master changelog.  Useful for PR changelogs that won't get used again.
+delete-after: true
+
+changes: 
+  - rscadd: "The Syndicate have severely improved their Syndiborg models!"
+  - rscadd: "Syndicate Cyborgs start with the VTEC upgrade installed."
+  - rscadd: "Cryptographic Sequencer now comes added to Syndicate Cyborg equipment list."
+  - rscadd: "Syndicate Cyborg light machine gun fires 3 round bursts and does not need charging (can be fired as long as you have energy). Costs 300 energy per burst."
+  - rscadd: "Syndicate Cyborg grenade launcher can replicate grenades. To begin the process, click on the grenade launcher when it is equipped. Fabricates 1 shell every 6 seconds and you must stand still during the process."
+  - tweak: "Cyborg energy sword costs 150 energy to use (down from 500)."
