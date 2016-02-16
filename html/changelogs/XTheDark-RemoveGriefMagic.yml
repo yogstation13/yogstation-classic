@@ -1,0 +1,8 @@
+# Your name.  
+author: Xthedark
+
+# Optional: Remove this file after generating master changelog.  Useful for PR changelogs that won't get used again.
+delete-after: True
+
+changes: 
+  - rscdel: "Summon Magic removed from wizard spells until it can be rebalanced/reimplemented to be less grief-ridden."
