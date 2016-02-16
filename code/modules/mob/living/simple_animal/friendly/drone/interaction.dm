@@ -75,10 +75,10 @@
 		if(buckled)
 			user << "<span class='warning'>[src] is buckled to the [buckled.name] and cannot be picked up!</span>"
 			return
-		if(picked_up == 1)
+		user << "You start picking up the [src]."
+		if(!do_after(user, 20, target = user))
+			user << "You failed picking up [src]."
 			return
-		picked_up = 1 //prevents duplication of drone
-		sleep(20)
 		user << "<span class='notice'>You pick [src] up.</span>"
 		drop_l_hand()
 		drop_r_hand()
@@ -88,7 +88,6 @@
 		DH.drone = src
 		user.put_in_hands(DH)
 		src.loc = DH
-		picked_up = 0
 		return
 
 	..()
