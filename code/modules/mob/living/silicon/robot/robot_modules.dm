@@ -96,6 +96,7 @@
 	modules += new /obj/item/weapon/circular_saw(src)
 	modules += new /obj/item/weapon/extinguisher/mini(src)
 	modules += new /obj/item/roller/robo(src)
+	modules += new /obj/item/weapon/twohanded/shockpaddles/cyborg(src)
 	emag = new /obj/item/weapon/reagent_containers/spray(src)
 
 	emag.reagents.add_reagent("facid", 250)
