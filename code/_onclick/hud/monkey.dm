@@ -100,12 +100,6 @@
 	mymob.pullin.update_icon(mymob)
 	mymob.pullin.screen_loc = ui_pull_resist
 
-	lingchemdisplay = new /obj/screen/ling/chems()
-	lingchemdisplay.screen_loc = ui_lingchemdisplay
-
-	lingstingdisplay = new /obj/screen/ling/sting()
-	lingstingdisplay.screen_loc = ui_lingstingdisplay
-
 	mymob.zone_sel = new /obj/screen/zone_sel()
 	mymob.zone_sel.icon = ui_style
 	mymob.zone_sel.update_icon()

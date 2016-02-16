@@ -258,12 +258,6 @@
 	mymob.pullin.screen_loc = ui_pull_resist
 	hotkeybuttons += mymob.pullin
 
-	lingchemdisplay = new /obj/screen/ling/chems()
-	lingchemdisplay.screen_loc = ui_lingchemdisplay
-
-	lingstingdisplay = new /obj/screen/ling/sting()
-	lingstingdisplay.screen_loc = ui_lingstingdisplay
-
 	mymob.zone_sel = new /obj/screen/zone_sel()
 	mymob.zone_sel.icon = ui_style
 	mymob.zone_sel.update_icon()
@@ -279,6 +273,7 @@
 	mymob.healthdoll = new /obj/screen()
 	mymob.healthdoll.name = "health doll"
 	mymob.healthdoll.screen_loc = ui_healthdoll
+
 	lingchemdisplay = new /obj/screen/ling/chems()
 	lingchemdisplay.screen_loc = ui_lingchemdisplay
 

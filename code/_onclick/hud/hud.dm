@@ -150,9 +150,6 @@
 	else if(isswarmer(mymob))
 		swarmer_hud()
 
-/datum/hud/proc/create_overlays()
-
-
 //Version denotes which style should be displayed. blank or 0 means "next version"
 /datum/hud/proc/show_hud(version = 0)
 	if(!ismob(mymob))
