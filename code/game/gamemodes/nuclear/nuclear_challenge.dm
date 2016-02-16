@@ -23,7 +23,7 @@
 		user << "It's too late to declare hostilities. Your benefactors are already busy with other schemes. You'll have to make  do with what you have on hand."
 		return
 
-	var/are_you_sure = alert(user, "Consult your team carefully before you declare war on [station_name()]]. Are you sure you want to alert the enemy crew?<br>You will receive [round(CHALLENGE_TC_PER_PLAYER*player_list.len)] bonus Telecrystals for declaring War.", "Declare war?", "Yes", "No")
+	var/are_you_sure = alert(user, "Consult your team carefully before you declare war on [station_name()]]. Are you sure you want to alert the enemy crew? You will receive [round(CHALLENGE_TC_PER_PLAYER*player_list.len)] bonus Telecrystals for declaring War.", "Declare war?", "Yes", "No")
 	if(are_you_sure == "No")
 		user << "On second thought, the element of surprise isn't so bad after all."
 		return
