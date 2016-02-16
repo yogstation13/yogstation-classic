@@ -43,7 +43,7 @@
 		var/mob/living/L = loc
 		if(L.stat == DEAD)
 			src.forceMove(get_turf(src))
-			if(istype(L, /mob/living/carbon)
+			if(istype(L, /mob/living/carbon))
 				var/mob/living/carbon/C = L
 				C.head = null
 				C.update_inv_head()
