@@ -258,6 +258,12 @@
 	mymob.pullin.screen_loc = ui_pull_resist
 	hotkeybuttons += mymob.pullin
 
+	lingchemdisplay = new /obj/screen/ling/chems()
+	lingchemdisplay.screen_loc = ui_lingchemdisplay
+
+	lingstingdisplay = new /obj/screen/ling/sting()
+	lingstingdisplay.screen_loc = ui_lingstingdisplay
+
 	mymob.zone_sel = new /obj/screen/zone_sel()
 	mymob.zone_sel.icon = ui_style
 	mymob.zone_sel.update_icon()
@@ -306,10 +312,10 @@
 
 	mymob.client.screen = list()
 
-	mymob.client.screen += list( mymob.throw_icon, mymob.zone_sel, mymob.internals, mymob.healths, mymob.healthdoll, mymob.pullin, mymob.blind, mymob.flash, mymob.damageoverlay, lingchemdisplay, lingstingdisplay) //, mymob.hands, mymob.rest, mymob.sleep) //, mymob.mach )
+	mymob.client.screen += list( mymob.throw_icon, mymob.zone_sel, mymob.internals, mymob.healths, mymob.healthdoll, mymob.pullin, lingchemdisplay, lingstingdisplay) //, mymob.hands, mymob.rest, mymob.sleep) //, mymob.mach )
 	mymob.client.screen += adding + hotkeybuttons
 	mymob.client.screen += mymob.client.void
-	inventory_shown = 0;
+	inventory_shown = 0
 
 
 /mob/living/carbon/human/verb/toggle_hotkey_verbs()

@@ -1,8 +1,0 @@
-# Your name.  
-author: Xthedark
-
-# Optional: Remove this file after generating master changelog.  Useful for PR changelogs that won't get used again.
-delete-after: true
-
-changes: 
-  - bugfix: "Timestop no longer blocks objects under it from being interacted with."
