@@ -8,7 +8,7 @@
 	mymob.client.screen = list()
 	mymob.client.screen += mymob.client.void
 
-/datum/hud/proc/blob_hud(ui_style = 'icons/mob/screen_midnight.dmi', only_do_style_updates = 0)
+/datum/hud/proc/blob_hud(ui_style = 'icons/mob/screen_midnight.dmi')
 
 	blobpwrdisplay = new /obj/screen()
 	blobpwrdisplay.name = "blob power"

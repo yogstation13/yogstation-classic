@@ -132,7 +132,7 @@
 	S.sensor_mode()
 
 
-/datum/hud/proc/ai_hud(ui_style = 'icons/mob/screen_ai.dmi', only_do_style_updates = 0)
+/datum/hud/proc/ai_hud(ui_style = 'icons/mob/screen_ai.dmi')
 	adding = list()
 	other = list()
 

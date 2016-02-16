@@ -91,7 +91,7 @@
 			if(H.r_store)	H.r_store.screen_loc = null
 
 
-/datum/hud/proc/instantiate(only_do_style_updates = 0)
+/datum/hud/proc/instantiate()
 	if(!ismob(mymob))
 		return 0
 	if(!mymob.client)
@@ -103,52 +103,52 @@
 			ui_style = ui_style2icon_carbon(mymob.client.prefs.UI_style_carbon)
 		else
 			ui_style = DEFAULT_CARBON_UI
-		human_hud(ui_style, only_do_style_updates) // Pass the player the UI style chosen in preferences
+		human_hud(ui_style) // Pass the player the UI style chosen in preferences
 	else if(ismonkey(mymob))
 		var/ui_style
 		if(mymob.client && mymob.client.prefs)
 			ui_style = ui_style2icon_carbon(mymob.client.prefs.UI_style_carbon)
 		else
 			ui_style = DEFAULT_CARBON_UI
-		monkey_hud(ui_style, only_do_style_updates)
+		monkey_hud(ui_style)
 	else if(isbrain(mymob))
 		var/ui_style
 		if(mymob.client && mymob.client.prefs)
 			ui_style = ui_style2icon_carbon(mymob.client.prefs.UI_style_carbon)
 		else
 			ui_style = DEFAULT_CARBON_UI
-		brain_hud(ui_style, only_do_style_updates)
+		brain_hud(ui_style)
 	else if(islarva(mymob))
-		larva_hud(only_do_style_updates)
+		larva_hud()
 	else if(isalien(mymob))
-		alien_hud(only_do_style_updates)
+		alien_hud()
 	else if(isAI(mymob))
 		var/ui_style
 		if(mymob.client && mymob.client.prefs)
 			ui_style = ui_style2icon_ai(mymob.client.prefs.UI_style_ai)
 		else
 			ui_style = DEFAULT_AI_UI
-		ai_hud(ui_style, only_do_style_updates)
+		ai_hud(ui_style)
 	else if(isrobot(mymob))
 		var/ui_style
 		if(mymob.client && mymob.client.prefs)
 			ui_style = ui_style2icon_borg(mymob.client.prefs.UI_style_borg)
 		else
 			ui_style = DEFAULT_BORG_UI
-		robot_hud(ui_style, only_do_style_updates)
+		robot_hud(ui_style)
 	else if(isobserver(mymob))
-		ghost_hud(only_do_style_updates)
+		ghost_hud()
 	else if(isovermind(mymob))
-		blob_hud(only_do_style_updates)
+		blob_hud()
 	else if(isdrone(mymob))
 		var/ui_style
 		if(mymob.client && mymob.client.prefs)
 			ui_style = ui_style2icon_carbon(mymob.client.prefs.UI_style_carbon)
 		else
 			ui_style = DEFAULT_CARBON_UI
-		drone_hud(ui_style, only_do_style_updates)
+		drone_hud(ui_style)
 	else if(isswarmer(mymob))
-		swarmer_hud(only_do_style_updates)
+		swarmer_hud()
 
 /datum/hud/proc/create_overlays()
 
