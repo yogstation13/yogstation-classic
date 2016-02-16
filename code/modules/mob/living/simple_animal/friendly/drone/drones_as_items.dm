@@ -41,10 +41,16 @@
 
 	if(istype(loc, /mob/living))
 		var/mob/living/L = loc
-		L.show_message("<span class='notice'>[drone] is trying to escape!</span>")
-		if(!do_after(L, 50, target = L) || loc != L)
-			return
-		L.unEquip(src)
+		if(L.stat == DEAD)
+			src.forceMove(get_turf(src))
+			if(L:head && L:head == src) //Guess whos time it is to be shunned?
+				L:head = null
+				L.update_inv_head()
+		else
+			L.show_message("<span class='notice'>[drone] is trying to escape!</span>")
+			if(!do_after(L, 50, target = L) || loc != L)
+				return
+			L.unEquip(src)
 
 	contents -= drone
 	drone.loc = get_turf(src)
