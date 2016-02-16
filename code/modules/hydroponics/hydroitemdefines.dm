@@ -10,6 +10,15 @@
 /obj/item/device/analyzer/plant_analyzer/attack_self(mob/user)
 	return 0
 
+/proc/is_plant_analyzer(var/O)
+	if(istype(O, /obj/item/device/analyzer/plant_analyzer))
+		return 1
+	if(istype(O, /obj/item/device/pda))
+		var/obj/item/device/pda/A = O
+		if(A.scanmode == PDA_SCAN_FLORAL)
+			return 1
+	return 0
+
 // *************************************
 // Hydroponics Tools
 // *************************************
