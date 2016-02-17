@@ -8,6 +8,6 @@ changes:
   - rscadd: "The Syndicate have severely improved their Syndiborg models!"
   - rscadd: "Syndicate Cyborgs start with the VTEC upgrade installed."
   - rscadd: "Cryptographic Sequencer now comes added to Syndicate Cyborg equipment list."
-  - rscadd: "Syndicate Cyborg light machine gun fires 3 round bursts and does not need charging (can be fired as long as you have energy). Costs 300 energy per burst."
+  - rscadd: "Syndicate Cyborg light machine gun can now fire 1/3/5 round bursts recharges faster (1 bullet per 2 ticks instead of 5). Examining it now tells you how much ammo is in it's replicator."
   - rscadd: "Syndicate Cyborg grenade launcher can replicate grenades. To begin the process, click on the grenade launcher when it is equipped. Fabricates 1 shell every 6 seconds and you must stand still during the process."
   - tweak: "Cyborg energy sword costs 150 energy to use (down from 500)."
