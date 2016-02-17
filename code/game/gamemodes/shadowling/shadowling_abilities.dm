@@ -233,7 +233,7 @@
 		if(istype(H.glasses, /obj/item/clothing/glasses/night/shadowling))
 			var/obj/item/clothing/glasses/night/shadowling/eyes = H.glasses
 			if (eyes.darkness_view == 0)
-				user << "<span class='notice'>You shift the nerves in your eyes, allowing you to see in the dark.</span>"
+				user << "<span class='notice'>You shift the nerves in your eyes, allowing you to see in the dark. Any form of eye covering will hamper this ability.</span>"
 				eyes.darkness_view = 8
 			else
 				user << "<span class='notice'>You return your vision to normal.</span>"

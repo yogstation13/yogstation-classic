@@ -54,17 +54,18 @@
 			keyname += "<img style='width:9px;height:9px;' class=icon src=\ref['icons/member_content.dmi'] iconstate=yogdon>"
 		keyname += "[key]</font>"
 
-	if(!holder && !bypass_ooc_approval)
-		var/regex/R = new("/(((https?):\\/\\/)?\[^\\s/$.?#\].\[^\\s\]*)/iS")
+	// This needs to be fixed for the new regex in Byond510
+	/*if(!holder && !bypass_ooc_approval)
+		var/regex/R = new("(((https?):\\/\\/)?\[^\\s/$.?#\].\[^\\s\]*)", "iS")
 		var/count = 0
-		while(R.FindNext(msg))
+		while(R.Find(msg))
 			if(count < 1)
 				var/hyperlink = copytext(msg,R.match,R.index)
 				admin_link_approval(hyperlink)
 				count++
 			msg = "[copytext(msg,1,R.match)]<b>(Link removed)</b>[copytext(msg,R.index)]"
 	else
-		bypass_ooc_approval = 0
+		bypass_ooc_approval = 0*/
 
 	msg = emoji_parse(msg)
 

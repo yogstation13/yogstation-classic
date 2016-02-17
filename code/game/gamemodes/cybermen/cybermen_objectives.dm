@@ -1,4 +1,4 @@
-/datum/game_mode
+/datum/cyberman_network
 	var/list/cybermen_analyze_targets = list(/obj/item/weapon/gun/energy/laser/captain = "the captain's antique laser gun", //stolen from objective_items.dm. Could just use the objective datums instead.
 								/obj/item/weapon/gun/energy/gun/hos = "the head of security's personal laser gun",
 								/obj/item/weapon/hand_tele = "a hand teleporter",
@@ -46,15 +46,16 @@
 /datum/objective/cybermen/explore/get_research_levels/New()
 	..()
 	target_research_levels = rand(8, 10)
-	explanation_text = "Download [target_research_levels] research level\s by hacking the station's RnD server, the server controller, or technology disks."
+	check_completion()//updates explanation_text.
 
 /datum/objective/cybermen/explore/get_research_levels/check_completion()//yes, I copy-pasted from ninjacode.
 	if(..())
 		return 1
 	var/current_amount = 0
-	for(var/datum/tech/current_data in ticker.mode.cybermen_research_downloaded)
+	for(var/datum/tech/current_data in cyberman_network.cybermen_research_downloaded)
 		if(current_data.level)
 			current_amount += (current_data.level-1)//can't let that level 1 junk give us points
+	explanation_text = "Download [target_research_levels] research level\s by hacking the station's RnD server, the server controller, or technology disks. So far [current_amount] research levels have been downloaded."
 	return current_amount >= target_research_levels
 
 //GET SECRET DOCUMENTS
@@ -64,7 +65,7 @@
 /datum/objective/cybermen/explore/get_secret_documents/check_completion()
 	if(..())
 		return 1
-	for(var/obj/item/documents/nanotrasen/D in ticker.mode.cybermen_hacked_objects)
+	for(var/obj/item/documents/nanotrasen/D in cyberman_network.cybermen_hacked_objects)
 		return 1
 	return 0
 
@@ -75,7 +76,7 @@
 /datum/objective/cybermen/explore/get_access/check_completion()
 	if(..())
 		return 1
-	return (access_captain in ticker.mode.cybermen_access_downloaded)
+	return (access_captain in cyberman_network.cybermen_access_downloaded)
 
 //////////////////////////////
 //////////EXPAND//////////////
@@ -90,7 +91,8 @@
 /datum/objective/cybermen/expand/convert_crewmembers/New()
 	..()
 	target_cybermen_num = rand(6, 8)
-	explanation_text = "Convert crewmembers until there are [target_cybermen_num] living cybermen on the station."
+	check_completion()//updates explanation_text.
+
 
 /datum/objective/cybermen/expand/convert_crewmembers/is_valid()
 	var/humans_on_station = 0
@@ -106,8 +108,8 @@
 			humans_on_station++
 	if(humans_on_station > 3)//needs a somewhat sane lozer limit
 		target_cybermen_num = humans_on_station
-		ticker.mode.message_all_cybermen("<span class='notice'>Too few humans detected aboard the station. Number of required cybermen reduced to [target_cybermen_num].</span>")
-		explanation_text = "Convert crewmembers until there are [target_cybermen_num] living cybermen on the station."
+		cyberman_network.message_all_cybermen("<span class='notice'>Too few humans detected aboard the station. Number of required cybermen reduced to [target_cybermen_num].</span>")
+		check_completion()//updates explanation_text.
 		return 1
 	else
 		return 0
@@ -116,9 +118,10 @@
 	if(..())
 		return 1
 	var/living_cybermen = 0
-	for(var/datum/mind/M in ticker.mode.cybermen)
+	for(var/datum/mind/M in cyberman_network.cybermen)
 		if(M.current && !(M.current.stat | DEAD))
 			living_cybermen++
+	explanation_text = "Convert crewmembers until there are [target_cybermen_num] living cybermen on the station. There are currently [living_cybermen] living cybermen on the station."
 	return living_cybermen >= target_cybermen_num
 
 //HACK AI
@@ -141,14 +144,14 @@
 		if(targetAI && targetAI.current != null && !qdeleted(targetAI.current) && targetAI.key && targetAI.client)
 			targetAI = new_ai
 			explanation_text = "Hack [targetAI.current.name], the AI."
-			ticker.mode.message_all_cybermen("Cybermen AI hack target changed. New AI hack target is [targetAI.current.name].")
+			cyberman_network.message_all_cybermen("Cybermen AI hack target changed. New AI hack target is [targetAI.current.name].")
 			return 1
 	return 0
 
 /datum/objective/cybermen/expand/hack_ai/check_completion()
 	if(..())
 		return 1
-	return targetAI in ticker.mode.cybermen_hacked_objects
+	return targetAI in cyberman_network.cybermen_hacked_objects
 
 //CONVERT HEADS
 /datum/objective/cybermen/expand/convert_heads
@@ -157,7 +160,7 @@
 /datum/objective/cybermen/expand/convert_heads/New()
 	..()
 	target_heads_num = pick(2, 3)
-	explanation_text = "Place [target_heads_num] cybermen into command positions, either by having a cyberman promoted or converting a current head."
+	check_completion()//updates explanation_text.
 
 /datum/objective/cybermen/expand/convert_heads/is_valid()
 	return 1//could check how many heads there are, but cybermen could just get head IDs, so no real need to.
@@ -165,17 +168,23 @@
 /datum/objective/cybermen/expand/convert_heads/check_completion()
 	if(..())
 		return 1
-	var/num
+	var/list/candidates = list()
 	for(var/datum/data/record/t in data_core.general)
 		var/name = t.fields["name"]
 		var/rank = t.fields["rank"]
 		if(rank in command_positions)
-			for(var/datum/mind/M in ticker.mode.cybermen)
+			for(var/datum/mind/M in cyberman_network.cybermen)
 				if(M.current.real_name == name)//possible issues with duplicate names
-					num++
+					candidates += "\n[M.current.real_name] is the [rank]"
 					break
-
-	return num >= target_heads_num
+	explanation_text = "Place [target_heads_num] cybermen into command positions, either by having a cyberman promoted or converting a current head."
+	if(candidates.len)
+		explanation_text += " Currently, the following heads are cybermen:"
+		for(var/candidate in candidates)
+			explanation_text += candidate
+	else
+		explanation_text += " No heads are currently cybermen."
+	return candidates.len >= target_heads_num
 
 //////////////////////////////
 //////////EXPLOIT/////////////
@@ -192,8 +201,8 @@
 
 /datum/objective/cybermen/exploit/analyze_and_hack/New()
 	..()
-	var/list/analyze_target_candidates = ticker.mode.cybermen_analyze_targets.Copy()
-	var/list/hack_target_candidates = ticker.mode.cybermen_hack_targets.Copy()
+	var/list/analyze_target_candidates = cyberman_network.cybermen_analyze_targets.Copy()
+	var/list/hack_target_candidates = cyberman_network.cybermen_hack_targets.Copy()
 	var/remaining = num_analyze_targets
 	while(remaining)
 		var/candidate = pick(analyze_target_candidates)
@@ -227,7 +236,7 @@
 	var/list/done_indicators = list()
 	for(var/current2 in targets_copy)
 		var/done_indicator = "(<font color='red'>Not Completed</font>)"
-		for(var/current in ticker.mode.cybermen_hacked_objects)
+		for(var/current in cyberman_network.cybermen_hacked_objects)
 			if(istype(current, current2))
 				targets_copy -= current2
 				done_indicator = "(<font color='green'>Completed</font>)"
@@ -281,7 +290,7 @@
 
 /datum/objective/cybermen/exterminate/hijack_shuttle/New()
 	..()
-	required_escaped_cybermen = min(6, ticker.mode.cybermen.len)
+	required_escaped_cybermen = min(6, cyberman_network.cybermen.len)
 	explanation_text = "Hijack the escape shuttle, ensuring that no non-cybermen escape on it. At least [required_escaped_cybermen] Cybermen must escape on the shuttle. The escape pods may be ignored."
 
 /datum/objective/cybermen/exterminate/hijack_shuttle/check_completion()//some copy-pasting from objective.dm
@@ -304,7 +313,7 @@
 /datum/objective/cybermen/exterminate/eliminate_humans/New()
 	..()
 	target_percent = 60
-	explanation_text = "Ensure [target_percent]% of the humanoid population of the station is comprised of cybermen, by either killing, converting, or exiling non-cybermen. Do not allow the escape shuttle to leave the station."
+	check_completion()//updates explanation_text.
 
 /datum/objective/cybermen/exterminate/eliminate_humans/check_completion()//I mean, you COULD just cart all those pesky non-cybermen off to mining. But that's no fun. The alternative is the possibility that the cybermen have to search the asteroid and deep space for the non-cybermen, and that's even less fun.
 	if(..())
@@ -319,4 +328,6 @@
 				cybermen_num++
 			else
 				non_cybermen_num++
-	return (cybermen_num / (cybermen_num + non_cybermen_num))*100 >= target_percent
+	var/percent = (cybermen_num + non_cybermen_num > 0) && (cybermen_num / (cybermen_num + non_cybermen_num))*100
+	explanation_text = "Ensure [target_percent]% of the humanoid population of the station is comprised of cybermen, by either killing, converting, or exiling non-cybermen. Using the data you have collected on human physiology, we have drastically reduced the time it takes to convert additional humans. Do not allow the escape shuttle to leave the station. Sensors indicate that [percent]% of the station's living crew are currently cybermen."
+	return percent >= target_percent

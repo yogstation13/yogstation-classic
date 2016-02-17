@@ -760,7 +760,7 @@ var/list/slot_equipment_priority = list( \
 		if(mind.changeling)
 			add_stings_to_statpanel(mind.changeling.purchasedpowers)
 		if(mind.cyberman)
-			mind.cyberman.add_cyberman_abilities_to_statpanel()
+			mind.cyberman.add_cyberman_abilities_to_statpanel(src)
 	add_spells_to_statpanel(mob_spell_list)
 
 /mob/proc/add_spells_to_statpanel(list/spells)

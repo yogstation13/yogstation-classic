@@ -88,6 +88,7 @@
 /mob/living/carbon/update_hud()
 	if(client)
 		client.screen |= contents
+		reload_fullscreen()
 		return 1
 
 /mob/living/carbon/regenerate_icons()
