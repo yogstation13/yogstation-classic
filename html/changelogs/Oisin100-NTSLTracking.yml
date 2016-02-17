@@ -1,8 +1,0 @@
-author: Oisin100
-
-# Optional: Remove this file after generating master changelog.  Useful for PR changelogs that won't get used again.
-delete-after: True
-
-changes: 
-  - bugfix: "Changing the $source variable in NTSL will no longer break AI tracking."
-  - rscadd: "Added new $uuid variable in NTSL. $uuid variable is used by the AI to track players."
