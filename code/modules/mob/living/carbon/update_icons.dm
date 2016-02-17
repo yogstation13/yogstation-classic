@@ -49,14 +49,7 @@
 		r_hand.screen_loc = ui_rhand
 		if(client && hud_used)
 			client.screen += r_hand
-		var/t_state = r_hand.r_item_state
-		if(!t_state)
-			t_state = r_hand.item_state
-		if(!t_state)
-			t_state = r_hand.icon_state
-		if(!t_state)
-			t_state = r_hand.icon_state
-		overlays_standing[R_HAND_LAYER] = image("icon" = r_hand.righthand_file, "icon_state"="[t_state]", "layer"=-R_HAND_LAYER)
+		overlays_standing[R_HAND_LAYER] = image("icon" = r_hand.righthand_file, "icon_state"="[r_hand.r_item_state || r_hand.item_state || r_hand.icon_state]", "layer"=-R_HAND_LAYER)
 
 	apply_overlay(R_HAND_LAYER)
 
@@ -74,7 +67,7 @@
 			t_state = l_hand.item_state
 		if(!t_state)
 			t_state = l_hand.icon_state
-		overlays_standing[L_HAND_LAYER] = image("icon" = l_hand.lefthand_file, "icon_state"="[t_state]", "layer"=-L_HAND_LAYER)
+		overlays_standing[L_HAND_LAYER] = image("icon" = l_hand.lefthand_file, "icon_state"="[l_hand.l_item_state || l_hand.item_state || l_hand.icon_state]", "layer"=-L_HAND_LAYER)
 
 	apply_overlay(L_HAND_LAYER)
 
