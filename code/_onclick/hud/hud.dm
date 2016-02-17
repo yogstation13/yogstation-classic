@@ -97,31 +97,55 @@
 	if(!mymob.client)
 		return 0
 
-	var/ui_style
-	if(mymob.client && mymob.client.prefs)
-		ui_style = ui_style2icon(mymob.client.prefs.UI_style)
-	else
-		ui_style = 'icons/mob/screen_midnight.dmi'
-
 	if(ishuman(mymob))
+		var/ui_style
+		if(mymob.client && mymob.client.prefs)
+			ui_style = ui_style2icon_carbon(mymob.client.prefs.UI_style_carbon)
+		else
+			ui_style = DEFAULT_CARBON_UI
 		human_hud(ui_style) // Pass the player the UI style chosen in preferences
 	else if(ismonkey(mymob))
+		var/ui_style
+		if(mymob.client && mymob.client.prefs)
+			ui_style = ui_style2icon_carbon(mymob.client.prefs.UI_style_carbon)
+		else
+			ui_style = DEFAULT_CARBON_UI
 		monkey_hud(ui_style)
 	else if(isbrain(mymob))
+		var/ui_style
+		if(mymob.client && mymob.client.prefs)
+			ui_style = ui_style2icon_carbon(mymob.client.prefs.UI_style_carbon)
+		else
+			ui_style = DEFAULT_CARBON_UI
 		brain_hud(ui_style)
 	else if(islarva(mymob))
 		larva_hud()
 	else if(isalien(mymob))
 		alien_hud()
 	else if(isAI(mymob))
-		ai_hud()
+		var/ui_style
+		if(mymob.client && mymob.client.prefs)
+			ui_style = ui_style2icon_ai(mymob.client.prefs.UI_style_ai)
+		else
+			ui_style = DEFAULT_AI_UI
+		ai_hud(ui_style)
 	else if(isrobot(mymob))
-		robot_hud()
+		var/ui_style
+		if(mymob.client && mymob.client.prefs)
+			ui_style = ui_style2icon_borg(mymob.client.prefs.UI_style_borg)
+		else
+			ui_style = DEFAULT_BORG_UI
+		robot_hud(ui_style)
 	else if(isobserver(mymob))
 		ghost_hud()
 	else if(isovermind(mymob))
 		blob_hud()
 	else if(isdrone(mymob))
+		var/ui_style
+		if(mymob.client && mymob.client.prefs)
+			ui_style = ui_style2icon_carbon(mymob.client.prefs.UI_style_carbon)
+		else
+			ui_style = DEFAULT_CARBON_UI
 		drone_hud(ui_style)
 	else if(isswarmer(mymob))
 		swarmer_hud()
@@ -212,3 +236,4 @@
 			usr << "<span class ='warning'>Inventory hiding is currently only supported for human mobs, sorry.</span>"
 	else
 		usr << "<span class ='warning'>This mob type does not use a HUD.</span>"
+
