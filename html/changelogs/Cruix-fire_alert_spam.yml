@@ -1,0 +1,6 @@
+author: Cruix
+
+delete-after: True
+
+changes: 
+  - bugfix: "Stops PDA fire alert message spam."
