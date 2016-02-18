@@ -9,7 +9,6 @@
 	var/datum/effect/effect/system/ion_trail_follow/ion_trail
 	var/on = 0.0
 	var/stabilization_on = 0
-	var/flying = 0 // Needed to control the PASSTABLE flag
 	var/volume_rate = 500              //Needed for borg jetpack transfer
 
 /obj/item/weapon/tank/jetpack/New()
@@ -34,36 +33,24 @@
 	if(usr.stat || !usr.canmove || usr.restrained())
 		return
 	on = !on
-	var/mob/living/C = usr
 	if(on)
 		icon_state = "[icon_state]-on"
 	//	item_state = "[item_state]-on"
 		ion_trail.start()
-		if(!has_gravity(C) && flying == 0)
-			C.pass_flags += PASSTABLE
 	else
 		icon_state = initial(icon_state)
 	//	item_state = initial(item_state)
 		ion_trail.stop()
-		if(!has_gravity(C) && flying == 0 && C.pass_flags & PASSTABLE) // so it removes PASSTABLE which they get when its on. Prevents loopholes.
-			C.pass_flags -= PASSTABLE
 	usr << "<span class='notice'>You toggle the jetpack [on? "on":"off"].</span>"
 	return
 
+
 /obj/item/weapon/tank/jetpack/proc/allow_thrust(num, mob/living/user)
-	var/mob/living/C = usr
 	if(!(src.on))
 		return 0
 	if((num < 0.005 || src.air_contents.total_moles() < num))
 		src.ion_trail.stop()
-		flying = 1
-		if(!has_gravity(C) && C.pass_flags & PASSTABLE && flying == 1)
-			C.pass_flags -= PASSTABLE
-	if((num > 0.9 || src.air_contents.total_moles() > num) && flying == 1)
-		if(C.pass_flags & PASSTABLE && src.on == on) // the final check to get rid of unwanted flags.
-			C.pass_flags -= PASSTABLE
-		flying = 0 //restores it back to normal.
-		return
+		return 0
 
 	var/datum/gas_mixture/G = src.air_contents.remove(num)
 
@@ -108,7 +95,7 @@
 /obj/item/weapon/tank/jetpack/oxygen/captain/New()
 	..()
 	air_contents.oxygen = (6*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C)
-
+	
 /obj/item/weapon/tank/jetpack/oxygen/harness
 	name = "jet harness (oxygen)"
 	desc = "A lightweight tactical harness, used by those who don't want to be weighed down by traditional jetpacks."
@@ -164,10 +151,7 @@
 
 		on = !on
 		if(on)
-			var/mob/living/carbon/human/C = usr
 			ion_trail.start()
-			if(!has_gravity(C) && flying == 0)
-				C.pass_flags += PASSTABLE
 			tank = H.s_store
 			air_contents = tank.air_contents
 			SSobj.processing |= src
@@ -177,12 +161,9 @@
 		H << "<span class='notice'>You toggle the inbuilt jetpack [on? "on":"off"].</span>"
 
 /obj/item/weapon/tank/jetpack/suit/proc/turn_off()
-	var/mob/living/carbon/human/C = usr
 	on = 0
 	SSobj.processing -= src
 	ion_trail.stop()
-	if(!has_gravity(C) && flying == 0 && C.pass_flags & PASSTABLE) // so it removes PASSTABLE which they get when its on. Prevents loopholes.
-		C.pass_flags -= PASSTABLE
 	air_contents = null
 	tank = null
 	icon_state = initial(icon_state)
