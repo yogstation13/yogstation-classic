@@ -36,6 +36,7 @@
 /obj/effect/blob/core/Destroy()
 	blob_cores -= src
 	if(overmind)
+		overmind.ghostize()
 		overmind.blob_core = null
 	overmind = null
 	SSobj.processing.Remove(src)
