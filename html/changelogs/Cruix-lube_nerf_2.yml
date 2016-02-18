@@ -1,0 +1,6 @@
+author: Cruix
+
+delete-after: True
+
+changes: 
+  - tweak: "Space cleaner now removes space lube from tiles."
