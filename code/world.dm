@@ -41,8 +41,18 @@
 	make_datum_references_lists()	//initialises global lists for referencing frequently used datums (so that we only ever do it once)
 
 	load_configuration()
+
+	if(config.sql_enabled)
+		if(!setup_database_connection())
+			world.log << "Your server failed to establish a connection with the database."
+		else
+			world.log << "Database connection established."
+
 	load_mode()
 	load_motd()
+
+	refresh_admin_files()
+
 	load_admins()
 	LoadBansjob()
 	if(config.usewhitelist)
@@ -61,12 +71,6 @@
 		config.server_name += " #[(world.port % 1000) / 100]"
 
 	timezoneOffset = text2num(time2text(0,"hh")) * 36000
-
-	if(config.sql_enabled)
-		if(!setup_database_connection())
-			world.log << "Your server failed to establish a connection with the database."
-		else
-			world.log << "Database connection established."
 
 
 	data_core = new /datum/datacore()
