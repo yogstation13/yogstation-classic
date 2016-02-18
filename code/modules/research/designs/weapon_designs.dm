@@ -175,16 +175,6 @@
 	build_path = /obj/item/weaponcrafting/reciever
 	category = list("Weapons")
 
-/datum/design/compartmentalizer
-	name= "Compartmentalizer"
-	desc= "A large tube used for omniversal storage of items."
-	id = "compartmentalizer"
-	req_tech = list("engineering=6;combat=6;magnets=6")
-	build_type = PROTOLATHE
-	materials = list(MAT_SILVER = 500, MAT_URANIUM = 500, MAT_DIAMOND = 500, MAT_METAL = 500, MAT_PLASMA = 500, MAT_GOLD = 500)
-	build_path = /obj/item/weaponcrafting/compartmentalizer
-	category = list("Weapons")
-
 /datum/design/mag_smg
 	name = "Submachine Gun Magazine (9mm)"
 	desc = "A 20-round magazine for the prototype submachine gun."
