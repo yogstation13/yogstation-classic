@@ -3,12 +3,13 @@
 	icon = 'icons/obj/ghetto_armoury.dmi'
 	name = "duct tape"
 	icon_state = "ductape"
-	desc = "Used the the crafting of various items."
+	desc = "Used in the the crafting of various items."
 
 /obj/item/weapon/ghetto
 	icon = 'icons/obj/ghetto_armoury.dmi'
 	lefthand_file = 'icons/obj/ghetto_armoury.dmi'
 	righthand_file = 'icons/obj/ghetto_armoury.dmi'
+	desc = "You should not see this. #AdminBus"
 
 /obj/item/weapon/ghetto/glass
 	var/smashable = 1
@@ -25,7 +26,7 @@
 
 		if(uses <= 0)
 			if(prob(40))
-				user.visible_message("<span class='notice'>You hear a slight tinkle as the [src] smashes!</span>")
+				user.visible_message("<span class='notice'>You hear a slight tinkle as [src] smashes!</span>")
 				qdel(src)
 				if(istype(target, /mob/living/carbon/human))
 					var/mob/living/carbon/human/H = target
@@ -33,7 +34,7 @@
 						H.blood_max += rand(0.5, 3)
 					if(prob(10))
 						H.throw_alert("embeddedobject")
-						var/obj/item/organ/limb/L = pick(H.organs)
+						var/obj/item/organ/limb/L = H.get_organ(check_zone(user.zone_sel.selecting))
 						var/obj/item/weapon/shard/shard = new
 						L.embedded_objects |= shard
 						shard.loc = H
@@ -60,7 +61,7 @@
 /obj/item/weapon/ghetto/glass/sword/black
 	name = "black glass sword"
 	icon_state = "glass_black"
-	desc = "A sword made out of shiny blaack glass. Perfect for slashing."
+	desc = "A sword made out of shiny black glass. Perfect for slashing."
 
 /obj/item/weapon/ghetto/glass/sword/refined
 	name = "refined glass sword"
@@ -77,7 +78,7 @@
 
 /obj/item/weapon/ghetto/airspear
 	icon_state = "spear_detached"
-	name = "spear"
+	name = "pneumatic spear"
 	desc = "A spear with a canister of tank of gas ductaped to it to allow extra thrust."
 	slot_flags = SLOT_BACK
 	throwforce = 19
@@ -94,6 +95,11 @@
 	var/old_throw_speed = 3
 	var/old_throw_force = 19
 
+	var/max_throw_force = 24
+	var/minimum_kpi = 100
+	var/divise_constant = 100
+	var/fraction_decrease_gas = 7
+
 /obj/item/weapon/ghetto/airspear/attackby(obj/item/weapon/W, mob/user, params)
 	if(istype(W, /obj/item/weapon/tank))
 		if(tank)
@@ -107,16 +113,16 @@
 			icon_state = "spear_off"
 
 /obj/item/weapon/ghetto/airspear/throw_at(atom/target, range, speed, mob/thrower, spin, diagonals_first)
-	if(tank && tank.air_contents && tank.air_contents.return_pressure() >= 100)
+	if(tank && tank.air_contents && tank.air_contents.return_pressure() >= minimum_kpi)
 
-		throw_speed = old_throw_speed+tank.air_contents.return_pressure()/100
-		throwforce = old_throw_force+tank.air_contents.return_pressure()/50
+		throw_speed = old_throw_speed+tank.air_contents.return_pressure()/divise_constant
+		throwforce = old_throw_force+tank.air_contents.return_pressure()/(divise_constant/2)
 
-		if(throwforce > 24) throwforce=24
+		if(throwforce > max_throw_force) throwforce = max_throw_force
 
 		icon_state = "spear_on"
 
-		var/datum/gas_mixture/removed = tank.air_contents.remove(tank.air_contents.total_moles()/7)
+		var/datum/gas_mixture/removed = tank.air_contents.remove(tank.air_contents.total_moles()/fraction_decrease_gas)
 		loc.assume_air(removed)
 		air_update_turf()
 
