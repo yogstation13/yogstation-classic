@@ -36,7 +36,14 @@
 /obj/effect/blob/core/Destroy()
 	blob_cores -= src
 	if(overmind)
-		overmind.ghostize()
+		if(!blob_cores.len)
+			for(var/OM in blob_overmind_list)
+				var/mob/camera/blob/Blob_OM = OM
+				Blob_OM.ghostize()
+				blob_overmind_list -= Blob_OM
+				qdel(Blob_OM)
+		else
+			overmind << "<span class='warning'>Your core has been destroyed, but another overmind with a living core exists. Assist them in any way you can. You will continue gaining resorces from your Resource Blobs."
 		overmind.blob_core = null
 	overmind = null
 	SSobj.processing.Remove(src)

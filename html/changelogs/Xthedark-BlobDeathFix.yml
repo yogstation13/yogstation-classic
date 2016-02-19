@@ -1,0 +1,8 @@
+author: Xthedark
+
+delete-after: True
+
+changes:
+  - bugfix: "Dead blobs no longer get kicked from the server." 
+  - rscadd: "We blob together! If your core gets destroyed and there is still another overmind with a core alive (Split Consciousness), you don't die. You will still gain resources from Resource Nodes and be able to help out your offspring/parent with Rally Spores and such. If all cores die, overminds get ghosted."
+  - bugfix: "You can no longer Split Consciousness or Relocate Core if you don't have one. This should also fix relocating/splitting just after death."

@@ -114,7 +114,11 @@
 	set name = "Relocate Core (80)"
 	set desc = "Relocates your core to the node you are on, your old core will be turned into a node."
 	var/turf/T = get_turf(src)
-
+	
+	if(!blob_core) //Don't allow dead overminds to create new cores
+		usr << "You have no core to relocate!"
+		return
+		
 	if(!T)
 		return
 
@@ -198,6 +202,11 @@
 	set category = "Blob"
 	set name = "Split consciousness (100) (One use)"
 	set desc = "Expend resources to attempt to produce another sentient overmind"
+	
+	if(!blob_core)
+		src << "You do not have a core to split yourself."
+		return
+	
 	if(!blob_nodes || !blob_nodes.len)
 		src << "<span class='warning'>A node is required to birth your offspring...</span>"
 		return
