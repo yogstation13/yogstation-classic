@@ -121,7 +121,7 @@
 		
 	if(!T)
 		return
-
+	
 	var/obj/effect/blob/node/B = locate(/obj/effect/blob/node) in T
 	if(!B)
 		src << "You must be on a blob node!"
@@ -206,19 +206,20 @@
 	if(!blob_core)
 		src << "You do not have a core to split yourself."
 		return
+		
+	var/turf/T = get_turf(src)
+	var/obj/effect/blob/node/B = locate(/obj/effect/blob/node) in T
 	
-	if(!blob_nodes || !blob_nodes.len)
-		src << "<span class='warning'>A node is required to birth your offspring...</span>"
+	if(!B)
+		src << "<span class='warning'>You must be on a blob node!</span>"
 		return
-	var/obj/effect/blob/node/N = locate(/obj/effect/blob) in blob_nodes
-	if(!N)
-		src << "<span class='warning'>A node is required to birth your offspring...</span>"
-		return
+		
 	if(!can_buy(100))
 		return
+		
 	verbs -= /mob/camera/blob/verb/split_consciousness
-	new /obj/effect/blob/core/ (get_turf(N), 200, null, blob_core.point_rate, "offspring")
-	qdel(N)
+	new /obj/effect/blob/core/(get_turf(B), 200, null, blob_core.point_rate, "offspring")
+	qdel(B)
 	if(ticker && ticker.mode.name == "blob")
 		var/datum/game_mode/blob/BL = ticker.mode
 		BL.blobwincount = initial(BL.blobwincount) * 2
