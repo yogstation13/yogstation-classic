@@ -1,8 +1,14 @@
-
 //The advanced pea-green monochrome lcd of tomorrow.
 
 var/global/list/obj/item/device/pda/PDAs = list()
 
+#define PDA_SCAN_MEDICAL 1
+#define PDA_SCAN_FORENSICS 2
+#define PDA_SCAN_REAGENT 3
+#define PDA_SCAN_HALOGEN 4
+#define PDA_SCAN_GAS 5
+#define PDA_SCAN_FLORAL 6
+#define PDA_SCAN_POWER 7
 
 /obj/item/device/pda
 	name = "\improper PDA"
@@ -157,7 +163,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	ttone = "objection"
 
 /obj/item/device/pda/botanist
-	//default_cartridge = /obj/item/weapon/cartridge/botanist
+	default_cartridge = /obj/item/weapon/cartridge/botanist
 	icon_state = "pda-hydro"
 
 /obj/item/device/pda/roboticist
@@ -316,17 +322,45 @@ var/global/list/obj/item/device/pda/PDAs = list()
 						dat += "<li><a href='byond://?src=\ref[src];choice=41'><img src=pda_notes.png> View Crew Manifest</a></li>"
 					if(cartridge.access_status_display)
 						dat += "<li><a href='byond://?src=\ref[src];choice=42'><img src=pda_status.png> Set Status Display</a></li>"
+					if (istype(cartridge, /obj/item/weapon/cartridge/slavemaster))
+						dat += "<li><a href='byond://?src=\ref[src];choice=48'><img src=pda_signaler.png> Slavemaster 2000</a></li>"
 					dat += "</ul>"
-					if (cartridge.access_engine)
+					if (cartridge.access_engine || (cartridge.alert_flags & PDA_POWER_ALERT))
 						dat += "<h4>Engineering Functions</h4>"
 						dat += "<ul>"
 						dat += "<li><a href='byond://?src=\ref[src];choice=43'><img src=pda_power.png> Power Monitor</a></li>"
+						dat += "<li><a href='byond://?src=\ref[src];choice=Halogen Counter'><img src=pda_reagent.png> [scanmode == PDA_SCAN_HALOGEN ? "Disable" : "Enable"] Halogen Counter</a></li>"
+						dat += "<li><a href='byond://?src=\ref[src];choice=Power Meter'><img src=pda_reagent.png> [scanmode == PDA_SCAN_POWER ? "Disable" : "Enable"] Power Meter</a></li>"
+						if(cartridge.alert_flags & PDA_POWER_ALERT)
+							dat += "<li><a href='byond://?src=\ref[src];choice=power alerts'><img src=pda_signaler.png> [(cartridge.alert_toggles & PDA_POWER_ALERT) ? "Disable" : "Enable"] Power Alert Notifications</a></li>"
+						dat += "</ul>"
+					if (cartridge.access_atmos || cartridge.access_atmos_sensors || (cartridge.alert_flags & PDA_ATMOS_ALERT) || (cartridge.alert_flags & PDA_FIRE_ALERT))
+						dat += "<h4>Atmospherics Functions:</h4>"
+						dat += "<ul>"
+						if(cartridge.access_atmos)
+							dat += "<li><a href='byond://?src=\ref[src];choice=Gas Scan'><img src=pda_reagent.png> [scanmode == PDA_SCAN_GAS ? "Disable" : "Enable"] Gas Scanner</a></li>"
+						if(cartridge.access_atmos_sensors)
+							dat += "<li><a href='byond://?src=\ref[src];choice=50'><img src=pda_power.png> Atmospherics Monitor</a></li>"
+						if(cartridge.alert_flags & PDA_ATMOS_ALERT)
+							dat += "<li><a href='byond://?src=\ref[src];choice=atmos alerts'><img src=pda_signaler.png> [(cartridge.alert_toggles & PDA_ATMOS_ALERT) ? "Disable" : "Enable"] Atmos Alert Notifications</a></li>"
+						if(cartridge.alert_flags & PDA_FIRE_ALERT)
+							dat += "<li><a href='byond://?src=\ref[src];choice=fire alerts'><img src=pda_signaler.png> [(cartridge.alert_toggles & PDA_FIRE_ALERT) ? "Disable" : "Enable"] Fire Alert Notifications</a></li>"
 						dat += "</ul>"
 					if (cartridge.access_medical)
 						dat += "<h4>Medical Functions</h4>"
 						dat += "<ul>"
 						dat += "<li><a href='byond://?src=\ref[src];choice=44'><img src=pda_medical.png> Medical Records</a></li>"
-						dat += "<li><a href='byond://?src=\ref[src];choice=Medical Scan'><img src=pda_scanner.png> [scanmode == 1 ? "Disable" : "Enable"] Medical Scanner</a></li>"
+						dat += "<li><a href='byond://?src=\ref[src];choice=Medical Scan'><img src=pda_scanner.png> [scanmode == PDA_SCAN_MEDICAL ? "Disable" : "Enable"] Medical Scanner</a></li>"
+						dat += "</ul>"
+					if (cartridge.access_reagent_scanner)
+						dat += "<h4>Chemistry Functions:</h4>"
+						dat += "<ul>"
+						dat += "<li><a href='byond://?src=\ref[src];choice=Reagent Scan'><img src=pda_reagent.png> [scanmode == PDA_SCAN_REAGENT ? "Disable" : "Enable"] Reagent Scanner</a></li>"
+						dat += "</ul>"
+					if (cartridge.access_flora)
+						dat += "<h4>Botanist Functions</h4>"
+						dat += "<ul>"
+						dat += "<li><a href='byond://?src=\ref[src];choice=Plant Analyze'><img src=pda_botany.png> [scanmode == PDA_SCAN_FLORAL ? "Disable" : "Enable"] Plant Analyzer</a></li>"
 						dat += "</ul>"
 					if (cartridge.access_security)
 						dat += "<h4>Security Functions</h4>"
@@ -338,6 +372,12 @@ var/global/list/obj/item/device/pda/PDAs = list()
 						dat += "<ul>"
 						dat += "<li><a href='byond://?src=\ref[src];choice=47'><img src=pda_crate.png> Supply Records</A></li>"
 						dat += "</ul>"
+					if(cartridge.access_janitor)
+						dat += "<h4>Janitorial Functions:</h4>"
+						dat += "<ul>"
+						dat += "<li><a href='byond://?src=\ref[src];choice=49'><img src=pda_bucket.png> Custodial Locator</a></li>"
+						dat += "</ul>"
+
 				dat += "</ul>"
 
 				dat += "<h4>Utilities</h4>"
@@ -345,20 +385,15 @@ var/global/list/obj/item/device/pda/PDAs = list()
 				if (cartridge)
 					if(cartridge.bot_access_flags)
 						dat += "<li><a href='byond://?src=\ref[src];choice=54'><img src=pda_medbot.png> Bots Access</a></li>"
-					if (cartridge.access_janitor)
-						dat += "<li><a href='byond://?src=\ref[src];choice=49'><img src=pda_bucket.png> Custodial Locator</a></li>"
+					if(cartridge.alert_flags)
+						dat += "<li><a href='byond://?src=\ref[src];choice=51'><img src=pda_medbot.png> View Alerts</a></li>"
 					if (istype(cartridge.radio, /obj/item/radio/integrated/signal))
 						dat += "<li><a href='byond://?src=\ref[src];choice=40'><img src=pda_signaler.png> Signaler System</a></li>"
 					if (cartridge.access_newscaster)
 						dat += "<li><a href='byond://?src=\ref[src];choice=53'><img src=pda_notes.png> Newscaster Access </a></li>"
-					if (cartridge.access_reagent_scanner)
-						dat += "<li><a href='byond://?src=\ref[src];choice=Reagent Scan'><img src=pda_reagent.png> [scanmode == 3 ? "Disable" : "Enable"] Reagent Scanner</a></li>"
-					if (cartridge.access_engine)
-						dat += "<li><a href='byond://?src=\ref[src];choice=Halogen Counter'><img src=pda_reagent.png> [scanmode == 4 ? "Disable" : "Enable"] Halogen Counter</a></li>"
-					if (cartridge.access_atmos)
-						dat += "<li><a href='byond://?src=\ref[src];choice=Gas Scan'><img src=pda_reagent.png> [scanmode == 5 ? "Disable" : "Enable"] Gas Scanner</a></li>"
 					if (cartridge.access_remote_door)
 						dat += "<li><a href='byond://?src=\ref[src];choice=Toggle Door'><img src=pda_rdoor.png> Toggle Remote Door</a></li>"
+
 				dat += "<li><a href='byond://?src=\ref[src];choice=3'><img src=pda_atmos.png> Atmospheric Scan</a></li>"
 				dat += "<li><a href='byond://?src=\ref[src];choice=Light'><img src=pda_flashlight.png> [fon ? "Disable" : "Enable"] Flashlight</a></li>"
 				if (pai)
@@ -545,20 +580,30 @@ var/global/list/obj/item/device/pda/PDAs = list()
 					if(src in U.contents)	U.AddLuminosity(f_lum)
 					else					SetLuminosity(f_lum)
 			if("Medical Scan")
-				if(scanmode == 1)
+				if(scanmode == PDA_SCAN_MEDICAL)
 					scanmode = 0
 				else if((!isnull(cartridge)) && (cartridge.access_medical))
-					scanmode = 1
+					scanmode = PDA_SCAN_MEDICAL
+			if("Plant Analyze")
+				if(scanmode == PDA_SCAN_FLORAL)
+					scanmode = 0
+				else if ((!isnull(cartridge)) && (cartridge.access_flora))
+					scanmode = PDA_SCAN_FLORAL
 			if("Reagent Scan")
-				if(scanmode == 3)
+				if(scanmode == PDA_SCAN_REAGENT)
 					scanmode = 0
 				else if((!isnull(cartridge)) && (cartridge.access_reagent_scanner))
-					scanmode = 3
+					scanmode = PDA_SCAN_REAGENT
 			if("Halogen Counter")
-				if(scanmode == 4)
+				if(scanmode == PDA_SCAN_HALOGEN)
 					scanmode = 0
 				else if((!isnull(cartridge)) && (cartridge.access_engine))
-					scanmode = 4
+					scanmode = PDA_SCAN_HALOGEN
+			if("Power Meter")
+				if(scanmode == PDA_SCAN_POWER)
+					scanmode = 0
+				else if((!isnull(cartridge)) && (cartridge.access_engine))
+					scanmode = PDA_SCAN_POWER
 			if("Honk")
 				if ( !(last_noise && world.time < last_noise + 20) )
 					playsound(loc, 'sound/items/bikehorn.ogg', 50, 1)
@@ -568,10 +613,23 @@ var/global/list/obj/item/device/pda/PDAs = list()
 					playsound(loc, 'sound/misc/sadtrombone.ogg', 50, 1)
 					last_noise = world.time
 			if("Gas Scan")
-				if(scanmode == 5)
+				if(scanmode == PDA_SCAN_GAS)
 					scanmode = 0
 				else if((!isnull(cartridge)) && (cartridge.access_atmos))
-					scanmode = 5
+					scanmode = PDA_SCAN_GAS
+
+//ALERT FUNCTIONS========================================
+			if("power alerts")
+				if(cartridge)
+					cartridge.alert_toggles ^= PDA_POWER_ALERT
+
+			if("atmos alerts")
+				if(cartridge)
+					cartridge.alert_toggles ^= PDA_ATMOS_ALERT
+
+			if("fire alerts")
+				if(cartridge)
+					cartridge.alert_toggles ^= PDA_FIRE_ALERT
 
 //NOTEKEEPER FUNCTIONS===================================
 
@@ -845,7 +903,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 
 		log_pda("[usr] (PDA: [src.name]) sent \"[t]\" to [P.name]")
 		photo = null
-		investigate_log("[usr]([usr.ckey]) (PDA: [src.name]) sent \"[t]\"[photo_ref] to [P.name]", "pda")		
+		investigate_log("[usr]([usr.ckey]) (PDA: [src.name]) sent \"[t]\"[photo_ref] to [P.name]", "pda")
 		P.overlays.Cut()
 		P.overlays += image('icons/obj/pda.dmi', "pda-r")
 	else
@@ -985,15 +1043,15 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	if(istype(C))
 		switch(scanmode)
 
-			if(1)
+			if(PDA_SCAN_MEDICAL)
 				user.visible_message(text("<span class='alert'>[] has analyzed []'s vitals!</span>", user, C))
 				healthscan(user, C, 1)
 				src.add_fingerprint(user)
 
-			if(2)
+			if(PDA_SCAN_FORENSICS)
 				// Unused
 
-			if(4)
+			if(PDA_SCAN_HALOGEN)
 				C.visible_message("<span class='warning'>[user] has analyzed [C]'s radiation levels!</span>")
 
 				user.show_message("<span class='notice'>Analyzing Results for [C]:</span>")
@@ -1006,7 +1064,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	if(!proximity) return
 	switch(scanmode)
 
-		if(3)
+		if(PDA_SCAN_REAGENT)
 			if(!isnull(A.reagents))
 				if(A.reagents.reagent_list.len > 0)
 					var/reagents_length = A.reagents.reagent_list.len
@@ -1018,7 +1076,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 			else
 				user << "<span class='notice'>No significant chemical agents found in [A].</span>"
 
-		if(5)
+		if(PDA_SCAN_GAS)
 			if (istype(A, /obj/item/weapon/tank))
 				var/obj/item/weapon/tank/T = A
 				atmosanalyzer_scan(T.air_contents, user, T)

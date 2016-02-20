@@ -177,7 +177,7 @@
 	..()
 
 /mob/living/simple_animal/slime/MouseDrop(atom/movable/A as mob|obj)
-	if(isliving(A) && A != src)
+	if(isliving(A) && A != src && ((usr in Friends) || usr == src) && isliving(usr))
 		var/mob/living/Food = A
 		if(CanFeedon(Food))
 			Feedon(Food)

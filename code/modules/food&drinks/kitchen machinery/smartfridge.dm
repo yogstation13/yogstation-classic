@@ -17,6 +17,8 @@
 	var/icon_on = "smartfridge"
 	var/icon_off = "smartfridge-off"
 	var/list/item_quants = list()
+	var/icon_open = "smartfridge-open"
+	var/icon_closed = "smartfridge"
 
 /obj/machinery/smartfridge/New()
 	..()
@@ -55,7 +57,7 @@
 ********************/
 
 /obj/machinery/smartfridge/attackby(obj/item/O, mob/user, params)
-	if(default_deconstruction_screwdriver(user, "smartfridge_open", "smartfridge", O))
+	if(default_deconstruction_screwdriver(user, icon_open, icon_closed, O))
 		return
 
 	if(exchange_parts(user, O))
@@ -225,6 +227,8 @@
 	active_power_usage = 200
 	icon_on = "drying_rack_on"
 	icon_off = "drying_rack"
+	icon_open = "drying_rack"
+	icon_closed = "drying_rack"
 	var/drying = 0
 
 /obj/machinery/smartfridge/drying_rack/interact(mob/user)

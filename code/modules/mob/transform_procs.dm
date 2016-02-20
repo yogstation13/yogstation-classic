@@ -20,13 +20,14 @@
 
 	//Make mob invisible and spawn animation
 	regenerate_icons()
-	notransform = 0
+	notransform = 1
 	canmove = 0
 	stunned = 1
 	icon = null
 	overlays.Cut()
 	invisibility = 101
 
+	var/storedkey = ckey
 	var/atom/movable/overlay/animation = new( loc )
 	animation.icon_state = "blank"
 	animation.icon = 'icons/mob/mob.dmi'
@@ -88,6 +89,8 @@
 		mind.transfer_to(O)
 		if(O.mind.changeling)
 			O.mind.changeling.purchasedpowers += new /obj/effect/proc_holder/changeling/humanform(null)
+	if(O.ckey == null || O.ckey == "")
+		O.ckey = storedkey // Fix that random ghosting bug.
 	if (tr_flags & TR_DEFAULTMSG)
 		O << "<B>You are now a monkey.</B>"
 

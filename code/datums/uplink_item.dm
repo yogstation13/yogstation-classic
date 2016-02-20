@@ -233,7 +233,7 @@ var/list/uplink_items = list()
 	name = "Syndicate Cyborg"
 	desc = "A cyborg designed and programmed for systematic extermination of non-Syndicate personnel."
 	item = /obj/item/weapon/antag_spawner/borg_tele
-	cost = 120
+	cost = 80
 	gamemodes = list(/datum/game_mode/nuclear)
 	surplus = 0
 
@@ -436,6 +436,13 @@ var/list/uplink_items = list()
 	cost = 1
 	surplus = 35
 
+/datum/uplink_item/stealthy_tools/chameleon_military_belt
+	name = "Chameleon Military Belt"
+	desc = "A robust seven-slot red belt made for carrying a broad variety of weapons, ammunition and explosives. This one can be disguised to imitate many of the standard belts found around the station."
+	item = /obj/item/weapon/storage/belt/military/chameleon
+	cost = 3
+	excludefrom = list(/datum/game_mode/nuclear)
+
 /datum/uplink_item/stealthy_tools/syndigaloshes
 	name = "No-Slip Brown Shoes"
 	desc = "These allow you to run on wet floors. They do not work on lubricated surfaces."
@@ -445,8 +452,8 @@ var/list/uplink_items = list()
 
 /datum/uplink_item/stealthy_tools/syndigaloshes/nuke
 	name = "Tactical No-Slip Brown Shoes"
-	desc = "These allow you to run on wet floors. They do not work on lubricated surfaces, and the maker swears they're better than normal ones, somehow."
-	cost = 4 //but they aren't
+	desc = "These allow you to run on wet floors. They do work on lubricated surfaces, and the maker swears they're better than normal ones, somehow."
+	cost = 4 //And they are, now.
 	gamemodes = list(/datum/game_mode/nuclear)
 
 /datum/uplink_item/stealthy_tools/agent_card
@@ -512,13 +519,6 @@ var/list/uplink_items = list()
 	desc = "The Syndicate surgery dufflebag is a toolkit containing all surgery tools, surgical drapes, a Syndicate brand MMI, a straitjacket, and a muzzle."
 	item = /obj/item/weapon/storage/backpack/dufflebag/syndie/surgery
 	cost = 4
-
-/datum/uplink_item/device_tools/military_belt
-	name = "Military Belt"
-	desc = "A robust seven-slot red belt made for carrying a broad variety of weapons, ammunition and explosives"
-	item = /obj/item/weapon/storage/belt/military
-	cost = 3
-	excludefrom = list(/datum/game_mode/nuclear)
 
 /datum/uplink_item/device_tools/medkit
 	name = "Syndicate Combat Medic Kit"
@@ -694,6 +694,12 @@ var/list/uplink_items = list()
 	desc = "An implant injected into the body, and later activated using a bodily gesture to inject a specially formulated sedative along with an anti-toxin solution to counteract some negative effects. \
 	You will appear dead to most casual observers, and will eventually wake up of your own accord. Can also be purged by medical chemistry."
 	item = /obj/item/weapon/storage/box/syndie_kit/imp_zombie
+	cost = 12
+
+/datum/uplink_item/implants/mindslave
+	name = "Mindslave Implant"
+	desc = "An implant injected into a targets body. Will cause the target to obey your every command whilst the target is implanted. Implant can be removed by surgery!"
+	item = /obj/item/weapon/storage/box/syndie_kit/imp_mindslave
 	cost = 12
 
 

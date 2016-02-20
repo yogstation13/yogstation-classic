@@ -21,6 +21,7 @@
 								   list("morphine", "salbutamol", "bicaridine", "kelotane", "oculine"),
 								   list("morphine", "salbutamol", "bicaridine", "kelotane", "oculine", "antitoxin", "mutadone", "mannitol", "pen_acid"),
 								   list("morphine", "salbutamol", "bicaridine", "kelotane", "oculine", "antitoxin", "mutadone", "mannitol", "pen_acid", "omnizine"))
+	var/broke = 0 // for when someone actually uses the emagged sleeper. it will become unusable after filling the occupant up with everything
 
 /obj/machinery/sleeper/New()
 	..()
@@ -76,6 +77,11 @@
 	if(!state_open && !occupant)
 		if(default_deconstruction_screwdriver(user, "sleeper-o", "sleeper", I))
 			return
+
+	if(istype(I, /obj/item/weapon/wirecutters) && src.broke == 1 && !state_open && !occupant && icon_state == "sleeper-o")
+		src.broke = 0
+		src.emagged = 0
+		user << "<span class='notice'>You mend some of the wires together and cut off the burnt out ones, allowing the sleeper to function properly.</span>"
 
 	if(default_change_direction_wrench(user, I))
 		return
@@ -137,6 +143,7 @@
 
 /obj/machinery/sleeper/proc/sleeperUI(mob/user)
 	var/dat
+	var/dat2
 	var/medstaff = 0 //is the person a human, and if they are, are they medical staff?
 
 	if (ishuman(user))
@@ -157,7 +164,7 @@
 	else
 		dat += "<span class='linkOff'>Inject Epinephrine</span>"
 
-	if (medstaff)
+	if (medstaff || src.emagged == 1) // when emagged, ANYONE can use it.
 		if(occupant && occupant.health > min_health)
 			for(var/re in injection_chems)
 				var/datum/reagent/C = chemical_reagents_list[re]
@@ -168,6 +175,7 @@
 				var/datum/reagent/C = chemical_reagents_list[re]
 				if(C)
 					dat += "<BR><span class='linkOff'>Inject [C.name]</span>"
+
 	else
 		dat += "<br><font colour='red'>ERROR: Not authorized to use advanced chemicals.</font>"
 
@@ -202,11 +210,20 @@
 			for(var/datum/reagent/R in occupant.reagents.reagent_list)
 				dat += "<div class='line'><div style='width: 170px;' class='statusLabel'>[R.name]:</div><div class='statusValue'>[round(R.volume, 0.1)] units</div></div><br>"
 	dat += "</div>"
-
+	if(src.broke == 1)
+		dat2 += "<h3>Sleeper Status</h3>"
+		dat2 += "<A href='?src=\ref[src];[state_open ? "close=1'>Close</A>" : "open=1'>Open</A>"]"
+		dat2 += "<br>ALERT! A critical error has created a malfunction. Seek local authority and technicians to begin maintenance protocol."
 	var/datum/browser/popup = new(user, "sleeper", "Sleeper Console", 520, 540)	//Set up the popup browser window
-	popup.set_title_image(user.browse_rsc_icon(icon, icon_state))
-	popup.set_content(dat)
-	popup.open()
+	if(src.broke == 0)
+		popup.set_title_image(user.browse_rsc_icon(icon, icon_state))
+		popup.set_content(dat)
+		popup.open()
+	else if (src.broke == 1)
+		popup.set_title_image(user.browse_rsc_icon(icon, icon_state))
+		popup.set_content(dat2)
+		popup.open()
+		user << "<span class='notice'> Some of the sleepers functions have been disabled during this time.</span>"
 
 /obj/machinery/sleeper/Topic(href, href_list)
 	if(..() || usr == occupant)
@@ -339,6 +356,38 @@
 				occupant.reagents.add_reagent(chem, 10)
 			var/units = round(occupant.reagents.get_reagent_amount(chem))
 			user << "<span class='notice'>Occupant now has [units] unit\s of [chemical_reagents_list[chem]] in their bloodstream.</span>"
+	if(occupant && occupant.reagents && src.emagged == 1)
+		occupant.reagents.add_reagent("morphine", 50)
+		occupant.reagents.add_reagent("salbutamol", 50)
+		occupant.reagents.add_reagent("bicaridine", 50)
+		occupant.reagents.add_reagent("kelotane", 50)
+		user << "<span class='notice'>ERROR! 411 criminal activity has been detected! Seek local authority and technicians to begin maintenance protocol.</span>"
+		for(var/obj/item/weapon/stock_parts/manipulator/M in component_parts)
+			if(M.rating > 1)
+				occupant.reagents.add_reagent("oculine", 50)
+				if(M.rating > 2)
+					occupant.reagents.add_reagent("antitoxin", 50)
+					occupant.reagents.add_reagent("mutadone", 50)
+					occupant.reagents.add_reagent("mannitol", 50)
+					occupant.reagents.add_reagent("pen_acid", 50)
+					if(M.rating > 3)
+						occupant.reagents.add_reagent("omnizine", 50)
+		go_out()
+		src.broke = 1
+		audible_message("<span class='alert'>[src] begins to overloading and goes REEEEEEEEEEEEEEEEEEE!</span>")
+		throwSmoke(src.loc)
+
+
+/obj/machinery/sleeper/proc/throwSmoke(turf/where)
+	var/datum/effect/effect/system/smoke_spread/smoke = new
+	smoke.set_up(1,0, where, 0)
+	playsound(src.loc, 'sound/effects/smoke.ogg', 50, 1, -3)
+	smoke.start()
+
+/obj/machinery/sleeper/proc/broken()
+	if(src.broke == 1)
+		src.state_open = 1
+
 
 /obj/machinery/sleeper/update_icon()
 	if(state_open)
@@ -356,3 +405,8 @@
 	component_parts += new /obj/item/weapon/stock_parts/console_screen(null)
 	component_parts += new /obj/item/weapon/stock_parts/console_screen(null)
 	component_parts += new /obj/item/stack/cable_coil(null, 1)
+
+/obj/machinery/sleeper/emag_act(mob/user)
+	if(!emagged)
+		src.emagged = 1
+		user << "You scramble the sleepers access lock and safety mechanics."

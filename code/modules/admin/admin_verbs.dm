@@ -71,8 +71,14 @@ var/list/admin_verbs_admin = list(
 	/client/proc/test_pretty_filters,
 	/client/proc/add_pretty_filter,
 	/client/proc/reset_pretty_filter,
+	/client/proc/admin_credits_get,
+	/client/proc/admin_credits_list,
+	/client/proc/admin_credits_spend,
+	/client/proc/admin_credits_earn,
+	/client/proc/admin_credits_set,
 	/client/proc/check_words,			/*displays cult-words*/
-	/client/proc/reset_all_tcs			/*resets all telecomms scripts*/
+	/client/proc/reset_all_tcs,		/*resets all telecomms scripts*/
+	/datum/admins/proc/cybermen_panel   //lots of cybermen options
 	)
 var/list/admin_verbs_ban = list(
 	/client/proc/unban_panel,
@@ -221,6 +227,11 @@ var/list/admin_verbs_hideable = list(
 	/client/proc/list_pretty_filters,
 	/client/proc/test_pretty_filters,
 	/client/proc/add_pretty_filter,
+	/client/proc/admin_credits_get,
+	/client/proc/admin_credits_list,
+	/client/proc/admin_credits_spend,
+	/client/proc/admin_credits_earn,
+	/client/proc/admin_credits_set,
 	/proc/possess,
 	/proc/release,
 	/client/proc/reload_admins,
@@ -237,6 +248,9 @@ var/list/admin_verbs_hideable = list(
 
 		var/rights = holder.rank.rights
 		verbs += admin_verbs_default
+		#ifdef CYBERMEN_DEBUG
+		verbs += cybermen_debug_abilities
+		#endif
 		if(rights & R_BUILDMODE)	verbs += /client/proc/togglebuildmodeself
 		if(rights & R_ADMIN)		verbs += admin_verbs_admin
 		if(rights & R_BAN)			verbs += admin_verbs_ban
@@ -324,8 +338,71 @@ var/list/admin_verbs_hideable = list(
 	src << "<span class='interface'>All of your adminverbs are now visible.</span>"
 	feedback_add_details("admin_verb","TAVVS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
+/client/proc/admin_credits_get(mob/M as mob)
+	set category = "Special Verbs"
+	set name = "Credits Show"
 
+	if(!get_client(M))
+		src << "Error: The mob requires a client"
+		return
 
+	log_admin("CREDITS [get_ckey(src)] accessed the credits count for [get_ckey(M)]")
+	src << "[get_ckey(M)] has [credits_reload_from_db(M)] credits"
+
+/client/proc/admin_credits_list(var/total as num)
+	set category = "Special Verbs"
+	set name = "Credits Top List"
+
+	src << "Top [total] players by credits:"
+
+	var/list/L = credits_top(total)
+	for(var/datum/credit/C in L)
+		src << " * [C.ckey] = [C.credits]"
+
+/client/proc/admin_credits_spend(mob/M as mob, var/credits as num)
+	set category = "Special Verbs"
+	set name = "Credits Spend"
+
+	if(!get_client(M))
+		src << "Error: The mob requires a client"
+		return
+
+	var/result = credits_spend(M, credits)
+	if(result >= 0)
+		log_admin("CREDITS [get_ckey(src)] decreased the credits for [get_ckey(M)] by [credits]")
+		src << "[get_ckey(M)] now has [result] credits ([credits] spent)"
+	else
+		src << "Error giving credits: [result]"
+
+/client/proc/admin_credits_earn(mob/M as mob, var/credits as num)
+	set category = "Special Verbs"
+	set name = "Credits Earn"
+
+	if(!get_client(M))
+		src << "Error: The mob requires a client"
+		return
+
+	var/result = credits_earn(M, credits)
+	if(result >= 0)
+		log_admin("CREDITS [get_ckey(src)] increased the credits for [get_ckey(M)] by [credits]")
+		src << "[get_ckey(M)] now has [result] credits ([credits] received)"
+	else
+		src << "Error giving credits: [result]"
+
+/client/proc/admin_credits_set(mob/M as mob, var/credits as num)
+	set category = "Special Verbs"
+	set name = "Credits Set"
+
+	if(!get_client(M))
+		src << "Error: The mob requires a client"
+		return
+
+	var/result = credits_set(M, credits)
+	if(result == QUERY_OK)
+		log_admin("CREDITS [get_ckey(src)] set the credits for [get_ckey(M)] to [credits]")
+		src << "[get_ckey(M)] now has [credits] credits"
+	else
+		src << "Error giving credits: [result]"
 
 /client/proc/admin_ghost()
 	set category = "Admin"

@@ -232,11 +232,12 @@ Made by Xhuis
 	id = "shadowling"
 	say_mod = "chitters"
 	specflags = list(NOBREATH,NOBLOOD,RADIMMUNE,NOGUNS) //Can't use guns due to muzzle flash
-	burnmod = 1.5 //1.5x burn damage, 2x is excessive 
+	burnmod = 1.5 //1.5x burn damage, 2x is excessive
 	heatmod = 1.5
 
 /datum/species/shadow/ling/spec_life(mob/living/carbon/human/H)
 	if(!H.weakeyes) H.weakeyes = 1 //Makes them more vulnerable to flashes and flashbangs
+	if(!H.glasses) H.equip_to_slot_or_del(new /obj/item/clothing/glasses/night/shadowling(H), slot_glasses)	//Give us the sling goggles if we don't have them.
 	var/light_amount = 0
 	H.nutrition = NUTRITION_LEVEL_WELL_FED //i aint never get hongry
 	if(isturf(H.loc))
@@ -271,4 +272,4 @@ Made by Xhuis
 	if(!A || !istype(src)) return
 	if(A.lighting_use_dynamic) light_amount = src.lighting_lumcount
 	else light_amount =  10
-	return light_amount
+	return max(light_amount, A.min_lumcount)

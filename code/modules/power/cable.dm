@@ -130,6 +130,11 @@ By design, d1 is the smallest direction and d2 is the highest
 //
 /obj/structure/cable/attackby(obj/item/W, mob/user, params)
 	var/turf/T = src.loc
+	var/is_pda_multitool = 0
+	if(istype(W, /obj/item/device/pda/))
+		var/obj/item/device/pda/pda = W
+		if(pda.scanmode == PDA_SCAN_POWER)
+			is_pda_multitool = 1
 	if(T.intact)
 		return
 	if(istype(W, /obj/item/weapon/wirecutters))
@@ -148,13 +153,12 @@ By design, d1 is the smallest direction and d2 is the highest
 			return
 		coil.cable_join(src, user)
 
-	else if(istype(W, /obj/item/device/multitool))
+	else if(is_pda_multitool || istype(W, /obj/item/device/multitool))
 		if(powernet && (powernet.avail > 0))		// is it powered?
 			user << "<span class='danger'>[powernet.avail]W in power network.</span>"
 		else
 			user << "<span class='danger'>The cable is not powered.</span>"
 		shock(user, 5, 0.2)
-
 	else
 		if (W.flags & CONDUCT)
 			shock(user, 50, 0.7)
@@ -463,6 +467,7 @@ var/global/list/datum/stack_recipe/cable_coil_recipes = list ( \
 	icon = 'icons/obj/power.dmi'
 	icon_state = "coil_red"
 	item_state = "coil_red"
+	max_amount = MAXCOIL
 	amount = MAXCOIL
 	item_color = "red"
 	desc = "A coil of power cable."
@@ -536,34 +541,29 @@ var/global/list/datum/stack_recipe/cable_coil_recipes = list ( \
 		icon_state = "coil_[item_color]"
 		name = "cable coil"
 
+/obj/item/stack/cable_coil/attack_hand(mob/user)
+	var/obj/item/stack/cable_coil/new_cable = ..()
+	if(istype(new_cable))
+		new_cable.item_color = item_color
+		new_cable.update_icon()
+	return new_cable
+
+/obj/item/stack/cable_coil/split()
+	var/obj/item/stack/cable_coil/new_cable = ..()
+	if(istype(new_cable))
+		new_cable.item_color = item_color
+		new_cable.update_icon()
+	return new_cable
 
 // Items usable on a cable coil :
-//   - Cable coil : merge cables
 /obj/item/stack/cable_coil/attackby(obj/item/weapon/W, mob/user, params)
-	..()
 	if(istype(W, /obj/item/stack/cable_coil/cyborg))
 		var/obj/item/stack/cable_coil/cyborg/C = W
 		var/to_transfer = min(src.amount, round((C.source.max_energy - C.source.energy) / C.cost))
 		C.add(to_transfer)
 		src.use(to_transfer)
-	else if(istype(W, /obj/item/stack/cable_coil))
-		var/obj/item/stack/cable_coil/C = W
-		if(C.amount >= MAXCOIL)
-			user << "<span class='warning'>The coil is too long, you cannot add any more cable to it!</span>"
-			return
-
-		if( (C.amount + src.amount <= MAXCOIL) )
-			user << "<span class='notice'>You join the cable coils together.</span>"
-			C.give(src.amount) // give it cable
-			src.use(src.amount) // make sure this one cleans up right
-			return
-
-		else
-			var/amt = MAXCOIL - C.amount
-			user << "<span class='notice'>You transfer [amt] length\s of cable from one coil to the other.</span>"
-			C.give(amt)
-			src.use(amt)
-			return
+	else
+		..()
 
 /obj/item/stack/cable_coil/use(used)
 	. = ..()
@@ -572,8 +572,8 @@ var/global/list/datum/stack_recipe/cable_coil_recipes = list ( \
 
 //add cables to the stack
 /obj/item/stack/cable_coil/proc/give(extra)
-	if(amount + extra > MAXCOIL)
-		amount = MAXCOIL
+	if(amount + extra > max_amount)
+		amount = max_amount
 	else
 		amount += extra
 	update_icon()

@@ -12,7 +12,8 @@
 
 /datum/round_event/wizard/summonguns/start()
 	rightandwrong(0,,10)
-
+	
+/* Removed until a rework is found
 /datum/round_event_control/wizard/summonmagic //The Somewhat Less Classic
 	name = "Summon Magic"
 	weight = 1
@@ -27,3 +28,4 @@
 
 /datum/round_event/wizard/summonmagic/start()
 	rightandwrong(1,,10)
+*/

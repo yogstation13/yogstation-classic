@@ -1,3 +1,4 @@
+#define MINIMUM_CHARGE 10 //Minimum charge (in percent) replaced batteries will have, used to prevent eternal 0% power
 
 /obj/mecha/proc/take_damage(amount, type="brute")
 	if(amount)
@@ -247,6 +248,7 @@
 			clearInternalDamage(MECHA_INT_TEMP_CONTROL)
 			user << "<span class='notice'>You repair the damaged temperature controller.</span>"
 		else if(state==3 && src.cell)
+			powerleft = max(MINIMUM_CHARGE/100, src.cell.charge/src.cell.maxcharge)
 			src.cell.forceMove(src.loc)
 			src.cell = null
 			state = 4
@@ -265,7 +267,7 @@
 				var/obj/item/weapon/stock_parts/cell/C = W
 				user << "<span class='notice'>You install the powercell.</span>"
 				C.forceMove(src)
-				C.use(C.charge * 0.8)
+				C.use(max(0, C.charge - C.maxcharge*powerleft))
 				src.cell = C
 				src.log_message("Powercell installed")
 			else
@@ -343,3 +345,4 @@
 	take_damage(M.force, damtype)
 	add_logs(M.occupant, src, "attacked", M, "(INTENT: [uppertext(M.occupant.a_intent)]) (DAMTYPE: [uppertext(M.damtype)])")
 	return
+#undef MINIMUM_CHARGE

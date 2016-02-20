@@ -37,7 +37,7 @@
 		reagents.add_reagent_list(list_reagents)
 
 /obj/item/weapon/reagent_containers/attack_self(mob/user)
-	return
+	set_APTFT()
 
 /obj/item/weapon/reagent_containers/attack(mob/M, mob/user, def_zone)
 	return

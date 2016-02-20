@@ -692,6 +692,7 @@ var/list/slot_equipment_priority = list( \
 
 	if(statpanel("Status"))
 		stat(null, "Server Time: [time2text(world.realtime, "YYYY-MM-DD hh:mm")]")
+		stat(null, "Round: [yog_round_number]")
 
 		if(client && client.holder)
 			var/tickets_unclaimed = 0
@@ -758,6 +759,8 @@ var/list/slot_equipment_priority = list( \
 		add_spells_to_statpanel(mind.spell_list)
 		if(mind.changeling)
 			add_stings_to_statpanel(mind.changeling.purchasedpowers)
+		if(mind.cyberman)
+			mind.cyberman.add_cyberman_abilities_to_statpanel(src)
 	add_spells_to_statpanel(mob_spell_list)
 
 /mob/proc/add_spells_to_statpanel(list/spells)
