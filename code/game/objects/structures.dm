@@ -9,6 +9,12 @@
 		smooth_icon(src)
 		smooth_icon_neighbors(src)
 		icon_state = ""
+	var/mob/user = usr
+	if(ticker.current_state == GAME_STATE_PLAYING)
+		src.builtby = "This was created by [user.ckey]/[user.name]."
+	else
+		src.builtby = "This was loaded by the map, nerd."
+		return
 
 /obj/structure/blob_act()
 	if(prob(50))

@@ -18,10 +18,15 @@
 	var/datum/robot_energy_storage/source
 	var/cost = 1 // How much energy from storage it costs
 
-/obj/item/stack/New(var/loc, var/amount=null)
+/obj/item/stack/New(var/loc, var/amount=null, var/mob/user=usr)
 	..()
 	if (amount)
 		src.amount = amount
+	if(ticker.current_state == GAME_STATE_PLAYING)
+		src.builtby = "This was created by [user.ckey]/[user.name]."
+	else
+		src.builtby = "This was loaded from the current map."
+		return
 	return
 
 /obj/item/stack/Destroy()
@@ -269,6 +274,7 @@
 	src.fingerprints  = from.fingerprints
 	src.fingerprintshidden  = from.fingerprintshidden
 	src.fingerprintslast  = from.fingerprintslast
+	src.builtby = from.builtby
 	//TODO bloody overlay
 
 /*
