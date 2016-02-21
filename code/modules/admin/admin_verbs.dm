@@ -378,7 +378,10 @@ var/list/admin_verbs_hideable = list(
 
 	var/result = credits_spend(M, credits)
 	if(result >= 0)
-		log_admin("CREDITS [get_ckey(src)] decreased the credits for [get_ckey(M)] by [credits]")
+		var/msg = "CREDITS [get_ckey(src)] decreased the credits for [get_ckey(M)] by [credits]"
+		log_admin(msg)
+		for(var/client/X in admins)
+			X << "<span class='adminnotice'><b><font color=red>[msg]</font></b></span>"
 		src << "[get_ckey(M)] now has [result] credits ([credits] spent)"
 	else
 		src << "Error giving credits: [result]"
@@ -396,7 +399,10 @@ var/list/admin_verbs_hideable = list(
 
 	var/result = credits_earn(M, credits)
 	if(result >= 0)
-		log_admin("CREDITS [get_ckey(src)] increased the credits for [get_ckey(M)] by [credits]")
+		var/msg = "CREDITS [get_ckey(src)] increased the credits for [get_ckey(M)] by [credits]"
+		log_admin(msg)
+		for(var/client/X in admins)
+			X << "<span class='adminnotice'><b><font color=red>[msg]</font></b></span>"
 		src << "[get_ckey(M)] now has [result] credits ([credits] received)"
 	else
 		src << "Error giving credits: [result]"
@@ -414,7 +420,10 @@ var/list/admin_verbs_hideable = list(
 
 	var/result = credits_set(M, credits)
 	if(result == QUERY_OK)
-		log_admin("CREDITS [get_ckey(src)] set the credits for [get_ckey(M)] to [credits]")
+		var/msg = "CREDITS [get_ckey(src)] set the credits for [get_ckey(M)] to [credits]"
+		log_admin(msg)
+		for(var/client/X in admins)
+			X << "<span class='adminnotice'><b><font color=red>[msg]</font></b></span>"
 		src << "[get_ckey(M)] now has [credits] credits"
 	else
 		src << "Error giving credits: [result]"

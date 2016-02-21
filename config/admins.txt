@@ -23,19 +23,19 @@ Eff Chap	=	Primary Admin
 Gremlen12	=	Primary Admin
 Kmc2000	=	Primary Admin
 CptAzure	=	Primary Admin
-EXOTICISME	=	Administrator
 Stealthkibbler	=	Administrator
 BestMango	=	Administrator
 Wardog390	=	Administrator
-Time-Green	=	Admin Observer
-DominusLucian	=	Admin Observer
+EXOTICISME	=	Administrator
 Observer	=	Admin Observer
 Matskuman5	=	Admin Observer
  
 Adameltablawy	=	ModeratorOnProbation
 R3DGL4R3	=	Moderator V2
 Dzlan	=	Moderator V2
+Time-Green	=	Moderator V2
 Thee_Flame_Prince	=	Moderator V2
+DominusLucian	=	Moderator V2
 Klitri	=	Moderator V2
 Abdbla	=	Moderator V2
  
