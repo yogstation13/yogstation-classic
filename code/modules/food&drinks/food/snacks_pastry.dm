@@ -68,6 +68,10 @@
 	icon_state = "jdonut1"
 	extra_reagent = "cherryjelly"
 
+/obj/item/weapon/reagent_containers/food/snacks/donut/rezadone
+	name = "rezadonut"
+	desc = "The tastier alternative to rezadone patches."
+	list_reagents = list("rezadone" = 15, "nutriment" = 3, "sugar" = 2)
 ////////////////////////////////////////////MUFFINS////////////////////////////////////////////
 
 /obj/item/weapon/reagent_containers/food/snacks/muffin
