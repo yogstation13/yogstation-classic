@@ -51,6 +51,10 @@
 	can_hold = list(/obj/item/weapon/reagent_containers/food/snacks/donut)
 	spawn_type = /obj/item/weapon/reagent_containers/food/snacks/donut
 
+/obj/item/weapon/storage/fancy/donut_box/rezadone
+	name = "rezadonut box"
+	spawn_type = /obj/item/weapon/reagent_containers/food/snacks/donut/rezadone
+
 /*
  * Egg Box
  */
