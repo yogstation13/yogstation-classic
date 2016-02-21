@@ -1,8 +1,0 @@
-# Your name.  
-author: Oisin100
-
-# Optional: Remove this file after generating master changelog.  Useful for PR changelogs that won't get used again.
-delete-after: True
-
-changes: 
-  - rscadd: "Nanotrasen thought it was about time to give the warden the keys to his <strike>swegway</strike> secway."

@@ -1,8 +1,0 @@
-author: Cruix
-
-delete-after: True
-
-changes: 
-  - rscadd: "Using the thrall darksight ability now informs the user that any type of glasses block the ability."
-  - rscadd: "Removed the old pre-game method of selecting a UI style, and replaced it with the 'select UI style' verb in preferences. Added Support for additional AI and Cyborg UIs, and donator only UIs. Added two new donator-exclusive UIs: Beepsky for Cyborgs and Matrix_OS for AIs."
-  - rscadd: "The syndicate has upgraded the military belt in their traitor uplinks - the belt can now be disguised as many of the belts found around the station, in the same manner as the chameleon jumpsuit. Still costs 3 TC. Nuke ops military belts remain the old, non-disguisable model."
