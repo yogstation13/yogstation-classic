@@ -288,8 +288,16 @@
 	icon = 'icons/obj/guns/projectile.dmi'
 	cell_type = "/obj/item/weapon/stock_parts/cell/secborg"
 	ammo_type = list(/obj/item/ammo_casing/energy/c3dbullet)
+
 	var/charge_tick = 0
-	var/recharge_time = 5
+	var/recharge_time = 2
+
+	
+	var/list/burst_size_options = list(1, 3, 5)
+	var/burst_mode = 2
+	burst_size = 3
+
+	action_button_name = "Toggle Firemode"
 
 /obj/item/weapon/gun/energy/printer/update_icon()
 	return
@@ -297,7 +305,6 @@
 /obj/item/weapon/gun/energy/printer/New()
 	..()
 	SSobj.processing |= src
-
 
 /obj/item/weapon/gun/energy/printer/Destroy()
 	SSobj.processing.Remove(src)
@@ -307,7 +314,6 @@
 	charge_tick++
 	if(charge_tick < recharge_time) return 0
 	charge_tick = 0
-
 	if(!power_supply) return 0 //sanity
 	if(isrobot(src.loc))
 		var/mob/living/silicon/robot/R = src.loc
@@ -315,8 +321,29 @@
 			var/obj/item/ammo_casing/energy/shot = ammo_type[select] //Necessary to find cost of shot
 			if(R.cell.use(shot.e_cost)) 		//Take power from the borg...
 				power_supply.give(shot.e_cost)	//...to recharge the shot
-
 	return 1
+
+/obj/item/weapon/gun/energy/printer/examine(mob/user)
+	..()
+	var/obj/item/ammo_casing/energy/shot = ammo_type[select]
+	user << "Has [round(power_supply.charge/shot.e_cost)] round\s in it's replication chamber."
+
+/obj/item/weapon/gun/energy/printer/ui_action_click()
+	burst_select()
+
+/obj/item/weapon/gun/energy/printer/proc/burst_select()
+	burst_mode++
+
+	if(burst_mode > burst_size_options.len)
+		burst_mode %= burst_size_options.len
+
+	burst_size = burst_size_options[burst_mode]
+
+	if(burst_size == 1)
+		usr << "<span class='notice'>You switch to semi-automatic.</span>"
+	else
+		usr << "<span class='notice'>You switch to [burst_size]-rnd burst.</span>"
+	return
 
 /obj/item/weapon/gun/energy/temperature
 	name = "temperature gun"
