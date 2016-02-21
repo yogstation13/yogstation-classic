@@ -250,7 +250,8 @@
 	modules += new /obj/item/weapon/gun/energy/printer(src)
 	modules += new /obj/item/weapon/gun/projectile/revolver/grenadelauncher/cyborg(src)
 	modules += new /obj/item/weapon/tank/jetpack/carbondioxide(src)
-	modules += new /obj/item/weapon/crowbar(src)
+	modules += new /obj/item/weapon/crowbar/red(src)
+	modules += new /obj/item/weapon/card/emag(src)
 	modules += new /obj/item/weapon/pinpointer/operative(src)
 	emag = null
 	fix_modules()
