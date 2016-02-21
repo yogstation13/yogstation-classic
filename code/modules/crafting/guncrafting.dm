@@ -15,6 +15,17 @@
 	icon = 'icons/obj/improvised.dmi'
 	icon_state = "riflestock"
 
+obj/item/weaponcrafting/compartmentalizer
+	name = "Compartmentalizer"
+	desc = "A cylindrical... thing. There's a pressure gauge attached to it."
+	icon = 'icons/obj/improvised.dmi'
+	icon_state = "compartmentalizer"
+
+obj/item/weapon/stock_parts/compartmentalizer/bluespace
+	name= "Bluespace Compartmentalizer"
+	desc= "A cylindrical... bluespace... thing. You bet John knows what it is. There's a pressure gauge attached to it."
+	icon = 'icons/obj/improvised.dmi'
+	icon_state = "BScompartmentalizer"
 
 // CRAFTING //
 

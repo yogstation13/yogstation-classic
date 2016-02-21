@@ -235,6 +235,15 @@ other types of metals and chemistry for reagents).
 	build_path = /obj/item/weapon/storage/bag/ore/holding
 	category = list("Bluespace Designs")
 
+/datum/design/bluespace_compartmentalizer
+	name= "Bluespace Compartmentalizer"
+	desc= "What is this and how did it get here?"
+	id = "bs-compartmentalizer"
+	req_tech = list("combat" = 6, "bluespace" = 7)
+	build_type = PROTOLATHE
+	materials = list(MAT_BANANIUM = 500, MAT_SILVER = 500, MAT_URANIUM = 500, MAT_DIAMOND = 500, MAT_METAL = 500, MAT_PLASMA = 500, MAT_GOLD = 500)
+	build_path = /obj/item/weapon/stock_parts/compartmentalizer/bluespace
+	category = list("Bluespace Designs")
 
 /////////////////////////////////////////
 /////////////////HUDs////////////////////
