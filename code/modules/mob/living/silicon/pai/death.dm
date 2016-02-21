@@ -18,7 +18,6 @@
 	stat = DEAD
 	close_up()
 	canmove = 0
-	if(blind)	blind.layer = 0
 	sight |= SEE_TURFS|SEE_MOBS|SEE_OBJS
 	see_in_dark = 8
 	see_invisible = SEE_INVISIBLE_LEVEL_TWO

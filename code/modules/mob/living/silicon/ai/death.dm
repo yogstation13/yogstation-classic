@@ -9,10 +9,8 @@
 		icon_state = "ai_dead"
 
 	update_canmove()
-	if(src.eyeobj)
-		src.eyeobj.setLoc(get_turf(src))
-	if (src.blind && src.blind.layer != 0)
-		src.blind.layer = 0
+	if(eyeobj)
+		eyeobj.setLoc(get_turf(src))
 	src.sight |= SEE_TURFS
 	src.sight |= SEE_MOBS
 	src.sight |= SEE_OBJS
