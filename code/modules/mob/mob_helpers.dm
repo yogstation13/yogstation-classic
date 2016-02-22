@@ -140,6 +140,11 @@
 		return 1
 	return 0
 
+/proc/istacdolphin(A)
+	if(istype(A, /mob/living/simple_animal/hostile/retaliate/dolphin/tactical/))
+		return 1
+	return 0
+
 /proc/islimb(A)
 	if(istype(A, /obj/item/organ/limb))
 		return 1

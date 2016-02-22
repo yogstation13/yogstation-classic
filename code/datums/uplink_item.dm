@@ -54,6 +54,9 @@ var/list/uplink_items = list()
 		U.uses -= max(cost, 0)
 		U.used_TC += cost
 		feedback_add_details("traitor_uplink_items_bought", "[item]")
+		if(istype(item, /obj/item/weapon/antag_spawner/ally_tele/))
+			var/obj/item/weapon/antag_spawner/ally_tele/T = item
+			T.TC_cost = cost
 		return new item(loc)
 
 /datum/uplink_item/proc/buy(obj/item/device/uplink/U, mob/user)
@@ -232,16 +235,18 @@ var/list/uplink_items = list()
 /datum/uplink_item/dangerous/syndieborg
 	name = "Syndicate Cyborg"
 	desc = "A cyborg designed and programmed for systematic extermination of non-Syndicate personnel."
-	item = /obj/item/weapon/antag_spawner/borg_tele
+	item = /obj/item/weapon/antag_spawner/ally_tele/borg_tele
 	cost = 80
 	gamemodes = list(/datum/game_mode/nuclear)
 	surplus = 0
 
-//for refunding the syndieborg teleporter
-/datum/uplink_item/dangerous/syndieborg/spawn_item()
-	var/obj/item/weapon/antag_spawner/borg_tele/T = ..()
-	if(istype(T))
-		T.TC_cost = cost
+/datum/uplink_item/dangerous/tactical_dolphin
+	name = "Tactical Dolphin"
+	desc = "A highly-trained space dolphin used by the syndicate to provide light fire support and space superiority. Its harness comes with an integrated emag, storage space, and 5 syndicakes that can be fed to the dolphin to heal it."
+	item = /obj/item/weapon/antag_spawner/ally_tele/dolphin_tele
+	cost = 20
+	gamemodes = list(/datum/game_mode/nuclear)
+	surplus = 0
 
 // AMMUNITION
 
