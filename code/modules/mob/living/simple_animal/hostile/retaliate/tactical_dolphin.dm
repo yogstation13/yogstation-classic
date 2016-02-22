@@ -74,7 +74,6 @@
 	. = ..()
 	if(. != 0)
 		return .
-	world << "TEST:[message_mode], [message_mode == MODE_HEADSET]"
 	if((message_mode in radiochannels) || (message_mode == MODE_HEADSET))
 		if(headset)
 			headset.talk_into(src, message, message_mode, spans)
@@ -369,7 +368,6 @@
 	screen_loc = "SOUTH:6,CENTER:16"
 
 /obj/screen/tac_dolphin/toggle_emag/update_button_icon(var/obj/item/weapon/storage/dolphin_harness/harness)
-	world << "Togg emag [harness]"
 	if(harness)
 		icon_state = harness.emag_active ? "emag_button_on" : "emag_button_off"
 
