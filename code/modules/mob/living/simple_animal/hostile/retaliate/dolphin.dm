@@ -31,7 +31,7 @@
 	minbodytemp = 0
 	maxbodytemp = 1500
 
-	faction = list("carp")
+	faction = list("carp", "dolphin")//why do carps not attack dolphins again?
 	flying = 1
 
 /mob/living/simple_animal/hostile/retaliate/dolphin/Process_Spacemove(movement_dir = 0)
@@ -50,9 +50,8 @@
 		qdel(W)
 		qdel(src)
 
-/mob/living/simple_animal/hostile/retaliate/dolphin/show_inv(mob/user)
-	return
-
+/*
 /mob/living/simple_animal/hostile/retaliate/dolphin/say_quote(input)//I thought about using a new language, but then the dolphin wouldn't be able to understand its masters.
 	var/new_input = pick("eeeeh eeh eeh!", "eeh eeh eeh!", "eeh eeeeeeh ehh!", "eeh eeh eeeeeeh!", "eeh eeeeeeeh!")
 	return ..(new_input)
+*/

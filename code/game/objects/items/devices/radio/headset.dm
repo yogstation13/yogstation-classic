@@ -32,9 +32,9 @@
 		var/mob/living/carbon/human/H = src.loc
 		if(H.ears == src)
 			return ..(freq, level)
-	else if(istacdolphin(loc))
-		var/mob/living/simple_animal/hostile/retaliate/dolphin/tactical/dolphin = loc
-		if(dolphin.headset == src)
+	else if(istype(loc, /mob/living/simple_animal/hostile))
+		var/mob/living/simple_animal/hostile/animal = loc
+		if(animal.headset == src)
 			return ..(freq, level)
 	else if(AIuser)
 		return ..(freq, level)

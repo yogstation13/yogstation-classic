@@ -181,6 +181,14 @@ var/list/world_uplinks = list()
 			user << "<span class='notice'>Teleporter refunded.</span>"
 		else
 			user << "<span class='warning'>This teleporter is already used!</span>"
+	else if(istype(W, /obj/item/weapon/storage/tactical_harness/carp))
+		var/obj/item/weapon/storage/tactical_harness/carp/CH = W
+		if(CH.failed_to_find_player)
+			hidden_uplink.uses += CH.refund_TC
+			qdel(CH)
+			user << "<span class='notice'>Item refunded.</span>"
+		else
+			user << "<span class='warning'>This item has already been used, you cannot refund it!</span>"
 
 // PRESET UPLINKS
 // A collection of preset uplinks.

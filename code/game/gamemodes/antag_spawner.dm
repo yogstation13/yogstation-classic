@@ -150,8 +150,6 @@
 	R.mind.special_role = "syndicate"
 	R.faction = list("syndicate")
 
-/////////START TACTICAL DOLPHIN//////////////
-
 /obj/item/weapon/antag_spawner/ally_tele/dolphin_tele
 	name = "tactical dolphin teleporter"
 	desc = "A single-use teleporter designed to deploy a single Syndicate tactical dolphin onto the field."
@@ -182,10 +180,10 @@
 	ticker.mode.syndicates += the_dolphin.mind
 	ticker.mode.update_synd_icons_added(the_dolphin.mind)
 	the_dolphin.mind.special_role = "syndicate"
-	the_dolphin.faction = list("syndicate", "dolphin")
+	the_dolphin.faction = list("syndicate", "dolphin", "carp")
 	the_dolphin << "<span class='notice'>You are a space dolphin trained by the syndicate to assist their elite commando teams. Obey and assist your syndicate masters at all costs.</span>"
 
-//Debug
+//Debug, and fun.
 /obj/item/weapon/antag_spawner/ally_tele/dolphin_tele/transform
 	name = "tactical dolphin transformer"
 	desc = "Using strange syndicate magics, this device transforms the user into a tactical dolphin."
@@ -199,8 +197,6 @@
 	used = 1
 	user.gib()
 	spawn_antag(user.client, get_turf(src.loc))
-
-///////////END TACTICAL DOLPHIN//////////////
 
 /obj/item/weapon/antag_spawner/slaughter_demon //Warning edgiest item in the game
 	name = "vial of blood"

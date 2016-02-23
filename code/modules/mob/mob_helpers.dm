@@ -140,11 +140,6 @@
 		return 1
 	return 0
 
-/proc/istacdolphin(A)
-	if(istype(A, /mob/living/simple_animal/hostile/retaliate/dolphin/tactical/))
-		return 1
-	return 0
-
 /proc/islimb(A)
 	if(istype(A, /obj/item/organ/limb))
 		return 1
@@ -539,3 +534,8 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	else
 		return
 
+/proc/is_wearing_tactical_harness(mob/M)//returns the harness if it is wearing one, null otherwise.
+	if(!istype(M, /mob/living/simple_animal/hostile))
+		return 0
+	var/mob/living/simple_animal/hostile/A = M
+	return A.harness

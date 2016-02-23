@@ -57,6 +57,9 @@ var/list/uplink_items = list()
 		if(istype(item, /obj/item/weapon/antag_spawner/ally_tele/))
 			var/obj/item/weapon/antag_spawner/ally_tele/T = item
 			T.TC_cost = cost
+		else if(istype(item, /obj/item/weapon/storage/tactical_harness/carp))
+			var/obj/item/weapon/storage/tactical_harness/carp/CH = item
+			CH.refund_TC = cost
 		return new item(loc)
 
 /datum/uplink_item/proc/buy(obj/item/device/uplink/U, mob/user)
@@ -240,10 +243,19 @@ var/list/uplink_items = list()
 	gamemodes = list(/datum/game_mode/nuclear)
 	surplus = 0
 
+/*
 /datum/uplink_item/dangerous/tactical_dolphin
 	name = "Tactical Dolphin"
 	desc = "A highly-trained space dolphin used by the syndicate to provide light fire support and space superiority. Its harness comes with an integrated emag, storage space, and 5 syndicakes that can be fed to the dolphin to heal it."
 	item = /obj/item/weapon/antag_spawner/ally_tele/dolphin_tele
+	cost = 20
+	gamemodes = list(/datum/game_mode/nuclear)
+	surplus = 0
+*/
+/datum/uplink_item/dangerous/tactical_carp_harness
+	name = "Tactical Carp Harness"
+	desc = "A harness that can be placed on any space carp to give it sentience and a variety of useful weapons and equipment."
+	item = /obj/item/weapon/storage/tactical_harness/carp
 	cost = 20
 	gamemodes = list(/datum/game_mode/nuclear)
 	surplus = 0

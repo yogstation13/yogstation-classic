@@ -149,8 +149,8 @@
 		drone_hud(ui_style)
 	else if(isswarmer(mymob))
 		swarmer_hud()
-	else if(istacdolphin(mymob))
-		tactical_dolpin_hud()
+	else if(is_wearing_tactical_harness(mymob))
+		tactical_harness_hud()
 
 //Version denotes which style should be displayed. blank or 0 means "next version"
 /datum/hud/proc/show_hud(version = 0)
