@@ -1,0 +1,6 @@
+author: AsV9
+
+delete-after: True
+
+changes: 
+  - bugfix: "Admins can no longer edit sound related variables if they do not have +SOUND."
