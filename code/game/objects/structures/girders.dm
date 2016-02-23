@@ -133,6 +133,7 @@
 						var/turf/T = get_turf(src)
 						T.ChangeTurf(/turf/simulated/wall)
 						transfer_fingerprints_to(T)
+						T.builtby = user.ckey
 						qdel(src)
 					return
 
@@ -194,6 +195,7 @@
 				var/F = text2path("/obj/structure/falsewall/[M]")
 				var/obj/structure/FW = new F (loc)
 				transfer_fingerprints_to(FW)
+				FW.builtby = "This was created by [user.ckey]/[user.name]."
 				qdel(src)
 			else
 				if(S.amount < 2)
@@ -209,6 +211,7 @@
 					var/turf/T = get_turf(src)
 					T.ChangeTurf(text2path("/turf/simulated/wall/mineral/[M]"))
 					transfer_fingerprints_to(T)
+					T.builtby = "This was created by [user.ckey]/[user.name]."
 					qdel(src)
 				return
 

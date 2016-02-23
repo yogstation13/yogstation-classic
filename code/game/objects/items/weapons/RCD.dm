@@ -325,6 +325,7 @@ RCD
 					user << "<span class='notice'>You start building floor...</span>"
 					activate()
 					S.ChangeTurf(/turf/simulated/floor/plating)
+					S.builtby = "This was created by [user.ckey]/[user.name]."
 					return 1
 				return 0
 
@@ -337,6 +338,7 @@ RCD
 						if(!useResource(wallcost, user)) return 0
 						activate()
 						F.ChangeTurf(/turf/simulated/wall)
+						F.builtby = "This was created by [user.ckey]/[user.name]."
 						return 1
 				return 0
 
@@ -376,6 +378,7 @@ RCD
 								return 0
 							T.autoclose = 1
 							T.access_set = 0
+							T.builtby = "This was created by [user.ckey]/[user.name]."
 							return 1
 						return 0
 					else
@@ -461,6 +464,7 @@ RCD
 						activate()
 						var/obj/structure/grille/G = new/obj/structure/grille(A)
 						G.anchored = 1
+						G.builtby = "This was created by [user.ckey]/[user.name]."
 						return 1
 					return 0
 				return 0
@@ -474,6 +478,7 @@ RCD
 						activate()
 						var/obj/structure/window/WD = new/obj/structure/window/fulltile(A.loc)
 						WD.anchored = 1
+						WD.builtby = "This was created by [user.ckey]/[user.name]."
 						return 1
 					return 0
 				return 0

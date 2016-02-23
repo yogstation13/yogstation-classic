@@ -124,6 +124,12 @@ Class Procs:
 	machines += src
 	SSmachine.processing += src
 	power_change()
+	var/mob/user = usr
+	if(ticker.current_state == GAME_STATE_PLAYING)
+		src.builtby = "This was created by [user.ckey]/[user.name]."
+	else
+		src.builtby = "This was loaded by the map, nerd."
+		return
 
 /obj/machinery/Destroy()
 	if(paired)

@@ -5,6 +5,7 @@
 	var/slowdown = 0 //negative for faster, positive for slower
 	var/intact = 1
 	var/baseturf = /turf/space
+	var/builtby
 
 	//Properties for open tiles (/floor)
 	var/oxygen = 0
