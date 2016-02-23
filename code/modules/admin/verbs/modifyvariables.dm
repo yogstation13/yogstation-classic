@@ -390,6 +390,11 @@ var/list/VVckey_edit = list("key", "ckey")
 		usr << "<span class='danger'>You cannot edit ckeys on client objects.</span>"
 		return
 
+	if(param_var_name == "honksound")
+		usr << "<span class='danger'>Editing this variable is forbidden. Don't you even try, [usr.ckey]!"
+		message_admins("[key_name_admin(src)] tried to modify a banned variable. Shame on them!")
+		return
+
 	var/class
 	var/variable
 	var/var_value
