@@ -31,6 +31,9 @@ Thus, the two variables affect pump operation are set in New():
 /obj/machinery/atmospherics/components/binary/pump/Destroy()
 	if(radio_controller)
 		radio_controller.remove_object(src,frequency)
+
+	if(adminlog == 1)
+		message_admins("[key_name_admin(usr)]<A HREF='?_src_=holder;adminmoreinfo=\ref[usr]'>?</A> (<A HREF='?_src_=holder;adminplayerobservefollow=\ref[usr]'>FLW</A>) destroyed protected device '[src]'. <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[loc.x];Y=[loc.y];Z=[loc.z]'>(JMP)</a> This alert will not show again for this device.")
 	..()
 
 /obj/machinery/atmospherics/components/binary/pump/on
@@ -168,7 +171,7 @@ Thus, the two variables affect pump operation are set in New():
 		investigate_log("was turned [on ? "on" : "off"] by [key_name(usr)]", "atmos")
 
 	if(adminlog == 1)
-		message_admins("[key_name_admin(usr)]<A HREF='?_src_=holder;adminmoreinfo=\ref[usr]'>?</A> (<A HREF='?_src_=holder;adminplayerobservefollow=\ref[usr]'>FLW</A>) has toggled [src] [on ? "on" : "off"] at <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[loc.x];Y=[loc.y];Z=[loc.z]'>(JMP)</a>.")
+		message_admins("[key_name_admin(usr)]<A HREF='?_src_=holder;adminmoreinfo=\ref[usr]'>?</A> (<A HREF='?_src_=holder;adminplayerobservefollow=\ref[usr]'>FLW</A>) has toggled [src] [on ? "ON" : "OFF"]. ([loc.x],[loc.y],[loc.z]) <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[loc.x];Y=[loc.y];Z=[loc.z]'>(JMP)</a>")
 
 	if(href_list["set_press"])
 		switch(href_list["set_press"])
