@@ -64,6 +64,8 @@
 	if (istype(vict, /mob/living/carbon))
 		var/blockable = 0
 		var/blockitem = null
+		if (vict == usr)
+			return ..()
 		if (istype(vict.get_active_hand(), /obj/item/weapon/melee/energy))
 			var/obj/item/weapon/melee/energy/blocktool = vict.get_active_hand()
 			if (blocktool.active)

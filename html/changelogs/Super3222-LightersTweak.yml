@@ -12,3 +12,4 @@ delete-after: True
 changes: 
   - tweak: "Fire resistant gloves are now resistant against accidentally burning yourself when turning them on."
   - rscadd: "Lighters can close bleeding wounds at the cost of burn damage. +1 survival method."
+  - bugfix: "So there was a magical way where you could block the energy sword you are hitting yourself with... the same energy sword. That's fixed now."

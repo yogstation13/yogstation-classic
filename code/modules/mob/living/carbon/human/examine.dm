@@ -304,7 +304,7 @@
 		msg += "[t_He] [t_has] pale skin.\n"
 
 	if(bleedsuppress)
-		if(skinmended == 0) // so skinmended will add in nothing.
+		if(skinmended == 0) // so skinmended = 1 will add in nothing.
 			msg += "[t_He] [t_is] bandaged with something.\n"
 	else if(blood_max)
 		switch (blood_max)
