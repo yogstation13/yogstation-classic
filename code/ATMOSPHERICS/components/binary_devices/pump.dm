@@ -22,6 +22,8 @@ Thus, the two variables affect pump operation are set in New():
 	var/on = 0
 	var/target_pressure = ONE_ATMOSPHERE
 
+	var/adminlog = 0 //used for annoying admins with popups whenever someone toggles the pump. defaults to 0 = do not annoy admins
+
 	var/frequency = 0
 	var/id = null
 	var/datum/radio_frequency/radio_connection
@@ -164,6 +166,10 @@ Thus, the two variables affect pump operation are set in New():
 	if(href_list["power"])
 		on = !on
 		investigate_log("was turned [on ? "on" : "off"] by [key_name(usr)]", "atmos")
+
+	if(adminlog == 1)
+		message_admins("[key_name_admin(usr)]<A HREF='?_src_=holder;adminmoreinfo=\ref[usr]'>?</A> (<A HREF='?_src_=holder;adminplayerobservefollow=\ref[usr]'>FLW</A>) has toggled [src] [on ? "on" : "off"] at <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[loc.x];Y=[loc.y];Z=[loc.z]'>(JMP)</a>.")
+
 	if(href_list["set_press"])
 		switch(href_list["set_press"])
 			if ("max")
