@@ -485,13 +485,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 			else
 				if(prot > 0)
 					user.visible_message("After a few attempts, [user] manages to light [src], without burning themself.", "<span class='notice'>After a few attempts, you manage to light [src]. Your fire-resistant gloves shield you from burning yourself.</span>")
-<<<<<<< .mine
 					return
 				else if(prob(75))
-=======
-					return 0
-				else if(prob(75))
->>>>>>> .theirs
 					user.visible_message("After a few attempts, [user] manages to light [src].", "<span class='notice'>After a few attempts, you manage to light [src].</span>")
 				else
 					var/hitzone = user.r_hand == src ? "r_hand" : "l_hand"
