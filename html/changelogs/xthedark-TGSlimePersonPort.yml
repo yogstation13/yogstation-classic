@@ -1,0 +1,6 @@
+author: Xthedark
+
+delete-after: True
+
+changes: 
+  - rscadd: "Ported /tg/ Slime Person split ability by Incoming5643. Slime People can now split, provided enough Slime Jelly (200), which they gain passively. You gain up to 100 if you are not Starving and up to 200 if you are above Well Fed. Slime Jelly production MASSIVELY burns your nutrition."
