@@ -285,19 +285,19 @@
 	var/msg
 	switch(class)
 		if("Atmosphere")
-			if(!(alert_flags & PDA_ATMOS_ALERT))
+			if(!(alert_flags & PDA_ATMOS_ALERT) || (A in atmos_alerts))
 				return
 			atmos_alerts += A
 			if(alert_toggles & PDA_ATMOS_ALERT)
 				msg = "Alert: Atmos alarm in \the [A]"
 		if("Power")
-			if(!(alert_flags & PDA_POWER_ALERT))
+			if(!(alert_flags & PDA_POWER_ALERT) || (A in power_alerts))
 				return
 			power_alerts += A
 			if(alert_toggles & PDA_POWER_ALERT)
 				msg = "Alert: Power alarm in \the [A]"
 		if("Fire")
-			if(!(alert_flags & PDA_FIRE_ALERT))
+			if(!(alert_flags & PDA_FIRE_ALERT) || (A in fire_alerts))
 				return
 			fire_alerts += A
 			if(alert_toggles & PDA_FIRE_ALERT)

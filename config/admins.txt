@@ -25,14 +25,17 @@ Kmc2000	=	Primary Admin
 CptAzure	=	Primary Admin
 Stealthkibbler	=	Administrator
 BestMango	=	Administrator
-Thee_Flame_Prince	=	Administrator
 Wardog390	=	Administrator
 EXOTICISME	=	Administrator
 Observer	=	Admin Observer
+Matskuman5	=	Admin Observer
  
 Adameltablawy	=	ModeratorOnProbation
 R3DGL4R3	=	Moderator V2
 Dzlan	=	Moderator V2
+Time-Green	=	Moderator V2
+Thee_Flame_Prince	=	Moderator V2
+DominusLucian	=	Moderator V2
 Klitri	=	Moderator V2
 Abdbla	=	Moderator V2
  

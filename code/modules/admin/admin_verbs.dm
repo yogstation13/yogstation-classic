@@ -157,7 +157,12 @@ var/list/admin_verbs_possess = list(
 	/proc/release
 	)
 var/list/admin_verbs_permissions = list(
-	/client/proc/edit_admin_permissions
+	/client/proc/edit_admin_permissions,
+	/client/proc/admin_credits_get,
+	/client/proc/admin_credits_list,
+	/client/proc/admin_credits_spend,
+	/client/proc/admin_credits_earn,
+	/client/proc/admin_credits_set
 	)
 var/list/admin_verbs_rejuv = list(
 	/client/proc/respawn_character
@@ -227,11 +232,6 @@ var/list/admin_verbs_hideable = list(
 	/client/proc/list_pretty_filters,
 	/client/proc/test_pretty_filters,
 	/client/proc/add_pretty_filter,
-	/client/proc/admin_credits_get,
-	/client/proc/admin_credits_list,
-	/client/proc/admin_credits_spend,
-	/client/proc/admin_credits_earn,
-	/client/proc/admin_credits_set,
 	/proc/possess,
 	/proc/release,
 	/client/proc/reload_admins,
@@ -342,6 +342,9 @@ var/list/admin_verbs_hideable = list(
 	set category = "Special Verbs"
 	set name = "Credits Show"
 
+	if(!holder)
+		return
+
 	if(!get_client(M))
 		src << "Error: The mob requires a client"
 		return
@@ -353,15 +356,21 @@ var/list/admin_verbs_hideable = list(
 	set category = "Special Verbs"
 	set name = "Credits Top List"
 
+	if(!holder)
+		return
+
 	src << "Top [total] players by credits:"
 
 	var/list/L = credits_top(total)
 	for(var/datum/credit/C in L)
-		src << " * [C.ckey] = [C.credits]"
+		src << " * [C.ckey] = [num2text(C.credits)]"
 
 /client/proc/admin_credits_spend(mob/M as mob, var/credits as num)
 	set category = "Special Verbs"
 	set name = "Credits Spend"
+
+	if(!holder)
+		return
 
 	if(!get_client(M))
 		src << "Error: The mob requires a client"
@@ -369,7 +378,10 @@ var/list/admin_verbs_hideable = list(
 
 	var/result = credits_spend(M, credits)
 	if(result >= 0)
-		log_admin("CREDITS [get_ckey(src)] decreased the credits for [get_ckey(M)] by [credits]")
+		var/msg = "CREDITS [get_ckey(src)] decreased the credits for [get_ckey(M)] by [credits]"
+		log_admin(msg)
+		for(var/client/X in admins)
+			X << "<span class='adminnotice'><b><font color=red>[msg]</font></b></span>"
 		src << "[get_ckey(M)] now has [result] credits ([credits] spent)"
 	else
 		src << "Error giving credits: [result]"
@@ -378,13 +390,19 @@ var/list/admin_verbs_hideable = list(
 	set category = "Special Verbs"
 	set name = "Credits Earn"
 
+	if(!holder)
+		return
+
 	if(!get_client(M))
 		src << "Error: The mob requires a client"
 		return
 
 	var/result = credits_earn(M, credits)
 	if(result >= 0)
-		log_admin("CREDITS [get_ckey(src)] increased the credits for [get_ckey(M)] by [credits]")
+		var/msg = "CREDITS [get_ckey(src)] increased the credits for [get_ckey(M)] by [credits]"
+		log_admin(msg)
+		for(var/client/X in admins)
+			X << "<span class='adminnotice'><b><font color=red>[msg]</font></b></span>"
 		src << "[get_ckey(M)] now has [result] credits ([credits] received)"
 	else
 		src << "Error giving credits: [result]"
@@ -393,13 +411,19 @@ var/list/admin_verbs_hideable = list(
 	set category = "Special Verbs"
 	set name = "Credits Set"
 
+	if(!holder)
+		return
+
 	if(!get_client(M))
 		src << "Error: The mob requires a client"
 		return
 
 	var/result = credits_set(M, credits)
 	if(result == QUERY_OK)
-		log_admin("CREDITS [get_ckey(src)] set the credits for [get_ckey(M)] to [credits]")
+		var/msg = "CREDITS [get_ckey(src)] set the credits for [get_ckey(M)] to [credits]"
+		log_admin(msg)
+		for(var/client/X in admins)
+			X << "<span class='adminnotice'><b><font color=red>[msg]</font></b></span>"
 		src << "[get_ckey(M)] now has [credits] credits"
 	else
 		src << "Error giving credits: [result]"

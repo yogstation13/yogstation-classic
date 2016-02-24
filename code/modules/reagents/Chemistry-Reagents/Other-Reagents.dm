@@ -368,7 +368,7 @@
 	H.visible_message("<b>[H]</b> falls to the ground and screams as their skin bubbles and froths!") //'froths' sounds painful when used with SKIN.
 	H.Weaken(3)
 	sleep(30)
-	var/list/blacklisted_species = list(/datum/species/zombie, /datum/species/skeleton, /datum/species/human, /datum/species/golem, /datum/species/golem/adamantine, /datum/species/shadow, /datum/species/shadow/ling, /datum/species/plasmaman, /datum/species)
+	var/list/blacklisted_species = list(/datum/species/zombie, /datum/species/skeleton, /datum/species/human, /datum/species/golem, /datum/species/golem/adamantine, /*/datum/species/shadow,*/ /datum/species/shadow/ling, /datum/species/plasmaman, /datum/species) // shadow people are take off blacklist. hope this doesn't end terribly.
 	var/list/possible_morphs = typesof(/datum/species/) - blacklisted_species
 	var/datum/species/mutation = pick(possible_morphs)
 	if(prob(90) && mutation && H.dna.species != /datum/species/golem && H.dna.species != /datum/species/golem/adamantine)
@@ -653,6 +653,10 @@
 		var/turf/simulated/floor/F = T
 		if(reac_volume >= 1)
 			F.dirt = 0
+			if(F.wet == 2)
+				F.wet = 0
+				if(F.wet_overlay)
+					F.overlays -= F.wet_overlay
 
 /datum/reagent/space_cleaner/reaction_mob(mob/M, method=TOUCH, reac_volume)
 	if(method == TOUCH || VAPOR)
