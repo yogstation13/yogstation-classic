@@ -54,3 +54,5 @@
 	var/name_override //For temporary visible name changes
 
 	var/heart_attack = 0
+
+	var/mob/living/simple_animal/borer/borer //Im doing this until i can think of a better way to do this without hardcoding.
