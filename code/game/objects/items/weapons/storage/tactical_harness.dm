@@ -15,14 +15,17 @@
 	var/icon_state_dead
 	var/animal_new_name
 	var/animal_new_desc
+	var/attack_cooldown_cap = 1
+	var/rapid_fire = 0
+	var/new_speed = 0
+	var/new_health = 150
+	var/new_melee_damage = 100
+
 	var/emag_active = 0
 	var/weapon_safety = 1
 	var/night_vision_on = 0
-	var/attack_cooldown_cap = 1
-	var/new_health = 150
-	var/new_melee_damage = 100
 	var/obj/item/projectile/selected_weapon
-	var/list/obj/item/projectile/ranged_attacks = list(/obj/item/projectile/beam = "laser")//, /obj/item/projectile/beam/scatter = "scattershot")//gotta figure out how to do multiple shots at once for this.
+	var/list/obj/item/projectile/ranged_attacks = list()
 	var/obj/screen/tac_harness/toggle_weapon/toggle_weapon_button
 	var/obj/screen/tac_harness/toggle_safety/toggle_safety_button
 	var/obj/screen/tac_harness/toggle_emag/toggle_emag_button
@@ -51,11 +54,11 @@
 /obj/item/weapon/storage/tactical_harness/proc/canWear(mob/living/simple_animal/hostile/animal)//true if the animal could possibly wear it, even if it is already wearing one.
 	if(!animal || !istype(animal))
 		return 0
-	if(animal.type in wearable_by)
-		return 1
-	for(var/exact_type in wearable_by_exact)
-		if(exact_type in typesof(animal.type))//There is probably a better way to do this...
+	for(var/type in wearable_by)
+		if(istype(animal, type))
 			return 1
+	if(animal.type in wearable_by_exact)
+		return 1
 	return 0
 
 /obj/item/weapon/storage/tactical_harness/proc/add_harness(var/mob/living/simple_animal/hostile/animal, var/mob/user = usr)
@@ -67,11 +70,11 @@
 	animal.icon_state = (animal.stat & DEAD) ? animal.icon_dead : animal.icon_living
 	animal.name = animal_new_name
 	animal.desc = animal_new_desc
-	animal.health = initial(new_health)
-	animal.maxHealth = initial(new_health)
+	animal.maxHealth =  new_health
+	animal.health = (animal.health/animal.maxHealth)*new_health //same percent health.
 	animal.melee_damage_lower = initial(new_melee_damage)
 	animal.melee_damage_upper = initial(new_melee_damage)
-	animal.access_card = new /obj/item/weapon/card/id/syndicate(src)
+	animal.access_card = new /obj/item/weapon/card/id/syndicate(animal)
 	animal.headset = new /obj/item/device/radio/headset/syndicate(animal)
 	animal.pullin = new /obj/screen/pull/tac_harness()
 	if(istype(loc, /mob))
@@ -81,6 +84,8 @@
 	animal.ranged = !weapon_safety
 	animal.projectiletype = selected_weapon
 	animal.ranged_cooldown_cap = attack_cooldown_cap
+	animal.rapid = rapid_fire
+	animal.speed = new_speed
 	animal.projectilesound = 'sound/weapons/sear.ogg'
 
 	set_night_vision(night_vision_on)
@@ -100,8 +105,8 @@
 	wearer.icon_state = (wearer.stat & DEAD) ? wearer.icon_dead : wearer.icon_living
 	wearer.name = initial(wearer.name)
 	wearer.desc = initial(wearer.desc)
-	wearer.health = initial(wearer.health)
 	wearer.maxHealth = initial(wearer.maxHealth)
+	wearer.health = (wearer.health/wearer.maxHealth)*initial(wearer.health)//same percent health.
 	wearer.melee_damage_lower = initial(wearer.melee_damage_lower)
 	wearer.melee_damage_upper = initial(wearer.melee_damage_upper)
 	qdel(wearer.access_card)
@@ -111,6 +116,8 @@
 	wearer.ranged = initial(wearer.ranged)
 	wearer.projectiletype = initial(wearer.projectiletype)
 	wearer.ranged_cooldown_cap = initial(wearer.ranged_cooldown_cap)
+	wearer.rapid = initial(wearer.rapid)
+	wearer.speed = initial(wearer.speed)
 	wearer.projectilesound = initial(wearer.projectilesound)
 
 	set_night_vision(0)
@@ -342,38 +349,62 @@
 
 
 ///////////Tactical Dolphin////////////////
-/obj/item/weapon/storage/tactical_harness/dolphin
-	name = "tactical dolphin harness"
-	desc = "A harness for a Syndicate tactical dolphin."
-	wearable_by = list(/mob/living/simple_animal/hostile/retaliate/dolphin/tactical)
-	icon_state_alive = "tactical_dolphin"
-	icon_state_dead = "tactical_dolphin_dead"
-	animal_new_name = "tactical dolphin"
-	animal_new_desc = "A highly trained space dolphin used by the syndicate to provide light fire support and space superiority for elite commando teams."
 
-///////////Tactical Carp///////////////////
-/obj/item/weapon/storage/tactical_harness/carp
-	name = "tactical carp harness"
-	desc = "A harness for a Syndicate tactical carp."
-	var/refund_TC = 0
-	var/failed_to_find_player = -1 //-1 means it hasn't tried to find a player yet, 1 means it has tried to find a player and failed, 0 means it has tried to find a player and succeeded. Here to prevent the creation of infinite sentient carps.
+/obj/item/weapon/storage/tactical_harness/universal
+	name = "tactical animal harness"
+	desc = "A harness for a Syndicate tactical animal. This one will mold itself to the first valid animal it is placed on."
+	wearable_by = list(/mob/living/simple_animal/hostile/retaliate/dolphin)
 	wearable_by_exact = list(/mob/living/simple_animal/hostile/carp)
-	icon_state_alive = "tactical_dolphin"//needs actual sprites
-	icon_state_dead = "tactical_dolphin_dead"
-	animal_new_name = "tactical space carp"
-	animal_new_desc = "A highly trained space carp used by the syndicate to provide light fire support and space superiority for elite commando teams."
+	var/refund_TC = 0
+	var/failed_to_find_player = -1 //-1 means it hasn't tried to find a player yet, 1 means it has tried to find a player and failed, 0 means it has tried to find a player and succeeded. Here to prevent the creation of infinite sentient animals.
 
-/obj/item/weapon/storage/tactical_harness/carp/add_harness(var/mob/living/simple_animal/hostile/animal, var/mob/user = usr)
+/obj/item/weapon/storage/tactical_harness/universal/add_harness(var/mob/living/simple_animal/hostile/animal, var/mob/user = usr)
 	if(failed_to_find_player && !animal.ckey)
 		var/list/carp_candidates = get_candidates(BE_OPERATIVE, 3000, "operative")
 		if(carp_candidates.len > 0)
 			var/client/C = pick(carp_candidates)
 			animal.ckey = C.key
 			failed_to_find_player = 0
-			animal << "<span class='notice'>You are a space carp trained by the syndicate to assist their elite commando teams. Obey and assist your syndicate masters at all costs.</span>"
-			animal.faction = list("carp", "syndicate")
+			animal << "<span class='notice'>You are a space [istype(animal, /mob/living/simple_animal/hostile/retaliate/dolphin) ? "dolphin" : "carp"] trained by the syndicate to assist their elite commando teams. Obey and assist your syndicate masters at all costs.</span>"
+			animal.faction += "syndicate"
 		else
 			user << "<span class='warning'>\The [animal] refuses to cooperate, it looks like it won't be helping you on this mission. You can refund the harness by using it on your uplink.</span>"
 			failed_to_find_player = 1
 			return
-	..()
+
+	if(istype(animal, /mob/living/simple_animal/hostile/retaliate/dolphin))
+		user << "<span class='notice'>\The [src] molds itself to the shape of \the [animal].</span>"
+		qdel(src)
+		var/obj/item/weapon/storage/tactical_harness/the_harness = new /obj/item/weapon/storage/tactical_harness/dolphin()
+		the_harness.add_harness(animal, user)
+	else if(animal.type == /mob/living/simple_animal/hostile/carp)
+		user << "<span class='notice'>\The [src] molds itself to the shape of \the [animal].</span>"
+		qdel(src)
+		var/obj/item/weapon/storage/tactical_harness/the_harness = new /obj/item/weapon/storage/tactical_harness/carp()
+		the_harness.add_harness(animal, user)
+	else
+		user << "<span class='notice'>\The [src] does nothing. It looks like it is not compatible with this type of creature.</span>"
+
+/obj/item/weapon/storage/tactical_harness/dolphin
+	name = "tactical dolphin harness"
+	desc = "A harness for a Syndicate tactical dolphin."
+	wearable_by = list(/mob/living/simple_animal/hostile/retaliate/dolphin)
+	icon_state_alive = "tactical_dolphin"
+	icon_state_dead = "tactical_dolphin_dead"
+	animal_new_name = "tactical dolphin"
+	animal_new_desc = "A highly trained space dolphin used by the syndicate to provide light fire support and space superiority for elite commando teams."
+	new_speed = -0.3 //faster than an unencumbered human, but not too much faster.
+	rapid_fire = 1
+	ranged_attacks = list(/obj/item/projectile/beam = "laser")
+
+///////////Tactical Carp///////////////////
+/obj/item/weapon/storage/tactical_harness/carp
+	name = "tactical carp harness"
+	desc = "A harness for a Syndicate tactical carp."
+	wearable_by_exact = list(/mob/living/simple_animal/hostile/carp)
+	icon_state_alive = "tactical_carp"
+	icon_state_dead = "tactical_carp_dead"
+	animal_new_name = "tactical space carp"
+	animal_new_desc = "A highly trained space carp used by the syndicate to provide heavy fire support and space superiority for elite commando teams."
+	ranged_attacks = list(/obj/item/projectile/beam/heavylaser = "heavy laser")
+	new_health = 300

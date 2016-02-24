@@ -181,8 +181,8 @@ var/list/world_uplinks = list()
 			user << "<span class='notice'>Teleporter refunded.</span>"
 		else
 			user << "<span class='warning'>This teleporter is already used!</span>"
-	else if(istype(W, /obj/item/weapon/storage/tactical_harness/carp))
-		var/obj/item/weapon/storage/tactical_harness/carp/CH = W
+	else if(istype(W, /obj/item/weapon/storage/tactical_harness/universal))
+		var/obj/item/weapon/storage/tactical_harness/universal/CH = W
 		if(CH.failed_to_find_player)
 			hidden_uplink.uses += CH.refund_TC
 			qdel(CH)
