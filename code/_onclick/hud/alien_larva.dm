@@ -3,7 +3,6 @@
 	other = list()
 
 	var/obj/screen/using
-
 	using = new /obj/screen/act_intent()
 	using.icon = 'icons/mob/screen_alien.dmi'
 	using.icon_state = mymob.a_intent

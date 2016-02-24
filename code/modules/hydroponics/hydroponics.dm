@@ -713,7 +713,7 @@
 		else
 			user << "<span class='warning'>[src] already has seeds in it!</span>"
 
-	else if(istype(O, /obj/item/device/analyzer/plant_analyzer))
+	else if(is_plant_analyzer(O))
 		if(planted && myseed)
 			user << "*** <B>[myseed.plantname]</B> ***" //Carn: now reports the plants growing, not the seeds.
 			user << "-Plant Age: <span class='notice'>[age]</span>"
@@ -736,27 +736,6 @@
 		user << "-Water level: <span class='notice'>[waterlevel] / [maxwater]</span>"
 		user << "-Nutrition level: <span class='notice'>[nutrilevel] / [maxnutri]</span>"
 		user << ""
-	else if(istype(O, /obj/item/device/pda))
-		var/obj/item/device/pda/A = O
-		if(A.scanmode == 6)
-			if(planted && myseed)
-				visible_message("<span class='notice'[user] scans the plants in the hydroponic tray!</span>")
-				user << "*** <B>[myseed.plantname]</B> ***" //Carn: now reports the plants growing, not the seeds.
-				user << "-Plant Age: <span class='notice'>[age]</span>"
-				user << "-Plant Endurance: <span class='notice'>[myseed.endurance]</span>"
-				user << "-Plant Lifespan: <span class='notice'>[myseed.lifespan]</span>"
-				if(myseed.yield != -1)
-					user << "-Plant Yield: <span class='notice'>[myseed.yield]</span>"
-				user << "-Plant Production: <span class='notice'>[myseed.production]</span>"
-				if(myseed.potency != -1)
-					user << "-Plant Potency: <span class='notice'>[myseed.potency]</span>"
-				var/list/text_strings = myseed.get_analyzer_text()
-				if(text_strings)
-					for(var/string in text_strings)
-						user << string
-			else
-				user << "There are no plants in the tray!"
-
 	else if(istype(O, /obj/item/weapon/cultivator))
 		if(weedlevel > 0)
 			user.visible_message("[user] uproots the weeds.", "<span class='notice'>You remove the weeds from [src].</span>")
