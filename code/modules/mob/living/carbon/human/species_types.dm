@@ -389,14 +389,17 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 			H << "<span class='danger'>You feel empty!</span>"
 
 	for(var/datum/reagent/toxin/slimejelly/S in H.reagents.reagent_list)
+		if(S.volume >= 200)
+			if(prob(5))
+				H << "<span class='notice'>You feel very bloated!</span>"
 		if(S.volume < 200)
 			if(H.nutrition >= NUTRITION_LEVEL_WELL_FED)
 				H.reagents.add_reagent("slimejelly", 0.5)
-				H.nutrition -= 5
+				H.nutrition -= 2.5
 		if(S.volume < 100)
 			if(H.nutrition >= NUTRITION_LEVEL_STARVING)
 				H.reagents.add_reagent("slimejelly", 0.5)
-				H.nutrition -= 5
+				H.nutrition -= 2.5
 		if(S.volume < 50)
 			if(prob(5))
 				H << "<span class='danger'>You feel drained!</span>"
@@ -445,14 +448,6 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 			var/datum/action/swap_body/callswap = new /datum/action/swap_body()
 			H.mind.slime_bodies += spare
 			callswap.Grant(spare)
-			/*
-			var/datum/action/swap_body/callforward = new /datum/action/swap_body()
-			var/datum/action/swap_body/callback = new /datum/action/swap_body()
-			callforward.body = spare
-			callforward.Grant(H)
-			callback.body = H
-			callback.Grant(spare)
-			*/
 			H.mind.transfer_to(spare)
 			spare << "<span class='notice'>...and after a moment of disorentation, you're besides yourself!</span>"
 			return
@@ -480,17 +475,21 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 
 	for(var/slime_body in owner.mind.slime_bodies)
 		var/mob/living/carbon/human/body = slime_body
-		if(!body || !istype(body) || !body.dna || !body.dna.species || body.dna.species.id != "slime" || body.stat == DEAD || qdeleted(body))
+		if(!istype(body) || !body.dna || !body.dna.species || body.dna.species.id != "slime" || body.stat == DEAD || qdeleted(body))
 			owner.mind.slime_bodies -= body
 			continue
-		temp_body_list += body
+		if((body != owner) && (body.stat == CONSCIOUS)) //Only swap into conscious bodies that are not the ones we're in
+			temp_body_list += body
 
-	if(!owner.mind.slime_bodies.len) //THEY ARE ALL DEAD
+	if(owner.mind.slime_bodies.len == 1) //if our current body is our only one it means the rest are dead
 		owner << "<span class='warning'>Something is wrong, you cannot sense your other bodies!</span>"
 		Remove(owner)
 		return
 
-	//HE'S STILL ALIVE
+	if(!temp_body_list.len)
+		owner << "<span class='warning'>You can sense your bodies, but they are unconscious. Swapping into them could be fatal.</span>"
+		return
+
 	var/body_name = input(owner, "Select the body you want to move into", "List of active bodies") as null|anything in temp_body_list
 
 	if(!body_name)
@@ -498,7 +497,8 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 
 	var/mob/living/carbon/human/selected_body = body_name
 
-	if(!selected_body)
+	if(selected_body.stat == UNCONSCIOUS || owner.stat == UNCONSCIOUS) //sanity check
+		owner << "<span class='warning'>The user or the target body have become unconscious during selection.</span>"
 		return
 
 	owner.mind.transfer_to(selected_body)
@@ -533,7 +533,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 		if(S.volume < 100)
 			if(H.nutrition >= NUTRITION_LEVEL_STARVING)
 				H.reagents.add_reagent("slimejelly", 0.5)
-				H.nutrition -= 5
+				H.nutrition -= 2.5
 			else if(prob(5))
 				H << "<span class='danger'>You feel drained!</span>"
 		if(S.volume < 10)
