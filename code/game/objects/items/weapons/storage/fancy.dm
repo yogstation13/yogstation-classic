@@ -36,7 +36,7 @@
 	if(contents.len == 1)
 		user << "There is one [src.icon_type] left."
 	if(istype(src, /obj/item/weapon/storage/fancy/donut_box))
-		user << "A label on the side that reads 'Take caution when eating multiple Rezadonuts, as this may cause disfiguration of facial features which is not covered by standard space insurance!'"
+		user << "A label on the side reads 'Take caution when eating multiple Rezadonuts, as this may cause disfiguration of facial features which is not covered by standard space insurance!'"
 	else
 		user << "There are [contents.len <= 0 ? "no" : "[src.contents.len]"] [src.icon_type]s left."
 
