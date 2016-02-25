@@ -1,15 +1,17 @@
 /mob/living/simple_animal/borer
 	name = "Cortical Borer"
 	desc = "Absolutely not de-beaked or harmless. Keep away from corpses."
-	icon_state = "headcrab"
-	icon_living = "headcrab"
-	icon_dead = "headcrab_dead"
+	icon_state = "brainslug"
+	icon_living = "brainslug"
+	icon_dead = "brainslug_dead"
 	health = 20
 	maxHealth = 20
 	melee_damage_lower = 5
 	melee_damage_upper = 5
 	attacktext = "chomps"
 	attack_sound = 'sound/weapons/bite.ogg'
+	pass_flags = PASSTABLE | PASSMOB
+	mob_size = MOB_SIZE_SMALL
 	faction = list("creature")
 	speak_emote = list("squeaks")
 	ventcrawler = 2
@@ -18,11 +20,11 @@
 	var/docile = 0
 	var/controlling = 0
 	var/chemicals = 50
+	var/used_dominate
 
 /mob/living/simple_animal/borer/New()
 	..()
 	name = "[pick("Primary","Secondary","Tertiary","Quaternary")] Borer ([rand(100,999)])"
-
 
 /mob/living/simple_animal/borer/Stat()
 	..()
@@ -86,3 +88,12 @@
 	victim.Weaken(4)
 	victim.apply_effect(STUTTER, 4)
 	visible_message("<span class='warning'>[victim] collapses into a fit of spasms!.</span>")
+
+/mob/living/simple_animal/borer/proc/leave_victim()
+
+	if(!victim) return
+
+	src.loc = get_turf(victim)
+
+	victim.borer = null
+	victim = null
