@@ -67,6 +67,10 @@
 		internal_storage.screen_loc = ui_drone_storage
 		client.screen += internal_storage
 
+/mob/living/simple_animal/drone/minedrone/proc/update_inv_internal_storage_2()
+	if(scanner_storage && client && hud_used)
+		scanner_storage.screen_loc = "CENTER+2:20,SOUTH+0:20"
+		client.screen += scanner_storage
 
 /mob/living/simple_animal/drone/update_inv_head()
 	remove_overlay(DRONE_HEAD_LAYER)
