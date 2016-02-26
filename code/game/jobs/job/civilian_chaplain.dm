@@ -20,6 +20,7 @@ Chaplain
 
 /datum/job/chaplain/equip_items(mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/chaplain(H), slot_w_uniform)
+	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/headset_srv(H), slot_ears)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/black(H), slot_shoes)
 
 	var/obj/item/weapon/storage/book/bible/B = new /obj/item/weapon/storage/book/bible/booze(H)
@@ -44,6 +45,7 @@ Chaplain
 			B.name = "Uplifting Primer"
 		if("toolboxia")
 			B.name = "Toolbox Manifesto"
+			H.setBrainLoss(100)
 		if("homosexuality")
 			B.name = "Guys Gone Wild"
 		if("lol", "wtf", "gay", "penis", "ass", "poo", "badmin", "shitmin", "deadmin", "cock", "cocks")
