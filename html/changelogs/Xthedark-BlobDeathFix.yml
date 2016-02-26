@@ -1,0 +1,12 @@
+author: Xthedark
+
+delete-after: True
+
+changes:
+  - tweak: "Small explosion code optimizations."
+  - bugfix: "Dead blobs no longer get kicked from the server." 
+  - rscadd: "We blob together! If your core gets destroyed and there is still another overmind with a core alive (Split Consciousness), you don't die. You will still gain resources from Resource Nodes and be able to help out your offspring/parent with Rally Spores and such. If all cores die, overminds get ghosted."
+  - bugfix: "You can no longer Split Consciousness or Relocate Core if you don't have one. This should also fix relocating/splitting just after death."
+  - rscadd: "Ported code by ChangelingRain at /tg/ - Blob is more resistant to explosions, core is immune to bombs."
+  - rscadd: "More ported code by ChangelingRain at /tg/ - Strong Blob and Core block atmos. Split Consciousness requires blob node under it, rather than searching for the oldest one created."
+  - rscadd: "Even more ported code by ChangelingRain at /tg/ - Blob can expand onto lattices. Also nerf to bombs against Blob, since lattices are often a byproduct of explosions."
