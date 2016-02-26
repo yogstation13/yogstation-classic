@@ -1,0 +1,6 @@
+author: Xthedark
+
+delete-after: True
+
+changes: 
+  - rscadd: "Odysseus can now rearm it's syringes. Rearm is done in bulk (all or nothing) with 3 second per syringe, must stand still and costs 250 energy per syringe."
