@@ -1,0 +1,7 @@
+author: AsV9
+
+delete-after: True
+
+changes: 
+  - rscadd: "Admins now get notified when new areas are created with blueprints."
+  - rscadd: "Admins now get notified when certain atmos components are toggled."
