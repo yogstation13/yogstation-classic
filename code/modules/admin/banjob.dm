@@ -19,7 +19,7 @@ var/jobban_keylist[0]		//to store the keys & ranks
 	/*var/list/tempList = jobban_list_for_mob(M)
 	return jobban_job_in_list(tempList, rank)*/
 
-	var/DBQuery/query = dbcon.NewQuery("SELECT job FROM [format_table_name("ban")] WHERE ckey = '[get_ckey(M)]' AND job = '[rank]' AND ((bantype = 'JOB_PERMABAN' AND isnull(unbanned)) OR (bantype = 'JOB_TEMPBAN' AND (isnull(unbanned) OR expiration_time > Now())))")
+	var/DBQuery/query = dbcon.NewQuery("SELECT job FROM [format_table_name("ban")] WHERE ckey = '[get_ckey(M)]' AND job = '[rank]' AND  (bantype = 'JOB_PERMABAN'  OR (bantype = 'JOB_TEMPBAN' AND expiration_time > Now())) AND isnull(unbanned)")
 	query.Execute()
 
 	if(query.NextRow())
