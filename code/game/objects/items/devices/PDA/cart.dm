@@ -283,6 +283,9 @@
 
 /obj/item/weapon/cartridge/proc/triggerAlarm(class, area/A, O, obj/alarmsource)
 	var/msg
+	var/turf/myTurf = get_turf(src)
+	if(!alarmsource || !myTurf || (alarmsource.z != myTurf.z))
+		return
 	switch(class)
 		if("Atmosphere")
 			if(!(alert_flags & PDA_ATMOS_ALERT) || (A in atmos_alerts))
