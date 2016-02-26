@@ -61,19 +61,38 @@
 		src << "<span class='boldnotice'>You don't have enough chemicals!</span>"
 		return
 
-	var/chem = input("Select a chemical to secrete.", "Chemicals") as null|anything in list("mannitol","bicaridine", "kelotane", "charcoal", "morphine", "ephedrine")
+	var/list/chemnames = list()
+	for(var/datum in typesof(/datum/borer_chem))
+		var/datum/borer_chem/C = new datum()
+		if(C.needed_influence < influence)
+			chemnames += C.chemname
+
+	var/chemname = input("Select a chemical to secrete.", "Chemicals") as null|anything in chemnames
+
+	var/datum/borer_chem/chem
+	for(var/datum in typesof(/datum/borer_chem))
+		var/datum/borer_chem/C = new datum()
+		if(C.chemname == chemname)
+			chem = C
 
 	if(!chem || chemicals < 50 || !victim || controlling || !src || stat) //Sanity check.
 		return
 
-	src << "\red <B>You squirt a measure of [chem] from your reservoirs into [host]'s bloodstream.</B>"
-	victim.reagents.add_reagent(chem, 10)
-	chemicals -= 50
+	if(!istype(chem, /datum/borer_chem))
+		return
+
+	src << "\red <B>You squirt a measure of [chem.chemname] from your reservoirs into [host]'s bloodstream.</B>"
+	victim.reagents.add_reagent(chem.chemname, chem.quantity)
+	chemicals -= chem.chemuse
+	influence += chem.influence_change
 
 /mob/living/simple_animal/borer/verb/hide()
 	set category = "Borer"
 	set name = "Hide"
 	set desc = "Become invisible to the common eye."
+
+	if(victim)
+		src << "<span class='boldnotice'>You cannot do this whilst you are infecting a host</span>"
 
 	if(src.stat != CONSCIOUS)
 		return
@@ -163,3 +182,37 @@
 			host << "<span class='danger'>As though waking from a dream, you shake off the insidious mind control of the brain worm. Your thoughts are your own again.</span>"
 
 		leave_victim()
+
+
+/mob/living/simple_animal/borer/verb/jumpstart()
+	set category = "Borer"
+	set name = "Jumpstart Host"
+	set desc = "Brings your host back from the dead."
+
+	if(!victim)
+		src << "<span class='boldnotice'>You need a host to be able to use this.</span>"
+		return
+
+	if(chemicals < 250)
+		src << "<span class='boldnotice'>You need 250 chems to use this!</span>"
+		return
+
+	if(victim.stat == DEAD)
+		dead_mob_list -= victim
+		living_mob_list += victim
+	victim.tod = null
+	victim.setToxLoss(0)
+	victim.setOxyLoss(0)
+	victim.setCloneLoss(0)
+	victim.SetParalysis(0)
+	victim.SetStunned(0)
+	victim.SetWeakened(0)
+	victim.radiation = 0
+	victim.heal_overall_damage(victim.getBruteLoss(), victim.getFireLoss())
+	victim.reagents.clear_reagents()
+	victim.restore_blood()
+	victim.remove_all_embedded_objects()
+	victim.update_canmove()
+	victim.med_hud_set_status()
+	victim.med_hud_set_health()
+	victim.stat = CONSCIOUS
