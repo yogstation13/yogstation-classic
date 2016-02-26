@@ -16,6 +16,11 @@
 
 	var/mob/living/carbon/human/H = input(src,"Who do you wish to infect?") in null|choices
 	if(!H) return
+
+	if(H.borer)
+		src << "<span class='usernotice'>[victim] is already infected!</span>"
+		return
+
 	if(CanInfect(H))
 		H << "<span class='boldnotice'>Something slimy begins probing at the opening of your ear canal...</span>"
 		src << "<span class='boldnotice'>You slither up [H] and begin probing at their ear canal...</span>"
@@ -61,19 +66,38 @@
 		src << "<span class='boldnotice'>You don't have enough chemicals!</span>"
 		return
 
-	var/chem = input("Select a chemical to secrete.", "Chemicals") as null|anything in list("mannitol","bicaridine", "kelotane", "charcoal", "morphine", "ephedrine")
+	var/list/chemnames = list()
+	for(var/datum in typesof(/datum/borer_chem))
+		var/datum/borer_chem/C = new datum()
+		if(C.needed_influence < influence)
+			chemnames += C.chemname
 
-	if(!chem || chemicals < 50 || !victim || controlling || !src || stat) //Sanity check.
+	var/chemname = input("Select a chemical to secrete.", "Chemicals") as null|anything in chemnames
+
+	var/datum/borer_chem/chem
+	for(var/datum in typesof(/datum/borer_chem))
+		var/datum/borer_chem/C = new datum()
+		if(C.chemname == chemname)
+			chem = C
+
+	if(!chem || chemicals < 50 || !victim || controlling || !src || stat)
 		return
 
-	src << "\red <B>You squirt a measure of [chem] from your reservoirs into [host]'s bloodstream.</B>"
-	victim.reagents.add_reagent(chem, 10)
-	chemicals -= 50
+	if(!istype(chem, /datum/borer_chem))
+		return
+
+	src << "<span class='userdanger'>You squirt a measure of [chem.chemname] from your reservoirs into [host]'s bloodstream.</span>"
+	victim.reagents.add_reagent(chem.chemname, chem.quantity)
+	chemicals -= chem.chemuse
+	influence += chem.influence_change
 
 /mob/living/simple_animal/borer/verb/hide()
 	set category = "Borer"
 	set name = "Hide"
 	set desc = "Become invisible to the common eye."
+
+	if(victim)
+		src << "<span class='boldnotice'>You cannot do this whilst you are infecting a host</span>"
 
 	if(src.stat != CONSCIOUS)
 		return
@@ -106,10 +130,10 @@
 
 	var/list/choices = list()
 	for(var/mob/living/carbon/C in view(3,src))
-		if(C.stat != 2)
+		if(C.stat == CONSCIOUS)
 			choices += C
 
-	if(world.time - used_dominate < 150)
+	if(world.time - used_dominate < dominate_cooldown)
 		src << "<span class='boldnotice'>You cannot use that ability again so soon.</span>"
 		return
 
@@ -126,7 +150,7 @@
 	src.layer = MOB_LAYER
 	src << "<span class='warning'>You focus your psychic lance on [M] and freeze their limbs with a wave of terrible dread.</span>"
 	M << "<span class='userdanger'>You feel a creeping, horrible sense of dread come over you, freezing your limbs and setting your heart racing.</span>"
-	M.Weaken(10)
+	M.Weaken(4)
 
 	used_dominate = world.time
 
@@ -163,3 +187,154 @@
 			host << "<span class='danger'>As though waking from a dream, you shake off the insidious mind control of the brain worm. Your thoughts are your own again.</span>"
 
 		leave_victim()
+
+
+/mob/living/simple_animal/borer/verb/jumpstart()
+	set category = "Borer"
+	set name = "Jumpstart Host"
+	set desc = "Brings your host back from the dead."
+
+	if(!victim)
+		src << "<span class='boldnotice'>You need a host to be able to use this.</span>"
+		return
+
+	if(docile)
+		src << "<span class='boldnotice'>You are feeling too docile to use this!</span>"
+		return
+
+	if(chemicals < 250)
+		src << "<span class='boldnotice'>You need 250 chems to use this!</span>"
+		return
+
+	if(victim.stat == DEAD)
+		dead_mob_list -= victim
+		living_mob_list += victim
+	victim.tod = null
+	victim.setToxLoss(0)
+	victim.setOxyLoss(0)
+	victim.setCloneLoss(0)
+	victim.SetParalysis(0)
+	victim.SetStunned(0)
+	victim.SetWeakened(0)
+	victim.radiation = 0
+	victim.heal_overall_damage(victim.getBruteLoss(), victim.getFireLoss())
+	victim.reagents.clear_reagents()
+	victim.restore_blood()
+	victim.remove_all_embedded_objects()
+	victim.update_canmove()
+	victim.med_hud_set_status()
+	victim.med_hud_set_health()
+	victim.stat = CONSCIOUS
+
+/mob/living/simple_animal/borer/verb/bond_brain()
+	set category = "Borer"
+	set name = "Assume Control"
+	set desc = "Fully connect to the brain of your host."
+
+	if(!victim)
+		src << "<span class='boldnotice'>You are not inside a host body.</span>"
+		return
+
+	if(src.stat != CONSCIOUS)
+		src << "You cannot do that in your current state."
+		return
+
+	if(docile)
+		src << "<span class='boldnotice'>You are feeling far too docile to do that.</span>"
+		return
+
+	if(world.time - used_control < control_cooldown)
+		src << "<span class='boldnotice'>Its too soon to use that again!</span>"
+		return
+
+	src << "<span class='danger'>You begin delicately adjusting your connection to the host brain...</span>"
+
+	spawn(100+(victim.brainloss*5))
+
+		if(!victim || !src || controlling)
+			return
+		else
+
+			src << "<span class='boldnotice'>You plunge your probosci deep into the cortex of the host brain, interfacing directly with their nervous system.</span>"
+			victim << "<span class='userdanger'>You feel a strange shifting sensation behind your eyes as an alien consciousness displaces yours.</span>"
+
+			// host -> brain
+			var/h2b_id = victim.computer_id
+			var/h2b_ip= victim.lastKnownIP
+			victim.computer_id = null
+			victim.lastKnownIP = null
+
+			qdel(host_brain)
+			host_brain = new(src)
+
+			host_brain.ckey = victim.ckey
+
+			host_brain.name = victim.name
+
+			if(!host_brain.computer_id)
+				host_brain.computer_id = h2b_id
+
+			if(!host_brain.lastKnownIP)
+				host_brain.lastKnownIP = h2b_ip
+
+			// self -> host
+			var/s2h_id = src.computer_id
+			var/s2h_ip= src.lastKnownIP
+			src.computer_id = null
+			src.lastKnownIP = null
+
+			victim.ckey = src.ckey
+
+			if(!victim.computer_id)
+				victim.computer_id = s2h_id
+
+			if(!victim.lastKnownIP)
+				victim.lastKnownIP = s2h_ip
+
+			controlling = 1
+
+			victim.verbs += /mob/living/carbon/human/proc/release_control
+			victim.verbs += /mob/living/carbon/human/proc/spawn_larvae
+
+			return
+
+mob/living/carbon/human/proc/release_control()
+
+	set category = "Borer"
+	set name = "Release Control"
+	set desc = "Release control of your host's body."
+
+	if(borer && borer.host_brain)
+		src << "<span class='danger'>You withdraw your probosci, releasing control of [borer.host_brain]</span>"
+
+		borer.detatch()
+
+		verbs -= /mob/living/carbon/human/proc/release_control
+		verbs -= /mob/living/carbon/human/proc/spawn_larvae
+
+/mob/living/carbon/human/proc/spawn_larvae()
+	set category = "Borer"
+	set name = "Reproduce"
+	set desc = "Vomit out your younglings."
+
+	if(!borer)
+		return
+
+	if(borer.chemicals >= 100)
+		var/list/candidates = get_candidates(BE_ALIEN, ALIEN_AFK_BRACKET)
+		if(!candidates.len)
+			src << "<span class='usernotice'>Our reproduction system seems to have failed... Perhaps we should try again some other time?</span>"
+			return
+		var/client/C = pick(candidates)
+
+		borer.chemicals -= 100
+
+		new /obj/effect/decal/cleanable/vomit(get_turf(src))
+		playsound(loc, 'sound/effects/splat.ogg', 50, 1)
+
+		var/mob/living/simple_animal/borer/newborer = new(get_turf(src))
+		newborer.transfer_personality(C)
+		visible_message("<span class='userdanger'>[src] heaves violently, expelling a rush of vomit and a wriggling, sluglike creature!</span>")
+	else
+		src << "<span class='boldnotice'>You do not have enough chemicals stored to reproduce.</span>"
+		return
