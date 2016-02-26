@@ -34,11 +34,7 @@
 	ghostimage = image(src.icon,src,src.icon_state)
 	ghost_darkness_images |= ghostimage //so ghosts can see the blob cursor when they disable darkness
 	updateallghostimages()
-	..()
-
-/mob/camera/blob/Life()
-	if(!blob_core)
-		qdel(src)
+	blob_overmind_list += src
 	..()
 
 /mob/camera/blob/Destroy()
@@ -47,6 +43,7 @@
 		qdel(ghostimage)
 		ghostimage = null;
 		updateallghostimages()
+		blob_overmind_list -= src
 	//..()
 
 /mob/camera/blob/Login()

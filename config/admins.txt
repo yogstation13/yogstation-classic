@@ -12,41 +12,43 @@
 # IT IS AUTOMATICALLY GENERATED FROM THE SERVER DATABASE
 
 Kn0ss0s	=	Head Coder
-George99	=	Council Member
 Xantam	=	Council Member
 AsV9	=	Council Member
 Slovenian	=	Council Member
+George99	=	Council Member
  
-Groudonmaster	=	SeniorAdmin
 Greatbigben	=	SeniorAdmin
-Eff Chap	=	Primary Admin
+Groudonmaster	=	SeniorAdmin
 Gremlen12	=	Primary Admin
 Kmc2000	=	Primary Admin
 CptAzure	=	Primary Admin
-Stealthkibbler	=	Administrator
+Eff Chap	=	Primary Admin
+Oakboscage	=	Administrator
 BestMango	=	Administrator
-Thee_Flame_Prince	=	Administrator
 Wardog390	=	Administrator
 EXOTICISME	=	Administrator
 Observer	=	Admin Observer
  
 Adameltablawy	=	ModeratorOnProbation
-R3DGL4R3	=	Moderator V2
 Dzlan	=	Moderator V2
+Stealthkibbler	=	Moderator V2
+Time-Green	=	Moderator V2
+Thee_Flame_Prince	=	Moderator V2
+DominusLucian	=	Moderator V2
 Klitri	=	Moderator V2
 Abdbla	=	Moderator V2
+Matskuman5	=	Moderator V2
+R3DGL4R3	=	Moderator V2
  
+TehFlaminTaco	=	Coder Initiate
 Groxic	=	Coder Initiate
 B1gb3ast	=	Coder Initiate
 Super3222	=	Coder Initiate
 Xthedark	=	Coder
-TehFlaminTaco	=	Coder
 Cruix	=	Coder
  
-Alek2ander	=	Retired Admin
 Madventurer	=	Retired Admin
 Chuggachar	=	Retired Admin
-Oakboscage	=	Retired Admin
 Spl99	=	Retired Admin
 Hadrin Alucard	=	Retired Admin
 Blukey	=	Retired Admin
@@ -55,5 +57,6 @@ Rumia29	=	Retired Admin
 Hydre	=	Retired Admin
 Misutto	=	Retired Admin
 Willverdrag1314	=	Retired Admin
+Alek2ander	=	Retired Admin
  
 Yogstation13-Bot	=	Bot

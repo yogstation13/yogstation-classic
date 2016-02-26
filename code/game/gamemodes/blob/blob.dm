@@ -4,6 +4,7 @@
 var/list/blobs = list()
 var/list/blob_cores = list()
 var/list/blob_nodes = list()
+var/list/blob_overmind_list = list()         //blob overmind list so we can keep them alive until all cores are dead.
 
 
 /datum/game_mode/blob
