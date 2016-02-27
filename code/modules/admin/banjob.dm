@@ -40,7 +40,7 @@ var/jobban_keylist[0]		//to store the keys & ranks
 /proc/jobban_list_for_mob(mob/M)
 	if (!M) return 0
 
-	var/DBQuery/query = dbcon.NewQuery("SELECT job FROM [format_table_name("ban")] WHERE ckey = '[get_ckey(M)]' AND job = '[rank]' AND (bantype = 'JOB_PERMABAN' OR (bantype = 'JOB_TEMPBAN' AND expiration_time > Now())) AND isnull(unbanned)")
+	var/DBQuery/query = dbcon.NewQuery("SELECT job FROM [format_table_name("ban")] WHERE ckey = '[get_ckey(M)]' AND (bantype = 'JOB_PERMABAN' OR (bantype = 'JOB_TEMPBAN' AND expiration_time > Now())) AND isnull(unbanned)")
 	query.Execute()
 
 	var/list/ckey_job_bans = list()
