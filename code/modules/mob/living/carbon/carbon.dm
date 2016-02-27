@@ -78,6 +78,8 @@
 	shock_damage *= siemens_coeff
 	if(shock_damage<1 && !override)
 		return 0
+	if(reagents.has_reagent("teslium"))
+		shock_damage *= 1.5
 	take_overall_damage(0,shock_damage)
 	//src.burn_skin(shock_damage)
 	//src.adjustFireLoss(shock_damage) //burn_skin will do this for us
