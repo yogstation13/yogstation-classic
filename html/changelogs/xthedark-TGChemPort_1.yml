@@ -1,0 +1,15 @@
+author: xthedark
+
+delete-after: True
+
+changes: 
+  - rscadd: "Ported chemistry balances as well as two new chems from /tg/ made by Xhuis (optimumtact). Teslium and Heparin."
+  - rscadd: "Teslium is made from Plasma, Silver, and Black Powder, heated to 400K. Causes random (damaging) shocks to the person every 5-30 seconds and increases shock damage received by 1.5."
+  - rscadd: "Heparin is made from Formaldehyde, Sodium, Chlorine, and Lithium. Makes you bleed and causes brute damage every tick."
+  - tweak: "Port: Amatoxin and Lexorin are a bit more powerful now."
+  - tweak: "Port: Morphine causes knockout only after 24 cycles now (up from 12)."
+  - tweak: "Port: Oculine actually cures blindness/nearsightedness now."
+  - tweak: "Port: Atropine and Epinephrine now are 100% effective for anyone in crit (below 0 health)."
+  - rscadd: "Ported new medical chem from /tg/ by bgobandit - Oxandrolone made from 3 parts Carbon, 1 part of Hydrogen, Oxygen and Phenol. Twice as effective as silver sulfadrazine against heavy burns, half as effective otherwise."
+  - rscadd: "Ported new medical chem from /tg/ by Ressler (markressler) - Haloperidol. Made from Chlorine, Fluorine, Aluminum, Potassium Iodide, and Oil. Quickly purges body of drugs (methaphetamine, etc)."
+  
