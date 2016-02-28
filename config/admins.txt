@@ -19,7 +19,6 @@ George99	=	Council Member
  
 Greatbigben	=	SeniorAdmin
 Groudonmaster	=	SeniorAdmin
-Gremlen12	=	Primary Admin
 Kmc2000	=	Primary Admin
 CptAzure	=	Primary Admin
 Eff Chap	=	Primary Admin
@@ -51,6 +50,7 @@ Cruix	=	Coder
 Madventurer	=	Retired Admin
 Spl99	=	Retired Admin
 Hadrin Alucard	=	Retired Admin
+Gremlen12	=	Retired Admin
 Blukey	=	Retired Admin
 Ephemeralis	=	Retired Admin
 Rumia29	=	Retired Admin
