@@ -1,4 +1,5 @@
 //This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:33
+#define DONOR_CHARACTER_SLOTS 6
 
 var/list/preferences_datums = list()
 
@@ -39,7 +40,9 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 	var/lastchangelog = ""				//Saved changlog filesize to detect if there was a change
 	var/ooccolor = null
 	var/be_special = 0					//Special role selection
-	var/UI_style = "Midnight"
+	var/UI_style_carbon = DEFAULT_CARBON_UI
+	var/UI_style_borg = DEFAULT_BORG_UI
+	var/UI_style_ai = DEFAULT_AI_UI
 	var/toggles = TOGGLES_DEFAULT
 	var/chat_toggles = TOGGLES_DEFAULT_CHAT
 	var/ghost_form = "ghost"
@@ -113,7 +116,17 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 			unlock_content |= C.IsByondMember()
 			if(unlock_content)
 				max_save_slots = 8
+			else if(is_donator(C))
+				max_save_slots = DONOR_CHARACTER_SLOTS
 	var/loaded_preferences_successfully = load_preferences()
+	//make sure they're not carrying any donator stuff from back when they were an admin.
+	if(!is_donator(src))
+		if(UI_style_carbon in donator_carbon_uis)
+			UI_style_carbon = DEFAULT_CARBON_UI
+		if(UI_style_borg in donator_borg_uis)
+			UI_style_borg = DEFAULT_BORG_UI
+		if(UI_style_ai in donator_ai_uis)
+			UI_style_ai = DEFAULT_AI_UI
 	if(loaded_preferences_successfully)
 		if(load_character())
 			return
@@ -351,7 +364,7 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 				var/list/bans = jobban_list_for_mob(user)
 				dat += "<table><tr><td width='340px' height='300px' valign='top'>"
 				dat += "<h2>General Settings</h2>"
-				dat += "<b>UI Style:</b> <a href='?_src_=prefs;preference=ui'>[UI_style]</a><br>"
+//				dat += "<b>UI Style:</b> <a href='?_src_=prefs;preference=ui'>[UI_style]</a><br>"
 				dat += "<b>Play admin midis:</b> <a href='?_src_=prefs;preference=hear_midis'>[(toggles & SOUND_MIDI) ? "Yes" : "No"]</a><br>"
 				dat += "<b>Play lobby music:</b> <a href='?_src_=prefs;preference=lobby_music'>[(toggles & SOUND_LOBBY) ? "Yes" : "No"]</a><br>"
 				dat += "<b>Ghost ears:</b> <a href='?_src_=prefs;preference=ghost_ears'>[(chat_toggles & CHAT_GHOSTEARS) ? "Nearest Creatures" : "All Speech"]</a><br>"
@@ -685,6 +698,50 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 		return 0
 
 	proc/process_link(mob/user, list/href_list)
+		//you can change your UI even while in game.
+		if(href_list["preference"] == "dynamic_ui")
+			if(!user || !user.client)
+				return
+			var/domain = href_list["ui_domain"]
+			switch(domain)
+				if("carbon")
+					var/ui = href_list["ui"]
+					if(ui in donator_carbon_uis && !is_donator(src))
+						message_admins("EXPLOIT : [usr] attempted to grant themselves a donator UI ([href_list["ui_domain"]]:[ui]), but they are not a donator.")
+						return
+					UI_style_carbon = ui
+				if("borg")
+					var/ui = href_list["ui"]
+					if(ui in donator_borg_uis && !is_donator(src))
+						message_admins("EXPLOIT : [usr] attempted to grant themselves a donator UI ([href_list["ui_domain"]]:[ui]), but they are not a donator.")
+						return
+					UI_style_borg = ui
+				if("ai")
+					var/ui = href_list["ui"]
+					if(ui in donator_ai_uis && !is_donator(src))
+						message_admins("EXPLOIT : [usr] attempted to grant themselves a donator UI ([href_list["ui_domain"]]:[ui]), but they are not a donator.")
+						return
+					UI_style_ai = ui
+			user.client.select_ui()//refresh the page
+			if(user.hud_used && ((istype(user, /mob/living/silicon/robot) && domain == "borg") || (istype(user, /mob/living/silicon/ai) && domain == "ai") || (domain == "carbon")) )//remake the hud if we have to. Currently doesn't test if the user is carbon because there are so many things that use that UI, and not just carbons. Feel free to upgrade the logic.
+
+				var/old_zone_sel = 0//to carry over the selected attack zone.
+				var/throw_icon_state = null//to carry over the throw icon's state
+				if(user.zone_sel)
+					old_zone_sel = user.zone_sel.selecting
+				if(user.throw_icon)
+					throw_icon_state = user.throw_icon.icon_state
+				user.hud_used.instantiate(1)
+				user.update_hud()
+
+				if(user.zone_sel)
+					user.zone_sel.selecting = old_zone_sel
+					user.zone_sel.update_icon()
+				if(user.throw_icon)
+					user.throw_icon.icon_state = throw_icon_state
+
+			return 1
+
 		if(!istype(user, /mob/new_player))	return
 
 		if(href_list["preference"] == "donor")
@@ -1071,6 +1128,7 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 					if("hear_adminhelps")
 						toggles ^= SOUND_ADMINHELP
 
+/* //the old way we don't need anymore. Unless something goes wrong. Which it will.
 					if("ui")
 						switch(UI_style)
 							if("Midnight")
@@ -1079,7 +1137,7 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 								UI_style = "Retro"
 							else
 								UI_style = "Midnight"
-
+*/
 					if("be_special")
 						var/num = text2num(href_list["num"])
 						be_special ^= (1<<num)
@@ -1199,3 +1257,5 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 		else
 			character.update_body()
 			character.update_hair()
+
+#undef DONOR_CHARACTER_SLOTS

@@ -78,6 +78,8 @@
 	shock_damage *= siemens_coeff
 	if(shock_damage<1 && !override)
 		return 0
+	if(reagents.has_reagent("teslium"))
+		shock_damage *= 1.5
 	take_overall_damage(0,shock_damage)
 	//src.burn_skin(shock_damage)
 	//src.adjustFireLoss(shock_damage) //burn_skin will do this for us
@@ -156,9 +158,11 @@
 
 		playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 
-/mob/living/carbon/flash_eyes(intensity = 1, override_blindness_check = 0, affect_silicon = 0)
+/mob/living/carbon/flash_eyes(intensity = 1, override_blindness_check = 0, affect_silicon = 0, visual = 0)
 	var/damage = intensity - check_eye_prot()
 	if(..()) // we've been flashed
+		if(visual)
+			return
 		if(weakeyes)
 			Stun(2)
 		switch(damage)

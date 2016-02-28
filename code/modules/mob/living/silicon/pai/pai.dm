@@ -250,7 +250,7 @@ Getting it to work properly in /tg/ however, is another thing entirely. */
 					if ((O.client && !( O.stat )))
 						O.show_message(text("\red <B>[] has slashed at []!</B>", M, src), 1)
 				if(prob(8))
-					flick("noise", src.flash)
+					flash_eyes(affect_silicon = 1)
 				src.adjustBruteLoss(damage)
 				src.updatehealth()
 			else

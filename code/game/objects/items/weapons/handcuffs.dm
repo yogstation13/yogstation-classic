@@ -112,6 +112,13 @@
 			user << "<span class='warning'>You need one rod to make a wired rod!</span>"
 			return
 
+/obj/item/weapon/restraints/handcuffs/cable/attack_self(mob/user)
+		var/obj/item/stack/cable_coil/new_coil = new /obj/item/stack/cable_coil
+		new_coil.amount = 15
+		qdel(src)
+		usr.put_in_hands(new_coil)
+		usr.visible_message("<span class='notice'>[user.name] unties the knot that holds together [src].</span>")
+
 /obj/item/weapon/restraints/handcuffs/cable/zipties/cyborg/attack(mob/living/carbon/C, mob/user)
 	if(isrobot(user))
 		if(!C.handcuffed)

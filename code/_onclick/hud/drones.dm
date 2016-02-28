@@ -81,7 +81,6 @@
 	mymob.client.screen += mymob.client.void
 	mymob.client.screen += adding
 
-
 /***************************************************************************************************************************************/
 /datum/hud/proc/mine_drone_hud(ui_style = 'icons/mob/screen_midnight.dmi')
 	adding = list()

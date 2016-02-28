@@ -867,9 +867,6 @@
 
 	src.go_out()
 	add_fingerprint(usr)
-
-	usr.hud_used.show_hud()
-	usr.hud_used.show_hud()
 	return
 
 /obj/mecha/container_resist()
