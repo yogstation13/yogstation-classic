@@ -52,7 +52,7 @@
 	icon_state = "drone_mine"
 	icon_living = "drone_mine"
 	health = 90
-	maxHealth = 125
+	maxHealth = 120
 	laws = \
 	"1. You may not in any way shape or form interact with any non-hostile, non-xenobiological life-forms on the asteroid or anywhere else, even in self defense, unless that being is another drone.\n"+\
 	"2. You may not harm or impede any non-xenobiological asteroid creatures, regardless of intent or circumstance.\n"+\
@@ -83,6 +83,10 @@
 		var/obj/item/I = new scanner(src)
 		equip_to_slot_or_del(I, "internal_storage_2")
 
+/mob/living/simple_animal/drone/minedrone/Login()
+	..()
+	update_inv_internal_storage_2()
+
 /mob/living/simple_animal/drone/minedrone/Destroy()
 	qdel(default_storage)
 	qdel(scanner_storage)
@@ -90,41 +94,47 @@
 
 /mob/living/simple_animal/drone/minedrone/unEquip(obj/item/I, force)
 	if(..(I,force))
-		world << "unEquip_1"
 		update_inv_hands()
 		if(I == scanner_storage)
-			world << "unEquip_2"
 			scanner_storage = null
-			update_inv_internal_storage()
+			update_inv_internal_storage_2()
 		return 1
 	return 0
 
 /mob/living/simple_animal/drone/minedrone/can_equip(obj/item/I, slot)
 	if (slot == "internal_storage_2")
 		if(scanner_storage)
-			world << "can_equip_1"
 			return 0
-		world << "can_equip_2"
 		return 1
 	return ..()
 
 /mob/living/simple_animal/drone/minedrone/get_item_by_slot(slot_id)
 	if (slot_id == "internal_storage_2")
-		world << "get_item_by_slot"
 		return scanner_storage
 	return ..()
 
 /mob/living/simple_animal/drone/minedrone/equip_to_slot(obj/item/I, slot)
+	if(!slot)	return
+	if(!istype(I))	return
+
+	if(I == l_hand)
+		l_hand = null
+	else if(I == r_hand)
+		r_hand = null
+	update_inv_hands()
+
+	I.screen_loc = null
+	I.loc = src
+	I.equipped(src, slot)
+	I.layer = 20
+
 	if (slot == "internal_storage_2")
-		world << "equip_to_slot"
 		scanner_storage = I
-		update_inv_internal_storage()
+		update_inv_internal_storage_2()
 	return ..()
 
 /mob/living/simple_animal/drone/minedrone/quick_equip()
-	world << "quick_equip"
 	var/obj/item/I = get_active_hand()
 	if(istype(I, /obj/item/device))
-		world << "quick_equip2"
-		src.equip_to_slot(I, "internal_storage_2")
-	..()
+		equip_to_slot(I, "internal_storage_2")
+	else ..()

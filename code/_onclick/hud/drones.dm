@@ -162,7 +162,7 @@
 	inv_box.name = "secondary storage"
 	inv_box.icon = ui_style
 	inv_box.icon_state = "suit_storage"
-	inv_box.screen_loc = "CENTER+2:20,SOUTH+0:20"
+	inv_box.screen_loc = "CENTER+2:05,SOUTH+0:05"
 	inv_box.slot_id = "internal_storage_2"
 	inv_box.layer = 19
 	adding += inv_box
