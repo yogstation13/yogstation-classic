@@ -33,24 +33,16 @@
 #define LIGHTING_ICON_STATE "white"
 #define LIGHTING_TIME 1.2									//Time to do any lighting change. Actual number pulled out of my ass
 #define LIGHTING_DARKEST_VISIBLE_ALPHA 230					//Anything darker than this is so dark, we'll just consider the whole tile unlit
-//#define USE_COLOURED_LIGHTING 1
 
 /datum/light_source
 	var/atom/owner
 	var/radius = 0
 	var/changed = 1
 	var/list/effect = list()
-	var/list/effectr = list()
-	var/list/effectg = list()
-	var/list/effectb = list()
-	var/lightr = 1
-	var/lightg = 1
-	var/lightb = 1
-	var/lighta = 1
 	var/__x = 0		//x coordinate at last update
 	var/__y = 0		//y coordinate at last update
 
-/datum/light_source/New(atom/A, var/defaulto = 0)
+/datum/light_source/New(atom/A)
 	if(!istype(A))
 		CRASH("The first argument to the light object's constructor must be the atom that is the light source. Expected atom, received '[A]' instead.")
 	..()
@@ -58,10 +50,6 @@
 	radius = A.luminosity
 	__x = owner.x
 	__y = owner.y
-	if (defaulto)
-		lightr = 0
-		lightg = 0
-		lightb = 0
 	SSlighting.changed_lights |= src
 
 /datum/light_source/Destroy()
@@ -96,7 +84,7 @@
 //Remove current effect
 /datum/light_source/proc/remove_effect().
 	for(var/turf/T in effect)
-		T.update_lumcount(-effect[T], -effectr[T], -effectg[T], -effectb[T])
+		T.update_lumcount(-effect[T])
 
 		if(T.affecting_lights && T.affecting_lights.len)
 			T.affecting_lights -= src
@@ -120,11 +108,8 @@
 		for(var/turf/T in view(range, To))
 			var/delta_lumcount = T.lumen(src)
 			if(delta_lumcount > 0)
-				effect[T] = delta_lumcount * lighta
-				effectr[T] = (lightr) * (delta_lumcount/LIGHTING_CAP) * lighta
-				effectg[T] = (lightg) * (delta_lumcount/LIGHTING_CAP) * lighta
-				effectb[T] = (lightb) * (delta_lumcount/LIGHTING_CAP) * lighta
-				T.update_lumcount(delta_lumcount * lighta, (lightr) * (delta_lumcount/LIGHTING_CAP), (lightg) * (delta_lumcount/LIGHTING_CAP), (lightb) * (delta_lumcount/LIGHTING_CAP))
+				effect[T] = delta_lumcount
+				T.update_lumcount(delta_lumcount)
 
 				if(!T.affecting_lights)
 					T.affecting_lights = list()
@@ -190,39 +175,26 @@
 //If we are setting luminosity to 0 the light will be cleaned up by the controller and garbage collected once all its
 //queues are complete.
 //if we have a light already it is merely updated, rather than making a new one.
-/atom/proc/SetLuminosity(new_luminosity, var/r = 1, var/g = 1, var/b = 1)
+/atom/proc/SetLuminosity(new_luminosity)
 	if(new_luminosity < 0)
 		new_luminosity = 0
-
-	r = max(r, 0)
-	g = max(g, 0)
-	b = max(b, 0)
 
 	if(!light)
 		if(!new_luminosity)
 			return
 		light = new(src, 1)
 	else
-		if(light.radius == new_luminosity && light.lightr == r && light.lightg == g && light.lightb == b)
+		if(light.radius == new_luminosity)
 			return
 	light.radius = new_luminosity
-	light.lightr = r
-	light.lightg = g
-	light.lightb = b
 	luminosity = new_luminosity
 	light.changed()
 
-/atom/proc/AddLuminosity(delta_luminosity, var/r, var/g , var/b)
-	if (r == null)
-		r = (delta_luminosity >= 0 ? 1 : -1)
-	if (g == null)
-		g = (delta_luminosity >= 0 ? 1 : -1)
-	if (b == null)
-		b = (delta_luminosity >= 0 ? 1 : -1)
+/atom/proc/AddLuminosity(delta_luminosity)
 	if(light)
-		SetLuminosity(light.radius + delta_luminosity, light.lightr + (r * delta_luminosity), light.lightg + (g * delta_luminosity), light.lightb + (b * delta_luminosity))
+		SetLuminosity(light.radius + delta_luminosity)
 	else
-		SetLuminosity(delta_luminosity, r, g, b)
+		SetLuminosity(delta_luminosity)
 
 /area/SetLuminosity(new_luminosity)			//we don't want dynamic lighting for areas
 	luminosity = !!new_luminosity
@@ -243,11 +215,7 @@
 	icon_state = LIGHTING_ICON_STATE
 	layer = LIGHTING_LAYER
 	mouse_opacity = 0
-#ifdef USE_COLOURED_LIGHTING
-	blend_mode = BLEND_MULTIPLY // Overlay is for nerds, We have new toys now~
-#else
 	blend_mode = BLEND_OVERLAY
-#endif
 	invisibility = INVISIBILITY_LIGHTING
 	color = "#000"
 	luminosity = 0
@@ -258,11 +226,7 @@
 	var/light_b = 0
 
 /atom/movable/light/dim
-#ifdef USE_COLOURED_LIGHTING
-	color = "#444" // Always half bright.
-#else
 	color = "#000"
-#endif
 	alpha = 0 // Only visible when the tile it's on is ~pure black.
 	invisibility = SEE_INVISIBLE_MINIMUM + 1 // Rarely invisible. Hidden for things like mesons.
 	layer = TURF_LAYER // Don't darken things on top of the turf.
@@ -275,9 +239,6 @@
 
 /turf
 	var/lighting_lumcount = 0
-	var/lighting_rlums = 0
-	var/lighting_glums = 0
-	var/lighting_blums = 0
 	var/lighting_changed = 0
 	var/atom/movable/light/lighting_object //Will be null for space turfs and anything in a static lighting area
 	var/atom/movable/light/dim/light_dim // Used for shadowlings and night vision and stuffs, to show pure black areas, but make them still visible... So to speak...
@@ -294,9 +255,6 @@
 		qdel(light)
 
 	var/old_lumcount = lighting_lumcount - initial(lighting_lumcount)
-	var/oldrlums = lighting_rlums - initial(lighting_rlums)
-	var/oldglums = lighting_glums - initial(lighting_glums)
-	var/oldblums = lighting_blums - initial(lighting_blums)
 	var/oldbaseturf = baseturf
 
 	var/list/our_lights //reset affecting_lights if needed
@@ -311,7 +269,7 @@
 	affecting_lights = our_lights
 
 	lighting_changed = 1 //Don't add ourself to SSlighting.changed_turfs
-	update_lumcount(old_lumcount, oldrlums, oldglums, oldblums)
+	update_lumcount(old_lumcount)
 	baseturf = oldbaseturf
 	lighting_object = locate() in src
 	init_lighting()
@@ -320,20 +278,14 @@
 		S.update_starlight()
 
 
-/turf/proc/update_lumcount(amount, rlums, glums, blums)
+/turf/proc/update_lumcount(amount)
 	lighting_lumcount += amount
-	lighting_rlums += rlums
-	lighting_glums += glums
-	lighting_blums += blums
 	if(!lighting_changed)
 		SSlighting.changed_turfs += src
 		lighting_changed = 1
 
-/turf/space/update_lumcount(amount, rlums, glums, blums) //Keep track in case the turf becomes a floor at some point, but don't process.
+/turf/space/update_lumcount(amount) //Keep track in case the turf becomes a floor at some point, but don't process.
 	lighting_lumcount += amount
-	lighting_rlums += rlums
-	lighting_glums += glums
-	lighting_blums += blums
 
 /turf/proc/init_lighting()
 	var/area/A = loc
@@ -370,40 +322,17 @@
 				newalpha = num
 			else //if(lighting_lumcount >= LIGHTING_CAP)
 				newalpha = 255
-#ifdef USE_COLOURED_LIGHTING
-		var/t = max(lighting_rlums, lighting_glums, lighting_blums) // So that the highest value is always 1, then adjusted for luminosity.
-		var/r = newalpha
-		var/g = newalpha
-		var/b = newalpha
-		if (t != 0)
-			r = newalpha * (lighting_rlums / t)
-			g = newalpha * (lighting_glums / t)
-			b = newalpha * (lighting_blums / t)
-		var/newcolor = "#[num2hex(r)][num2hex(g)][num2hex(b)]" // THE ISSUE WAS ONE FUCKING ) IN THE FUCKING STRING FUCK ME I'M A SHIT CODER.
-
-		if (newalpha == alpha && newcolor == color) // Prevent unneeded updates.
-			return;
-#else
 		newalpha = 255-newalpha
 		if (newalpha == alpha)
 			return;
-#endif
 		var/change_time = LIGHTING_TIME
 
 		if(instantly)
 			change_time = 0
-#ifdef USE_COLOURED_LIGHTING
-		animate(lighting_object, color = newcolor, time = change_time) // Animated lights, look smoother and things.
-#else
 		animate(lighting_object, alpha = newalpha, time = change_time)
-#endif
-		if(newalpha < 255-LIGHTING_DARKEST_VISIBLE_ALPHA) //Doesn't actually make it darker or anything, just tells byond you can't see the tile
+		if(newalpha > LIGHTING_DARKEST_VISIBLE_ALPHA) //Doesn't actually make it darker or anything, just tells byond you can't see the tile
 			animate(luminosity = 0, time = 0)
-#ifdef USE_COLOURED_LIGHTING
-		light_dim.alpha = (get_lumcount() <= 0.3) * 255 // We're only visible if the lighting lumcount is less than what shadowlings can walk through.
-#else
 		light_dim.alpha = (get_lumcount() <= 0.3) * 128 // See above
-#endif
 
 	lighting_changed = 0
 
@@ -421,7 +350,7 @@
 	luminosity = 0
 	for(var/turf/T in src.contents)
 		T.init_lighting()
-		T.update_lumcount(0, 0, 0, 0)
+		T.update_lumcount(0)
 
 #undef LIGHTING_LAYER
 #undef LIGHTING_CIRCULAR

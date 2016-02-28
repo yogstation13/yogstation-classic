@@ -25,3 +25,5 @@
 
 #define ANTAG_HUD_WIZ		8
 #define ANTAG_HUD_SHADOW    9
+
+#define ANTAG_HUD_CYBERMEN 10

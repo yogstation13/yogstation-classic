@@ -48,3 +48,4 @@
 	// Used by html_interface module.
 	var/hi_last_pos
 
+	var/datum/tooltip/tooltips
