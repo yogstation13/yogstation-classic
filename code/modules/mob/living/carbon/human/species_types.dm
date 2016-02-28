@@ -114,6 +114,8 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
  ANDROIDS
  */
 
+#define EATING_MESSAGE_COOLDOWN 1200//2 minutes, in deciseconds.
+
 /datum/species/android
 	//augmented half-silicon, half-human hybrids
 	//ocular augmentations (they never asked for this) give them slightly improved nightsight (and permanent meson effect)
@@ -131,15 +133,17 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	burnmod = 1.05
 	heatmod = 1.05
 	invis_sight = SEE_INVISIBLE_MINIMUM
+	var/last_eat_message = -EATING_MESSAGE_COOLDOWN
 
 /datum/species/android/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
 	if (istype(chem, /datum/reagent/consumable)) //paranoia paranoia type casting is coming to get me
 		var/datum/reagent/consumable/food = chem
 		if (food.nutriment_factor)
 			food.nutriment_factor = food.nutriment_factor * 0.2
-			if (prob(1))
+			if (world.time - last_eat_message > EATING_MESSAGE_COOLDOWN)
 				H << "<span class='info'>NOTICE: Digestive subroutines are inefficient. Seek sustenance via power-cell CONSUME induction.</span>"
-		return 1
+				last_eat_message = world.time
+		return 0
 
 /datum/species/android/handle_vision(mob/living/carbon/human/H)
 	//custom override because darksight APPARENTLY DOESN"T WORK LIKE THIS BY DEFAULT??
@@ -166,6 +170,8 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	H << "<span class='info'>Powerful ocular implants afford you greater vision in the darkness, but draw large amounts of power from your biological body. Should your stores run out, they will deactivate and leave you blind.</span>"
 	H << "<span class='info'>Normal food is worth only a fraction of its normal sustenance to you. You must instead draw your nourishment from power cells, tapping into the energy contained within. Beware electromagnetic pulses, for they would do grevious damage to your internal organs..</span>"
 	return ..()
+
+#undef EATING_MESSAGE_COOLDOWN
 /*
  PLANTPEOPLE
 */
