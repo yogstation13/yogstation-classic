@@ -138,14 +138,16 @@
 		dat += text("<A href='?src=\ref[src];choice=claim'>Claim points.</A><br>")
 	else
 		dat += text("No ID inserted.  <A href='?src=\ref[src];choice=insert'>Insert ID.</A><br>")
-
+	
+	if(stack_list.len)
+		dat += text("<A href='?src=\ref[src];release=all'>Release All</A><br>")
 	for(var/O in stack_list)
 		s = stack_list[O]
 		if(s.amount > 0)
 			if(O == stack_list[1])
 				dat += "<br>"		//just looks nicer
 			dat += text("[capitalize(s.name)]: [s.amount] <A href='?src=\ref[src];release=[s.type]'>Release</A><br>")
-
+		
 	if((/obj/item/stack/sheet/metal in stack_list) && (/obj/item/stack/sheet/mineral/plasma in stack_list))
 		var/obj/item/stack/sheet/metalstack = stack_list[/obj/item/stack/sheet/metal]
 		var/obj/item/stack/sheet/plasmastack = stack_list[/obj/item/stack/sheet/mineral/plasma]
@@ -192,16 +194,19 @@
 			else usr << "<span class='warning'>No valid ID.</span>"
 	if(href_list["release"])
 		if(check_access(inserted_id) || allowed(usr)) //Check the ID inside, otherwise check the user.
-			if(!(text2path(href_list["release"]) in stack_list)) return
-			var/obj/item/stack/sheet/inp = stack_list[text2path(href_list["release"])]
-			var/obj/item/stack/sheet/out = new inp.type()
-			var/desired = input("How much?", "How much to eject?", 1) as num
-			out.amount = min(desired,50,inp.amount)
-			if(out.amount >= 1)
-				inp.amount -= out.amount
-				unload_mineral(out)
-			if(inp.amount < 1)
-				stack_list -= text2path(href_list["release"])
+			if(href_list["release"] == "all")
+				empty_content("unloadall")
+			else
+				if(!(text2path(href_list["release"]) in stack_list)) return
+				var/obj/item/stack/sheet/inp = stack_list[text2path(href_list["release"])]
+				var/obj/item/stack/sheet/out = new inp.type()
+				var/desired = input("How much?", "How much to eject?", 1) as num
+				out.amount = min(desired,50,inp.amount)
+				if(out.amount >= 1)
+					inp.amount -= out.amount
+					unload_mineral(out)
+				if(inp.amount < 1)
+					stack_list -= text2path(href_list["release"])
 		else
 			usr << "<span class='warning'>Required access not found.</span>"
 	if(href_list["plasteel"])
@@ -237,17 +242,22 @@
 			qdel(src)
 
 //empty the redemption machine by stacks of at most max_amount (50 at this time) size
-/obj/machinery/mineral/ore_redemption/proc/empty_content()
+/obj/machinery/mineral/ore_redemption/proc/empty_content(var/mode = "none")
 	var/obj/item/stack/sheet/s
-
+	var/turf/unloadloc = loc
+	
+	if(mode == "unloadall")
+		var/turf/T = get_step(src,output_dir)
+		if(T)
+			unloadloc = T
+			
 	for(var/O in stack_list)
 		s = stack_list[O]
-		while(s.amount > s.max_amount)
-			new s.type(loc,s.max_amount)
-			s.use(s.max_amount)
-		s.loc = loc
-		s.layer = initial(s.layer)
-
+		while(s.amount > 0)
+			var/num_to_unload = min(s.amount, s.max_amount)
+			new s.type(unloadloc, num_to_unload)
+			s.use(num_to_unload)
+		stack_list -= s.type
 
 /**********************Mining Equipment Vendor**************************/
 

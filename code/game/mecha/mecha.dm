@@ -767,10 +767,6 @@
 		H.reset_view(src)
 		H.stop_pulling()
 		H.forceMove(src)
-		if(H.hud_used)
-			last_user_hud = H.hud_used.hud_shown
-			H.hud_used.show_hud(HUD_STYLE_REDUCED)
-
 		occupant = H
 		add_fingerprint(H)
 		GrantActions(H, human_occupant=1)

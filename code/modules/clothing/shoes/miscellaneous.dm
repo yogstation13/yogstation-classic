@@ -13,7 +13,7 @@
 	icon_state = "brown"
 	item_state = "brown"
 	permeability_coefficient = 0.05
-	flags = NOSLIP
+	flags = SUPERNOSLIP
 	origin_tech = "syndicate=3"
 	burn_state = -1 //Won't burn in fires
 
