@@ -82,7 +82,7 @@
 			else
 				t += "<A href='?src=\ref[src];setz=[i]'>[i]</A>"
 		t += "<br>Selected beacon:<br>"
-		if(selection && selection.on && selection.get_loc())
+		if(selection && selection.can_be_found(z_co))
 			var/turf/sloc = selection.get_loc()
 			var/locstring = "([sloc.x], [sloc.y]) [(sloc.z == ZLEVEL_STATION || sloc.z == ZLEVEL_MINING) ? get_area(sloc) : "???"]"
 			t += "<div class='statusDisplay'>[selection.name]<br>[locstring]</div><br>"
@@ -122,9 +122,8 @@
 		t += "<br><br>"
 		for (var/B in tsbeacon_list)
 			var/obj/item/device/tsbeacon/TSB = B
-			if(!TSB || !TSB.on) continue
+			if(!TSB || !TSB.can_be_found(z_co)) continue
 			var/turf/sloc = TSB.get_loc()
-			if(!sloc || sloc.z != z_co) continue
 			if(TSB == selection)
 				t += "<span class='linkOn'>Select</span>"
 			else
@@ -150,7 +149,20 @@
 	visible_message("<span class='warning'>The telepad weakly fizzles.</span>")
 	return
 
-/obj/machinery/computer/telescience/proc/doteleport(mob/user, turf/target)
+/obj/machinery/computer/telescience/proc/teleport(mob/user, random = 0)
+	if(z_co < 1 || z_co > ZLEVEL_SPACEMAX || z_co == ZLEVEL_CENTCOM)
+		temp_msg = "ERROR!<BR>Forbidden sector."
+		return
+	if(!random)
+		if(!selection || !selection.can_be_found(z))
+			temp_msg = "ERROR!<BR>Cannot locate beacon."
+			return
+		if(offset_x < -selection.range || offset_x > selection.range)
+			temp_msg = "ERROR!<BR>Impossible x offset."
+			return
+		if(offset_y < -selection.range || offset_y > selection.range)
+			temp_msg = "ERROR!<BR>Impossible y offset."
+			return
 
 	if(teleport_cooldown > world.time)
 		temp_msg = "Telepad is recharging power.<BR>Please wait [round((teleport_cooldown - world.time) / 10)] seconds."
@@ -162,23 +174,34 @@
 
 	if(telepad)
 		var/spawn_time = 240/((telepad.efficiency + 1)*(telepad.efficiency + 1))
-
-		last_target = target
-		var/area/A = get_area(target)
 		flick("pad-beam", telepad)
-
+		teleporting = 1
 		if(spawn_time > 15) // 1.5 seconds
 			playsound(telepad.loc, 'sound/weapons/flash.ogg', 25, 1)
 			// Wait depending on the time the projectile took to get there
-			teleporting = 1
 			temp_msg = "Powering up bluespace crystals.<BR>Please wait."
-
 
 		spawn(spawn_time) // in seconds
 			if(!telepad)
 				return
 			if(telepad.stat & NOPOWER)
 				return
+			if(!random && (!selection || !selection.can_be_found(z)))
+				temp_msg = "ERROR!<BR>Beacon lock lost during power up sequence."
+				updateDialog()
+				return
+			var/turf/target
+			if(random)
+				target = random_accessible_turf(z_co)
+			else
+				target = selection.get_offset(offset_x, offset_y)
+			if(!target)
+				temp_msg = "ERROR!<BR>Bluespace instability. Please report this incident."
+				updateDialog()
+				return
+			last_target = target
+			var/area/A = get_area(target)
+
 			teleporting = 0
 			teleport_cooldown = world.time + (spawn_time * 20)
 
@@ -251,35 +274,6 @@
 			investigate_log(log_msg, "telesci")
 			updateDialog()
 
-/obj/machinery/computer/telescience/proc/teleport(mob/user, random = 0)
-	if(z_co < 1 || z_co > ZLEVEL_SPACEMAX || z_co == ZLEVEL_CENTCOM)
-		temp_msg = "ERROR!<BR>Forbidden sector."
-		return
-	var/turf/target
-	if(!random)
-		if(!selection || !selection.on)
-			temp_msg = "ERROR!<BR>Cannot locate beacon."
-			return
-		if(offset_x < -selection.range || offset_x > selection.range)
-			temp_msg = "ERROR!<BR>Impossible x offset."
-			return
-		if(offset_y < -selection.range || offset_y > selection.range)
-			temp_msg = "ERROR!<BR>Impossible y offset."
-			return
-		target = selection.get_offset(offset_x, offset_y)
-		if(!target)
-			temp_msg = "ERROR!<BR>Cannot locate beacon."
-			return
-	else
-		var/rx = rand(TRANSITIONEDGE + 1, world.maxx - TRANSITIONEDGE - 2)
-		var/ry = rand(TRANSITIONEDGE + 1, world.maxy - TRANSITIONEDGE - 2)
-		target = locate(rx, ry, z_co)
-		if(!target)
-			temp_msg = "ERROR!<BR>Unexpected bluespace field collapse. Please try again."
-			return
-	doteleport(user, target)
-	return
-
 /obj/machinery/computer/telescience/Topic(href, href_list)
 	if(..())
 		return
@@ -288,9 +282,8 @@
 		return
 	if(telepad.panel_open)
 		temp_msg = "ERROR!<BR>Telepad undergoing physical maintenance operations."
-
-
-
+	if(teleporting)
+		return
 	if(href_list["setz"])
 		var/A = href_list["setz"]
 		A = text2num(A)
@@ -305,7 +298,7 @@
 	if(href_list["offsetx"])
 		var/A = href_list["offsetx"]
 		A = text2num(A)
-		if(!selection || !selection.on || A < -selection.range || A > selection.range)
+		if(!selection || !selection.can_be_found(z_co) || A < -selection.range || A > selection.range)
 			updateDialog()
 			return
 		offset_x = A
@@ -313,23 +306,19 @@
 	if(href_list["offsety"])
 		var/A = href_list["offsety"]
 		A = text2num(A)
-		if(!selection || !selection.on || A < -selection.range || A > selection.range)
+		if(!selection || !selection.can_be_found(z_co) || A < -selection.range || A > selection.range)
 			updateDialog()
 			return
 		offset_y = A
 
 	if(href_list["select"])
 		var/obj/item/device/tsbeacon/TSB = locate(href_list["select"])
-		if(!TSB || !TSB.on)
-			updateDialog()
-			return
-		var/turf/sloc = TSB.get_loc()
-		if(sloc.z != z_co)
+		if(!TSB || !TSB.can_be_found(z_co))
 			updateDialog()
 			return
 		selection = TSB
-		offset_x = 0
-		offset_y = 0
+		offset_x = Clamp(offset_x, -selection.range, selection.range)
+		offset_y = Clamp(offset_y, -selection.range, selection.range)
 
 	if(href_list["deselect"])
 		selection = null
@@ -337,15 +326,19 @@
 		offset_y = 0
 
 	if(href_list["rename"])
-		if(!selection || !selection.on)
+		if(!selection || !selection.can_be_found(z_co))
 			updateDialog()
 			return
 		var/t = stripped_input(usr, "Enter new name", name, null, 20)
-		if(!t || !usr.canUseTopic(src) || !selection || !selection.on)
+		if(!t || !usr.canUseTopic(src) || !selection || !selection.can_be_found(z_co))
 			updateDialog()
 			return
 		selection.update_name(t)
-
+	if(href_list["beaconaction"])
+		if(!selection || !selection.can_be_found(z_co) || !selection.has_action || !selection.action_available)
+			updateDialog()
+			return
+		selection.beacon_action()
 	if(href_list["ejectGPS"])
 		if(inserted_gps)
 			inserted_gps.loc = loc

@@ -46,11 +46,9 @@ var/list/tsbeacon_list = list()
 	var/turf/t = get_turf(src)
 	if(!t)
 		return
-	var/rx = rand(TRANSITIONEDGE + 1, world.maxx - TRANSITIONEDGE - 2)
-	var/ry = rand(TRANSITIONEDGE + 1, world.maxy - TRANSITIONEDGE - 2)
-	faketurf = locate(rx, ry, t.z)
+	faketurf = random_accessible_turf(t.z)
 	update_icon()
-	spawn(300)
+	spawn(3000)
 		emped = 0
 		faketurf = null
 		update_icon()
@@ -58,6 +56,7 @@ var/list/tsbeacon_list = list()
 /obj/item/device/tsbeacon/attack_self(mob/user)
 	if(emped) return
 	on = !on
+	user << "<span class='caution'>You switch [src] [on ? "on" : "off"].</span>"
 	update_icon()
 
 /obj/item/device/tsbeacon/attackby(obj/item/I, mob/user, params)
@@ -74,6 +73,10 @@ var/list/tsbeacon_list = list()
 	if (emped) return faketurf
 	return get_turf(src)
 
+/obj/item/device/tsbeacon/proc/can_be_found(z)
+	var/turf/t = get_turf(src)
+	if(!on || !t || t.z != z) return 0
+	else return 1
 
 /obj/item/device/tsbeacon/proc/get_offset(dx, dy)
 	var/turf/t = get_turf(src)
@@ -84,7 +87,7 @@ var/list/tsbeacon_list = list()
 	return locate(rx, ry, t.z)
 
 /obj/item/device/tsbeacon/proc/beacon_action()
-	if(!has_action) return
+	return
 
 /obj/item/device/tsbeacon/advanced
 	name = "advanced telescience beacon"
