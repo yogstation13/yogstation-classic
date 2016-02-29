@@ -149,7 +149,7 @@
 /mob/living/silicon/robot/proc/pick_module()
 	if(module)
 		return
-	designation = input("Please, select a module!", "Robot", null, null) in list("Standard", "Engineering", "Medical", "Miner", "Janitor","Service", "Security")
+	designation = input("Please, select a module!", "Robot", null, null) in list("Standard", "Engineering", "Medical", "Miner", "Janitor","Service", "Security", "Clown")
 	var/animation_length=0
 	if(module)
 		return
@@ -285,6 +285,30 @@
 					animation_length = 22
 			modtype = "Jan"
 			feedback_inc("cyborg_janitor",1)
+
+	if("Clown")
+		var/icontype = input("Select an icon!", "Robot", "Clown") in list("Clown")
+		if(!icontype) return
+		module = new /obj/item/weapon/robot_module/clown(src)
+		hands.icon_state = "standard"
+		switch(icontype)
+			if("Clown")
+				icon_state = "ClownBot"
+				animation_length = 1
+			else
+				icon_state = "ClownBot"
+				animation_length = 1
+			/*if("Wizard")
+				icon_state = "disposalbot"
+				animation_length = 6
+			if("Chicken")
+				icon_state = "disposalbot"
+				animation_length = 6
+			else
+				icon_state = "janiborg"
+				animation_length = 22 */
+		modtype = "Jan"
+		feedback_inc("cyborg_janitor",1)
 
 	transform_animation(animation_length)
 	notify_ai(2)
