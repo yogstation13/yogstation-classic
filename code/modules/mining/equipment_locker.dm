@@ -138,7 +138,7 @@
 		dat += text("<A href='?src=\ref[src];choice=claim'>Claim points.</A><br>")
 	else
 		dat += text("No ID inserted.  <A href='?src=\ref[src];choice=insert'>Insert ID.</A><br>")
-	
+
 	if(stack_list.len)
 		dat += text("<A href='?src=\ref[src];release=all'>Release All</A><br>")
 	for(var/O in stack_list)
@@ -147,7 +147,7 @@
 			if(O == stack_list[1])
 				dat += "<br>"		//just looks nicer
 			dat += text("[capitalize(s.name)]: [s.amount] <A href='?src=\ref[src];release=[s.type]'>Release</A><br>")
-		
+
 	if((/obj/item/stack/sheet/metal in stack_list) && (/obj/item/stack/sheet/mineral/plasma in stack_list))
 		var/obj/item/stack/sheet/metalstack = stack_list[/obj/item/stack/sheet/metal]
 		var/obj/item/stack/sheet/plasmastack = stack_list[/obj/item/stack/sheet/mineral/plasma]
@@ -245,12 +245,12 @@
 /obj/machinery/mineral/ore_redemption/proc/empty_content(var/mode = "none")
 	var/obj/item/stack/sheet/s
 	var/turf/unloadloc = loc
-	
+
 	if(mode == "unloadall")
 		var/turf/T = get_step(src,output_dir)
 		if(T)
 			unloadloc = T
-			
+
 	for(var/O in stack_list)
 		s = stack_list[O]
 		while(s.amount > 0)
@@ -281,6 +281,7 @@
 		new /datum/data/mining_equipment("Advanced Scanner",	/obj/item/device/t_scanner/adv_mining_scanner,                     400),
 		new /datum/data/mining_equipment("Mining Drone",        /mob/living/simple_animal/hostile/mining_drone,                    500),
 		new /datum/data/mining_equipment("GAR mesons",			/obj/item/clothing/glasses/meson/gar,							   500),
+		new /datum/data/mining_equipment("Survival Capsule",	/obj/item/weapon/survivalcapsule,								   700),
 		new /datum/data/mining_equipment("Kinetic Accelerator", /obj/item/weapon/gun/energy/kinetic_accelerator,               	   750),
 		new /datum/data/mining_equipment("Resonator",           /obj/item/weapon/resonator,                                    	   800),
 		new /datum/data/mining_equipment("Lazarus Injector",    /obj/item/weapon/lazarus_injector,                                1000),
