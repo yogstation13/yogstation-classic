@@ -9,6 +9,7 @@
 	idle_power_usage = 200
 	active_power_usage = 5000
 	var/efficiency
+	var/beacon
 
 /obj/machinery/telepad/New()
 	..()
@@ -20,6 +21,11 @@
 	component_parts += new /obj/item/weapon/stock_parts/console_screen(null)
 	component_parts += new /obj/item/stack/cable_coil(null, 1)
 	RefreshParts()
+	beacon = new /obj/item/device/tsbeacon/advanced/telepad(src)
+
+/obj/machinery/telepad/Destroy()
+	qdel(beacon)
+	..()
 
 /obj/machinery/telepad/RefreshParts()
 	var/E
