@@ -1,0 +1,4 @@
+author: GROXIC
+delete-after: True
+changes:
+  - rscadd: "Nanotrasen advanced engineers have added minedrones and their corresponding shell to the asteroid and mining vendors. Minedrones come with a new law-set, a HUD addition, and specific items."

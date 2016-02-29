@@ -140,6 +140,13 @@
 		ghost_hud()
 	else if(isovermind(mymob))
 		blob_hud()
+	else if(isminedrone(mymob))
+		var/ui_style
+		if(mymob.client && mymob.client.prefs)
+			ui_style = ui_style2icon_carbon(mymob.client.prefs.UI_style_carbon)
+		else
+			ui_style = DEFAULT_CARBON_UI
+		mine_drone_hud(ui_style)
 	else if(isdrone(mymob))
 		var/ui_style
 		if(mymob.client && mymob.client.prefs)
