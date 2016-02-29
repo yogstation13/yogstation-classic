@@ -244,6 +244,16 @@ other types of metals and chemistry for reagents).
 	build_path = /obj/item/device/tsbeacon/advanced
 	category = list("Bluespace Designs")
 
+/datum/design/tscamerabeacon
+	name = "Telescience Camera Beacon"
+	desc = "A telescience beacon with a built-in camera."
+	id = "telesci_camerabeacon"
+	req_tech = list("materials" = 3, "magnets" = 2, "bluespace" = 2, "programming" = 3)
+	build_type = PROTOLATHE
+	materials = list(MAT_METAL = 500, MAT_GLASS = 1500)
+	build_path = /obj/item/device/tsbeacon/camera
+	category = list("Bluespace Designs")
+
 /datum/design/miningsatchel_holding
 	name = "Mining Satchel of Holding"
 	desc = "A mining satchel that can hold an infinite amount of ores."

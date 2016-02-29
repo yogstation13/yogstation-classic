@@ -49,6 +49,8 @@
 			offset_y = 0
 			M.buffer = null
 			user << "<span class='caution'>You upload the data from the [W.name]'s buffer.</span>"
+			temp_msg = "Telepad data installed.<BR>System ready."
+			attack_hand(user)
 	else
 		..()
 
@@ -59,6 +61,10 @@
 	if(..())
 		return
 	interact(user)
+
+/obj/machinery/computer/telescience/process()
+	if(..())
+		updateDialog()
 
 /obj/machinery/computer/telescience/interact(mob/user)
 	var/t
@@ -182,6 +188,7 @@
 			temp_msg = "Powering up bluespace crystals.<BR>Please wait."
 
 		spawn(spawn_time) // in seconds
+			teleporting = 0
 			if(!telepad)
 				return
 			if(telepad.stat & NOPOWER)
@@ -202,7 +209,6 @@
 			last_target = target
 			var/area/A = get_area(target)
 
-			teleporting = 0
 			teleport_cooldown = world.time + (spawn_time * 20)
 
 			// use a lot of power
