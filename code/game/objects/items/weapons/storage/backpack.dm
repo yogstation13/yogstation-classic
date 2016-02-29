@@ -421,10 +421,8 @@
 /obj/item/weapon/storage/backpack/drone/New()
 	..()
 	contents = list()
-	new /obj/item/weapon/gun/energy/kinetic_accelerator(src)
 	new /obj/item/weapon/storage/bag/ore(src)
 	new /obj/item/weapon/shovel/spade(src)
 	new /obj/item/weapon/pickaxe/drill(src)
 	new /obj/item/weapon/screwdriver(src)
-	new /obj/item/weapon/mining_voucher(src)
 	return
