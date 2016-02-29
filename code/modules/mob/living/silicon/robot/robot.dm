@@ -291,24 +291,10 @@
 		if(!icontype) return
 		module = new /obj/item/weapon/robot_module/clown(src)
 		hands.icon_state = "standard"
-		switch(icontype)
-			if("Clown")
-				icon_state = "ClownBot"
-				animation_length = 1
-			else
-				icon_state = "ClownBot"
-				animation_length = 1
-			/*if("Wizard")
-				icon_state = "disposalbot"
-				animation_length = 6
-			if("Chicken")
-				icon_state = "disposalbot"
-				animation_length = 6
-			else
-				icon_state = "janiborg"
-				animation_length = 22 */
-		modtype = "Jan"
-		feedback_inc("cyborg_janitor",1)
+		icon_state = "ClownBot"
+		animation_length = 8
+		modtype = "Clown"
+		feedback_inc("cyborg_clown",1)
 
 	transform_animation(animation_length)
 	notify_ai(2)
