@@ -271,7 +271,6 @@
 	var/obj/item/weapon/card/id/inserted_id
 	var/list/prize_list = list(
 		new /datum/data/mining_equipment("Stimpack",			/obj/item/weapon/reagent_containers/hypospray/medipen/stimpack,	    50),
-		new /datum/data/mining_equipment("Minedrone Shell",		/obj/item/drone_shell/minedrone,								   600),
 		new /datum/data/mining_equipment("Stimpack Bundle",		/obj/item/weapon/storage/box/medipens/utility,	 				   200),
 		new /datum/data/mining_equipment("Whiskey",             /obj/item/weapon/reagent_containers/food/drinks/bottle/whiskey,    100),
 		new /datum/data/mining_equipment("Cigar",               /obj/item/clothing/mask/cigarette/cigar/havana,                    150),
@@ -285,6 +284,7 @@
 		new /datum/data/mining_equipment("Survival Capsule",	/obj/item/weapon/survivalcapsule,								   700),
 		new /datum/data/mining_equipment("Kinetic Accelerator", /obj/item/weapon/gun/energy/kinetic_accelerator,               	   750),
 		new /datum/data/mining_equipment("Resonator",           /obj/item/weapon/resonator,                                    	   800),
+		new /datum/data/mining_equipment("Minedrone Shell",		/obj/item/drone_shell/minedrone,								  1000),
 		new /datum/data/mining_equipment("Lazarus Injector",    /obj/item/weapon/lazarus_injector,                                1000),
 		new /datum/data/mining_equipment("Diamond Pickaxe",		/obj/item/weapon/pickaxe/diamond,				                  1200),
 		new /datum/data/mining_equipment("Jetpack",             /obj/item/weapon/tank/jetpack/carbondioxide/mining,               1500),
