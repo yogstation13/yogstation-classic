@@ -1,0 +1,6 @@
+author: GROXIC
+delete-after: True
+changes:
+  - rscadd:	1)Rezadone mix reduced to(4u): 6u cryoxadone, 6u copper, 1u cryptobiolin.
+  - rscadd:	2)All types of hyposprays(including borghypo) now penetrates hardsuits.
+  - rscadd:	3)Changeling last resort removed because it was... sh*t.
