@@ -531,11 +531,10 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		var/hitzone = user.zone_sel.selecting
 		H.suppress_bloodloss(src.stop_bleeding)
 		H.apply_damage(5, BURN, hitzone)
-		switch (H.blood_max)
-			if (2.0 to INFINITY) // basically, if it's to severe of bleeding damage, a simple lighter won't fix it. maybe try something stronger?
-				user.visible_message("<span class='alert'>There is too much blood coming out of the wound for you to fix it with [src] and you screw up!</span>")
-				visible_message("<span class='alert'>[H]'s wounds are burned by [src], but are unable to be closed by it's flame!</span>")
-				return
+		if (H.blood_max == 2.0 to INFINITY) // basically, if it's to severe of bleeding damage, a simple lighter won't fix it. maybe try something stronger?
+			user.visible_message("<span class='alert'>There is too much blood coming out of the wound for you to fix it with [src] and you screw up!</span>")
+			visible_message("<span class='alert'>[H]'s wounds are burned by [src], but are unable to be closed by it's flame!</span>")
+			return
 		if(user == H)
 			user.visible_message("<span class='notice'>You mend your bleeding wound with [src], sealing it completely. Also looking like a total badass.</span>")
 			visible_message("<span class='alert'>[user] mends their bleeding wounds with a lighter! What a badass.</span>")
