@@ -140,23 +140,19 @@
 					kill_objective.find_target()
 					traitor.objectives += kill_objective
 			else
+				is_martyr = 0
 				var/datum/objective/steal/steal_objective = new
 				steal_objective.owner = traitor
 				steal_objective.find_target()
 				traitor.objectives += steal_objective
-
+				
 		if(is_hijacker && objective_count <= config.traitor_objectives_amount) //Don't assign hijack if it would exceed the number of objectives set in config.traitor_objectives_amount
 			if (!(locate(/datum/objective/hijack) in traitor.objectives))
 				var/datum/objective/hijack/hijack_objective = new
 				hijack_objective.owner = traitor
 				traitor.objectives += hijack_objective
 				return
-
-		for(var/datum/objective/obj in traitor.objectives)
-			if(!obj.martyr_compatible && is_martyr)
-				is_martyr = 0
-				break
-
+				
 		if(is_martyr)
 			var/datum/objective/martyr/martyr_objective = new
 			martyr_objective.owner = traitor
