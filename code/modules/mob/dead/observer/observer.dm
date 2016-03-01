@@ -32,6 +32,7 @@ var/list/image/ghost_darkness_images = list() //this is a list of images for thi
 	stat = DEAD
 
 	ghostimage = image(src.icon,src,src.icon_state)
+	ghostimage.overlays = overlays
 	ghost_darkness_images |= ghostimage
 	updateallghostimages()
 	var/turf/T
@@ -109,6 +110,8 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 
 /mob/dead/observer/Move(NewLoc, direct)
+	dir = direct
+	ghostimage.dir = direct
 	if(NewLoc)
 		loc = NewLoc
 		for(var/obj/effect/step_trigger/S in NewLoc)
@@ -124,7 +127,6 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		x++
 	else if((direct & WEST) && x > 1)
 		x--
-
 	for(var/obj/effect/step_trigger/S in locate(x, y, z))	//<-- this is dumb
 		S.Crossed(src)
 
