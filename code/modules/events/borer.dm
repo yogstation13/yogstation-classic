@@ -10,33 +10,26 @@
 	announceWhen = 3000 //Borers get 5 minutes till the crew tries to murder them.
 	var/spawned = 0
 
-/datum/round_event/alien_infestation/announce()
+/datum/round_event/borer/announce()
 	if(spawned)
 		priority_announce("Unidentified lifesigns detected coming aboard [station_name()]. Secure any exterior access, including ducting and ventilation.", "Lifesign Alert", 'sound/AI/aliens.ogg') //Borers seem like normal xenomorphs.
 
 
 /datum/round_event/borer/start()
 
-	var/list/spawn_locs = list()
-	for(var/obj/effect/landmark/L in landmarks_list)
-		if(isturf(L.loc))
-			switch(L.name)
-				if("borer_start")
-					spawn_locs += L.loc
-
-	if(!spawn_locs.len)
-		return
-
-	var/spawn_loc = pick(spawn_locs)
-
-	if(!spawn_loc)
-		return
+	if(!borerstart.len)
+		return kill()
+	var/turf/T = pick(borerstart)
+	if(!T)
+		return kill()
 
 	var/list/candidates = get_candidates(BE_ALIEN, ALIEN_AFK_BRACKET)
 	if(!candidates.len)
-		return
+		return kill()
 	var/client/C = pick(candidates)
+	if(!C)
+		return kill()
 
-	var/mob/living/simple_animal/borer/borer = new(spawn_loc)
+	var/mob/living/simple_animal/borer/borer = new(T)
 	borer.transfer_personality(C)
 	spawned = 1

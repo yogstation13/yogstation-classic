@@ -1,6 +1,6 @@
 /mob/living/simple_animal/borer
 	name = "Cortical Borer"
-	desc = "Absolutely not de-beaked or harmless. Keep away from corpses."
+	desc = "A small, quivering, slug-like creature."
 	icon_state = "brainslug"
 	icon_living = "brainslug"
 	icon_dead = "brainslug_dead"
@@ -21,8 +21,11 @@
 	var/controlling = 0
 	var/chemicals = 50
 	var/used_dominate
+	var/used_control
 	var/influence = 0
 	var/borer_chems = list()
+	var/dominate_cooldown = 150
+	var/control_cooldown = 3000
 
 
 /mob/living/simple_animal/borer/New()

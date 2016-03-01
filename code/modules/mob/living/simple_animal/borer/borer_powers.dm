@@ -133,7 +133,7 @@
 		if(C.stat == CONSCIOUS)
 			choices += C
 
-	if(world.time - used_dominate < 150)
+	if(world.time - used_dominate < dominate_cooldown)
 		src << "<span class='boldnotice'>You cannot use that ability again so soon.</span>"
 		return
 
@@ -241,6 +241,10 @@
 
 	if(docile)
 		src << "<span class='boldnotice'>You are feeling far too docile to do that.</span>"
+		return
+
+	if(world.time - used_control < control_cooldown)
+		src << "<span class='boldnotice'>Its too soon to use that again!</span>"
 		return
 
 	src << "<span class='danger'>You begin delicately adjusting your connection to the host brain...</span>"
