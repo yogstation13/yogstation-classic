@@ -35,7 +35,7 @@ var/list/tsbeacon_list = list()
 	else if(on)
 		overlays += "working"
 
-/obj/item/device/tsbeacon/proc/update_name(var/newname)
+/obj/item/device/tsbeacon/proc/update_name(newname)
 	if(newname)
 		beacontag = newname
 		name = "[initial(name)] ([beacontag])"
@@ -49,9 +49,12 @@ var/list/tsbeacon_list = list()
 	faketurf = random_accessible_turf(t.z)
 	update_icon()
 	spawn(3000)
-		emped = 0
-		faketurf = null
-		update_icon()
+		emp_recover()
+
+/obj/item/device/tsbeacon/proc/emp_recover()
+	emped = 0
+	faketurf = null
+	update_icon()
 
 /obj/item/device/tsbeacon/attack_self(mob/user)
 	if(emped) return
@@ -102,3 +105,58 @@ var/list/tsbeacon_list = list()
 
 /obj/item/device/tsbeacon/advanced/telepad/emp_act(severity)
 	return
+
+/obj/item/device/tsbeacon/camera
+	name = "telescience camera beacon"
+	desc = "A bluespace beacon that provides a target for the telepad. This one has a built-in camera."
+	icon_state = "tsphotobeacon"
+	origin_tech = "bluespace=1;engineering=2"
+	has_action = 1
+	action_name = "Turn Camera On"
+	var/obj/machinery/camera/portable/camera
+
+/obj/item/device/tsbeacon/camera/New()
+	camera = new /obj/machinery/camera/portable(src)
+	camera.network = list("telesci")
+	camera.status = 0
+	..()
+
+/obj/item/device/tsbeacon/camera/Destroy()
+	qdel(camera)
+	..()
+
+/obj/item/device/tsbeacon/camera/examine(mob/user)
+	..()
+	user << "The built-in camera is [camera.status ? "on" : "off"]."
+
+/obj/item/device/tsbeacon/camera/update_icon()
+	..()
+	if(!on)
+		camera.status = 0
+		action_name = "Turn Camera On"
+	if(camera.status)
+		overlays += "tspb-ready"
+
+/obj/item/device/tsbeacon/camera/update_name(newname)
+	..()
+	camera.c_tag = src.name
+
+/obj/item/device/tsbeacon/camera/beacon_action()
+	if(!on) return
+	if(emped)
+		action_name = "ERROR"
+		action_available = 0
+		return
+	camera.status = !camera.status
+	action_name = "Turn Camera [camera.status ? "Off" : "On"]"
+	update_icon()
+
+/obj/item/device/tsbeacon/camera/emp_act(severity)
+	camera.status = 0
+	action_name = "Turn Camera On"
+	..()
+
+/obj/item/device/tsbeacon/camera/emp_recover()
+	action_available = 1
+	action_name = "Turn Camera On"
+	..()
