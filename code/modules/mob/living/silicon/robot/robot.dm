@@ -287,7 +287,7 @@
 			feedback_inc("cyborg_janitor",1)
 
 	if("Clown")
-		var/icontype = input("Select an icon!", "Robot", "Clown") in list("Clown", "Wizard Bot", "Wizard Borg")
+		var/icontype = input("Select an icon!", "Robot", "Clown") in list("Clown", "Wizard Bot", "Wizard Borg","Chicken")
 		if(!icontype) return
 		module = new /obj/item/weapon/robot_module/clown(src)
 		hands.icon_state = "standard"
@@ -295,16 +295,23 @@
 			if("Clown")
 				icon_state = "ClownBot"
 				animation_length= 8
+				modtype = "Clown"
 			if("Wizard Bot")
 				icon_state = "WizardBot"
-				animation_length = 8
+				animation_length = 1
+				modtype = "Wizard"
 			if("Wizard Borg")
 				icon_state = "WizardBorg"
 				animation_length = 1
+				modtype = "Wizard"
+			if("Chicken")
+				icon_state = "ChickenBot"
+				animation_length = 1
+				modtype = "Chicken"
 			else
 				icon_state = "ClownBot"
 				animation_length = 8
-		modtype = "Clown"
+			modtype = "Clown"
 		feedback_inc("cyborg_clown",1)
 
 	transform_animation(animation_length)
