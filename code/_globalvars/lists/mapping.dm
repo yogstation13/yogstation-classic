@@ -46,6 +46,7 @@ var/list/blobstart = list()
 var/list/secequipment = list()
 var/list/deathsquadspawn = list()
 var/list/emergencyresponseteamspawn = list()
+var/list/borerstart = list()
 
 	//away missions
 var/list/awaydestinations = list()	//a list of landmarks that the warpgate can take you to

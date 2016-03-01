@@ -63,6 +63,10 @@
 			xeno_spawn += loc
 			qdel(src)
 			return
+		if("borer_spawn")
+			borerstart += loc
+			qdel(src)
+			return
 
 	return 1
 

@@ -17,16 +17,9 @@
 /datum/borer_chem/charcoal
 	chemname = "charcoal"
 
-/datum/borer_chem/potassiumiodide
-	chemname = "potass_iodide"
-
 /datum/borer_chem/leporazine
 	chemname = "leporazine"
 	chemuse = 100
-
-/datum/borer_chem/leporazine
-	chemname = "spaceacillin"
-	chemuse = 250
 
 /datum/borer_chem/morphine
 	chemname = "morphine"
