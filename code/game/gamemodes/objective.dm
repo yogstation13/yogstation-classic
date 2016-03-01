@@ -5,8 +5,7 @@
 	var/target_amount = 0				//If they are focused on a particular number. Steal objectives have their own counter.
 	var/completed = 0					//currently only used for custom objectives.
 	var/dangerrating = 0				//How hard the objective is, essentially. Used for dishing out objectives and checking overall victory.
-	var/martyr_compatible = 0			//If the objective is compatible with martyr objective, i.e. if you can still do it while dead.
-
+	
 /datum/objective/New(var/text)
 	if(text)
 		explanation_text = text
@@ -60,10 +59,11 @@
 
 /datum/objective/proc/give_special_equipment()
 
+
+//Assassination
 /datum/objective/assassinate
 	var/target_role_type=0
 	dangerrating = 10
-	martyr_compatible = 1
 
 /datum/objective/assassinate/find_target_by_role(role, role_type=0, invert=0)
 	if(!invert)
@@ -85,10 +85,9 @@
 	else
 		explanation_text = "Free Objective"
 
-
+//Mutiny
 /datum/objective/mutiny
 	var/target_role_type=0
-	martyr_compatible = 1
 
 /datum/objective/mutiny/find_target_by_role(role, role_type=0,invert=0)
 	if(!invert)
@@ -114,11 +113,10 @@
 		explanation_text = "Free Objective"
 
 
-
+//Maroon
 /datum/objective/maroon
 	var/target_role_type=0
 	dangerrating = 5
-	martyr_compatible = 1
 
 /datum/objective/maroon/find_target_by_role(role, role_type=0, invert=0)
 	if(!invert)
@@ -141,7 +139,7 @@
 		explanation_text = "Free Objective"
 
 
-
+//Debraining
 /datum/objective/debrain//I want braaaainssss
 	var/target_role_type=0
 	dangerrating = 20
@@ -174,11 +172,10 @@
 		explanation_text = "Free Objective"
 
 
-
+//Protection
 /datum/objective/protect//The opposite of killing a dude.
 	var/target_role_type=0
 	dangerrating = 10
-	martyr_compatible = 1
 
 /datum/objective/protect/find_target_by_role(role, role_type=0, invert=0)
 	if(!invert)
@@ -203,11 +200,10 @@
 		explanation_text = "Free Objective"
 
 
-
+//Hijacking
 /datum/objective/hijack
 	explanation_text = "Hijack the shuttle to ensure no loyalist Nanotrasen crew escape alive and out of custody."
 	dangerrating = 25
-	martyr_compatible = 0 //Technically you won't get both anyway.
 
 /datum/objective/hijack/check_completion()
 	if(!owner.current || owner.current.stat)
@@ -232,10 +228,10 @@
 						return 0
 	return 1
 
+//Hijacking (cloning allowed)
 /datum/objective/hijackclone
 	explanation_text = "Hijack the emergency shuttle by ensuring only you (or your copies) escape."
 	dangerrating = 25
-	martyr_compatible = 0
 
 /datum/objective/hijackclone/check_completion()
 	if(!owner.current)
@@ -266,10 +262,10 @@
 						return 1
 	return 0
 
+//Blocking
 /datum/objective/block
 	explanation_text = "Do not allow any organic lifeforms to escape on the shuttle alive."
 	dangerrating = 25
-	martyr_compatible = 1
 
 /datum/objective/block/check_completion()
 	if(!istype(owner.current, /mob/living/silicon))
@@ -289,7 +285,7 @@
 
 	return 1
 
-
+//Escaping
 /datum/objective/escape
 	explanation_text = "Escape on the shuttle or an escape pod alive and without being in custody."
 	dangerrating = 5
@@ -317,6 +313,7 @@
 
 	return 0
 
+//Escaping with identity
 /datum/objective/escape/escape_with_identity
 	dangerrating = 10
 	var/target_real_name // Has to be stored because the target's real_name can change over the course of the round
@@ -354,7 +351,7 @@
 				return 1
 	return 0
 
-
+//Surviving
 /datum/objective/survive
 	explanation_text = "Stay alive until the end."
 	dangerrating = 3
@@ -366,7 +363,7 @@
 		return 0
 	return 1
 
-
+//Be martyred
 /datum/objective/martyr
 	explanation_text = "Die a glorious death."
 	dangerrating = 1
@@ -378,12 +375,12 @@
 		return 1
 	return 0
 
-
+//Nuke the station
 /datum/objective/nuclear
 	explanation_text = "Destroy the station with a nuclear device."
 	martyr_compatible = 1
 
-
+//Steal something
 var/global/list/possible_items = list()
 /datum/objective/steal
 	var/datum/objective_item/targetinfo = null //Save the chosen item datum so we can access it later.
@@ -478,10 +475,9 @@ var/global/list/possible_items_special = list()
 	return set_target(pick(possible_items_special))
 
 
-
+//Exchange documents
 /datum/objective/steal/exchange
 	dangerrating = 10
-	martyr_compatible = 0
 
 /datum/objective/steal/exchange/proc/set_faction(faction,otheragent)
 	target = otheragent
@@ -512,7 +508,7 @@ var/global/list/possible_items_special = list()
 	explanation_text = "Do not give up or lose [targetinfo.name]."
 	steal_target = targetinfo.targetitem
 
-
+//Download research levels
 /datum/objective/download
 	dangerrating = 10
 
@@ -548,7 +544,7 @@ var/global/list/possible_items_special = list()
 	return 1
 
 
-
+//Capture life forms
 /datum/objective/capture
 	dangerrating = 10
 
@@ -588,7 +584,7 @@ var/global/list/possible_items_special = list()
 	return 1
 
 
-
+//Absorb DNA
 /datum/objective/absorb
 	dangerrating = 10
 
@@ -616,10 +612,9 @@ var/global/list/possible_items_special = list()
 		return 0
 
 
-
+//Destroy something
 /datum/objective/destroy
 	dangerrating = 10
-	martyr_compatible = 1
 
 /datum/objective/destroy/find_target()
 	var/list/possible_targets = active_ais(1)
@@ -642,6 +637,7 @@ var/global/list/possible_items_special = list()
 	else
 		explanation_text = "Free Objective"
 
+//Steal a bunch of guns
 /datum/objective/summon_guns
 	explanation_text = "Steal at least five guns!"
 
