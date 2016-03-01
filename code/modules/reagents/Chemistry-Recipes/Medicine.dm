@@ -11,8 +11,8 @@
 	name = "Rezadone"
 	id = "rezadone"
 	result = "rezadone"
-	required_reagents = list("cryoxadone" = 3, "cryptobiolin" = 1, "copper" = 1)
-	result_amount = 3
+	required_reagents = list("cryoxadone" = 6, "cryptobiolin" = 1, "copper" = 6)
+	result_amount = 4
 
 /datum/chemical_reaction/spaceacillin
 	name = "Spaceacillin"
