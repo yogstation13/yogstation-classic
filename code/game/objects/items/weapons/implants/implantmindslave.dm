@@ -87,4 +87,3 @@
 	..()
 
 /datum/objective/mindslave
-	martyr_compatible = 1
