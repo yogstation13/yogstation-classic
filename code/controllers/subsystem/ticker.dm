@@ -255,7 +255,11 @@ var/datum/subsystem/ticker/ticker
 			if(M.stat != DEAD)
 				var/turf/T = get_turf(M)
 				if(((station_missed == 0) && T && (T.z==1)) || ((station_missed > 1) && T && (T.z == station_missed)))
-					M.death(0) //no mercy
+					// The chef's meat locker is lead-lined to improve the taste of the meat
+					if (!istype(M.loc, /obj/structure/closet/secure_closet/freezer/meat))
+						M.death(0) //no mercy
+					else
+						M << "The freezer wobbles a bit, then stops. You let out a sigh of relief.";
 
 	//Now animate the cinematic
 	switch(station_missed)
