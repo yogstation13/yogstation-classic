@@ -231,7 +231,7 @@ var/list/ghost_forms = list("ghost","ghostking","ghostian2","skeleghost","ghost_
 							"ghost_blue","ghost_yellow","ghost_green","ghost_pink", \
 							"ghost_cyan","ghost_dblue","ghost_dred","ghost_dgreen", \
 							"ghost_dcyan","ghost_grey","ghost_dyellow","ghost_dpink", "ghost_purpleswirl","ghost_funkypurp","ghost_pinksherbert","ghost_blazeit",\
-							"ghost_mellow","ghost_rainbow","ghost_camo","ghost_fire")
+							"ghost_mellow","ghost_rainbow","ghost_camo","ghost_fire", "Corpse")
 /client/verb/pick_form()
 	set name = "Choose Ghost Form"
 	set category = "Preferences"
@@ -242,7 +242,22 @@ var/list/ghost_forms = list("ghost","ghostking","ghostian2","skeleghost","ghost_
 		prefs.ghost_form = new_form
 		prefs.save_preferences()
 		if(istype(mob,/mob/dead/observer))
-			mob.icon_state = new_form
+			if (new_form=="Corpse")
+				if(mob.mind && mob.mind.current)
+					mob.icon = mob.mind.current.icon
+					mob.icon_state = mob.mind.current.icon_state;
+					mob.overlays.Cut()
+					mob.overlays += mob.mind.current.overlays
+					mob.alpha = 127
+			else
+				mob.icon = initial(mob.icon)
+				mob.icon_state = new_form
+				mob.alpha = 255
+			var/mob/dead/observer/ghost = mob
+			var/image/ghost_image = ghost.ghostimage
+			ghost_image.icon_state = new_form
+			ghost_image.overlays = mob.overlays
+			ghost_image.alpha = mob.alpha
 
 /client/verb/toggle_intent_style()
 	set name = "Toggle Intent Selection Style"
@@ -251,4 +266,4 @@ var/list/ghost_forms = list("ghost","ghostking","ghostian2","skeleghost","ghost_
 	prefs.toggles ^= INTENT_STYLE
 	src << "[(prefs.toggles & INTENT_STYLE) ? "Clicking directly on intents selects them." : "Clicking on intents rotates selection clockwise."]"
 	prefs.save_preferences()
-	feedback_add_details("admin_verb","ITENTS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+	feedback_add_details("admin_verb","ITENTS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!.

@@ -299,11 +299,29 @@
 		. += "[seperator]-[verbpath]"
 	return .
 
-/proc/ui_style2icon(ui_style)
-	switch(ui_style)
-		if("Retro")		return 'icons/mob/screen_retro.dmi'
-		if("Plasmafire")	return 'icons/mob/screen_plasmafire.dmi'
-		else			return 'icons/mob/screen_midnight.dmi'
+/proc/ui_style2icon_carbon(ui_style)
+	var/result = everyone_carbon_uis[ui_style]
+	if(!result)
+		result = donator_carbon_uis[ui_style]
+	if(!result)
+		result = everyone_carbon_uis[DEFAULT_CARBON_UI]
+	return result
+
+/proc/ui_style2icon_borg(ui_style)
+	var/result = everyone_borg_uis[ui_style]
+	if(!result)
+		result = donator_borg_uis[ui_style]
+	if(!result)
+		result = everyone_borg_uis[DEFAULT_BORG_UI]
+	return result
+
+/proc/ui_style2icon_ai(ui_style)
+	var/result = everyone_ai_uis[ui_style]
+	if(!result)
+		result = donator_ai_uis[ui_style]
+	if(!result)
+		result = everyone_ai_uis[DEFAULT_AI_UI]
+	return result
 
 //colour formats
 /proc/rgb2hsl(red, green, blue)
@@ -627,6 +645,7 @@ for(var/t in test_times)
 				for(var/A in value)
 					if(var_source.vars.Find(A))
 						. += A
+
 
 
 

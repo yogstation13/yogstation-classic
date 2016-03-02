@@ -244,3 +244,11 @@
 #define FACING_EACHOTHER										2
 #define FACING_INIT_FACING_TARGET_TARGET_FACING_PERPENDICULAR	3 //Do I win the most informative but also most stupid define award?
 
+
+
+#define NO_DB_CONNECTION		-1
+#define BAD_CLIENT				-2
+#define FAILED_QUERY			-3
+#define NO_RESULT				-4
+#define QUERY_OK				-5
+#define INSUFFICIENT_CREDITS	-6

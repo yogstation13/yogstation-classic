@@ -27,10 +27,9 @@
 
 	var/obj/screen/using
 	var/obj/screen/inventory/inv_box
+	//equippable shit
 
-//equippable shit
-
-//hands
+	//hands
 	inv_box = new /obj/screen/inventory()
 	inv_box.name = "r_hand"
 	inv_box.icon = 'icons/mob/screen_alien.dmi'

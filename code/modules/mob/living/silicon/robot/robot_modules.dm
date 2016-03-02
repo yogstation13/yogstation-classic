@@ -96,6 +96,7 @@
 	modules += new /obj/item/weapon/circular_saw(src)
 	modules += new /obj/item/weapon/extinguisher/mini(src)
 	modules += new /obj/item/roller/robo(src)
+	modules += new /obj/item/weapon/twohanded/shockpaddles/cyborg(src)
 	emag = new /obj/item/weapon/reagent_containers/spray(src)
 
 	emag.reagents.add_reagent("facid", 250)
@@ -241,6 +242,28 @@
 	fix_modules()
 
 
+/obj/item/weapon/robot_module/clown
+	name = "clown robot module"
+
+/obj/item/weapon/robot_module/clown/New()
+	..()
+	modules += new /obj/item/toy/crayon/rainbow(src)
+	modules += new /obj/item/weapon/extinguisher(src)
+	modules += new /obj/item/weapon/bikehorn(src)
+	modules += new /obj/item/weapon/crowbar(src)
+	modules += new /obj/item/weapon/bikehorn/airhorn(src)
+	modules += new /obj/item/weapon/razor(src)
+	modules += new /obj/item/device/instrument/violin(src)
+	modules += new /obj/item/device/instrument/guitar(src)
+	modules += new /obj/item/weapon/gun/magic/wand/(src)
+	emag = new /obj/item/weapon/reagent_containers/spray(src)
+
+	emag.reagents.add_reagent("lube", 250)
+	emag.name = "lube spray"
+	fix_modules()
+
+
+
 /obj/item/weapon/robot_module/syndicate
 	name = "syndicate robot module"
 
@@ -250,7 +273,8 @@
 	modules += new /obj/item/weapon/gun/energy/printer(src)
 	modules += new /obj/item/weapon/gun/projectile/revolver/grenadelauncher/cyborg(src)
 	modules += new /obj/item/weapon/tank/jetpack/carbondioxide(src)
-	modules += new /obj/item/weapon/crowbar(src)
+	modules += new /obj/item/weapon/crowbar/red(src)
+	modules += new /obj/item/weapon/card/emag(src)
 	modules += new /obj/item/weapon/pinpointer/operative(src)
 	emag = null
 	fix_modules()

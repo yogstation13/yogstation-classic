@@ -351,6 +351,7 @@
 	user << "<span class='notice'>You have cast summon guns!</span>"
 	return 1
 
+/* Removed until a rework is found
 /datum/spellbook_entry/summon/magic
 	name = "Summon Magic"
 	category = "Challenges"
@@ -371,6 +372,7 @@
 	playsound(get_turf(user),"sound/magic/CastSummon.ogg",50,1)
 	user << "<span class='notice'>You have cast summon magic and gained an extra charge for your spellbook.</span>"
 	return 1
+*/
 
 /datum/spellbook_entry/summon/events
 	name = "Summon Events"

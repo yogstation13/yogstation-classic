@@ -189,31 +189,14 @@
 		else
 			recoil = initial(recoil)
 
-	if(burst_size > 1)
-		for(var/i = 1 to burst_size)
-			if(!issilicon(user))
-				if( i>1 && !(src in get_both_hands(user))) //for burst firing
-					break
-			if(chambered)
-				if(!chambered.fire(target, user, params, , suppressed))
-					shoot_with_empty_chamber(user)
-					break
-				else
-					if(get_dist(user, target) <= 1) //Making sure whether the target is in vicinity for the pointblank shot
-						shoot_live_shot(user, 1, target, message)
-					else
-						shoot_live_shot(user, 0, target, message)
-			else
-				shoot_with_empty_chamber(user)
+	for(var/i in 1 to burst_size)
+		if(!issilicon(user))
+			if( i>1 && !(src in get_both_hands(user))) //for burst firing
 				break
-			process_chamber()
-			update_icon()
-			sleep(fire_delay)
-	else
 		if(chambered)
 			if(!chambered.fire(target, user, params, , suppressed))
 				shoot_with_empty_chamber(user)
-				return
+				break
 			else
 				if(get_dist(user, target) <= 1) //Making sure whether the target is in vicinity for the pointblank shot
 					shoot_live_shot(user, 1, target, message)
@@ -221,12 +204,15 @@
 					shoot_live_shot(user, 0, target, message)
 		else
 			shoot_with_empty_chamber(user)
-			return
+			break
 		process_chamber()
 		update_icon()
-		semicd = 1
-		spawn(fire_delay)
-			semicd = 0
+		if(burst_size > 1)
+			sleep(fire_delay)
+		else
+			semicd = 1
+			spawn(fire_delay)
+				semicd = 0
 
 	if(user.hand)
 		user.update_inv_l_hand()

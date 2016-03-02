@@ -96,6 +96,7 @@ var/list/allowed_custom_spans = list(SPAN_ROBOT,SPAN_YELL,SPAN_ITALICS,SPAN_SANS
 		interpreter.SetVar("$content", 	html_decode(signal.data["message"]))
 		interpreter.SetVar("$freq"   , 	signal.frequency)
 		interpreter.SetVar("$source" , 	signal.data["name"])
+		interpreter.SetVar("$uuid"   , 	signal.data["uuid"])
 		interpreter.SetVar("$job"    , 	signal.data["job"])
 		interpreter.SetVar("$sign"   ,	signal)
 		interpreter.SetVar("$pass"	 ,  !(signal.data["reject"])) // if the signal isn't rejected, pass = 1; if the signal IS rejected, pass = 0
@@ -235,6 +236,7 @@ var/list/allowed_custom_spans = list(SPAN_ROBOT,SPAN_YELL,SPAN_ITALICS,SPAN_SANS
 		if(signal.data["name"] != setname)
 			signal.data["realname"] = setname
 		signal.data["name"]			= setname
+		signal.data["uuid"]			= interpreter.GetCleanVar("$uuid", signal.data["uuid"])
 		signal.data["job"]			= interpreter.GetCleanVar("$job", signal.data["job"])
 		signal.data["reject"]		= !(interpreter.GetCleanVar("$pass")) // set reject to the opposite of $pass
 		signal.data["verb_say"]		= interpreter.GetCleanVar("$say")
@@ -339,6 +341,7 @@ var/const/SIGNAL_COOLDOWN = 20 // 2 seconds
 		newsign.data["mobtype"] = /mob/living/carbon/human
 		newsign.data["name"] = source
 		newsign.data["realname"] = newsign.data["name"]
+		newsign.data["uuid"] = source
 		newsign.data["job"] = "[job]"
 		newsign.data["compression"] = 0
 		newsign.data["message"] = message
