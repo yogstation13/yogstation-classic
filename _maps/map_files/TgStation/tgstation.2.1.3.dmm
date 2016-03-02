@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 73c5abd... Fuck predefined spawn points.
 "aaa" = (/turf/space,/area/space)
 "aab" = (/obj/effect/landmark/shuttledock{name = "syndicate"},/turf/space,/area/space)
 "aac" = (/obj/docking_port/stationary{dheight = 9; dir = 2; dwidth = 5; height = 22; id = "syndicate_n"; name = "north of station"; turf_type = /turf/space; width = 18},/obj/effect/landmark/shuttledock{name = "syndicate"},/turf/space,/area/space)
@@ -1701,11 +1705,30 @@
 "aGK" = (/obj/structure/grille,/obj/machinery/atmospherics/pipe/simple/supply/hidden,/obj/structure/window/reinforced/fulltile,/obj/machinery/door/firedoor,/turf/simulated/floor/plating,/area/hallway/secondary/entry)
 "aGL" = (/obj/machinery/door/firedoor/border_only{dir = 1; name = "Firelock North"},/turf/simulated/floor/plasteel{icon_state = "delivery"},/area/hallway/secondary/entry)
 "aGM" = (/obj/structure/grille,/obj/structure/window/reinforced/fulltile,/obj/machinery/door/firedoor,/turf/simulated/floor/plating,/area/hallway/secondary/entry)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 "aGN" = (/obj/machinery/atmospherics/components/binary/pump{adminlog = 1; dir = 8; name = "N2O Outlet Pump"; on = 0},/turf/simulated/floor/plasteel{icon_state = "escape"; dir = 5},/area/atmos)
 "aGO" = (/obj/machinery/camera{c_tag = "Atmospherics East"; dir = 8; network = list("SS13")},/obj/machinery/atmospherics/components/binary/pump{adminlog = 1; dir = 8; name = "Plasma Outlet Pump"; on = 0},/turf/simulated/floor/plasteel{dir = 5; icon_state = "warning"},/area/atmos)
 "aGP" = (/obj/machinery/atmospherics/components/binary/pump{adminlog = 1; dir = 8; name = "CO2 Outlet Pump"; on = 0},/turf/simulated/floor/plasteel{dir = 5; icon_state = "yellow"},/area/atmos)
 "aGQ" = (/obj/structure/table,/obj/item/device/gps/science,/obj/item/device/gps/science,/obj/item/device/gps/science,/obj/item/device/gps/science,/obj/item/device/gps/science,/obj/machinery/camera{c_tag = "Telescience Lab"; dir = 4; network = list("SS13","RD")},/obj/machinery/requests_console{department = "Science"; departmentType = 2; name = "Science Requests Console"; pixel_x = -30; pixel_y = 0},/obj/item/device/tsbeacon,/obj/item/device/tsbeacon,/obj/item/device/tsbeacon,/obj/item/device/tsbeacon,/obj/item/device/tsbeacon,/turf/simulated/floor/plasteel{icon_state = "white"},/area/toxins/telesci)
 "aGR" = (/obj/structure/table,/obj/item/weapon/wrench,/obj/item/weapon/crowbar,/obj/item/device/multitool,/obj/item/weapon/screwdriver,/obj/machinery/computer/security/telescreen{desc = "Used for monitoring camera beacons."; dir = 4; name = "Telescience observation"; network = list("telesci"); pixel_x = -26; pixel_y = -1},/turf/simulated/floor/plasteel{icon_state = "white"},/area/toxins/telesci)
+=======
+"aGN" = (/obj/structure/disposalpipe/segment,/obj/effect/landmark{name = "borer_spawn"; pixel_x = -1},/turf/simulated/floor/plasteel{icon_state = "showroomfloor"},/area/crew_quarters/kitchen)
+"aGO" = (/obj/machinery/atmospherics/components/unary/vent_scrubber{dir = 8; on = 1; scrub_N2O = 0; scrub_Toxins = 0},/obj/effect/landmark{name = "borer_spawn"; pixel_x = -1},/turf/simulated/floor/wood,/area/security/vacantoffice)
+"aGP" = (/obj/machinery/camera{c_tag = "Locker Room Toilets"; dir = 8; network = list("SS13")},/obj/effect/landmark{name = "borer_spawn"; pixel_x = -1},/turf/simulated/floor/plasteel{icon_state = "freezerfloor"},/area/crew_quarters/locker/locker_toilet)
+"aGQ" = (/obj/machinery/atmospherics/components/unary/vent_pump{on = 1},/obj/effect/landmark{name = "borer_spawn"; pixel_x = -1},/turf/simulated/floor/plasteel{icon_state = "dark"},/area/medical/morgue)
+"aGR" = (/obj/effect/landmark{name = "blobstart"},/obj/effect/landmark{name = "xeno_spawn"; pixel_x = -1},/obj/effect/landmark{name = "borer_spawn"; pixel_x = -1},/turf/simulated/floor/engine,/area/toxins/explab)
+>>>>>>> 2fff905... Borer Updates + Merge Conflicts
+=======
+"aGN" = (/obj/machinery/alarm{pixel_y = 25},/obj/machinery/atmospherics/components/unary/vent_scrubber{on = 1; scrub_N2O = 0; scrub_Toxins = 0},/obj/effect/landmark{name = "borer_spawn"; pixel_x = -1},/turf/simulated/floor/plasteel{icon_state = "grimy"},/area/chapel/office)
+"aGO" = (/obj/structure/disposalpipe/segment,/obj/effect/landmark{name = "borer_spawn"; pixel_x = -1},/turf/simulated/floor/plasteel{icon_state = "showroomfloor"},/area/crew_quarters/kitchen)
+"aGP" = (/obj/effect/landmark{name = "borer_spawn"; pixel_x = -1},/turf/simulated/floor/carpet,/area/security/vacantoffice)
+"aGQ" = (/obj/machinery/camera{c_tag = "Locker Room Toilets"; dir = 8; network = list("SS13")},/obj/effect/landmark{name = "borer_spawn"; pixel_x = -1},/turf/simulated/floor/plasteel{icon_state = "freezerfloor"},/area/crew_quarters/locker/locker_toilet)
+"aGR" = (/obj/machinery/atmospherics/components/unary/vent_pump{on = 1},/obj/effect/landmark{name = "borer_spawn"; pixel_x = -1},/turf/simulated/floor/plasteel{icon_state = "dark"},/area/medical/morgue)
+>>>>>>> 1e753fd... Merge Conflicts.
+=======
+>>>>>>> 73c5abd... Fuck predefined spawn points.
 "aGS" = (/obj/structure/table,/obj/item/weapon/storage/box/lights/mixed,/obj/item/weapon/storage/box/lights/mixed,/obj/item/weapon/storage/box/lights/mixed,/obj/machinery/atmospherics/pipe/manifold/scrubbers/hidden{dir = 8; initialize_directions = 11},/turf/simulated/floor/plasteel,/area/storage/primary)
 "aGT" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"; pixel_y = 0},/obj/machinery/atmospherics/pipe/manifold/scrubbers/hidden,/turf/simulated/floor/plasteel,/area/storage/primary)
 "aGU" = (/obj/machinery/atmospherics/pipe/simple/scrubbers/hidden{dir = 4},/turf/simulated/floor/plasteel,/area/storage/primary)
@@ -1770,8 +1793,23 @@
 "aIb" = (/obj/machinery/atmospherics/pipe/simple/supply/hidden{dir = 4},/turf/simulated/floor/plasteel{icon_state = "bot"},/area/hallway/secondary/entry)
 "aIc" = (/obj/machinery/atmospherics/pipe/simple/supply/hidden{dir = 9},/turf/simulated/floor/plasteel{icon_state = "bot"},/area/hallway/secondary/entry)
 "aId" = (/turf/simulated/floor/plasteel{icon_state = "bot"},/area/hallway/secondary/entry)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 "aIe" = (/obj/machinery/door_control{id = "telelabdoor"; name = "Test Chamber Blast Doors"; pixel_x = 0; pixel_y = -25},/obj/machinery/camera{c_tag = "Telescience Test Chamber"; dir = 1; network = list("SS13","RD","telesci")},/obj/machinery/atmospherics/components/unary/vent_pump{dir = 8; on = 1},/turf/simulated/floor/engine,/area/toxins/telesci)
 "aIf" = (/obj/structure/extinguisher_cabinet{pixel_x = -5; pixel_y = 30},/turf/simulated/floor/plasteel,/area/hallway/secondary/entry)
+=======
+"aIe" = (/obj/structure/disposalpipe/segment{dir = 4},/obj/effect/landmark{name = "borer_spawn"; pixel_x = -1},/turf/simulated/floor/plasteel,/area/janitor)
+"aIf" = (/obj/structure/extinguisher_cabinet{pixel_x = -5; pixel_y = 30},/turf/simulated/floor/plasteel,/area/hallway/secondary/entry)
+"aIg" = (/obj/effect/landmark{name = "borer_spawn"; pixel_x = -1},/turf/simulated/floor/wood,/area/crew_quarters/cafeteria)
+"aIh" = (/obj/machinery/atmospherics/pipe/simple/general/visible,/obj/effect/landmark{name = "borer_spawn"; pixel_x = -1},/turf/simulated/floor/plasteel{icon_state = "floorgrime"},/area/maintenance/incinerator)
+>>>>>>> 2fff905... Borer Updates + Merge Conflicts
+=======
+"aIf" = (/obj/structure/extinguisher_cabinet{pixel_x = -5; pixel_y = 30},/turf/simulated/floor/plasteel,/area/hallway/secondary/entry)
+>>>>>>> 6d250a3... Fix Conflicts?
+=======
+"aIf" = (/obj/structure/extinguisher_cabinet{pixel_x = -5; pixel_y = 30},/turf/simulated/floor/plasteel,/area/hallway/secondary/entry)
+>>>>>>> 73c5abd... Fuck predefined spawn points.
 "aIk" = (/obj/structure/table,/obj/item/weapon/wrench,/obj/item/device/analyzer,/obj/machinery/atmospherics/pipe/simple/scrubbers/hidden,/turf/simulated/floor/plasteel,/area/storage/primary)
 "aIl" = (/obj/structure/reagent_dispensers/watertank,/turf/simulated/floor/plasteel,/area/storage/primary)
 "aIm" = (/obj/structure/table,/obj/item/weapon/crowbar,/obj/item/device/assembly/prox_sensor{pixel_x = -8; pixel_y = 4},/turf/simulated/floor/plasteel,/area/storage/primary)
@@ -2579,7 +2617,18 @@
 "aXK" = (/turf/simulated/floor/carpet,/area/security/vacantoffice)
 "aXL" = (/obj/effect/landmark{name = "blobstart"},/turf/simulated/floor/carpet,/area/security/vacantoffice)
 "aXM" = (/obj/machinery/atmospherics/pipe/manifold/scrubbers/hidden{tag = "icon-manifold-r-f (WEST)"; dir = 8},/turf/simulated/floor/carpet,/area/security/vacantoffice)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 "aXN" = (/obj/machinery/atmospherics/components/unary/vent_scrubber{dir = 8; on = 1; scrub_N2O = 0; scrub_Toxins = 0},/turf/simulated/floor/wood,/area/security/vacantoffice)
+=======
+>>>>>>> 2fff905... Borer Updates + Merge Conflicts
+=======
+"aXN" = (/obj/machinery/atmospherics/components/unary/vent_scrubber{dir = 8; on = 1; scrub_N2O = 0; scrub_Toxins = 0},/turf/simulated/floor/wood,/area/security/vacantoffice)
+>>>>>>> 6d250a3... Fix Conflicts?
+=======
+"aXN" = (/obj/machinery/atmospherics/components/unary/vent_scrubber{dir = 8; on = 1; scrub_N2O = 0; scrub_Toxins = 0},/turf/simulated/floor/wood,/area/security/vacantoffice)
+>>>>>>> 73c5abd... Fuck predefined spawn points.
 "aXO" = (/obj/machinery/light{dir = 4},/obj/structure/filingcabinet/chestdrawer,/turf/simulated/floor/wood,/area/security/vacantoffice)
 "aXP" = (/obj/machinery/portable_atmospherics/canister/air,/turf/simulated/floor/plating,/area/maintenance/port)
 "aXQ" = (/turf/simulated/wall,/area/crew_quarters/locker/locker_toilet)
@@ -2984,7 +3033,21 @@
 "bfz" = (/obj/structure/disposalpipe/segment{dir = 4},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"; pixel_y = 0},/obj/structure/disposalpipe/segment,/obj/machinery/atmospherics/pipe/simple/supply/hidden,/turf/simulated/floor/plating,/area/maintenance/port)
 "bfA" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"; pixel_y = 0},/obj/structure/disposalpipe/sortjunction{dir = 1; icon_state = "pipe-j2s"; sortType = 1},/obj/structure/cable{d1 = 2; d2 = 8; icon_state = "2-8"},/turf/simulated/floor/plating,/area/maintenance/port)
 "bfB" = (/turf/simulated/floor/plasteel{icon_state = "freezerfloor"},/area/crew_quarters/locker/locker_toilet)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 "bfC" = (/obj/machinery/camera{c_tag = "Locker Room Toilets"; dir = 8; network = list("SS13")},/turf/simulated/floor/plasteel{icon_state = "freezerfloor"},/area/crew_quarters/locker/locker_toilet)
+=======
+>>>>>>> 2fff905... Borer Updates + Merge Conflicts
+=======
+"bfC" = (/obj/machinery/camera{c_tag = "Locker Room Toilets"; dir = 8; network = list("SS13")},/turf/simulated/floor/plasteel{icon_state = "freezerfloor"},/area/crew_quarters/locker/locker_toilet)
+>>>>>>> 6d250a3... Fix Conflicts?
+=======
+>>>>>>> 1e753fd... Merge Conflicts.
+=======
+"bfC" = (/obj/machinery/camera{c_tag = "Locker Room Toilets"; dir = 8; network = list("SS13")},/turf/simulated/floor/plasteel{icon_state = "freezerfloor"},/area/crew_quarters/locker/locker_toilet)
+>>>>>>> 73c5abd... Fuck predefined spawn points.
 "bfD" = (/obj/machinery/power/apc{dir = 1; name = "Locker Room APC"; pixel_x = 0; pixel_y = 24},/obj/structure/cable{icon_state = "0-2"; d2 = 2},/obj/machinery/atmospherics/pipe/simple/supply/hidden{dir = 6},/mob/living/simple_animal/mouse,/turf/simulated/floor/plating,/area/crew_quarters/locker)
 "bfE" = (/obj/machinery/atmospherics/pipe/manifold/supply/hidden,/turf/simulated/floor/plating,/area/maintenance/port)
 "bfF" = (/obj/machinery/atmospherics/pipe/simple/supply/hidden{dir = 4},/obj/machinery/atmospherics/pipe/simple/scrubbers/hidden,/turf/simulated/floor/plating,/area/maintenance/port)
@@ -3246,7 +3309,21 @@
 "bkB" = (/obj/structure/table,/obj/machinery/recharger{pixel_y = 4},/turf/simulated/floor/plasteel{icon_state = "red"; dir = 8},/area/security/checkpoint/medical)
 "bkC" = (/obj/machinery/alarm{dir = 8; icon_state = "alarm0"; pixel_x = 24},/obj/machinery/light{dir = 4},/turf/simulated/floor/plasteel{icon_state = "red"; dir = 4},/area/security/checkpoint/medical)
 "bkD" = (/obj/structure/bodycontainer/morgue,/obj/machinery/camera{c_tag = "Morgue"; dir = 4; network = list("SS13")},/turf/simulated/floor/plasteel{icon_state = "dark"},/area/medical/morgue)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 "bkE" = (/obj/machinery/atmospherics/components/unary/vent_pump{on = 1},/turf/simulated/floor/plasteel{icon_state = "dark"},/area/medical/morgue)
+=======
+>>>>>>> 2fff905... Borer Updates + Merge Conflicts
+=======
+"bkE" = (/obj/machinery/atmospherics/components/unary/vent_pump{on = 1},/turf/simulated/floor/plasteel{icon_state = "dark"},/area/medical/morgue)
+>>>>>>> 6d250a3... Fix Conflicts?
+=======
+>>>>>>> 1e753fd... Merge Conflicts.
+=======
+"bkE" = (/obj/machinery/atmospherics/components/unary/vent_pump{on = 1},/turf/simulated/floor/plasteel{icon_state = "dark"},/area/medical/morgue)
+>>>>>>> 73c5abd... Fuck predefined spawn points.
 "bkF" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/atmospherics/components/unary/vent_scrubber{on = 1; scrub_N2O = 0; scrub_Toxins = 0},/turf/simulated/floor/plasteel{icon_state = "dark"},/area/medical/morgue)
 "bkG" = (/obj/machinery/alarm{dir = 8; icon_state = "alarm0"; pixel_x = 24},/turf/simulated/floor/plasteel{icon_state = "dark"},/area/medical/morgue)
 "bkH" = (/obj/structure/closet/l3closet,/obj/machinery/atmospherics/components/unary/vent_pump{on = 1},/turf/simulated/floor/plasteel,/area/storage/emergency{name = "Paramedic Staging Area"})
@@ -4135,7 +4212,18 @@
 "bBG" = (/obj/structure/disposalpipe/segment{dir = 2; icon_state = "pipe-c"},/obj/machinery/atmospherics/pipe/simple/scrubbers/hidden{dir = 4},/turf/simulated/floor/plasteel{icon_state = "cafeteria"},/area/crew_quarters/hor)
 "bBH" = (/obj/machinery/alarm{dir = 8; icon_state = "alarm0"; pixel_x = 24},/obj/machinery/atmospherics/components/unary/vent_scrubber{dir = 8; on = 1; scrub_Toxins = 0},/turf/simulated/floor/plasteel{icon_state = "cafeteria"},/area/crew_quarters/hor)
 "bBI" = (/obj/machinery/r_n_d/experimentor,/turf/simulated/floor/engine,/area/toxins/explab)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 "bBJ" = (/obj/effect/landmark{name = "blobstart"},/obj/effect/landmark{name = "xeno_spawn"; pixel_x = -1},/turf/simulated/floor/engine,/area/toxins/explab)
+=======
+>>>>>>> 2fff905... Borer Updates + Merge Conflicts
+=======
+"bBJ" = (/obj/effect/landmark{name = "blobstart"},/obj/effect/landmark{name = "xeno_spawn"; pixel_x = -1},/turf/simulated/floor/engine,/area/toxins/explab)
+>>>>>>> 6d250a3... Fix Conflicts?
+=======
+"bBJ" = (/obj/effect/landmark{name = "blobstart"},/obj/effect/landmark{name = "xeno_spawn"; pixel_x = -1},/turf/simulated/floor/engine,/area/toxins/explab)
+>>>>>>> 73c5abd... Fuck predefined spawn points.
 "bBK" = (/obj/machinery/atmospherics/pipe/simple,/turf/simulated/wall/r_wall,/area/toxins/mixing)
 "bBL" = (/obj/machinery/door/airlock/glass_research{autoclose = 0; frequency = 1449; glass = 1; heat_proof = 1; icon_state = "door_locked"; id_tag = "tox_airlock_exterior"; locked = 1; name = "Mixing Room Exterior Airlock"; req_access_txt = "8"},/turf/simulated/floor/engine,/area/toxins/mixing)
 "bBM" = (/obj/machinery/atmospherics/pipe/simple{dir = 6},/turf/simulated/wall/r_wall,/area/toxins/mixing)
@@ -4403,7 +4491,18 @@
 "bGO" = (/obj/machinery/atmospherics/pipe/simple/scrubbers/hidden,/turf/simulated/floor/plasteel,/area/janitor)
 "bGP" = (/obj/structure/stool,/obj/effect/landmark/start{name = "Janitor"},/turf/simulated/floor/plasteel,/area/janitor)
 "bGQ" = (/obj/structure/disposalpipe/segment{dir = 4; icon_state = "pipe-c"},/turf/simulated/floor/plasteel,/area/janitor)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 "bGR" = (/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/plasteel,/area/janitor)
+=======
+>>>>>>> 2fff905... Borer Updates + Merge Conflicts
+=======
+"bGR" = (/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/plasteel,/area/janitor)
+>>>>>>> 6d250a3... Fix Conflicts?
+=======
+"bGR" = (/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/plasteel,/area/janitor)
+>>>>>>> 73c5abd... Fuck predefined spawn points.
 "bGS" = (/obj/structure/disposalpipe/segment{dir = 8; icon_state = "pipe-c"},/turf/simulated/floor/plasteel,/area/janitor)
 "bGT" = (/obj/effect/landmark/start{name = "Janitor"},/turf/simulated/floor/plasteel,/area/janitor)
 "bGU" = (/obj/item/weapon/mop,/obj/item/weapon/reagent_containers/glass/bucket,/turf/simulated/floor/plasteel,/area/janitor)
@@ -5058,6 +5157,14 @@
 "bTt" = (/obj/structure/table,/obj/item/weapon/hand_labeler,/obj/item/clothing/glasses/science,/obj/item/clothing/glasses/science,/obj/machinery/atmospherics/pipe/simple/scrubbers/hidden{dir = 4},/turf/simulated/floor/plasteel,/area/toxins/misc_lab)
 "bTu" = (/obj/structure/table,/obj/item/weapon/storage/toolbox/mechanical,/obj/item/clothing/ears/earmuffs,/obj/machinery/atmospherics/pipe/simple/scrubbers/hidden{dir = 10},/turf/simulated/floor/plasteel,/area/toxins/misc_lab)
 "bTv" = (/turf/simulated/wall,/area/toxins/telesci)
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+"bTw" = (/obj/structure/table,/obj/item/weapon/wrench,/obj/item/weapon/crowbar,/obj/item/device/multitool,/obj/item/weapon/screwdriver,/turf/simulated/floor/plasteel{icon_state = "white"},/area/toxins/telesci)
+>>>>>>> 2fff905... Borer Updates + Merge Conflicts
+=======
+"bTw" = (/obj/structure/table,/obj/item/weapon/wrench,/obj/item/weapon/crowbar,/obj/item/device/multitool,/obj/item/weapon/screwdriver,/turf/simulated/floor/plasteel{icon_state = "white"},/area/toxins/telesci)
+>>>>>>> 73c5abd... Fuck predefined spawn points.
 "bTx" = (/obj/structure/cable{icon_state = "0-2"; d2 = 2},/obj/machinery/power/apc{dir = 1; name = "Telescience Lab APC"; pixel_x = 0; pixel_y = 25},/turf/simulated/floor/plasteel{icon_state = "white"},/area/toxins/telesci)
 "bTy" = (/obj/machinery/alarm{frequency = 1439; pixel_y = 23},/obj/item/device/radio/intercom{dir = 0; name = "Station Intercom (General)"; pixel_x = 27; pixel_y = 24},/obj/machinery/atmospherics/components/unary/vent_scrubber{on = 1; scrub_N2O = 0; scrub_Toxins = 0},/turf/simulated/floor/plasteel{icon_state = "white"},/area/toxins/telesci)
 "bTz" = (/obj/structure/table/reinforced,/obj/item/weapon/paper_bin{pixel_x = 1; pixel_y = 9},/obj/item/weapon/pen,/turf/simulated/floor/plasteel{icon_state = "white"},/area/toxins/telesci)
@@ -5129,6 +5236,14 @@
 "bUN" = (/obj/machinery/atmospherics/pipe/simple/supply/hidden{dir = 4},/turf/simulated/floor/plasteel,/area/toxins/misc_lab)
 "bUO" = (/obj/structure/stool/bed/chair/office/light{dir = 4},/obj/machinery/atmospherics/pipe/simple/supply/hidden{dir = 10},/obj/effect/landmark/start{name = "Scientist"},/turf/simulated/floor/plasteel,/area/toxins/misc_lab)
 "bUP" = (/obj/structure/table,/obj/item/device/electropack,/obj/item/device/healthanalyzer,/obj/item/device/assembly/signaler,/obj/machinery/atmospherics/pipe/simple/scrubbers/hidden,/obj/machinery/camera{c_tag = "Testing Lab North"; dir = 8; network = list("SS13","RD")},/turf/simulated/floor/plasteel,/area/toxins/misc_lab)
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+"bUQ" = (/obj/structure/table,/obj/item/device/gps/science,/obj/item/device/gps/science,/obj/item/device/gps/science,/obj/item/device/gps/science,/obj/item/device/gps/science,/obj/machinery/camera{c_tag = "Telescience Lab"; dir = 4; network = list("SS13","RD")},/obj/machinery/requests_console{department = "Science"; departmentType = 2; name = "Science Requests Console"; pixel_x = -30; pixel_y = 0},/turf/simulated/floor/plasteel{icon_state = "white"},/area/toxins/telesci)
+>>>>>>> 2fff905... Borer Updates + Merge Conflicts
+=======
+"bUQ" = (/obj/structure/table,/obj/item/device/gps/science,/obj/item/device/gps/science,/obj/item/device/gps/science,/obj/item/device/gps/science,/obj/item/device/gps/science,/obj/machinery/camera{c_tag = "Telescience Lab"; dir = 4; network = list("SS13","RD")},/obj/machinery/requests_console{department = "Science"; departmentType = 2; name = "Science Requests Console"; pixel_x = -30; pixel_y = 0},/turf/simulated/floor/plasteel{icon_state = "white"},/area/toxins/telesci)
+>>>>>>> 73c5abd... Fuck predefined spawn points.
 "bUR" = (/obj/machinery/atmospherics/pipe/simple/scrubbers/hidden{dir = 6},/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"; pixel_y = 0; tag = ""},/turf/simulated/floor/plasteel{icon_state = "white"},/area/toxins/telesci)
 "bUS" = (/obj/structure/stool/bed/chair/office/light{dir = 4},/obj/effect/landmark/start{name = "Scientist"},/obj/machinery/atmospherics/pipe/manifold/scrubbers/hidden,/turf/simulated/floor/plasteel{icon_state = "white"},/area/toxins/telesci)
 "bUT" = (/obj/machinery/computer/telescience,/obj/machinery/atmospherics/pipe/simple/scrubbers/hidden{dir = 4},/turf/simulated/floor/plasteel{icon_state = "white"},/area/toxins/telesci)
@@ -5189,6 +5304,14 @@
 "bVW" = (/obj/structure/table/reinforced,/obj/item/weapon/clipboard,/obj/item/weapon/book/manual/wiki/telescience,/obj/machinery/atmospherics/pipe/simple/supply/hidden{dir = 4},/turf/simulated/floor/plasteel{icon_state = "white"},/area/toxins/telesci)
 "bVX" = (/obj/structure/grille,/obj/machinery/door/poddoor/preopen{id = "telelabwind"; name = "test chamber blast door"},/obj/machinery/atmospherics/pipe/simple/supply/hidden{dir = 4},/obj/structure/window/reinforced/fulltile,/turf/simulated/floor/plating,/area/toxins/telesci)
 "bVY" = (/obj/machinery/atmospherics/pipe/simple/supply/hidden{dir = 4},/turf/simulated/floor/engine,/area/toxins/telesci)
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+"bVZ" = (/obj/machinery/door_control{id = "telelabdoor"; name = "Test Chamber Blast Doors"; pixel_x = 0; pixel_y = -25},/obj/machinery/camera{c_tag = "Telescience Test Chamber"; dir = 1; network = list("SS13","RD")},/obj/machinery/atmospherics/components/unary/vent_pump{dir = 8; on = 1},/turf/simulated/floor/engine,/area/toxins/telesci)
+>>>>>>> 2fff905... Borer Updates + Merge Conflicts
+=======
+"bVZ" = (/obj/machinery/door_control{id = "telelabdoor"; name = "Test Chamber Blast Doors"; pixel_x = 0; pixel_y = -25},/obj/machinery/camera{c_tag = "Telescience Test Chamber"; dir = 1; network = list("SS13","RD")},/obj/machinery/atmospherics/components/unary/vent_pump{dir = 8; on = 1},/turf/simulated/floor/engine,/area/toxins/telesci)
+>>>>>>> 73c5abd... Fuck predefined spawn points.
 "bWa" = (/turf/simulated/wall,/area/toxins/misc_lab)
 "bWb" = (/obj/machinery/atmospherics/pipe/simple/supply/hidden,/turf/simulated/wall,/area/toxins/misc_lab)
 "bWc" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/atmospherics/pipe/simple/scrubbers/hidden,/turf/simulated/floor/plating,/area/maintenance/asmaint2)
@@ -5219,6 +5342,14 @@
 "bWB" = (/obj/machinery/atmospherics/pipe/simple/yellow/visible{dir = 6},/obj/machinery/meter,/turf/simulated/floor/plasteel,/area/atmos)
 "bWC" = (/obj/machinery/atmospherics/pipe/manifold/yellow/visible{dir = 1},/turf/simulated/floor/plasteel,/area/atmos)
 "bWD" = (/obj/machinery/atmospherics/pipe/simple/green/visible,/obj/machinery/atmospherics/pipe/simple/yellow/visible{dir = 4},/turf/simulated/floor/plasteel,/area/atmos)
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+"bWE" = (/obj/machinery/atmospherics/components/binary/pump{dir = 8; name = "N2O Outlet Pump"; on = 0},/turf/simulated/floor/plasteel{icon_state = "escape"; dir = 5},/area/atmos)
+>>>>>>> 2fff905... Borer Updates + Merge Conflicts
+=======
+"bWE" = (/obj/machinery/atmospherics/components/binary/pump{dir = 8; name = "N2O Outlet Pump"; on = 0},/turf/simulated/floor/plasteel{icon_state = "escape"; dir = 5},/area/atmos)
+>>>>>>> 73c5abd... Fuck predefined spawn points.
 "bWF" = (/obj/machinery/atmospherics/components/unary/vent_pump{dir = 8; external_pressure_bound = 0; frequency = 1441; id_tag = "n2o_out"; initialize_directions = 1; internal_pressure_bound = 4000; on = 1; pressure_checks = 2; pump_direction = 0},/turf/simulated/floor/engine/n20,/area/atmos)
 "bWG" = (/turf/simulated/floor/engine/n20,/area/atmos)
 "bWH" = (/obj/structure/closet/crate/freezer,/obj/item/weapon/reagent_containers/blood/empty,/obj/item/weapon/reagent_containers/blood/empty{pixel_x = -3; pixel_y = -3},/obj/item/weapon/reagent_containers/blood/AMinus,/obj/item/weapon/reagent_containers/blood/BMinus{pixel_x = -4; pixel_y = 4},/obj/item/weapon/reagent_containers/blood/BPlus{pixel_x = 1; pixel_y = 2},/obj/item/weapon/reagent_containers/blood/OMinus,/obj/item/weapon/reagent_containers/blood/OPlus{pixel_x = -2; pixel_y = -1},/obj/item/weapon/reagent_containers/blood/random,/obj/item/weapon/reagent_containers/blood/random,/obj/item/weapon/reagent_containers/blood/random,/obj/machinery/atmospherics/components/unary/vent_scrubber{dir = 4; on = 1; scrub_N2O = 0; scrub_Toxins = 0},/turf/simulated/floor/plasteel{icon_state = "white"},/area/medical/virology)
@@ -5439,6 +5570,14 @@
 "caO" = (/obj/machinery/atmospherics/components/unary/portables_connector/visible{dir = 4},/obj/machinery/portable_atmospherics/canister,/turf/simulated/floor/plasteel{dir = 2; icon_state = "bot"},/area/atmos)
 "caP" = (/obj/machinery/atmospherics/components/unary/portables_connector/visible{dir = 8},/turf/simulated/floor/plasteel{dir = 2; icon_state = "bot"},/area/atmos)
 "caQ" = (/obj/machinery/atmospherics/pipe/manifold/yellow/visible{dir = 8},/turf/simulated/floor/plasteel,/area/atmos)
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+"caR" = (/obj/machinery/camera{c_tag = "Atmospherics East"; dir = 8; network = list("SS13")},/obj/machinery/atmospherics/components/binary/pump{dir = 8; name = "Plasma Outlet Pump"; on = 0},/turf/simulated/floor/plasteel{dir = 5; icon_state = "warning"},/area/atmos)
+>>>>>>> 2fff905... Borer Updates + Merge Conflicts
+=======
+"caR" = (/obj/machinery/camera{c_tag = "Atmospherics East"; dir = 8; network = list("SS13")},/obj/machinery/atmospherics/components/binary/pump{dir = 8; name = "Plasma Outlet Pump"; on = 0},/turf/simulated/floor/plasteel{dir = 5; icon_state = "warning"},/area/atmos)
+>>>>>>> 73c5abd... Fuck predefined spawn points.
 "caS" = (/obj/machinery/atmospherics/components/unary/vent_pump{dir = 8; external_pressure_bound = 0; frequency = 1441; id_tag = "tox_out"; initialize_directions = 1; internal_pressure_bound = 4000; on = 1; pressure_checks = 2; pump_direction = 0},/turf/simulated/floor/engine{carbon_dioxide = 0; name = "plasma floor"; nitrogen = 0; oxygen = 0; toxins = 70000},/area/atmos)
 "caT" = (/turf/simulated/floor/engine{carbon_dioxide = 0; name = "plasma floor"; nitrogen = 0; oxygen = 0; toxins = 70000},/area/atmos)
 "caU" = (/obj/effect/landmark{name = "xeno_spawn"; pixel_x = -1},/turf/simulated/floor/engine{carbon_dioxide = 0; name = "plasma floor"; nitrogen = 0; oxygen = 0; toxins = 70000},/area/atmos)
@@ -5644,6 +5783,14 @@
 "ceM" = (/obj/machinery/atmospherics/components/binary/pump{dir = 8; name = "Port to Filter"; on = 0},/turf/simulated/floor/plasteel,/area/atmos)
 "ceN" = (/obj/machinery/atmospherics/pipe/manifold/general/visible,/obj/item/weapon/cigbutt,/turf/simulated/floor/plasteel,/area/atmos)
 "ceO" = (/obj/machinery/atmospherics/components/unary/cold_sink/freezer{dir = 8},/turf/simulated/floor/plasteel,/area/atmos)
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+"ceP" = (/obj/machinery/atmospherics/components/binary/pump{dir = 8; name = "CO2 Outlet Pump"; on = 0},/turf/simulated/floor/plasteel{dir = 5; icon_state = "yellow"},/area/atmos)
+>>>>>>> 2fff905... Borer Updates + Merge Conflicts
+=======
+"ceP" = (/obj/machinery/atmospherics/components/binary/pump{dir = 8; name = "CO2 Outlet Pump"; on = 0},/turf/simulated/floor/plasteel{dir = 5; icon_state = "yellow"},/area/atmos)
+>>>>>>> 73c5abd... Fuck predefined spawn points.
 "ceQ" = (/obj/machinery/atmospherics/components/unary/vent_pump{dir = 8; external_pressure_bound = 0; frequency = 1441; id_tag = "co2_out"; initialize_directions = 1; internal_pressure_bound = 4000; on = 1; pressure_checks = 2; pump_direction = 0},/turf/simulated/floor/engine{carbon_dioxide = 50000; name = "co2 floor"; nitrogen = 0; oxygen = 0},/area/atmos)
 "ceR" = (/turf/simulated/floor/engine{carbon_dioxide = 50000; name = "co2 floor"; nitrogen = 0; oxygen = 0},/area/atmos)
 "ceS" = (/obj/structure/closet/crate,/obj/effect/spawner/lootdrop/maintenance,/turf/simulated/floor/plating,/area/maintenance/asmaint)
@@ -6273,7 +6420,18 @@
 "cqS" = (/turf/simulated/floor/plasteel{icon_state = "floorgrime"},/area/maintenance/incinerator)
 "cqT" = (/obj/machinery/atmospherics/components/binary/valve{dir = 1; name = "Mix to Space"},/turf/simulated/floor/plasteel{icon_state = "floorgrime"},/area/maintenance/incinerator)
 "cqU" = (/obj/machinery/atmospherics/components/unary/vent_pump{dir = 1; external_pressure_bound = 101.325; on = 1; pressure_checks = 1},/turf/simulated/floor/plasteel{icon_state = "floorgrime"},/area/maintenance/incinerator)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 "cqV" = (/obj/machinery/atmospherics/pipe/simple/general/visible,/turf/simulated/floor/plasteel{icon_state = "floorgrime"},/area/maintenance/incinerator)
+=======
+>>>>>>> 2fff905... Borer Updates + Merge Conflicts
+=======
+"cqV" = (/obj/machinery/atmospherics/pipe/simple/general/visible,/turf/simulated/floor/plasteel{icon_state = "floorgrime"},/area/maintenance/incinerator)
+>>>>>>> 6d250a3... Fix Conflicts?
+=======
+"cqV" = (/obj/machinery/atmospherics/pipe/simple/general/visible,/turf/simulated/floor/plasteel{icon_state = "floorgrime"},/area/maintenance/incinerator)
+>>>>>>> 73c5abd... Fuck predefined spawn points.
 "cqW" = (/obj/structure/cable/yellow{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/structure/disposalpipe/segment{dir = 1; icon_state = "pipe-c"},/turf/simulated/floor/plasteel{icon_state = "floorgrime"},/area/maintenance/incinerator)
 "cqX" = (/obj/machinery/atmospherics/components/binary/pump{dir = 1; name = "Incinerator to Output"; on = 0},/obj/structure/disposalpipe/segment{dir = 4},/obj/machinery/alarm{desc = "This particular atmos control unit appears to have no access restrictions."; dir = 8; icon_state = "alarm0"; locked = 0; name = "all-access air alarm"; pixel_x = 24; req_access = "0"; req_one_access = "0"},/turf/simulated/floor/plasteel{icon_state = "floorgrime"},/area/maintenance/incinerator)
 "cqY" = (/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/wall,/area/maintenance/incinerator)
@@ -6937,18 +7095,18 @@ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahaahaagaahaahaahaahaahajWaaaaagaagaagaaaaaaaaabOBbGpbOCbGpbODaaaaagaaabxTbOEbOFbOGbOHbOIbxTaaaaaaaaaaagbNsbIabIbaagaagaagaagbDHbDHbDHbDHbDHbDHbDHbDHbDHbDHbOJbOKbOLbOMbNGbNHbNIbNJbNKbONbONbOObOPbOQbORbOSbOTbOUbOVbOWbOXbOYbOZbPabPbbPcbPdbPdbPdbPdbPdbPdbPebAcbPfbPgbPhbPibPjbPkbPlbEjbPmbElbPnbLDbLDbPobLDbKgbPpbPqbPrbPsbPtbPubPtbPvbPwbPxbPybPybPybPybPybPybPzbPAbPBbxCbicbPCbPDbHCbHCbPEbPFbPFbPFbPGbPHbGbbPIbuRbmCbxObPJbPKbPLbPMbPNbPObPPbNkaagaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagaagbPQbNmbPRbPSbPTbNmbPQaagaagaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagaahaagaagaczaagaagaaaaaaaaaaaaaaaaaaaaaaaaaahaEQaEQaEQaEQaEQaahaagaaabxTbPUbPVbPWbPXbPYbxTaaaaaaaaaaaabNsbIabIbaaaaaaaaaaagbPZbQabQabQbbQcbQdbQdbQebQebPZbGLbQfbNEbQgbNGbQhbQibQibQjbQkbONbQlbQmbQnbQobQpbQqbQrbQsbQtbQubQvbQubQwbQxbQyaagbQzbQzbQzbQzbQzbQAbAcbPfbQBbPhbQCbQDbQEbQFbQGbQHbQIbMNbQJbQKbLDbQLbKgbPpbQMbEpbOabOabOabQNbOabOabQObQPbQQbQQbQRbQQbQQbQSbQTbQUbQVbicbQWbQXbQYbQZbRabRbbRcbRdbRebRfbGbbRgbuRbmCbxObRhbRibRjbBObRkbNkbNkbBOaagaagaAFaagaagaagaagaAFaagaagaagaagaAFaagaagaagaagaAFbNmbNmbRlbRmbRmbRmbRnbNmbNmaagaagaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagaagaagaagaaaaczaaaaagaagaagaagaagaagaagaagaagaagaagaagaagaagaagaagaagaagbDGbDGbDGbDGbDGbDGbDGaaaaaaaaaaaabNsbIabIbaaaaaaaaaaagbPZbRobQbbQbbQbbQbbQdbRpbRqbRrbRsbNDbRtbRubRvbRwbRxbRybRzbRAbRBbRxbRxbRxbRzbRCbRDbREbRFbRGbPbbRHbRIbRJbRKbRLbPdbRMbRNbRObRPbQzbQAbAcbNPbRQbPhbPhbPhbPhbPhbRRbHobRSbKgbKgbKgbKgbKgbKgbIsbhUbEpbRTbRUbRVbRWbRXbRYbRZbSabSbbScbSdbSebSfbLLbicbSgbShbicbFRbFRbFRbFRbFRbFRbGbbGbbGbbGbbGbbRgbuRbSibxObSjbSkbSlbBObSmbSnbSobSpaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabSqbSrbSqbRmbSsbRmbStbSubNlaagaagaagaagaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagaaaaczaczaczaczaczaczaczaczaczaczaaaaaaaaaaaaaaaaaaaaaaagaaaaaabDGbSvbJsbJsbJsbSwbDGaaaaaaaaaaaabNsbNtbIbaaaaagbNsbNsbPZbQbbSxbSybQbbQbbSzbSAbQdbSBbGLbQfbSCbSDbSEbSFbSGbSHbSIbSJbSKbSHbSLbSHbSMbSNbSObOUbSPbSQbSRbSSbSTbSUbSVbSWaagbSXbSYbRPbSZbQzbQAbAcbNPbRQbPhbTabTbbTcbTdbEjbTebTfbTgbThbTibTjbTkbMzbTlbTmbEpbLLbLLbLLbLLbMZbTnbTobTpbMZbLLbLLbLLbLLbLLbTqbTrbTsbTtbTubTvaGRbTxbTybTzbTAbTBbTCbTDbTEbTFbuRbmCbxObTGbTHbNkbBObBObBObBObBOaagaagaEQaagaagaagaagaEQaagaagaagaagaEQaagaagaagaagaEQbNmbNmbTIbRmbRmbRmbTJbNmbNmaagaagaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagaaaaagaagaagaaaaaaaagaczaagaagaagaagaagaagaagaagaagaagaagaagaagbDGbTKbJsbJrbJsbTLbDGaaaaaaaaaaaabNsbIabIbaaaaagbNsbTMbTNbTObTPbTQbTQbTQbTQbTQbTRbTSbTTbQfbSCbTUbTVbTWbTXbQubTYbTZbUabUbbUcbUdbUebUfbUfbUgbUhbPbbUibUjbUkbUlbUmbUnbUobRMbUpbRPbRPbQzbQAbAcbNPbRQbPhbUqbUrbUsbUtbUubUvbUwbUxbUybUzbUAbUzbUzbUBbUCbEpbUDbUEbUEbUFbUGbOabUHbUIbUJbUKbFKbFKbFKbLLbULbUMbUNbUObUPbTvaGQbURbUSbUTbUUbUVbUWbUXbTEbUYbUZbVablebVbbVbbVcbVdbVcbVdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaafaaaaaaaaaaaaaaaaaaaaaaaaaagaagbPQbNmbVebVfbVgbVhbPQaagaagaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaczaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabDGbTKbJsbJsbVibVjbDGaaaaagaaaaaabNsbIabGCbDGbDGbDGbVkbPZbVlbQbbQbbQbbVmbVnbVobVpbPZbGLbQfbSCbTUbSEbVqbVrbQubQubVsbONbVtbVubVvbVwbQubQubOUbVxbVybVzbVAbVBbVCbVBbVDaagbQzbQzbQzbQzbQzbQAbAcbNPbVEbVFbVFbVFbVFbVFbVGbVHbVIbVFbVFbVFbVFbVFbVFbVEbNPbEpbFKbFKbFKbVJbVKbOabVLbOabVMbVNbFKbFKbFKbLLbVObVPbVQbVRbVSbTvbVTbVUbVVbVWbVXbVYbVYaIebTEbWabWbbWcblebWdbWebWfbWebWfbWdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagaagbNmbNlbWgbNlbVhaagaagaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaafaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagaagaagaagaczaagbWhaagaagaagbDGbDGbDGbDGbDGbDGbDGbDGbDGbDGbDGbWibDGbDGbDGbNsbNsbNsbDGbWjbWkbWlbWmbWnbWobWpbTSbTSbTSbTSbTSbTSbTSbTSbTSbWqbWrbWsbSCbWtbNGbWubWvbUabWwbUabONbQubQubQubVwbWxbWybWybWzbWAbWBbRHbWCbWDaGNbRLbPdbRMbWFbWGbWGbQzbQAbAcbNPbVEbWHbWIbWJbWKbVFbWLbWMbWNbVFbWObWPbWQbWObWPbVEbNPbEpbFKbFKbFKbWRbWSbUIbWTbOabWUbWVbUEbUEbWWbLLbWXbWYbWZbXabXbbTvbTvbXcbXdbTvbTEbTEbXebTEbTEbXfbWbbWcblebWdbVcbVdbVcbVdbWdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagaagbNlbNmbNlaagaagaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagaaaaczaczaczaczaczaczaczaczaczaczaaaaaaaaaaaaaaaaaaaaaaagaaaaaabDGbSvbJsbJsbJsbSwbDGaaaaaaaaaaaabNsbNtbIbaaaaagbNsbNsbPZbQbbSxbSybQbbQbbSzbSAbQdbSBbGLbQfbSCbSDbSEbSFbSGbSHbSIbSJbSKbSHbSLbSHbSMbSNbSObOUbSPbSQbSRbSSbSTbSUbSVbSWaagbSXbSYbRPbSZbQzbQAbAcbNPbRQbPhbTabTbbTcbTdbEjbTebTfbTgbThbTibTjbTkbMzbTlbTmbEpbLLbLLbLLbLLbMZbTnbTobTpbMZbLLbLLbLLbLLbLLbTqbTrbTsbTtbTubTvbTwbTxbTybTzbTAbTBbTCbTDbTEbTFbuRbmCbxObTGbTHbNkbBObBObBObBObBOaagaagaEQaagaagaagaagaEQaagaagaagaagaEQaagaagaagaagaEQbNmbNmbTIbRmbRmbRmbTJbNmbNmaagaagaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagaaaaagaagaagaaaaaaaagaczaagaagaagaagaagaagaagaagaagaagaagaagaagbDGbTKbJsbJrbJsbTLbDGaaaaaaaaaaaabNsbIabIbaaaaagbNsbTMbTNbTObTPbTQbTQbTQbTQbTQbTRbTSbTTbQfbSCbTUbTVbTWbTXbQubTYbTZbUabUbbUcbUdbUebUfbUfbUgbUhbPbbUibUjbUkbUlbUmbUnbUobRMbUpbRPbRPbQzbQAbAcbNPbRQbPhbUqbUrbUsbUtbUubUvbUwbUxbUybUzbUAbUzbUzbUBbUCbEpbUDbUEbUEbUFbUGbOabUHbUIbUJbUKbFKbFKbFKbLLbULbUMbUNbUObUPbTvbUQbURbUSbUTbUUbUVbUWbUXbTEbUYbUZbVablebVbbVbbVcbVdbVcbVdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaafaaaaaaaaaaaaaaaaaaaaaaaaaagaagbPQbNmbVebVfbVgbVhbPQaagaagaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaczaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabDGbTKbJsbJsbVibVjbDGaaaaagaaaaaabNsbIabGCbDGbDGbDGbVkbPZbVlbQbbQbbQbbVmbVnbVobVpbPZbGLbQfbSCbTUbSEbVqbVrbQubQubVsbONbVtbVubVvbVwbQubQubOUbVxbVybVzbVAbVBbVCbVBbVDaagbQzbQzbQzbQzbQzbQAbAcbNPbVEbVFbVFbVFbVFbVFbVGbVHbVIbVFbVFbVFbVFbVFbVFbVEbNPbEpbFKbFKbFKbVJbVKbOabVLbOabVMbVNbFKbFKbFKbLLbVObVPbVQbVRbVSbTvbVTbVUbVVbVWbVXbVYbVYbVZbTEbWabWbbWcblebWdbWebWfbWebWfbWdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagaagbNmbNlbWgbNlbVhaagaagaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaafaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagaagaagaagaczaagbWhaagaagaagbDGbDGbDGbDGbDGbDGbDGbDGbDGbDGbDGbWibDGbDGbDGbNsbNsbNsbDGbWjbWkbWlbWmbWnbWobWpbTSbTSbTSbTSbTSbTSbTSbTSbTSbWqbWrbWsbSCbWtbNGbWubWvbUabWwbUabONbQubQubQubVwbWxbWybWybWzbWAbWBbRHbWCbWDbWEbRLbPdbRMbWFbWGbWGbQzbQAbAcbNPbVEbWHbWIbWJbWKbVFbWLbWMbWNbVFbWObWPbWQbWObWPbVEbNPbEpbFKbFKbFKbWRbWSbUIbWTbOabWUbWVbUEbUEbWWbLLbWXbWYbWZbXabXbbTvbTvbXcbXdbTvbTEbTEbXebTEbTEbXfbWbbWcblebWdbVcbVdbVcbVdbWdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagaagbNlbNmbNlaagaagaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabXgbXhbXibXhbXjbXkbXkbXlbXmbXnbXobXpbXqbXqbXrbDGbJsbJsbJsbJsbJsbJsbJsbJsbJsbJsbXsbXtbXubXvbXvbXvbXvbXwbXxbXxbXxbXybGybGybGybGybXzbGCbGLbQfbSCbXAbXBbXCbXDbWybWybXEbXFbWybWybXGbXHbXIbQubXJbXKbXLbXMbQubXNbXObXPbSWaagbSXbXQbXRbXSbQzbQAbXTbNPbVEbXUbWObXVbXWbXXbXYbWMbXZbVFbWPbYabWPbYbbYcbVEbNPbEpbLLbLLbLLbLLbYdbYebVLbYfbYdbLLbLLbLLbLLbLLbYgbYhbVQbYibYjbYkbYlbYmbYnbYobYpbYqbVQbYrbYsbYtbWbbWcblebWebWfbWebWfbWebWfaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagaagaagaagaagaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagaczaaaaaaaaabNsbNsbNsbJsbYubYvbYwbYxbYybDGbJsbYzbYzbYzbYzbYzbYzbYzbYzbYzbYAbGCbDGbDGbDGbDGbDGbNsbNsbNsbNsbNsbNsbDGbDGbYBbYCbYDbYEbQfbSCbYFbYGbYHbYIbYJbUfbYKbYLbUfbUfbYMbYNbYObYPbYQbYRbYSbYTbQubXNbYUbYVbUnbUobRMbYWbWGbWGbQzbQAbXTbNPbVEbYXbYYbWObYZbVFbZabZbbZcbVFbWObZdbZebWPbZfbVEbNPbEpbUDbUEbUEbZgbUGbOabUHbUIbZhbZibFKbFKbZjbLLbZkbZlbZmbZnbZobZpbZqbZrbZsbZtbZubZvbVQbZwbYsbYtbWbbWcbleaaaaaaaagaagaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagaczaczaczaczbZxbJsbZxbZybZzbZAbYvbZBbZCbDGbZybYzbZDbZEbZFbZGbZHbZIbZJbZKbZLbGCbZMbZNbDGaaaaaaaaaaagaaaaaaaagaaaaaabDGbDGbZObZPbZQbZRbSCbZSbZTbZUbZUbZVbNGbNGbNGbNGbNGbZWbZXbONbONbONbZYbQubXLbQubXNbXObZZbSWaagbQzbQzbQzbQzbQzbQAbXTbNPbVEcaabWOcabbVGbVFbVFcacbVEbVFcadcaecafcadcagbVEbNPbEpbFKbFKbFKcahbVKbOabVLbOabVMcaibFKbFKbFKbEpbYscajcakcakbYsbYscalbVQcamcanbWabWabWabWabYscaocapbWcbleblecaqcaqbleaahaahaagaagaagaagaahaahaagaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagaagbNsbNsbNscarcascatcaucavbJscawbJsbYzcaxbZFbZFcaycazbZFcazbYzcaAcaBcaCcaDbDGaaacaEcaEcaEcaEcaEcaEcaEcaEcaEcaEcaEcaEbGLbQfbSCcaFcaGbNGcaHcaIbNGcaJcaKcaLbNGcaMbVwcaNbONcaObYTbQubYRcaPcaQbWDaGObRLbPdbRMcaScaTcaUbQzbQAbAcbNPbVEcaVcaWcaWcaXcaYcaZcbacbbcbcbWObZdbWObWObZfbVEbNPbEpbFKbZjbFKcbdcbebUIbWTbOabWUcbfbUEbUEbWWbEpcbgcbhcbgcbgcbgbYscbicbicbjcbkcblcbmcbnbVQcbocbpcapbWcblecbqcbrcbqbleaagaagaagaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagaagbNsbNsbNscarcascatcaucavbJscawbJsbYzcaxbZFbZFcaycazbZFcazbYzcaAcaBcaCcaDbDGaaacaEcaEcaEcaEcaEcaEcaEcaEcaEcaEcaEcaEbGLbQfbSCcaFcaGbNGcaHcaIbNGcaJcaKcaLbNGcaMbVwcaNbONcaObYTbQubYRcaPcaQbWDcaRbRLbPdbRMcaScaTcaUbQzbQAbAcbNPbVEcaVcaWcaWcaXcaYcaZcbacbbcbcbWObZdbWObWObZfbVEbNPbEpbFKbZjbFKcbdcbebUIbWTbOabWUcbfbUEbUEbWWbEpcbgcbhcbgcbgcbgbYscbicbicbjcbkcblcbmcbnbVQcbocbpcapbWcblecbqcbrcbqbleaagaagaagaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagaagaagbNscbscbtcbtcbubYycbvbDGbJsbYzcbwbZFbZFcbxcazcbybYzbYzcaAbGCcbzcbAbDGaagcaEcbBcbBcbCcbBcbDcbEcbFcbGcaEcbHcbIbGLbQfcbJcbKcbKcbLcbMcbNcbOcbPcbQcbRbNGbQubVwcbScbTcaOcbUbQubYRcaPbXNbXOcbVbSWaagbSXcbWcbXcbYbQzbQAbAcbNPcbZbXXbXXbXXccaccbbWOcccbXVccdccdcceccfccdccgbVEbNPbEpbLLbLLbLLbLLbYdcchbVLccibYdbLLbLLbLLbLLbEpccjcbgcckcbgcbgcclccmccnccoccpccqccrccscctccuccvcapbWcblebRgbRgbRgcaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaGFaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagaagaagaagaagaagaagaagaagaagaagaagaagbDGbDGbDGbDGbDGbDGcawbDGbDGbDGbDGbJsbYzccwbZFccxccycazbZFbZFcczcaAbGCbDGbDGbDGaaacaEccAccBccCccDccEccFccGccHccIccJccKccLccMccNcbKccOccPccPccQccRccSccTccUbNGccVccWcaNbONcaOccXbQuccYcaPbXNccZcdabUnbUobRMcdbcaTcaTbQzbQAbXTcdccddcddcddcdebVEcdfcaVcdgcdhcdicdjcdkcdlcdmcdnbVEbNPbEpbUDbUEbUEcdobUGbOabUHbUIcdpcdqbFKbFKbFKbEpcdrcbgcdscbgcbgbYscbicbicdtcancducdvcdwcdxbYsbYscapbWcblecdycdzcdAcaqaagaagaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaieaieaieaifaifaieaifaifaifajWaifaifaifaieaifaaaaagbDGbJsbJsbJsbJsbJsbJsbJsbJscbvbJsbJsbYzbYzbZFcazcdBbZFbZFcdCcczcaAcdDcdEcdFbNsaaacaEcdGccCcbBccCcbBcdHcdIcdJcaEcdKcbIcdLcdMbJDcbKcdNccPcdOcdPcdQcdRcdScdTcdUbRGcdVbONbONbONcdWbQucdXcdYbXNbXObQubSWaagbQzbQzbQzbQzbQzbQAbXTcdZbAcbAcbAcceabVEcebbWObWOceccaecedceecagceecedbVEbNPbEpbFKbFKbFKcefbVKbOabVLbOabVMcegbFKbFKbFKbEpbYsbYsbYsbYsbYsbYscehcehceicejbWacaocaocaobYsbUYcekcelblecemcenbRgcaqaagaaaaaaaaaaaaaaaaafaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaieaaaaaaaagaagaaaaagaagaaaaaaaagaagaagaaaaifaaaaaabDGceobJrbDGbDGbDGbWibDGbDGbDGbDGbJsbYzcazbZFbZFbZFbZFcbybYzbYzcepceqcercesbNsaaacaEcbBccDcetccBceucevcewcexceycezceyceAceBceCcbKcbKceDccPceEceFceGceFceHbNGbQuceIceJceKceLbSPceMceNceOcaQbWDaGPbRLbPdbRMceQceRceRbQzbQAbXTcdZbAcceSbIsceabVEceTceUceVceWceXccfceYceZceYcfabVEbNPbEpbFKbFKbFKcfbcfcbUIcfdbOabWUcfebUEbUEbWWbEpcffcfgcfhcficfibYscfjcfjceicancducaocaocfkbYscbqcekbWcblebleblecflbleaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaieaaaaaaaagaagaaaaagaagaaaaaaaagaagaagaaaaifaaaaaabDGceobJrbDGbDGbDGbWibDGbDGbDGbDGbJsbYzcazbZFbZFbZFbZFcbybYzbYzcepceqcercesbNsaaacaEcbBccDcetccBceucevcewcexceycezceyceAceBceCcbKcbKceDccPceEceFceGceFceHbNGbQuceIceJceKceLbSPceMceNceOcaQbWDcePbRLbPdbRMceQceRceRbQzbQAbXTcdZbAcceSbIsceabVEceTceUceVceWceXccfceYceZceYcfabVEbNPbEpbFKbFKbFKcfbcfcbUIcfdbOabWUcfebUEbUEbWWbEpcffcfgcfhcficfibYscfjcfjceicancducaocaocfkbYscbqcekbWcblebleblecflbleaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaifaaacfmcfncfoaaacfmcfncfoaaacfmcfncfoaaaaifaaaaaabDGcfpcfqbDGcfrbJsbJscfsbSwcftbDGbJscfucfvcazbZFcazbZFbZFcfwbYzcaAcfxbVicfybNsaaacaEcbBcbBcfzcfAcfBcfCcfDcfEcaEcfFcfGcfHcfIcfJcfKcfLcfMcfNcfMcfNcfOcfNcfPbNGcfQcfRcfSbUfbUfbUhbWxcfTbWCbUibXOcfUbSWaagbSXcfVcfWcfXbQzbQAbAccdZbAcbCSbIsceabVEcfYcfZcgacgbcaecfZcgccagcgccfZbVEbNPbEpbEpbEpbEpbEpbEpcgdcgecgdbEpbEpbEpbEpbEpbEpcgfcggcghcgicgjbYscgkcgkcglcgmbWacaocaocaobYsblecgnbWcblecgocgpbRgbleaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaifaagcfmcgqcfoaaacfmcgqcfoaaacfmcgqcfoaagaagaaaaaabDGbNsbNsbDGbDGcgrcgsbSwbJsbVibDGbJsbYzcazbZFcazcgtbZFbZFcgubYzcaAbGCbDGbDGbDGaaacaEcaEcaEcaEcaEcaEcaEcaEcaEcaEcgvbNEbSCcgwcgxcgycgzcgAcgBcgCcgDcgEccPcgFbNGcgGbQuceIbWxbWycgHcgIcgJcgKbPacgLcgMbUnbUobRMcgNceRceRbQzbQAbAccdZbAcbJKbJKceabVEbVFcgOcgPbVFcgQbVFbVFbVEbVFbVFbVEbNPbAcaaaaaaaaaaagaaaaaacgRaaaaagaaaaaaaaaaaablecgSblecgTbleblebYsbYsbYscgUcgVbYscgWcgXcgYbYsbUYcgnbWcblecgZbRgbRgbleblebleaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaifaaacfmcgqcfoaagcfmcgqcfoaagcfmcgqcfoaaaaagaaaaaaaaaaaaaaaaagbDGbDGbDGbDGbWibDGbDGbJsbYzbYzbYzbYzbYzchachbbYzbYzcaAbGCchcbDGaagaaaaaaaagaaaaaaaagaaaaaaaagaaabDGchdchechfchgchhchichjchkchlchmchnchochpchqchrchsbQuceIchtbQubQubQuchtchtchtbXOchuchvaagbQzbQzbQzbQzbQzbQAbXTcdZbAcchwbIsceachxbXXbXXchybVFchzchAchBchCchDchEbRQbNPbAcaaaaaaaaaaagaaaaaacgRaaaaagaaaaaaaaaaaablechFchGbRgblechHblechIchJchKbmCbYscgXchLcgXbYsbUYcgnchMchNchNchNchOchPchQchPchRaczaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
