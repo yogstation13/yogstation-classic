@@ -17,12 +17,17 @@
 
 /datum/round_event/borer/start()
 
-	if(!borerstart.len)
-		return kill()
-	var/turf/T = pick(borerstart)
-	if(!T)
+	var/list/vents = list()
+	for(var/obj/machinery/atmospherics/components/unary/vent_pump/temp_vent in world)
+		if(temp_vent.loc.z == ZLEVEL_STATION && !temp_vent.welded)
+			var/datum/pipeline/temp_vent_parent = temp_vent.parents["p1"]
+			if(temp_vent_parent.other_atmosmch.len > 20)
+				vents += temp_vent
+
+	if(!vents.len)
 		return kill()
 
+	var/obj/vent = pick_n_take(vents)
 	var/list/candidates = get_candidates(BE_ALIEN, ALIEN_AFK_BRACKET)
 	if(!candidates.len)
 		return kill()
@@ -30,6 +35,6 @@
 	if(!C)
 		return kill()
 
-	var/mob/living/simple_animal/borer/borer = new(T)
+	var/mob/living/simple_animal/borer/borer = new(vent.loc)
 	borer.transfer_personality(C)
 	spawned = 1

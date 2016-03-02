@@ -35,6 +35,7 @@
 	borer_chems += /datum/borer_chem/bicardine
 	borer_chems += /datum/borer_chem/kelotane
 	borer_chems += /datum/borer_chem/charcoal
+	borer_chems += /datum/borer_chem/ephedrine
 	borer_chems += /datum/borer_chem/leporazine
 	borer_chems += /datum/borer_chem/morphine
 	borer_chems += /datum/borer_chem/spacedrugs

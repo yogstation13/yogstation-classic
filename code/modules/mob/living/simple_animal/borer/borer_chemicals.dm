@@ -17,6 +17,9 @@
 /datum/borer_chem/charcoal
 	chemname = "charcoal"
 
+/datum/borer_chem/ephedrine
+	chemname = "ephedrine"
+
 /datum/borer_chem/leporazine
 	chemname = "leporazine"
 	chemuse = 100
