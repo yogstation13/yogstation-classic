@@ -1,5 +1,5 @@
 /obj/item/medical/bandage
-	name = "Bandage"
+	name = "\improper Bandage"
 	desc = "A generic bandage of unknown origin and use. What does it cover? Is it a trendy accessory? Will I ever know?."
 	icon = 'icons/obj/items.dmi'
 	icon_state = "improv_bandage"
@@ -82,7 +82,7 @@
 				user.visible_message("<span class='notice'>[user] begins winding [src] about [tar]'s [lt.getDisplayName()]..</span>", "<span class='notice'>You begin winding [src] around [tar]'s [lt.getDisplayName()]..</span>")
 
 			if (do_after(user, 50, target = tar))
-				if(!user.drop_item())
+				if(!user.unEquip(src))
 					return 0
 				src.blood_DNA = temphuman.dna.unique_enzymes
 				src.healing_limb = lt
@@ -91,10 +91,13 @@
 				user.visible_message("[user] has applied [src] successfully.", "You have applied [src] successfully.")
 				return 1
 			else
-				if(!user.drop_item())
-					return 0
-				src.loc = temphuman.loc
-				user.visible_message("<span class='warning'>Interrupted, [user] fumbles and drops [src] to the floor!</span>", "<span class='warning'>Losing your concentration, you find yourself unable to apply [src] and let it slip through your fingers to pool upon the floor!</span>")
+				if(user.get_active_hand() == src)
+					if(!user.unEquip(src))
+						return 0
+					src.loc = temphuman.loc
+					user.visible_message("<span class='warning'>Interrupted, [user] fumbles and drops [src] to the floor!</span>", "<span class='warning'>Losing your concentration, you find yourself unable to apply [src] and let it slip through your fingers to pool upon the floor!</span>")
+				else
+					user.visible_message("<span class='warning'>[user] stops applying [src] to [tar].</span>", "<span class='warning'>You stop applying [src] to [tar].</span>")
 				return 0
 		else
 			user << "[tar] is already bandaged for the moment."
@@ -179,7 +182,7 @@
 	staunch_bleeding = 0
 
 /obj/item/medical/bandage/quality
-	name = "RB-ST brand medicinal bandages"
+	name = "\improper RB-ST brand medicinal bandages"
 	desc = "Quality bandages with a novel toolbox-icon weave. Comes with a polymer stabilizing agent built into the fabric to stiffen and secure broken limbs. Smells like cough syrup and pine needles."
 	color = "blue"
 	healamount = 90

@@ -22,7 +22,7 @@
 #################################
 
 # Your name.  
-author: Oisin100
+author: Alek2ander
 
 # Optional: Remove this file after generating master changelog.  Useful for PR changelogs that won't get used again.
 delete-after: True
@@ -33,4 +33,8 @@ delete-after: True
 # Also, this gets changed to [] after reading.  Just remove the brackets when you add new shit.
 # Please surround your changes in  double quotes ("). It works without them, but if you use certain characters it screws up compiling. The quotes will not show up in the changelog.
 changes: 
-  - bugfix: "Nanotrasen have removed fun once again by making drying racks visible when screwdrivered."
+  - rscadd: "Redesigned telescience. The telepad can now only target telescience beacons, and access a 9x9 area around them."
+  - rscadd: "Telescience beacon and advanced telescience beacon added to the protolathe. The advanced beacon has twice the range."
+  - tweak: "The quality of the capacitor in the telepad now affects the delay between uses."
+  - rscdel: "Telescience no longer uses bluespace crystals in any way."
+  - experiment: "All of this is subject to change in the future."

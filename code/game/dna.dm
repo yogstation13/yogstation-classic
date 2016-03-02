@@ -30,12 +30,15 @@
 	if(new_holder && istype(new_holder))
 		holder = new_holder
 
-/datum/dna/proc/transfer_identity(mob/living/carbon/destination)
+/datum/dna/proc/transfer_identity(mob/living/carbon/destination, transfer_SE = 0)
 	if(check_dna_integrity(destination))
 		destination.dna.unique_enzymes = unique_enzymes
 		destination.dna.uni_identity = uni_identity
 		destination.dna.blood_type = blood_type
-		hardset_dna(destination, null, null, null, null, species)
+		if(transfer_SE)
+			hardset_dna(destination, null, struc_enzymes, null, null, species.type)
+		else
+			hardset_dna(destination, null, null, null, null, species.type)
 		destination.dna.features = features
 		destination.dna.real_name = real_name
 		destination.dna.mutations = mutations

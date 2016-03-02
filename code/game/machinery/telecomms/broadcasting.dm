@@ -40,6 +40,8 @@
 				2 -- Will only broadcast to intercoms and station-bounced radios
 				3 -- Broadcast to syndicate frequency
 				4 -- AI can't track down this person. Useful for imitation broadcasts where you can't find the actual mob
+	@param identifier
+		Helps the AI track the mob even when its name has been changed by a NTSL script
 
 	@param compression:
 		If 0, the signal is audible
@@ -57,7 +59,7 @@
 /proc/Broadcast_Message(var/atom/movable/AM,
 						var/vmask, var/obj/item/device/radio/radio,
 						var/message, var/name, var/job, var/realname,
-						var/data, var/compression, var/list/level, var/freq, var/list/spans,
+						var/data, var/identifier, var/compression, var/list/level, var/freq, var/list/spans,
 						var/verb_say, var/verb_ask, var/verb_exclaim, var/verb_yell)
 
 	message = copytext(message, 1, MAX_BROADCAST_LEN)
@@ -71,6 +73,7 @@
 	virt.name = name
 	virt.job = job
 	virt.languages = AM.languages
+	virt.identifier = identifier
 	virt.source = AM
 	virt.radio = radio
 	virt.verb_say = verb_say

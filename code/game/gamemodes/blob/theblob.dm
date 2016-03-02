@@ -7,12 +7,14 @@
 	density = 0
 	opacity = 0
 	anchored = 1
+	explosion_block = 1
 	var/health = 30
 	var/health_timestamp = 0
 	var/brute_resist = 4
 	var/fire_resist = 1
+	var/atmos_block = 0
 	var/mob/camera/blob/overmind
-
+	
 
 /obj/effect/blob/New(loc)
 	blobs += src
@@ -21,10 +23,15 @@
 	..(loc)
 	for(var/atom/A in loc)
 		A.blob_act()
+	if(atmos_block)
+		air_update_turf(1)
 	return
 
 
 /obj/effect/blob/Destroy()
+	if(atmos_block)
+		atmos_block = 0
+		air_update_turf(1)
 	blobs -= src
 	if(isturf(loc)) //Necessary because Expand() is retarded and spawns a blob and then deletes it
 		playsound(src.loc, 'sound/effects/splat.ogg', 50, 1)
@@ -36,24 +43,32 @@
 	if(istype(mover) && mover.checkpass(PASSBLOB))	return 1
 	return 0
 
+	
+/obj/effect/blob/CanAtmosPass(turf/T)
+	return !atmos_block
 
+	
 /obj/effect/blob/process()
 	Life()
 	return
 
+	
 /obj/effect/blob/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	..()
 	var/damage = Clamp(0.01 * exposed_temperature, 0, 4)
 	take_damage(damage, BURN)
 
+	
 /obj/effect/blob/proc/Life()
 	return
 
+	
 /obj/effect/blob/proc/PulseAnimation()
 	if(!istype(src, /obj/effect/blob/core) || !istype(src, /obj/effect/blob/node))
 		flick("[icon_state]_glow", src)
 	return
 
+	
 /obj/effect/blob/proc/RegenHealth()
 	// All blobs heal over time when pulsed, but it has a cool down
 	if(health_timestamp > world.time)
@@ -63,6 +78,7 @@
 		update_icon()
 		health_timestamp = world.time + 10 // 1 seconds
 
+		
 /obj/effect/blob/proc/pulseLoop(num)
 	var/a_color
 	if(overmind)
@@ -70,6 +86,7 @@
 	for(var/i = 1; i < 8; i += i)
 		Pulse(num, i, a_color)
 
+		
 /obj/effect/blob/proc/Pulse(pulse = 0, origin_dir = 0, a_color)//Todo: Fix spaceblob expand
 
 	set background = BACKGROUND_ENABLED
@@ -109,7 +126,7 @@
 
 /obj/effect/blob/proc/expand(turf/T = null, prob = 1, a_color)
 	if(prob && !prob(health))	return
-	if(istype(T, /turf/space) && prob(75)) 	return
+	if(istype(T, /turf/space) && !(locate(/obj/structure/lattice) in T) && prob(75)) 	return
 	if(!T)
 		var/list/dirs = list(1,2,4,8)
 		for(var/i = 1 to 4)
@@ -135,16 +152,19 @@
 		A.blob_act()
 	return 1
 
+	
 /obj/effect/blob/ex_act(severity, target)
 	..()
 	var/damage = 150 - 20 * severity
 	take_damage(damage, BRUTE)
 
+	
 /obj/effect/blob/bullet_act(var/obj/item/projectile/Proj)
 	..()
 	take_damage(Proj.damage, Proj.damage_type)
 	return 0
 
+	
 /obj/effect/blob/Crossed(mob/living/L)
 	..()
 	L.blob_act()
@@ -159,6 +179,7 @@
 		playsound(src.loc, 'sound/items/Welder.ogg', 100, 1)
 	take_damage(W.force, W.damtype)
 
+	
 /obj/effect/blob/attack_animal(mob/living/simple_animal/M)
 	M.changeNext_move(CLICK_CD_MELEE)
 	M.do_attack_animation(src)
@@ -168,6 +189,7 @@
 	take_damage(damage, BRUTE)
 	return
 
+	
 /obj/effect/blob/attack_alien(mob/living/carbon/alien/humanoid/M)
 	M.changeNext_move(CLICK_CD_MELEE)
 	M.do_attack_animation(src)
@@ -177,6 +199,7 @@
 	take_damage(damage, BRUTE)
 	return
 
+	
 /obj/effect/blob/proc/take_damage(damage, damage_type)
 	if(!damage || damage_type == STAMINA) // Avoid divide by zero errors
 		return
@@ -188,6 +211,7 @@
 	health -= damage
 	update_icon()
 
+	
 /obj/effect/blob/proc/change_to(type)
 	if(!ispath(type))
 		throw EXCEPTION("change_to(): invalid type for blob")
@@ -200,27 +224,32 @@
 	qdel(src)
 	return B
 
+	
 /obj/effect/blob/proc/adjustcolors(a_color)
 	if(a_color)
 		color = a_color
 	return
 
+	
 /obj/effect/blob/examine(mob/user)
 	..()
 	user << "It looks like it's of a [get_chem_name()] kind."
 	return
 
+	
 /obj/effect/blob/proc/get_chem_name()
 	for(var/mob/camera/blob/B in mob_list)
 		if(lowertext(B.blob_reagent_datum.color) == lowertext(src.color)) // Goddamit why we use strings for these
 			return B.blob_reagent_datum.name
 	return "unknown"
 
+	
 /obj/effect/blob/normal
 	icon_state = "blob"
 	luminosity = 0
 	health = 21
 
+	
 /obj/effect/blob/normal/update_icon()
 	if(health <= 0)
 		qdel(src)

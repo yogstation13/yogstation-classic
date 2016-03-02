@@ -36,9 +36,9 @@
 	update_icon()
 	return
 
-
 /obj/item/weapon/gun/energy/afterattack(atom/target as mob|obj|turf, mob/living/user as mob|obj, params)
-	newshot() //prepare a new shot
+	if(!chambered || !chambered.BB)
+		newshot() //prepare a new shot
 	..()
 
 /obj/item/weapon/gun/energy/can_shoot()
@@ -58,7 +58,10 @@
 	if(chambered && !chambered.BB) //if BB is null, i.e the shot has been fired...
 		var/obj/item/ammo_casing/energy/shot = chambered
 		power_supply.use(shot.e_cost)//... drain the power_supply cell
-	chambered = null //either way, released the prepared shot
+		chambered = null 
+		newshot()
+	else
+		chambered = null //either way, released the prepared shot
 	return
 
 /obj/item/weapon/gun/energy/proc/select_fire(mob/living/user)

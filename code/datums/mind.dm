@@ -33,6 +33,7 @@
 	var/key
 	var/name				//replaces mob/var/original_name
 	var/mob/living/current
+	var/list/slime_bodies = list() //Keep a list of all our bodies
 	var/active = 0
 
 	var/memory

@@ -50,6 +50,75 @@
 	parts = list(/obj/item/weapon/stock_parts/cell = 1)
 	category = CAT_WEAPON
 
+/datum/table_recipe/shank
+	name = "Glass Shank"
+	result = /obj/item/weapon/ghetto/glass/shank
+	reqs = list(/obj/item/weapon/shard = 1,
+				/obj/item/ducttape = 1)
+	time = 40
+	category = CAT_WEAPON
+
+/datum/table_recipe/sword
+	name = "Glass Sword"
+	result = /obj/item/weapon/ghetto/glass/sword
+	reqs = list(/obj/item/weapon/shard = 1,
+				/obj/item/ducttape = 1,
+				/obj/item/stack/sheet/glass = 2,
+				/obj/item/stack/rods = 1)
+	time = 100
+	category = CAT_WEAPON
+
+/datum/table_recipe/blacksword
+	name = "Black Glass Sword"
+	result = /obj/item/weapon/ghetto/glass/sword/black
+	reqs = list(/obj/item/weapon/shard = 1,
+				/obj/item/ducttape = 1,
+				/obj/item/stack/sheet/glass = 2,
+				/obj/item/stack/rods = 1,
+				/obj/item/toy/crayon/mime = 1)
+	time = 100
+	category = CAT_WEAPON
+
+/datum/table_recipe/refinedsword
+	name = "Refined Glass Sword"
+	result = /obj/item/weapon/ghetto/glass/sword/refined
+	reqs = list(/obj/item/weapon/ghetto/glass/sword/black = 1,
+				/obj/item/ducttape = 1,
+				/obj/item/stack/sheet/metal = 2,
+				/obj/item/stack/sheet/rglass = 3,
+				/obj/item/stack/rods = 2)
+	time = 100
+	category = CAT_WEAPON
+
+/datum/table_recipe/pneumaticspear
+	name = "Pneumatic Spear"
+	result = /obj/item/weapon/ghetto/airspear
+	reqs = list(/obj/item/weapon/twohanded/spear = 1,
+				/obj/item/device/transfer_valve = 1,
+				/obj/item/ducttape = 2)
+	time = 100
+	category = CAT_WEAPON
+
+/datum/table_recipe/armouredjumpsuit
+	name = "Armoured Jumpsuit"
+	result = /obj/item/clothing/under/armouredjumpsuit
+	reqs = list(/obj/item/clothing/under/color/black = 1,
+				/obj/item/clothing/torncloth = 1,
+				/obj/item/stack/sheet/metal = 1,
+				/obj/item/ducttape = 1)
+	time = 100
+	category = CAT_MISC
+
+/datum/table_recipe/robustcoat
+	name = "Robust Coat"
+	result = /obj/item/clothing/suit/robustcoat
+	reqs = list(/obj/item/clothing/suit/jacket/leather/overcoat = 1,
+				/obj/item/clothing/torncloth = 2,
+				/obj/item/stack/sheet/metal = 2,
+				/obj/item/ducttape = 2)
+	time = 100
+	category = CAT_MISC
+
 /datum/table_recipe/ed209
 	name = "ED209"
 	result = /obj/machinery/bot/ed209

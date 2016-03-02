@@ -333,15 +333,14 @@
 			return
 
 /obj/structure/sign/poster/proc/roll_and_drop(turf/location)
-	var/obj/item/weapon/contraband/poster/P = new(src, serial_number)
+	var/obj/item/weapon/contraband/poster/P = new(location, serial_number)
 	P.resulting_poster = src
-	P.loc = location
-	loc = P
+	loc = null
+
 /obj/structure/sign/poster/proc/roll_and_drop_legit(turf/location)
-	var/obj/item/weapon/contraband/poster/legit/P = new(src, serial_number)
+	var/obj/item/weapon/contraband/poster/legit/P = new(location, serial_number)
 	P.resulting_poster = src
-	P.loc = location
-	loc = P
+	loc = null
 
 //seperated to reduce code duplication. Moved here for ease of reference and to unclutter r_wall/attackby()
 /turf/simulated/wall/proc/place_poster(obj/item/weapon/contraband/poster/P, mob/user)
@@ -361,22 +360,23 @@
 	var/legit = istype(P, /obj/item/weapon/contraband/poster/legit)
 	//declaring D because otherwise if P gets 'deconstructed' we lose our reference to P.resulting_poster
 	var/obj/structure/sign/poster/D = P.resulting_poster
+	D.loc = src
 	qdel(P)	//delete it now to cut down on sanity checks afterwards. Agouri's code supports rerolling it anyway
 
 	var/temp_loc = user.loc
 	flick("poster_being_set",D)
-	D.loc = src
 	playsound(D.loc, 'sound/items/poster_being_created.ogg', 100, 1)
 
-	sleep(17)
-	if(!D)	return
-
-	if(istype(src,/turf/simulated/wall) && user && user.loc == temp_loc)	//Let's check if everything is still there
-		user << "<span class='notice'>You place the poster!</span>"
+	if(do_after(user, 17, target = src) && istype(src,/turf/simulated/wall))	//Let's check if everything is still there
+		if(D)
+			D.loc = src
+			user << "<span class='notice'>You place the poster!</span>"
 	else if(legit)
-		D.roll_and_drop_legit(temp_loc)
+		if(D)
+			D.roll_and_drop_legit(temp_loc)
 	else
-		D.roll_and_drop(temp_loc)
+		if(D)
+			D.roll_and_drop(temp_loc)
 	return
 
 //Putting non-contraband posters here because everything else here is related to posters anyway. -JS

@@ -95,6 +95,15 @@
 	mymob.throw_icon.icon = ui_style
 	mymob.throw_icon.screen_loc = ui_drop_throw
 
+	mymob.pullin = new /obj/screen/pull()
+	mymob.pullin.icon = ui_style
+	mymob.pullin.update_icon(mymob)
+	mymob.pullin.screen_loc = ui_pull_resist
+
+	mymob.zone_sel = new /obj/screen/zone_sel()
+	mymob.zone_sel.icon = ui_style
+	mymob.zone_sel.update_icon()
+
 	mymob.internals = new /obj/screen/internals()
 	mymob.internals.screen_loc = ui_internal
 
@@ -103,20 +112,11 @@
 	mymob.healths.name = "health"
 	mymob.healths.screen_loc = ui_health
 
-	mymob.pullin = new /obj/screen/pull()
-	mymob.pullin.icon = ui_style
-	mymob.pullin.update_icon(mymob)
-	mymob.pullin.screen_loc = ui_pull_resist
-
 	lingchemdisplay = new /obj/screen/ling/chems()
 	lingchemdisplay.screen_loc = ui_lingchemdisplay
 
 	lingstingdisplay = new /obj/screen/ling/sting()
 	lingstingdisplay.screen_loc = ui_lingstingdisplay
-
-	mymob.zone_sel = new /obj/screen/zone_sel()
-	mymob.zone_sel.icon = ui_style
-	mymob.zone_sel.update_icon()
 
 	mymob.client.screen = list()
 

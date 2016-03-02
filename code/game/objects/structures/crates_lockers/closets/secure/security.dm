@@ -130,6 +130,7 @@
 	new /obj/item/weapon/storage/belt/security/full(src)
 	new /obj/item/device/radio/security(src)
 	new /obj/item/weapon/gun/energy/gun/advtaser(src)
+	new /obj/item/key/security(src)
 
 /obj/structure/closet/secure_closet/security
 	name = "security officer's locker"
