@@ -33,4 +33,4 @@ delete-after: True
 # Also, this gets changed to [] after reading.  Just remove the brackets when you add new shit.
 # Please surround your changes in  double quotes ("). It works without them, but if you use certain characters it screws up compiling. The quotes will not show up in the changelog.
 changes: 
-  - rscadd: "Nanotrasen has confirmed a new biohazard threat created by the <strike>nanotrasen</strike> syndicate animal experimentation labs"
+  - rscadd: "Nanotrasen has confirmed a new biohazard threat created by the <strike>Nanotrasen</strike> syndicate animal experimentation labs. Rumors say that these strange creatures can temporarily seize control of their victims mind."
