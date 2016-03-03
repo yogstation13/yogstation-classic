@@ -9,7 +9,7 @@
 	possible_transfer_amounts = null
 	flags = OPENCONTAINER
 	slot_flags = SLOT_BELT
-	var/ignore_flags = 0
+	var/ignore_flags = 1
 
 /obj/item/weapon/reagent_containers/hypospray/attack_paw(mob/user)
 	return attack_hand(user)
