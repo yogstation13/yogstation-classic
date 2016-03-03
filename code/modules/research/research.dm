@@ -148,6 +148,15 @@ research holder datum.
 				KT.level = max((KT.level + 1), (level - 1))
 	return
 
+//Check to see if the specified level is enough to level up the known technology
+//Input: Techs ID And level; Output: Boolean
+/datum/research/proc/WillUpdateTech(ID, level)
+	for(var/datum/tech/KT in known_tech)
+		if(KT.id == ID)
+			if(KT.level <= level)
+				return 1
+	return 0
+
 /datum/research/proc/UpdateDesigns(obj/item/I, list/temp_tech)
 	for(var/T in temp_tech)
 		if(temp_tech[T] - 1 >= known_tech[T])

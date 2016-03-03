@@ -16,28 +16,26 @@
 
 /obj/item/device/flashlight/initialize()
 	..()
-	var/datum/color/col = splitHTML(lightcolor)
 	if(on)
 		icon_state = "[initial(icon_state)]-on"
-		SetLuminosity(brightness_on, col.r/255, col.g/255, col.b/255)
+		SetLuminosity(brightness_on)
 	else
 		icon_state = initial(icon_state)
 		SetLuminosity(0)
 
 /obj/item/device/flashlight/proc/update_brightness(mob/user = null)
-	var/datum/color/col = splitHTML(lightcolor)
 	if(on)
 		icon_state = "[initial(icon_state)]-on"
 		if(loc == user)
-			user.AddLuminosity(brightness_on, col.r/255, col.g/255, col.b/255)
+			user.AddLuminosity(brightness_on)
 		else if(isturf(loc))
-			SetLuminosity(brightness_on, col.r/255, col.g/255, col.b/255)
+			SetLuminosity(brightness_on)
 	else
 		icon_state = initial(icon_state)
 		if(loc == user)
-			user.AddLuminosity(-brightness_on, -col.r/255, -col.g/255, -col.b/255)
+			user.AddLuminosity(-brightness_on)
 		else if(isturf(loc))
-			SetLuminosity(0, 0, 0, 0)
+			SetLuminosity(0)
 
 /obj/item/device/flashlight/attack_self(mob/user)
 	if(!isturf(user.loc))
@@ -68,8 +66,7 @@
 			return
 
 		if(M == user)	//they're using it on themselves
-			if(!M.eye_blind)
-				flick("flash", M.flash)
+			if(M.flash_eyes(visual = 1))
 				M.visible_message("[M] directs [src] to \his eyes.", \
 									 "<span class='notice'>You wave the light in front of your eyes! Trippy!</span>")
 			else
@@ -87,25 +84,22 @@
 			else if(M.dna.check_mutation(XRAY))	//mob has X-RAY vision
 				user << "<span class='danger'>[M] pupils give an eerie glow!</span>"
 			else	//they're okay!
-				if(!M.eye_blind)
-					flick("flash", M.flash)	//flash the affected mob
+				if(M.flash_eyes(visual = 1))
 					user << "<span class='notice'>[M]'s pupils narrow.</span>"
 	else
 		return ..()
 
 
 /obj/item/device/flashlight/pickup(mob/user)
-	var/datum/color/col = splitHTML(lightcolor)
 	if(on)
-		user.AddLuminosity(brightness_on, col.r/255, col.g/255, col.b/255)
-		SetLuminosity(0, 0, 0, 0)
+		user.AddLuminosity(brightness_on)
+		SetLuminosity(0)
 
 
 /obj/item/device/flashlight/dropped(mob/user)
-	var/datum/color/col = splitHTML(lightcolor)
 	if(on)
-		user.AddLuminosity(-brightness_on, -col.r/255, -col.g/255, -col.b/255)
-		SetLuminosity(brightness_on, col.r/255, col.g/255, col.b/255)
+		user.AddLuminosity(-brightness_on)
+		SetLuminosity(brightness_on)
 
 
 /obj/item/device/flashlight/pen

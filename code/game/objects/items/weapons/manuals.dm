@@ -912,7 +912,8 @@
 
 // A book that links to the wiki
 /obj/item/weapon/book/manual/wiki
-	var/page_link = ""
+	var/page_link = "" // Use a LINK for a partial link involving the config.wikiurl
+	var/page_url = "" // Use a URL for a direct link
 	window_size = "970x710"
 
 /obj/item/weapon/book/manual/wiki/attack_self()
@@ -939,7 +940,7 @@
     			}
 			</script>
 			<p id='loading'>You start skimming through the manual...</p>
-			<iframe width='100%' height='97%' onload="pageloaded(this)" src="[config.wikiurl]/[page_link]?printable=yes&remove_links=1" frameborder="0" id="main_frame"></iframe>
+			<iframe width='100%' height='97%' onload="pageloaded(this)" src="[page_url != "" ? page_url : "[config.wikiurl]/[page_link]?printable=yes&remove_links=1"]" frameborder="0" id="main_frame"></iframe>
 			</body>
 
 			</html>
@@ -966,7 +967,7 @@
 	icon_state = "bookSpaceLaw"
 	author = "Nanotrasen"
 	title = "Space Law"
-	page_link = "Space_Law"
+	page_url = "https://wiki.yogstation.net/index.php?title=Space_law"
 
 /obj/item/weapon/book/manual/wiki/infections
 	name = "Infections - Making your own pandemic!"

@@ -7,7 +7,6 @@
 
 /datum/reagent/blood/reaction_mob(mob/M, method=TOUCH, reac_volume)
 	var/datum/reagent/blood/self = src
-	src = null
 	if(self.data && self.data["viruses"])
 		for(var/datum/disease/D in self.data["viruses"])
 
@@ -52,7 +51,6 @@
 	if(!istype(T))
 		return
 	var/datum/reagent/blood/self = src
-	src = null
 	if(reac_volume < 3)
 		return
 	//var/datum/disease/D = self.data["virus"]
@@ -97,7 +95,6 @@
 
 /datum/reagent/vaccine/reaction_mob(mob/M, method=TOUCH, reac_volume)
 	var/datum/reagent/vaccine/self = src
-	src = null
 	if(islist(self.data) && method == INGEST)
 		for(var/datum/disease/D in M.viruses)
 			if(D.GetDiseaseID() in self.data)
@@ -131,7 +128,6 @@
 			F.dirt = 0
 
 	var/CT = cooling_temperature
-	src = null
 	if(reac_volume >= 10)
 		T.MakeSlippery()
 
@@ -153,7 +149,6 @@
  */
 
 /datum/reagent/water/reaction_obj(obj/O, reac_volume)
-	src = null
 	O.color = initial(O.color)
 
 	if(istype(O,/obj/item))
@@ -262,7 +257,6 @@
 
 /datum/reagent/lube/reaction_turf(turf/simulated/T, reac_volume)
 	if (!istype(T)) return
-	src = null
 	if(reac_volume >= 1)
 		T.MakeSlippery(2)
 
@@ -374,7 +368,7 @@
 	H.visible_message("<b>[H]</b> falls to the ground and screams as their skin bubbles and froths!") //'froths' sounds painful when used with SKIN.
 	H.Weaken(3)
 	sleep(30)
-	var/list/blacklisted_species = list(/datum/species/zombie, /datum/species/skeleton, /datum/species/human, /datum/species/golem, /datum/species/golem/adamantine, /datum/species/shadow, /datum/species/shadow/ling, /datum/species/plasmaman, /datum/species)
+	var/list/blacklisted_species = list(/datum/species/zombie, /datum/species/skeleton, /datum/species/human, /datum/species/golem, /datum/species/golem/adamantine, /*/datum/species/shadow,*/ /datum/species/shadow/ling, /datum/species/plasmaman, /datum/species) // shadow people are take off blacklist. hope this doesn't end terribly.
 	var/list/possible_morphs = typesof(/datum/species/) - blacklisted_species
 	var/datum/species/mutation = pick(possible_morphs)
 	if(prob(90) && mutation && H.dna.species != /datum/species/golem && H.dna.species != /datum/species/golem/adamantine)
@@ -396,7 +390,6 @@
 	color = "#13BC5E" // rgb: 19, 188, 94
 
 /datum/reagent/aslimetoxin/reaction_mob(mob/M, method=TOUCH, reac_volume)
-	src = null
 	if(method != TOUCH)
 		M.ForceContractDisease(new /datum/disease/transformation/slime(0))
 
@@ -478,7 +471,6 @@
 	color = "#1C1300" // rgb: 30, 20, 0
 
 /datum/reagent/carbon/reaction_turf(turf/T, reac_volume)
-	src = null
 	if(!istype(T, /turf/space))
 		new /obj/effect/decal/cleanable/dirt(T)
 
@@ -554,7 +546,6 @@
 	return
 
 /datum/reagent/radium/reaction_turf(turf/T, reac_volume)
-	src = null
 	if(reac_volume >= 3)
 		if(!istype(T, /turf/space))
 			var/obj/effect/decal/cleanable/reagentdecal = new/obj/effect/decal/cleanable/greenglow(T)
@@ -599,7 +590,6 @@
 	..()
 
 /datum/reagent/uranium/reaction_turf(turf/T, reac_volume)
-	src = null
 	if(reac_volume >= 3)
 		if(!istype(T, /turf/space))
 			var/obj/effect/decal/cleanable/reagentdecal = new/obj/effect/decal/cleanable/greenglow(T)
@@ -663,6 +653,10 @@
 		var/turf/simulated/floor/F = T
 		if(reac_volume >= 1)
 			F.dirt = 0
+			if(F.wet == 2)
+				F.wet = 0
+				if(F.wet_overlay)
+					F.overlays -= F.wet_overlay
 
 /datum/reagent/space_cleaner/reaction_mob(mob/M, method=TOUCH, reac_volume)
 	if(method == TOUCH || VAPOR)
@@ -733,7 +727,6 @@
 	color = "#535E66" // rgb: 83, 94, 102
 
 /datum/reagent/nanites/reaction_mob(mob/M, method=TOUCH, reac_volume, show_message = 1, touch_protection = 0)
-	src = null
 	if(method==PATCH || method==INGEST || (method == VAPOR && prob(min(reac_volume,100)*(1 - touch_protection))))
 		M.ForceContractDisease(new /datum/disease/transformation/robot(0))
 
@@ -744,7 +737,6 @@
 	color = "#535E66" // rgb: 83, 94, 102
 
 /datum/reagent/xenomicrobes/reaction_mob(mob/M, method=TOUCH, reac_volume, show_message = 1, touch_protection = 0)
-	src = null
 	if(method==PATCH || method==INGEST || (method == VAPOR && prob(min(reac_volume,100)*(1 - touch_protection))))
 		M.ContractDisease(new /datum/disease/transformation/xeno(0))
 

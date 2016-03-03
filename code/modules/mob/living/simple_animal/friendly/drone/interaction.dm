@@ -75,6 +75,10 @@
 		if(buckled)
 			user << "<span class='warning'>[src] is buckled to the [buckled.name] and cannot be picked up!</span>"
 			return
+		user << "You start picking up the [src]."
+		if(!do_after(user, 20, target = user))
+			user << "You failed picking up [src]."
+			return
 		user << "<span class='notice'>You pick [src] up.</span>"
 		drop_l_hand()
 		drop_r_hand()

@@ -21,16 +21,15 @@
 	if(wet >= wet_setting)
 		return
 	wet = wet_setting
-	if(wet_setting == 1)
-		if(wet_overlay)
-			overlays -= wet_overlay
-			wet_overlay = null
-		var/turf/simulated/floor/F = src
-		if(istype(F))
-			wet_overlay = image('icons/effects/water.dmi', src, "wet_floor_static")
-		else
-			wet_overlay = image('icons/effects/water.dmi', src, "wet_static")
-		overlays += wet_overlay
+	if(wet_overlay)
+		overlays -= wet_overlay
+		wet_overlay = null
+	var/turf/simulated/floor/F = src
+	if(istype(F))
+		wet_overlay = image('icons/effects/water.dmi', src, "wet_floor_static")
+	else
+		wet_overlay = image('icons/effects/water.dmi', src, "wet_static")
+	overlays += wet_overlay
 
 	spawn(rand(790, 820)) // Purely so for visual effect
 		if(!istype(src, /turf/simulated)) //Because turfs don't get deleted, they change, adapt, transform, evolve and deform. they are one and they are all.

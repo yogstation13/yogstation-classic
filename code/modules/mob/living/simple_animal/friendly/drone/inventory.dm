@@ -83,6 +83,8 @@
 /mob/living/simple_animal/drone/equip_to_slot(obj/item/I, slot)
 	if(!slot)	return
 	if(!istype(I))	return
+	if(slot == "internal_storage_2")
+		return
 
 	if(I == l_hand)
 		l_hand = null

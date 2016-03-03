@@ -138,7 +138,13 @@
 				else
 					message_admins("[key_name_admin(usr)] tried to create a shadowling. Unfortunately, there were no candidates available.")
 					log_admin("[key_name(usr)] failed to create a shadowling.")
-
+			if("17")
+				if(src.makeCyberman())
+					message_admins("[key_name(usr)] created a cyberman.")
+					log_admin("[key_name(usr)] created a cyberman.")
+				else
+					message_admins("[key_name_admin(usr)] tried to create a cyberman. Unfortunately, there were no candidates available.")
+					log_admin("[key_name(usr)] failed to create a cyberman.")
 	else if(href_list["forceevent"])
 		if(!check_rights(R_FUN))	return
 		var/datum/round_event_control/E = locate(href_list["forceevent"]) in SSevent.control
@@ -1004,6 +1010,29 @@
 	else if(href_list["addnoteempty"])
 		add_note()
 
+	else if(href_list["noteexport"])
+		var/target_ckey = href_list["noteexport"]
+		var/output = ""
+
+		var/target_sql_ckey = sanitizeSQL(target_ckey)
+		var/DBQuery/query_get_notes = dbcon.NewQuery("SELECT id, timestamp, notetext, adminckey, last_editor, server FROM [format_table_name("notes")] WHERE ckey = '[target_sql_ckey]' ORDER BY timestamp")
+		if(!query_get_notes.Execute())
+			var/err = query_get_notes.ErrorMsg()
+			log_game("SQL ERROR obtaining ckey, notetext, adminckey, last_editor, server from notes table. Error : \[[err]\]\n")
+			return
+
+		while(query_get_notes.NextRow())
+			//var/id = query_get_notes.item[1]
+			var/timestamp = query_get_notes.item[2]
+			var/notetext = query_get_notes.item[3]
+			//var/adminckey = query_get_notes.item[4]
+			//var/last_editor = query_get_notes.item[5]
+			var/server = query_get_notes.item[6]
+			output += "<p style='margin-bottom: 0px;'><b>[timestamp] | [server]</b><br />"
+			output += "<span style='margin-left: 16px; margin-top: 0px;'>[notetext]</span></p>"
+
+		usr << browse(output, "window=noteexport;size=800x650")
+
 	else if(href_list["removenote"])
 		var/note_id = href_list["removenote"]
 		remove_note(note_id)
@@ -1793,6 +1822,38 @@
 			log_admin("[src.owner] stopped forcing the rules popup for [key_name(M)].")
 			message_admins("[src.owner] stopped forcing the rules popup for [key_name(M)].")
 
+	else if(href_list["antag_token_increase"])
+		if(!check_rights(R_ADMIN))	return
+
+		var/reason = input("","What reason are you giving an antag token?") as text
+		if(length(reason) < 5)
+			usr << "That reason isn't good enough! Cancelling."
+			return
+
+		var/mob/M = locate(href_list["antag_token_increase"])
+		var/tokens = antag_token_add(M)
+		var/msg = "ANTAGTOKENS [get_ckey(usr)] increased the antag token count for [get_ckey(M)]: [tokens] (reason: [reason])"
+		log_admin(msg)
+		for(var/client/X in admins)
+			X << "<span class='adminnotice'><b><font color=red>[msg]</font></b></span>"
+		show_player_panel(M)
+
+	else if(href_list["antag_token_decrease"])
+		if(!check_rights(R_ADMIN))	return
+
+		var/reason = input("","What reason are you giving an antag token?") as text
+		if(length(reason) < 5)
+			usr << "That reason isn't good enough! Cancelling."
+			return
+
+		var/mob/M = locate(href_list["antag_token_decrease"])
+		var/tokens = antag_token_use(M)
+		var/msg = "ANTAGTOKENS [get_ckey(usr)] decreased the antag token count for [get_ckey(M)]: [tokens] (reason: [reason])"
+		log_admin(msg)
+		for(var/client/X in admins)
+			X << "<span class='adminnotice'><b><font color=red>[msg]</font></b></span>"
+		show_player_panel(M)
+
 	else if(href_list["getmob"])
 		if(!check_rights(R_ADMIN))	return
 
@@ -2199,3 +2260,27 @@
 			log_admin("[key_name(usr)] has kicked [afkonly ? "all AFK" : "all"] clients from the lobby. [length(listkicked)] clients kicked: [strkicked ? strkicked : "--"]")
 		else
 			usr << "You may only use this when the game is running"
+	else if(href_list["cybermen"])
+		if(!check_rights(R_ADMIN))
+			return
+		switch(href_list["cybermen"])
+			if("1")//refresh
+				cybermen_panel()
+			if("2")//force complete objective
+				force_complete_cybermen_objective()
+			if("3")//set objective
+				set_cybermen_objective()
+			if("4")//display objective
+				cyberman_network.display_current_cybermen_objective()
+			if("5")//message all cybermen
+				cybermen_collective_broadcast()
+			if("6")//set random objective
+				reroll_cybermen_objective()
+			if("7")//initialize network
+				if(!cyberman_network)
+					message_admins("[key_name_admin(usr)] attempted to initialize a Cyberman Network without any Cybermen.")
+					new /datum/cyberman_network()
+			if("8")//broadcast log
+				cyberman_broadcast_log()
+			if("9")//hacking log
+				cyberman_hacking_log()

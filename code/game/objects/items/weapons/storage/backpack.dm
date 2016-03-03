@@ -356,6 +356,26 @@
 	new /obj/item/device/mmi/syndie(src)
 	return
 
+/obj/item/weapon/storage/backpack/dufflebag/syndie/professional // for the traitor bundle "professional"
+	name = "blood-red duffelbag"
+	desc = "A suspecious looking duffelbag. It also has a a strong smell of iron which is unnerving..."
+	icon_state = "duffle-syndieammo"
+	item_state = "duffle-syndieammo"
+
+/obj/item/weapon/storage/backpack/dufflebag/syndie/professional/New()
+	..()
+	contents = list()
+	new /obj/item/ammo_box/magazine/m10mm(src)
+	new /obj/item/ammo_box/magazine/m10mm(src)
+	new /obj/item/ammo_box/magazine/m10mm(src)
+	new /obj/item/bodybag(src)
+	new /obj/item/bodybag(src)
+	new /obj/item/bodybag(src)
+	new /datum/uplink_item/device_tools/c4(src)
+	new /datum/uplink_item/device_tools/c4(src)
+	new /datum/uplink_item/device_tools/c4(src)
+	return
+
 /obj/item/weapon/storage/backpack/dufflebag/captain
 	name = "captain's dufflebag"
 	desc = "A large dufflebag for holding extra captainly goods."
@@ -388,3 +408,21 @@
 	icon_state = "duffle-clown"
 	item_state = "duffle-clown"
 
+/obj/item/weapon/storage/backpack/drone
+	name = "backpack"
+	desc = "It's a tough backpack for the daily grind of miner drone life.."
+	icon_state = "engiepack"
+	item_state = "engiepack"
+	max_w_class = 4
+	max_combined_w_class = 28
+	burn_state = -1
+	flags = NODROP
+
+/obj/item/weapon/storage/backpack/drone/New()
+	..()
+	contents = list()
+	new /obj/item/weapon/storage/bag/ore(src)
+	new /obj/item/weapon/shovel/spade(src)
+	new /obj/item/weapon/pickaxe/drill(src)
+	new /obj/item/weapon/screwdriver(src)
+	return

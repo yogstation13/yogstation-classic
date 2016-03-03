@@ -47,7 +47,7 @@
 	panel = "Shadowling Abilities"
 	charge_max = 250 //Short cooldown because people can just turn the lights back on
 	clothes_req = 0
-	range = 5
+	range = 7
 	action_icon_state = "veil"
 	var/blacklisted_lights = list(/obj/item/device/flashlight/flare, /obj/item/device/flashlight/slime)
 
@@ -233,7 +233,7 @@
 		if(istype(H.glasses, /obj/item/clothing/glasses/night/shadowling))
 			var/obj/item/clothing/glasses/night/shadowling/eyes = H.glasses
 			if (eyes.darkness_view == 0)
-				user << "<span class='notice'>You shift the nerves in your eyes, allowing you to see in the dark.</span>"
+				user << "<span class='notice'>You shift the nerves in your eyes, allowing you to see in the dark. Any form of eye covering will hamper this ability.</span>"
 				eyes.darkness_view = 8
 			else
 				user << "<span class='notice'>You return your vision to normal.</span>"

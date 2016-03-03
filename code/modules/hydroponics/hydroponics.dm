@@ -713,7 +713,7 @@
 		else
 			user << "<span class='warning'>[src] already has seeds in it!</span>"
 
-	else if(istype(O, /obj/item/device/analyzer/plant_analyzer))
+	else if(is_plant_analyzer(O))
 		if(planted && myseed)
 			user << "*** <B>[myseed.plantname]</B> ***" //Carn: now reports the plants growing, not the seeds.
 			user << "-Plant Age: <span class='notice'>[age]</span>"
@@ -736,7 +736,6 @@
 		user << "-Water level: <span class='notice'>[waterlevel] / [maxwater]</span>"
 		user << "-Nutrition level: <span class='notice'>[nutrilevel] / [maxnutri]</span>"
 		user << ""
-
 	else if(istype(O, /obj/item/weapon/cultivator))
 		if(weedlevel > 0)
 			user.visible_message("[user] uproots the weeds.", "<span class='notice'>You remove the weeds from [src].</span>")

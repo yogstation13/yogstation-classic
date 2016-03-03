@@ -150,6 +150,9 @@ var/next_external_rsc = 0
 		return null
 
 	spawn(30)
+		antag_token_reload_from_db(src)
+		credits_reload_from_db(src)
+
 		for(var/datum/admin_ticket/T in tickets_list)
 			if(compare_ckey(T.owner_ckey, src) && !T.resolved)
 				T.owner = src
@@ -260,6 +263,9 @@ var/next_external_rsc = 0
 		convert_notes_sql(ckey)
 
 	world.manage_fps()
+
+	if(!tooltips)
+		tooltips = new /datum/tooltip(src)
 
 	//////////////
 	//DISCONNECT//
@@ -426,6 +432,7 @@ proc/sync_logout_with_db(number)
 		'icons/pda_icons/pda_scanner.png',
 		'icons/pda_icons/pda_signaler.png',
 		'icons/pda_icons/pda_status.png',
+		'icons/pda_icons/pda_botany.png',
 		'icons/spideros_icons/sos_1.png',
 		'icons/spideros_icons/sos_2.png',
 		'icons/spideros_icons/sos_3.png',

@@ -1,0 +1,3 @@
+#define PDA_ATMOS_ALERT 1
+#define PDA_FIRE_ALERT 2
+#define PDA_POWER_ALERT 4

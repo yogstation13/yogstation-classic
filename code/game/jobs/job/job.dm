@@ -66,9 +66,6 @@
 		new default_storagebox(BPK)
 		H.equip_to_slot_or_del(BPK, slot_back,1)
 
-	if(is_donator(H) && BPK && H.client.prefs.donor_hat)
-		BPK.contents += H.client.prefs.donor_hat
-
 //But don't override this
 /datum/job/proc/equip(mob/living/carbon/human/H)
 	if(!H)
@@ -104,9 +101,21 @@
 	//Equip headset
 	H.equip_to_slot_or_del(new src.default_headset(H), slot_ears)
 
-	// Moved Hats to backpack, instead of being forced on
-	/*if(is_donator(H))
-		H.equip_to_slot_or_del(H.client.prefs.donor_hat, slot_head)*/
+	//Donor stuff
+	give_donor_stuff(H)
+
+//or this
+/datum/job/proc/give_donor_stuff(mob/living/carbon/human/H)
+	if(!is_donator(H))
+		return
+	if(H.client.prefs.donor_hat)
+		for(var/obj/item/weapon/storage/backpack/backpack in H.GetAllContents())
+			backpack.contents += H.client.prefs.donor_hat
+			break
+	if(H.client.prefs.donor_pda)
+		for(var/obj/item/device/pda/PDA in H.GetAllContents())
+			PDA.icon_state = "pda-clear"
+			break
 
 /datum/job/proc/apply_fingerprints(mob/living/carbon/human/H)
 	if(!istype(H))

@@ -3,6 +3,8 @@
 	~Sayu
 */
 
+#define CLICKCATCHER_PLANE -99
+
 // 1 decisecond click delay (above and beyond mob/next_move)
 /mob/var/next_click	= 0
 
@@ -184,6 +186,9 @@
 	if(!src.stat && src.mind && src.mind.changeling && src.mind.changeling.chosen_sting && (istype(A, /mob/living/carbon)) && (A != src))
 		next_click = world.time + 5
 		mind.changeling.chosen_sting.try_to_sting(src, A)
+	else if(!src.stat && src.mind && src.mind.cyberman && src.mind.cyberman.quickhack)
+		next_click = world.time + 5
+		mind.cyberman.initiate_hack(A)
 	else
 		swap_hand()
 
@@ -235,6 +240,9 @@
 	if(!src.stat && src.mind && src.mind.changeling && src.mind.changeling.chosen_sting && (istype(A, /mob/living/carbon)) && (A != src))
 		next_click = world.time + 5
 		mind.changeling.chosen_sting.try_to_sting(src, A)
+	else if(!src.stat && src.mind && src.mind.cyberman && src.mind.cyberman.quickhack)
+		next_click = world.time + 5
+		mind.cyberman.initiate_hack(A)
 	else
 		..()
 
@@ -318,7 +326,7 @@
 /obj/screen/click_catcher
 	icon = 'icons/mob/screen_full.dmi'
 	icon_state = "passage0"
-	layer = 0
+	plane = CLICKCATCHER_PLANE
 	mouse_opacity = 2
 	screen_loc = "CENTER-7,CENTER-7"
 

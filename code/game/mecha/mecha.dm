@@ -30,6 +30,7 @@
 	var/list/damage_absorption = list("brute"=0.8,"fire"=1.2,"bullet"=0.9,"laser"=1,"energy"=1,"bomb"=1)
 	var/obj/item/weapon/stock_parts/cell/cell
 	var/state = 0
+	var/powerleft = 1 //determines how much % battery we get when we replace it
 	var/list/log = new
 	var/last_message = 0
 	var/add_req_access = 1
@@ -158,9 +159,9 @@
 		C.forceMove(src)
 		cell = C
 		return
-	cell = new(src)
-	cell.charge = 15000
-	cell.maxcharge = 15000
+	cell = new /obj/item/weapon/stock_parts/cell/super(src)
+	//cell.charge = 15000
+	//cell.maxcharge = 15000
 
 /obj/mecha/proc/add_cabin()
 	cabin_air = new
@@ -766,10 +767,6 @@
 		H.reset_view(src)
 		H.stop_pulling()
 		H.forceMove(src)
-		if(H.hud_used)
-			last_user_hud = H.hud_used.hud_shown
-			H.hud_used.show_hud(HUD_STYLE_REDUCED)
-
 		occupant = H
 		add_fingerprint(H)
 		GrantActions(H, human_occupant=1)
@@ -870,9 +867,6 @@
 
 	src.go_out()
 	add_fingerprint(usr)
-
-	usr.hud_used.show_hud()
-	usr.hud_used.show_hud()
 	return
 
 /obj/mecha/container_resist()

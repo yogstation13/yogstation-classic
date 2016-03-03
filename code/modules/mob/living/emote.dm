@@ -231,6 +231,13 @@
 			message = "<B>[src]</B> trembles in fear!"
 			m_type = 1
 
+		if("tip","tips")
+			var/obj/item/head = src.get_active_hand()
+			if(istype(head, /obj/item/clothing/head))
+				message = "<b>[src]</b> tips [head]! So cool!"
+			else
+				message = "<b>[src]</b> tries to tip \his hat, but isn't holding any! So shameful!"
+
 		if ("twitch","twitches")
 			message = "<B>[src]</B> twitches violently."
 			m_type = 1

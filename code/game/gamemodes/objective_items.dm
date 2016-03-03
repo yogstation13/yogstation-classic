@@ -31,7 +31,7 @@
 
 /datum/objective_item/steal/jetpack
 	name = "The Captain's jetpack"
-	targetitem = /obj/item/weapon/tank/jetpack/oxygen
+	targetitem = /obj/item/weapon/tank/jetpack/oxygen/captain
 	difficulty = 5
 	excludefromjob = list("Captain")
 

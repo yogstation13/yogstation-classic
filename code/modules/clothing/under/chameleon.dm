@@ -12,6 +12,7 @@
 	var/list/clothing_choices = list()
 	var/malfunctioning = 0
 	burn_state = -1 //Won't burn in fires
+	armor = list(melee = 10, bullet = 10, laser = 10, energy = 0, bomb = 0, bio = 0, rad = 0)
 
 /obj/item/clothing/under/chameleon/New()
 	..()
@@ -28,7 +29,7 @@
 /obj/item/clothing/under/chameleon/attackby(obj/item/clothing/under/U, mob/user, params)
 	..()
 	if(istype(U, /obj/item/clothing/under/chameleon))
-		user << "\<span class='notice'>Nothing happens.</span>"
+		user << "<span class='notice'>Nothing happens.</span>"
 		return
 	if(istype(U, /obj/item/clothing/under))
 		if(src.clothing_choices.Find(U))

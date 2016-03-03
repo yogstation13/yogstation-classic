@@ -30,6 +30,9 @@
 	..()
 
 /obj/item/stack/DblClick()
+	split()
+
+/obj/item/stack/proc/split()
 	if(amount < 2)
 		return
 
@@ -47,6 +50,7 @@
 
 	N.amount = amount1
 	src.amount = amount2
+	return N
 
 /obj/item/stack/examine(mob/user)
 	..()
@@ -247,6 +251,7 @@
 		use(1)
 		if (src && usr.machine==src)
 			spawn(0) src.interact(usr)
+		return F
 	else
 		..()
 	return
