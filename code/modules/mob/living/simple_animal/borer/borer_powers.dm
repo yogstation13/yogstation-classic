@@ -249,6 +249,10 @@
 		src << "<span class='boldnotice'>Its too soon to use that again!</span>"
 		return
 
+	if(influence < 50)
+		src << "<span class='boldnotice'>You need atleast 50% influence to do this!</span>"
+		return
+
 	src << "<span class='danger'>You begin delicately adjusting your connection to the host brain...</span>"
 
 	spawn(100+(victim.brainloss*5))

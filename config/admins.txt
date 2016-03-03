@@ -12,7 +12,7 @@
 # IT IS AUTOMATICALLY GENERATED FROM THE SERVER DATABASE
 
 Kn0ss0s	=	Head Coder
-Slovenian	=	Council Member
+Oisin100	=	Council Member
 George99	=	Council Member
 Xantam	=	Council Member
 AsV9	=	Council Member
