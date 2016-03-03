@@ -90,6 +90,8 @@
 	victim.reagents.add_reagent(chem.chemname, chem.quantity)
 	chemicals -= chem.chemuse
 	influence += chem.influence_change
+	if(influence > 100)
+		influence = 100
 
 /mob/living/simple_animal/borer/verb/hide()
 	set category = "Borer"

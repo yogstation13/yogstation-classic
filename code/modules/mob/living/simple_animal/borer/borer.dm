@@ -14,6 +14,7 @@
 	mob_size = MOB_SIZE_SMALL
 	faction = list("creature")
 	ventcrawler = 2
+	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 1, "min_co2" = 0, "max_co2" = 10, "min_n2" = 0, "max_n2" = 3)
 
 	var/mob/living/carbon/human/victim = null
 	var/mob/living/captive_brain/host_brain = null
@@ -37,7 +38,7 @@
 	borer_chems += /datum/borer_chem/charcoal
 	borer_chems += /datum/borer_chem/ephedrine
 	borer_chems += /datum/borer_chem/leporazine
-	borer_chems += /datum/borer_chem/morphine
+	borer_chems += /datum/borer_chem/perfluorodecalin
 	borer_chems += /datum/borer_chem/spacedrugs
 
 /mob/living/simple_animal/borer/Stat()

@@ -24,13 +24,14 @@
 	chemname = "leporazine"
 	chemuse = 100
 
-/datum/borer_chem/morphine
-	chemname = "morphine"
-	needed_influence = 50
-	influence_change = -10
-	chemuse = 100
+/datum/borer_chem/perfluorodecalin
+	chemname = "perfluorodecalin"
+	needed_influence = 40
+	influence_change = -5
+	chemuse = 75
 
 /datum/borer_chem/spacedrugs
 	chemname = "space_drugs"
 	needed_influence = 50
+	influence_change = -5
 	chemuse = 75

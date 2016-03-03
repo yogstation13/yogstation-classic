@@ -1,7 +1,7 @@
 /datum/round_event_control/borer
 	name = "Borer"
 	typepath = /datum/round_event/borer
-	weight = 5
+	weight = 15
 	max_occurrences = 1
 
 	earliest_start = 12000 // 20 Minutes
