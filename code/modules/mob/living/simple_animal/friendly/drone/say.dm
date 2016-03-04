@@ -42,5 +42,7 @@
 
 
 /mob/living/simple_animal/drone/proc/drone_chat(msg)
+	log_say("[key_name(src)] : [msg]")
+	say_log_silent += "Drone Chat: [msg]"
 	var/rendered = "<i><span class='game say'>DRONE CHAT: <span class='name'>[name]</span>: [msg]</span></i>"
 	alert_drones(rendered, 1)

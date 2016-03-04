@@ -362,6 +362,8 @@
 		var/text = stripped_input(user, "What do you want to say your thralls and fellow shadowlings?.", "Hive Chat", "")
 		if(!text)
 			return
+		log_say("[key_name(user)] : [text]")
+		user.say_log_silent += "Shadowling Hivemind: [text]"
 		for(var/mob/M in mob_list)
 			if(is_shadow_or_thrall(M) || (M in dead_mob_list))
 				M << "<span class='shadowling'><b>\[Shadowling\]</b><i> [usr.real_name]</i>: [text]</span>"

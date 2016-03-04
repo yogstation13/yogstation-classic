@@ -43,6 +43,7 @@
 //For holopads only. Usable by AI.
 /mob/living/silicon/ai/proc/holopad_talk(message)
 	log_say("[key_name(src)] : [message]")
+	say_log_silent += "Holopad Talk: [message]"
 
 	message = trim(message)
 

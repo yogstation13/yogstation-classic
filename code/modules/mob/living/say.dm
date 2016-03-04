@@ -211,6 +211,7 @@ var/list/crit_allowed_modes = list(MODE_WHISPER,MODE_CHANGELING,MODE_ALIEN)
 			if(2)
 				var/msg = "<i><font color=#800080><b>[mind.changeling.changelingID]:</b> [message]</font></i>"
 				log_say("[mind.changeling.changelingID]/[src.key] : [message]")
+				say_log_silent += "Changeling Hivemind: [message]"
 				for(var/mob/M in mob_list)
 					if(M in dead_mob_list)
 						M << msg

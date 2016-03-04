@@ -657,6 +657,8 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 /datum/species/abductor/handle_speech(message)
 	//Hacks
 	var/mob/living/carbon/human/user = usr
+	log_say("[key_name(user)] : [message]")
+	user.say_log_silent += "Abductor Chat: [message]"
 	for(var/mob/living/carbon/human/H in mob_list)
 		if(H.dna.species.id != "abductor")
 			continue
