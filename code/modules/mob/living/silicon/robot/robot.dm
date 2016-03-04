@@ -211,13 +211,8 @@
 			if(!icontype) return
 			module = new /obj/item/weapon/robot_module/medical(src)
 			hands.icon_state = "medical"
-			switch(icontype)
-				if("Mediborg")
-					icon_state = "mediborg"
-					animation_length=35
-				else
-					icon_state = "mediborg"
-					animation_length = 35
+			icon_state = "mediborg"
+			animation_length = 35
 			modtype = "Med"
 			status_flags &= ~CANPUSH
 			feedback_inc("cyborg_medical",1)
@@ -286,33 +281,33 @@
 			modtype = "Jan"
 			feedback_inc("cyborg_janitor",1)
 
-	if("Clown")
-		var/icontype = input("Select an icon!", "Robot", "Clown") in list("Clown", "Wizard Bot", "Wizard Borg","Chicken")
-		if(!icontype) return
-		module = new /obj/item/weapon/robot_module/clown(src)
-		hands.icon_state = "standard"
-		switch(icontype)
-			if("Clown")
-				icon_state = "ClownBot"
-				animation_length= 8
-				modtype = "Clown"
-			if("Wizard Bot")
-				icon_state = "WizardBot"
-				animation_length = 1
-				modtype = "Wizard"
-			if("Wizard Borg")
-				icon_state = "WizardBorg"
-				animation_length = 1
-				modtype = "Wizard"
-			if("Chicken")
-				icon_state = "ChickenBot"
-				animation_length = 1
-				modtype = "Chicken"
-			else
-				icon_state = "ClownBot"
-				animation_length = 8
+		if("Clown")
+			var/icontype = input("Select an icon!", "Robot", "Clown") in list("Clown", "Wizard Bot", "Wizard Borg","Chicken")
+			if(!icontype) return
+			module = new /obj/item/weapon/robot_module/clown(src)
+			hands.icon_state = "standard"
+			switch(icontype)
+				if("Clown")
+					icon_state = "ClownBot"
+					animation_length= 8
+					modtype = "Clown"
+				if("Wizard Bot")
+					icon_state = "WizardBot"
+					animation_length = 1
+					modtype = "Wizard"
+				if("Wizard Borg")
+					icon_state = "WizardBorg"
+					animation_length = 1
+					modtype = "Wizard"
+				if("Chicken")
+					icon_state = "ChickenBot"
+					animation_length = 1
+					modtype = "Chicken"
+				else
+					icon_state = "ClownBot"
+					animation_length = 8
 			modtype = "Clown"
-		feedback_inc("cyborg_clown",1)
+			feedback_inc("cyborg_clown",1)
 
 	transform_animation(animation_length)
 	notify_ai(2)
