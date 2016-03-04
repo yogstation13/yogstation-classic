@@ -1,0 +1,25 @@
+# Valid Prefixes: 
+
+#   bugfix
+
+#   wip (For works in progress)
+
+#   tweak
+
+#   soundadd
+
+#   sounddel
+
+#   rscadd (general adding of nice things)
+
+#   rscdel (general deleting of nice things)
+
+#   imageadd
+
+#   imagedel
+
+#   spellcheck (typo fixes)
+
+#   experiment
+
+#   tgs (TG-ported fixes?)
