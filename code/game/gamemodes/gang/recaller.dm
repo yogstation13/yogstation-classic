@@ -313,7 +313,7 @@
 	attack_self(usr)
 
 
-/obj/item/device/gangtool/proc/ping_gang(mob/user)
+/obj/item/device/gangtool/proc/ping_gang(mob/living/user)
 	if(!user)
 		return
 	var/message = stripped_input(user,"Discreetly send a gang-wide message.","Send Message") as null|text
@@ -339,6 +339,8 @@
 			else
 				gang_rank = "[gang_rank - 1]th Lieutenant"
 		var/ping = "<span class='danger'><B><i>[gang.name] [gang_rank]</i>: [message]</B></span>"
+		log_say("[key_name(user)] : [message]")
+		user.say_log_silent += "Gang Chat: [message]"
 		for(var/datum/mind/ganger in members)
 			if(ganger.current && (ganger.current.z <= 2) && (ganger.current.stat == CONSCIOUS))
 				ganger.current << ping
