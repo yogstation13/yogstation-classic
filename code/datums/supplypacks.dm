@@ -156,7 +156,7 @@ var/list/all_supply_groups = list(supply_emergency,supply_security,supply_engine
 /datum/supply_packs/emergency/syndicate
 	name = "ERROR_NULL_ENTRY"
 	contains = list(/obj/item/weapon/storage/box/syndicate)
-	cost = 140
+	cost = 280
 	containertype = /obj/structure/closet/crate
 	containername = "crate"
 	hidden = 1

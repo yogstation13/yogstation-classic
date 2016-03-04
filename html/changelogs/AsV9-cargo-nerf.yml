@@ -1,0 +1,7 @@
+author: AsV9
+
+delete-after: True
+
+changes: 
+  - rscadd: "Sending plasma to CentComm now rewards 10 pts instead of 5."
+  - tweak: "Syndicate crates now are twice as expensive."
