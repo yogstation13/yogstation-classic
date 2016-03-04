@@ -54,5 +54,6 @@
 	var/smoke_delay = 0 //used to prevent spam with smoke reagent reaction on mob.
 
 	var/list/say_log = list() //a log of what we've said, plain text, no spans or junk, essentially just each individual "message"
+	var/list/say_log_silent = list() //a log of things that are not said out loud, such as binary chat, changeling chat, shadlowing commune, etc.
 
 	var/unique_name = 0 //if a mob's name should be appended with an id when created e.g. Mob (666)
