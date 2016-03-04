@@ -61,6 +61,8 @@
 
 	var/buffed = 0 //In the event that you want to have a buffing effect on the mob, but don't want it to stack with other effects, any outside force that applies a buff to a simple mob should at least set this to 1, so we have something to check against
 
+	var/list/obj/item/weapon/reagent_containers/food/snacks/eats = list() //associative list, food_type = heal_per_bite e.x. list(/obj/item/weapon/reagent_containers/food/snacks/syndicake/cake = 5)
+
 /mob/living/simple_animal/New()
 	..()
 	create_reagents(1000)
@@ -530,3 +532,45 @@
 
 	if(changed)
 		animate(src, transform = ntransform, time = 2, easing = EASE_IN|EASE_OUT)
+
+/mob/living/simple_animal/proc/can_eat(var/obj/item/weapon/reagent_containers/food/snacks/I)
+	if(istype(I))
+		for(var/F in eats)
+			if(istype(I, F))
+				return 1
+	return 0
+
+/mob/living/simple_animal/proc/eat_snack(var/obj/item/weapon/reagent_containers/food/snacks/snack, var/mob/user = usr)//no sanity checks, assumes can_eat() returned 1
+	if(health >= maxHealth)
+		if(user)
+			if(user == src)
+				user << "<span class='warning'>You do not need to eat \the [snack] right now.</span>"
+			else
+				user << "<span class='warning'>\The [src] refuses to eat \the [snack]!</span>"
+	else
+		if(user == src)
+			user.visible_message("<span class='warning'>You eat \the [snack].</span>", "<span class='warning'>You eat \the [snack].</span>")
+		else
+			user.visible_message("<span class='warning'>[usr] feeds \the [snack] to the [src].</span>", "<span class='warning'>You feed \the [snack] to \the [src]!</span>")
+		playsound(loc, 'sound/items/eatfood.ogg', rand(10,50), 1)
+		if(snack.reagents.total_volume)
+			var/fraction = min(snack.bitesize/snack.reagents.total_volume, 1)
+			snack.reagents.reaction(src, INGEST, fraction)
+			snack.reagents.trans_to(src, snack.bitesize)
+			snack.bitecount++
+			snack.On_Consume()
+		var/heal_amount = eats[snack.type]
+		adjustBruteLoss(-heal_amount)
+		updatehealth()
+
+/mob/living/simple_animal/UnarmedAttack(obj/item/W, mob/user, params)
+	if(!stat && can_eat(W) && Adjacent(W) && istype(W.loc, /turf))
+		eat_snack(W)
+	else
+		return ..()
+
+/mob/living/simple_animal/attackby(obj/item/weapon/W, mob/user, params)
+	if(!stat && can_eat(W))
+		eat_snack(W, user)
+	else
+		return ..()

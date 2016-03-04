@@ -19,7 +19,7 @@
 	var/rapid_fire = 0
 	var/new_speed = 0
 	var/new_health = 150
-	var/new_melee_damage = 100
+	var/new_melee_damage = 15
 
 	var/emag_active = 0
 	var/weapon_safety = 1
@@ -64,6 +64,9 @@
 /obj/item/weapon/storage/tactical_harness/proc/add_harness(var/mob/living/simple_animal/hostile/animal, var/mob/user = usr)
 	if(!animal || animal.harness || !canWear(animal))
 		return 0
+	if(!(/obj/item/weapon/reagent_containers/food/snacks/syndicake in animal.eats))
+		animal.eats += /obj/item/weapon/reagent_containers/food/snacks/syndicake
+		animal.eats[/obj/item/weapon/reagent_containers/food/snacks/syndicake] = 5
 	animal.harness	= src
 	animal.icon_living = icon_state_alive
 	animal.icon_dead = icon_state_dead
@@ -353,7 +356,7 @@
 /obj/item/weapon/storage/tactical_harness/universal
 	name = "tactical animal harness"
 	desc = "A harness for a Syndicate tactical animal. This one will mold itself to the first valid animal it is placed on."
-	wearable_by = list(/mob/living/simple_animal/hostile/retaliate/dolphin)
+	wearable_by = list(/mob/living/simple_animal/hostile/retaliate/dolphin, /mob/living/simple_animal/hostile/carp/tactical)
 	wearable_by_exact = list(/mob/living/simple_animal/hostile/carp)
 	var/refund_TC = 0
 	var/failed_to_find_player = -1 //-1 means it hasn't tried to find a player yet, 1 means it has tried to find a player and failed, 0 means it has tried to find a player and succeeded. Here to prevent the creation of infinite sentient animals.
@@ -401,6 +404,7 @@
 /obj/item/weapon/storage/tactical_harness/carp
 	name = "tactical carp harness"
 	desc = "A harness for a Syndicate tactical carp."
+	wearable_by = list(/mob/living/simple_animal/hostile/carp/tactical)
 	wearable_by_exact = list(/mob/living/simple_animal/hostile/carp)
 	icon_state_alive = "tactical_carp"
 	icon_state_dead = "tactical_carp_dead"
