@@ -119,7 +119,7 @@
 /datum/reagent/medicine/rezadone
 	name = "Rezadone"
 	id = "rezadone"
-	description = "A powder derived from fish toxin, this substance can effectively treat cellular damage in humanoids, though excessive consumption has side effects."
+	description = "A powder derived from synthetic fish-toxins, this substance can effectively treat cellular damage in humanoids, though excessive consumption has side effects."
 	reagent_state = SOLID
 	color = "#669900" // rgb: 102, 153, 0
 	overdose_threshold = 30
