@@ -15,7 +15,7 @@
 	var/locked = 1
 
 /obj/item/weapon/airlock_electronics/attack_self(mob/user)
-	if (!ishuman(user))
+	if (!ishuman(user) && !isdrone(user))
 		return ..(user)
 
 	var/mob/living/carbon/human/H = user
@@ -69,8 +69,11 @@
 
 /obj/item/weapon/airlock_electronics/Topic(href, href_list)
 	..()
-	if (usr.stat || usr.restrained() || !ishuman(usr))
-		return
+	if (isdrone(usr))
+		src.locked = 0
+		src.last_configurator = usr.name // which will come out as drone [random number 1-999]
+	if (usr.stat || usr.restrained() || !ishuman(usr) && !isdrone(usr))
+		return 0
 	if (href_list["close"])
 		usr << browse(null, "window=airlock")
 		return

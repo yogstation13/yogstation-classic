@@ -149,7 +149,7 @@
 /mob/living/silicon/robot/proc/pick_module()
 	if(module)
 		return
-	designation = input("Please, select a module!", "Robot", null, null) in list("Standard", "Engineering", "Medical", "Miner", "Janitor","Service", "Security")
+	designation = input("Please, select a module!", "Robot", null, null) in list("Standard", "Engineering", "Medical", "Miner", "Janitor","Service", "Security", "Clown")
 	var/animation_length=0
 	if(module)
 		return
@@ -285,6 +285,34 @@
 					animation_length = 22
 			modtype = "Jan"
 			feedback_inc("cyborg_janitor",1)
+
+	if("Clown")
+		var/icontype = input("Select an icon!", "Robot", "Clown") in list("Clown", "Wizard Bot", "Wizard Borg","Chicken")
+		if(!icontype) return
+		module = new /obj/item/weapon/robot_module/clown(src)
+		hands.icon_state = "standard"
+		switch(icontype)
+			if("Clown")
+				icon_state = "ClownBot"
+				animation_length= 8
+				modtype = "Clown"
+			if("Wizard Bot")
+				icon_state = "WizardBot"
+				animation_length = 1
+				modtype = "Wizard"
+			if("Wizard Borg")
+				icon_state = "WizardBorg"
+				animation_length = 1
+				modtype = "Wizard"
+			if("Chicken")
+				icon_state = "ChickenBot"
+				animation_length = 1
+				modtype = "Chicken"
+			else
+				icon_state = "ClownBot"
+				animation_length = 8
+			modtype = "Clown"
+		feedback_inc("cyborg_clown",1)
 
 	transform_animation(animation_length)
 	notify_ai(2)
@@ -1182,11 +1210,12 @@
 
 /mob/living/silicon/robot/syndicate/New(loc)
 	..()
-	cell.maxcharge = 25000
-	cell.charge = 25000
+	cell = new /obj/item/weapon/stock_parts/cell/hyper(src)
 	radio = new /obj/item/device/radio/borg/syndicate(src)
 	module = new /obj/item/weapon/robot_module/syndicate(src)
 	laws = new /datum/ai_laws/syndicate_override()
+	var/obj/item/borg/upgrade/vtec/VTEC = new(src)
+	VTEC.action(src)
 
 /mob/living/silicon/robot/proc/notify_ai(notifytype, oldname, newname)
 	if(!connected_ai)
