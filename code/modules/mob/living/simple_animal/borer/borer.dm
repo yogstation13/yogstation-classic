@@ -14,7 +14,7 @@
 	mob_size = MOB_SIZE_SMALL
 	faction = list("creature")
 	ventcrawler = 2
-	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 1, "min_co2" = 0, "max_co2" = 10, "min_n2" = 0, "max_n2" = 3)
+	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 
 	var/mob/living/carbon/human/victim = null
 	var/mob/living/captive_brain/host_brain = null
@@ -73,7 +73,7 @@
 			if(victim.reagents.has_reagent("sugar"))
 				if(!docile)
 					if(controlling)
-						host << "<span class='boldnotice'>You feel the soporific flow of sugar in your host's blood, lulling you into docility.</span>"
+						victim << "<span class='boldnotice'>You feel the soporific flow of sugar in your host's blood, lulling you into docility.</span>"
 					else
 						src << "<span class='boldnotice'>You feel the soporific flow of sugar in your host's blood, lulling you into docility.</span>"
 					docile = 1
@@ -81,15 +81,15 @@
 			else
 				if(docile)
 					if(controlling)
-						host << "<span class='boldnotice'>You shake off your lethargy as the sugar leaves your host's blood.</span>"
+						victim << "<span class='boldnotice'>You shake off your lethargy as the sugar leaves your host's blood.</span>"
 					else
 						src << "<span class='boldnotice'>You shake off your lethargy as the sugar leaves your host's blood.</span>"
 					docile = 0
 			if(controlling)
 
 				if(docile)
-					host << "<span class='boldnotice'>You are feeling far too docile to continue controlling your host...</span>"
-					//host.release_control() //Sort this out.
+					victim << "<span class='boldnotice'>You are feeling far too docile to continue controlling your host...</span>"
+					victim.release_control()
 					return
 
 				if(prob(5))
@@ -128,6 +128,7 @@
 	victim.Weaken(4)
 	victim.apply_effect(STUTTER, 4)
 	visible_message("<span class='warning'>[victim] collapses into a fit of spasms!.</span>")
+	log_game("[src]/([src.ckey]) has infected [victim]/([victim.ckey]")
 
 /mob/living/simple_animal/borer/proc/leave_victim()
 	if(!victim) return
@@ -165,6 +166,8 @@
 
 	victim.verbs -= /mob/living/carbon/human/proc/release_control
 	victim.verbs -= /mob/living/carbon/human/proc/spawn_larvae
+
+	log_game("[src]/([src.ckey]) released control of [victim]/([victim.ckey]")
 
 	if(host_brain)
 

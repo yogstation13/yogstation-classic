@@ -92,6 +92,7 @@
 	influence += chem.influence_change
 	if(influence > 100)
 		influence = 100
+	log_game("[src]/([src.ckey]) has injected [chemname] into their host [victim]/([victim.ckey])")
 
 /mob/living/simple_animal/borer/verb/hide()
 	set category = "Borer"
@@ -227,6 +228,7 @@
 	victim.med_hud_set_status()
 	victim.med_hud_set_health()
 	victim.stat = CONSCIOUS
+	log_game("[src]/([src.ckey]) has revived [victim]/([victim.ckey]")
 
 /mob/living/simple_animal/borer/verb/bond_brain()
 	set category = "Borer"
@@ -261,6 +263,8 @@
 			return
 		else
 
+
+			log_game("[src]/([src.ckey]) assumed control of [victim]/([victim.ckey] with borer powers.")
 			src << "<span class='boldnotice'>You plunge your probosci deep into the cortex of the host brain, interfacing directly with their nervous system.</span>"
 			victim << "<span class='userdanger'>You feel a strange shifting sensation behind your eyes as an alien consciousness displaces yours.</span>"
 
@@ -341,6 +345,7 @@ mob/living/carbon/human/proc/release_control()
 		var/mob/living/simple_animal/borer/newborer = new(get_turf(src))
 		newborer.transfer_personality(C)
 		visible_message("<span class='userdanger'>[src] heaves violently, expelling a rush of vomit and a wriggling, sluglike creature!</span>")
+		log_game("[src]/([src.ckey]) has spawned a new borer via reproducing.")
 	else
 		src << "<span class='boldnotice'>You do not have enough chemicals stored to reproduce.</span>"
 		return

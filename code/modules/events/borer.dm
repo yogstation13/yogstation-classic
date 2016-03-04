@@ -27,14 +27,16 @@
 	if(!vents.len)
 		return kill()
 
-	var/obj/vent = pick_n_take(vents)
-	var/list/candidates = get_candidates(BE_ALIEN, ALIEN_AFK_BRACKET)
-	if(!candidates.len)
-		return kill()
-	var/client/C = pick(candidates)
-	if(!C)
-		return kill()
+	for(var/borers = 0, borers < 3, borers++)
+		var/obj/vent = pick_n_take(vents)
+		var/list/candidates = get_candidates(BE_ALIEN, ALIEN_AFK_BRACKET)
+		if(!candidates.len)
+			return kill()
+		var/client/C = pick(candidates)
+		if(!C)
+			return kill()
 
-	var/mob/living/simple_animal/borer/borer = new(vent.loc)
-	borer.transfer_personality(C)
-	spawned = 1
+		var/mob/living/simple_animal/borer/borer = new(vent.loc)
+		borer.transfer_personality(C)
+		spawned = 1
+		log_game("[borer]/([borer.ckey]) was spawned as a cortical borer.")
