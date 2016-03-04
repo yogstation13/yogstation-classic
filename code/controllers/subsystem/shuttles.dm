@@ -25,7 +25,7 @@ var/datum/subsystem/shuttle/SSshuttle
 	var/points_per_slip = 2				//points gained per slip returned
 	var/points_per_crate = 5			//points gained per crate returned
 	var/points_per_intel = 250			//points gained per intel returned
-	var/points_per_plasma = 5			//points gained per plasma returned
+	var/points_per_plasma = 10			//points gained per plasma returned
 	var/points_per_design = 25			//points gained per max reliability research design returned (only for initilally unreliable designs)
 	var/centcom_message = ""			//Remarks from Centcom on how well you checked the last order.
 	var/list/discoveredPlants = list()	//Typepaths for unusual plants we've already sent CentComm, associated with their potencies
