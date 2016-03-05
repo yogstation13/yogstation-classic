@@ -59,6 +59,14 @@
 				AIStatus = AI_IDLE				// otherwise we go idle
 	return 1
 
+/mob/living/simple_animal/hostile/UnarmedAttack(atom/A, proximity_flag)
+	if(!stat && can_eat(A) && istype(A.loc, /turf))
+		eat_snack(A)
+	else
+		target = A
+		AttackingTarget()
+
+
 //////////////TACTICAL HARNESS STUFF////////////
 
 /mob/living/simple_animal/hostile/UnarmedAttack(atom/A, proximity_flag)
@@ -148,7 +156,7 @@
 		headset.on = 1
 	..()
 
-/mob/living/simple_animal/hostile/tactical/radio(message, message_mode, list/spans)
+/mob/living/simple_animal/hostile/radio(message, message_mode, list/spans)
 	. = ..()
 	if(. != 0)
 		return .
