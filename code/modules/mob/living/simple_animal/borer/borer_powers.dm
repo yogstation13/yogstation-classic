@@ -160,6 +160,10 @@
 
 	src.layer = MOB_LAYER
 
+	src << "<span class='warning'>You focus your psychic lance on [M] and freeze their limbs with a wave of terrible dread.</span>"
+	M << "<span class='userdanger'>You feel a creeping, horrible sense of dread come over you, freezing your limbs and setting your heart racing.</span>"
+	M.Stun(4)
+
 	used_dominate = world.time
 
 /mob/living/simple_animal/borer/verb/release_victim()
