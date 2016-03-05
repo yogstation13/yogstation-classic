@@ -86,4 +86,8 @@
 	imp = new /obj/item/weapon/implant/mindslave(src)
 	..()
 
+<<<<<<< HEAD
 /datum/objective/mindslave
+=======
+/datum/objective/mindslave
+>>>>>>> 66c88d25f6a075adc4056f7f44f8a1c228c2b261
