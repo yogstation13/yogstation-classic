@@ -148,7 +148,7 @@ update_label("John Doe", "Clowny")
 	var/list/card_choices = list()
 
 /obj/item/weapon/card/id/syndicate/New()
-	card_choices = list(new /obj/item/weapon/card/id(), new /obj/item/weapon/card/id/silver(), new /obj/item/weapon/card/id/gold(), new /obj/item/weapon/card/emag() )
+	card_choices = list(new /obj/item/weapon/card/id(), new /obj/item/weapon/card/id/silver(), new /obj/item/weapon/card/id/gold(), new /obj/item/weapon/card/id/prisoner(), new /obj/item/weapon/card/emag() )
 
 /obj/item/weapon/card/id/syndicate/afterattack(obj/item/weapon/O, mob/user, proximity)
 	if(!proximity) return
