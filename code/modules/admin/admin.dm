@@ -851,14 +851,13 @@ datum/admins/proc/cybermen_panel()
 	else
 		dat += {"
 			<A href='?_src_=holder;cybermen=2'>Force Complete Current Objective</A>(automatically displays to all cybermen)<br>
-			<A href='?_src_=holder;cybermen=6'>Set Random Current Objective</A>(automatically displays to all cybermen)<br>
+			<A href='?_src_=holder;cybermen=3'>Set Current Objective</A><br>
+			<A href='?_src_=holder;cybermen=6'>Set Random Current Objective</A><br>
 			<A href='?_src_=holder;cybermen=4'>Display Current Objective to all Cybermen</A><br>
 			<A href='?_src_=holder;cybermen=5'>Message All Cybermen</A><br>
 			<A href='?_src_=holder;cybermen=8'>Show Broadcast Log</A><br>
 			<A href='?_src_=holder;cybermen=9'>Show Hacking Log</A><br>
 			"}
-
-		//<A href='?_src_=holder;cybermen=3'>Set Current Objective</A><br> //does not work at the moment.
 
 		dat += "<BR>Current Cybermen:<BR>"
 		for(var/datum/mind/M in cyberman_network.cybermen)
@@ -876,14 +875,17 @@ datum/admins/proc/cybermen_panel()
 		for(var/i = 1 to cyberman_network.cybermen_objectives.len)
 			var/datum/objective/cybermen/O = cyberman_network.cybermen_objectives[i]
 			if(O)
-				dat += "Phase [i]:[O.phase]<BR>[O.explanation_text]<BR><BR>"
+				if(i == cyberman_network.cybermen_objectives.len)
+					dat += "Phase [i]:[O.phase] (<A href='?_src_=holder;cybermen=10;editvar=toggle_win_on_complete;target=\ref[O]'>[O.win_upon_completion ? "Cybermen win on completion" : "Cybermen do not win on completion"]</A>)<BR>[O.explanation_text]<BR><BR>"
+				else
+					dat += "Phase [i]:[O.phase]<BR>[O.explanation_text]<BR><BR>"
 			else
 				dat += "ERROR - null in the objective list<BR>"
 
 		dat += "<BR>Current Active Hacks:<BR>"
 		for(var/obj/effect/cyberman_hack/H in cyberman_network.active_cybermen_hacks)
 			if(H)
-				dat += "[H.target_name] ([H.progress]/[H.cost])"
+				dat += "[H.target_name] (<A href='?_src_=holder;cybermen=10;editvar=set_progress;target=\ref[H]'>[H.progress]</A>/<A href='?_src_=holder;cybermen=10;editvar=set_cost;target=\ref[H]'>[H.cost]</A>) (+<A href='?_src_=holder;cybermen=10;editvar=set_innate;target=\ref[H]'>[H.innate_processing]</A>/tick)"
 				if(istype(H, /obj/effect/cyberman_hack/multiple_vector))
 					var/obj/effect/cyberman_hack/multiple_vector/MVH = H
 					for(var/obj/effect/cyberman_hack/CH in MVH.component_hacks)
@@ -894,10 +896,26 @@ datum/admins/proc/cybermen_panel()
 		dat += "<BR>Objects Hacked:<BR>"
 		for(var/O in cyberman_network.cybermen_hacked_objects)
 			if(O)
-				dat += "[O]"
+				dat += "[O]\[<A href='?_src_=holder;cybermen=10;editvar=remove_hacked_obj;target=\ref[O]'>Remove</A>\]"
 			else
 				dat += "ERROR - null in the hacked items list."
 			dat += "<BR>"
+		dat += "<BR>Access Downloaded:<BR>"
+		for(var/O in cyberman_network.cybermen_access_downloaded)
+			if(O)
+				dat += "[get_access_desc(O)]\[<A href='?_src_=holder;cybermen=10;editvar=remove_hacked_access;target=[O]'>Remove</A>\]"
+			else
+				dat += "ERROR - null in the hacked items list."
+			dat += "<BR>"
+		dat += "<BR>Research Downloaded:<BR>"
+		for(var/O in cyberman_network.cybermen_research_downloaded)
+			var/datum/tech/T = O
+			if(T)
+				dat += "[T.id] [T.level]\[<A href='?_src_=holder;cybermen=10;editvar=remove_hacked_obj;target=\ref[O]'>Remove</A>\]"
+			else
+				dat += "ERROR - null in the hacked items list."
+			dat += "<BR>"
+
 	usr << browse(dat, "window=cybermen;size=400x600")
 	return
 
@@ -918,3 +936,44 @@ datum/admins/proc/cyberman_hacking_log()
 	for(var/entry in cyberman_network.hacking_log)
 		dat += "[entry]<BR>"
 	usr << browse(dat, "window=cybermen_hacking;size=400x600")
+
+datum/admins/proc/cyberman_varedit(list/href_list)
+	if(!cyberman_network)
+		return
+	switch(href_list["editvar"])
+		if("remove_hacked_obj")
+			var/obj = locate(href_list["target"])
+			if(!cyberman_network.cybermen_hacked_objects.Remove(obj))
+				cyberman_network.cybermen_research_downloaded.Remove(obj)
+		if("remove_hacked_access")
+			cyberman_network.cybermen_access_downloaded.Remove(text2num(href_list["target"]))
+		if("toggle_win_on_complete")
+			var/datum/objective/cybermen/obj = locate(href_list["target"])
+			if(istype(obj))
+				obj.win_upon_completion = !obj.win_upon_completion
+		if("set_progress")
+			var/obj/effect/cyberman_hack/hack = locate(href_list["target"])
+			if(istype(hack))
+				var/num = input("Set progress to what?") as num
+				if(hack)
+					hack.progress = num
+					if(hack.progress >= 0)
+						hack.maintained = 1
+					else
+						hack.drop("<span class='warning'>[hack.display_verb] of \the [hack.target_name] cancelled by the Cyberman Collective.</span>")
+		if("set_cost")
+			var/obj/effect/cyberman_hack/hack = locate(href_list["target"])
+			world << "Test"
+			world << "[hack], "
+			world << "[istype(hack)]"
+			if(istype(hack))
+				var/num = input("Set cost to what?") as num
+				if(hack)
+					hack.cost = num
+					hack.maintained = 1
+		if("set_innate")
+			var/obj/effect/cyberman_hack/hack = locate(href_list["target"])
+			if(istype(hack))
+				var/num = input("Set innate processing to what? (If this is not 0, the hack will not lose progress if no cybermen are nearby)") as num
+				if(hack)
+					hack.innate_processing = num

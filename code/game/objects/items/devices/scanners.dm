@@ -138,10 +138,13 @@ MASS SPECTROMETER
 		if(H.heart_attack)
 			user << "<span class='danger'>Subject suffering from heart attack: Apply defibrillator immediately!</span>"
 		if(cyberman_network)
-			for(var/obj/effect/cyberman_hack/human/hack in cyberman_network.active_cybermen_hacks)
-				if(hack.target == H)
-					user << "<span class='danger'>Unknown harmful microscopic machines detected in subject's bloodstream: Recommend treatment via Electro Magnetic Pulse or Strong Electric Shock immediately!</span>"
-					break
+			if(ticker.mode.is_cyberman(M.mind))
+				user << "<span class='danger'>Unknown harmful implants detected in patient's brain - recommend removal via brain surgery.</span>"
+			else
+				for(var/obj/effect/cyberman_hack/human/hack in cyberman_network.active_cybermen_hacks)
+					if(hack.target == H)
+						user << "<span class='danger'>Unknown harmful microscopic machines detected in subject's bloodstream: Recommend treatment via Electro Magnetic Pulse or Strong Electric Shock immediately!</span>"
+						break
 
 	user << "<span class='info'>Analyzing results for [M]:\n\tOverall status: [mob_status]</span>"
 

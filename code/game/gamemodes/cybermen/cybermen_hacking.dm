@@ -1,5 +1,6 @@
 #define CYBERMEN_HACK_AIRLOCK_STD_COST 200
 #define CYBERMEN_HACK_LOCKER_COST 200
+#define CYBERMEN_HACK_CRATE_COST 200
 #define CYBERMEN_HACK_APC_COST 200
 #define CYBERMEN_HACK_ALARM_COST 200
 #define CYBERMEN_HACK_SECURE_COMPUTER_COST 300
@@ -15,11 +16,12 @@
 #define CYBERMEN_HACK_NUKE_COST 1000
 #define CYBERMEN_HACK_DISPLAY_CASE_COST 300
 #define CYBERMEN_HACK_BARSIGN_COST 100
-#define CYBERMEN_HACK_SECURITRON_COST 300
+#define CYBERMEN_HACK_BOT_COST 300
 #define CYBERMEN_HACK_VENDING_MACHINE_COST 300
 #define CYBERMEN_HACK_AUTOLATHE_COST 400
 #define CYBERMEN_HACK_SHUTTLE_COST 400
 #define CYBERMEN_HACK_RADIO_COST 1000
+#define CYBERMEN_HACK_MICROWAVE_COST 100
 #define CYBERMEN_INSTALL_BASE_COST 300
 
 #define CYBERMEN_HACK_MAX_PREFERENCE 128//this is 128 becuase get_dist() always returns a number no greater than 127. It is actually possible for a preference to go above this - get_dist returns -1 sometimes, and the standard formula is (preference = CYBERMEN_HACK_MAX_PREFERENCE - distance), so some prefereces will be 129.
@@ -35,6 +37,9 @@
 
 /obj/structure/closet/secure_closet/get_cybermen_hack()
 	return new /obj/effect/cyberman_hack/locker(src)
+
+/obj/structure/closet/crate/get_cybermen_hack()
+	return new /obj/effect/cyberman_hack/crate(src)
 
 /obj/machinery/power/apc/get_cybermen_hack()
 	return new /obj/effect/cyberman_hack/machinery/apc(src)
@@ -71,7 +76,12 @@
 	return new /obj/effect/cyberman_hack/analyze/id(src)
 
 /obj/item/get_cybermen_hack()
-	if(cyberman_network && src.type in cyberman_network.cybermen_analyze_targets)//this includes all possible objectives, not just current ones. This allows cybermen to complete objectives instantly, if they analyzed lots of things and get lucky.
+	var/is_analyze_target = 0
+	for(var/name in cyberman_network.cybermen_analyze_targets)
+		if(src.type == cyberman_network.cybermen_analyze_targets[name])
+			is_analyze_target = 1
+			break
+	if(cyberman_network && is_analyze_target)//this includes all possible objectives, not just current ones. This allows cybermen to complete objectives instantly, if they analyzed lots of things and get lucky.
 		return new /obj/effect/cyberman_hack/analyze(src)
 	return null
 
@@ -112,8 +122,8 @@
 /obj/structure/sign/barsign/get_cybermen_hack()
 	return new /obj/effect/cyberman_hack/barsign(src)
 
-/obj/machinery/bot/secbot/get_cybermen_hack()
-	return new /obj/effect/cyberman_hack/securitron(src)
+/obj/machinery/bot/get_cybermen_hack()
+	return new /obj/effect/cyberman_hack/bot(src)
 
 /obj/machinery/vending/get_cybermen_hack()
 	return new /obj/effect/cyberman_hack/machinery/vending_machine(src)
@@ -132,6 +142,9 @@
 
 /obj/item/device/radio/intercom/get_cybermen_hack()
 	return new /obj/effect/cyberman_hack/radio/intercom(src)
+
+/obj/machinery/microwave/get_cybermen_hack()
+	return new /obj/effect/cyberman_hack/microwave()
 
 //upgrades
 /obj/item/weapon/stock_parts/capacitor/get_cybermen_hack()
@@ -303,9 +316,8 @@
 	return result
 
 /obj/effect/cyberman_hack/Destroy()
-	..()
 	cyberman_network.active_cybermen_hacks -= src
-	return QDEL_HINT_HARDDEL_NOW
+	return ..()
 
 //HACK MACHINERY
 //takes care of things like the machine being unpowered, broken, or deconstructed.
@@ -569,13 +581,27 @@
 
 /obj/effect/cyberman_hack/locker
 	cost = CYBERMEN_HACK_LOCKER_COST
-	var/extraCost = 0
 	required_type = /obj/structure/closet/secure_closet/
 	explanation = "Toggles the locker's lock."
 
 /obj/effect/cyberman_hack/locker/complete()
 	var/obj/structure/closet/secure_closet/C = target
 	C.locked = !C.locked
+	C.update_icon()
+	..()
+
+////////////////////////////////////////////////////////
+//HACK CRATE
+////////////////////////////////////////////////////////
+
+/obj/effect/cyberman_hack/crate
+	cost = CYBERMEN_HACK_CRATE_COST
+	required_type = /obj/structure/closet/crate/secure
+	explanation = "Unlocks the crate."
+
+/obj/effect/cyberman_hack/crate/complete()
+	var/obj/structure/closet/crate/secure/C = target
+	C.locked = 0
 	C.update_icon()
 	..()
 
@@ -969,7 +995,7 @@
 /obj/effect/cyberman_hack/human/New()
 	..()
 	var/mob/living/carbon/human/H = target
-	cost = 200 + 400*cyberman_network.cybermen.len//you can just convert a bunch of people at once to keep the cost down. Possible expoit, but won't worry about it now.
+	cost = 400 + 200*cyberman_network.cybermen.len//you can just convert a bunch of people at once to keep the cost down. Possible expoit, but won't worry about it now.
 	if(istype(cyberman_network.cybermen_objectives[cyberman_network.cybermen_objectives.len], /datum/objective/cybermen/exterminate/eliminate_humans/))//discourages murderboning. Hopefully.
 		cost = min(cost, 3000)
 	if(isloyal(H))
@@ -1210,28 +1236,29 @@
 	..()
 
 ////////////////////////////////////////////////////////
-//HACK BEEPSKY/SECURITRON
+//HACK BOT
 ////////////////////////////////////////////////////////
 
-//wouldn't be too hard to make the securitron ignore cybermen. Might do that in the future.
-/obj/effect/cyberman_hack/securitron
-	cost = CYBERMEN_HACK_SECURITRON_COST
-	required_type = /obj/machinery/bot/secbot
-	explanation = "Overloads the securitron's targeting systems, causing it to apprehend all humans on sight."
+//wouldn't be too hard to make securitrons ignore cybermen. Might do that in the future.
+/obj/effect/cyberman_hack/bot
+	cost = CYBERMEN_HACK_BOT_COST
+	required_type = /obj/machinery/bot
+	explanation = "Overloads the target bot's systems, causing an effect akin to an emag."
 
-/obj/effect/cyberman_hack/securitron/process()
-	var/obj/machinery/bot/secbot/B = target
+/obj/effect/cyberman_hack/bot/process()
+	var/obj/machinery/bot/B = target
 	if(B && B.emagged == 2)
-		drop("<span class='warning'>The securitron's targeting systems are already overloaded.</span>")
+		drop("<span class='warning'>\The [target_name]'s systems are already overloaded.</span>")
 	else
 		..()
 
-/obj/effect/cyberman_hack/securitron/complete()
-	var/obj/machinery/bot/secbot/B = target
-	B.emagged = 2
-	B.audible_message("<span class='danger'>[B] buzzes oddly!</span>")
-	B.declare_arrests = 0
-	B.icon_state = "secbot[B.on]"
+/obj/effect/cyberman_hack/bot/complete()
+	var/obj/machinery/bot/B = target
+	var/old_open = B.open
+	B.locked = 0
+	B.open = 1
+	B.Emag(null)
+	B.open = old_open
 	..()
 
 ////////////////////////////////////////////////////////
@@ -1304,7 +1331,6 @@
 	cost = CYBERMEN_HACK_RADIO_COST
 	explanation = "Toggles off all telecommunication hubs in the local area. Networks without a hub cannot be hacked. Can be maintained by hacking the machine directly, or through any standard intercomm, radio, or radio headset."
 
-
 /obj/effect/cyberman_hack/multiple_vector/telecomms/New()
 	..()
 	target_name = "telecomms network"
@@ -1360,6 +1386,14 @@
 /obj/effect/cyberman_hack/machinery/tcomms_hub/start()
 	return component_hack_start(/obj/effect/cyberman_hack/multiple_vector/telecomms/, null)
 
+////////////////////////////////////////////////////////
+//HACK MICROWAVE
+////////////////////////////////////////////////////////
+
+/obj/effect/cyberman_hack/microwave
+	cost = CYBERMEN_HACK_MICROWAVE_COST
+	explanation = "Hacks the mircowave. Does nothing useful."
+	required_type = /obj/machinery/microwave
 
 ////////////////////////////////////////////////////////
 //INSTALL PART

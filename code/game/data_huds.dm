@@ -116,6 +116,8 @@
 		holder.icon_state = "hudxeno"
 	else if(check_virus())
 		holder.icon_state = "hudill"
+	//else if(cyberman_network && cyberman_network.is_cyberman_or_being_converted(src))
+	//	holder.icon_state = "hudill"
 	else
 		holder.icon_state = "hudhealthy"
 
