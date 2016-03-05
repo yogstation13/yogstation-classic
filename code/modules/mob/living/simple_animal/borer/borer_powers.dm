@@ -92,7 +92,7 @@
 		src << "<span class='boldnotice'>You need [chem.chemuse] chemicals stored to use this chemical!</span>"
 		return
 
-	src << "<span class='userdanger'>You squirt a measure of [chem.chemname] from your reservoirs into [host]'s bloodstream.</span>"
+	src << "<span class='userdanger'>You squirt a measure of [chem.chemname] from your reservoirs into [victim]'s bloodstream.</span>"
 	victim.reagents.add_reagent(chem.chemname, chem.quantity)
 	chemicals -= chem.chemuse
 	influence += chem.influence_change
