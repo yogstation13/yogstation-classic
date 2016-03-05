@@ -1,0 +1,8 @@
+author: Cruix
+
+delete-after: True
+
+changes: 
+  - rscadd: "The Syndicate mothership has a new pet: Disky the dolphin."
+  - rscadd: "Syndicate nuclear operatives can now purchase a new item - the tactical animal harness. Upon putting the harness on a space carp or space dolphin, the animal will become sentient and gain a variety of useful abilities to assist the operatives, including storage space locked with syndicate access, toggleable night vision, an integrated emag, and a laser weapon. Tactical dolphins move 50% faster than an unencumbered human, and can fire three standard laser shots once per second. Tactical carps have twice as much health, and can fire one heavy laser round per second. Both animals can heal by eating syndicakes, and come with 5."
+  - rscadd: "Added generic code allowing simple animals to eat specific snacks to heal, and to understand the human language but not be able to speak it."
