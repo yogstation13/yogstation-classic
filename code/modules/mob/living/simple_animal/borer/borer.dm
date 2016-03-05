@@ -112,7 +112,7 @@
 		victim << "<span class='green'><b>[name] telepathicaly whispers... </b></span><i>[message]</i>"
 		src << "<span class='green'><b>[name] telepathicaly whispers... </b></span><i>[message]</i>"
 
-/mob/living/simple_animal/borer/attack_animal()
+/mob/living/simple_animal/borer/UnarmedAttack()
 	return
 
 /mob/living/simple_animal/borer/proc/Infect(mob/living/carbon/human/victim)
