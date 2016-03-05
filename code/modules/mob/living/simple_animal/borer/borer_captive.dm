@@ -45,7 +45,7 @@
 		H << "<span class='danger'>You begin doggedly resisting the parasite's control (this will take approximately [B.influence-50] seconds).</span>"
 		B.victim << "<span class='danger'>You feel the captive mind of [src] begin to resist your control.</span>"
 
-		spawn(B.influence-50*10)
+		spawn(max(10, (B.influence-50)*10))
 			if(!B || !B.controlling) return
 
 			B.victim.adjustBrainLoss(rand(5,10))

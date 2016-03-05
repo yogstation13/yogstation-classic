@@ -33,7 +33,7 @@
 	..()
 	name = "[pick("Primary","Secondary","Tertiary","Quaternary")] Borer ([rand(100,999)])"
 	borer_chems += /datum/borer_chem/mannitol
-	borer_chems += /datum/borer_chem/bicardine
+	borer_chems += /datum/borer_chem/bicaridine
 	borer_chems += /datum/borer_chem/kelotane
 	borer_chems += /datum/borer_chem/charcoal
 	borer_chems += /datum/borer_chem/ephedrine
@@ -112,6 +112,9 @@
 		victim << "<span class='green'><b>[name] telepathicaly whispers... </b></span><i>[message]</i>"
 		src << "<span class='green'><b>[name] telepathicaly whispers... </b></span><i>[message]</i>"
 
+/mob/living/simple_animal/borer/UnarmedAttack()
+	return
+
 /mob/living/simple_animal/borer/proc/Infect(mob/living/carbon/human/victim)
 	if(!victim)
 		return
@@ -124,14 +127,13 @@
 	victim.borer = src
 	src.loc = victim
 
-	victim.Stun(4)
-	victim.Weaken(4)
-	victim.apply_effect(STUTTER, 4)
-	visible_message("<span class='warning'>[victim] collapses into a fit of spasms!.</span>")
 	log_game("[src]/([src.ckey]) has infected [victim]/([victim.ckey]")
 
 /mob/living/simple_animal/borer/proc/leave_victim()
 	if(!victim) return
+
+	if(controlling)
+		detatch()
 
 	src.loc = get_turf(victim)
 
