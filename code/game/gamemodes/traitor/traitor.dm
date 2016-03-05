@@ -107,13 +107,17 @@
 
 	else
 		var/is_hijacker = prob(10)
-		var/martyr_chance = prob(20)
+		var/is_martyr = prob(20)	//Renamed for consistency
+		if(is_martyr && is_hijacker) //Hijacking the shuttle and dying a glorious death are reasonably mutally exlusive
+			is_martyr = 0
 		var/objective_count = is_hijacker 			//Hijacking counts towards number of objectives
 		if(!exchange_blue && traitors.len >= 5) 	//Set up an exchange if there are enough traitors
 			if(!exchange_red)
 				exchange_red = traitor
+				is_martyr = 0					//Possible fix for issue involving traitors getting exchange and martyr
 			else
 				exchange_blue = traitor
+				is_martyr = 0					//Ditto
 				assign_exchange_role(exchange_red)
 				assign_exchange_role(exchange_blue)
 			objective_count += 1					//Exchange counts towards number of objectives
@@ -136,38 +140,30 @@
 					kill_objective.find_target()
 					traitor.objectives += kill_objective
 			else
+				is_martyr = 0
 				var/datum/objective/steal/steal_objective = new
 				steal_objective.owner = traitor
 				steal_objective.find_target()
 				traitor.objectives += steal_objective
-
+				
 		if(is_hijacker && objective_count <= config.traitor_objectives_amount) //Don't assign hijack if it would exceed the number of objectives set in config.traitor_objectives_amount
 			if (!(locate(/datum/objective/hijack) in traitor.objectives))
 				var/datum/objective/hijack/hijack_objective = new
 				hijack_objective.owner = traitor
 				traitor.objectives += hijack_objective
 				return
-
-
-		var/martyr_compatibility = 1 //You can't succeed in stealing if you're dead.
-		for(var/datum/objective/O in traitor.objectives)
-			if(!O.martyr_compatible)
-				martyr_compatibility = 0
-				break
-
-		if(martyr_compatibility && martyr_chance)
+				
+		if(is_martyr)
 			var/datum/objective/martyr/martyr_objective = new
 			martyr_objective.owner = traitor
 			traitor.objectives += martyr_objective
 			return
-
-		else
-			if(!(locate(/datum/objective/escape) in traitor.objectives))
-				var/datum/objective/escape/escape_objective = new
-				escape_objective.owner = traitor
-				traitor.objectives += escape_objective
-				return
-
+		
+		if(!(locate(/datum/objective/escape) in traitor.objectives))
+			var/datum/objective/escape/escape_objective = new
+			escape_objective.owner = traitor
+			traitor.objectives += escape_objective
+			return
 
 
 /datum/game_mode/proc/greet_traitor(datum/mind/traitor)
