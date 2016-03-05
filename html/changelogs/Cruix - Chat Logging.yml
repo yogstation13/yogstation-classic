@@ -1,6 +1,0 @@
-author: Cruix
-
-delete-after: True
-
-changes: 
-  - rscadd: "Admins can now view what mobs have said through emotes, binary chat, drone chat, gang chat, changeling chat, cyberman broadcast, holopad talking, abductor chat, and shadowling chat."
