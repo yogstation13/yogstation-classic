@@ -12,45 +12,43 @@
 # IT IS AUTOMATICALLY GENERATED FROM THE SERVER DATABASE
 
 Kn0ss0s	=	Head Coder
-Slovenian	=	Council Member
-George99	=	Council Member
 Xantam	=	Council Member
 AsV9	=	Council Member
+Slovenian	=	Council Member
+George99	=	Council Member
  
 Greatbigben	=	SeniorAdmin
 Groudonmaster	=	SeniorAdmin
-Eff Chap	=	Primary Admin
 Kmc2000	=	Primary Admin
 CptAzure	=	Primary Admin
-Wardog390	=	Administrator
-EXOTICISME	=	Administrator
+Eff Chap	=	Primary Admin
 Chuggachar	=	Administrator
 Oakboscage	=	Administrator
 BestMango	=	Administrator
+Wardog390	=	Administrator
+EXOTICISME	=	Administrator
+FluffySurvivor	=	Admin Observer
 Observer	=	Admin Observer
  
 Adameltablawy	=	ModeratorOnProbation
-Abdbla	=	Moderator V2
-Matskuman5	=	Moderator V2
-R3DGL4R3	=	Moderator V2
 Dzlan	=	Moderator V2
 Stealthkibbler	=	Moderator V2
 Time-Green	=	Moderator V2
 Thee_Flame_Prince	=	Moderator V2
 DominusLucian	=	Moderator V2
 Klitri	=	Moderator V2
+Abdbla	=	Moderator V2
+Matskuman5	=	Moderator V2
+R3DGL4R3	=	Moderator V2
  
-Super3222	=	Coder Initiate
+PineappleTerror	=	Coder Initiate
 TehFlaminTaco	=	Coder Initiate
 Groxic	=	Coder Initiate
 B1gb3ast	=	Coder Initiate
-Cruix	=	Coder
+Super3222	=	Coder Initiate
 Xthedark	=	Coder
+Cruix	=	Coder
  
-Hydre	=	Retired Admin
-Misutto	=	Retired Admin
-Willverdrag1314	=	Retired Admin
-Alek2ander	=	Retired Admin
 Madventurer	=	Retired Admin
 Spl99	=	Retired Admin
 Hadrin Alucard	=	Retired Admin
@@ -58,5 +56,9 @@ Gremlen12	=	Retired Admin
 Blukey	=	Retired Admin
 Ephemeralis	=	Retired Admin
 Rumia29	=	Retired Admin
+Hydre	=	Retired Admin
+Misutto	=	Retired Admin
+Willverdrag1314	=	Retired Admin
+Alek2ander	=	Retired Admin
  
 Yogstation13-Bot	=	Bot
