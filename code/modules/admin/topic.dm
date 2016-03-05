@@ -2284,3 +2284,6 @@
 				cyberman_broadcast_log()
 			if("9")//hacking log
 				cyberman_hacking_log()
+			if("10")//varedit-y stuff
+				cyberman_varedit(href_list)
+		cybermen_panel()//refresh the page.
