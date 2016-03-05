@@ -5,7 +5,7 @@
 	var/target_amount = 0				//If they are focused on a particular number. Steal objectives have their own counter.
 	var/completed = 0					//currently only used for custom objectives.
 	var/dangerrating = 0				//How hard the objective is, essentially. Used for dishing out objectives and checking overall victory.
-	
+
 /datum/objective/New(var/text)
 	if(text)
 		explanation_text = text
@@ -378,7 +378,6 @@
 //Nuke the station
 /datum/objective/nuclear
 	explanation_text = "Destroy the station with a nuclear device."
-	martyr_compatible = 1
 
 //Steal something
 var/global/list/possible_items = list()
@@ -386,7 +385,6 @@ var/global/list/possible_items = list()
 	var/datum/objective_item/targetinfo = null //Save the chosen item datum so we can access it later.
 	var/obj/item/steal_target = null //Needed for custom objectives (they're just items, not datums).
 	dangerrating = 5 //Overridden by the individual item's difficulty, but defaults to 5 for custom objectives.
-	martyr_compatible = 0
 
 /datum/objective/steal/get_target()
 	return steal_target
@@ -661,7 +659,6 @@ var/global/list/possible_items_special = list()
 ////////////////////////////////
 
 /datum/objective/changeling_team_objective //Abstract type
-	martyr_compatible = 0	//Suicide is not teamwork!
 	explanation_text = "Changeling Friendship!"
 	var/min_lings = 3 //Minimum amount of lings for this team objective to be possible
 	var/escape_objective_compatible = FALSE

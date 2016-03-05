@@ -102,7 +102,7 @@
 				if(index < parts.len)
 					replacement += "="
 
-		var/regex/R = new(pattern, "ig")
-		text = R.Replace(text, replacement)
+		//var/regex/R = new(pattern, "ig")	//Commented out because BYGEX compatibility
+		//text = R.Replace(text, replacement)
 
 	return text

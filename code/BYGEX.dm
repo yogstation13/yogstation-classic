@@ -1,35 +1,8 @@
-/*
-	This file is part of bygex.
-
-    bygex is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Lesser General Public License as
-	published by the Free Software Foundation, either version 3 of
-	the License, or (at your option) any later version.
-
-    bygex is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public License
-    along with bygex.  If not, see <http://www.gnu.org/licenses/>
-
-    Based on code by Zac Stringham -  Copyright 2009 (LGPL)
-    Written 6-Oct-2013 - carnie (elly1989@rocketmail.com), accreditation appreciated but not required.
-    Please do not remove this comment.
-
-	Full source code is available at https://code.google.com/p/byond-regex/
-	Please report any relevant issues on the tracker at the above address.
-	~Carn
-*/
-
-#ifdef USE_BYGEX
-
 #ifndef LIBREGEX_LIBRARY
 	#define LIBREGEX_LIBRARY "bin/bygex"
 #endif
 
-/proc
+proc
 	regEx_compare(str, exp)
 		return new /datum/regex(str, exp, call(LIBREGEX_LIBRARY, "regEx_compare")(str, exp))
 
@@ -100,28 +73,20 @@
 		str(i)
 			if(!i)	return str
 			var/datum/match/M = matches[i]
-			if(i < 1 || i > matches.len)
-				throw EXCEPTION("str(): out of bounds")
 			return copytext(str, M.pos, M.pos+M.len)
 
 		pos(i)
 			if(!i)	return 1
-			if(i < 1 || i > matches.len)
-				throw EXCEPTION("pos(): out of bounds")
 			var/datum/match/M = matches[i]
 			return M.pos
 
 		len(i)
 			if(!i)	return length(str)
-			if(i < 1 || i > matches.len)
-				throw EXCEPTION("len(): out of bounds")
 			var/datum/match/M = matches[i]
 			return M.len
 
 		end(i)
 			if(!i) return length(str)
-			if(i < 1 || i > matches.len)
-				throw EXCEPTION("end() out of bounds")
 			var/datum/match/M = matches[i]
 			return M.pos + M.len
 
@@ -140,5 +105,3 @@
 	New(pos, len)
 		src.pos = pos
 		src.len = len
-
-#endif

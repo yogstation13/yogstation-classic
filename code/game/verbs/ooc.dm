@@ -55,6 +55,7 @@
 		keyname += "[key]</font>"
 
 	if(!holder && !bypass_ooc_approval)
+	/* //All of the following is link approval code, BYGEX won't work so I've disabled it for my build.
 		var/regex/R = new("((\[a-z\]+://|www\\.)\\S+)", "ig")
 
 		R.Find(msg)
@@ -65,6 +66,7 @@
 			break
 
 		msg = R.Replace(msg, "<b>(Link removed)</b>")
+		*/
 	else
 		bypass_ooc_approval = 0
 
