@@ -22,7 +22,6 @@
 		return
 
 	if(CanInfect(H))
-		H << "<span class='boldnotice'>Something slimy begins probing at the opening of your ear canal...</span>"
 		src << "<span class='boldnotice'>You slither up [H] and begin probing at their ear canal...</span>"
 		src.layer = MOB_LAYER
 		if(!do_after(src,30))
@@ -74,24 +73,33 @@
 
 	var/chemname = input("Select a chemical to secrete.", "Chemicals") as null|anything in chemnames
 
+	if(!chemname)
+		return
+
 	var/datum/borer_chem/chem
 	for(var/datum in typesof(/datum/borer_chem))
 		var/datum/borer_chem/C = new datum()
 		if(C.chemname == chemname)
 			chem = C
 
-	if(!chem || chemicals < 50 || !victim || controlling || !src || stat)
+	if(!chem || !victim || controlling || !src || stat)
 		return
 
 	if(!istype(chem, /datum/borer_chem))
 		return
 
-	src << "<span class='userdanger'>You squirt a measure of [chem.chemname] from your reservoirs into [host]'s bloodstream.</span>"
+	if(chemicals < chem.chemuse)
+		src << "<span class='boldnotice'>You need [chem.chemuse] chemicals stored to use this chemical!</span>"
+		return
+
+	src << "<span class='userdanger'>You squirt a measure of [chem.chemname] from your reservoirs into [victim]'s bloodstream.</span>"
 	victim.reagents.add_reagent(chem.chemname, chem.quantity)
 	chemicals -= chem.chemuse
 	influence += chem.influence_change
 	if(influence > 100)
 		influence = 100
+	if(influence < 0)
+		influence = 0
 	log_game("[src]/([src.ckey]) has injected [chemname] into their host [victim]/([victim.ckey])")
 
 /mob/living/simple_animal/borer/verb/hide()
@@ -147,13 +155,14 @@
 	if(istype(M, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M
 		if(H.borer)
-			src << "<span class='boldnotice'>You cannot infest someone who is already infested!</span>"
+			src << "<span class='boldnotice'>You cannot paralyze someone who is already infected!</span>"
 			return
 
 	src.layer = MOB_LAYER
+
 	src << "<span class='warning'>You focus your psychic lance on [M] and freeze their limbs with a wave of terrible dread.</span>"
 	M << "<span class='userdanger'>You feel a creeping, horrible sense of dread come over you, freezing your limbs and setting your heart racing.</span>"
-	M.Weaken(4)
+	M.Stun(4)
 
 	used_dominate = world.time
 
@@ -179,6 +188,8 @@
 	spawn(100)
 
 		if(!victim || !src) return
+
+		if(controlling) return
 
 		if(src.stat != CONSCIOUS)
 			src << "<span class='userdanger'>You cannot release your host in your current state.</span>"
@@ -281,6 +292,9 @@
 
 			host_brain.name = victim.name
 
+			if(victim.mind)
+				host_brain.mind = victim.mind
+
 			if(!host_brain.computer_id)
 				host_brain.computer_id = h2b_id
 
@@ -294,6 +308,7 @@
 			src.lastKnownIP = null
 
 			victim.ckey = src.ckey
+			victim.mind = src.mind
 
 			if(!victim.computer_id)
 				victim.computer_id = s2h_id

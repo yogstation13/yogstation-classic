@@ -1,27 +1,32 @@
 /datum/cyberman_network
-	var/list/cybermen_analyze_targets = list(/obj/item/weapon/gun/energy/laser/captain = "the captain's antique laser gun", //stolen from objective_items.dm. Could just use the objective datums instead.
-								/obj/item/weapon/gun/energy/gun/hos = "the head of security's personal laser gun",
-								/obj/item/weapon/hand_tele = "a hand teleporter",
-								/obj/item/clothing/shoes/magboots/advance = "the chief engineer's advanced magnetic boots",
-								/obj/item/weapon/reagent_containers/hypospray/CMO = "the hypospray",
-								/obj/item/weapon/disk/nuclear = "the nuclear authentication disk", //lucky if you also get the "nuke station" objective
-								/obj/item/weapon/pinpointer = "a pinpointer", //also lucky, but less so.
-								/obj/item/clothing/suit/armor/laserproof = "an ablative armor vest",
-								/obj/item/weapon/gun/energy/ionrifle = "the ion rifle",//because irony
-								/obj/item/clothing/suit/armor/reactive = "the reactive teleport armor",
-								/obj/item/areaeditor/blueprints = "the station blueprints")
-	var/list/cybermen_hack_targets = list(/obj/machinery/computer/communications/ = "a communications console",//seriously need to add things to this
-							/obj/machinery/power/apc/ = "an APC",
-							/obj/machinery/alarm/ = "an air alarm",
-							/obj/machinery/computer/card/ = "an identification console",
-							/obj/machinery/r_n_d/server/ = "the station's RnD server",//might already be hacked due to a previous objective
-							/obj/machinery/telecomms/hub/ = "a telecomminications hub",//hopefully these haven't all been deconstructed yet
+	var/list/cybermen_analyze_targets = list("the captain's antique laser gun" = /obj/item/weapon/gun/energy/laser/captain, //stolen from objective_items.dm. Could just use the objective datums instead.
+								"the head of security's personal laser gun" = /obj/item/weapon/gun/energy/gun/hos,
+								"a hand teleporter" = /obj/item/weapon/hand_tele,
+								"the chief engineer's advanced magnetic boots" = /obj/item/clothing/shoes/magboots/advance,
+								"the hypospray" = /obj/item/weapon/reagent_containers/hypospray/CMO,
+								"the nuclear authentication disk" = /obj/item/weapon/disk/nuclear, //lucky if you also get the "nuke station" objective
+								"a pinpointer" = /obj/item/weapon/pinpointer, //also lucky, but less so.
+								"an ablative armor vest" = /obj/item/clothing/suit/armor/laserproof,
+								"the ion rifle" = /obj/item/weapon/gun/energy/ionrifle,//because irony (ion-ry)
+								"the reactive teleport armor" = /obj/item/clothing/suit/armor/reactive,
+								"the station blueprints" = /obj/item/areaeditor/blueprints)
+
+	var/list/cybermen_hack_targets = list("a communications console" = /obj/machinery/computer/communications,
+							"an APC" = /obj/machinery/power/apc,
+							"an air alarm" = /obj/machinery/alarm,
+							"an identification console" = /obj/machinery/computer/card,
+							"the station's RnD server" = /obj/machinery/r_n_d/server,//might already be hacked due to a previous objective
+							"a telecomminications hub" = /obj/machinery/telecomms/hub,//hopefully these haven't all been deconstructed yet
+							"a microwave" = /obj/machinery/microwave,
 							// /mob/living/silicon/robot/ = "a cyborg"//needs a check in is_valid(). Removed because of overlap with hacking the AI
 							)
 
 
 /datum/objective/cybermen
+	var/name = "Unnamed Objective"
 	var/phase
+	var/win_upon_completion = 0
+	explanation_text = "Nothing"
 	dangerrating = 10 //seems like a good number
 
 /datum/objective/cybermen/proc/is_valid()//ensure the objective is completeable.
@@ -29,6 +34,9 @@
 
 /datum/objective/cybermen/proc/make_valid()//some objectives can be made valid by reducing the number or changing the targets - this method should warn cybermen and return 1 if it succeeds.
 	return 0
+
+/datum/objective/cybermen/proc/admin_create_objective(mob/user = usr)
+	return
 
 /datum/objective/cybermen/check_completion()
 	return ..()
@@ -41,6 +49,7 @@
 
 //GET RESEARCH LEVELS
 /datum/objective/cybermen/explore/get_research_levels
+	name = "Download Research Levels"
 	var/target_research_levels
 
 /datum/objective/cybermen/explore/get_research_levels/New()
@@ -58,8 +67,16 @@
 	explanation_text = "Download [target_research_levels] research level\s by hacking the station's RnD server, the server controller, or technology disks. So far [current_amount] research levels have been downloaded."
 	return current_amount >= target_research_levels
 
+/datum/objective/cybermen/explore/get_research_levels/admin_create_objective(mob/user = usr)
+	if(alert("Set number of research levels?", user, "Set", "Random") == "Random")
+		return
+	var/num = input("Select number of research levels required:", user, 0) as num
+	target_research_levels = num
+	check_completion()//updates explanation_text.
+
 //GET SECRET DOCUMENTS
 /datum/objective/cybermen/explore/get_secret_documents//how can you hack pieces of paper? Nanomachines or something.
+	name = "Analyze Secret Documents"
 	explanation_text = "Aquire the NT secret documents located in the vault, and upload them to the cybermen network by hacking them."
 
 /datum/objective/cybermen/explore/get_secret_documents/check_completion()
@@ -71,12 +88,24 @@
 
 //GET ACCESS
 /datum/objective/cybermen/explore/get_access
+	name = "Download Access"
 	explanation_text = "Aquire an ID with Captain-level access upload it to the cybermen network by hacking it."
+	var/required_access = access_captain
 
 /datum/objective/cybermen/explore/get_access/check_completion()
 	if(..())
 		return 1
-	return (access_captain in cyberman_network.cybermen_access_downloaded)
+	return (required_access in cyberman_network.cybermen_access_downloaded)
+
+/datum/objective/cybermen/explore/get_access/admin_create_objective(mob/user = usr)
+	if(alert("Required access?", user, "Captain", "Custom") == "Captain")
+		return
+	var/list/L = list()
+	for(var/V in get_all_accesses())
+		L[get_access_desc(V)] = V
+	var/access_name = input("Set custom required access:", user, 0) in L
+	required_access = L[access_name]
+	explanation_text = "Aquire an ID with [get_access_desc(required_access)]-level access upload it to the cybermen network by hacking it."
 
 //////////////////////////////
 //////////EXPAND//////////////
@@ -86,6 +115,7 @@
 
 //RECRUIT CYBERMEN
 /datum/objective/cybermen/expand/convert_crewmembers
+	name = "Recruit Cybermen"
 	var/target_cybermen_num
 
 /datum/objective/cybermen/expand/convert_crewmembers/New()
@@ -124,8 +154,16 @@
 	explanation_text = "Convert crewmembers until there are [target_cybermen_num] living cybermen on the station. There are currently [living_cybermen] living cybermen on the station."
 	return living_cybermen >= target_cybermen_num
 
+/datum/objective/cybermen/expand/convert_crewmembers/admin_create_objective(mob/user = usr)
+	if(alert("Set number of required cybermen?", user, "Set", "Random") == "Random")
+		return
+	var/num = input("Select number of cybermen required:", user, 0) as num
+	target_cybermen_num = num
+	check_completion()//updates explanation_text.
+
 //HACK AI
 /datum/objective/cybermen/expand/hack_ai
+	name = "Hack AI"
 	var/mob/living/silicon/ai/targetAI
 
 /datum/objective/cybermen/expand/hack_ai/New()
@@ -136,7 +174,7 @@
 			explanation_text = "Hack [targetAI.current.name], the AI."
 
 /datum/objective/cybermen/expand/hack_ai/is_valid()
-	return targetAI && targetAI.current != null && !qdeleted(targetAI.current) && targetAI.key && targetAI.client
+	return targetAI && targetAI.current != null && !qdeleted(targetAI.current)// && targetAI.key && targetAI.client
 
 /datum/objective/cybermen/expand/hack_ai/make_valid()
 	targetAI = null
@@ -153,8 +191,19 @@
 		return 1
 	return targetAI in cyberman_network.cybermen_hacked_objects
 
+/datum/objective/cybermen/expand/hack_ai/admin_create_objective(mob/user = usr)
+	if(alert("Select required AI?", user, "Select", "Random") == "Random")
+		return
+	var/list/L = list()
+	for(var/AI in ai_list)
+		L["[AI]"] = AI
+	var/ai_name = input("Set custom AI:", user, 0) in L
+	targetAI = L[ai_name]
+	explanation_text = "Hack [targetAI.current.name], the AI."
+
 //CONVERT HEADS
 /datum/objective/cybermen/expand/convert_heads
+	name = "Infiltrate Command Staff"
 	var/target_heads_num
 
 /datum/objective/cybermen/expand/convert_heads/New()
@@ -186,6 +235,13 @@
 		explanation_text += " No heads are currently cybermen."
 	return candidates.len >= target_heads_num
 
+/datum/objective/cybermen/expand/convert_heads/admin_create_objective(mob/user = usr)
+	if(alert("Set number of required heads?", user, "Set", "Random") == "Random")
+		return
+	var/num = input("Select number of heads required:", user, 0) as num
+	target_heads_num = num
+	check_completion()//updates explanation_text.
+
 //////////////////////////////
 //////////EXPLOIT/////////////
 //////////////////////////////
@@ -194,6 +250,7 @@
 
 //ANALYZE AND HACK SOME RANDOM THINGS
 /datum/objective/cybermen/exploit/analyze_and_hack
+	name = "Analyze and Hack"
 	var/list/targets = list()//these two lists must remain in synch.
 	var/descriptions = list()
 	var/num_analyze_targets = 2//change explanation_text if you change either of these
@@ -207,17 +264,17 @@
 	while(remaining)
 		var/candidate = pick(analyze_target_candidates)
 		if(candidate)
-			descriptions += analyze_target_candidates[candidate]
-			analyze_target_candidates -= candidate
-			targets += candidate
+			descriptions += candidate
+			analyze_target_candidates -= analyze_target_candidates[candidate]
+			targets += analyze_target_candidates[candidate]
 		remaining--
 	remaining = num_hack_targets
 	while(remaining)
 		var/candidate = pick(hack_target_candidates)
 		if(candidate)
-			descriptions += hack_target_candidates[candidate]
-			hack_target_candidates -= candidate
-			targets += candidate
+			descriptions += candidate
+			hack_target_candidates -= hack_target_candidates[candidate]
+			targets += hack_target_candidates[candidate]
 		remaining--
 	check_completion()//takes care of explanation text.
 
@@ -246,6 +303,20 @@
 	explanation_text = "Obtain and analyze [descriptions[1]][done_indicators[1]] and [descriptions[2]][done_indicators[2]], and hack [descriptions[3]][done_indicators[3]]."
 	return targets_copy.len == 0
 
+/datum/objective/cybermen/exploit/analyze_and_hack/admin_create_objective(mob/user = usr)
+	if(alert("Select Analyze and Hack targets?", user, "Select", "Random") == "Random")
+		return
+	descriptions = list()
+	targets = list()
+	for(var/i=0;i<num_analyze_targets;i++)
+		var/target_name = input("Select analysis target [i+1]:", user) in cyberman_network.cybermen_analyze_targets
+		descriptions += target_name
+		targets += cyberman_network.cybermen_analyze_targets[target_name]
+	for(var/i=0;i<num_hack_targets;i++)
+		var/target_name = input("Select hack target [i+1]:", user) in cyberman_network.cybermen_hack_targets
+		descriptions += target_name
+		targets += cyberman_network.cybermen_hack_targets[target_name]
+	check_completion()//takes care of explanation text.
 
 /*
 //ANALYZE SOME RANDOM THINGS
@@ -267,6 +338,7 @@
 //////////////////////////////
 /datum/objective/cybermen/exterminate
 	phase = "Exterminate"
+	win_upon_completion = 1
 
 /datum/objective/cybermen/exterminate/is_valid()
 	return 1//probably should not touch this becuase it is a game-ending objective. Don't ever want it to change.
@@ -277,6 +349,7 @@
 
 //GET DAT FUKKIN DISK
 /datum/objective/cybermen/exterminate/nuke_station
+	name = "Nuke Station"
 	explanation_text = "Destroy the station with the nuclear device in the vault. Hack the nuclear core to bypass the Centcom password lock. The nuclear authentication disk is still required. Do not allow the escape shuttle to leave the station."
 
 /datum/objective/cybermen/exterminate/nuke_station/check_completion()
@@ -286,6 +359,7 @@
 
 //HIJACK SHUTTLE
 /datum/objective/cybermen/exterminate/hijack_shuttle
+	name = "Hijack Shuttle"
 	var/required_escaped_cybermen
 
 /datum/objective/cybermen/exterminate/hijack_shuttle/New()
@@ -305,9 +379,11 @@
 				return 0
  	return 1
 
+/datum/objective/cybermen/exterminate/hijack_shuttle/
 
 //KILL NON-CYBERMEN
 /datum/objective/cybermen/exterminate/eliminate_humans
+	name = "Exterminate Humans"
 	var/target_percent
 
 /datum/objective/cybermen/exterminate/eliminate_humans/New()
@@ -331,3 +407,23 @@
 	var/percent = (cybermen_num + non_cybermen_num > 0) && (cybermen_num / (cybermen_num + non_cybermen_num))*100
 	explanation_text = "Ensure [target_percent]% of the humanoid population of the station is comprised of cybermen, by either killing, converting, or exiling non-cybermen. Using the data you have collected on human physiology, we have drastically reduced the time it takes to convert additional humans. Do not allow the escape shuttle to leave the station. Sensors indicate that [percent]% of the station's living crew are currently cybermen."
 	return percent >= target_percent
+
+/datum/objective/cybermen/exterminate/eliminate_humans/admin_create_objective(mob/user = usr)
+	if(alert("Set required % cybermen?", user, "Set", "Standard([target_percent]%)") != "Set")
+		return
+	var/num = input("Select required % cybermen:", user, 0) as num
+	target_percent = Clamp(num, 0, 100)
+	check_completion()//updates explanation_text.
+
+//////////////////////////////
+////////////MISC//////////////
+//////////////////////////////
+
+/datum/objective/cybermen/custom
+	name = "Custom"
+
+/datum/objective/cybermen/custom/admin_create_objective(mob/user = usr)
+	phase = input("Enter phase name:", user)
+	explanation_text = input("Enter objective text:", user)
+	win_upon_completion = alert("Cyberman victory upon completion?", user, "Yes", "No") == "Yes" ? 1 : 0
+	alert("Note that an admin must use \"Force Objective Completion\" in the Cyberman Panel to complete this objective and end the game.", user, "Okay")

@@ -1,3 +1,6 @@
+
+var/list/mob/living/simple_animal/borer/borers = list()
+
 /mob/living/simple_animal/borer
 	name = "Cortical Borer"
 	desc = "A small, quivering, slug-like creature."
@@ -33,13 +36,15 @@
 	..()
 	name = "[pick("Primary","Secondary","Tertiary","Quaternary")] Borer ([rand(100,999)])"
 	borer_chems += /datum/borer_chem/mannitol
-	borer_chems += /datum/borer_chem/bicardine
+	borer_chems += /datum/borer_chem/bicaridine
 	borer_chems += /datum/borer_chem/kelotane
 	borer_chems += /datum/borer_chem/charcoal
 	borer_chems += /datum/borer_chem/ephedrine
 	borer_chems += /datum/borer_chem/leporazine
 	borer_chems += /datum/borer_chem/perfluorodecalin
 	borer_chems += /datum/borer_chem/spacedrugs
+
+	borers += src
 
 /mob/living/simple_animal/borer/Stat()
 	..()
@@ -99,11 +104,20 @@
 					victim.say("*[pick(list("blink","blink_r","choke","aflap","drool","twitch","twitch_s","gasp"))]")
 
 /mob/living/simple_animal/borer/say(message)
+
+	log_say("[src.ckey] : [message]")
+
+	if(dd_hasprefix(message, ";"))
+		message = copytext(message,2)
+		for(var/borer in borers)
+			borer << "<span class='green'><b>HIVEMIND: </b>[name] says: \"[message]\""
+		return
 	if(!victim)
 		src << "<span class='boldnotice'>You cannot speak without a host.</span>"
+		return
 
 	if(influence > 80)
-		victim << "<span class='green'><b>[name] telepathicaly shouts... </b></span><span class='userdanger'>[message]</span"
+		victim << "<span class='green'><b>[name] telepathicaly shouts... </b></span><span class='userdanger'>[message]</span>"
 		src << "<span class='green'><b>[name] telepathicaly shouts... </b></span><span class='userdanger'>[message]</span>"
 	else if(influence > 40)
 		victim << "<span class='green'><b>[name] telepathicaly says... </b></span>[message]"
@@ -111,6 +125,9 @@
 	else
 		victim << "<span class='green'><b>[name] telepathicaly whispers... </b></span><i>[message]</i>"
 		src << "<span class='green'><b>[name] telepathicaly whispers... </b></span><i>[message]</i>"
+
+/mob/living/simple_animal/borer/UnarmedAttack()
+	return
 
 /mob/living/simple_animal/borer/proc/Infect(mob/living/carbon/human/victim)
 	if(!victim)
@@ -124,14 +141,13 @@
 	victim.borer = src
 	src.loc = victim
 
-	victim.Stun(4)
-	victim.Weaken(4)
-	victim.apply_effect(STUTTER, 4)
-	visible_message("<span class='warning'>[victim] collapses into a fit of spasms!.</span>")
 	log_game("[src]/([src.ckey]) has infected [victim]/([victim.ckey]")
 
 /mob/living/simple_animal/borer/proc/leave_victim()
 	if(!victim) return
+
+	if(controlling)
+		detatch()
 
 	src.loc = get_turf(victim)
 

@@ -6,6 +6,7 @@
 
 /mob/living/proc/robot_talk(message)
 	log_say("[key_name(src)] : [message]")
+	say_log_silent += "Binary Chat: [message]"
 	var/desig = "Default Cyborg" //ezmode for taters
 	if(istype(src, /mob/living/silicon))
 		var/mob/living/silicon/S = src

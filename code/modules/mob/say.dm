@@ -22,7 +22,17 @@
 		return
 
 	message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN))
+	usr.emote("me",1,message)
 
+/mob/living/me_verb(message as text)
+	set name = "Me"
+	set category = "IC"
+	if(say_disabled)	//This is here to try to identify lag problems
+		usr << "<span class='danger'>Speech is currently admin-disabled.</span>"
+		return
+
+	message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN))
+	say_log_silent += "Emote: [message]"
 	usr.emote("me",1,message)
 
 /mob/proc/say_dead(var/message)

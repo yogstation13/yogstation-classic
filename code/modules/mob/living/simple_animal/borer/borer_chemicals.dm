@@ -8,8 +8,8 @@
 /datum/borer_chem/mannitol
 	chemname = "mannitol"
 
-/datum/borer_chem/bicardine
-	chemname = "bicardine"
+/datum/borer_chem/bicaridine
+	chemname = "bicaridine"
 
 /datum/borer_chem/kelotane
 	chemname = "kelotane"
