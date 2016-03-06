@@ -58,3 +58,6 @@
 	var/heart_attack = 0
 
 	var/darksight_init = 0
+	var/heart_attack = 0
+
+	var/puppetingSSD = 0
