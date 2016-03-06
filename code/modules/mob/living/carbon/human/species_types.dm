@@ -357,7 +357,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 		else if (light_amount < 2) //heal in the dark
 			H.heal_overall_damage(1,1)
 
-	if(!H.darksight_init) //Have darksight abilities been initialized?
+	if(!H.darksight_init && !istype(H.dna.species,/datum/species/shadow/ling)) //Prevents double initialization
 		//Initialize powers
 		H.equip_to_slot_or_del(new /obj/item/clothing/glasses/night/shadowling(H), slot_glasses)  //Put on shadowling darksight 'glasses'
 		H.darksight_init = 1
