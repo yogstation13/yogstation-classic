@@ -341,7 +341,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	sexes = 0
 	ignored_by = list(/mob/living/simple_animal/hostile/faithless)
 	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/shadow
-	specflags = list(NOBREATH,NOBLOOD,RADIMMUNE,NOGUNS)	//Can't use guns due to muzzle flash, just like shadowlings
+	specflags = list(NOBREATH,NOBLOOD,RADIMMUNE)
 	dangerous_existence = 1
 
 /datum/species/shadow/spec_life(mob/living/carbon/human/H)
@@ -356,11 +356,6 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 			H.take_overall_damage(1,1)
 		else if (light_amount < 2) //heal in the dark
 			H.heal_overall_damage(1,1)
-	/*
-	if(!H.darksight_init) //Have darksight abilities been initialized?
-		//Initialize powers
-		H.equip_to_slot_or_del(new /obj/item/clothing/glasses/night/shadowling(H), slot_glasses)  //Put on shadowling darksight 'glasses'
-		H.darksight_init = 1*/
 
 /*
  SLIMEPEOPLE
