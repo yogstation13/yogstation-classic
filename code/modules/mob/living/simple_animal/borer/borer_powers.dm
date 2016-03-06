@@ -233,8 +233,10 @@
 	victim.radiation = 0
 	victim.heal_overall_damage(victim.getBruteLoss(), victim.getFireLoss())
 	victim.reagents.clear_reagents()
-	victim.restore_blood()
-	victim.remove_all_embedded_objects()
+	if(istype(victim,/mob/living/carbon/human))
+		var/mob/living/carbon/human/H = victim
+		H.restore_blood()
+		H.remove_all_embedded_objects()
 	victim.update_canmove()
 	victim.med_hud_set_status()
 	victim.med_hud_set_health()
@@ -318,12 +320,12 @@
 
 			controlling = 1
 
-			victim.verbs += /mob/living/carbon/human/proc/release_control
-			victim.verbs += /mob/living/carbon/human/proc/spawn_larvae
+			victim.verbs += /mob/living/carbon/proc/release_control
+			victim.verbs += /mob/living/carbon/proc/spawn_larvae
 
 			return
 
-mob/living/carbon/human/proc/release_control()
+mob/living/carbon/proc/release_control()
 
 	set category = "Borer"
 	set name = "Release Control"
@@ -334,14 +336,17 @@ mob/living/carbon/human/proc/release_control()
 
 		borer.detatch()
 
-		verbs -= /mob/living/carbon/human/proc/release_control
-		verbs -= /mob/living/carbon/human/proc/spawn_larvae
+		verbs -= /mob/living/carbon/proc/release_control
+		verbs -= /mob/living/carbon/proc/spawn_larvae
 
-/mob/living/carbon/human/proc/spawn_larvae()
+/mob/living/carbon/proc/spawn_larvae()
 	set category = "Borer"
 	set name = "Reproduce"
 	set desc = "Vomit out your younglings."
 
+	if(istype(src, /mob/living/carbon/brain))
+		src << "<span class='usernotice'>You need a mouth to be able to do this.</span>"
+		return
 	if(!borer)
 		return
 
