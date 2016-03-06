@@ -11,8 +11,8 @@
 	name = "Rezadone"
 	id = "rezadone"
 	result = "rezadone"
-	required_reagents = list("carpotoxin" = 1, "cryptobiolin" = 1, "copper" = 1)
-	result_amount = 3
+	required_reagents = list("cryoxadone" = 6, "cryptobiolin" = 1, "copper" = 6)
+	result_amount = 4
 
 /datum/chemical_reaction/spaceacillin
 	name = "Spaceacillin"
@@ -57,14 +57,14 @@
 	result = "salglu_solution"
 	required_reagents = list("sodiumchloride" = 1, "water" = 1, "sugar" = 1)
 	result_amount = 3
-	
+
 /datum/chemical_reaction/mine_salve
 	name = "Miner's Salve"
 	id = "mine_salve"
 	result = "mine_salve"
 	required_reagents = list("oil" = 1, "water" = 1, "iron" = 1)
 	result_amount = 3
-	
+
 /datum/chemical_reaction/mine_salve2
 	name = "Miner's Salve"
 	id = "mine_salve"
@@ -116,6 +116,12 @@
 	required_reagents = list("sodium" = 1, "phenol" = 1, "carbon" = 1, "oxygen" = 1, "sacid" = 1)
 	result_amount = 5
 
+/datum/chemical_reaction/oxandrolone
+	name = "Oxandrolone"
+	id = "oxandrolone"
+	result = "oxandrolone"
+	required_reagents = list("carbon" = 3, "phenol" = 1, "hydrogen" = 1, "oxygen" = 1)
+	result_amount = 6
 
 /datum/chemical_reaction/salbutamol
 	name = "Salbutamol"
@@ -207,5 +213,9 @@
 	required_reagents = list("stable_plasma" = 1, "acetone" = 1, "mutagen" = 1)
 	result_amount = 3
 
-
-
+/datum/chemical_reaction/haloperidol
+	name = "Haloperidol"
+	id = "haloperidol"
+	result = "haloperidol"
+	required_reagents = list("chlorine" = 1, "fluorine" = 1, "aluminium" = 1, "potass_iodide" = 1, "oil" = 1)
+	result_amount = 5

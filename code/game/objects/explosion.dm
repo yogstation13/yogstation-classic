@@ -85,7 +85,8 @@
 		var/list/affected_turfs = trange(max_range, epicenter)
 
 		if(config.reactionary_explosions)
-			for(var/turf/T in affected_turfs) // we cache the explosion block rating of every turf in the explosion area
+			for(var/V in affected_turfs) // we cache the explosion block rating of every turf in the explosion area
+				var/turf/T = V
 				cached_exp_block[T] = 0
 				if(T.density && T.explosion_block)
 					cached_exp_block[T] += T.explosion_block
@@ -98,8 +99,8 @@
 					if(W.reinf && W.fulltile)
 						cached_exp_block[T] += W.explosion_block
 
-		for(var/turf/T in affected_turfs)
-
+		for(var/V in affected_turfs)
+			var/turf/T = V
 			var/dist = cheap_hypotenuse(T.x, T.y, x0, y0)
 
 			if(config.reactionary_explosions)

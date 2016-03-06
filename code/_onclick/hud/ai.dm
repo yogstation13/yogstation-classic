@@ -132,7 +132,7 @@
 	S.sensor_mode()
 
 
-/datum/hud/proc/ai_hud()
+/datum/hud/proc/ai_hud(ui_style = 'icons/mob/screen_ai.dmi')
 	adding = list()
 	other = list()
 
@@ -141,86 +141,95 @@
 //AI core
 	using = new /obj/screen/ai/aicore()
 	using.screen_loc = ui_ai_core
+	using.icon = ui_style
 	adding += using
 
 //Camera list
 	using = new /obj/screen/ai/camera_list()
 	using.screen_loc = ui_ai_camera_list
+	using.icon = ui_style
 	adding += using
 
 //Track
 	using = new /obj/screen/ai/camera_track()
 	using.screen_loc = ui_ai_track_with_camera
+	using.icon = ui_style
 	adding += using
 
 //Camera light
 	using = new /obj/screen/ai/camera_light()
 	using.screen_loc = ui_ai_camera_light
+	using.icon = ui_style
 	adding += using
 
 //Crew Monitoring
 	using = new /obj/screen/ai/crew_monitor()
 	using.screen_loc = ui_ai_crew_monitor
+	using.icon = ui_style
 	adding += using
 
 //Crew Manifest
 	using = new /obj/screen/ai/crew_manifest()
 	using.screen_loc = ui_ai_crew_manifest
+	using.icon = ui_style
 	adding += using
 
 //Alerts
 	using = new /obj/screen/ai/alerts()
 	using.screen_loc = ui_ai_alerts
+	using.icon = ui_style
 	adding += using
 
 //Announcement
 	using = new /obj/screen/ai/announcement()
 	using.screen_loc = ui_ai_announcement
+	using.icon = ui_style
 	adding += using
 
 //Shuttle
 	using = new /obj/screen/ai/call_shuttle()
 	using.screen_loc = ui_ai_shuttle
+	using.icon = ui_style
 	adding += using
 
 //Laws
 	using = new /obj/screen/ai/state_laws()
 	using.screen_loc = ui_ai_state_laws
+	using.icon = ui_style
 	adding += using
 
 //PDA message
 	using = new /obj/screen/ai/pda_msg_send()
 	using.screen_loc = ui_ai_pda_send
+	using.icon = ui_style
 	adding += using
 
 //PDA log
 	using = new /obj/screen/ai/pda_msg_show()
 	using.screen_loc = ui_ai_pda_log
+	using.icon = ui_style
 	adding += using
 
 //Take image
 	using = new /obj/screen/ai/image_take()
 	using.screen_loc = ui_ai_take_picture
+	using.icon = ui_style
 	adding += using
 
 //View images
 	using = new /obj/screen/ai/image_view()
 	using.screen_loc = ui_ai_view_images
+	using.icon = ui_style
 	adding += using
 
 
 //Medical/Security sensors
 	using = new /obj/screen/ai/sensors()
 	using.screen_loc = ui_ai_sensor
+	using.icon = ui_style
 	adding += using
 
+	mymob.client.screen = list()
 	mymob.client.screen += adding + other
-
-	mymob.blind = new /obj/screen()
-	mymob.blind.icon = 'icons/mob/screen_full.dmi'
-	mymob.blind.icon_state = "blackimageoverlay"
-	mymob.blind.name = " "
-	mymob.blind.screen_loc = "CENTER-7,CENTER-7"
-	mymob.blind.layer = 0
 
 	return

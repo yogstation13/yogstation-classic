@@ -138,7 +138,7 @@
 		dat += text("<A href='?src=\ref[src];choice=claim'>Claim points.</A><br>")
 	else
 		dat += text("No ID inserted.  <A href='?src=\ref[src];choice=insert'>Insert ID.</A><br>")
-	
+
 	if(stack_list.len)
 		dat += text("<A href='?src=\ref[src];release=all'>Release All</A><br>")
 	for(var/O in stack_list)
@@ -147,7 +147,7 @@
 			if(O == stack_list[1])
 				dat += "<br>"		//just looks nicer
 			dat += text("[capitalize(s.name)]: [s.amount] <A href='?src=\ref[src];release=[s.type]'>Release</A><br>")
-		
+
 	if((/obj/item/stack/sheet/metal in stack_list) && (/obj/item/stack/sheet/mineral/plasma in stack_list))
 		var/obj/item/stack/sheet/metalstack = stack_list[/obj/item/stack/sheet/metal]
 		var/obj/item/stack/sheet/plasmastack = stack_list[/obj/item/stack/sheet/mineral/plasma]
@@ -245,12 +245,12 @@
 /obj/machinery/mineral/ore_redemption/proc/empty_content(var/mode = "none")
 	var/obj/item/stack/sheet/s
 	var/turf/unloadloc = loc
-	
+
 	if(mode == "unloadall")
 		var/turf/T = get_step(src,output_dir)
 		if(T)
 			unloadloc = T
-			
+
 	for(var/O in stack_list)
 		s = stack_list[O]
 		while(s.amount > 0)
@@ -271,6 +271,7 @@
 	var/obj/item/weapon/card/id/inserted_id
 	var/list/prize_list = list(
 		new /datum/data/mining_equipment("Stimpack",			/obj/item/weapon/reagent_containers/hypospray/medipen/stimpack,	    50),
+		new /datum/data/mining_equipment("Minedrone Shell",		/obj/item/drone_shell/minedrone,								   600),
 		new /datum/data/mining_equipment("Stimpack Bundle",		/obj/item/weapon/storage/box/medipens/utility,	 				   200),
 		new /datum/data/mining_equipment("Whiskey",             /obj/item/weapon/reagent_containers/food/drinks/bottle/whiskey,    100),
 		new /datum/data/mining_equipment("Cigar",               /obj/item/clothing/mask/cigarette/cigar/havana,                    150),
