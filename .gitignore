@@ -29,8 +29,8 @@
 *.backup
 
 
-config/admins.txt
-code/controllers/subsystem/timer.dm
+#config/admins.txt
+#code/controllers/subsystem/timer.dm
 code/game/verbs/ooc.dm
 code/modules/admin/prettyfilter/prettyfilter.dm
 code/__HELPERS/bygex/bygex.dm
