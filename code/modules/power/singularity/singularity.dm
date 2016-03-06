@@ -413,4 +413,4 @@
 	return(gain)
 
 /obj/singularity/Process_Spacemove()
-	return 1
+	return 0

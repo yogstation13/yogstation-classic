@@ -387,3 +387,12 @@
 
 	return new /datum/projectile_data(src_x, src_y, time, distance, power_x, power_y, dest_x, dest_y)
 
+/proc/random_accessible_turf(z)
+	if(!z)
+		var/list/zlevels = list()
+		for(var/i in 1 to ZLEVEL_SPACEMAX)
+			if(i != ZLEVEL_CENTCOM) zlevels += i
+		z = pick(zlevels)
+	var/rx = rand(TRANSITIONEDGE + 1, world.maxx - TRANSITIONEDGE - 2)
+	var/ry = rand(TRANSITIONEDGE + 1, world.maxy - TRANSITIONEDGE - 2)
+	return locate(rx, ry, z)

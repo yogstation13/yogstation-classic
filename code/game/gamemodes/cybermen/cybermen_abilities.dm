@@ -4,47 +4,95 @@
 //Ability Activators//
 //////////////////////
 
-/obj/effect/proc_holder/cyberman
-	panel = "Cyberman"
+/datum/action/cyberman
+	action_type = null
+	var/panel = "Cyberman"
+	var/desc
+	button_icon = 'icons/mob/actions.dmi'
+	button_icon_state = "cyberman"
+	background_icon_state = "bg_default"
 
-/obj/effect/proc_holder/cyberman/commune
+/*
+/datum/action/cyberman/proc/Trigger()
+	if(!Checks())
+		return
+	switch(action_type)
+		if(AB_ITEM)
+			if(target)
+				var/obj/item/item = target
+				item.ui_action_click()
+		if(AB_SPELL)
+			if(target)
+				var/obj/effect/proc_holder/spell = target
+				spell.Click()
+		if(AB_INNATE)
+			if(!active)
+				Activate()
+			else
+				Deactivate()
+		if(AB_GENERIC)
+			if(target && procname)
+				call(target,procname)(usr)
+	return
+*/
+/*
+/datum/action/cyberman/Activate()
+	return
+
+/datum/action/cyberman/Deactivate()
+	return
+
+/datum/action/cyberman/Process()
+	return
+*/
+/datum/action/cyberman/CheckRemoval(mob/living/user) // 1 if action is no longer valid for this mob and should be removed
+	return user && user.mind && !ticker.mode.is_cyberman(user.mind)
+
+/datum/action/cyberman/Checks()// returns 1 if all checks pass
+	if(!..())
+		return 0
+	return owner.mind.cyberman && !owner.mind.cyberman.emp_hit
+
+
+/datum/action/cyberman/commune
 	name = "Cyberman Broadcast"
 	desc = "Communicate with fellow cybermen. Completely undetectable, but cannot be done if you have been recently EMPed."
+	button_icon_state = "cyberman_broadcast"
 
-/obj/effect/proc_holder/cyberman/commune/Click()
+/datum/action/cyberman/commune/Trigger()
 	if(!(usr.mind && usr.mind.cyberman))
 		usr << "You are not a cyberman, you should not be able to do this!"
 		return 0
 	return usr.mind.cyberman.use_broadcast(usr)
 
-/mob/living/proc/cyberman_hack(var/atom/target in world)//for the context menu option. Disabled for now becuase middle-click works just fine..
-	//set category = ""//automatically goes in "Commands" tab.
-	set name = "Hack"
-	usr.mind.cyberman.initiate_hack(target, usr)
-
-/obj/effect/proc_holder/cyberman/cyberman_toggle_quickhack
+/datum/action/cyberman/cyberman_toggle_quickhack
 	name = "Prepare Hacking"
 	desc = "Enable or disable your cyberman hacking module."
+	button_icon_state = "cyberman_hacking_off"
 
-/obj/effect/proc_holder/cyberman/cyberman_toggle_quickhack/Click()
+/datum/action/cyberman/cyberman_toggle_quickhack/Trigger()
 	if(!usr.mind || !usr.mind.cyberman)
 		return
 	usr.mind.cyberman.toggle_quickhack(usr)
+	button_icon_state = usr.mind.cyberman.quickhack ? "cyberman_hacking_on" : "cyberman_hacking_off"
+	button.UpdateIcon()
 
-/obj/effect/proc_holder/cyberman/cyberman_manual_select_hack
+/datum/action/cyberman/cyberman_manual_select_hack
 	name = "Select Current Hack"
 	desc = "Select the hack you are contributing processing power to."
+	button_icon_state = "cyberman_select_hack"
 
-/obj/effect/proc_holder/cyberman/cyberman_manual_select_hack/Click()
+/datum/action/cyberman/cyberman_manual_select_hack/Trigger()
 	if(!usr.mind || !usr.mind.cyberman)
 		return
 	usr.mind.cyberman.manual_select_hack(usr)
 
-/obj/effect/proc_holder/cyberman/cyberman_cancel_hack//maybe this should open an "are you sure?" dialogue.
+/datum/action/cyberman/cyberman_cancel_hack
 	name = "Cancel Hack"
 	desc = "End a hack prematurely."
+	button_icon_state = "cyberman_cancel_hack"
 
-/obj/effect/proc_holder/cyberman/cyberman_cancel_hack/Click()
+/datum/action/cyberman/cyberman_cancel_hack/Trigger()
 	if(!usr.mind || !usr.mind.cyberman)
 		return
 	usr.mind.cyberman.manual_cancel_hack()
@@ -65,12 +113,20 @@
 		return
 	usr.mind.cyberman.cancel_hack(usr, hack)
 */
-/obj/effect/proc_holder/cyberman/cyberman_disp_objectives
+/datum/action/cyberman/cyberman_disp_objectives
 	name = "Display Objectives"
 	desc = "Display all cyberman objectives that have been assigned so far."
+	button_icon_state = "cyberman_objectives"
 
-/obj/effect/proc_holder/cyberman/cyberman_disp_objectives/Click()
+/datum/action/cyberman/cyberman_disp_objectives/Trigger()
 	cyberman_network.display_all_cybermen_objectives(usr.mind)
+
+/*//for the context menu option. Disabled for now becuase middle-click works just fine.
+/mob/living/proc/cyberman_hack(var/atom/target in world)
+	//set category = ""//automatically goes in "Commands" tab.
+	set name = "Hack"
+	usr.mind.cyberman.initiate_hack(target, usr)
+*/
 
 ////////////////////
 //Actual abilities//
@@ -84,17 +140,21 @@
 	if(emp_hit)
 		user << "<span class='warning'>You were recently hit by an EMP, you cannot hack right now!</span>"
 		return
-	if(get_dist(user, target) > hack_max_start_dist)
+	var/dist = get_dist(user, target)
+	if(dist > hack_max_start_dist)
 		user << "<span class='warning'>You are to far away to hack \the [target].</span>"
 		return
 	var/obj/effect/cyberman_hack/newHack = target.get_cybermen_hack()
 	if(newHack)
+		if(dist <= 1)//someday there could be cybermen who can hack from range.
+			target.add_fingerprint(user, 1)//let's assume cybermen have to touch the thing with their bare hand to hack it - we can make gloves work if they seem to be struggling.
 		user.audible_message("<span class='danger'>You hear a faint sound of static.</span>", CYBERMEN_HACK_NOISE_DIST )
 		if(istype(target, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = target
 			H << "<span class='warning'>You feel a tiny prick!</span>"
-		cyberman_network.message_all_cybermen("<span class='notice>[newHack.display_verb] of [newHack.target_name] started by [user].</span>")
-		newHack.start()
+		cyberman_network.message_all_cybermen("<span class='notice'>[newHack.display_verb] of [newHack.target_name] started by [user].</span>")
+		if(newHack.start())
+			select_hack(user, newHack)
 	else
 		user << "<span class='warning'>\The [target] cannot be hacked.</span>"
 
@@ -143,6 +203,8 @@
 	var/input = stripped_input(user, "Enter a message to share with all other Cybermen.", "Cybermen Broadcast", "")
 	if(input)
 		cyberman_network.log_broadcast("[user]([user.ckey ? user.ckey : "No ckey"]) Sent a Cyberman Broadcast: [input]")
+		log_say("[key_name(user)] : [input]")
+		user.say_log_silent += "Cyberman Broadcast: [input]"
 		for(var/datum/mind/cyberman in cyberman_network.cybermen)
 			var/distorted_message = input
 			if(cyberman.cyberman.emp_hit)
@@ -180,7 +242,7 @@
 
 
 /datum/cyberman_datum/proc/manual_cancel_hack(var/mob/living/carbon/human/user = usr)
-	var/obj/effect/cyberman_hack/selected_hack = get_user_selected_hack(user, "Choose which hack you wish to contribute to:", "(none)")
+	var/obj/effect/cyberman_hack/selected_hack = get_user_selected_hack(user, "Choose which hack you wish to cancel:", "(none)")
 	if(selected_hack)
 		user.mind.cyberman.cancel_hack(user, selected_hack)
 
@@ -199,7 +261,7 @@ var/list/cybermen_debug_abilities = list(/datum/admins/proc/become_cyberman,
 										 /datum/admins/proc/cyberman_defect,
 										 /datum/admins/proc/reroll_cybermen_objective,
 										 /datum/admins/proc/force_complete_cybermen_objective,
-										 // /datum/admins/proc/set_cybermen_objective
+										 /datum/admins/proc/set_cybermen_objective,
 										 /datum/admins/proc/start_auto_hack,
 										 /datum/admins/proc/cybermen_collective_broadcast
 										    )
@@ -269,7 +331,25 @@ var/list/cybermen_debug_abilities = list(/datum/admins/proc/become_cyberman,
 	set category = "Cyberman Debug"
 	set name = "Set Current Objective"
 
-	usr << "<span class='warning'>This operation is not functional at this time.</span>"
+	if(!cyberman_network)
+		usr << "There is no Cyberman network to set the objective of."
+		return
+	var/list/objective_options = list()
+	for(var/type in typesof(/datum/objective/cybermen/))
+		var/datum/objective/cybermen/O = new type()
+		if(O.name == "Unnamed Objective")
+			continue
+		objective_options += O.name
+		objective_options[O.name] = O
+	var/chosen_objective_name = input("Select new objective:") in objective_options
+	var/datum/objective/cybermen/chosen_objective = objective_options[chosen_objective_name]
+	chosen_objective.admin_create_objective()
+
+	cyberman_network.message_all_cybermen("Re-assigning current objective...")
+	cyberman_network.cybermen_objectives -= cyberman_network.cybermen_objectives[cyberman_network.cybermen_objectives.len]
+	cyberman_network.cybermen_objectives += chosen_objective
+	cyberman_network.display_current_cybermen_objective()
+
 
 /datum/admins/proc/start_auto_hack(var/atom/target in world)
 	set category = "Cyberman Debug"
