@@ -1504,6 +1504,18 @@
 		message_admins("<span class='danger'>Admin [key_name_admin(usr)] healed / revived [key_name_admin(L)]!</span>")
 		log_admin("[key_name(usr)] healed / Revived [key_name(L)]")
 
+	else if(href_list["makeborer"])
+		if(!check_rights(R_SPAWN))  return
+
+		var/mob/living/carbon/human/H = locate(href_list["makeborer"])
+		if(!istype(H))
+			usr << "This can only be used on instances of /mob/living"
+			return
+
+		message_admins("<span class='danger'>Admin [key_name_admin(usr)] turned [key_name_admin(H)] into a borer!</span>")
+		log_admin("[key_name(usr)] borerized [key_name(H)].")
+		H.Borerize()
+
 	else if(href_list["makeai"])
 		if(!check_rights(R_SPAWN))	return
 

@@ -432,6 +432,32 @@
 	qdel(src)
 	return
 
+//human -> borer
+/mob/living/carbon/human/proc/Borerize()
+	if(notransform)
+		return
+	for(var/obj/item/W in src)
+		unEquip(W)
+	regenerate_icons()
+	notransform = 1
+	canmove = 0
+	icon = null
+	invisibility = 101
+	for(var/o in organs)
+		qdel(o)
+
+	var/mob/living/simple_animal/borer/B = new /mob/living/simple_animal/borer(loc)
+
+	B.invisibility = 0
+
+	if(mind)
+		mind.transfer_to(B)
+	else
+		B.key = key
+
+	B.update_pipe_vision()
+	. = B
+	qdel(src)
 
 //human -> robot
 /mob/living/carbon/human/proc/Robotize(delete_items = 0)
