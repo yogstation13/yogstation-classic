@@ -18,6 +18,8 @@
 /obj/item/drone_shell/attack_ghost(mob/user)
 	if(jobban_check_mob(user,"drone"))
 		return
+	if(istype(src, /obj/item/drone_shell/syndronescout)) // not happenin bud.
+		return
 
 	var/be_drone = alert("Become a drone? (Warning, You can no longer be cloned!)",,"Yes","No")
 	if(be_drone == "No" || gc_destroyed)

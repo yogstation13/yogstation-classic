@@ -649,6 +649,13 @@ var/list/uplink_items = list()
 	gamemodes = list(/datum/game_mode/nuclear,/datum/game_mode/gang)
 	surplus = 20
 
+/datum/uplink_item/device_tools/scoutdrone
+	name = "Syndicate Scout Drone"
+	desc = "A survalliance drone which is known best for scouting enemies bases and trying to discover vital information which can be used for a team's objective. It has advanced vision and many of the same capatabilities of a normal drone."
+	item = /obj/item/device/syndiscoutController
+	cost = 4
+	gamemodes = list(/datum/game_mode/nuclear)
+	surplus = 0
 
 // IMPLANTS
 
