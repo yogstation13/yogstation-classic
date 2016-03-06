@@ -18,6 +18,9 @@ var/list/mob/living/simple_animal/borer/borers = list()
 	faction = list("creature")
 	ventcrawler = 2
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
+	minbodytemp = 0
+	maxbodytemp = 1500
+
 
 	var/mob/living/carbon/victim = null
 	var/mob/living/captive_brain/host_brain = null
@@ -134,6 +137,8 @@ var/list/mob/living/simple_animal/borer/borers = list()
 		src << "<span class='usernotice'>[victim] is already infected!</span>"
 		return
 
+	update_borer_icons_add(victim)
+
 	src.victim = victim
 	victim.borer = src
 	src.loc = victim
@@ -145,6 +150,8 @@ var/list/mob/living/simple_animal/borer/borers = list()
 
 	if(controlling)
 		detatch()
+
+	update_borer_icons_remove(victim)
 
 	src.loc = get_turf(victim)
 
@@ -166,6 +173,9 @@ var/list/mob/living/simple_animal/borer/borers = list()
 	if(src.mind)
 		src.mind.assigned_role = "Cortical Borer"
 		src.mind.special_role = "Cortical Borer"
+
+
+	update_borer_icons_add(src)
 
 	src << "<span class='notice'>You are a cortical borer!</span> You are a brain slug that worms its way \
 	into the head of its victim. Use stealth, persuasion and your powers of mind control to keep you, \
@@ -226,3 +236,13 @@ var/list/mob/living/simple_animal/borer/borers = list()
 	M.assigned_role = "Cortical Borer"
 	M.special_role = "Cortical Borer"
 	return M
+
+/proc/update_borer_icons_add(mob/living/carbon/M)
+	var/datum/atom_hud/antag/borer_hud = huds[ANTAG_HUD_BORER]
+	borer_hud.join_hud(M)
+	ticker.mode.set_antag_hud(M, "borer")
+
+/proc/update_borer_icons_remove(mob/living/carbon/M)
+	var/datum/atom_hud/antag/borer_hud = huds[ANTAG_HUD_BORER]
+	borer_hud.leave_hud(M)
+	ticker.mode.set_antag_hud(M, null)
