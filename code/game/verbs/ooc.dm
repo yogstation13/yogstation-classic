@@ -53,23 +53,17 @@
 		if(prefs.unlock_content & 2)
 			keyname += "<img style='width:9px;height:9px;' class=icon src=\ref['icons/member_content.dmi'] iconstate=yogdon>"
 		keyname += "[key]</font>"
-
 	if(!holder && !bypass_ooc_approval)
 		var/regex/R = new("((\[a-z\]+://|www\\.)\\S+)", "ig")
-
 		R.Find(msg)
-
 		for(var/G in R.group)
 			admin_link_approval(G)
 			// Only request approval for the first link
 			break
-
 		msg = R.Replace(msg, "<b>(Link removed)</b>")
 	else
 		bypass_ooc_approval = 0
-
 	msg = emoji_parse(msg)
-
 	for(var/client/C in clients)
 		if(C.prefs.chat_toggles & CHAT_OOC)
 			if(holder)
@@ -82,7 +76,6 @@
 					C << "<font color='[normal_ooc_colour]'><span class='ooc'><span class='prefix'>OOC:</span> <EM>[holder.fakekey ? holder.fakekey : key]:</EM> <span class='message'>[msg]</span></span></font>"
 			else
 				C << "<font color='[normal_ooc_colour]'><span class='ooc'><span class='prefix'>OOC:</span> <EM>[keyname]:</EM> <span class='message'>[msg]</span></span></font>"
-
 /proc/toggle_ooc(toggle = null)
 	if(toggle != null) //if we're specifically en/disabling ooc
 		if(toggle != ooc_allowed)
