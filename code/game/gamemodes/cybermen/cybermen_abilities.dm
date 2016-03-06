@@ -301,6 +301,8 @@ var/list/cybermen_debug_abilities = list(/datum/admins/proc/become_cyberman,
 /datum/admins/proc/reroll_cybermen_objective()
 	set category = "Cyberman Debug"
 	set name = "Reroll Objective"
+	if(alert("Set a new random Cyberman objective?", usr, "Yes", "No") == "No" )
+		return
 	if(!cyberman_network)
 		usr << "There is no Cyberman network to change the objective of."
 		return
@@ -312,7 +314,8 @@ var/list/cybermen_debug_abilities = list(/datum/admins/proc/become_cyberman,
 /datum/admins/proc/force_complete_cybermen_objective()
 	set category = "Cyberman Debug"
 	set name = "Force Complete Objective"
-
+	if(alert("Set current Cybermen objective as completed?", usr, "Yes", "No") == "No" )
+		return
 	if(!cyberman_network)
 		usr << "There is no Cyberman network to complete the objective of."
 		return
@@ -341,7 +344,9 @@ var/list/cybermen_debug_abilities = list(/datum/admins/proc/become_cyberman,
 			continue
 		objective_options += O.name
 		objective_options[O.name] = O
-	var/chosen_objective_name = input("Select new objective:") in objective_options
+	var/chosen_objective_name = input("Select new objective:") as null|anything in objective_options
+	if(!chosen_objective_name)
+		return
 	var/datum/objective/cybermen/chosen_objective = objective_options[chosen_objective_name]
 	chosen_objective.admin_create_objective()
 

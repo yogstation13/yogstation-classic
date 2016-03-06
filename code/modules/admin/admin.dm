@@ -889,7 +889,7 @@ datum/admins/proc/cybermen_panel()
 				if(istype(H, /obj/effect/cyberman_hack/multiple_vector))
 					var/obj/effect/cyberman_hack/multiple_vector/MVH = H
 					for(var/obj/effect/cyberman_hack/CH in MVH.component_hacks)
-						dat += "<BR>:[CH.target_name]"
+						dat += "<BR>---[CH.target_name]"
 				dat += "<BR>"
 			else
 				dat += "ERROR - null in the hack list<BR>"

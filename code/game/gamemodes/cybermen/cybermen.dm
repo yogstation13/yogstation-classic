@@ -152,15 +152,24 @@ var/datum/cyberman_network/cyberman_network
 	return ..() || cyberman_network.cybermen_win
 
 /datum/game_mode/cybermen/check_win()
-	return cyberman_network.cybermen_win
+	return cyberman_network.cybermen_win == 1
 
 /datum/game_mode/cybermen/declare_completion()
 	..()
-	if(!cyberman_network.cybermen_win && SSshuttle.emergency.mode >= SHUTTLE_ESCAPE)
+	cyberman_network.process_cyberman_objectives()
+	var/cybermen_won = (cyberman_network.cybermen_win == 1)
+
+	#ifdef CYBERMEN_DEBUG
+	world << "Cybermen won:[cybermen_won]"
+	world << "Shuttle Escaped: [SSshuttle.emergency.mode >= SHUTTLE_ESCAPE]"
+	world << "Station was Nuked: [station_was_nuked]"
+	#endif
+
+	if(!cybermen_won && SSshuttle.emergency.mode >= SHUTTLE_ESCAPE)
 		world << "<span class='redtext'>The Cybermen failed to take control of the station!</span>"
-	else if(cyberman_network.cybermen_win && station_was_nuked)
+	else if(cybermen_won && station_was_nuked)
 		world << "<span class='greentext'>The Cybermen win! They acivated the station's self-destruct device!</span>"
-	else if(cyberman_network.cybermen_win)
+	else if(cybermen_won)
 		world << "<span class='greentext'>The Cybermen win! They have exterminated or stranded all of the non-cybermen!</span>"
 	else
 		world << "<span class='redtext'>The Cybermen have failed!</span>"
@@ -252,6 +261,8 @@ datum/game_mode/proc/update_cybermen_icons_remove(datum/mind/cyberman)
 			cyberman.cyberman.emp_hit--
 
 /datum/cyberman_network/proc/process_cyberman_objectives()
+	if(cybermen_win)
+		return
 	for(var/datum/mind/cyberman in cybermen)
 		cyberman.cyberman.process_hacking(cyberman.current)
 	for(var/obj/effect/cyberman_hack/H in active_cybermen_hacks)
