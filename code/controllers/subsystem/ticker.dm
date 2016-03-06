@@ -112,8 +112,17 @@ var/datum/subsystem/ticker/ticker
 					for(var/datum/admin_ticket/T in tickets_list)
 						if(!T.resolved)
 							unresolved_tickets++
+
 					for(var/client/X in admins)
 						admins_online++
+						var/invalid = 0
+						if(!check_rights_for(X, R_SERVER))
+							invalid = 1
+						if(X.is_afk())
+							invalid = 1
+						if(!invalid)
+							admins_online++
+
 					if(unresolved_tickets && admins_online)
 						ticker.delay_end = 1
 						message_admins("Not all tickets have been resolved. Server restart delayed.")

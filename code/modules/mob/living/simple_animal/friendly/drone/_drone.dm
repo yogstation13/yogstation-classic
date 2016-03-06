@@ -9,6 +9,7 @@
 #define MAINTDRONE	"drone_maint"
 #define REPAIRDRONE	"drone_repair"
 #define SCOUTDRONE	"drone_scout"
+#define MINEDRONE	"drone_mine"
 
 /mob/living/simple_animal/drone
 	name = "Drone"
@@ -41,7 +42,7 @@
 	var/laws = \
 	"1. You may not involve yourself in the matters of another being, even if such matters conflict with Law Two or Law Three, unless the other being is another Drone.\n"+\
 	"2. You may not harm any being, regardless of intent or circumstance.\n"+\
-	"3. Your goals are to build, maintain, repair, improve, and power to the best of your abilities, You must never actively work against these goals."
+	"3. Your goals are to build, maintain, repair, improve, and power to the best of your abilities. You must never actively work against these goals."
 	var/light_on = 0
 	var/heavy_emp_damage = 25 //Amount of damage sustained if hit by a heavy EMP pulse
 	var/health_repair_max = 0 //Drone will only be able to be repaired/reactivated up to this point, defaults to health
@@ -52,7 +53,6 @@
 	var/obj/item/default_hatmask //If this exists, it will spawn in the hat/mask slot if it can fit
 	var/seeStatic = 1 //Whether we see static instead of mobs
 	var/visualAppearence = MAINTDRONE //What we appear as
-	var/picked_up = 0
 
 
 /mob/living/simple_animal/drone/New()
@@ -177,6 +177,6 @@
 /mob/living/simple_animal/drone/handle_temperature_damage()
 	return
 
-/mob/living/simple_animal/drone/flash_eyes(intensity = 1, override_blindness_check = 0, affect_silicon = 0)
+/mob/living/simple_animal/drone/flash_eyes(intensity = 1, override_blindness_check = 0, affect_silicon = 0, visual = 0, type = /obj/screen/fullscreen/flash/noise)
 	if(affect_silicon)
 		return ..()

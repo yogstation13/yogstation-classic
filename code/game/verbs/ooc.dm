@@ -55,14 +55,16 @@
 		keyname += "[key]</font>"
 
 	if(!holder && !bypass_ooc_approval)
-		var/regex/R = new("/(((https?):\\/\\/)?\[^\\s/$.?#\].\[^\\s\]*)/iS")
-		var/count = 0
-		while(R.FindNext(msg))
-			if(count < 1)
-				var/hyperlink = copytext(msg,R.match,R.index)
-				admin_link_approval(hyperlink)
-				count++
-			msg = "[copytext(msg,1,R.match)]<b>(Link removed)</b>[copytext(msg,R.index)]"
+		var/regex/R = new("((\[a-z\]+://|www\\.)\\S+)", "ig")
+
+		R.Find(msg)
+
+		for(var/G in R.group)
+			admin_link_approval(G)
+			// Only request approval for the first link
+			break
+
+		msg = R.Replace(msg, "<b>(Link removed)</b>")
 	else
 		bypass_ooc_approval = 0
 

@@ -126,7 +126,6 @@
 			return AREA_SPECIAL
 	return AREA_STATION
 
-
 /obj/item/areaeditor/proc/create_area()
 	var/res = detect_room(get_turf(usr))
 	if(!istype(res,/list))
@@ -162,6 +161,9 @@
 
 	A.addSorted()
 
+	message_admins("[key_name_admin(usr)]<A HREF='?_src_=holder;adminmoreinfo=\ref[usr]'>?</A> (<A HREF='?_src_=holder;adminplayerobservefollow=\ref[usr]'>FLW</A>) created new area '[A.name]'. ([loc.x],[loc.y],[loc.z]) <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[loc.x];Y=[loc.y];Z=[loc.z]'>(JMP)</a>")
+	log_game("[key_name(usr)] created new area [A.name]'.")
+
 	interact()
 	return 1
 
@@ -183,6 +185,10 @@
 	for(var/area/RA in A.related)
 		RA.name = str
 	usr << "<span class='notice'>You rename the '[prevname]' to '[str]'.</span>"
+
+	message_admins("[key_name_admin(usr)]<A HREF='?_src_=holder;adminmoreinfo=\ref[usr]'>?</A> (<A HREF='?_src_=holder;adminplayerobservefollow=\ref[usr]'>FLW</A>) renamed the '[prevname]' to '[str]'. ([loc.x],[loc.y],[loc.z]) <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[loc.x];Y=[loc.y];Z=[loc.z]'>(JMP)</a>")
+	log_game("[key_name(usr)] renamed the '[prevname]' to '[str]'.")
+
 	interact()
 	return
 

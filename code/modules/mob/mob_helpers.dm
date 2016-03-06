@@ -135,6 +135,11 @@
 		return 1
 	return 0
 
+/proc/isminedrone(A)
+	if(istype(A, /mob/living/simple_animal/drone/minedrone))
+		return 1
+	return 0
+
 /proc/isdrone(A)
 	if(istype(A, /mob/living/simple_animal/drone))
 		return 1

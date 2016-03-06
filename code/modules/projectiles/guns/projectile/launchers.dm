@@ -27,7 +27,23 @@
 	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/grenadelauncher/multi
 	pin = /obj/item/device/firing_pin
 
-/obj/item/weapon/gun/projectile/revolver/grenadelauncher/cyborg/attack_self()
+/obj/item/weapon/gun/projectile/revolver/grenadelauncher/cyborg/attack_self(mob/living/user)
+	if(magazine)
+		var/mob/living/silicon/robot/syndicate/R = user
+		var/ammo_count = get_ammo(0,0)
+		if(ammo_count < magazine.max_ammo && R && R.cell)
+			for(var/i in 1 to magazine.max_ammo-ammo_count)
+				user << "<span class='notice'>You start fabricating a shell, you will need to stay still for this.</span>"
+				if(do_after(user, 60, target = user))
+					if(R.cell.use(500))
+						var/shell_to_load = new magazine.ammo_type()
+						magazine.give_round(shell_to_load, 1)
+						if(!chambered.BB)
+							chamber_round()
+				else
+					break
+	else
+		user << "<span class='notice'>You should never see this message.</span>"
 	return
 
 /obj/item/weapon/gun/projectile/automatic/gyropistol

@@ -1799,6 +1799,38 @@
 			log_admin("[src.owner] stopped forcing the rules popup for [key_name(M)].")
 			message_admins("[src.owner] stopped forcing the rules popup for [key_name(M)].")
 
+	else if(href_list["antag_token_increase"])
+		if(!check_rights(R_ADMIN))	return
+
+		var/reason = input("","What reason are you giving an antag token?") as text
+		if(length(reason) < 5)
+			usr << "That reason isn't good enough! Cancelling."
+			return
+
+		var/mob/M = locate(href_list["antag_token_increase"])
+		var/tokens = antag_token_add(M)
+		var/msg = "ANTAGTOKENS [get_ckey(usr)] increased the antag token count for [get_ckey(M)]: [tokens] (reason: [reason])"
+		log_admin(msg)
+		for(var/client/X in admins)
+			X << "<span class='adminnotice'><b><font color=red>[msg]</font></b></span>"
+		show_player_panel(M)
+
+	else if(href_list["antag_token_decrease"])
+		if(!check_rights(R_ADMIN))	return
+
+		var/reason = input("","What reason are you giving an antag token?") as text
+		if(length(reason) < 5)
+			usr << "That reason isn't good enough! Cancelling."
+			return
+
+		var/mob/M = locate(href_list["antag_token_decrease"])
+		var/tokens = antag_token_use(M)
+		var/msg = "ANTAGTOKENS [get_ckey(usr)] decreased the antag token count for [get_ckey(M)]: [tokens] (reason: [reason])"
+		log_admin(msg)
+		for(var/client/X in admins)
+			X << "<span class='adminnotice'><b><font color=red>[msg]</font></b></span>"
+		show_player_panel(M)
+
 	else if(href_list["getmob"])
 		if(!check_rights(R_ADMIN))	return
 

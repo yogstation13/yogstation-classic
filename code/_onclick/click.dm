@@ -3,6 +3,8 @@
 	~Sayu
 */
 
+#define CLICKCATCHER_PLANE -99
+
 // 1 decisecond click delay (above and beyond mob/next_move)
 /mob/var/next_click	= 0
 
@@ -324,7 +326,7 @@
 /obj/screen/click_catcher
 	icon = 'icons/mob/screen_full.dmi'
 	icon_state = "passage0"
-	layer = 0
+	plane = CLICKCATCHER_PLANE
 	mouse_opacity = 2
 	screen_loc = "CENTER-7,CENTER-7"
 

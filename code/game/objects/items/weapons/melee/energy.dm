@@ -114,7 +114,7 @@
 	return
 
 /obj/item/weapon/melee/energy/sword/cyborg
-	var/hitcost = 500
+	var/hitcost = 150
 
 /obj/item/weapon/melee/energy/sword/cyborg/attack(mob/M, var/mob/living/silicon/robot/R)
 	if(R.cell)

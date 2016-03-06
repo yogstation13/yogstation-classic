@@ -710,7 +710,7 @@
 
 /mob/living/silicon/robot/attack_slime(mob/living/simple_animal/slime/M)
 	if(..()) //successful slime shock
-		flick("noise", flash)
+		flash_eyes()
 		var/stunprob = M.powerlevel * 7 + 10
 		if(prob(stunprob) && M.powerlevel >= 8)
 			adjustBruteLoss(M.powerlevel * rand(6,10))
@@ -1093,7 +1093,40 @@
 
 	update_icons()
 
+/mob/living/silicon/robot/proc/update_selected_module()
+	switch(get_selected_module())
+		if(1)
+			inv1.icon_state = "inv1 +a"
+		if(2)
+			inv2.icon_state = "inv2 +a"
+		if(3)
+			inv3.icon_state = "inv3 +a"
 
+/mob/living/silicon/robot/proc/update_module_indicator()
+	switch(designation)
+		if("Standard")
+			hands.icon_state = "standard"
+		if("Service")
+			hands.icon_state = "service"
+		if("Miner")
+			hands.icon_state = "miner"
+		if("Medical")
+			hands.icon_state = "medical"
+		if("Security")
+			hands.icon_state = "security"
+		if("Engineering")
+			hands.icon_state = "engineer"
+		if("Janitor")
+			hands.icon_state = "janitor"
+
+/mob/living/silicon/robot/update_hud()
+	..()
+	if(hud_used)
+		hud_used.update_robot_modules_display()
+		update_icons()
+		update_headlamp()
+		update_selected_module()
+		update_module_indicator()
 
 /mob/living/silicon/robot/proc/deconstruct()
 	var/turf/T = get_turf(src)
@@ -1149,11 +1182,12 @@
 
 /mob/living/silicon/robot/syndicate/New(loc)
 	..()
-	cell.maxcharge = 25000
-	cell.charge = 25000
+	cell = new /obj/item/weapon/stock_parts/cell/hyper(src)
 	radio = new /obj/item/device/radio/borg/syndicate(src)
 	module = new /obj/item/weapon/robot_module/syndicate(src)
 	laws = new /datum/ai_laws/syndicate_override()
+	var/obj/item/borg/upgrade/vtec/VTEC = new(src)
+	VTEC.action(src)
 
 /mob/living/silicon/robot/proc/notify_ai(notifytype, oldname, newname)
 	if(!connected_ai)
@@ -1177,3 +1211,4 @@
 
 /mob/living/silicon/robot/gutsy_standard
 	icon_state = "gutsy_standard"
+

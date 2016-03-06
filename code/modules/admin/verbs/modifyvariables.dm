@@ -8,6 +8,7 @@ var/list/forbidden_varedit_object_types = list(
 var/list/VVlocked = list("vars", "client", "virus", "viruses", "cuffed", "last_eaten", "unlock_content", "step_x", "step_y", "force_ending")
 var/list/VVicon_edit_lock = list("icon", "icon_state", "overlays", "underlays")
 var/list/VVckey_edit = list("key", "ckey")
+var/list/VVsound_edit_lock = list("honksound", "hitsound") //this is to prevent admins circumventing need for +SOUND
 
 /*
 /client/proc/cmd_modify_object_variables(obj/O as obj|mob|turf|area in world)
@@ -405,6 +406,8 @@ var/list/VVckey_edit = list("key", "ckey")
 			if(!check_rights(R_SPAWN|R_DEBUG)) return
 		if(param_var_name in VVicon_edit_lock)
 			if(!check_rights(R_FUN|R_DEBUG)) return
+		if(param_var_name in VVsound_edit_lock)
+			if(!check_rights(R_SOUNDS)) return
 
 		variable = param_var_name
 
@@ -467,6 +470,8 @@ var/list/VVckey_edit = list("key", "ckey")
 			if(!check_rights(R_SPAWN|R_DEBUG)) return
 		if(variable in VVicon_edit_lock)
 			if(!check_rights(R_FUN|R_DEBUG)) return
+		if(variable in VVsound_edit_lock)
+			if(!check_rights(R_SOUNDS)) return
 
 	if(!autodetect_class)
 

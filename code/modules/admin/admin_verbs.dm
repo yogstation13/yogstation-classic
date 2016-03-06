@@ -71,6 +71,11 @@ var/list/admin_verbs_admin = list(
 	/client/proc/test_pretty_filters,
 	/client/proc/add_pretty_filter,
 	/client/proc/reset_pretty_filter,
+	/client/proc/admin_credits_get,
+	/client/proc/admin_credits_list,
+	/client/proc/admin_credits_spend,
+	/client/proc/admin_credits_earn,
+	/client/proc/admin_credits_set,
 	/client/proc/check_words,			/*displays cult-words*/
 	/client/proc/reset_all_tcs,		/*resets all telecomms scripts*/
 	/datum/admins/proc/cybermen_panel   //lots of cybermen options
@@ -152,7 +157,12 @@ var/list/admin_verbs_possess = list(
 	/proc/release
 	)
 var/list/admin_verbs_permissions = list(
-	/client/proc/edit_admin_permissions
+	/client/proc/edit_admin_permissions,
+	/client/proc/admin_credits_get,
+	/client/proc/admin_credits_list,
+	/client/proc/admin_credits_spend,
+	/client/proc/admin_credits_earn,
+	/client/proc/admin_credits_set
 	)
 var/list/admin_verbs_rejuv = list(
 	/client/proc/respawn_character
@@ -328,8 +338,95 @@ var/list/admin_verbs_hideable = list(
 	src << "<span class='interface'>All of your adminverbs are now visible.</span>"
 	feedback_add_details("admin_verb","TAVVS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
+/client/proc/admin_credits_get(mob/M as mob)
+	set category = "Special Verbs"
+	set name = "Credits Show"
 
+	if(!holder)
+		return
 
+	if(!get_client(M))
+		src << "Error: The mob requires a client"
+		return
+
+	log_admin("CREDITS [get_ckey(src)] accessed the credits count for [get_ckey(M)]")
+	src << "[get_ckey(M)] has [credits_reload_from_db(M)] credits"
+
+/client/proc/admin_credits_list(var/total as num)
+	set category = "Special Verbs"
+	set name = "Credits Top List"
+
+	if(!holder)
+		return
+
+	src << "Top [total] players by credits:"
+
+	var/list/L = credits_top(total)
+	for(var/datum/credit/C in L)
+		src << " * [C.ckey] = [num2text(C.credits)]"
+
+/client/proc/admin_credits_spend(mob/M as mob, var/credits as num)
+	set category = "Special Verbs"
+	set name = "Credits Spend"
+
+	if(!holder)
+		return
+
+	if(!get_client(M))
+		src << "Error: The mob requires a client"
+		return
+
+	var/result = credits_spend(M, credits)
+	if(result >= 0)
+		var/msg = "CREDITS [get_ckey(src)] decreased the credits for [get_ckey(M)] by [credits]"
+		log_admin(msg)
+		for(var/client/X in admins)
+			X << "<span class='adminnotice'><b><font color=red>[msg]</font></b></span>"
+		src << "[get_ckey(M)] now has [result] credits ([credits] spent)"
+	else
+		src << "Error giving credits: [result]"
+
+/client/proc/admin_credits_earn(mob/M as mob, var/credits as num)
+	set category = "Special Verbs"
+	set name = "Credits Earn"
+
+	if(!holder)
+		return
+
+	if(!get_client(M))
+		src << "Error: The mob requires a client"
+		return
+
+	var/result = credits_earn(M, credits)
+	if(result >= 0)
+		var/msg = "CREDITS [get_ckey(src)] increased the credits for [get_ckey(M)] by [credits]"
+		log_admin(msg)
+		for(var/client/X in admins)
+			X << "<span class='adminnotice'><b><font color=red>[msg]</font></b></span>"
+		src << "[get_ckey(M)] now has [result] credits ([credits] received)"
+	else
+		src << "Error giving credits: [result]"
+
+/client/proc/admin_credits_set(mob/M as mob, var/credits as num)
+	set category = "Special Verbs"
+	set name = "Credits Set"
+
+	if(!holder)
+		return
+
+	if(!get_client(M))
+		src << "Error: The mob requires a client"
+		return
+
+	var/result = credits_set(M, credits)
+	if(result == QUERY_OK)
+		var/msg = "CREDITS [get_ckey(src)] set the credits for [get_ckey(M)] to [credits]"
+		log_admin(msg)
+		for(var/client/X in admins)
+			X << "<span class='adminnotice'><b><font color=red>[msg]</font></b></span>"
+		src << "[get_ckey(M)] now has [credits] credits"
+	else
+		src << "Error giving credits: [result]"
 
 /client/proc/admin_ghost()
 	set category = "Admin"
