@@ -134,7 +134,11 @@ var/list/mob/living/simple_animal/borer/borers = list()
 		return
 
 	if(victim.borer)
-		src << "<span class='usernotice'>[victim] is already infected!</span>"
+		src << "<span class='boldnotice'>[victim] is already infected!</span>"
+		return
+
+	if(!victim.key || !victim.mind || !victim.client)
+		src << "<span class='boldnotice'>[victim]'s mind seems unresponsive. Try someone else!</span>"
 		return
 
 	update_borer_icons_add(victim)
@@ -163,11 +167,9 @@ var/list/mob/living/simple_animal/borer/borers = list()
 	if(!candidate || !candidate.mob)
 		return
 
-	if(!candidate.mob.mind)
-		candidate.mob.mind = create_borer_mind(candidate.ckey)
+	var/datum/mind/M = create_borer_mind(candidate.ckey)
+	M.transfer_to(src)
 
-	src.mind = candidate.mob.mind
-	src.ckey = candidate.ckey
 	candidate.mob = src
 
 	if(src.mind)
