@@ -1509,7 +1509,7 @@
 
 		var/mob/living/carbon/human/H = locate(href_list["makeborer"])
 		if(!istype(H))
-			usr << "This can only be used on instances of /mob/living"
+			usr << "This can only be used on instances of /mob/living/carbon/human"
 			return
 
 		message_admins("<span class='danger'>Admin [key_name_admin(usr)] turned [key_name_admin(H)] into a borer!</span>")

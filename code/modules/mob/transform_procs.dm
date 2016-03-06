@@ -452,6 +452,7 @@
 
 	if(mind)
 		mind.transfer_to(B)
+		B.transfer_personality(src.client)
 	else
 		B.key = key
 
