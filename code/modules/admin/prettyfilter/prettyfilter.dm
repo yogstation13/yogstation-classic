@@ -101,8 +101,8 @@
 				replacement += parts[index]
 				if(index < parts.len)
 					replacement += "="
-		/*This code commented out because of build issues on computer, do not add to PR!
+
 		var/regex/R = new(pattern, "ig")
 		text = R.Replace(text, replacement)
-		*/
+
 	return text

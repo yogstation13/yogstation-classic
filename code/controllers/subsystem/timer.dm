@@ -62,7 +62,7 @@ var/datum/subsystem/timer/SStimer
 	event.thingToCall = thingToCall
 	event.procToCall = procToCall
 	event.timeToRun = world.time + wait
-	event.hash = args
+	event.hash = jointext(args, null)
 	if(args.len > 4)
 		event.argList = args.Copy(5)
 

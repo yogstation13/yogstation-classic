@@ -53,7 +53,7 @@
 		if(prefs.unlock_content & 2)
 			keyname += "<img style='width:9px;height:9px;' class=icon src=\ref['icons/member_content.dmi'] iconstate=yogdon>"
 		keyname += "[key]</font>"
-	/*	Link replacement code, removed because of BYGEX issues. Do not add to pull request!
+
 	if(!holder && !bypass_ooc_approval)
 		var/regex/R = new("((\[a-z\]+://|www\\.)\\S+)", "ig")
 
@@ -67,7 +67,7 @@
 		msg = R.Replace(msg, "<b>(Link removed)</b>")
 	else
 		bypass_ooc_approval = 0
-	*/
+
 	msg = emoji_parse(msg)
 
 	for(var/client/C in clients)
