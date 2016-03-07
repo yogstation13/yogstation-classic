@@ -140,4 +140,5 @@ Here is guide to using the map merging tool:
 #### Credit
    Thanks to-
    /tg/station and their wiki for the guides and the image.
+
    AsV9 for creating the map merging guide.
