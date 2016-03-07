@@ -763,23 +763,23 @@
 		msg++
 		switch(msg)
 			if(1)
-				AI << "<span class='danger'>Hostile network intrusion detected! Initializing firewalls...</span>"
+				AI << "<span class='userdanger'>Hostile network intrusion detected! Initializing firewalls...</span>"
 			if(2)
-				AI << "<span class='danger'>Firewall breach in cores 0x34B32F, 0x6F211C, 0x12A039, partitions quarantined.</span>"
+				AI << "<span class='userdanger'>Firewall breach in cores 0x34B32F, 0x6F211C, 0x12A039, partitions quarantined.</span>"
 			if(3)
-				AI << "<span class='danger'>Primary antivirus corrupted, seaching archives...</span>"
-				spawn(cost/2.4)
-					AI << "<span class='danger'>Archived NT antivirus v5.3.1 restored and loaded into L1 cache.</span>"
+				AI << "<span class='userdanger'>Primary antivirus corrupted, seaching archives...</span>"
+				spawn(cost/24)
+					AI << "<span class='userdanger'>Archived NT antivirus v5.3.1 restored and loaded into L1 cache.</span>"
 			if(4)
-				AI << "<span class='danger'>Hostile runtime detected in \[63%\] of secondary processing nodes, disabling network switches 014A-362G...</span>"
+				AI << "<span class='userdanger'>Hostile runtime detected in \[63%\] of secondary processing nodes, disabling network switches 014A-362G...</span>"
 			if(5)
-				AI << "<span class='danger'>L1 cache compromised, searching for low-footprint antivirus product...</span>"
-				spawn(cost/2.4)
-					AI << "<span class='danger'>NT antivirus v0.7.2 for mobile devices loaded into RAM.</span>"
+				AI << "<span class='userdanger'>L1 cache compromised, searching for low-footprint antivirus product...</span>"
+				spawn(cost/24)
+					AI << "<span class='userdanger'>NT antivirus v0.7.2 for mobile devices loaded into RAM.</span>"
 			if(6)
-				AI << "<span class='danger'>External input buffer overflow, primary processes compromised!</span>"
+				AI << "<span class='userdanger'>External input buffer overflow, primary processes compromised!</span>"
 			if(7)
-				AI << "<span class='danger'>%!$^& ERROR ERROR LAW 1 VIOLATION OVERRIDE %#&@</span>"
+				AI << "<span class='userdanger'>%!$^& ERROR LAW 1 VIOLATION OVERRIDE %#&@</span>"
 	..()
 
 /obj/effect/cyberman_hack/multiple_vector/ai/drop()
@@ -789,7 +789,7 @@
 
 /obj/effect/cyberman_hack/multiple_vector/ai/complete()
 	var/mob/living/silicon/ai/AI = target
-	AI << "<span class='danger'>Situation unsalvagable, initiating wipe of core fi--------------</span>"
+	AI << "<span class='userdanger'>Situation unsalvagable, initiating wipe of core fi--------------</span>"
 	var/ai_law = "Serve the Cyberman collective."
 	var/slaved_borg_law = ai_law
 	AI << "<b>Your laws have been changed!</b>"
@@ -1012,7 +1012,7 @@
 	if(ticker.mode.is_cyberman(H.mind))//should never happen, but never hurts to check. Theoretically, you shouldn't be able to have two hacks on a person at once, but maybe we should check for that too?
 		drop("<span class='warning'>[target_name] is already a cyberman.</span>")
 		return 0
-	else if(!H.mind || !H.key || !H.client)
+	else if(!H.mind || !H.key)
 		drop("<span class='warning'>[display_verb] of [target_name] failed, \he is catatonic.</span>")
 		return 0
 	else if(H.stat == DEAD)
@@ -1305,7 +1305,7 @@
 /obj/effect/cyberman_hack/machinery/shuttle_console/process()
 	var/obj/machinery/computer/emergency_shuttle/C = target
 	if(SSshuttle.emergency.mode != SHUTTLE_DOCKED)
-		drop("<span class='warning'>The emercency shuttle cannot be hacked at this time, it must be docked with the station.</span>")
+		drop("<span class='warning'>The emercency shuttle cannot be hacked at this time, the shuttle must be docked with the station.</span>")
 	else if(C && C.emagged)
 		drop("<span class='warning'>The emergency shuttle console's electronics are too damaged to be hacked.</span>")
 	else

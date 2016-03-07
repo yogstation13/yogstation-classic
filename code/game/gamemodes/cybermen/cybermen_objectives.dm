@@ -134,9 +134,12 @@
 /datum/objective/cybermen/expand/convert_crewmembers/make_valid()
 	var/humans_on_station = 0
 	for(var/mob/living/carbon/human/survivor in living_mob_list)
-		if(survivor.loc.z == ZLEVEL_STATION && !survivor.client.is_afk())
+		if(survivor.loc.z == ZLEVEL_STATION && survivor.key)
 			humans_on_station++
-	if(humans_on_station > 3)//needs a somewhat sane lozer limit
+	#ifdef CYBERMEN_DEBUG
+	world << "Humans on station: [humans_on_station]"
+	#endif
+	if(humans_on_station > 3)//needs a somewhat sane lower limit
 		target_cybermen_num = humans_on_station
 		cyberman_network.message_all_cybermen("<span class='notice'>Too few humans detected aboard the station. Number of required cybermen reduced to [target_cybermen_num].</span>")
 		check_completion()//updates explanation_text.
@@ -149,7 +152,7 @@
 		return 1
 	var/living_cybermen = 0
 	for(var/datum/mind/M in cyberman_network.cybermen)
-		if(M.current && !(M.current.stat | DEAD))
+		if(M.current && !(M.current.stat & DEAD))
 			living_cybermen++
 	explanation_text = "Convert crewmembers until there are [target_cybermen_num] living cybermen on the station. There are currently [living_cybermen] living cybermen on the station."
 	return living_cybermen >= target_cybermen_num
@@ -169,17 +172,17 @@
 /datum/objective/cybermen/expand/hack_ai/New()
 	..()
 	for(var/mob/living/silicon/ai/new_ai in ai_list)
-		if(targetAI && targetAI.current != null && !qdeleted(targetAI.current) && targetAI.key && targetAI.client)
+		if(targetAI && targetAI.key)
 			targetAI = new_ai
 			explanation_text = "Hack [targetAI.current.name], the AI."
 
 /datum/objective/cybermen/expand/hack_ai/is_valid()
-	return targetAI && targetAI.current != null && !qdeleted(targetAI.current)// && targetAI.key && targetAI.client
+	return targetAI && targetAI.key
 
 /datum/objective/cybermen/expand/hack_ai/make_valid()
 	targetAI = null
 	for(var/mob/living/silicon/ai/new_ai in ai_list)
-		if(targetAI && targetAI.current != null && !qdeleted(targetAI.current) && targetAI.key && targetAI.client)
+		if(targetAI && targetAI.key)
 			targetAI = new_ai
 			explanation_text = "Hack [targetAI.current.name], the AI."
 			cyberman_network.message_all_cybermen("Cybermen AI hack target changed. New AI hack target is [targetAI.current.name].")
@@ -195,11 +198,19 @@
 	if(alert("Select required AI?", user, "Select", "Random") == "Random")
 		return
 	var/list/L = list()
-	for(var/AI in ai_list)
-		L["[AI]"] = AI
+	for(var/A in ai_list)
+		var/mob/living/silicon/AI = A
+		L[AI.name] = AI
+	if(!L.len)
+		alert("No AI candidates", user)
+		return
 	var/ai_name = input("Set custom AI:", user, 0) in L
-	targetAI = L[ai_name]
-	explanation_text = "Hack [targetAI.current.name], the AI."
+	if(!ai_name)
+		return
+	var/the_ai = L[ai_name]
+	if(the_ai)
+		targetAI = the_ai
+		explanation_text = "Hack [targetAI.name], the AI."
 
 //CONVERT HEADS
 /datum/objective/cybermen/expand/convert_heads
@@ -263,9 +274,15 @@
 	var/remaining = num_analyze_targets
 	while(remaining)
 		var/candidate = pick(analyze_target_candidates)
+		#ifdef CYBERMEN_DEBUG
+		world << "Analysis Candidates:"
+		for(var/curcandidate in analyze_target_candidates)
+			world << "  [curcandidate]"
+		world << "Selected: [candidate]"
+		#endif
 		if(candidate)
 			descriptions += candidate
-			analyze_target_candidates -= analyze_target_candidates[candidate]
+			analyze_target_candidates -= candidate
 			targets += analyze_target_candidates[candidate]
 		remaining--
 	remaining = num_hack_targets
@@ -355,7 +372,7 @@
 /datum/objective/cybermen/exterminate/nuke_station/check_completion()
 	if(..())
 		return 1
-	return ticker.mode.station_was_nuked && SSshuttle.emergency.mode < SHUTTLE_ESCAPE
+	return ticker.mode.station_was_nuked && (SSshuttle.emergency.mode < SHUTTLE_ESCAPE)
 
 //HIJACK SHUTTLE
 /datum/objective/cybermen/exterminate/hijack_shuttle
@@ -367,17 +384,27 @@
 	required_escaped_cybermen = min(6, cyberman_network.cybermen.len)
 	explanation_text = "Hijack the escape shuttle, ensuring that no non-cybermen escape on it. At least [required_escaped_cybermen] Cybermen must escape on the shuttle. The escape pods may be ignored."
 
-/datum/objective/cybermen/exterminate/hijack_shuttle/check_completion()//some copy-pasting from objective.dm
+/datum/objective/cybermen/exterminate/hijack_shuttle/check_completion()
 	if(..())
 		return 1
 	if(SSshuttle.emergency.mode < SHUTTLE_ENDGAME)
 		return 0
 	var/area/A = SSshuttle.emergency.areaInstance
+	var/cybermen_escaped = 0
 	for(var/mob/living/player in player_list)
-		if(player.mind && player.stat != DEAD && !istype(player, /mob/living/silicon) && get_area(player) == A)
+		#ifdef CYBERMEN_DEBUG
+		world << "Checking Player [player]"
+		world << "Mind: [player.mind]"
+		world << "Stat: [player.stat]"
+		world << "Human: [istype(player, /mob/living/carbon/human)]"
+		world << "Area: [get_area(player) == A]"
+		world << ""
+		#endif
+		if(player.mind && player.stat != DEAD && istype(player, /mob/living/carbon/human) && get_area(player) == A)
 			if(player.mind && !ticker.mode.is_cyberman(player.mind))
 				return 0
- 	return 1
+			cybermen_escaped++
+ 	return cybermen_escaped >= required_escaped_cybermen
 
 /datum/objective/cybermen/exterminate/hijack_shuttle/
 
@@ -394,19 +421,17 @@
 /datum/objective/cybermen/exterminate/eliminate_humans/check_completion()//I mean, you COULD just cart all those pesky non-cybermen off to mining. But that's no fun. The alternative is the possibility that the cybermen have to search the asteroid and deep space for the non-cybermen, and that's even less fun.
 	if(..())
 		return 1
-	if(SSshuttle.emergency.mode >= SHUTTLE_ESCAPE)
-		return 0
 	var/cybermen_num = 0
 	var/non_cybermen_num = 0
 	for(var/mob/living/carbon/human/survivor in living_mob_list)
-		if(survivor.loc.z == ZLEVEL_STATION && !survivor.client.is_afk())//don't care about sentient animals, silicones, AFKs, or people off the z-level
+		if(survivor.loc.z == ZLEVEL_STATION && survivor.key)
 			if(ticker.mode.is_cyberman(survivor.mind))
 				cybermen_num++
 			else
 				non_cybermen_num++
 	var/percent = (cybermen_num + non_cybermen_num > 0) && (cybermen_num / (cybermen_num + non_cybermen_num))*100
-	explanation_text = "Ensure [target_percent]% of the humanoid population of the station is comprised of cybermen, by either killing, converting, or exiling non-cybermen. Using the data you have collected on human physiology, we have drastically reduced the time it takes to convert additional humans. Do not allow the escape shuttle to leave the station. Sensors indicate that [percent]% of the station's living crew are currently cybermen."
-	return percent >= target_percent
+	explanation_text = "Ensure at least [target_percent]% of the humanoid population of the station is comprised of cybermen, by either killing, converting, or exiling non-cybermen. Using the data you have collected on human physiology, we have drastically reduced the time it takes to convert additional humans. Do not allow the escape shuttle to leave the station. Sensors indicate that [percent]% of the station's living crew are currently cybermen."
+	return (SSshuttle.emergency.mode < SHUTTLE_ESCAPE) && (percent >= target_percent)
 
 /datum/objective/cybermen/exterminate/eliminate_humans/admin_create_objective(mob/user = usr)
 	if(alert("Set required % cybermen?", user, "Set", "Standard([target_percent]%)") != "Set")
@@ -426,4 +451,4 @@
 	phase = input("Enter phase name:", user)
 	explanation_text = input("Enter objective text:", user)
 	win_upon_completion = alert("Cyberman victory upon completion?", user, "Yes", "No") == "Yes" ? 1 : 0
-	alert("Note that an admin must use \"Force Objective Completion\" in the Cyberman Panel to complete this objective and end the game.", user, "Okay")
+	alert("Note that an admin must use \"Force Objective Completion\" in the Cyberman Panel to complete this objective and advance the game.", user, "Okay")
