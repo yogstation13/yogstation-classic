@@ -1,0 +1,8 @@
+# Your name.  
+author: Oisin100
+
+# Optional: Remove this file after generating master changelog.  Useful for PR changelogs that won't get used again.
+delete-after: true
+
+changes: 
+  - tweak: "R&D can now produce portal guns with just level 5 combat. Meaning you dont need combat shotguns to make them anymore."

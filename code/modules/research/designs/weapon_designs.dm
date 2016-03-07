@@ -159,7 +159,7 @@
 	name = "Bluespace Wormhole Projector"
 	desc = "A projector that emits high density quantum-coupled bluespace beams."
 	id = "wormholeprojector"
-	req_tech = list("combat" = 6, "materials" = 6, "bluespace" = 4)
+	req_tech = list("combat" = 5, "materials" = 6, "bluespace" = 4)
 	build_type = PROTOLATHE
 	materials = list(MAT_SILVER = 1000, MAT_METAL = 5000, MAT_DIAMOND = 3000)
 	build_path = /obj/item/weapon/gun/energy/wormhole_projector
