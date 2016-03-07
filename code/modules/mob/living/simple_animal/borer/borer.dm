@@ -194,6 +194,8 @@ var/list/mob/living/simple_animal/borer/borers = list()
 
 	log_game("[src]/([src.ckey]) released control of [victim]/([victim.ckey]")
 
+	victim.med_hud_set_status()
+
 	if(host_brain)
 
 		// these are here so bans and multikey warnings are not triggered on the wrong people when ckey is changed.

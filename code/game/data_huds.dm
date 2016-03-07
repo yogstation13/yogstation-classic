@@ -112,7 +112,7 @@
 	var/image/holder = hud_list[STATUS_HUD]
 	if(stat == 2)
 		holder.icon_state = "huddead"
-	else if(status_flags & XENO_HOST)
+	else if(status_flags & XENO_HOST || (borer && borer.controlling))
 		holder.icon_state = "hudxeno"
 	else if(check_virus())
 		holder.icon_state = "hudill"

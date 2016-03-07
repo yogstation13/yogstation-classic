@@ -220,6 +220,8 @@
 		src << "<span class='boldnotice'>You need 250 chems to use this!</span>"
 		return
 
+	chemicals -= 250
+
 	if(victim.stat == DEAD)
 		dead_mob_list -= victim
 		living_mob_list += victim
@@ -323,7 +325,7 @@
 			victim.verbs += /mob/living/carbon/proc/release_control
 			victim.verbs += /mob/living/carbon/proc/spawn_larvae
 
-			return
+			victim.med_hud_set_status()
 
 mob/living/carbon/proc/release_control()
 

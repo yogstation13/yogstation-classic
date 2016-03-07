@@ -146,7 +146,7 @@ MASS SPECTROMETER
 	if(iscarbon(M))
 		var/mob/living/carbon/C = M
 		if(C.borer)
-			user << "<span class='danger'>Foreign virus detected in subjects cranium. Recommended treatment: Brain Surgery and a dosage of sucrose in solution.</span>"
+			user << "<span class='danger'>Foreign organism detected in subjects cranium. Recommended treatment: Brain Surgery and a dosage of sucrose in solution.</span>"
 
 
 	user << "<span class='info'>Analyzing results for [M]:\n\tOverall status: [mob_status]</span>"
