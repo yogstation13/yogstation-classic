@@ -104,7 +104,7 @@ var/path_type = "/obj/item/weapon/baseball_bat"
   In this PR I fixed bug #1234 and also modified the baton's name and description. 
   ```
   
-  **If your pull request has new sprites, upload a picture of goddamn sake.**
+  **If your pull request has new sprites, upload a picture for goddamn sake.**
   
   **Not uploading pictures will slow your pull request down.**
 
