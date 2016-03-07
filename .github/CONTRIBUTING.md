@@ -35,7 +35,7 @@ var/path_type = "/obj/item/weapon/baseball_bat"
 
 * Hacky code, such as adding specific checks, is highly discouraged and only allowed when there is no other option. You can avoid hacky code by using object oriented methodologies, such as overriding a function (called procs in DM) or sectioning code into functions and then overriding them as required.
 
-* Duplicated code is 99% of the time never allowed. Copying code from one place to another maybe suitable for small short time projects but /tg/station focuses on the long term and thus discourages this. Instead you can use object orientation, or simply placing repeated code in a function, to obey this specification easily.
+* Duplicated code is 99% of the time never allowed. Copying code from one place to another maybe suitable for small short time projects but Yogstation focuses on the long term and thus discourages this. Instead you can use object orientation, or simply placing repeated code in a function, to obey this specification easily.
 
 * Code should be modular where possible, if you are working on a new class then it is best if you put it in a new file.
 
