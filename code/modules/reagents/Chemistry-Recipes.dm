@@ -59,7 +59,9 @@
 			/mob/living/simple_animal/hostile/guardian/bomb,
 			/mob/living/simple_animal/hostile/guardian/shield
 			)//exclusion list for things you don't want the reaction to create.
+		var/spec_include = list(/mob/living/simple_animal/borer)  //Special spawnable mobs (not hostile)
 		var/list/meancritters = typesof(/mob/living/simple_animal/hostile) - blocked // list of possible hostile mobs
+		meancritters += spec_include
 		var/list/nicecritters = list(/mob/living/simple_animal/crab,
 		                        /mob/living/simple_animal/mouse,
 		                        /mob/living/simple_animal/lizard,
@@ -68,6 +70,7 @@
 		                        /mob/living/simple_animal/cow,
 		                        /mob/living/simple_animal/chicken) // and possible friendly mobs
 		nicecritters += typesof(/mob/living/simple_animal/pet) - /mob/living/simple_animal/pet
+		nicecritters += spec_include  //Since spec_include mobs are neither friendly nor hostile, they get into both lists
 		var/atom/A = holder.my_atom
 		var/turf/T = get_turf(A)
 		var/area/my_area = get_area(T)
@@ -97,7 +100,7 @@
 						step(C, pick(NORTH,SOUTH,EAST,WEST))
 			else
 				var/chosen = pick(meancritters)
-				var/mob/living/simple_animal/hostile/C = new chosen
+				var/mob/living/simple_animal/C = new chosen
 				C.faction |= mob_faction
 				C.loc = get_turf(holder.my_atom)
 				if(prob(50))
