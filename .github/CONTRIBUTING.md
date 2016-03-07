@@ -10,6 +10,7 @@ Secondly, these are technically rules, but if you feel these are poor guidelines
 
 * [Additional Notes](#additional-notes)
     * [Map Merger](#use-the-map-merger)
+    * [Credits](#credit)
 
 ### Coding Standards
 
@@ -136,3 +137,7 @@ Here is guide to using the map merging tool:
 4. Commit your changes. You should now see that your map change only has ~50 changed lines instead of 500 000.
   
   
+#### Credit
+   Thanks to-
+   /tg/station and their wiki for the guides and the image.
+   AsV9 for creating the map merging guide.
