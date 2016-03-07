@@ -60,3 +60,14 @@
 			H << "<span class='notice'>You make a vow of silence.</span>"
 		else
 			H << "<span class='notice'>You break your vow of silence.</span>"
+/*
+			sleep(50)
+			H << "<span class='notice'>Centcomm noticed.</span>
+			explosion(H.loc, 0, 0, 0, 0)
+			adjustBruteLoss(min(99,(H.health - 1)))
+			H.Stun(20)
+			H.Weaken(20)
+			var/area/cornered = get_area(H)
+			priority_announce("[H] has broken their vow of silence at [cornered], lynch them at all costs!", "Mime broke vow")
+			H.remove_reagent("blood",5000)
+*/
