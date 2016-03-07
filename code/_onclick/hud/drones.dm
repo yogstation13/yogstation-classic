@@ -171,7 +171,11 @@
 
 	mymob.client.screen = list()
 	mymob.client.screen += mymob.client.void
-	mymob.client.screen += adding/datum/hud/proc/syndicate_scout_drone(ui_style = 'icons/mob/screen_midnight.dmi')
+	mymob.client.screen += adding
+
+
+// syndicate scout drones:
+/datum/hud/proc/syndicate_scout_drone(ui_style = 'icons/mob/screen_midnight.dmi')
 	adding = list()
 
 	var/obj/screen/inventory/inv_box

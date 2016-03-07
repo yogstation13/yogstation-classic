@@ -145,7 +145,7 @@
 
 /mob/living/simple_animal/drone/syndiscout
 	name = "Syndicate Scout Drone"
-	desc = "A strange black-colored drone with a red syndicate emblem on the top of it."
+	desc = "A strange dark-colored drone with a red syndicate emblem on the top of it."
 	icon = 'icons/mob/scout_drone.dmi'
 	icon_state = "movement"
 	icon_living = "movement"
@@ -155,7 +155,7 @@
 	faction = list("syndicate")
 	pass_flags = PASSTABLE | PASSDOOR
 	sight = (SEE_TURFS | SEE_OBJS)
-	status_flags = (CANPUSH | CANSTUN | CANWEAKEN | GOTTAGOFAST)
+	status_flags = (CANPUSH | CANSTUN | CANWEAKEN)
 	voice_name = "squeals"
 	has_unlimited_silicon_privilege = 0 // can't open doors. can scoot under them though.
 	laws = \
@@ -294,7 +294,7 @@
 	else
 		..()
 
-/obj/item/drone_shell/syndronescout // this will not be spawned with the nukeops.
+/obj/item/drone_shell/syndronescout // this is here for another time
 	name = "syndrone shell"
 	desc = "A shell of a syndicate scout drone, once it's activated it's used to scout the station of any known powergamers on board."
 	icon = 'icons/mob/scout_drone.dmi'
