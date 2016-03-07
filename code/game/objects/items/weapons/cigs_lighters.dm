@@ -485,8 +485,6 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 			else
 				if(prot > 0)
 					user.visible_message("After a few attempts, [user] manages to light [src], without burning themself.", "<span class='notice'>After a few attempts, you manage to light [src]. Your fire-resistant gloves shield you from burning yourself.</span>")
-					return 0
-				else if(prob(75))
 					return
 				else if(prob(75))
 					user.visible_message("After a few attempts, [user] manages to light [src].", "<span class='notice'>After a few attempts, you manage to light [src].</span>")
@@ -533,7 +531,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		var/hitzone = user.zone_sel.selecting
 		H.suppress_bloodloss(src.stop_bleeding)
 		H.apply_damage(5, BURN, hitzone)
-		if (H.blood_max == 2.0 to INFINITY) // basically, if it's to severe of bleeding damage, a simple lighter won't fix it. maybe try something stronger?
+		if (H.blood_max == 1.5 to INFINITY) // basically, if it's to severe of bleeding damage, a simple lighter won't fix it. maybe try something stronger?
 			user.visible_message("<span class='alert'>There is too much blood coming out of the wound for you to fix it with [src] and you screw up!</span>")
 			visible_message("<span class='alert'>[H]'s wounds are burned by [src], but are unable to be closed by it's flame!</span>")
 			return
