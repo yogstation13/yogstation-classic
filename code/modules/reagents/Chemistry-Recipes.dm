@@ -70,7 +70,7 @@
 		                        /mob/living/simple_animal/cow,
 		                        /mob/living/simple_animal/chicken) // and possible friendly mobs
 		nicecritters += typesof(/mob/living/simple_animal/pet) - /mob/living/simple_animal/pet
-		nicecritters += spec_include  //Since spec_include mobs are neither friendly nor hostile, they get into both lists
+		//nicecritters += spec_include  //Uncomment to include special mobs in friendly spawns
 		var/atom/A = holder.my_atom
 		var/turf/T = get_turf(A)
 		var/area/my_area = get_area(T)
