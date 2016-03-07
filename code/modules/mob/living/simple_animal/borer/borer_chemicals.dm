@@ -2,7 +2,7 @@
 	var/chemname
 	var/needed_influence = 0
 	var/influence_change = 5
-	var/chemuse = 50
+	var/chemuse = 35
 	var/quantity = 10
 
 /datum/borer_chem/mannitol

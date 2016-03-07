@@ -84,6 +84,11 @@
 		for(var/obj/item/organ/internal/I in int_organs)
 			I.Insert(O, 1)
 
+	//Transfer Borer
+	O.borer = borer
+	borer.loc = O
+	borer = null
+
 	//transfer mind and delete old mob
 	if(mind)
 		mind.transfer_to(O)
@@ -196,6 +201,12 @@
 		I.implanted = O
 
 	//O.AddDisease(new /datum/disease/transformation/rage_virus)
+
+	//Transfer Borer
+	O.borer = borer
+	borer.loc = O
+	borer = null
+
 
 	//transfer mind and delete old mob
 	if(mind)
@@ -323,6 +334,11 @@
 		I.loc = O
 		I.implanted = O
 	O.sec_hud_set_implants()
+
+	//Transfer Borer
+	O.borer = borer
+	borer.loc = O
+	borer = null
 
 	if(tr_flags & TR_KEEPORGANS)
 		for(var/obj/item/organ/internal/I in O.internal_organs)
@@ -507,6 +523,11 @@
 
 	new_xeno.a_intent = "harm"
 	new_xeno.key = key
+
+	//Transfer Borer
+	new_xeno.borer = borer
+	borer.loc = new_xeno
+	borer = null
 
 	new_xeno << "<B>You are now an alien.</B>"
 	new_xeno.update_pipe_vision()
