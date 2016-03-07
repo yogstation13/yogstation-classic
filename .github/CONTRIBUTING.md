@@ -10,6 +10,7 @@ Secondly, these are technically rules, but if you feel these are poor guidelines
 
 * [Additional Notes](#additional-notes)
     * [Map Merger](#use-the-map-merger)
+    * [Text Formatting](#text-formatting)
     * [Credits](#credit)
 
 ### Coding Standards
@@ -136,7 +137,32 @@ Here is guide to using the map merging tool:
   
 4. Commit your changes. You should now see that your map change only has ~50 changed lines instead of 500 000.
   
-  
+#### Text Formatting
+   
+So you're making some code to do something, and you'd like to use a chat-pane text message to inform the players about it. Good for you! Now, there's a few things to know when doing this.
+
+##### Use Span Classes Goddamn
+
+   Span classes allow for **consistent** and informative text formatting.
+   
+   You may be familiar with span classes if you have previous experience with HTML. There are various types of classes, which can all    be found in interface/stylesheet.dm. Make sure to use the appropriate one for the situation!
+   
+   `user << "<span class='notice'>You begin welding the vent...</span>"`
+   
+   This is a notice. Notices show up in simple blue text, and are used for benign informational messages. This notice ends with "...", which implies that the action will take a period of time to complete.
+   
+   `user << "<span class='warning'>You can't vent crawl while you're stunned!</span>"`
+   
+   This is a warning! It shows up as simple red text, and are used for things like restriction notifications, machines malfunctioning,
+   
+   `user.visible_message("<span class='danger'>[user.name] was shocked by the [src.name]!</span>", \`
+   
+   This is danger! This is heavier red text, used in situations where someone other than yourself is being harmed or having some other potentionally harmful action taken against them, such as cuffing.
+   
+   `target << "<span class='userdanger'>You are absorbed by the changeling!</span>"`
+   
+   This is userdanger! Userdanger is used in only one situation: when the person receiving the text message is being directly harmed, such as from attacks or antagonist abilities.
+   
 #### Credit
    Thanks to-
    /tg/station and their wiki for the guides and the image.
