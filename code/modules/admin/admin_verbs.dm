@@ -78,7 +78,8 @@ var/list/admin_verbs_admin = list(
 	/client/proc/admin_credits_set,
 	/client/proc/check_words,			/*displays cult-words*/
 	/client/proc/reset_all_tcs,		/*resets all telecomms scripts*/
-	/datum/admins/proc/cybermen_panel   //lots of cybermen options
+	/datum/admins/proc/cybermen_panel,  //lots of cybermen options
+	/client/proc/toggle_restart_vote	//moderator tool for toggling restart vote
 	)
 var/list/admin_verbs_ban = list(
 	/client/proc/unban_panel,
@@ -767,11 +768,11 @@ var/list/admin_verbs_hideable = list(
 			if(!config.allow_vote_restart)
 				var/admins_number = 0
 				for(var/client/admin in admins)
-					if(check_rights_for(admin, R_SERVER))
+					if(check_rights_for(admin, R_ADMIN))
 						admins_number++
 				if(admins_number == 0)
-					log_admin("No admins left with +SERVER. Restart vote allowed.")
-					message_admins("No admins left with +SERVER. Restart vote allowed.")
+					log_admin("No staff left with +ADMIN. Restart vote allowed.")
+					message_admins("No staff left with +ADMIN. Restart vote allowed.")
 					config.allow_vote_restart = 1
 	feedback_add_details("admin_verb","DAS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
@@ -839,11 +840,11 @@ var/list/admin_verbs_hideable = list(
 		if(config.allow_vote_restart)
 			var/admins_number = 0
 			for(var/client/admin in admins)
-				if(check_rights_for(admin, R_SERVER))
+				if(check_rights_for(admin, R_ADMIN))
 					admins_number++
 			if(admins_number > 0)
-				log_admin("Admin joined with +SERVER. Restart vote disallowed.")
-				message_admins("Admin joined with +SERVER. Restart vote disallowed.")
+				log_admin("Staff joined with +ADMIN. Restart vote disallowed.")
+				message_admins("Staff joined with +ADMIN. Restart vote disallowed.")
 				config.allow_vote_restart = 0
 		feedback_add_details("admin_verb","RAS")
 		return
@@ -887,3 +888,17 @@ var/list/admin_verbs_hideable = list(
 
 							testing("Spawned test mob with name \"[mob.name]\" at [tile.x],[tile.y],[tile.z]")
 			while (!area && --j > 0)
+
+/client/proc/toggle_restart_vote()
+	set name = "Toggle Restart Vote"
+	set category = "Server"
+	set desc = "Toggle Restart Vote for Moderators"
+
+	if(config.allow_vote_restart == 1)
+		config.allow_vote_restart = 0
+		message_admins("[src] toggled the restart vote off.")
+		log_admin("[src] toggled the restart vote off.")
+	else
+		config.allow_vote_restart = 1
+		message_admins("[src] toggled the restart vote on.")
+		log_admin("[src] toggled the restart vote on.")
