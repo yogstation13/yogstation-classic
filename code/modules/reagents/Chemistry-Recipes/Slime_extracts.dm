@@ -140,6 +140,23 @@
 
 		chemical_mob_spawn(holder, 1, "Friendly Gold Slime", "neutral")
 
+/datum/chemical_reaction/slimecritstrange
+	name = "Slime Crit Strange"
+	id = "m_tele5"
+	result = null
+	required_reagents = list("strange_reagent" = 5) //Grind those donk pockets
+	result_amount = 1
+	required_container = /obj/item/slime_extract/gold
+	required_other = 1
+
+/datum/chemical_reaction/slimecritstrange/on_reaction(datum/reagents/holder)
+	feedback_add_details("slime_cores_used","[type]")
+	for(var/mob/O in viewers(get_turf(holder.my_atom),null))
+		O.show_message(text("<span class='danger'>The slime extract begins to vibrate gently !</span>"), 1)
+	spawn(50)
+
+		chemical_mob_spawn(holder, 1, "Strange Gold Slime", "neutral")
+
 //Silver
 /datum/chemical_reaction/slimebork
 	name = "Slime Bork"
