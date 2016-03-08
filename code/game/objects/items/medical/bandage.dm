@@ -84,7 +84,9 @@
 			if (do_after(user, 50, target = tar))
 				if(!user.unEquip(src))
 					return 0
-				src.blood_DNA = temphuman.dna.unique_enzymes
+				if(!src.blood_DNA)
+					src.blood_DNA = list()
+				src.blood_DNA.Add(temphuman.dna.unique_enzymes)
 				src.healing_limb = lt
 				lt.bandaged = src
 				src.loc = temphuman
