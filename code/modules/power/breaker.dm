@@ -6,7 +6,7 @@
 /obj/structure/breaker/powerswitch
 	name = "\improper fuse box"
 	desc = "A box that controls power-flow."
-	icon = 'breaker.dmi'
+	icon = 'icons/obj/breaker.dmi'
 	icon_state = "tb_on"
 	var/icon_state_on = "tb_on"
 	var/icon_state_off = "tb_off"
