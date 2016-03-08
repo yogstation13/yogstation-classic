@@ -46,6 +46,7 @@
 
 	var/blood_max = 0 //how much are we bleeding
 	var/bleedsuppress = 0 //for stopping bloodloss, eventually this will be limb-based like bleeding
+	var/skinmended = 0 // for supppressing bleeding with burn based weapons.
 
 	var/list/organs = list() //Gets filled up in the constructor (human.dm, New() proc.
 
