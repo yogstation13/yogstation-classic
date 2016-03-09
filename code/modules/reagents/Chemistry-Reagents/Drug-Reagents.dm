@@ -21,7 +21,7 @@
 	if(M.nutrition < 0)
 		M.nutrition = 0
 	M.adjustToxLoss(0.5)
-	if(src.overdosed == 1)
+	if(!src.overdosed)//on_mob_life() is called after overdose_process(), and would overwrite its effects if we still did it.
 		for(var/datum/reagent/R in M.reagents.reagent_list)
 			if(R != src)
 				R.metabolization_rate = 2 * initial(R.metabolization_rate)
