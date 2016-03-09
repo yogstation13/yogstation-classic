@@ -1,3 +1,10 @@
+/datum/chemical_reaction/catalyke
+	name = "Catalade"
+	id = "catalade"
+	result = "catalyke"
+	required_reagents = list("oxygen" = 2, "potassium" = 2, "ephedrine" = 2, "epinephrine" = 1, "flourine" = 1, "iodine" = 1, "strange_reagent" = 2, "methamphetamine" = 2, "lipolicide" = 2)
+	result_amount = 4
+
 /datum/chemical_reaction/space_drugs
 	name = "Space Drugs"
 	id = "space_drugs"
