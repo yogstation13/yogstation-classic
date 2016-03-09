@@ -423,6 +423,10 @@
 	contents = list()
 	new /obj/item/weapon/storage/bag/ore(src)
 	new /obj/item/weapon/shovel/spade(src)
-	new /obj/item/weapon/pickaxe/drill(src)
+	new /obj/item/weapon/pickaxe(src)
 	new /obj/item/weapon/screwdriver(src)
+	var/obj/item/weapon/card/id/point_card = new /obj/item/weapon/card/id(src)
+	var/datum/job/mining/M = new /datum/job/mining
+	point_card.name = "Mining Points Card"
+	point_card.access = M.get_access()
 	return
