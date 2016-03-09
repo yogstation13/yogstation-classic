@@ -44,6 +44,11 @@
 			R.metabolization_rate = 2.5 * initial(R.metabolization_rate)
 	..()
 
+/datum/reagent/drug/catalade/on_mob_delete(mob/M)
+	for(var/datum/reagent/R in M.reagents.reagent_list)
+		if(R != src)
+			R.metabolization_rate = initial(R.metabolization_rate)
+
 /datum/reagent/drug/space_drugs
 	name = "Space drugs"
 	id = "space_drugs"
