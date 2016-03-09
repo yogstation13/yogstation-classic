@@ -198,9 +198,9 @@ var/list/mob/living/simple_animal/borer/borers = list()
 	victim.verbs -= /mob/living/carbon/proc/release_control
 	victim.verbs -= /mob/living/carbon/proc/spawn_larvae
 
-	log_game("[src]/([src.ckey]) released control of [victim]/([victim.ckey]")
-
 	victim.med_hud_set_status()
+
+	victim.cansuicide = 1
 
 	if(host_brain)
 
@@ -238,6 +238,8 @@ var/list/mob/living/simple_animal/borer/borers = list()
 
 		if(!victim.lastKnownIP)
 			victim.lastKnownIP = b2h_ip
+
+	log_game("[src]/([src.ckey]) released control of [victim]/([victim.ckey]")
 
 	qdel(host_brain)
 

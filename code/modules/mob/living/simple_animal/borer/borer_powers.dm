@@ -330,6 +330,8 @@
 
 			victim.med_hud_set_status()
 
+			victim.cansuicide = 0
+
 /mob/living/simple_animal/borer/verb/punish()
 	set category = "Borer"
 	set name = "Punish"

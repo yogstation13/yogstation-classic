@@ -30,6 +30,9 @@
 	for(var/borers = 0, borers < 3, borers++)
 		var/obj/vent = pick_n_take(vents)
 		var/list/candidates = get_candidates(BE_ALIEN, ALIEN_AFK_BRACKET)
+		for(var/client/C in candidates)
+			if(jobban_check_mob(C.mob, "borer") || !(C.prefs.toggles & MIDROUND_ANTAG))
+				candidates -= C
 		if(!candidates.len)
 			return kill()
 		var/client/C = pick(candidates)

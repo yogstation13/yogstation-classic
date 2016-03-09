@@ -57,3 +57,5 @@
 	var/list/say_log_silent = list() //a log of things that are not said out loud, such as binary chat, changeling chat, shadlowing commune, etc.
 
 	var/unique_name = 0 //if a mob's name should be appended with an id when created e.g. Mob (666)
+
+	var/cansuicide = 1

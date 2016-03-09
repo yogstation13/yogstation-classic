@@ -172,6 +172,9 @@
 
 
 /mob/living/proc/canSuicide()
+	if(!cansuicide)
+		src << "You cant use that!"
+		return
 	if(stat == CONSCIOUS)
 		return 1
 	else if(stat == DEAD)
