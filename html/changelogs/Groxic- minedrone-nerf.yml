@@ -1,0 +1,6 @@
+author: GROXIC
+
+delete-after: True
+
+changes:
+  tweak- "Minedrones have been nerf'd and given a mining points card. Their HUD is fixed to prevent overlapping of drop and secondary storage icons."
