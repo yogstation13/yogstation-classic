@@ -251,7 +251,7 @@ var/list/uplink_items = list()
 	cost = 20
 	gamemodes = list(/datum/game_mode/nuclear)
 	surplus = 0
-*/
+
 /datum/uplink_item/dangerous/tactical_animal_harness
 	name = "Tactical Animal Harness"
 	desc = "A harness that can be placed on any space carp or space dolphin to give it sentience and a variety of useful weapons and equipment."
@@ -259,7 +259,7 @@ var/list/uplink_items = list()
 	cost = 20
 	gamemodes = list(/datum/game_mode/nuclear)
 	surplus = 0
-
+*/
 // AMMUNITION
 
 /datum/uplink_item/ammo

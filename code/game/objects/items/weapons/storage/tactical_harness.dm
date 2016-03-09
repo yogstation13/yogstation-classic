@@ -15,7 +15,7 @@
 	var/icon_state_dead
 	var/animal_new_name
 	var/animal_new_desc
-	var/attack_cooldown_cap = 1
+	var/attack_cooldown_cap = 2
 	var/rapid_fire = 0
 	var/new_speed = 0
 	var/new_health = 150
