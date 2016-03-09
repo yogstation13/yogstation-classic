@@ -32,6 +32,9 @@
 
 	var/area/A = get_area(loc)
 
+	if(isSSD(src))
+		return
+
 	if(alert_s && A && stat != DEAD)
 		var/msg = "<span class='boldnotice'>DRONE PING: [name]: [alert_s] priority alert in [A.name]!</span>"
 		alert_drones(msg)
@@ -51,3 +54,41 @@
 		staticChoice = selectedStatic
 
 	updateSeeStaticMobs()
+
+//////////////////////
+// SCOUT DRONE VERBS//
+//////////////////////
+
+
+
+/mob/living/simple_animal/drone/syndiscout/verb/terminate_link()
+	set name = "Terminate Link"
+	set desc = "Disconnects you immediately from the drone terminal."
+	set category = "Drone"
+
+	switch(alert("Select an option.","Terminate Link", "Proceed","Deny"))
+		if("Proceed")
+			src << "<span class='warning'>You decide to terminate the control link you have on the drone.</span>"
+			src.mind.transfer_to(observer)
+			src.observer = null
+			src.observing = !src.observing
+		if("Deny")
+			return
+
+/mob/living/simple_animal/drone/syndiscout/verb/hide()
+	set name = "Hide"
+	set desc = "Become invisible to the common eye."
+	set category = "Drone"
+
+	if(src.stat != CONSCIOUS)
+		return
+
+	if (src.layer != TURF_LAYER+0.2)
+		src.layer = TURF_LAYER+0.2
+		src.visible_message("<span class='name'>[src] ducks for cover!</span>", \
+						"<span class='noticealien'>You are now hiding.</span>")
+	else
+		src.layer = MOB_LAYER
+		src.visible_message("[src] slowly peaks up from the ground...", \
+					"<span class='noticealien'>You stop hiding.</span>")
+	return 1

@@ -108,6 +108,8 @@
 
 
 /mob/living/simple_animal/drone/proc/pickVisualAppearence()
+	if(isSSD(usr))
+		return
 	picked = FALSE
 	var/appearence = input("Choose your appearence!", "Appearence", "Maintenance Drone") in list("Maintenance Drone", "Repair Drone", "Scout Drone")
 	switch(appearence)
