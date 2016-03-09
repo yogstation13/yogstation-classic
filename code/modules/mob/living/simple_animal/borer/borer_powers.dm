@@ -180,6 +180,9 @@
 
 	if(!victim || !src) return
 
+	if(alert(src, "Sure you want to give up your control so soon?", "Confirm", "Yes", "No") != "Yes")
+		return
+
 	src << "<span class='userdanger'>You begin disconnecting from [victim]'s synapses and prodding at their internal ear canal.</span>"
 
 	if(victim.stat != DEAD)
@@ -326,6 +329,47 @@
 			victim.verbs += /mob/living/carbon/proc/spawn_larvae
 
 			victim.med_hud_set_status()
+
+/mob/living/simple_animal/borer/verb/punish()
+	set category = "Borer"
+	set name = "Punish"
+	set desc = "Punish your victim"
+
+	if(!victim)
+		src << "<span class='boldnotice'>You are not inside a host body.</span>"
+		return
+
+	if(src.stat != CONSCIOUS)
+		src << "You cannot do that in your current state."
+		return
+
+	if(docile)
+		src << "<span class='boldnotice'>You are feeling far too docile to do that.</span>"
+		return
+
+	if(chemicals < 75)
+		src << "<span class='boldnotice'>You need 75 chems to punish your host.</span>"
+		return
+
+	var/punishment = input("Select a punishment:.", "Punish") as null|anything in list("Blindness","Deafness","Stun")
+
+	if(chemicals < 75)
+		src << "<span class='boldnotice'>You need 75 chems to punish your host.</span>"
+		return
+
+	switch(punishment) //Hardcoding this stuff.
+		if("Blindness")
+			victim.eye_blind = 20
+		if("Deafness")
+			victim.ear_deaf = 20
+		if("Stun")
+			victim.Weaken(10)
+
+	chemicals -= 75
+
+	influence -= 15
+	if(influence < 0)
+		influence = 0
 
 mob/living/carbon/proc/release_control()
 

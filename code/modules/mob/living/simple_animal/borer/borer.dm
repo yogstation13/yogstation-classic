@@ -46,6 +46,9 @@ var/list/mob/living/simple_animal/borer/borers = list()
 	borer_chems += /datum/borer_chem/leporazine
 	borer_chems += /datum/borer_chem/perfluorodecalin
 	borer_chems += /datum/borer_chem/spacedrugs
+	borer_chems += /datum/borer_chem/mutadone
+	borer_chems += /datum/borer_chem/creagent
+	borer_chems += /datum/borer_chem/ethanol
 
 	borers += src
 
@@ -115,7 +118,10 @@ var/list/mob/living/simple_animal/borer/borers = list()
 	if(!victim)
 		src << "<span class='boldnotice'>You cannot speak without a host.</span>"
 		return
-
+	if(dd_hasprefix(message, "*"))
+		message = copytext(message,2)
+		victim.say(message)
+		return
 	if(influence > 80)
 		victim << "<span class='green'><b>[name] telepathicaly shouts... </b></span><span class='userdanger'>[message]</span>"
 		src << "<span class='green'><b>[name] telepathicaly shouts... </b></span><span class='userdanger'>[message]</span>"

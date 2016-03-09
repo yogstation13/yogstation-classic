@@ -35,3 +35,16 @@
 	needed_influence = 50
 	influence_change = -5
 	chemuse = 75
+
+/datum/borer_chem/mutadone
+	chemname = "mutadone"
+	chemuse = 100
+
+/datum/borer_chem/creagent
+	chemname = "colorful_reagent"
+	needed_influence = 100
+	chemuse = 25
+
+/datum/borer_chem/ethanol
+	chemname = "ethanol"
+	chemuse = 50
