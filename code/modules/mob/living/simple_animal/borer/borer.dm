@@ -1,5 +1,6 @@
 
 var/list/mob/living/simple_animal/borer/borers = list()
+var/total_borer_hosts_needed = 10
 
 /mob/living/simple_animal/borer
 	name = "Cortical Borer"
@@ -33,6 +34,7 @@ var/list/mob/living/simple_animal/borer/borers = list()
 	var/borer_chems = list()
 	var/dominate_cooldown = 150
 	var/control_cooldown = 3000
+	var/leaving = 0
 
 
 /mob/living/simple_animal/borer/New()
@@ -46,6 +48,9 @@ var/list/mob/living/simple_animal/borer/borers = list()
 	borer_chems += /datum/borer_chem/leporazine
 	borer_chems += /datum/borer_chem/perfluorodecalin
 	borer_chems += /datum/borer_chem/spacedrugs
+	borer_chems += /datum/borer_chem/mutadone
+	borer_chems += /datum/borer_chem/creagent
+	borer_chems += /datum/borer_chem/ethanol
 
 	borers += src
 
@@ -123,7 +128,10 @@ var/list/mob/living/simple_animal/borer/borers = list()
 	if(!victim)
 		src << "<span class='boldnotice'>You cannot speak without a host.</span>"
 		return
-
+	if(dd_hasprefix(message, "*"))
+		message = copytext(message,2)
+		victim.say(message)
+		return
 	if(influence > 80)
 		victim << "<span class='green'><b>[name] telepathicaly shouts... </b></span><span class='userdanger'>[message]</span>"
 		src << "<span class='green'><b>[name] telepathicaly shouts... </b></span><span class='userdanger'>[message]</span>"
@@ -183,6 +191,7 @@ var/list/mob/living/simple_animal/borer/borers = list()
 	if(src.mind)
 		src.mind.assigned_role = "Cortical Borer"
 		src.mind.special_role = "Cortical Borer"
+		src.mind.store_memory("You <b>MUST</b> escape with atleast [total_borer_hosts_needed] borers with hosts on the shuttle.")
 
 
 	update_borer_icons_add(src)
@@ -191,7 +200,7 @@ var/list/mob/living/simple_animal/borer/borers = list()
 	into the head of its victim. Use stealth, persuasion and your powers of mind control to keep you, \
 	your host and your eventual spawn safe and warm."
 	src << "You can speak to your victim with <b>say</b> and your fellow borers by prefixing your message with ';'. Checkout your borer tab to see your powers as a borer."
-
+	src << "You <b>MUST</b> escape with atleast [total_borer_hosts_needed] borers with hosts on the shuttle."
 /mob/living/simple_animal/borer/proc/detatch()
 	if(!victim || !controlling) return
 
@@ -200,9 +209,9 @@ var/list/mob/living/simple_animal/borer/borers = list()
 	victim.verbs -= /mob/living/carbon/proc/release_control
 	victim.verbs -= /mob/living/carbon/proc/spawn_larvae
 
-	log_game("[src]/([src.ckey]) released control of [victim]/([victim.ckey]")
-
 	victim.med_hud_set_status()
+
+	victim.cansuicide = 1
 
 	if(host_brain)
 
@@ -240,6 +249,8 @@ var/list/mob/living/simple_animal/borer/borers = list()
 
 		if(!victim.lastKnownIP)
 			victim.lastKnownIP = b2h_ip
+
+	log_game("[src]/([src.ckey]) released control of [victim]/([victim.ckey]")
 
 	qdel(host_brain)
 

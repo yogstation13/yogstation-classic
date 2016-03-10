@@ -469,6 +469,19 @@ var/datum/subsystem/ticker/ticker
 	for(var/i in total_antagonists)
 		log_game("[i]s[total_antagonists[i]].")
 
+	if(borers.len)
+		var/total_borers = 0
+		for(var/mob/living/simple_animal/borer/B in borers)
+			if(B.stat != DEAD)
+				total_borers++
+		if(total_borers)
+			var/total_borer_hosts = 0
+			for(var/mob/living/carbon/C in mob_list)
+				var/turf/location = get_turf(C)
+				if(location.z == ZLEVEL_CENTCOM && C.borer && C.borer.stat != DEAD)
+					total_borer_hosts++
+			world << "<b>There were [total_borers] borers alive at round end!</b>"
+			world << "<b>A total of [total_borer_hosts] borers with hosts got to centcomm alive. The borers needed [total_borer_hosts_needed] hosts on the shuttle so they [(total_borer_hosts_needed <= total_borer_hosts) ? "<span class='greentext'>Won!</span>" : "<span class='redtext'>Lost!</span>"]</b>"
 	return 1
 
 /datum/subsystem/ticker/proc/send_random_tip()
