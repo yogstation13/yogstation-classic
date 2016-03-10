@@ -1,0 +1,7 @@
+author: Cruix
+
+delete-after: True
+
+changes: 
+  - rscadd: "The Agent Card can now be disguised as a gold, silver, or orange ID, or an emag."
+  - bugfix: "Fixed some bugs that made the chameleon belt and jumpsuit claim they did not have a uniform or belt's pattern when they did."

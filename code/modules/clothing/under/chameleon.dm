@@ -32,10 +32,12 @@
 		user << "<span class='notice'>Nothing happens.</span>"
 		return
 	if(istype(U, /obj/item/clothing/under))
-		if(src.clothing_choices.Find(U))
-			user << "<span class='notice'>Pattern is already recognised by the suit.</span>"
-			return
-		src.clothing_choices += U
+		for(var/choice in clothing_choices)
+			var/obj/item/clothing/under/C = choice
+			if(U.type == C.type)
+				user << "<span class='notice'>Pattern is already recognised by the suit.</span>"
+				return
+		src.clothing_choices += new U.type()
 		user << "<span class='notice'>Pattern absorbed by the suit.</span>"
 
 
@@ -66,10 +68,7 @@
 
 	var/obj/item/clothing/under/A
 	A = input("Select Colour to change it to", "BOOYEA", A) in clothing_choices
-	if(!A)
-		return
-
-	if(usr.stat != CONSCIOUS)
+	if(!A || loc != usr || usr.stat)
 		return
 
 	if(malfunctioning)

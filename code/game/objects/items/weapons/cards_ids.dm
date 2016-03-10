@@ -145,21 +145,58 @@ update_label("John Doe", "Clowny")
 	name = "agent card"
 	access = list(access_maint_tunnels, access_syndicate)
 	origin_tech = "syndicate=3"
+	var/list/card_choices = list()
+
+/obj/item/weapon/card/id/syndicate/New()
+	card_choices = list(new /obj/item/weapon/card/id(), new /obj/item/weapon/card/id/silver(), new /obj/item/weapon/card/id/gold(), new /obj/item/weapon/card/id/prisoner(), new /obj/item/weapon/card/emag() )
 
 /obj/item/weapon/card/id/syndicate/afterattack(obj/item/weapon/O, mob/user, proximity)
 	if(!proximity) return
 	if(istype(O, /obj/item/weapon/card/id))
 		var/obj/item/weapon/card/id/I = O
 		src.access |= I.access
+		var/has_card = 0
+		for(var/choice in card_choices)
+			var/obj/item/weapon/card/C = choice
+			if(I.type == C.type)
+				has_card = 1
+				break
+		if(!has_card)
+			card_choices += new I.type()
 		if(istype(user, /mob/living) && user.mind)
 			if(user.mind.special_role)
 				usr << "<span class='notice'>The card's microscanners activate as you pass it over the ID, copying its access.</span>"
+				if(!has_card)
+					usr << "<span class='notice'>The card has stored the appearance information of the ID.</span>"
 
 /obj/item/weapon/card/id/syndicate/attack_self(mob/user)
 	if(istype(user, /mob/living) && user.mind)
 		if(user.mind.special_role)
 			if(alert(user, "Action", "Agent ID", "Show", "Forge") == "Forge")
+				if(loc != usr || user.stat)
+					return
+				var/list/name_list = list()
+				for(var/choice in card_choices)
+					var/obj/item/weapon/card/C = choice
+					name_list[C.icon_state] = C
+				var/obj/item/weapon/card/A
+				A = input("Select an Appearance for your card", "BOOYEA", A) in name_list
+				if(!A || loc != usr || user.stat)
+					return
+				var/obj/item/weapon/card/C = name_list[A]
+				if(C)
+					name = C.name
+					desc = C.desc
+					icon_state = C.icon_state
+					item_state = C.item_state
+					item_color = C.item_color
+					if(istype(C, /obj/item/weapon/card/emag))
+						user << "<span class='notice'>You disguise the ID card as a cryptographic sequencer.</span>"
+						return
+
 				var t = copytext(sanitize(input(user, "What name would you like to put on this card?", "Agent card name", registered_name ? registered_name : (ishuman(user) ? user.real_name : user.name))as text | null),1,26)
+				if(loc != usr || user.stat)
+					return
 				if(!t || t == "Unknown" || t == "floor" || t == "wall" || t == "r-wall") //Same as mob/new_player/prefrences.dm
 					if (t)
 						alert("Invalid name.")
@@ -167,11 +204,14 @@ update_label("John Doe", "Clowny")
 				registered_name = t
 
 				var u = copytext(sanitize(input(user, "What occupation would you like to put on this card?\nNote: This will not grant any access levels other than Maintenance.", "Agent card job assignment", "Assistant")as text | null),1,MAX_MESSAGE_LEN)
+				if(loc != usr || user.stat)
+					return
 				if(!u)
 					registered_name = ""
 					return
 				assignment = u
 				update_label()
+
 				user << "<span class='notice'>You successfully forge the ID card.</span>"
 				return
 	..()
