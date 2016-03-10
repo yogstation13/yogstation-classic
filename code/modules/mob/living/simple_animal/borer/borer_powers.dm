@@ -185,9 +185,6 @@
 		src << "<span class='userdanger'>You decide against leaving your host.</span>"
 		return
 
-	if(alert(src, "Sure you want to give up your control so soon?", "Confirm", "Yes", "No") != "Yes")
-		return
-
 	src << "<span class='userdanger'>You begin disconnecting from [victim]'s synapses and prodding at their internal ear canal.</span>"
 
 	if(victim.stat != DEAD)
