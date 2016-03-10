@@ -1,0 +1,6 @@
+author: Pseudomaniac
+
+delete-after: True
+
+changes: 
+  - tweak: "Fixed the broken tiles in mining"
