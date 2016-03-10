@@ -144,18 +144,21 @@
 	name = "Slime Crit Strange"
 	id = "m_tele5"
 	result = null
-	required_reagents = list("strange_reagent" = 5) //Grind those donk pockets
+	required_reagents = list("strange_reagent" = 2) //Grind those donk pockets
 	result_amount = 1
 	required_container = /obj/item/slime_extract/gold
 	required_other = 1
 
 /datum/chemical_reaction/slimecritstrange/on_reaction(datum/reagents/holder)
 	feedback_add_details("slime_cores_used","[type]")
-	for(var/mob/O in viewers(get_turf(holder.my_atom),null))
-		O.show_message(text("<span class='danger'>The slime extract begins to vibrate gently !</span>"), 1)
-	spawn(50)
-
-		chemical_mob_spawn(holder, 1, "Strange Gold Slime", "neutral")
+	if(prob(15))
+		for(var/mob/O in viewers(get_turf(holder.my_atom),null))
+			O.show_message(text("<span class='danger'>The slime extract begins to vibrate gently !</span>"), 1)
+		spawn(50)
+			chemical_mob_spawn(holder, 1, "Strange Gold Slime", "neutral")
+	else
+		for(var/mob/O in viewers(get_turf(holder.my_atom),null))
+			O.show_message(text("<span class='notice'>The slime extract seems to tense up for a moment, then relaxes.</span>"), 1)
 
 //Silver
 /datum/chemical_reaction/slimebork
