@@ -49,6 +49,14 @@ var/list/mob/living/simple_animal/borer/borers = list()
 
 	borers += src
 
+/mob/living/simple_animal/borer/attack_ghost(mob/user)
+	if(src.ckey)
+		return
+	var/be_swarmer = alert("Become a cortical borer? (Warning, You can no longer be cloned!)",,"Yes","No")
+	if(be_swarmer == "No")
+		return
+	transfer_personality(user.client)
+
 /mob/living/simple_animal/borer/Stat()
 	..()
 
