@@ -126,6 +126,9 @@ var/const/BLOOD_VOLUME_SURVIVE = 122
 			blood_max += 3
 		drip(blood_max)
 
+		if(prob(heal_rate) && blood_max)  //Chance of healing every tick.
+			blood_max -= 0.5
+
 //Makes a blood drop, leaking amt units of blood from the mob
 /mob/living/carbon/human/proc/drip(amt as num)
 
