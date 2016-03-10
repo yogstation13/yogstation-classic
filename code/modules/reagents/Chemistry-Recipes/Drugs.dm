@@ -4,6 +4,7 @@
 	result = "catalade"
 	required_reagents = list("oxygen" = 1, "potassium" = 2, "ephedrine" = 2, "epinephrine" = 1, "flourine" = 2, "iodine" = 1, "methamphetamine" = 1, "lipolicide" = 1)
 	result_amount = 4
+	required_temp = 500
 
 /datum/chemical_reaction/space_drugs
 	name = "Space Drugs"
