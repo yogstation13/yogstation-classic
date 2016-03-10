@@ -1,0 +1,8 @@
+author: Cruix
+
+delete-after: True
+
+changes: 
+  - rscadd: "The Syndicate mothership has a new pet: Disky the dolphin."
+  - rscadd: "Added admin-spawn only tactical dolphin and tactical space carp."
+  - rscadd: "Added generic code allowing simple animals to eat specific snacks to heal, and to understand the human language but not be able to speak it."

@@ -17,20 +17,23 @@
 	maxHealth = 25
 	health = 25
 	a_intent = "harm"
+	languages = HUMAN|CARP
+
 	environment_smash = 0
 	harm_intent_damage = 8
 	melee_damage_lower = 15
 	melee_damage_upper = 15
+	pass_flags = PASSTABLE //secretly a tactical dolphin buff.
 	attacktext = "bites"
 	attack_sound = 'sound/weapons/bite.ogg'
-	speak_emote = list("gnashes")
+	speak_emote = list("Chitters", "Squeeks", "Clicks")
 
 	//Space dolphins aren't affected by cold.
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 	minbodytemp = 0
 	maxbodytemp = 1500
 
-	faction = list("carp")
+	faction = list("carp", "dolphin")//why do carps not attack dolphins again?
 	flying = 1
 
 /mob/living/simple_animal/hostile/retaliate/dolphin/Process_Spacemove(movement_dir = 0)
@@ -48,3 +51,9 @@
 		new /obj/item/weapon/reagent_containers/food/snacks/youmonster(src.loc)
 		qdel(W)
 		qdel(src)
+
+/*
+/mob/living/simple_animal/hostile/retaliate/dolphin/say_quote(input)//I thought about using a new language, but then the dolphin wouldn't be able to understand its masters.
+	var/new_input = pick("eeeeh eeh eeh!", "eeh eeh eeh!", "eeh eeeeeeh ehh!", "eeh eeh eeeeeeh!", "eeh eeeeeeeh!")
+	return ..(new_input)
+*/
