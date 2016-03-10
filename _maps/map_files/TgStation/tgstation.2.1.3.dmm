@@ -6594,7 +6594,7 @@
 "cwP" = (/obj/machinery/atmospherics/components/binary/pump{dir = 2; name = "Distro In"; on = 1},/obj/structure/cable{d1 = 1; d2 = 8; icon_state = "1-8"; tag = ""},/obj/structure/lattice/catwalk,/turf/space,/area/tcommsat/computer)
 "cwQ" = (/obj/structure/sign/securearea{desc = "A warning sign which reads 'RADIOACTIVE AREA'"; icon_state = "radiation"; name = "RADIOACTIVE AREA"; pixel_x = 0; pixel_y = 0},/turf/simulated/wall/r_wall,/area/engine/engineering)
 "cwR" = (/obj/machinery/light{dir = 8},/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/structure/grille,/turf/simulated/floor/plating/airless,/area/engine/engineering)
-"cwS" = (/obj/machinery/the_singularitygen{anchored = 1},/turf/simulated/floor/plating/airless,/area/space)
+"cwS" = (/obj/machinery/the_singularitygen{anchored = 0},/turf/simulated/floor/plating/airless,/area/space)
 "cwT" = (/obj/machinery/light{dir = 4; icon_state = "tube1"},/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/structure/grille,/turf/simulated/floor/plating/airless,/area/engine/engineering)
 "cwU" = (/obj/structure/sign/vacuum,/turf/simulated/wall,/area/engine/engineering)
 "cwV" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"; pixel_y = 0; tag = ""},/obj/machinery/light/small{dir = 4},/obj/structure/lattice/catwalk,/turf/space,/area/ai_monitored/storage/secure{name = "\improper Telecoms Satellite"})
