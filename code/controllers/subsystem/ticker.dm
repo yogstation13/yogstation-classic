@@ -480,8 +480,8 @@ var/datum/subsystem/ticker/ticker
 				var/turf/location = get_turf(C)
 				if(location.z == ZLEVEL_CENTCOM && C.borer && C.borer.stat != DEAD)
 					total_borer_hosts++
-			world << "<b>There were [total_borers] alive at round end!</b>"
-			world << "<b>A total of [total_borer_hosts] borers with hosts got to centcomm alive. The borers needed [total_borer_hosts_needed] hosts on the shuttle so they [(total_borer_hosts_needed <= total_borer_hosts) ? "<span class='greentext'>Win!</span>" : "<span class='redtext'>Loose!</span>"]</b>"
+			world << "<b>There were [total_borers] borers alive at round end!</b>"
+			world << "<b>A total of [total_borer_hosts] borers with hosts got to centcomm alive. The borers needed [total_borer_hosts_needed] hosts on the shuttle so they [(total_borer_hosts_needed <= total_borer_hosts) ? "<span class='greentext'>Won!</span>" : "<span class='redtext'>Lost!</span>"]</b>"
 	return 1
 
 /datum/subsystem/ticker/proc/send_random_tip()
