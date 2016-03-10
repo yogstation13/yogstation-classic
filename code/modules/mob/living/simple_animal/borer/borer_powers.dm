@@ -10,7 +10,7 @@
 		return
 
 	var/list/choices = list()
-	for(var/mob/living/carbon/human/H in view(1,src))
+	for(var/mob/living/carbon/H in view(1,src))
 		if(H!=src && Adjacent(H))
 			choices += H
 
@@ -140,7 +140,7 @@
 		return
 
 	var/list/choices = list()
-	for(var/mob/living/carbon/C in view(3,src))
+	for(var/mob/living/carbon/C in view(1,src))
 		if(C.stat == CONSCIOUS)
 			choices += C
 
@@ -150,13 +150,13 @@
 
 	var/mob/living/carbon/M = input(src,"Who do you wish to dominate?") in null|choices
 
-	if(!M || !src) return
 
-	if(istype(M, /mob/living/carbon/human))
-		var/mob/living/carbon/human/H = M
-		if(H.borer)
-			src << "<span class='boldnotice'>You cannot paralyze someone who is already infected!</span>"
-			return
+	if(!M || !src) return
+	if(!Adjacent(M)) return
+
+	if(M.borer)
+		src << "<span class='boldnotice'>You cannot paralyze someone who is already infected!</span>"
+		return
 
 	src.layer = MOB_LAYER
 

@@ -1,5 +1,6 @@
 
 var/list/mob/living/simple_animal/borer/borers = list()
+var/total_borer_hosts_needed = 10
 
 /mob/living/simple_animal/borer
 	name = "Cortical Borer"
@@ -181,6 +182,7 @@ var/list/mob/living/simple_animal/borer/borers = list()
 	if(src.mind)
 		src.mind.assigned_role = "Cortical Borer"
 		src.mind.special_role = "Cortical Borer"
+		src.mind.store_memory("You <b>MUST</b> escape with atleast [total_borer_hosts_needed] borers with hosts on the shuttle.")
 
 
 	update_borer_icons_add(src)
@@ -189,7 +191,7 @@ var/list/mob/living/simple_animal/borer/borers = list()
 	into the head of its victim. Use stealth, persuasion and your powers of mind control to keep you, \
 	your host and your eventual spawn safe and warm."
 	src << "You can speak to your victim with <b>say</b> and your fellow borers by prefixing your message with ';'. Checkout your borer tab to see your powers as a borer."
-
+	src << "You <b>MUST</b> escape with atleast [total_borer_hosts_needed] borers with hosts on the shuttle."
 /mob/living/simple_animal/borer/proc/detatch()
 	if(!victim || !controlling) return
 
