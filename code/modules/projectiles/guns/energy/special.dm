@@ -292,7 +292,7 @@
 	var/charge_tick = 0
 	var/recharge_time = 2
 
-	
+
 	var/list/burst_size_options = list(1, 3, 5)
 	var/burst_mode = 2
 	burst_size = 3
@@ -352,7 +352,7 @@
 	origin_tech = "combat=3;materials=4;powerstorage=3;magnets=2"
 	ammo_type = list(/obj/item/ammo_casing/energy/temp, /obj/item/ammo_casing/energy/temp/hot)
 	cell_type = "/obj/item/weapon/stock_parts/cell/high"
-	pin = null
+
 
 /obj/item/weapon/gun/energy/temperature/attack_self(mob/living/user)
 	select_fire(user)

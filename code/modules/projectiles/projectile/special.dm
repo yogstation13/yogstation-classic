@@ -45,6 +45,7 @@
 /obj/item/projectile/temp
 	name = "freeze beam"
 	icon_state = "ice_2"
+	pass_flags = PASSTABLE | PASSGLASS | PASSGRILLE
 	damage = 0
 	damage_type = BURN
 	nodamage = 1
@@ -158,7 +159,7 @@ obj/item/projectile/kinetic/New()
 
 /obj/item/projectile/kinetic/traitor
 	damage = 30
-		
+
 /obj/item/projectile/beam/wormhole
 	name = "bluespace beam"
 	icon_state = "spark"
