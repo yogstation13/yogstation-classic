@@ -34,6 +34,7 @@ var/total_borer_hosts_needed = 10
 	var/borer_chems = list()
 	var/dominate_cooldown = 150
 	var/control_cooldown = 3000
+	var/leaving = 0
 
 
 /mob/living/simple_animal/borer/New()

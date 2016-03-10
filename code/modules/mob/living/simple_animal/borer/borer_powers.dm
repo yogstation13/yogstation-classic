@@ -180,6 +180,11 @@
 
 	if(!victim || !src) return
 
+	if(leaving)
+		leaving = 0
+		src << "<span class='userdanger'>You decide against leaving your host.</span>"
+		return
+
 	if(alert(src, "Sure you want to give up your control so soon?", "Confirm", "Yes", "No") != "Yes")
 		return
 
@@ -188,10 +193,12 @@
 	if(victim.stat != DEAD)
 		host << "<span class='userdanger'>An odd, uncomfortable pressure begins to build inside your skull, behind your ear...</span>"
 
+	leaving = 1
+
 	spawn(100)
 
 		if(!victim || !src) return
-
+		if(!leaving) return
 		if(controlling) return
 
 		if(src.stat != CONSCIOUS)
@@ -366,6 +373,8 @@
 			victim.ear_deaf = 20
 		if("Stun")
 			victim.Weaken(10)
+
+	log_game("[src]/([src.ckey]) punished [victim]/([victim.ckey] with [punishment]")
 
 	chemicals -= 75
 
