@@ -835,6 +835,8 @@ obj/item/weapon/reagent_containers/food/snacks/grown/shell/eggy/add_juice()
 		return
 	user << "<span class='notice'>You begin to awaken the Killer Tomato...</span>"
 	awakening = 1
+	log_game("[user]/[user.ckey] activated a [potency] potency killer tomato at [user.x],[user.y],[user.z]")
+	message_admins("[key_name_admin(user)]<A HREF='?_src_=holder;adminmoreinfo=\ref[user]'>?</A> (<A HREF='?_src_=holder;adminplayerobservefollow=\ref[user]'>FLW</A>) activated a [potency] potency killer tomato at ([user.x],[user.y],[user.z]) <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>(JMP)</a>")
 
 	spawn(30)
 		if(!gc_destroyed)
