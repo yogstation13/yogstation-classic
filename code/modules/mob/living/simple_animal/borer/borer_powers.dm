@@ -10,7 +10,7 @@
 		return
 
 	var/list/choices = list()
-	for(var/mob/living/carbon/human/H in view(1,src))
+	for(var/mob/living/carbon/H in view(1,src))
 		if(H!=src && Adjacent(H))
 			choices += H
 
@@ -140,7 +140,7 @@
 		return
 
 	var/list/choices = list()
-	for(var/mob/living/carbon/C in view(3,src))
+	for(var/mob/living/carbon/C in view(1,src))
 		if(C.stat == CONSCIOUS)
 			choices += C
 
@@ -150,13 +150,13 @@
 
 	var/mob/living/carbon/M = input(src,"Who do you wish to dominate?") in null|choices
 
-	if(!M || !src) return
 
-	if(istype(M, /mob/living/carbon/human))
-		var/mob/living/carbon/human/H = M
-		if(H.borer)
-			src << "<span class='boldnotice'>You cannot paralyze someone who is already infected!</span>"
-			return
+	if(!M || !src) return
+	if(!Adjacent(M)) return
+
+	if(M.borer)
+		src << "<span class='boldnotice'>You cannot paralyze someone who is already infected!</span>"
+		return
 
 	src.layer = MOB_LAYER
 
@@ -180,15 +180,22 @@
 
 	if(!victim || !src) return
 
+	if(leaving)
+		leaving = 0
+		src << "<span class='userdanger'>You decide against leaving your host.</span>"
+		return
+
 	src << "<span class='userdanger'>You begin disconnecting from [victim]'s synapses and prodding at their internal ear canal.</span>"
 
 	if(victim.stat != DEAD)
 		host << "<span class='userdanger'>An odd, uncomfortable pressure begins to build inside your skull, behind your ear...</span>"
 
+	leaving = 1
+
 	spawn(100)
 
 		if(!victim || !src) return
-
+		if(!leaving) return
 		if(controlling) return
 
 		if(src.stat != CONSCIOUS)
@@ -220,6 +227,8 @@
 		src << "<span class='boldnotice'>You need 250 chems to use this!</span>"
 		return
 
+	chemicals -= 250
+
 	if(victim.stat == DEAD)
 		dead_mob_list -= victim
 		living_mob_list += victim
@@ -233,8 +242,10 @@
 	victim.radiation = 0
 	victim.heal_overall_damage(victim.getBruteLoss(), victim.getFireLoss())
 	victim.reagents.clear_reagents()
-	victim.restore_blood()
-	victim.remove_all_embedded_objects()
+	if(istype(victim,/mob/living/carbon/human))
+		var/mob/living/carbon/human/H = victim
+		H.restore_blood()
+		H.remove_all_embedded_objects()
 	victim.update_canmove()
 	victim.med_hud_set_status()
 	victim.med_hud_set_health()
@@ -318,30 +329,80 @@
 
 			controlling = 1
 
-			victim.verbs += /mob/living/carbon/human/proc/release_control
-			victim.verbs += /mob/living/carbon/human/proc/spawn_larvae
+			victim.verbs += /mob/living/carbon/proc/release_control
+			victim.verbs += /mob/living/carbon/proc/spawn_larvae
 
-			return
+			victim.med_hud_set_status()
 
-mob/living/carbon/human/proc/release_control()
+			victim.cansuicide = 0
+
+/mob/living/simple_animal/borer/verb/punish()
+	set category = "Borer"
+	set name = "Punish"
+	set desc = "Punish your victim"
+
+	if(!victim)
+		src << "<span class='boldnotice'>You are not inside a host body.</span>"
+		return
+
+	if(src.stat != CONSCIOUS)
+		src << "You cannot do that in your current state."
+		return
+
+	if(docile)
+		src << "<span class='boldnotice'>You are feeling far too docile to do that.</span>"
+		return
+
+	if(chemicals < 75)
+		src << "<span class='boldnotice'>You need 75 chems to punish your host.</span>"
+		return
+
+	var/punishment = input("Select a punishment:.", "Punish") as null|anything in list("Blindness","Deafness","Stun")
+
+	if(chemicals < 75)
+		src << "<span class='boldnotice'>You need 75 chems to punish your host.</span>"
+		return
+
+	switch(punishment) //Hardcoding this stuff.
+		if("Blindness")
+			victim.eye_blind = 20
+		if("Deafness")
+			victim.ear_deaf = 20
+		if("Stun")
+			victim.Weaken(10)
+
+	log_game("[src]/([src.ckey]) punished [victim]/([victim.ckey] with [punishment]")
+
+	chemicals -= 75
+
+	influence -= 15
+	if(influence < 0)
+		influence = 0
+
+mob/living/carbon/proc/release_control()
 
 	set category = "Borer"
 	set name = "Release Control"
 	set desc = "Release control of your host's body."
 
 	if(borer && borer.host_brain)
+		if(alert(src, "Sure you want to give up your control so soon?", "Confirm", "Yes", "No") != "Yes")
+			return
 		src << "<span class='danger'>You withdraw your probosci, releasing control of [borer.host_brain]</span>"
 
 		borer.detatch()
 
-		verbs -= /mob/living/carbon/human/proc/release_control
-		verbs -= /mob/living/carbon/human/proc/spawn_larvae
+		verbs -= /mob/living/carbon/proc/release_control
+		verbs -= /mob/living/carbon/proc/spawn_larvae
 
-/mob/living/carbon/human/proc/spawn_larvae()
+/mob/living/carbon/proc/spawn_larvae()
 	set category = "Borer"
 	set name = "Reproduce"
 	set desc = "Vomit out your younglings."
 
+	if(istype(src, /mob/living/carbon/brain))
+		src << "<span class='usernotice'>You need a mouth to be able to do this.</span>"
+		return
 	if(!borer)
 		return
 

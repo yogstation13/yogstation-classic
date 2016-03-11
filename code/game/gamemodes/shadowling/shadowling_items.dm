@@ -90,7 +90,7 @@
 	process()
 		if (istype(loc, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = loc
-			if (!istype(H.dna.species, /datum/species/shadow/ling))
+			if (!istype(H.dna.species, /datum/species/shadow))
 				del(src) // If we're being worn by someone who isn't a shadowling.
 
 

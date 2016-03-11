@@ -27,9 +27,19 @@
 	if(!vents.len)
 		return kill()
 
+	var/total_humans = 0
+	for(var/mob/living/carbon/human/H in mob_list)
+		if(H.stat != DEAD)
+			total_humans++
+
+	total_borer_hosts_needed = 6 + total_humans/7
+
 	for(var/borers = 0, borers < 3, borers++)
 		var/obj/vent = pick_n_take(vents)
 		var/list/candidates = get_candidates(BE_ALIEN, ALIEN_AFK_BRACKET)
+		for(var/client/C in candidates)
+			if(jobban_check_mob(C.mob, "borer") || !(C.prefs.toggles & MIDROUND_ANTAG))
+				candidates -= C
 		if(!candidates.len)
 			return kill()
 		var/client/C = pick(candidates)

@@ -232,9 +232,9 @@ var/next_external_rsc = 0
 
 	if(holder)
 		message_admins("Admin login: [key_name(src)]")
-		if(config.allow_vote_restart && check_rights_for(src, R_SERVER))
-			log_admin("Admin with +SERVER logged in. Restart vote disallowed.")
-			message_admins("Admin with +SERVER logged in. Restart vote disallowed.")
+		if(config.allow_vote_restart && check_rights_for(src, R_ADMIN))
+			log_admin("Staff joined with +ADMIN. Restart vote disallowed.")
+			message_admins("Staff joined with +ADMIN. Restart vote disallowed.")
 			config.allow_vote_restart = 0
 		add_admin_verbs()
 		add_donor_verbs()

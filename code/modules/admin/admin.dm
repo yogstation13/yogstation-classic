@@ -119,6 +119,7 @@ var/global/floorIsLava = 0
 				body += "<A href='?_src_=holder;makealien=\ref[M]'>Make Alien</A> | "
 				body += "<A href='?_src_=holder;makeslime=\ref[M]'>Make Slime</A> | "
 				body += "<A href='?_src_=holder;makeblob=\ref[M]'>Make Blob</A> | "
+				body += "<A href='?_src_=holder;makeborer=\ref[M]'>Make Borer</A> | "
 
 			//Simple Animals
 			if(isanimal(M))
@@ -889,7 +890,7 @@ datum/admins/proc/cybermen_panel()
 				if(istype(H, /obj/effect/cyberman_hack/multiple_vector))
 					var/obj/effect/cyberman_hack/multiple_vector/MVH = H
 					for(var/obj/effect/cyberman_hack/CH in MVH.component_hacks)
-						dat += "<BR>:[CH.target_name]"
+						dat += "<BR>---[CH.target_name]"
 				dat += "<BR>"
 			else
 				dat += "ERROR - null in the hack list<BR>"

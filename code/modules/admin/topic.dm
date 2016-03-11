@@ -803,6 +803,12 @@
 		else
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=abductor;jobban4=\ref[M]'>[replacetext("Abductor", " ", "&nbsp")]</a></td>"
 
+		//Borer
+		if(jobban_job_in_list(bans, "borer") || isbanned_dept)
+			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=borer;jobban4=\ref[M]'><font color=red>[replacetext("Borer", " ", "&nbsp")]</font></a></td>"
+		else
+			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=borer;jobban4=\ref[M]'>[replacetext("Borer", " ", "&nbsp")]</a></td>"
+
 /*		//Malfunctioning AI	//Removed Malf-bans because they're a pain to impliment
 		if(jobban_job_in_list(bans, "malf AI") || isbanned_dept)
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=malf AI;jobban4=\ref[M]'><font color=red>[replacetext("Malf AI", " ", "&nbsp")]</font></a></td>"
@@ -1503,6 +1509,18 @@
 		L.revive()
 		message_admins("<span class='danger'>Admin [key_name_admin(usr)] healed / revived [key_name_admin(L)]!</span>")
 		log_admin("[key_name(usr)] healed / Revived [key_name(L)]")
+
+	else if(href_list["makeborer"])
+		if(!check_rights(R_SPAWN))  return
+
+		var/mob/living/carbon/human/H = locate(href_list["makeborer"])
+		if(!istype(H))
+			usr << "This can only be used on instances of /mob/living/carbon/human"
+			return
+
+		message_admins("<span class='danger'>Admin [key_name_admin(usr)] turned [key_name_admin(H)] into a borer!</span>")
+		log_admin("[key_name(usr)] borerized [key_name(H)].")
+		H.Borerize()
 
 	else if(href_list["makeai"])
 		if(!check_rights(R_SPAWN))	return

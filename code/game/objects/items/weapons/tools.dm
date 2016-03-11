@@ -164,6 +164,7 @@
 	var/change_icons = 1
 	var/can_off_process = 0
 	var/light_intensity = 2 //how powerful the emitted light is when used.
+	var/stop_bleeding = 600
 
 /obj/item/weapon/weldingtool/New()
 	..()
@@ -219,6 +220,24 @@
 			return
 		else
 			return
+	else if(user.a_intent == "help" && src.stop_bleeding && H.blood_max) // for cauterizing wounds. unlike lighter, no limits.
+		if(src.remove_fuel(1) && !H.bleedsuppress)
+			var/hitzone = user.zone_sel.selecting
+			if(user == H)
+				user.visible_message("<span class='notice'>You mend your bleeding wound with [src], sealing it completely. It was extremely painful though.</span>")
+				visible_message("<span class='alert'>[user] mends their bleeding wounds with a lighter! What a freakin' psychopath!</span>")
+				H.emote("scream")
+			else
+				visible_message("<span class='alert'>[user] uses [src] to close some of [H]'s wounds by burning them with force.</span>")
+				if(user.stat)
+					return
+				else
+					H.emote("scream")
+			H.suppress_bloodloss(src.stop_bleeding)
+			H.skinmended = 1
+			H.apply_damage(15, BURN, hitzone) // OW. WHY?!
+		else
+			return ..()
 	else
 		return ..()
 
@@ -385,7 +404,6 @@
 
 /obj/item/weapon/weldingtool/largetank/flamethrower_screwdriver()
 	return
-
 
 /obj/item/weapon/weldingtool/mini
 	name = "emergency welding tool"

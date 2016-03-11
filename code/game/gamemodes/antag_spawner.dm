@@ -118,14 +118,16 @@
 	target.equip_to_slot_or_del(new /obj/item/weapon/storage/box(target), slot_in_backpack)
 	target.equip_to_slot_or_del(new /obj/item/weapon/teleportation_scroll/apprentice(target), slot_r_store)
 
-/obj/item/weapon/antag_spawner/borg_tele
+/obj/item/weapon/antag_spawner/ally_tele
+	var/TC_cost = 0
+
+/obj/item/weapon/antag_spawner/ally_tele/borg_tele
 	name = "Syndicate Cyborg Teleporter"
 	desc = "A single-use teleporter used to deploy a Syndicate Cyborg on the field."
 	icon = 'icons/obj/device.dmi'
 	icon_state = "locator"
-	var/TC_cost = 0
 
-/obj/item/weapon/antag_spawner/borg_tele/attack_self(mob/user)
+/obj/item/weapon/antag_spawner/ally_tele/borg_tele/attack_self(mob/user)
 	if(used)
 		user << "The teleporter is out of power."
 		return
@@ -137,7 +139,7 @@
 	else
 		user << "<span class='notice'>Unable to connect to Syndicate Command. Please wait and try again later or use the teleporter on your uplink to get your points refunded.</span>"
 
-/obj/item/weapon/antag_spawner/borg_tele/spawn_antag(client/C, turf/T, type = "")
+/obj/item/weapon/antag_spawner/ally_tele/borg_tele/spawn_antag(client/C, turf/T, type = "")
 	var/datum/effect/effect/system/spark_spread/S = new /datum/effect/effect/system/spark_spread
 	S.set_up(4, 1, src)
 	S.start()
@@ -148,6 +150,53 @@
 	R.mind.special_role = "syndicate"
 	R.faction = list("syndicate")
 
+/obj/item/weapon/antag_spawner/ally_tele/dolphin_tele
+	name = "tactical dolphin teleporter"
+	desc = "A single-use teleporter designed to deploy a single Syndicate tactical dolphin onto the field."
+	icon = 'icons/obj/device.dmi'
+	icon_state = "locator"
+
+/obj/item/weapon/antag_spawner/ally_tele/dolphin_tele/attack_self(mob/user)
+	if(used)
+		user << "<span class='warning'>[src] is out of power!</span>"
+		return
+	if(!(user.mind in ticker.mode.syndicates))
+		user << "<span class='danger'>AUTHENTICATION FAILURE. ACCESS DENIED.</span>"
+		return 0
+	var/list/dolphin_candidates = get_candidates(BE_OPERATIVE, 3000, "operative")
+	if(dolphin_candidates.len > 0)
+		used = 1
+		var/client/C = pick(dolphin_candidates)
+		spawn_antag(C, get_turf(src.loc))
+	else
+		user << "<span class='warning'>Unable to connect to Syndicate command. Please wait and try again later or use the teleporter on your uplink to get your points refunded.</span>"
+
+/obj/item/weapon/antag_spawner/ally_tele/dolphin_tele/spawn_antag(client/C, turf/T)
+	var/datum/effect/effect/system/spark_spread/S = new /datum/effect/effect/system/spark_spread
+	S.set_up(4, 1, src)
+	S.start()
+	var/mob/living/simple_animal/hostile/retaliate/dolphin/tactical/the_dolphin = new /mob/living/simple_animal/hostile/retaliate/dolphin/tactical(T)
+	the_dolphin.key = C.key
+	ticker.mode.syndicates += the_dolphin.mind
+	ticker.mode.update_synd_icons_added(the_dolphin.mind)
+	the_dolphin.mind.special_role = "syndicate"
+	the_dolphin.faction = list("syndicate", "dolphin", "carp")
+	the_dolphin << "<span class='notice'>You are a space dolphin trained by the syndicate to assist their elite commando teams. Obey and assist your syndicate masters at all costs.</span>"
+
+//Debug, and fun.
+/obj/item/weapon/antag_spawner/ally_tele/dolphin_tele/transform
+	name = "tactical dolphin transformer"
+	desc = "Using strange syndicate magics, this device transforms the user into a tactical dolphin."
+	icon = 'icons/obj/device.dmi'
+	icon_state = "locator"
+
+/obj/item/weapon/antag_spawner/ally_tele/dolphin_tele/transform/attack_self(mob/user)
+	if(used)
+		user << "<span class='warning'>[src] is out of power!</span>"
+		return
+	used = 1
+	user.gib()
+	spawn_antag(user.client, get_turf(src.loc))
 
 /obj/item/weapon/antag_spawner/slaughter_demon //Warning edgiest item in the game
 	name = "vial of blood"
