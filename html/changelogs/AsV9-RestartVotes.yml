@@ -1,8 +1,0 @@
-author: AsV9
-
-delete-after: True
-
-changes: 
-  - bugfix: "Restart votes are now dependant on +ADMIN instead of +SERVER."
-  - rscadd: "New admin tool added that allows for anyone with +ADMIN to toggle restart votes."
-  - bugfix: "Fixed some wonky code."
