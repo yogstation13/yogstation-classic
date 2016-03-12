@@ -408,6 +408,9 @@ mob/living/carbon/proc/release_control()
 
 	if(borer.chemicals >= 100)
 		var/list/candidates = get_candidates(BE_ALIEN, ALIEN_AFK_BRACKET)
+		for(var/client/C in candidates)
+			if(jobban_check_mob(C.mob, "borer") || !(C.prefs.toggles & MIDROUND_ANTAG))
+				candidates -= C
 		if(!candidates.len)
 			src << "<span class='usernotice'>Our reproduction system seems to have failed... Perhaps we should try again some other time?</span>"
 			return
