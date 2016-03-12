@@ -41,6 +41,7 @@
 	BB.current = curloc
 	BB.yo = targloc.y - curloc.y
 	BB.xo = targloc.x - curloc.x
+	BB.ammo_casing = src
 
 	if(params)
 		var/list/mouse_control = params2list(params)
