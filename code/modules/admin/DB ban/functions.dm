@@ -438,7 +438,7 @@
 			var/expiration = select_query.item[7]
 			var/ckey = select_query.item[8]
 			var/ackey = select_query.item[9]
-			var/unbanned = select_query.item[10]
+			var/unbanned = text2num(select_query.item[10])
 			var/unbanckey = select_query.item[11]
 			var/unbantime = select_query.item[12]
 			var/edits = select_query.item[13]
