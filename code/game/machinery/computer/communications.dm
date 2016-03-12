@@ -68,15 +68,15 @@ var/const/CALL_SHUTTLE_REASON_LENGTH = 12
 				var/obj/item/device/pda/pda = I
 				I = pda.id
 			if(src.allowed(M) && M.wear_id)
-				authenticated = 1
-				if(ishuman(M))
+				if(src.check_access(I))
+					authenticated = 1
 					auth_id = "[I.registered_name] ([I.assignment])"
 					if((20 in I.access))
 						authenticated = 2
 			if(src.emagged)
 				authenticated = 2
 				auth_id = "Unknown"
-			else if(!M.wear_id && !src.emagged) // aka you are still referring to the old way to log in with an ID.
+			else if(!M.wear_id && !src.emagged)
 				return
 		if("logout")
 			authenticated = 0
