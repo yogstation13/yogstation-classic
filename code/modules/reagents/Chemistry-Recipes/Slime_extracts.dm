@@ -159,7 +159,6 @@
 	else
 		for(var/mob/O in viewers(get_turf(holder.my_atom),null))
 			O.show_message(text("<span class='notice'>The slime extract seems to tense up for a moment, then goes dark.</span>"), 1)
-			Uses = 0
 
 //Silver
 /datum/chemical_reaction/slimebork
