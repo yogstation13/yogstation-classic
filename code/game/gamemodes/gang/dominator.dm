@@ -232,3 +232,6 @@
 		if(I.damtype == BURN || I.damtype == BRUTE)
 			healthcheck(I.force)
 		return
+
+/obj/machinery/dominator/tesla_act()
+	qdel(src)
