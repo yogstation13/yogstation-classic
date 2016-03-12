@@ -483,7 +483,7 @@
 
 /obj/item/clothing/under/ronaldmcdonald
 	name = "ronald mcdonald uniform"
-	desc = "An old uniform that was used as a mascot in commercial advertising to make children smile while in other places slaughtering children."
+	desc = "An old costume worn by a mascot who cheered up people's days, however in other lines of work used for slaughtering children."
 	icon_state = "ronald"
 	item_state = "ronald"
 	item_color = "ronald"
