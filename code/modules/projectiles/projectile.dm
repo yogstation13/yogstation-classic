@@ -9,6 +9,7 @@
 	hitsound = 'sound/weapons/pierce.ogg'
 	var/def_zone = ""	//Aiming at
 	var/mob/firer = null//Who shot it
+	var/obj/item/ammo_casing/ammo_casing = null	//The ammo_casing that fired this bullet
 	var/suppressed = 0	//Attack message
 	var/yo = null
 	var/xo = null
