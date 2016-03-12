@@ -23,6 +23,9 @@
 		if(Uses == 0)
 			user << "<span class='warning'>You can't enhance a used extract!</span>"
 			return ..()
+		if(istype(src,/obj/item/slime_extract/gold))
+			user<"<span class='warning'>The extract seems to recoil from the potion!</span>"
+			return ..()
 		user <<"<span class='notice'>You apply the enhancer. It now has triple the amount of uses.</span>"
 		Uses = 3
 		enhanced = 1
@@ -230,6 +233,9 @@
 		return..()
 	if(M.cores == 3)
 		user <<"<span class='warning'>The slime already has the maximum amount of extract!</span>"
+		return..()
+	if(M.colour == "gold")
+		user << "<span class='warning'>The slime recoils away from the bottle!  It won't eat it!</span>"
 		return..()
 
 	user <<"<span class='notice'>You feed the slime the steroid. It now has triple the amount of extract.</span>"

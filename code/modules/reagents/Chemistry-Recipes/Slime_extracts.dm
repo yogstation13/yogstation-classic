@@ -151,14 +151,15 @@
 
 /datum/chemical_reaction/slimecritstrange/on_reaction(datum/reagents/holder)
 	feedback_add_details("slime_cores_used","[type]")
-	if(prob(15))
+	if(prob(5))
 		for(var/mob/O in viewers(get_turf(holder.my_atom),null))
 			O.show_message(text("<span class='danger'>The slime extract begins to vibrate gently !</span>"), 1)
 		spawn(50)
 			chemical_mob_spawn(holder, 1, "Strange Gold Slime", "neutral")
 	else
 		for(var/mob/O in viewers(get_turf(holder.my_atom),null))
-			O.show_message(text("<span class='notice'>The slime extract seems to tense up for a moment, then relaxes.</span>"), 1)
+			O.show_message(text("<span class='notice'>The slime extract seems to tense up for a moment, then goes dark.</span>"), 1)
+			Uses = 0
 
 //Silver
 /datum/chemical_reaction/slimebork
