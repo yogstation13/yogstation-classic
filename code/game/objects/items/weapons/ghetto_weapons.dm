@@ -14,8 +14,10 @@
 /obj/item/weapon/ghetto/glass
 	var/smashable = 1
 	var/uses = 10
-	lefthand_file = 'icons/obj/ghetto_armoury.dmi'
-	righthand_file = 'icons/obj/ghetto_armoury.dmi'
+	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
+	l_item_state = "shard-glass"
+	r_item_state = "shard-glass"
 
 /obj/item.weapon/ghetto/glass/attack(mob/target, mob/living/carbon/human/user)
 	..()
@@ -41,10 +43,6 @@
 /obj/item/weapon/ghetto/glass/shank
 	name = "glass shank"
 	icon_state = "shank"
-	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
-	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
-	l_item_state = "shard-glass"
-	r_item_state = "shard-glass"
 	desc = "A shard of glass with duct tape wrapped around the bottom to create a handle."
 	force = 5.0
 	w_class = 2.0
@@ -59,22 +57,18 @@
 	w_class = 4.0
 	throwforce = 10.0
 	hitsound = 'sound/weapons/bladeslice.ogg'
-	l_item_state = "sword_left"
-	r_item_state = "sword_right"
 
 /obj/item/weapon/ghetto/glass/sword/black
 	name = "black glass sword"
 	icon_state = "glass_black"
 	desc = "A sword made out of shiny black glass. Perfect for slashing."
-	l_item_state = "black_left"
-	r_item_state = "black_right"
 
 /obj/item/weapon/ghetto/glass/sword/refined
 	name = "refined glass sword"
 	lefthand_file = 'icons/obj/ghetto_armoury.dmi'
 	righthand_file = 'icons/obj/ghetto_armoury.dmi'
-	l_item_state = "black_left"
-	r_item_state = "black_right"
+	l_item_state = "left"
+	r_item_state = "right"
 	icon_state = "glass_refined"
 	desc = "A sword made out of refined black glass. Can be placed on your back and its perfect for slashing."
 	force = 16.0
