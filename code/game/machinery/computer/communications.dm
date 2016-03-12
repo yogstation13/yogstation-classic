@@ -36,7 +36,6 @@ var/const/CALL_SHUTTLE_REASON_LENGTH = 12
 	var/stat_msg1
 	var/stat_msg2
 
-
 /obj/machinery/computer/communications/New()
 	shuttle_caller_list += src
 	..()
@@ -65,14 +64,20 @@ var/const/CALL_SHUTTLE_REASON_LENGTH = 12
 		if("login")
 			var/mob/living/carbon/human/M = usr
 			var/obj/item/weapon/card/id/I = M.get_idcard()
-			if(src.allowed(M))
-				authenticated = 1
-				auth_id = "[I.registered_name] ([I.assignment])"
-				if((20 in I.access))
-					authenticated = 2
+			if (istype(I, /obj/item/device/pda))
+				var/obj/item/device/pda/pda = I
+				I = pda.id
+			if(src.allowed(M) && M.wear_id)
+				if(src.check_access(I))
+					authenticated = 1
+					auth_id = "[I.registered_name] ([I.assignment])"
+					if((20 in I.access))
+						authenticated = 2
 			if(src.emagged)
 				authenticated = 2
 				auth_id = "Unknown"
+			else if(!M.wear_id && !src.emagged)
+				return
 		if("logout")
 			authenticated = 0
 
@@ -348,7 +353,6 @@ var/const/CALL_SHUTTLE_REASON_LENGTH = 12
 
 	var/datum/browser/popup = new(user, "communications", "Communications Console", 400, 500)
 	popup.set_title_image(user.browse_rsc_icon(src.icon, src.icon_state))
-
 	if (istype(user, /mob/living/silicon))
 		var/dat2 = src.interact_ai(user) // give the AI a different interact proc to limit its access
 		if(dat2)
@@ -491,6 +495,7 @@ var/const/CALL_SHUTTLE_REASON_LENGTH = 12
 
 /obj/machinery/computer/communications/proc/interact_ai(mob/living/silicon/ai/user)
 	var/dat = ""
+
 	switch(src.aistate)
 		if(STATE_DEFAULT)
 			if(SSshuttle.emergencyLastCallLoc)
