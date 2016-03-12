@@ -316,16 +316,6 @@
 				msg += "<B>[t_He] [t_is] bleeding severely!</B>\n"
 			if (6 to INFINITY)
 				msg += "<B>[t_He] [t_is] bleeding out quickly!</B>\n"
-	else if(blood_max)
-		switch (blood_max)
-			if (0.05 to 1)
-				msg += "[t_He] [t_is] bleeding very slightly.\n"
-			if (1.5 to 3)
-				msg += "<B>[t_He] [t_is] bleeding significantly!</B>\n"
-			if (4 to 6)
-				msg += "<B>[t_He] [t_is] bleeding severely!</B>\n"
-			if (6 to INFINITY)
-				msg += "<B>[t_He] [t_is] bleeding out quickly!</B>\n"
 	if(blood_max)
 		if(reagents.has_reagent("heparin"))
 			msg += "<b>[t_He] [t_is] bleeding uncontrollably!</b>\n"
