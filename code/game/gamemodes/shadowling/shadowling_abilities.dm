@@ -461,7 +461,7 @@
 					if(CM in M.mind.spell_list)
 						M.mind.spell_list -= CM
 						qdel(CM)
-					M.mind.remove_spell(/obj/effect/proc_holder/spell/targeted/shadowling_hatch)
+					//M.mind.remove_spell(/obj/effect/proc_holder/spell/targeted/shadowling_hatch)
 					M.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/shadowling_ascend(null))
 					if(M == usr)
 						M << "<span class='shadowling'><i>You project this power to the rest of the shadowlings.</i></span>"
