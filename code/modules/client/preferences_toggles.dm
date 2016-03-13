@@ -208,16 +208,150 @@
 	feedback_add_details("admin_verb", "SAmbi") //If you are copy-pasting this, I bet you read this comment expecting to see the same thing :^)
 
 //be special
-/client/verb/toggle_be_special(role in be_special_flags)
+/client/verb/toggle_be_special()
 	set name = "Toggle SpecialRole Candidacy"
 	set category = "Preferences"
 	set desc = "Toggles which special roles you would like to be a candidate for, during events."
-	var/role_flag = be_special_flags[role]
-	if(!role_flag)	return
-	prefs.be_special ^= role_flag
-	prefs.save_preferences()
-	src << "You will [(prefs.be_special & role_flag) ? "now" : "no longer"] be considered for [role] events (where possible)."
-	feedback_add_details("admin_verb","TBeSpecial") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+
+	var content = "<table><tr>"
+
+	var/count = 0
+	for(var/i in spec_roles)
+		count++
+		var role = spec_roles[i]
+		content += "<td class='[prefs.hasSpecialRole(i) ? "enabled" : "disabled"]'><a class='role-select' href='?_src_=\ref[src];toggle_be_special=[i]'>[role["name"]]</a></td>"
+
+		if(count % 3 == 0)
+			content += "</tr><tr>"
+
+	content += "</tr></table>"
+
+	var/html = {"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">
+		<html>
+		<head>
+			<title>Special Roles</title>
+			<link rel='stylesheet' type='text/css' href='icons.css'>
+			<link rel='stylesheet' type='text/css' href='shared.css'>
+			<style type='text/css'>
+
+			body {
+				padding: 10;
+				margin: 0;
+				font-size: 12px;
+				color: #ffffff;
+				line-height: 170%;
+				font-family: Verdana, Geneva, sans-serif;
+				background: #272727 url(uiBackground.png) 50% 0 repeat-x;
+				overflow-x: hidden;
+			}
+
+			hr {
+				background-color: #40628a;
+				height: 1px;
+			}
+
+			a, a:link, a:visited, a:active, .link, .linkOn, .linkOff, .selected, .disabled {
+				color: #ffffff;
+				text-decoration: none;
+				background: #40628a;
+				border: 1px solid #161616;
+				padding: 2px 2px 2px 2px;
+				margin: 2px 2px 2px 2px;
+				cursor:default;
+				display: inline-block;
+			}
+
+			a:hover, .linkActive:hover {
+				background: #507aac;
+			}
+
+			img {
+				border: 0px;
+			}
+
+			p {
+				padding: 0px;
+				margin: 0px;
+			}
+
+			h1, h2, h3, h4, h5, h6 {
+				margin: 0;
+				padding: 16px 0 8px 0;
+				color: #517087;
+				clear: both;
+			}
+
+			h1 {
+				font-size: 15px;
+			}
+
+			h2 {
+				font-size: 14px;
+			}
+
+			h3 {
+				font-size: 13px;
+			}
+
+			h4 {
+				font-size: 12px;
+			}
+
+			#header {
+				margin: 3px;
+				padding: 0px;
+			}
+
+			table {
+				width: 580px;
+				margin: 10px;
+			}
+
+			td {
+				border: solid 1px #000;
+				width: 180px;
+			}
+
+			.role-select {
+				width: 175px;
+				margin: 5px;
+				text-align: center;
+			}
+
+			.enabled {
+				background-color: #0f0;
+			}
+
+			.disabled {
+				background-color: #f00;
+			}
+
+			.shown {
+				display: block;
+			}
+
+			.hidden {
+				display: none;
+			}
+			</style>
+
+			<script src="libraries.min.js"></script>
+			<script type='text/javascript'>
+				$(function() {
+
+				});
+			</script>
+		</head>
+		<body scroll='yes'><div id='content'>
+		<h1 id='header'>Special Roles</h1>
+		<br />
+
+		[content]
+
+		</div></body></html>"}
+
+	usr << browse(null, "window=ViewSpecialRoles;size=600x400")
+	usr << browse(html, "window=ViewSpecialRoles;size=600x400")
 
 /client/verb/toggle_member_publicity()
 	set name = "Toggle Membership Publicity"

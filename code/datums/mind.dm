@@ -277,7 +277,7 @@
 		else
 			text += "head|loyal|<b>EMPLOYEE</b>|<a href='?src=\ref[src];revolution=headrev'>headrev</a>|<a href='?src=\ref[src];revolution=rev'>rev</a>"
 
-		if(current && current.client && current.client.prefs.be_special & BE_REV)
+		if(current && current.client && current.client.prefs.hasSpecialRole(BE_REV))
 			text += "|Enabled in Prefs"
 		else
 			text += "|Disabled in Prefs"
@@ -295,7 +295,7 @@
 		else
 			text += "<B>NONE</B>"
 
-		if(current && current.client && current.client.prefs.be_special & BE_GANG)
+		if(current && current.client && current.client.prefs.hasSpecialRole(BE_GANG))
 			text += "|Enabled in Prefs<BR>"
 		else
 			text += "|Disabled in Prefs<BR>"
@@ -342,7 +342,7 @@
 		else
 			text += "loyal|<b>EMPLOYEE</b>|<a href='?src=\ref[src];cult=cultist'>cultist</a>"
 
-		if(current && current.client && current.client.prefs.be_special & BE_CULTIST)
+		if(current && current.client && current.client.prefs.hasSpecialRole(BE_CULTIST))
 			text += "|Enabled in Prefs"
 		else
 			text += "|Disabled in Prefs"
@@ -362,7 +362,7 @@
 		else
 			text += "<a href='?src=\ref[src];wizard=wizard'>yes</a>|<b>NO</b>"
 
-		if(current && current.client && current.client.prefs.be_special & BE_WIZARD)
+		if(current && current.client && current.client.prefs.hasSpecialRole(BE_WIZARD))
 			text += "|Enabled in Prefs"
 		else
 			text += "|Disabled in Prefs"
@@ -386,7 +386,7 @@
 //			if (istype(changeling) && changeling.changelingdeath)
 //				text += "<br>All the changelings are dead! Restart in [round((changeling.TIME_TO_GET_REVIVED-(world.time-changeling.changelingdeathtime))/10)] seconds."
 
-		if(current && current.client && current.client.prefs.be_special & BE_CHANGELING)
+		if(current && current.client && current.client.prefs.hasSpecialRole(BE_CHANGELING))
 			text += "|Enabled in Prefs"
 		else
 			text += "|Disabled in Prefs"
@@ -411,7 +411,7 @@
 		else
 			text += "<a href='?src=\ref[src];nuclear=nuclear'>operative</a>|<b>NANOTRASEN</b>"
 
-		if(current && current.client && current.client.prefs.be_special & BE_OPERATIVE)
+		if(current && current.client && current.client.prefs.hasSpecialRole(BE_OPERATIVE))
 			text += "|Enabled in Prefs"
 		else
 			text += "|Disabled in Prefs"
@@ -430,7 +430,7 @@
 	else
 		text += "<a href='?src=\ref[src];traitor=traitor'>traitor</a>|<b>LOYAL</b>"
 
-	if(current && current.client && current.client.prefs.be_special & BE_TRAITOR)
+	if(current && current.client && current.client.prefs.hasSpecialRole(BE_TRAITOR))
 		text += "|Enabled in Prefs"
 	else
 		text += "|Disabled in Prefs"
@@ -449,7 +449,7 @@
 	else
 		text += "<a href='?src=\ref[src];shadowling=shadowling'>shadowling</a>|<a href='?src=\ref[src];shadowling=thrall'>thrall</a>|<b>HUMAN</b>"
 
-	if(current && current.client && current.client.prefs.be_special & BE_SHADOWLING)
+	if(current && current.client && current.client.prefs.hasSpecialRole(BE_SHADOWLING))
 		text += "|Enabled in Prefs"
 	else
 		text += "|Disabled in Prefs"
@@ -468,7 +468,7 @@
 	else
 		text += "<a href='?src=\ref[src];abductor=abductor'>Abductor</a>|<b>human</b>"
 
-	if(current && current.client && current.client.prefs.be_special & BE_ABDUCTOR)
+	if(current && current.client && current.client.prefs.hasSpecialRole(BE_ABDUCTOR))
 		text += "|Enabled in Prefs"
 	else
 		text += "|Disabled in Prefs"
@@ -485,12 +485,12 @@
 	else
 		text += "<a href='?src=\ref[src];cyberman=cyberman'>cyberman</a>|<b>HUMAN</b>"
 	text += "|Pref unknown"
-/*
-	if(current && current.client/* && current.client.prefs.be_special & BE_CYBERMAN*/)//the pref doesn't work because the number is too big for the & operator.
+
+	if(current && current.client && current.client.prefs.hasSpecialRole(BE_CYBERMAN))
 		text += "|Enabled in Prefs"
 	else
 		text += "|Disabled in Prefs"
-*/
+
 	sections["cyberman"] = text
 
 	/** MONKEY ***/
@@ -514,7 +514,7 @@
 		else
 			text += "healthy|infected|human|<b>OTHER</b>"
 
-		if(current && current.client && current.client.prefs.be_special & BE_MONKEY)
+		if(current && current.client && current.client.prefs.hasSpecialRole(BE_MONKEY))
 			text += "|Enabled in Prefs"
 		else
 			text += "|Disabled in Prefs"
@@ -545,7 +545,7 @@
 					n_e_robots++
 			text += "<br>[n_e_robots] of [ai.connected_robots.len] slaved cyborgs are emagged. <a href='?src=\ref[src];silicon=unemagcyborgs'>Unemag</a>"
 
-		if(current && current.client && current.client.prefs.be_special & BE_MALF)
+		if(current && current.client && current.client.prefs.hasSpecialRole(BE_MALF))
 			text += "|Enabled in Prefs"
 		else
 			text += "|Disabled in Prefs"
