@@ -40,8 +40,12 @@
 			if("purple")
 				color_hex = "#DA00FF"
 
-	name = (gangname ? gangname : pick(gang_name_pool))
-	gang_name_pool -= name
+	var/list/available_gang_names = list()
+	for(var/gang_name in gang_name_pool)
+		if(!gang_used_name_pool.Find(gang_name))
+			available_gang_names += gang_name
+	name = (gangname ? gangname : pick(available_gang_names))
+	gang_used_name_pool += name
 	if(name == "Sleeping Carp")
 		fighting_style = "martial"
 
