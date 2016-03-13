@@ -78,10 +78,10 @@
 							 "<span class='danger'>You direct [src] to [M]'s eyes.</span>")
 		M << "<span class='danger'>[user] directs [src] to your eyes.</span>"
 		if(istype(M, /mob/living/carbon/human) || istype(M, /mob/living/carbon/monkey))	//robots and aliens are unaffected
-			M.flash_eyes(visual = 1)//this checks for blindness itself
+			M.flash_eyes(visual = 1)//this checks for blindness itself.
 			if(M.stat == DEAD || M.disabilities & BLIND)	//mob is dead or fully blind
 				user << "<span class='warning'>[M] pupils don't react to the light!</span>"
-			else if(M.dna.check_mutation(XRAY))	//mob has X-RAY vision
+			else if(M.dna && M.dna.check_mutation(XRAY))	//mob has X-RAY vision
 				user << "<span class='danger'>[M] pupils give an eerie glow!</span>"
 			else if(M.weakeyes)
 				user << "<span class='danger'>[M]'s eyes snap shut in response to the light!</span>"
