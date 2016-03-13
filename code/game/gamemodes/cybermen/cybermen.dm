@@ -502,6 +502,12 @@ datum/game_mode/proc/update_cybermen_icons_remove(datum/mind/cyberman)
 	if(!obj)
 		return
 	return obj.DblClick()
+
+/obj/status_obj/examine(mob/user)
+	if(!obj)
+		return
+	obj.examine(user)
+
 /*
 /obj/status_obj/Click()
 	if(!obj)

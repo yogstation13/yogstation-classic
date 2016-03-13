@@ -232,7 +232,7 @@
 
 /datum/cyberman_datum/proc/toggle_quickhack(var/mob/living/carbon/human/user = usr)
 	quickhack = !quickhack
-	user << (user.mind.cyberman.quickhack ? "You prepare to hack nearby objects. Use alt- or middle-click to hack." : "You decide not to hack anything for the moment.")
+	user << (user.mind.cyberman.quickhack ? "<span class='notice'>You prepare to hack nearby objects. Use alt- or middle-click to hack. You can double-click on a hack in the Status panel to focus on it, or shift-click on it to learn what it does.</span>" : "<span class='notice'>You decide not to hack anything for the moment. You will still contribute to nearby hacks passively.</span>")
 
 
 /datum/cyberman_datum/proc/manual_select_hack(var/mob/living/carbon/human/user = usr)

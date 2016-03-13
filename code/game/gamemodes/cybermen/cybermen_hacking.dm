@@ -494,6 +494,11 @@
 		return
 	usr.mind.cyberman.select_hack(usr, src)
 
+/datum/cyberman_hack/proc/examine(mob/user)
+	if(!user.mind || !usr.mind.cyberman)
+		return
+	user << "<span class='info'>[explanation]</span>"
+
 //add control_click to cancel?
 
 
