@@ -79,6 +79,25 @@
 
 		return
 
+	if(href_list["toggle_be_special"])
+		var/role_flag = href_list["toggle_be_special"]
+		var/client/C = locate(href_list["_src_"])
+
+		if(!C.prefs.hasSpecialRole(role_flag))
+			C.prefs.be_special[role_flag] = spec_roles[role_flag]
+		else
+			C.prefs.be_special -= role_flag
+
+		C.prefs.save_preferences()
+
+		var/item = spec_roles[role_flag]
+		src << "You will [(C.prefs.hasSpecialRole(role_flag)) ? "now" : "no longer"] be considered for [item["name"]] events [(C.prefs.hasSpecialRole(role_flag)) ? "(where possible)" : ""]"
+		feedback_add_details("admin_verb","TBeSpecial") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+
+		toggle_be_special()
+
+		return
+
 	if(prefs.afreeze && !holder)
 		src << "<span class='userdanger'>You are frozen by an administrator.</span>"
 		return
