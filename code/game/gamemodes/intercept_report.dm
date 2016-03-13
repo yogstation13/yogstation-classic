@@ -100,6 +100,10 @@
 			src.text = ""
 			src.build_shadowling(correct_person)
 			return src.text
+		if("cybermen")
+			src.text = ""
+			src.build_cybermen(correct_person)
+			return src.text
 		else
 			return null
 
@@ -306,10 +310,17 @@
 	src.text += "<BR><BR>Centcom has recently received a report of a plague infecting outlying space stations. We believe that one member of your crew may "
 	src.text += "have been previously escaped a quarantined station. It is believed that knowledge of this report amongst the crew will cause widespread panic "
 	src.text += "and witchhunts. In the event of a confirmed case of infection, activate quarantine protocols immediately and contain the outbreak."
+	src.text += "<BR><HR>"
 
 
 /datum/intercept_text/proc/build_shadowling(datum/mind/correct_person)
 	src.text += "<br><br>Sightings of strange alien creatures have been observed in your area. These aliens supposedly possess the ability to enslave unwitting personnel and leech from their power. \
 	Be wary of dark areas and ensure all lights are kept well-maintained. Closely monitor all crew for suspicious behavior and perform dethralling surgery if they have obvious tells. Investigate all \
 	reports of odd or suspicious sightings in maintenance."
-	src.text += "<br><br>"
+	src.text += "<BR><HR>"
+
+/datum/intercept_text/proc/build_cybermen(datum/mind/correct_person)
+	src.text += "<BR><BR>During routine medical checkups, it has been discovered that unknown implants have been spontaneously appearing in the brains of Preternis working on NT stations. Affected subjects \
+	have reported seeing strange binary images, occasionally speak in 1s and 0s, and seem to have strange effects on nearby computerized technology. In addition, they seem to react even more poorly to EMP effects than is \
+	typical of Preternis. Perform medical examinations on all Preternis crew members, and be wary of these implants appearing in non-Preternis personnel. Should unknown illegal implants be detected in crewmembers, remove them with brain surgery."
+	src.text += "<BR><HR>"

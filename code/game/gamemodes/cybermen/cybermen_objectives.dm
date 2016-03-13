@@ -127,7 +127,7 @@
 /datum/objective/cybermen/expand/convert_crewmembers/is_valid()
 	var/humans_on_station = 0
 	for(var/mob/living/carbon/human/survivor in living_mob_list)
-		if(survivor.loc.z == ZLEVEL_STATION && !survivor.client.is_afk())
+		if(survivor.loc.z == ZLEVEL_STATION && survivor.key)
 			humans_on_station++
 	return target_cybermen_num <= humans_on_station
 
@@ -140,7 +140,7 @@
 	world << "Humans on station: [humans_on_station]"
 	#endif
 	if(humans_on_station > 3)//needs a somewhat sane lower limit
-		target_cybermen_num = humans_on_station
+		target_cybermen_num = min(target_cybermen_num, humans_on_station)
 		cyberman_network.message_all_cybermen("<span class='notice'>Too few humans detected aboard the station. Number of required cybermen reduced to [target_cybermen_num].</span>")
 		check_completion()//updates explanation_text.
 		return 1
@@ -282,18 +282,23 @@
 		#endif
 		if(candidate)
 			descriptions += candidate
-			analyze_target_candidates -= candidate
 			targets += analyze_target_candidates[candidate]
+			analyze_target_candidates -= candidate
 		remaining--
 	remaining = num_hack_targets
 	while(remaining)
 		var/candidate = pick(hack_target_candidates)
 		if(candidate)
 			descriptions += candidate
-			hack_target_candidates -= hack_target_candidates[candidate]
 			targets += hack_target_candidates[candidate]
+			hack_target_candidates -= hack_target_candidates[candidate]
 		remaining--
 	check_completion()//takes care of explanation text.
+	#ifdef CYBERMEN_DEBUG
+	world << "Targets:"
+	for(var/cur in targets)
+		world << "  [cur]"
+	#endif
 
 /datum/objective/cybermen/exploit/analyze_and_hack/is_valid()
 	//everything on the analyze list is a high-risk item, so we'll assume they haven't been spaced or destroyed.
@@ -311,6 +316,8 @@
 	for(var/current2 in targets_copy)
 		var/done_indicator = "(<font color='red'>Not Completed</font>)"
 		for(var/current in cyberman_network.cybermen_hacked_objects)
+			if(!current)
+				continue
 			if(istype(current, current2))
 				targets_copy -= current2
 				done_indicator = "(<font color='green'>Completed</font>)"

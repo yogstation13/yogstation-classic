@@ -302,7 +302,7 @@
 	//CYBERMEN STUFF
 	//I'd prefer to have an event-listener setup. see emp_act in human_defense.
 	if(cyberman_network)
-		for(var/obj/effect/cyberman_hack/human/H in cyberman_network.active_cybermen_hacks)
+		for(var/datum/cyberman_hack/human/H in cyberman_network.active_cybermen_hacks)
 			if(H.target == src)
 				H.electrocute_act()
 				break

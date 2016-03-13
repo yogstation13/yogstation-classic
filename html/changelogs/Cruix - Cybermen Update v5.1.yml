@@ -1,0 +1,6 @@
+author: Cruix
+
+delete-after: True
+
+changes: 
+  - rscadd: "Cybermen can now shift-click on hacks in the Status panel to see an explanation of what they do."
