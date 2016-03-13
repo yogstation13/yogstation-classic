@@ -83,7 +83,7 @@ var/datum/subsystem/job/SSjob
 		if(!job.player_old_enough(player.client))
 			Debug("FOC player not old enough, Player: [player]")
 			continue
-		if(flag && (!player.client.prefs.be_special & flag))
+		if(flag && (!player.client.prefs.has_antag_pref(flag)))
 			Debug("FOC flag failed, Player: [player], Flag: [flag], ")
 			continue
 		if(player.mind && job.title in player.mind.restricted_roles)

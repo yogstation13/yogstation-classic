@@ -1,0 +1,7 @@
+author: Cruix
+
+delete-after: True
+
+changes: 
+  - rscadd: "Added the ability to store an arbitrary number of preference toggles in a player save file."
+  - rscadd: "Enabled and activated Zombie, Revenant, and Cyberman preference toggles."
