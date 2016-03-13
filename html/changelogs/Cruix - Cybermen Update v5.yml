@@ -1,8 +1,0 @@
-author: Cruix
-
-delete-after: True
-
-changes: 
-  - bugfix: "Fixed miscellaneous bugs with cybermen hacking and objectives"
-  - rscadd: "Added an intercept report for cybermen."
-  - tweak: "Added shadowling intercept report to options for random intercept reports."
