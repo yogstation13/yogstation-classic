@@ -327,7 +327,7 @@
 	for(var/mob/new_player/player in players)
 		if(player.client && player.ready)
 			var/list/bans = jobban_list_for_mob(player)
-			if((player.client.prefs.be_special & role) && !(player.mind.quiet_round))
+			if((player.client.prefs.has_antag_pref(role)) && !(player.mind.quiet_round))
 				if(!jobban_job_in_list(bans, "Syndicate") && !jobban_job_in_list(bans, roletext)) //Nodrak/Carn: Antag Job-bans
 					if(age_check(player.client)) //Must be older than the minimum age
 						candidates += player.mind				// Get a list of all the people who want to be the antagonist for this round
@@ -342,7 +342,7 @@
 		for(var/mob/new_player/player in players)
 			if(player.client && player.ready)
 				var/list/bans = jobban_list_for_mob(player)
-				if(!(player.client.prefs.be_special & role)) // We don't have enough people who want to be antagonist, make a seperate list of people who don't want to be one
+				if(!(player.client.prefs.has_antag_pref(role))) // We don't have enough people who want to be antagonist, make a seperate list of people who don't want to be one
 					if(!jobban_job_in_list(bans, "Syndicate") && !jobban_job_in_list(bans, roletext)) //Nodrak/Carn: Antag Job-bans
 						drafted += player.mind
 						if(player.mind.quiet_round)
@@ -398,7 +398,7 @@
 
 /*
 /datum/game_mode/proc/check_player_role_pref(var/role, var/mob/new_player/player)
-	if(player.preferences.be_special & role)
+	if(player.preferences.has_antag_flag(role))
 		return 1
 	return 0
 */

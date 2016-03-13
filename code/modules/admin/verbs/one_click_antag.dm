@@ -66,7 +66,7 @@
 	var/mob/living/carbon/human/H = null
 
 	for(var/mob/living/carbon/human/applicant in player_list)
-		if(applicant.client.prefs.be_special & BE_TRAITOR)
+		if(applicant.client.prefs.has_antag_pref(BE_TRAITOR))
 			if(!applicant.stat)
 				if(applicant.mind)
 					if (!applicant.mind.special_role)
@@ -103,7 +103,7 @@
 	var/mob/living/carbon/human/H = null
 
 	for(var/mob/living/carbon/human/applicant in player_list)
-		if(applicant.client.prefs.be_special & BE_CHANGELING)
+		if(applicant.client.prefs.has_antag_pref(BE_CHANGELING))
 			if(!applicant.stat)
 				if(applicant.mind)
 					if (!applicant.mind.special_role)
@@ -138,7 +138,7 @@
 	var/mob/living/carbon/human/H = null
 
 	for(var/mob/living/carbon/human/applicant in player_list)
-		if(applicant.client.prefs.be_special & BE_REV)
+		if(applicant.client.prefs.has_antag_pref(BE_REV))
 			if(applicant.stat == CONSCIOUS)
 				if(applicant.mind)
 					if(!applicant.mind.special_role)
@@ -211,7 +211,7 @@
 	var/mob/living/carbon/human/H = null
 
 	for(var/mob/living/carbon/human/applicant in player_list)
-		if(applicant.client.prefs.be_special & BE_CULTIST)
+		if(applicant.client.prefs.has_antag_pref(BE_CULTIST))
 			if(applicant.stat == CONSCIOUS)
 				if(applicant.mind)
 					if(!applicant.mind.special_role)
@@ -407,7 +407,7 @@
 	var/mob/living/carbon/human/H = null
 
 	for(var/mob/living/carbon/human/applicant in player_list)
-		if(applicant.client.prefs.be_special & BE_GANG)
+		if(applicant.client.prefs.has_antag_pref(BE_GANG))
 			if(!applicant.stat)
 				if(applicant.mind)
 					if(!applicant.mind.special_role)
@@ -661,7 +661,7 @@
 	var/list/mob/living/carbon/human/candidates = list()
 	var/mob/living/carbon/human/H = null
 	for(var/mob/living/carbon/human/applicant in player_list)
-		if(applicant.client.prefs.be_special & BE_SHADOWLING)
+		if(applicant.client.prefs.has_antag_pref(BE_SHADOWLING))
 			if(!applicant.stat)
 				if(applicant.mind)
 					if(!applicant.mind.special_role)
@@ -691,14 +691,14 @@
 	var/list/mob/living/carbon/human/candidates = list()
 	var/mob/living/carbon/human/H = null
 	for(var/mob/living/carbon/human/applicant in player_list)
-		//if(applicant.client.prefs.be_special & BE_CYBERMAN)//the pref doesn't work because the number is too big for the & operator.
-		if(!applicant.stat)
-			if(applicant.mind)
-				if(!applicant.mind.special_role)
-					if(temp.age_check(applicant.client))
-						if(!(applicant.job in temp.restricted_jobs))
-							if(!(ticker.mode.is_cyberman(applicant.mind)))
-								candidates += applicant
+		if(applicant.client.prefs.has_antag_pref(BE_CYBERMAN))
+			if(!applicant.stat)
+				if(applicant.mind)
+					if(!applicant.mind.special_role)
+						if(temp.age_check(applicant.client))
+							if(!(applicant.job in temp.restricted_jobs))
+								if(!(ticker.mode.is_cyberman(applicant.mind)))
+									candidates += applicant
 
 	if(candidates.len)
 		H = pick(candidates)

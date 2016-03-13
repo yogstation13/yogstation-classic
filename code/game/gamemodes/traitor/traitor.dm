@@ -74,7 +74,7 @@
 	if(ticker.mode.traitors.len >= traitorcap) //Upper cap for number of latejoin antagonists
 		return
 	if(ticker.mode.traitors.len <= (traitorcap - 2) || prob(100 / (config.traitor_scaling_coeff * 2)))
-		if(character.client.prefs.be_special & BE_TRAITOR)
+		if(character.client.prefs.has_antag_pref(BE_TRAITOR))
 			var/list/bans = jobban_list_for_mob(character.client)
 			if(!jobban_job_in_list(bans, "traitor") && !jobban_job_in_list(bans, "Syndicate"))
 				if(age_check(character.client))

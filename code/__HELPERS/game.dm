@@ -304,7 +304,7 @@
 		for(var/mob/dead/observer/G in player_list)
 			if(G.client != null)
 				if(!(G.mind && G.mind.current && G.mind.current.stat != DEAD))
-					if(!G.client.is_afk(afk_bracket) && (G.client.prefs.be_special & be_special_flag))
+					if(!G.client.is_afk(afk_bracket) && (G.client.prefs.has_antag_pref(be_special_flag) ))
 						candidates += G.client
 		afk_bracket += 600 // Add a minute to the bracket, for every attempt
 	return candidates

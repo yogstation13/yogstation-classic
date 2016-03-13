@@ -54,7 +54,7 @@ var/list/blob_overmind_list = list()         //blob overmind list so we can keep
 /datum/game_mode/blob/proc/get_blob_candidates()
 	var/list/candidates = list()
 	for(var/mob/living/carbon/human/player in player_list)
-		if(!player.stat && player.mind && !player.mind.special_role && !jobban_check_mob(player, "Syndicate") && (player.client.prefs.be_special & BE_BLOB))
+		if(!player.stat && player.mind && !player.mind.special_role && !jobban_check_mob(player, "Syndicate") && (player.client.prefs.has_antag_pref(BE_BLOB)))
 			if(age_check(player.client))
 				candidates += player
 	return candidates

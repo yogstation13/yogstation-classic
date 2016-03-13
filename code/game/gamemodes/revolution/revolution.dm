@@ -180,7 +180,7 @@
 		var/list/promotable_revs = list()
 		for(var/datum/mind/khrushchev in revolutionaries)
 			if(khrushchev.current && khrushchev.current.client && khrushchev.current.stat != DEAD)
-				if(khrushchev.current.client.prefs.be_special & BE_REV)
+				if(khrushchev.current.client.prefs.has_antag_pref(BE_REV))
 					promotable_revs += khrushchev
 		if(promotable_revs)
 			var/datum/mind/stalin = pick(promotable_revs)
