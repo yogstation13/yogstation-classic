@@ -480,7 +480,7 @@ var/global/list/spec_roles = list(
 							else if(src.toggles & QUIET_ROUND)
 								dat += "<b>Be [item["name"]]:</b> <font color=blue><b>\[QUIET ROUND\]</b></font><br>"
 							else
-								dat += "<b>Be [item["name"]]:</b> <a href='?_src_=prefs;preference=be_special;num=[i]'>[src.hasSpecialRole(i) ? "Yes" : "No"]</a><br>"
+								dat += "<b>Be [item["name"]]:</b> <a href='?_src_=prefs;preference=be_[item["name"]]'>[src.hasSpecialRole(i) ? "Yes" : "No"]</a><br>"
 				if(is_donator(user.client))
 					dat += "<b>Quiet round:</b> <a href='?_src_=prefs;preference=donor;task=quiet_round'>[(src.toggles & QUIET_ROUND) ? "Yes" : "No"]</a><br>"
 				dat += "</td></tr></table>"
@@ -1174,7 +1174,10 @@ var/global/list/spec_roles = list(
 				for (var/i in spec_roles)
 					var/item = spec_roles[i]
 					if(href_list["preference"] == "be_[item["name"]]")
-						be_special[i] = item
+						if(!hasSpecialRole(i))
+							be_special[i] = item
+						else
+							be_special -= i
 
 				switch(href_list["preference"])
 					if("publicity")

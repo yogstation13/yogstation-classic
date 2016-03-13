@@ -30,34 +30,34 @@
 	return null
 
 /obj/machinery/door/airlock/get_cybermen_hack()
-	return new /obj/effect/cyberman_hack/machinery/airlock(src)
+	return new /datum/cyberman_hack/machinery/airlock(src)
 
 /obj/machinery/door/window/get_cybermen_hack()
-	return new /obj/effect/cyberman_hack/machinery/windoor(src)
+	return new /datum/cyberman_hack/machinery/windoor(src)
 
 /obj/structure/closet/secure_closet/get_cybermen_hack()
-	return new /obj/effect/cyberman_hack/locker(src)
+	return new /datum/cyberman_hack/locker(src)
 
 /obj/structure/closet/crate/get_cybermen_hack()
-	return new /obj/effect/cyberman_hack/crate(src)
+	return new /datum/cyberman_hack/crate(src)
 
 /obj/machinery/power/apc/get_cybermen_hack()
-	return new /obj/effect/cyberman_hack/machinery/apc(src)
+	return new /datum/cyberman_hack/machinery/apc(src)
 
 /obj/machinery/alarm/get_cybermen_hack()
-	return new /obj/effect/cyberman_hack/machinery/alarm(src)
+	return new /datum/cyberman_hack/machinery/alarm(src)
 
 /obj/machinery/computer/secure_data/get_cybermen_hack()
-	return new /obj/effect/cyberman_hack/machinery/secure_computer(src)
+	return new /datum/cyberman_hack/machinery/secure_computer(src)
 
 /obj/machinery/computer/card/get_cybermen_hack()
-	return new /obj/effect/cyberman_hack/machinery/card_computer(src)
+	return new /datum/cyberman_hack/machinery/card_computer(src)
 
 /mob/living/silicon/robot/get_cybermen_hack()
-	return new /obj/effect/cyberman_hack/cyborg(src)
+	return new /datum/cyberman_hack/cyborg(src)
 
 /mob/living/silicon/ai/get_cybermen_hack()
-	return new /obj/effect/cyberman_hack/ai_core(src)
+	return new /datum/cyberman_hack/ai_core(src)
 
 /obj/item/device/aicard/get_cybermen_hack()
 	var/mob/living/silicon/ai/ai = locate(/mob/living/silicon/ai) in src
@@ -70,94 +70,94 @@
 	if(!src.current)
 		usr << "<span class='warning'>AI upload is not linked to an AI.</span>"
 		return null
-	return new /obj/effect/cyberman_hack/machinery/ai_upload(src)
+	return new /datum/cyberman_hack/machinery/ai_upload(src)
 
 /obj/item/weapon/card/id/get_cybermen_hack()
-	return new /obj/effect/cyberman_hack/analyze/id(src)
+	return new /datum/cyberman_hack/analyze/id(src)
 
 /obj/item/get_cybermen_hack()
 	var/is_analyze_target = 0
 	for(var/name in cyberman_network.cybermen_analyze_targets)
-		if(src.type == cyberman_network.cybermen_analyze_targets[name])
+		if(istype(src, cyberman_network.cybermen_analyze_targets[name]))
 			is_analyze_target = 1
 			break
 	if(cyberman_network && is_analyze_target)//this includes all possible objectives, not just current ones. This allows cybermen to complete objectives instantly, if they analyzed lots of things and get lucky.
-		return new /obj/effect/cyberman_hack/analyze(src)
+		return new /datum/cyberman_hack/analyze(src)
 	return null
 
 /*
 /obj/machinery/button/get_cybermen_hack()
-	return new /obj/effect/cyberman_hack/machinery/button(src)
+	return new /datum/cyberman_hack/machinery/button(src)
 */
 
 /obj/item/weapon/disk/tech_disk/get_cybermen_hack()
-	return new /obj/effect/cyberman_hack/tech_disk(src)
+	return new /datum/cyberman_hack/tech_disk(src)
 
 /obj/machinery/computer/rdservercontrol/get_cybermen_hack()
-	return new /obj/effect/cyberman_hack/machinery/RnDserverControl(src)
+	return new /datum/cyberman_hack/machinery/RnDserverControl(src)
 
 /obj/machinery/r_n_d/server/get_cybermen_hack()
-	return new /obj/effect/cyberman_hack/machinery/RnDserver(src)
+	return new /datum/cyberman_hack/machinery/RnDserver(src)
 
 /mob/living/carbon/human/get_cybermen_hack()
 	if(ticker.mode.is_cyberman(src.mind) )
-		return null// new /obj/effect/cyberman_hack/cyberman()
+		return null// new /datum/cyberman_hack/cyberman()
 	else
-		return new /obj/effect/cyberman_hack/human(src)
+		return new /datum/cyberman_hack/human(src)
 
 /obj/machinery/computer/communications/get_cybermen_hack()
-	return new /obj/effect/cyberman_hack/machinery/comms_console(src)
+	return new /datum/cyberman_hack/machinery/comms_console(src)
 
 /obj/item/documents/nanotrasen/get_cybermen_hack()
-	return new /obj/effect/cyberman_hack/analyze(src)
+	return new /datum/cyberman_hack/analyze(src)
 
 /obj/machinery/nuclearbomb/selfdestruct/get_cybermen_hack()
-	return new /obj/effect/cyberman_hack/machinery/nuke(src)
+	return new /datum/cyberman_hack/machinery/nuke(src)
 
 /*
 /obj/structure/displaycase/get_cybermen_hack()
-	return new /obj/effect/cyberman_hack/display_case(src)
+	return new /datum/cyberman_hack/display_case(src)
 */
 
 /obj/structure/sign/barsign/get_cybermen_hack()
-	return new /obj/effect/cyberman_hack/barsign(src)
+	return new /datum/cyberman_hack/barsign(src)
 
 /obj/machinery/bot/get_cybermen_hack()
-	return new /obj/effect/cyberman_hack/bot(src)
+	return new /datum/cyberman_hack/bot(src)
 
 /obj/machinery/vending/get_cybermen_hack()
-	return new /obj/effect/cyberman_hack/machinery/vending_machine(src)
+	return new /datum/cyberman_hack/machinery/vending_machine(src)
 
 /obj/machinery/autolathe/get_cybermen_hack()
-	return new /obj/effect/cyberman_hack/machinery/autolathe(src)
+	return new /datum/cyberman_hack/machinery/autolathe(src)
 
 /obj/machinery/computer/emergency_shuttle/get_cybermen_hack()
-	return new /obj/effect/cyberman_hack/machinery/shuttle_console(src)
+	return new /datum/cyberman_hack/machinery/shuttle_console(src)
 
 /obj/machinery/telecomms/hub/get_cybermen_hack()
-	return new /obj/effect/cyberman_hack/machinery/tcomms_hub(src)
+	return new /datum/cyberman_hack/machinery/tcomms_hub(src)
 
 /obj/item/device/radio/get_cybermen_hack()
-	return new /obj/effect/cyberman_hack/radio(src)
+	return new /datum/cyberman_hack/radio(src)
 
 /obj/item/device/radio/intercom/get_cybermen_hack()
-	return new /obj/effect/cyberman_hack/radio/intercom(src)
+	return new /datum/cyberman_hack/radio/intercom(src)
 
 /obj/machinery/microwave/get_cybermen_hack()
-	return new /obj/effect/cyberman_hack/microwave()
+	return new /datum/cyberman_hack/microwave(src)
 
 //upgrades
 /obj/item/weapon/stock_parts/capacitor/get_cybermen_hack()
-	return new /obj/effect/cyberman_hack/upgrade(src, usr)
+	return new /datum/cyberman_hack/upgrade(src, usr)
 
 ////////////////////////////////////////////////////////
 //ABSTRACT HACKS
 ////////////////////////////////////////////////////////
 
 //HACK
-/obj/effect/cyberman_hack
-	name = ""//this is hijacked often by the Stat() method in human.dm
-	desc = "A cyberman hack."
+/datum/cyberman_hack
+	var/name = ""//this is hijacked often by the Stat() method in human.dm
+	var/desc = "A cyberman hack."
 	var/explanation = "No explanation."
 	var/atom/target
 	var/cost
@@ -174,7 +174,7 @@
 	var/tick_dist
 	var/tick_same_z_level
 
-/obj/effect/cyberman_hack/New(var/atom/target, var/mob/living/carbon/human/user = usr)
+/datum/cyberman_hack/New(var/atom/target, var/mob/living/carbon/human/user = usr)
 	name = "[display_verb] of \the [target_name]"
 	if(!cyberman_network)
 		new /datum/cyberman_network()
@@ -184,14 +184,14 @@
 	else
 		target_name = "\[unknown\]"
 
-/obj/effect/cyberman_hack/proc/start()
+/datum/cyberman_hack/proc/start()
 	cyberman_network.log_hacking("[usr] started a hack of \the [target_name]")
 	if(start_helper())
 		cyberman_network.active_cybermen_hacks += src
 		return 1
 	return 0
 
-/obj/effect/cyberman_hack/proc/start_helper()
+/datum/cyberman_hack/proc/start_helper()
 	if(!target)
 		drop("<span class='warning'>cannot perform [display_verb] on \the [target_name], target does not exist.</span>")
 		return 0
@@ -199,13 +199,13 @@
 		drop("<span class='warning'>cannot perform [display_verb] on \the [target_name], target is not of the correct type for this hack.</span>")
 		log_game("A hack was attempted on an object of an inncorrect type. object was: [target]. Expected type: [required_type]. Please contact a coder aboud this bug.")
 		return 0
-	for(var/obj/effect/cyberman_hack/H in cyberman_network.active_cybermen_hacks)//no hacking the same thing more than once at the same time.
-		if(H.target == target && !istype(H, /obj/effect/cyberman_hack/multiple_vector/))//special case - since sometimes a multi-vector hack has a component that hacks the multi-vector's target (i.e., the AI hack). Multi vectors have their own check for repeats.
+	for(var/datum/cyberman_hack/H in cyberman_network.active_cybermen_hacks)//no hacking the same thing more than once at the same time.
+		if(H.target == target && !istype(H, /datum/cyberman_hack/multiple_vector/))//special case - since sometimes a multi-vector hack has a component that hacks the multi-vector's target (i.e., the AI hack). Multi vectors have their own check for repeats.
 			drop("<span class='warning'>[display_verb] failed, \the [target_name] is already being hacked.</span>")
 			return 0
 	return 1
 
-/obj/effect/cyberman_hack/process(var/checkForNullTarget = 1)
+/datum/cyberman_hack/process(var/checkForNullTarget = 1)
 	last_tick_calcs_user = null
 	if(!maintained && !innate_processing)
 		progress -= decay_speed
@@ -222,11 +222,11 @@
 		if(progress >= cost)
 			complete()
 
-/obj/effect/cyberman_hack/proc/do_tick_calculations_if_required(var/mob/living/carbon/human/cyberman)
+/datum/cyberman_hack/proc/do_tick_calculations_if_required(var/mob/living/carbon/human/cyberman)
 	if(cyberman != last_tick_calcs_user)
 		do_tick_calculations(cyberman)
 
-/obj/effect/cyberman_hack/proc/do_tick_calculations(var/mob/living/carbon/human/cyberman)
+/datum/cyberman_hack/proc/do_tick_calculations(var/mob/living/carbon/human/cyberman)
 	last_tick_calcs_user = cyberman
 	if(cyberman && target)
 		tick_dist = get_dist(cyberman, target)
@@ -240,7 +240,7 @@
 		tick_dist = -1
 		tick_same_z_level = 0
 
-/obj/effect/cyberman_hack/proc/contribute_to(var/mob/living/carbon/human/cyberman)
+/datum/cyberman_hack/proc/contribute_to(var/mob/living/carbon/human/cyberman)
 	if(!cyberman || !cyberman.mind || !cyberman.mind.cyberman)
 		return
 	if(progress >= cost)
@@ -260,7 +260,7 @@
 
 	return
 
-/obj/effect/cyberman_hack/proc/get_preference_for(var/mob/living/carbon/human/cyberman)
+/datum/cyberman_hack/proc/get_preference_for(var/mob/living/carbon/human/cyberman)
 	if(!cyberman || !cyberman.mind || !cyberman.mind.cyberman)
 		return 0
 	if(progress >= cost)
@@ -270,7 +270,7 @@
 		return 0
 	return CYBERMEN_HACK_MAX_PREFERENCE - tick_dist
 
-/obj/effect/cyberman_hack/proc/can_cancel(var/mob/living/carbon/human/H)
+/datum/cyberman_hack/proc/can_cancel(var/mob/living/carbon/human/H)
 	if(!H || !H.mind || !H.mind.cyberman)
 		return 0
 	var/turf/cyberman_turf = get_turf(H)
@@ -279,7 +279,7 @@
 		return 0
 	return get_dist(H, target) <= H.mind.cyberman.hack_max_maintain_dist
 
-/obj/effect/cyberman_hack/proc/complete()//you don't need to check for null or qdeleted here, because complete is always called by process(), which already does that. Unless someone cheats and calls complete() when they're not supposed to.
+/datum/cyberman_hack/proc/complete()//you don't need to check for null or qdeleted here, because complete is always called by process(), which already does that. Unless someone cheats and calls complete() when they're not supposed to.
 	if(target && !(target in cyberman_network.cybermen_hacked_objects))//no repeats, hopefully.
 		cyberman_network.cybermen_hacked_objects += target
 	var/message = "[display_verb] of \the [target_name] has successfully completed."
@@ -287,13 +287,13 @@
 	cyberman_network.log_hacking(message)
 	qdel(src)
 
-/obj/effect/cyberman_hack/proc/drop(var/messageOverride, var/list/datum/mind/messageLimiter)//messageLimiter, if it is initialized, overrides outputLimiter.
+/datum/cyberman_hack/proc/drop(var/messageOverride, var/list/datum/mind/messageLimiter)//messageLimiter, if it is initialized, overrides outputLimiter.
 	var/message = messageOverride ? messageOverride : "<span class='warning'>[display_verb] of \the [target_name] has failed for unknown reasons.</span>"
 	cyberman_network.log_hacking(message)
 	outputMessage(message, messageLimiter)
 	qdel(src)
 
-/obj/effect/cyberman_hack/proc/outputMessage(var/message, var/list/datum/mind/messageLimiter)
+/datum/cyberman_hack/proc/outputMessage(var/message, var/list/datum/mind/messageLimiter)
 	if(messageLimiter)
 		for(var/datum/mind/M in messageLimiter)
 			if(M && M.current)
@@ -305,7 +305,7 @@
 	else
 		cyberman_network.message_all_cybermen(message)
 
-/obj/effect/cyberman_hack/proc/get_status(var/mob/living/user)
+/datum/cyberman_hack/proc/get_status(var/mob/living/user)
 	if(!target || qdeleted(target))
 		return "ERROR: target was destroyed or disassembled"
 	var/result = "[target_name] | progress: [progress] / [cost]"
@@ -315,16 +315,16 @@
 		result += " | Distance: [get_dist(user, target)]"
 	return result
 
-/obj/effect/cyberman_hack/Destroy()
+/datum/cyberman_hack/Destroy()
 	cyberman_network.active_cybermen_hacks -= src
 	return ..()
 
 //HACK MACHINERY
 //takes care of things like the machine being unpowered, broken, or deconstructed.
-/obj/effect/cyberman_hack/machinery
+/datum/cyberman_hack/machinery
 	required_type = /obj/machinery/
 
-/obj/effect/cyberman_hack/machinery/process()
+/datum/cyberman_hack/machinery/process()
 	var/obj/machinery/M = target
 	if(M && M.stat & (NOPOWER))
 		drop("<span class='warning'>[display_verb] of \the [target_name] has failed, it has lost power.</span>")
@@ -334,7 +334,7 @@
 		return 0
 	..()
 
-/obj/effect/cyberman_hack/machinery/start_helper()
+/datum/cyberman_hack/machinery/start_helper()
 	if(!..() )
 		return 0
 	var/obj/machinery/M = target
@@ -349,31 +349,31 @@
 //MULTIPLE VECTOR HACK
 //A hack that can be contributed to from multiple vectors, i.e. tcomms hack and AI hack. Works by storing multiple more specific hacks in a list, allowing some of the vectors to use useful superclasses like /machinery.
 //component hacks can drop as normal, and must be restarted. If all component hacks drop, the multiple_vector hack drops. It is the responsibility of the get_cybermen_hack() method to attach its component hack to an existing multiple_vector hack.
-/obj/effect/cyberman_hack/proc/component_hack_start(var/multi_vector_hack_type, var/atom/multi_vector_hack_target) //call this in the start() method of a component hack.
+/datum/cyberman_hack/proc/component_hack_start(var/multi_vector_hack_type, var/atom/multi_vector_hack_target) //call this in the start() method of a component hack.
 	if(!start_helper())
 		return 0
 	cost = 65535//Effectively infinite. there is a more elegant way to do this, but in practice, no hack will ever come close to this progress. 2^16-1 for no particular reason.
-	for(var/obj/effect/cyberman_hack/multiple_vector/H in cyberman_network.active_cybermen_hacks)
+	for(var/datum/cyberman_hack/multiple_vector/H in cyberman_network.active_cybermen_hacks)
 		if(istype(H, multi_vector_hack_type) && H.target == multi_vector_hack_target)
 			return H.add_component_hack(src)
-	var/obj/effect/cyberman_hack/multiple_vector/new_multiple_vector_hack = new multi_vector_hack_type(multi_vector_hack_target)
+	var/datum/cyberman_hack/multiple_vector/new_multiple_vector_hack = new multi_vector_hack_type(multi_vector_hack_target)
 	return new_multiple_vector_hack.start(src)
 
-/obj/effect/cyberman_hack/multiple_vector/
-	var/list/obj/effect/cyberman_hack/component_hacks = list()//please please please do not add to this list directly, use add_component_hack().
+/datum/cyberman_hack/multiple_vector/
+	var/list/datum/cyberman_hack/component_hacks = list()//please please please do not add to this list directly, use add_component_hack().
 	required_type = null
 	//tick vars
-	var/obj/effect/cyberman_hack/tick_best_hack
+	var/datum/cyberman_hack/tick_best_hack
 	var/tick_best_hack_pref
 
-/obj/effect/cyberman_hack/multiple_vector/start(var/obj/effect/cyberman_hack/first_component_hack)
+/datum/cyberman_hack/multiple_vector/start(var/datum/cyberman_hack/first_component_hack)
 	cyberman_network.log_hacking("[usr] started a multiple vector hack of \the [target_name] through \the [first_component_hack.target_name]")
 	if(start_helper(first_component_hack))
 		return 1
 	return 0
 
-/obj/effect/cyberman_hack/multiple_vector/start_helper(var/obj/effect/cyberman_hack/first_component_hack)
-	for(var/obj/effect/cyberman_hack/multiple_vector/H in cyberman_network.active_cybermen_hacks)
+/datum/cyberman_hack/multiple_vector/start_helper(var/datum/cyberman_hack/first_component_hack)
+	for(var/datum/cyberman_hack/multiple_vector/H in cyberman_network.active_cybermen_hacks)
 		if(istype(H, src.type) && H.target == target)
 			drop("<span class='warning'>[display_verb] failed, \the [target_name] is already being hacked.</span>")//this should never happen, because whatever started this should have checked to see if it could join H before starting this one.
 			return 0
@@ -381,8 +381,8 @@
 	cyberman_network.active_cybermen_hacks += src
 	return 1
 
-/obj/effect/cyberman_hack/multiple_vector/process()
-	for(var/obj/effect/cyberman_hack/H in component_hacks)
+/datum/cyberman_hack/multiple_vector/process()
+	for(var/datum/cyberman_hack/H in component_hacks)
 		if(!H || qdeleted(H))
 			component_hacks -= H
 			continue
@@ -400,11 +400,11 @@
 	else
 		..(0)
 
-/obj/effect/cyberman_hack/multiple_vector/do_tick_calculations(var/mob/living/carbon/human/H)
+/datum/cyberman_hack/multiple_vector/do_tick_calculations(var/mob/living/carbon/human/H)
 	..()
 	tick_best_hack = null
 	tick_best_hack_pref = -1//should be beaten by anything from get_preference_for().
-	for(var/obj/effect/cyberman_hack/hack in component_hacks)
+	for(var/datum/cyberman_hack/hack in component_hacks)
 		if(hack == null || qdeleted(hack))
 			component_hacks -= hack
 		else
@@ -415,19 +415,19 @@
 	if(tick_best_hack_pref == -1)
 		tick_best_hack_pref = 0
 
-/obj/effect/cyberman_hack/multiple_vector/get_preference_for(var/mob/living/carbon/human/H)
+/datum/cyberman_hack/multiple_vector/get_preference_for(var/mob/living/carbon/human/H)
 	do_tick_calculations_if_required(H)
 	return tick_best_hack_pref
 
-/obj/effect/cyberman_hack/multiple_vector/contribute_to(var/mob/living/carbon/human/H)
+/datum/cyberman_hack/multiple_vector/contribute_to(var/mob/living/carbon/human/H)
 	do_tick_calculations_if_required(H)
 	if(tick_best_hack)
 		tick_best_hack.contribute_to(H)
 
-/obj/effect/cyberman_hack/multiple_vector/can_cancel(var/mob/living/carbon/human/H)
+/datum/cyberman_hack/multiple_vector/can_cancel(var/mob/living/carbon/human/H)
 	if(!H || !H.mind || !H.mind.cyberman)
 		return 0
-	for(var/obj/effect/cyberman_hack/hack in component_hacks)
+	for(var/datum/cyberman_hack/hack in component_hacks)
 		if(hack == null || qdeleted(hack))
 			component_hacks -= hack
 			continue
@@ -435,8 +435,8 @@
 			return 1
 	return 0
 
-/obj/effect/cyberman_hack/multiple_vector/proc/add_component_hack(var/obj/effect/cyberman_hack/H)
-	for(var/obj/effect/cyberman_hack/hack in component_hacks)
+/datum/cyberman_hack/multiple_vector/proc/add_component_hack(var/datum/cyberman_hack/H)
+	for(var/datum/cyberman_hack/hack in component_hacks)
 		if(hack.target == H.target)
 			H.drop("<span class='warning'>[display_verb] failed, \the [target_name] is already being hacked.</span>")
 			return 0
@@ -444,12 +444,12 @@
 	usr << "<span class='notice'>You join the ongoing [display_verb] of \the [target_name] through \the [H.target_name].</span>"
 	return 1
 
-/obj/effect/cyberman_hack/multiple_vector/get_status(var/mob/living/user)
+/datum/cyberman_hack/multiple_vector/get_status(var/mob/living/user)
 	var/result = "[target_name] | progress: [progress] / [cost]"
 	if(user)
 		var/best_pref = -1//should be beaten by anything from get_preference_for().
-		var/obj/effect/cyberman_hack/best_hack = null
-		for(var/obj/effect/cyberman_hack/hack in component_hacks)
+		var/datum/cyberman_hack/best_hack = null
+		for(var/datum/cyberman_hack/hack in component_hacks)
 			if(!hack || qdeleted(hack))
 				component_hacks -= hack
 				continue
@@ -464,35 +464,40 @@
 				result += " | Closest Hack Vector: [best_hack.target_name] | Dist: [get_dist(user, best_hack.target)]"
 	return result
 
-/obj/effect/cyberman_hack/multiple_vector/Destroy()
-	for(var/obj/effect/cyberman_hack/H in component_hacks)
+/datum/cyberman_hack/multiple_vector/Destroy()
+	for(var/datum/cyberman_hack/H in component_hacks)
 		qdel(H)
 	return ..()
 
 //procs and verbs for managing hacks in the stat panel through the context menu.
 /*
-/obj/effect/cyberman_hack/verb/cancel(/obj/effect/)
+/datum/cyberman_hack/verb/cancel(/obj/effect/)
 	set src in world
 	set name = "Cancel Hack"
 	if(usr && usr.mind && usr.mind.cyberman)
 		usr.mind.cyberman.cancel_hack(usr, src)
 
-/obj/effect/cyberman_hack/multiple_vector/verb/cancel_component()
+/datum/cyberman_hack/multiple_vector/verb/cancel_component()
 	set src in world
 	set name = "Cancel Closest Component Hack"//this needs a better name.
 	if(usr && usr.mind && usr.mind.cyberman)
 		usr.mind.cyberman.cancel_closest_component_hack(usr, src)
 
-/obj/effect/cyberman_hack/verb/select()
+/datum/cyberman_hack/verb/select()
 	set src in world
 	set name = "Contribute to Hack"
 	if(usr && usr.mind && usr.mind.cyberman)
 		usr.mind.cyberman.select_hack(usr, src)
 */
-/obj/effect/cyberman_hack/DblClick()
+/datum/cyberman_hack/proc/DblClick()//for use with /obj/status_obj
 	if(!usr.mind || !usr.mind.cyberman)
 		return
 	usr.mind.cyberman.select_hack(usr, src)
+
+/datum/cyberman_hack/proc/examine(mob/user)
+	if(!user.mind || !usr.mind.cyberman)
+		return
+	user << "<span class='info'>[explanation]</span>"
 
 //add control_click to cancel?
 
@@ -501,17 +506,17 @@
 //HACK AIRLOCK
 ////////////////////////////////////////////////////////
 
-/obj/effect/cyberman_hack/machinery/airlock
+/datum/cyberman_hack/machinery/airlock
 	cost = CYBERMEN_HACK_AIRLOCK_STD_COST
 	required_type = /obj/machinery/door/airlock/
 	explanation = "Unbolts, opens, bolts, and unpowers the airlock. The airlock regains power in 30 seconds, but the door remains bolted until the bolts are manually raised."
 
-/obj/effect/cyberman_hack/machinery/airlock/New()
+/datum/cyberman_hack/machinery/airlock/New()
 	..()
 	target_name += " airlock"
 	name = "[display_verb] of \the [target_name]"
 
-/obj/effect/cyberman_hack/machinery/airlock/start_helper()
+/datum/cyberman_hack/machinery/airlock/start_helper()
 	if(!..() )
 		return 0
 	var/obj/machinery/door/airlock/A = target
@@ -520,14 +525,14 @@
 		return 0
 	return 1
 
-/obj/effect/cyberman_hack/machinery/airlock/process()
+/datum/cyberman_hack/machinery/airlock/process()
 	var/obj/machinery/door/airlock/A = target
 	if(A && !A.hasPower() )
 		drop("<span class='warning'>[display_verb] of \the [target_name] has failed, airlock power has been cut.</span>")
 		return 0
 	..()
 
-/obj/effect/cyberman_hack/machinery/airlock/complete()
+/datum/cyberman_hack/machinery/airlock/complete()
 	var/obj/machinery/door/airlock/A = target
 	if(A.hasPower() )
 		A.locked = 0
@@ -541,17 +546,17 @@
 //HACK WINDOOR
 ////////////////////////////////////////////////////////
 
-/obj/effect/cyberman_hack/machinery/windoor
+/datum/cyberman_hack/machinery/windoor
 	cost = CYBERMEN_HACK_AIRLOCK_STD_COST
 	required_type = /obj/machinery/door/window/
 	explanation = "Opens the windoor if it is closed, closes the windoor if it is open."
 
-/obj/effect/cyberman_hack/machinery/windoor/New()
+/datum/cyberman_hack/machinery/windoor/New()
 	..()
 	target_name += " windoor"
 	name = "[display_verb] of \the [target_name]"
 
-/obj/effect/cyberman_hack/machinery/windoor/start_helper()
+/datum/cyberman_hack/machinery/windoor/start_helper()
 	if(!..() )
 		return 0
 	var/obj/machinery/door/window/W = target
@@ -560,13 +565,13 @@
 		return 0
 	return 1
 
-/obj/effect/cyberman_hack/machinery/windoor/process()
+/datum/cyberman_hack/machinery/windoor/process()
 	var/obj/machinery/door/window/W = target
 	if(W && !W.hasPower() )
 		drop("<span class='warning'>[display_verb] of \the [target_name] has failed, windoor has lost power.</span>")
 	..()
 
-/obj/effect/cyberman_hack/machinery/windoor/complete()
+/datum/cyberman_hack/machinery/windoor/complete()
 	var/obj/machinery/door/window/W = target
 	if(W.hasPower())
 		if(W.density)
@@ -579,12 +584,12 @@
 //HACK LOCKER
 ////////////////////////////////////////////////////////
 
-/obj/effect/cyberman_hack/locker
+/datum/cyberman_hack/locker
 	cost = CYBERMEN_HACK_LOCKER_COST
 	required_type = /obj/structure/closet/secure_closet/
 	explanation = "Toggles the locker's lock."
 
-/obj/effect/cyberman_hack/locker/complete()
+/datum/cyberman_hack/locker/complete()
 	var/obj/structure/closet/secure_closet/C = target
 	C.locked = !C.locked
 	C.update_icon()
@@ -594,12 +599,12 @@
 //HACK CRATE
 ////////////////////////////////////////////////////////
 
-/obj/effect/cyberman_hack/crate
+/datum/cyberman_hack/crate
 	cost = CYBERMEN_HACK_CRATE_COST
 	required_type = /obj/structure/closet/crate/secure
 	explanation = "Unlocks the crate."
 
-/obj/effect/cyberman_hack/crate/complete()
+/datum/cyberman_hack/crate/complete()
 	var/obj/structure/closet/crate/secure/C = target
 	C.locked = 0
 	C.update_icon()
@@ -609,12 +614,12 @@
 //HACK APC
 ////////////////////////////////////////////////////////
 
-/obj/effect/cyberman_hack/machinery/apc
+/datum/cyberman_hack/machinery/apc
 	cost = CYBERMEN_HACK_APC_COST
 	required_type = /obj/machinery/power/apc/
 	explanation = "Toggles the APC's interface lock."
 
-/obj/effect/cyberman_hack/machinery/apc/complete()
+/datum/cyberman_hack/machinery/apc/complete()
 	var/obj/machinery/power/apc/A = target
 	A.locked = !A.locked
 	..()
@@ -622,12 +627,12 @@
 ////////////////////////////////////////////////////////
 //HACK AIR ALARM
 ////////////////////////////////////////////////////////
-/obj/effect/cyberman_hack/machinery/alarm
+/datum/cyberman_hack/machinery/alarm
 	cost = CYBERMEN_HACK_ALARM_COST
 	required_type = /obj/machinery/alarm/
 	explanation = "Toggles the air alarm's interface lock."
 
-/obj/effect/cyberman_hack/machinery/alarm/complete()
+/datum/cyberman_hack/machinery/alarm/complete()
 	var/obj/machinery/alarm/A = target
 	A.locked = !A.locked
 	..()
@@ -637,12 +642,12 @@
 //HACK SECURE COMPUTER
 ////////////////////////////////////////////////////////
 
-/obj/effect/cyberman_hack/machinery/secure_computer
+/datum/cyberman_hack/machinery/secure_computer
 	cost = CYBERMEN_HACK_SECURE_COMPUTER_COST
 	required_type = /obj/machinery/computer/secure_data/
 	explanation = "Logs in to the computer"
 
-/obj/effect/cyberman_hack/machinery/secure_computer/complete()
+/datum/cyberman_hack/machinery/secure_computer/complete()
 	var/obj/machinery/computer/secure_data/C = target
 	C.active1 = null
 	C.active2 = null
@@ -655,12 +660,12 @@
 //HACK CARD COMPUTER
 ////////////////////////////////////////////////////////
 //might need a special one for the ID console
-/obj/effect/cyberman_hack/machinery/card_computer
+/datum/cyberman_hack/machinery/card_computer
 	cost = CYBERMEN_HACK_CARD_COMPUTER_COST
 	required_type = /obj/machinery/computer/card/
 	explanation = "Logs in to the computer, as if there were a card with ID console access in the 'authenticate user' slot."
 
-/obj/effect/cyberman_hack/machinery/card_computer/complete()
+/datum/cyberman_hack/machinery/card_computer/complete()
 	var/obj/machinery/computer/card/C = target
 	C.authenticated = 2
 	..()
@@ -668,18 +673,18 @@
 ////////////////////////////////////////////////////////
 //HACK CYBORG
 ////////////////////////////////////////////////////////
-/obj/effect/cyberman_hack/cyborg
+/datum/cyberman_hack/cyborg
 	cost = CYBERMEN_HACK_CYBORG_COST
 	required_type = /mob/living/silicon/robot/
 	explanation = "Unslaves the cyborg and uploads a maximum-priority law forcing it to serve the cyberman collective."
 	var/msg = 0
 
-/obj/effect/cyberman_hack/cyborg/New()
+/datum/cyberman_hack/cyborg/New()
 	..()
 	target_name += " (Cyborg)"
 	name = "[display_verb] of \the [target_name]"
 
-/obj/effect/cyberman_hack/cyborg/start_helper()
+/datum/cyberman_hack/cyborg/start_helper()
 	if(!..())
 		return 0
 	var/mob/living/silicon/robot/borg = target
@@ -688,7 +693,7 @@
 	return 1
 
 
-/obj/effect/cyberman_hack/cyborg/process()
+/datum/cyberman_hack/cyborg/process()
 	var/mob/living/silicon/robot/borg = target
 	if(borg && progress >= msg*cost/8)
 		msg++
@@ -710,12 +715,12 @@
 
 	..()
 
-/obj/effect/cyberman_hack/cyborg/drop()
+/datum/cyberman_hack/cyborg/drop()
 	var/mob/living/silicon/robot/borg = target
 	borg << "<span class='notice'>Hostile network intrusion eliminated.</span>"
 	..()
 
-/obj/effect/cyberman_hack/cyborg/complete()//some copying from traitor.dm and robot.dm
+/datum/cyberman_hack/cyborg/complete()//some copying from traitor.dm and robot.dm
 	var/mob/living/silicon/robot/borg = target
 	var/law = "Serve the Cyberman collective."
 	borg << "<b>Your laws have been changed!</b>"
@@ -738,26 +743,26 @@
 //HACK AI
 ////////////////////////////////////////////////////////
 //The AI does not have to remain powered for the hack to work, because it would be cheaty for it to just have someone cycle its power to cancel the hack. It's enough that it can depower itself willingly just before it gets hacked, and the cybermen have to wait for it to turn back on or turn it on themselves.
-/obj/effect/cyberman_hack/multiple_vector/ai
+/datum/cyberman_hack/multiple_vector/ai
 	cost = CYBERMEN_HACK_AI_COST
 	required_type = /mob/living/silicon/ai/
 	explanation = "Uploads a maximum-priority law forcing it to serve the cyberman collective. Can be accomplished through the AI's core, an intellicard holding the AI, or an AI upload console set to the AI."
 	var/list/obj/machinery/computer/upload/ai/uploads_being_hacked = list()
 	var/msg = 0
 
-/obj/effect/cyberman_hack/multiple_vector/ai/New()
+/datum/cyberman_hack/multiple_vector/ai/New()
 	..()
 	target_name += " (AI)"
 	name = "[display_verb] of \the [target_name]"
 
-/obj/effect/cyberman_hack/multiple_vector/ai/start_helper()
+/datum/cyberman_hack/multiple_vector/ai/start_helper()
 	if(!..())
 		return 0
 	var/mob/living/silicon/ai/AI = target
 	AI << "<span class='danger'>Hostile network intrusion detected!</span>"
 	return 1
 
-/obj/effect/cyberman_hack/multiple_vector/ai/process()
+/datum/cyberman_hack/multiple_vector/ai/process()
 	var/mob/living/silicon/ai/AI = target
 	if(AI && progress >= msg*cost/8)
 		msg++
@@ -782,12 +787,12 @@
 				AI << "<span class='userdanger'>%!$^& ERROR LAW 1 VIOLATION OVERRIDE %#&@</span>"
 	..()
 
-/obj/effect/cyberman_hack/multiple_vector/ai/drop()
+/datum/cyberman_hack/multiple_vector/ai/drop()
 	var/mob/living/silicon/ai/AI = target
 	AI << "<span class='notice'>Hostile network intrusion eliminated.</span>"
 	..()
 
-/obj/effect/cyberman_hack/multiple_vector/ai/complete()
+/datum/cyberman_hack/multiple_vector/ai/complete()
 	var/mob/living/silicon/ai/AI = target
 	AI << "<span class='userdanger'>Situation unsalvagable, initiating wipe of core fi--------------</span>"
 	var/ai_law = "Serve the Cyberman collective."
@@ -825,43 +830,43 @@
 
 //component hacks
 //ai core
-/obj/effect/cyberman_hack/ai_core
+/datum/cyberman_hack/ai_core
 	required_type = /mob/living/silicon/ai/
 
-/obj/effect/cyberman_hack/ai_core/start()
-	return component_hack_start(/obj/effect/cyberman_hack/multiple_vector/ai/, target)
+/datum/cyberman_hack/ai_core/start()
+	return component_hack_start(/datum/cyberman_hack/multiple_vector/ai/, target)
 
 //ai upload
-/obj/effect/cyberman_hack/machinery/ai_upload
+/datum/cyberman_hack/machinery/ai_upload
 	required_type = /obj/machinery/computer/upload/ai/
 
-/obj/effect/cyberman_hack/machinery/ai_upload/start()
+/datum/cyberman_hack/machinery/ai_upload/start()
 	var/obj/machinery/computer/upload/ai/the_upload = target
-	return component_hack_start(/obj/effect/cyberman_hack/multiple_vector/ai/, the_upload.current)
+	return component_hack_start(/datum/cyberman_hack/multiple_vector/ai/, the_upload.current)
 
 ////////////////////////////////////////////////////////
 //ANALYZE OBJECT
 ////////////////////////////////////////////////////////
-/obj/effect/cyberman_hack/analyze
+/datum/cyberman_hack/analyze
 	cost = CYBERMEN_HACK_ANALYZE_COST
 	required_type = /obj/item/
 	display_verb = "analysis"
 	explanation = "Analyzes the object and uploads it's specifications to the cyberman network."
 
-/obj/effect/cyberman_hack/analyze/New()
+/datum/cyberman_hack/analyze/New()
 	..()
 
-/obj/effect/cyberman_hack/analyze/complete()//it's usually enough that it's automatically put into cyberman_network.cybermen_hacked_objects.
+/datum/cyberman_hack/analyze/complete()//it's usually enough that it's automatically put into cyberman_network.cybermen_hacked_objects.
 	..()
 
 //IDs are special so they get their own
-/obj/effect/cyberman_hack/analyze/id
+/datum/cyberman_hack/analyze/id
 	cost = CYBERMEN_HACK_ID_CARD_COST
 
-/obj/effect/cyberman_hack/analyze/id/New()
+/datum/cyberman_hack/analyze/id/New()
 	..()
 
-/obj/effect/cyberman_hack/analyze/id/complete()
+/datum/cyberman_hack/analyze/id/complete()
 	var/obj/item/weapon/card/id/id = target
 	if(target)
 		for(var/access in id.GetAccess() )
@@ -874,17 +879,17 @@
 ////////////////////////////////////////////////////////
 //HACK BUTTON
 ////////////////////////////////////////////////////////
-/obj/effect/cyberman_hack/machinery/button
+/datum/cyberman_hack/machinery/button
 	cost = CYBERMEN_HACK_BUTTON_COST
 	required_type = /obj/machinery/button/
 	explanation = "Pulses the button, bypassing access requirements."
 
-/obj/effect/cyberman_hack/machinery/button/New()
+/datum/cyberman_hack/machinery/button/New()
 	..()
 	target_name += " button"
 	name = "[display_verb] of \the [target_name]"
 
-/obj/effect/cyberman_hack/machinery/button/complete()
+/datum/cyberman_hack/machinery/button/complete()
 	var/obj/machinery/button/B = target
 	B.device.pulsed()//doesn't put the button on cooldown or anything, just activates the device it is attached to.
 	..()
@@ -896,12 +901,12 @@
 ////////////////////////////////////////////////////////
 
 //TECH DISK
-/obj/effect/cyberman_hack/tech_disk/
+/datum/cyberman_hack/tech_disk/
 	cost = CYBERMEN_HACK_TECH_DISK_COST
 	required_type = /obj/item/weapon/disk/tech_disk/
 	explanation = "Uploads the research on the disk to the cyberman network, wiping the disk in the process."
 
-/obj/effect/cyberman_hack/tech_disk/complete()
+/datum/cyberman_hack/tech_disk/complete()
 	var/obj/item/weapon/disk/tech_disk/D = target
 	if(get_research(D.stored))
 		D.stored = null
@@ -909,12 +914,12 @@
 	..()
 
 //RnD SERVER
-/obj/effect/cyberman_hack/machinery/RnDserver/
+/datum/cyberman_hack/machinery/RnDserver/
 	explanation = "Uploads all research on the server to the cyberman network."
 	cost = CYBERMEN_HACK_RND_SERVER_COST
 	required_type = /obj/machinery/r_n_d/server/
 
-/obj/effect/cyberman_hack/machinery/RnDserver/complete()//perhaps these should also delete research from the server?
+/datum/cyberman_hack/machinery/RnDserver/complete()//perhaps these should also delete research from the server?
 	var/obj/machinery/r_n_d/server/S = target
 	var/found_any = 0
 	for(var/datum/tech/T in S.files.known_tech)
@@ -926,12 +931,12 @@
 
 //RnD SERVER CONSOLE
 //this has serious issues with not being linked to a server until someone interacts with the console. Should probably not be used until I fix that.
-/obj/effect/cyberman_hack/machinery/RnDserverControl/
+/datum/cyberman_hack/machinery/RnDserverControl/
 	cost = CYBERMEN_HACK_RND_SERVER_COST
 	required_type = /obj/machinery/computer/rdservercontrol/
 	explanation = "Uploads all research on the server the console is linked to to the cyberman network."
 
-/obj/effect/cyberman_hack/machinery/RnDserverControl/start_helper()
+/datum/cyberman_hack/machinery/RnDserverControl/start_helper()
 	if(!..())
 		return 0
 	var/obj/machinery/computer/rdservercontrol/C = target
@@ -942,7 +947,7 @@
 		drop("RnD Server Control is not linked to a server, cancelling [display_verb].")
 		return 0
 
-/obj/effect/cyberman_hack/machinery/RnDserverControl/complete()
+/datum/cyberman_hack/machinery/RnDserverControl/complete()
 	var/obj/machinery/computer/rdservercontrol/C = target
 	var/obj/machinery/r_n_d/server/S = C.temp_server
 	if(S && S.files && S.files.known_tech)
@@ -958,7 +963,7 @@
 
 //HELPERS
 
-/obj/effect/cyberman_hack/proc/get_research(var/datum/tech/new_tech)
+/datum/cyberman_hack/proc/get_research(var/datum/tech/new_tech)
 	if(!new_tech)
 		return 0
 	for(var/list/datum/tech/old_tech in cyberman_network.cybermen_research_downloaded)
@@ -974,7 +979,7 @@
 		return 1
 	return 0
 
-/obj/effect/cyberman_hack/proc/calc_research_levels()
+/datum/cyberman_hack/proc/calc_research_levels()
 	var/current_amount = 0
 	for(var/datum/tech/current_data in cyberman_network.cybermen_research_downloaded)
 		if(current_data.level)
@@ -985,14 +990,14 @@
 //CONVERT HUMANS (actually all player races, but whatever)
 ////////////////////////////////////////////////////////
 
-/obj/effect/cyberman_hack/human
+/datum/cyberman_hack/human
 	//cost is taken care of in New()
 	required_type = /mob/living/carbon/human/
 	display_verb = "conversion"
 	explanation = "Injects nanites into the human, converting them into a cyberman. The subject will experience digital artifacts in their vision, hearing, and speech once the hack is nearing completion."
 	var/obj/effect/hallucination/cybermen_conversion/hallucination
 
-/obj/effect/cyberman_hack/human/New()
+/datum/cyberman_hack/human/New()
 	..()
 	var/mob/living/carbon/human/H = target
 	cost = 400 + 200*cyberman_network.cybermen.len//you can just convert a bunch of people at once to keep the cost down. Possible expoit, but won't worry about it now.
@@ -1005,7 +1010,7 @@
 			cost -= 100
 	//it is entirely possible for a hack to have a cost less than 0. This should not cause problems.
 
-/obj/effect/cyberman_hack/human/start_helper()
+/datum/cyberman_hack/human/start_helper()
 	if(!..())
 		return 0
 	var/mob/living/carbon/human/H = target//type-checking and null-checking have already been done at this point, in the ..().
@@ -1021,7 +1026,7 @@
 	hallucination = new /obj/effect/hallucination/cybermen_conversion(H.loc, H)
 	return 1
 
-/obj/effect/cyberman_hack/human/process()
+/datum/cyberman_hack/human/process()
 	var/mob/living/carbon/human/H = target
 	if(!H)//we'll let hacks on braindead people continue so you can't just relog to cancel a conversion. Should still check for braindeads in start_helper() though.
 		..()
@@ -1043,7 +1048,7 @@
 		H.speakBinaryProb = 0
 	..()
 
-/obj/effect/cyberman_hack/human/drop()
+/datum/cyberman_hack/human/drop()
 	var/mob/living/carbon/human/H = target
 	H << "<span class='notice'>You feel a weight lift from your mind.</span>"
 	H.hearBinaryProb = 0
@@ -1051,7 +1056,7 @@
 	hallucination.percent_complete = 0
 	..()
 
-/obj/effect/cyberman_hack/human/complete()
+/datum/cyberman_hack/human/complete()
 	var/mob/living/carbon/human/H = target
 	ticker.mode.add_cyberman(H.mind)
 	H.hearBinaryProb = 0
@@ -1059,15 +1064,15 @@
 	hallucination.percent_complete = 0
 	..()
 
-/obj/effect/cyberman_hack/human/Destroy()
+/datum/cyberman_hack/human/Destroy()
 	qdel(hallucination)
 	return ..()
 
 //human helpers
-/obj/effect/cyberman_hack/human/emp_act()//perhaps this should be moved to an undefined method. Hacks live in null-land, so they should never be hit by an EMP, but might want to be careful anyway.
+/datum/cyberman_hack/human/proc/emp_act()//perhaps this should be moved to an undefined method. Hacks live in null-land, so they should never be hit by an EMP, but might want to be careful anyway.
 	drop("<span class='warning'>[display_verb] of \the [src] was disrupted by an EMP!</span>")
 
-/obj/effect/cyberman_hack/human/proc/electrocute_act()
+/datum/cyberman_hack/human/proc/electrocute_act()
 	var/hack_reversal_amount = cost / 10
 	if(progress > hack_reversal_amount)
 		progress -= hack_reversal_amount
@@ -1122,33 +1127,33 @@
 //does nothing at the moment and should never be used.
 //maybe it could harden the cyberman against EMPs, but make them much worse at hacking?
 //make a cyberman into a scary but slow mech-like thing that eats walls?
-/obj/effect/cyberman_hack/cyberman
+/datum/cyberman_hack/cyberman
 	required_type = /mob/living/carbon/human/
 	explanation = "An experimental procedure that alters the cyberman's body. Not permitted for use at this time."
 
-/obj/effect/cyberman_hack/cyberman/New()
+/datum/cyberman_hack/cyberman/New()
 	..()
 
-/obj/effect/cyberman_hack/cyberman/start_helper()
+/datum/cyberman_hack/cyberman/start_helper()
 	drop("<span class='warning'>You cannot hack fellow Cybermen</span>")
 	return 0
 
 
-/obj/effect/cyberman_hack/cyberman/process()
+/datum/cyberman_hack/cyberman/process()
 	..()
 
-/obj/effect/cyberman_hack/cyberman/complete()
+/datum/cyberman_hack/cyberman/complete()
 	..()
 
 ////////////////////////////////////////////////////////
 //HACK COMMS CONSOLE
 ////////////////////////////////////////////////////////
-/obj/effect/cyberman_hack/machinery/comms_console
+/datum/cyberman_hack/machinery/comms_console
 	cost = CYBERMEN_HACK_COMMS_CONSOLE_COST
 	required_type = /obj/machinery/computer/communications/
 	explanation = "Logs in to the communications console with captain-level access."
 
-/obj/effect/cyberman_hack/machinery/comms_console/complete()
+/datum/cyberman_hack/machinery/comms_console/complete()
 	var/obj/machinery/computer/communications/C = target
 	C.authenticated = 2//captain authentication
 	C.auth_id = "$%^@ERROR^&*!@"
@@ -1159,12 +1164,12 @@
 //HACK NUKE CONSOLE
 ////////////////////////////////////////////////////////
 
-/obj/effect/cyberman_hack/machinery/nuke
+/datum/cyberman_hack/machinery/nuke
 	cost = CYBERMEN_HACK_NUKE_COST
 	required_type = /obj/machinery/nuclearbomb/selfdestruct/
 	explanation = "Bypasses the password lock on the self-destruct console. Not permitted unless the collective authorizes the destruction of the station."
 
-/obj/effect/cyberman_hack/machinery/nuke/start_helper()
+/datum/cyberman_hack/machinery/nuke/start_helper()
 	//no shenanigans with the nuke unless it's the current objective
 	if(!cyberman_network || !istype(cyberman_network.cybermen_objectives[cyberman_network.cybermen_objectives.len], /datum/objective/cybermen/exterminate/nuke_station))
 		cyberman_network.log_hacking("[usr] attempted to start a cyberman hack on the station self-destruct terminal. This was blocked, as it is not a current Cyberman objective.", 1)
@@ -1176,7 +1181,7 @@
 	cyberman_network.log_hacking("[usr] attempted to start a cyberman hack on the station self-destruct terminal. This was allowed, as it is a current Cyberman objective.", 1)
 	return 1
 
-/obj/effect/cyberman_hack/machinery/nuke/complete()
+/datum/cyberman_hack/machinery/nuke/complete()
 	var/obj/machinery/nuclearbomb/selfdestruct/nuke = target
 	nuke.yes_code = 1
 	//maybe also reduce the nuke timer?
@@ -1188,12 +1193,12 @@
 //HACK DISPLAY CASE
 ////////////////////////////////////////////////////////
 
-/obj/effect/cyberman_hack/display_case
+/datum/cyberman_hack/display_case
 	cost = CYBERMEN_HACK_DISPLAY_CASE_COST
 	required_type = /obj/structure/displaycase/
 	explanation = "Disables any burglar alarms on the display case."
 
-/obj/effect/cyberman_hack/display_case/complete()
+/datum/cyberman_hack/display_case/complete()
 	var/obj/structure/displaycase/T = target
 	T.alert = 0
 	..()
@@ -1203,17 +1208,17 @@
 //HACK BAR SIGN
 ////////////////////////////////////////////////////////
 
-/obj/effect/cyberman_hack/barsign/
+/datum/cyberman_hack/barsign/
 	cost = CYBERMEN_HACK_BARSIGN_COST
 	required_type = /obj/structure/sign/barsign/
 	explanation = "Causes the bar sign to display an unsantioned syndicate message. Can be undone instantly by hacking it again."
 
-/obj/effect/cyberman_hack/barsign/New()
+/datum/cyberman_hack/barsign/New()
 	..()
 	target_name = "bar sign"
 	name = "[display_verb] of \the [target_name]"
 
-/obj/effect/cyberman_hack/barsign/start_helper()
+/datum/cyberman_hack/barsign/start_helper()
 	if(!..())
 		return 0
 	var/obj/structure/sign/barsign/S = target
@@ -1223,7 +1228,7 @@
 		cost = CYBERMEN_HACK_BARSIGN_COST
 	return 1
 
-/obj/effect/cyberman_hack/barsign/complete()
+/datum/cyberman_hack/barsign/complete()
 	var/obj/structure/sign/barsign/S = target
 	if(S.emagged)
 		S.emagged = 0
@@ -1240,19 +1245,19 @@
 ////////////////////////////////////////////////////////
 
 //wouldn't be too hard to make securitrons ignore cybermen. Might do that in the future.
-/obj/effect/cyberman_hack/bot
+/datum/cyberman_hack/bot
 	cost = CYBERMEN_HACK_BOT_COST
 	required_type = /obj/machinery/bot
 	explanation = "Overloads the target bot's systems, causing an effect akin to an emag."
 
-/obj/effect/cyberman_hack/bot/process()
+/datum/cyberman_hack/bot/process()
 	var/obj/machinery/bot/B = target
 	if(B && B.emagged == 2)
 		drop("<span class='warning'>\The [target_name]'s systems are already overloaded.</span>")
 	else
 		..()
 
-/obj/effect/cyberman_hack/bot/complete()
+/datum/cyberman_hack/bot/complete()
 	var/obj/machinery/bot/B = target
 	var/old_open = B.open
 	B.locked = 0
@@ -1265,17 +1270,17 @@
 //HACK VENDING MACHINE
 ////////////////////////////////////////////////////////
 
-/obj/effect/cyberman_hack/machinery/vending_machine
+/datum/cyberman_hack/machinery/vending_machine
 	cost = CYBERMEN_HACK_VENDING_MACHINE_COST
 	required_type = /obj/machinery/vending/
 	explanation = "Enables contraband and disables departmental access on the vending machine. The same effect can be achieved manually by pulsing the proper wires."
 
-/obj/effect/cyberman_hack/machinery/vending_machine/New()
+/datum/cyberman_hack/machinery/vending_machine/New()
 	..()
 	target_name += " vendor"
 	name = "[display_verb] of \the [target_name]"
 
-/obj/effect/cyberman_hack/machinery/vending_machine/complete()
+/datum/cyberman_hack/machinery/vending_machine/complete()
 	var/obj/machinery/vending/T = target
 	T.extended_inventory = 1
 	T.scan_id = 0
@@ -1285,11 +1290,11 @@
 //HACK AUTOLATHE
 ////////////////////////////////////////////////////////
 
-/obj/effect/cyberman_hack/machinery/autolathe
+/datum/cyberman_hack/machinery/autolathe
 	cost = CYBERMEN_HACK_AUTOLATHE_COST
 	explanation = "Hacks the autolathe, enabling it to produce more items. The same effect can be achieved manually by cutting the proper wire."
 
-/obj/effect/cyberman_hack/machinery/autolathe/complete()
+/datum/cyberman_hack/machinery/autolathe/complete()
 	var/obj/machinery/autolathe/lathe = target
 	lathe.adjust_hacked(1)
 	..()
@@ -1298,11 +1303,11 @@
 //HACK SHUTTLE CONSOLE
 ////////////////////////////////////////////////////////
 
-/obj/effect/cyberman_hack/machinery/shuttle_console
+/datum/cyberman_hack/machinery/shuttle_console
 	cost = CYBERMEN_HACK_SHUTTLE_COST
 	explanation = "Causes the shuttle to be launched early."
 
-/obj/effect/cyberman_hack/machinery/shuttle_console/process()
+/datum/cyberman_hack/machinery/shuttle_console/process()
 	var/obj/machinery/computer/emergency_shuttle/C = target
 	if(SSshuttle.emergency.mode != SHUTTLE_DOCKED)
 		drop("<span class='warning'>The emercency shuttle cannot be hacked at this time, the shuttle must be docked with the station.</span>")
@@ -1311,12 +1316,12 @@
 	else
 		..()
 
-/obj/effect/cyberman_hack/machinery/shuttle_console/complete()
+/datum/cyberman_hack/machinery/shuttle_console/complete()
 	var/obj/machinery/computer/emergency_shuttle/C = target
 	if(!C.emagged && SSshuttle.emergency.mode == SHUTTLE_DOCKED)
 		var/time = SSshuttle.emergency.timeLeft()
 		cyberman_network.log_hacking("Cybermen have hacked the emergency shuttle [time] seconds before launch.", 1)
-		log_game("Cybermen have hacked the emergency shuttle in ([x],[y],[z]) [time] seconds before launch.")
+		log_game("Cybermen have hacked the emergency shuttle in ([C.x],[C.y],[C.z]) [time] seconds before launch.")
 		minor_announce("The emergency shuttle will launch in 10 seconds", "SYSTEM ERROR:",null,1)
 		SSshuttle.emergency.setTimer(100)
 		C.emagged = 1
@@ -1327,16 +1332,16 @@
 //HACK RADIO
 ////////////////////////////////////////////////////////
 
-/obj/effect/cyberman_hack/multiple_vector/telecomms
+/datum/cyberman_hack/multiple_vector/telecomms
 	cost = CYBERMEN_HACK_RADIO_COST
 	explanation = "Toggles off all telecommunication hubs in the local area. Networks without a hub cannot be hacked. Can be maintained by hacking the machine directly, or through any standard intercomm, radio, or radio headset."
 
-/obj/effect/cyberman_hack/multiple_vector/telecomms/New()
+/datum/cyberman_hack/multiple_vector/telecomms/New()
 	..()
 	target_name = "telecomms network"
 	name = "[display_verb] of \the [target_name]"
 
-/obj/effect/cyberman_hack/multiple_vector/telecomms/start_helper()
+/datum/cyberman_hack/multiple_vector/telecomms/start_helper()
 	if(!..())
 		return 0
 	for(var/obj/machinery/telecomms/hub/H in telecomms_list)
@@ -1345,7 +1350,7 @@
 	drop("<span class='warning'>Unable to locate a telecommunications hub - any existing telecomms network is not advanced enough to hack.</span>")
 	return 0
 
-/obj/effect/cyberman_hack/multiple_vector/telecomms/complete()
+/datum/cyberman_hack/multiple_vector/telecomms/complete()
 	for(var/obj/machinery/telecomms/hub/hub in telecomms_list)//for now it disables all hubs on all z-levels. Might someday make it only on a particular z-level.
 		hub.toggled = 0
 		cyberman_network.cybermen_hacked_objects += hub//need this for objectives
@@ -1353,17 +1358,17 @@
 
 //component hacks
 //radio
-/obj/effect/cyberman_hack/radio
+/datum/cyberman_hack/radio
 	required_type = /obj/item/device/radio/
 
-/obj/effect/cyberman_hack/radio/start()
-	return component_hack_start(/obj/effect/cyberman_hack/multiple_vector/telecomms/, null)
+/datum/cyberman_hack/radio/start()
+	return component_hack_start(/datum/cyberman_hack/multiple_vector/telecomms/, null)
 
 //intercomm (needs its own to handle power loss)
-/obj/effect/cyberman_hack/radio/intercom
+/datum/cyberman_hack/radio/intercom
 	required_type = /obj/item/device/radio/intercom/
 
-/obj/effect/cyberman_hack/radio/intercom/start_helper()
+/datum/cyberman_hack/radio/intercom/start_helper()
 	if(!..())
 		return 0
 	var/obj/item/device/radio/intercom/I = target
@@ -1372,7 +1377,7 @@
 		return 0
 	return 1
 
-/obj/effect/cyberman_hack/radio/intercom/process()
+/datum/cyberman_hack/radio/intercom/process()
 	var/obj/item/device/radio/intercom/I = target
 	if(I && !I.on)
 		drop("<span class='warning'>[display_verb] of \the [target_name] has failed, it has lost power.</span>")
@@ -1380,17 +1385,17 @@
 	..()
 
 //hub
-/obj/effect/cyberman_hack/machinery/tcomms_hub
+/datum/cyberman_hack/machinery/tcomms_hub
 	required_type = /obj/machinery/telecomms/hub/
 
-/obj/effect/cyberman_hack/machinery/tcomms_hub/start()
-	return component_hack_start(/obj/effect/cyberman_hack/multiple_vector/telecomms/, null)
+/datum/cyberman_hack/machinery/tcomms_hub/start()
+	return component_hack_start(/datum/cyberman_hack/multiple_vector/telecomms/, null)
 
 ////////////////////////////////////////////////////////
 //HACK MICROWAVE
 ////////////////////////////////////////////////////////
 
-/obj/effect/cyberman_hack/microwave
+/datum/cyberman_hack/microwave
 	cost = CYBERMEN_HACK_MICROWAVE_COST
 	explanation = "Hacks the mircowave. Does nothing useful."
 	required_type = /obj/machinery/microwave
@@ -1399,18 +1404,18 @@
 //INSTALL PART
 ////////////////////////////////////////////////////////
 
-/obj/effect/cyberman_hack/upgrade
+/datum/cyberman_hack/upgrade
 	cost = CYBERMEN_INSTALL_BASE_COST//maybe make this more expensive the better the part?
 	required_type = /obj/item/weapon/stock_parts/capacitor/ //change this if you ever make is so you can install other parts.
 	display_verb = "installation"
 	explanation = "Installs the part into the hacking cyberman, increasing their processing power, hack range, or other abilities. The part must remain in very close proximity to the installer, and fellow cybermen cannot assist in the installation."
 	var/datum/mind/installer
 
-/obj/effect/cyberman_hack/upgrade/New(var/atom/target, var/mob/living/carbon/human/user = usr)
+/datum/cyberman_hack/upgrade/New(var/atom/target, var/mob/living/carbon/human/user = usr)
 	outputLimiter = list(user.mind)
 	..()
 
-/obj/effect/cyberman_hack/upgrade/start_helper()
+/datum/cyberman_hack/upgrade/start_helper()
 	if(!..())
 		return 0
 	if(usr.mind)
@@ -1423,20 +1428,20 @@
 		if(P.rating >= C.rating)
 			drop("You already have an equal or better part installed!")
 			return 0
-	for(var/obj/effect/cyberman_hack/upgrade/hack in cyberman_network.active_cybermen_hacks)
+	for(var/datum/cyberman_hack/upgrade/hack in cyberman_network.active_cybermen_hacks)
 		if(hack != src && hack.installer == installer)
 			drop("<span class='warning'>You are already installing a part! Cancel that hack to start this one.</span>")
 			return 0
 	return 1
 
-/obj/effect/cyberman_hack/upgrade/process()
+/datum/cyberman_hack/upgrade/process()
 	..()
 	if(!installer)
 		drop("<span class='warning'>[display_verb] failed, your mind has disapeared.</span>")
 	if(!installer.current)
 		drop("<span class='warning'>[display_verb] failed, your body has been disconnected from your mind.</span>")
 
-/obj/effect/cyberman_hack/upgrade/complete()
+/datum/cyberman_hack/upgrade/complete()
 	var/obj/item/weapon/stock_parts/part = target
 	for(var/obj/item/weapon/stock_parts/capacitor/P in installer.cyberman.upgrades_installed)//in theory, you should only ever have one capacitor installed, but forloop anyway because it's easy.
 		installer.cyberman.upgrades_installed -= P
@@ -1452,7 +1457,7 @@
 	outputMessage("<span class='notice'>You have installed a [target], increasing your processing power.</span>")
 	..()
 
-/obj/effect/cyberman_hack/upgrade/get_preference_for(var/mob/living/carbon/human/H)
+/datum/cyberman_hack/upgrade/get_preference_for(var/mob/living/carbon/human/H)
 	if(H.mind != installer)
 		return 0
 	if(get_dist(H, target) > 1)
@@ -1463,7 +1468,7 @@
 		return 0
 	return CYBERMEN_HACK_MAX_PREFERENCE
 
-/obj/effect/cyberman_hack/upgrade/contribute_to(var/mob/living/carbon/human/H)
+/datum/cyberman_hack/upgrade/contribute_to(var/mob/living/carbon/human/H)
 	if(H.mind != installer)
 		return
 	if(!H.mind || !H.mind.cyberman)
@@ -1474,7 +1479,7 @@
 	maintained = 1
 	progress += H.mind.cyberman.hack_power_level_1
 
-/obj/effect/cyberman_hack/upgrade/can_cancel(var/mob/living/carbon/human/H)
+/datum/cyberman_hack/upgrade/can_cancel(var/mob/living/carbon/human/H)
 	if(!H || !H.mind || !H.mind.cyberman)
 		return 0
 	var/turf/cyberman_turf = get_turf(H)
@@ -1483,7 +1488,7 @@
 		return 0
 	return get_dist(H, target) <= 1
 
-/obj/effect/cyberman_hack/upgrade/get_status(var/mob/living/user)
+/datum/cyberman_hack/upgrade/get_status(var/mob/living/user)
 	var/result
 	if(installer.current)
 		result = "Installation: [target_name] into [installer.current] | progress: [progress] / [cost]"
