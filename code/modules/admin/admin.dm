@@ -883,12 +883,12 @@ datum/admins/proc/cybermen_panel()
 				dat += "ERROR - null in the objective list<BR>"
 
 		dat += "<BR>Current Active Hacks:<BR>"
-		for(var/obj/effect/cyberman_hack/H in cyberman_network.active_cybermen_hacks)
+		for(var/datum/cyberman_hack/H in cyberman_network.active_cybermen_hacks)
 			if(H)
 				dat += "[H.target_name] (<A href='?_src_=holder;cybermen=10;editvar=set_progress;target=\ref[H]'>[H.progress]</A>/<A href='?_src_=holder;cybermen=10;editvar=set_cost;target=\ref[H]'>[H.cost]</A>) (+<A href='?_src_=holder;cybermen=10;editvar=set_innate;target=\ref[H]'>[H.innate_processing]</A>/tick)"
-				if(istype(H, /obj/effect/cyberman_hack/multiple_vector))
-					var/obj/effect/cyberman_hack/multiple_vector/MVH = H
-					for(var/obj/effect/cyberman_hack/CH in MVH.component_hacks)
+				if(istype(H, /datum/cyberman_hack/multiple_vector))
+					var/datum/cyberman_hack/multiple_vector/MVH = H
+					for(var/datum/cyberman_hack/CH in MVH.component_hacks)
 						dat += "<BR>---[CH.target_name]"
 				dat += "<BR>"
 			else
@@ -952,7 +952,7 @@ datum/admins/proc/cyberman_varedit(list/href_list)
 			if(istype(obj))
 				obj.win_upon_completion = !obj.win_upon_completion
 		if("set_progress")
-			var/obj/effect/cyberman_hack/hack = locate(href_list["target"])
+			var/datum/cyberman_hack/hack = locate(href_list["target"])
 			if(istype(hack))
 				var/num = input("Set progress to what?") as num
 				if(hack)
@@ -962,7 +962,7 @@ datum/admins/proc/cyberman_varedit(list/href_list)
 					else
 						hack.drop("<span class='warning'>[hack.display_verb] of \the [hack.target_name] cancelled by the Cyberman Collective.</span>")
 		if("set_cost")
-			var/obj/effect/cyberman_hack/hack = locate(href_list["target"])
+			var/datum/cyberman_hack/hack = locate(href_list["target"])
 			world << "Test"
 			world << "[hack], "
 			world << "[istype(hack)]"
@@ -972,7 +972,7 @@ datum/admins/proc/cyberman_varedit(list/href_list)
 					hack.cost = num
 					hack.maintained = 1
 		if("set_innate")
-			var/obj/effect/cyberman_hack/hack = locate(href_list["target"])
+			var/datum/cyberman_hack/hack = locate(href_list["target"])
 			if(istype(hack))
 				var/num = input("Set innate processing to what? (If this is not 0, the hack will not lose progress if no cybermen are nearby)") as num
 				if(hack)

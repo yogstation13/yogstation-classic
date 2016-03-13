@@ -106,7 +106,7 @@
 		return
 	usr.mind.cyberman.manual_cancel_component_hack(usr)
 
-/mob/living/carbon/human/proc/cancel_hack_context(var/obj/effect/cyberman_hack/hack in cyberman_network.active_cybermen_hacks)
+/mob/living/carbon/human/proc/cancel_hack_context(var/datum/cyberman_hack/hack in cyberman_network.active_cybermen_hacks)
 	set name = "Cancel Hack"
 	set category = "Hacking"
 	if(!usr.mind || !usr.mind.cyberman)
@@ -144,7 +144,7 @@
 	if(dist > hack_max_start_dist)
 		user << "<span class='warning'>You are to far away to hack \the [target].</span>"
 		return
-	var/obj/effect/cyberman_hack/newHack = target.get_cybermen_hack()
+	var/datum/cyberman_hack/newHack = target.get_cybermen_hack()
 	if(newHack)
 		if(dist <= 1)//someday there could be cybermen who can hack from range.
 			target.add_fingerprint(user, 1)//let's assume cybermen have to touch the thing with their bare hand to hack it - we can make gloves work if they seem to be struggling.
@@ -159,7 +159,7 @@
 		user << "<span class='warning'>\The [target] cannot be hacked.</span>"
 
 
-/datum/cyberman_datum/proc/cancel_hack(var/mob/living/carbon/human/user = usr, var/obj/effect/cyberman_hack/hack)
+/datum/cyberman_datum/proc/cancel_hack(var/mob/living/carbon/human/user = usr, var/datum/cyberman_hack/hack)
 	if(!validate(user) || !hack || user.stat || user.stunned)
 		user << "<span class='warning'>You can't do that right now!</span>"
 		return
@@ -169,8 +169,8 @@
 		user << "<span class='warning'>You cannot cancel a hack unless you are close enough to maintain it!</span>"
 
 
-/datum/cyberman_datum/proc/cancel_closest_component_hack(var/mob/living/carbon/human/user = usr, var/obj/effect/cyberman_hack/multiple_vector/hack)
-	if(!validate(user) || !hack || !istype(hack, /obj/effect/cyberman_hack/multiple_vector))
+/datum/cyberman_datum/proc/cancel_closest_component_hack(var/mob/living/carbon/human/user = usr, var/datum/cyberman_hack/multiple_vector/hack)
+	if(!validate(user) || !hack || !istype(hack, /datum/cyberman_hack/multiple_vector))
 		return
 	hack.do_tick_calculations_if_required(user)
 	if(!hack.tick_best_hack)
@@ -185,7 +185,7 @@
 	hack.tick_best_hack.drop("<span class='notice'>The [hack.tick_best_hack.display_verb] of \the [hack.tick_best_hack.target_name], which was contributing to the [hack.display_verb] of \the [hack.target_name], was canceled by [user].<span>")
 
 
-/datum/cyberman_datum/proc/select_hack(var/mob/living/carbon/human/user = usr, var/obj/effect/cyberman_hack/hack)
+/datum/cyberman_datum/proc/select_hack(var/mob/living/carbon/human/user = usr, var/datum/cyberman_hack/hack)
 	if(!validate(user))
 		return
 	if(hack == user.mind.cyberman.manual_selected_hack)
@@ -216,15 +216,15 @@
 
 /datum/cyberman_datum/proc/get_user_selected_hack(var/mob/living/carbon/human/user = usr, var/display, var/null_option)
 	var/list/hacks = list()
-	for(var/obj/effect/cyberman_hack/hack in cyberman_network.active_cybermen_hacks)
+	for(var/datum/cyberman_hack/hack in cyberman_network.active_cybermen_hacks)
 		hacks += hack.target_name
 	if(null_option)
 		hacks += null_option
 	var/target_hack_name = input(usr, display, "Cyberman Hack Management") as null|anything in hacks
 	if(!target_hack_name || target_hack_name == null_option)
 		return null
-	var/obj/effect/cyberman_hack/target_hack = null
-	for(var/obj/effect/cyberman_hack/hack in cyberman_network.active_cybermen_hacks)//this will have issues if two different hacked objects have the same name.
+	var/datum/cyberman_hack/target_hack = null
+	for(var/datum/cyberman_hack/hack in cyberman_network.active_cybermen_hacks)//this will have issues if two different hacked objects have the same name.
 		if(hack.target_name == target_hack_name)
 			target_hack = hack
 			break
@@ -236,19 +236,19 @@
 
 
 /datum/cyberman_datum/proc/manual_select_hack(var/mob/living/carbon/human/user = usr)
-	var/obj/effect/cyberman_hack/selected_hack = get_user_selected_hack(user, "Choose which hack you wish to contribute to:", "(automatic)")
+	var/datum/cyberman_hack/selected_hack = get_user_selected_hack(user, "Choose which hack you wish to contribute to:", "(automatic)")
 	if(selected_hack)
 		select_hack(user, selected_hack)
 
 
 /datum/cyberman_datum/proc/manual_cancel_hack(var/mob/living/carbon/human/user = usr)
-	var/obj/effect/cyberman_hack/selected_hack = get_user_selected_hack(user, "Choose which hack you wish to cancel:", "(none)")
+	var/datum/cyberman_hack/selected_hack = get_user_selected_hack(user, "Choose which hack you wish to cancel:", "(none)")
 	if(selected_hack)
 		user.mind.cyberman.cancel_hack(user, selected_hack)
 
 
 /datum/cyberman_datum/proc/manual_cancel_component_hack(var/mob/living/carbon/human/user = usr)
-	var/obj/effect/cyberman_hack/selected_hack = get_user_selected_hack(user, "(none)")
+	var/datum/cyberman_hack/selected_hack = get_user_selected_hack(user, "(none)")
 	if(selected_hack)
 		user.mind.cyberman.cancel_closest_component_hack(usr, selected_hack)
 
@@ -273,7 +273,7 @@ var/list/cybermen_debug_abilities = list(/datum/admins/proc/become_cyberman,
 	if(ticker.mode.is_cyberman(usr.mind))
 		usr << "You are already a Cyberman!"
 	else
-		var/obj/effect/cyberman_hack/newHack = usr.get_cybermen_hack()
+		var/datum/cyberman_hack/newHack = usr.get_cybermen_hack()
 		newHack.innate_processing = 10
 		if(newHack)
 			if(newHack.start())
@@ -359,7 +359,7 @@ var/list/cybermen_debug_abilities = list(/datum/admins/proc/become_cyberman,
 /datum/admins/proc/start_auto_hack(var/atom/target in world)
 	set category = "Cyberman Debug"
 	set name = "Start Automatic Hack"
-	var/obj/effect/cyberman_hack/newHack = target.get_cybermen_hack()
+	var/datum/cyberman_hack/newHack = target.get_cybermen_hack()
 	if(newHack)
 		if(newHack.start())
 			newHack.innate_processing = 10
