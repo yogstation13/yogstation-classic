@@ -1,7 +1,0 @@
-author: Cruix
-
-delete-after: True
-
-changes: 
-  - bugfix: "Foam darts with the safety cap removed and foam darts with a pen inside them will now behave properly when fired."
-  - rscadd: "You can now remove pens from foam darts by using them in your hand."

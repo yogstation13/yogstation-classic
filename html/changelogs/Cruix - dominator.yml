@@ -1,7 +1,0 @@
-author: Cruix
-
-delete-after: True
-
-changes: 
-  - tweak: "Dominators will now be destroyed if they leave the station z-level."
-  - rscdel: "Swarmers can no longer attack dominators."

@@ -1,7 +1,0 @@
-author: AsV9
-
-delete-after: True
-
-changes: 
-  - rscadd: "Tesla-engine ported from /tg/station 13. It is fully modular and can be swapped out for the singularity with a wrench. For the Union!"
-  - rscadd: "New particle accelerator sprites."

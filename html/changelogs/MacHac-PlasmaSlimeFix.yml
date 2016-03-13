@@ -1,7 +1,0 @@
- 
-author: N3X15
-
-delete-after: True
-
-changes: 
-  - bugfix: "Golden slime extracts now behave as expected when injected with plasma."
