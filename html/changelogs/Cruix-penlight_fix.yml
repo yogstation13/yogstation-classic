@@ -1,8 +1,0 @@
-author: Cruix
-
-delete-after: True
-
-changes: 
-  - bugfix: "Shining a flashlight or penlight in someones eyes now always displays a message to the flasher."
-  - bugfix: "Xray no longer prevents someone from being flashed by a flashlight."
-  - rscadd: "Shining a flashlight in someone's eyes shows a new message if the subject is vulnerable to flashes."
