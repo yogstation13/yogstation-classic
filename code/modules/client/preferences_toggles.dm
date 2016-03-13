@@ -319,11 +319,11 @@
 			}
 
 			.enabled {
-				background-color: #0f0;
+				background-color: #0a0;
 			}
 
 			.disabled {
-				background-color: #f00;
+				background-color: #a00;
 			}
 
 			.shown {
