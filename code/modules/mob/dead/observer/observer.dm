@@ -448,7 +448,16 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 						if(null)
 							//Nothing
 						else//If we don't know what role they have but they have one.
-							client.images += image(tempHud,target,"hudunknown1")
+							var/is_gang = 0
+							for(var/gang_name in gang_name_pool)
+								if(target.mind.special_role == "[gang_name] Gang Boss")
+									client.images += image(tempHud,target,"gang_boss")
+									is_gang = 1
+								if(target.mind.special_role == "[gang_name] Gangster")
+									client.images += image(tempHud,target,"gangster")
+									is_gang = 1
+							if(!is_gang)
+								client.images += image(tempHud,target,"hudunknown1")
 
 				else if(issilicon(target))//If the silicon mob has no law datum, no inherent laws, or a law zero, add them to the hud.
 					var/mob/living/silicon/silicon_target = target
