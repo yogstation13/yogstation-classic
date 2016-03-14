@@ -451,7 +451,7 @@ var/global/list/spec_roles = list(
 					if(unlock_content)
 						dat += "<b>BYOND Membership Publicity:</b> <a href='?_src_=prefs;preference=publicity'>[(toggles & MEMBER_PUBLIC) ? "Public" : "Hidden"]</a><br>"
 						dat += "<b>Ghost Form:</b> <a href='?_src_=prefs;task=input;preference=ghostform'>[ghost_form]</a><br>"
-						dat += "<B>Ghost Orbit: </B> <a href='?_src_=prefs;task=input;preference=ghostform'>[ghost_orbit]</a><br>"
+						dat += "<B>Ghost Orbit: </B> <a href='?_src_=prefs;task=input;preference=ghostorbit'>[ghost_orbit]</a><br>"
 
 
 				dat += "</td><td width='300px' height='300px' valign='top'>"
