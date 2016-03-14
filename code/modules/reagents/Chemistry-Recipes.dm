@@ -125,10 +125,14 @@
 								O.show_message(text("<span class='notice'>You get a vague feeling that something is missing.</span>"), 1)  //Alert bystanders that their borer is braindead
 						else
 							B.transfer_personality(pick(candidates))
+							B << "<span class='warning'>You realize that you are self aware!</span>"
+							B << "<span class='userdanger'>You owe the person who gave you life a great debt.</span>"
+							B << "<span class='userdanger'>Serve your creator, and help them accomplish their goals at all costs.</span>"
 
 					if(/obj/item/unactivated_swarmer)
 						var/obj/item/unactivated_swarmer/U = new
 						U.loc = get_turf(holder.my_atom)
+						U.creator = 1
 						if(prob(50))
 							for(var/j = 1, j <= rand(1, 3), j++)
 								step(U, pick(NORTH,SOUTH,EAST,WEST))
