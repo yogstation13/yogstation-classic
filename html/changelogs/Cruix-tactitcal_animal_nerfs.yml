@@ -1,0 +1,7 @@
+author: Cruix
+
+delete-after: True
+
+changes: 
+  - tweak: "Tactical dolphin health nerfed fron 150 to 100, tactical carp health nerfed from 300 to 150."
+  - rscadd: "Tactical animal harnesses now have a slowly recharging power cell that powers their lasers. A dolphin can fire four salvos before needing to wait and recharge, and a carp can fire six shots. Their fire rate has been increased to once per second to compensate."
