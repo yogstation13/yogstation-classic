@@ -325,7 +325,9 @@
 	..(gibbed)
 
 /mob/living/simple_animal/hostile/proc/OpenFire(the_target)
-
+	if(harness && !harness.weapon_safety && harness.selected_weapon)
+		if(!harness.can_shoot())
+			return
 	var/target = the_target
 	visible_message("<span class='danger'><b>[src]</b> [ranged_message] at [target]!</span>")
 
@@ -350,7 +352,19 @@
 	ranged_cooldown = ranged_cooldown_cap
 	return
 
+/mob/living/simple_animal/hostile/Stat()
+	..()
+	if(harness && harness.cell && statpanel("Status"))
+		stat(null, "Harness Charge: [harness.cell.charge]/[harness.cell.maxcharge]([round((harness.cell.charge / harness.cell.maxcharge) * 100)]%)")
+		return 1
+
+
 /mob/living/simple_animal/hostile/proc/Shoot(target, start, user, bullet = 0)
+	if(harness && !harness.weapon_safety && harness.selected_weapon)
+		if(!harness.can_shoot())
+			return
+		else
+			harness.handle_shoot()
 	if(target == start)
 		return
 
