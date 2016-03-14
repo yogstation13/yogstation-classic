@@ -1,9 +1,53 @@
 
-
 /datum/reagent/drug
 	name = "Drug"
 	id = "drug"
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
+
+/datum/reagent/drug/catalade
+	name = "Catalade"
+	id = "catalade"
+	description = "A potentially dangerous drug that catalyzes many reactions in the body, effectively speeding up metabolism. Avoid extensive use of this drug."
+	metabolization_rate = 1.25 * REAGENTS_METABOLISM
+	color = "#60A584"
+	overdose_threshold = 15
+
+/datum/reagent/drug/catalade/on_mob_life(mob/living/M)
+	M.status_flags |= GOTTAGOFAST
+	if(!holder.has_reagent("nutriment"))
+		M.adjustToxLoss(0.5*REM)
+	M.nutrition -= 2 * REAGENTS_METABOLISM
+	M.overeatduration = 0
+	if(M.nutrition < 0)
+		M.nutrition = 0
+	M.adjustToxLoss(0.5)
+	if(!src.overdosed)//on_mob_life() is called after overdose_process(), and would overwrite its effects if we still did it.
+		for(var/datum/reagent/R in M.reagents.reagent_list)
+			if(R != src)
+				R.metabolization_rate = 2 * initial(R.metabolization_rate)
+	..()
+
+/datum/reagent/drug/catalade/overdose_start(mob/living/M)
+	M << "<span class='userdanger'>You begin to feel like everything and nothing at the same time!</span>"
+
+/datum/reagent/drug/catalade/overdose_process(mob/living/M)
+	M.status_flags |= GOTTAGOREALLYFAST
+	if(!holder.has_reagent("nutriment"))
+		M.adjustToxLoss(0.5*REM)
+	M.nutrition -= 5 * REAGENTS_METABOLISM
+	M.overeatduration = 0
+	if(M.nutrition < 0)
+		M.nutrition = 0
+	M.adjustToxLoss(1.5)
+	for(var/datum/reagent/R in M.reagents.reagent_list)
+		if(R != src)
+			R.metabolization_rate = 2.5 * initial(R.metabolization_rate)
+	..()
+
+/datum/reagent/drug/catalade/on_mob_delete(mob/M)
+	for(var/datum/reagent/R in M.reagents.reagent_list)
+		if(R != src)
+			R.metabolization_rate = initial(R.metabolization_rate)
 
 /datum/reagent/drug/space_drugs
 	name = "Space drugs"
