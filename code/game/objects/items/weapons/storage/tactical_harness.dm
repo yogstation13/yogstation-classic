@@ -10,7 +10,7 @@
 	cant_hold = list(/obj/item/weapon/storage/tactical_harness) //muh recursive backpacks.
 	req_access = list(access_syndicate)
 	var/obj/item/weapon/stock_parts/cell/cell
-	var/shot_cost = 100
+	var/shot_cost = 150
 	var/charge_rate = 10
 
 	var/list/wearable_by = list()//types of animals that can wear it. Their subtypes can also wear it. Should be a /mob/living/simple_animal/hostile.
@@ -422,7 +422,7 @@
 	animal_new_desc = "A highly trained space dolphin used by the syndicate to provide light fire support and space superiority for elite commando teams."
 	new_speed = -0.3 //faster than an unencumbered human, but not too much faster.
 	rapid_fire = 1
-	shot_cost = 50
+	shot_cost = 75
 	ranged_attacks = list(/obj/item/projectile/beam = "laser")
 
 ///////////Tactical Carp///////////////////
