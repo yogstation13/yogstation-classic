@@ -392,8 +392,11 @@ var/global/list/ghost_forms = list("ghost","ghostking","ghostian2","skeleghost",
 			ghost_image.icon_state = new_form
 			ghost_image.overlays = mob.overlays
 			ghost_image.alpha = mob.alpha
-var/global/list/ghost_orbits = list(GHOST_ORBIT_CIRCLE,GHOST_ORBIT_TRIANGLE,GHOST_ORBIT_SQUARE,GHOST_ORBIT_HEXAGON,GHOST_ORBIT_PENTAGON)
 
+
+//var/global/list/ghost_orbits = list(GHOST_ORBIT_CIRCLE,GHOST_ORBIT_TRIANGLE,GHOST_ORBIT_SQUARE,GHOST_ORBIT_HEXAGON,GHOST_ORBIT_PENTAGON)
+
+/*
 /client/verb/pick_ghost_orbit()
 	set name = "Choose Ghost Orbit"
 	set category = "Preferences"
@@ -407,6 +410,7 @@ var/global/list/ghost_orbits = list(GHOST_ORBIT_CIRCLE,GHOST_ORBIT_TRIANGLE,GHOS
 		if(istype(mob, /mob/dead/observer))
 			var/mob/dead/observer/O = mob
 			O.ghost_orbit = new_orbit
+*/
 
 
 /client/verb/toggle_intent_style()

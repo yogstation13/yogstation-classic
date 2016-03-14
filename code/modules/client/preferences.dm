@@ -100,7 +100,7 @@ var/global/list/spec_roles = list(
 	var/UI_style_ai = DEFAULT_AI_UI
 	var/toggles = TOGGLES_DEFAULT
 	var/chat_toggles = TOGGLES_DEFAULT_CHAT
-	var/ghost_orbit = GHOST_ORBIT_CIRCLE
+	//var/ghost_orbit = GHOST_ORBIT_CIRCLE
 	var/ghost_form = "ghost"
 	var/allow_midround_antag = 1
 
@@ -451,7 +451,7 @@ var/global/list/spec_roles = list(
 					if(unlock_content)
 						dat += "<b>BYOND Membership Publicity:</b> <a href='?_src_=prefs;preference=publicity'>[(toggles & MEMBER_PUBLIC) ? "Public" : "Hidden"]</a><br>"
 						dat += "<b>Ghost Form:</b> <a href='?_src_=prefs;task=input;preference=ghostform'>[ghost_form]</a><br>"
-						dat += "<B>Ghost Orbit: </B> <a href='?_src_=prefs;task=input;preference=ghostorbit'>[ghost_orbit]</a><br>"
+						//dat += "<B>Ghost Orbit: </B> <a href='?_src_=prefs;task=input;preference=ghostorbit'>[ghost_orbit]</a><br>"
 
 
 				dat += "</td><td width='300px' height='300px' valign='top'>"
@@ -942,11 +942,12 @@ var/global/list/spec_roles = list(
 							var/new_form = input(user, "Thanks for supporting BYOND - Choose your ghostly form:","Thanks for supporting BYOND",null) as null|anything in ghost_forms
 							if(new_form)
 								ghost_form = new_form
-					if("ghostorbit")
+					/*if("ghostorbit")
 						if(unlock_content)
 							var/new_orbit = input(user, "Thanks for supporting BYOND - Choose your ghostly orbit:","Thanks for supporting BYOND", null) as null|anything in ghost_orbits
 							if(new_orbit)
 								ghost_orbit = new_orbit
+					*/
 					if("name")
 						var/new_name = reject_bad_name( input(user, "Choose your character's name:", "Character Preference")  as text|null )
 						if(new_name)

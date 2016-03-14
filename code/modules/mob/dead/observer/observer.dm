@@ -23,7 +23,7 @@ var/list/image/ghost_darkness_images = list() //this is a list of images for thi
 	var/ghostvision = 1 //is the ghost able to see things humans can't?
 	var/seedarkness = 1
 	var/ninjahud = 0
-	var/ghost_orbit = GHOST_ORBIT_CIRCLE
+	//var/ghost_orbit = GHOST_ORBIT_CIRCLE
 
 /mob/dead/observer/New(mob/body)
 	sight |= SEE_TURFS | SEE_MOBS | SEE_OBJS | SEE_SELF
@@ -227,7 +227,25 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
  // This is the ghost's follow verb with an argument
 /mob/dead/observer/proc/ManualFollow(atom/movable/target)
-	if (!istype(target))
+	if(target && target != src)
+		if(following && following == target)
+			return
+		following = target
+		src << "<span class='notice'>Now following [target].</span>"
+		spawn(0)
+			var/turf/pos = get_turf(src)
+			while(loc == pos && target && following == target && client)
+				var/turf/T = get_turf(target)
+				if(!T)
+					break
+				// To stop the ghost flickering.
+				if(loc != T)
+					loc = T
+				pos = loc
+				sleep(15)
+			if (target == following) following = null
+//This below is ghost orbiting. I commented it out because people were annoyed.
+/*	if (!istype(target))
 		return
 
 	var/icon/I = icon(target.icon,target.icon_state,target.dir)
@@ -253,7 +271,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 			rot_seg = 36 //360/10 bby, smooth enough aproximation of a circle
 
 	orbit(target,orbitsize, FALSE, 20, rot_seg)
-
+*/
 /mob/dead/observer/proc/toggleninjahud()
 	set category = "Ghost"
 	set name = "Toggle Antag Icons"

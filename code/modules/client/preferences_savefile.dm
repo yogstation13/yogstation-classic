@@ -117,7 +117,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	S["chat_toggles"]		>> chat_toggles
 	S["toggles"]			>> toggles
 	S["ghost_form"]			>> ghost_form
-	S["ghost_orbit"]		>> ghost_orbit
+	//S["ghost_orbit"]		>> ghost_orbit
 	S["agree"]				>> agree
 
 	//try to fix any outdated data if necessary
@@ -134,7 +134,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	default_slot	= sanitize_integer(default_slot, 1, max_save_slots, initial(default_slot))
 	toggles			= sanitize_integer(toggles, 0, 65535, initial(toggles))
 	ghost_form		= sanitize_inlist(ghost_form, ghost_forms, initial(ghost_form))
-	ghost_orbit 	= sanitize_inlist(ghost_orbit, ghost_orbits, initial(ghost_orbit))
+	//ghost_orbit 	= sanitize_inlist(ghost_orbit, ghost_orbits, initial(ghost_orbit))
 	agree			= sanitize_integer(agree, -1, 65535, 0)
 
 	if(!be_special)
@@ -161,7 +161,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	S["toggles"]			<< toggles
 	S["chat_toggles"]		<< chat_toggles
 	S["ghost_form"]			<< ghost_form
-	S["ghost_orbit"]		<< ghost_orbit
+	//S["ghost_orbit"]		<< ghost_orbit
 	S["agree"]				<< agree
 
 	return 1

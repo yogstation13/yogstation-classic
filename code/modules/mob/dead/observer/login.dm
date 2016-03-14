@@ -15,7 +15,7 @@
 			alpha = 255
 		if (ghostimage)
 			ghostimage.icon_state = src.icon_state
-			ghost_orbit = client.prefs.ghost_orbit
+			//ghost_orbit = client.prefs.ghost_orbit
 			ghostimage.overlays = overlays
 			ghostimage.alpha = alpha
 	if(client.holder)
