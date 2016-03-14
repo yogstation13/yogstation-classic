@@ -438,14 +438,14 @@
 			var/expiration = select_query.item[7]
 			var/ckey = select_query.item[8]
 			var/ackey = select_query.item[9]
-			var/unbanned = select_query.item[10]
+			var/unbanned = text2num(select_query.item[10])
 			var/unbanckey = select_query.item[11]
 			var/unbantime = select_query.item[12]
 			var/edits = select_query.item[13]
 
 			var/lcolor = blcolor
 			var/dcolor = bdcolor
-			if(unbanned)
+			if(unbanned == 1)
 				lcolor = ulcolor
 				dcolor = udcolor
 
@@ -454,7 +454,7 @@
 				if("PERMABAN")
 					typedesc = "<font color='red'><b>PERMABAN</b></font>"
 				if("TEMPBAN")
-					typedesc = "<b>TEMPBAN</b><br><font size='2'>([duration] minutes [(unbanned) ? "" : "(<a href=\"byond://?src=\ref[src];dbbanedit=duration;dbbanid=[banid]\">Edit</a>))"]<br>Expires [expiration]</font>"
+					typedesc = "<b>TEMPBAN</b><br><font size='2'>([duration] minutes [(unbanned == 1) ? "" : "(<a href=\"byond://?src=\ref[src];dbbanedit=duration;dbbanid=[banid]\">Edit</a>))"]<br>Expires [expiration]</font>"
 				if("JOB_PERMABAN")
 					typedesc = "<b>JOBBAN</b><br><font size='2'>([job])"
 				if("JOB_TEMPBAN")
@@ -464,17 +464,17 @@
 				if("ADMIN_PERMABAN")
 					typedesc = "<b>ADMIN PERMABAN</b>"
 				if("ADMIN_TEMPBAN")
-					typedesc = "<b>ADMIN TEMPBAN</b><br><font size='2'>([duration] minutes [(unbanned) ? "" : "(<a href=\"byond://?src=\ref[src];dbbanedit=duration;dbbanid=[banid]\">Edit</a>))"]<br>Expires [expiration]</font>"
+					typedesc = "<b>ADMIN TEMPBAN</b><br><font size='2'>([duration] minutes [(unbanned == 1) ? "" : "(<a href=\"byond://?src=\ref[src];dbbanedit=duration;dbbanid=[banid]\">Edit</a>))"]<br>Expires [expiration]</font>"
 
 			output += "<tr bgcolor='[dcolor]'>"
 			output += "<td align='center'>[typedesc]</td>"
 			output += "<td align='center'><b>[ckey]</b></td>"
 			output += "<td align='center'>[bantime]</td>"
 			output += "<td align='center'><b>[ackey]</b></td>"
-			output += "<td align='center'>[(unbanned) ? "" : "<b><a href=\"byond://?src=\ref[src];dbbanedit=unban;dbbanid=[banid]\">Unban</a></b>"]</td>"
+			output += "<td align='center'>[(unbanned == 1) ? "" : "<b><a href=\"byond://?src=\ref[src];dbbanedit=unban;dbbanid=[banid]\">Unban</a></b>"]</td>"
 			output += "</tr>"
 			output += "<tr bgcolor='[lcolor]'>"
-			output += "<td align='center' colspan='5'><b>Reason: [(unbanned) ? "" : "(<a href=\"byond://?src=\ref[src];dbbanedit=reason;dbbanid=[banid]\">Edit</a>)"]</b> <cite>\"[reason]\"</cite></td>"
+			output += "<td align='center' colspan='5'><b>Reason: [(unbanned == 1) ? "" : "(<a href=\"byond://?src=\ref[src];dbbanedit=reason;dbbanid=[banid]\">Edit</a>)"]</b> <cite>\"[reason]\"</cite></td>"
 			output += "</tr>"
 			if(edits)
 				output += "<tr bgcolor='[dcolor]'>"
@@ -483,7 +483,7 @@
 				output += "<tr bgcolor='[lcolor]'>"
 				output += "<td align='center' colspan='5'><font size='2'>[edits]</font></td>"
 				output += "</tr>"
-			if(unbanned)
+			if(unbanned == 1)
 				output += "<tr bgcolor='[dcolor]'>"
 				output += "<td align='center' colspan='5' bgcolor=''><b>UNBANNED by admin [unbanckey] on [unbantime]</b></td>"
 				output += "</tr>"

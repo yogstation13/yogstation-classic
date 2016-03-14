@@ -57,6 +57,9 @@
 
 	client.screen += client.void
 
+
+	winset(src, null, "mainwindow.title='Space Station 13 - [station_name()]'")
+
 // Calling update_interface() in /mob/Login() causes the Cyborg to immediately be ghosted; because of winget().
 // Calling it in the overriden Login, such as /mob/living/Login() doesn't cause this.
 /mob/proc/update_interface()

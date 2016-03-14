@@ -3,24 +3,79 @@
 
 var/list/preferences_datums = list()
 
-var/global/list/special_roles = list( //keep synced with the defines BE_* in setup.dm
-//some autodetection here.
-	"traitor" = /datum/game_mode/traitor,			//0
-	"operative" = /datum/game_mode/nuclear,			//1
-	"changeling" = /datum/game_mode/changeling,		//2
-	"wizard" = /datum/game_mode/wizard,				//3
-	"malf AI" = /datum/game_mode/malfunction,		//4
-	"revolutionary" = /datum/game_mode/revolution,	//5
-	"alien",										//6
-	"pAI/posibrain",								//7
-	"cultist" = /datum/game_mode/cult,				//8
-	"blob" = /datum/game_mode/blob,					//9
-	"ninja",										//10
-	"monkey" = /datum/game_mode/monkey,				//11
-	"gangster" = /datum/game_mode/gang,				//12
-	"shadowling" = /datum/game_mode/shadowling,		//13
-	"abductor" = /datum/game_mode/abduction,		//14
-	"cyberman" = /datum/game_mode/cybermen
+var/global/list/spec_roles = list(
+	BE_TRAITOR = list(
+			"game_mode" = /datum/game_mode/traitor,
+			"name" 		= "traitor"
+		),
+	BE_OPERATIVE = list(
+			"game_mode" = /datum/game_mode/nuclear,
+			"name" 		= "operative"
+		),
+	BE_CHANGELING = list(
+			"game_mode" = /datum/game_mode/changeling,
+			"name" 		= "changeling"
+		),
+	BE_WIZARD = list(
+			"game_mode" = /datum/game_mode/wizard,
+			"name" 		= "wizard"
+		),
+	BE_MALF = list(
+			"game_mode" = /datum/game_mode/malfunction,
+			"name" 		= "malf AI"
+		),
+	BE_REV = list(
+			"game_mode" = /datum/game_mode/revolution,
+			"name" 		= "revolutionary"
+		),
+	BE_ALIEN = list(
+			"game_mode" = null,
+			"name" 		= "alien"
+		),
+	BE_PAI = list(
+			"game_mode" = null,
+			"name" 		= "pAI/posibrain"
+		),
+	BE_CULTIST = list(
+			"game_mode" = /datum/game_mode/cult,
+			"name" 		= "cultist"
+		),
+	BE_BLOB = list(
+			"game_mode" = /datum/game_mode/blob,
+			"name" 		= "blob"
+		),
+	BE_NINJA = list(
+			"game_mode" = null,
+			"name" 		= "ninja"
+		),
+	BE_MONKEY = list(
+			"game_mode" = /datum/game_mode/monkey,
+			"name" 		= "monkey"
+		),
+	BE_GANG = list(
+			"game_mode" = /datum/game_mode/gang,
+			"name" 		= "gangster"
+		),
+	BE_SHADOWLING = list(
+			"game_mode" = /datum/game_mode/shadowling,
+			"name" 		= "shadowling"
+		),
+	BE_ABDUCTOR = list(
+			"game_mode" = /datum/game_mode/abduction,
+			"name" 		= "abductor"
+		),
+	BE_REVENANT = list(
+			"game_mode" = null,
+			"name" 		= "revenant"
+		),
+	BE_ZOMBIE = list(
+			"game_mode" = /datum/game_mode/zombies,
+			"name" 		= "zombie"
+		),
+	BE_CYBERMAN = list(
+			"game_mode" = /datum/game_mode/cybermen,
+			"name" 		= "cyberman"
+		)
 )
 
 
@@ -39,7 +94,7 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 	//game-preferences
 	var/lastchangelog = ""				//Saved changlog filesize to detect if there was a change
 	var/ooccolor = null
-	var/be_special = 0					//Special role selection
+	var/be_special = list()					//Special role selection
 	var/UI_style_carbon = DEFAULT_CARBON_UI
 	var/UI_style_borg = DEFAULT_BORG_UI
 	var/UI_style_ai = DEFAULT_AI_UI
@@ -137,6 +192,13 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 		save_preferences()
 	save_character()		//let's save this new random character so it doesn't keep generating new ones.
 	return
+
+/datum/preferences/proc/hasSpecialRole(var/id)
+	for (var/i in be_special)
+		if(id == i)
+			return 1
+
+	return 0
 
 /datum/preferences
 	proc/ShowChoices(mob/user)
@@ -396,30 +458,29 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 
 				if(jobban_job_in_list(user, "Syndicate"))
 					dat += "<font color=red><b>You are banned from antagonist roles.</b></font>"
-					src.be_special = 0
+					src.be_special = list()
 
 				else
-					var/n = 0
-					for (var/i in special_roles)
-						if(jobban_job_in_list(bans, i))
-							dat += "<b>Be [i]:</b> <font color=red><b>\[BANNED]</b></font><br>"
-						else if(i == "pAI/posibrain")
+					for (var/i in spec_roles)
+						var/item = spec_roles[i]
+						if(jobban_job_in_list(bans, item["name"]))
+							dat += "<b>Be [item["name"]]:</b> <font color=red><b>\[BANNED\]</b></font><br>"
+						else if(item["name"] == "pAI/posibrain")
 							if(jobban_job_in_list(bans, "pAI"))
-								dat += "<b>Be [i]:</b> <font color=red><b>\[BANNED\]</b></font><br>"
+								dat += "<b>Be [item["name"]]:</b> <font color=red><b>\[BANNED\]</b></font><br>"
 						else
 							var/days_remaining = null
-							if(config.use_age_restriction_for_jobs && ispath(special_roles[i])) //If it's a game mode antag, check if the player meets the minimum age
-								var/mode_path = special_roles[i]
+							if(config.use_age_restriction_for_jobs && ispath(item["game_mode"])) //If it's a game mode antag, check if the player meets the minimum age
+								var/mode_path = item["game_mode"]
 								var/datum/game_mode/temp_mode = new mode_path
 								days_remaining = temp_mode.get_remaining_days(user.client)
 
 							if(days_remaining)
-								dat += "<b>Be [i]:</b> <font color=red> \[IN [days_remaining] DAYS]</font><br>"
+								dat += "<b>Be [item["name"]]:</b> <font color=red> \[IN [days_remaining] DAYS]</font><br>"
 							else if(src.toggles & QUIET_ROUND)
-								dat += "<b>Be [i]:</b> <font color=blue><b>\[QUIET ROUND\]</b></font><br>"
+								dat += "<b>Be [item["name"]]:</b> <font color=blue><b>\[QUIET ROUND\]</b></font><br>"
 							else
-								dat += "<b>Be [i]:</b> <a href='?_src_=prefs;preference=be_special;num=[n]'>[src.be_special&(1<<n) ? "Yes" : "No"]</a><br>"
-						n++
+								dat += "<b>Be [item["name"]]:</b> <a href='?_src_=prefs;preference=be_[item["name"]]'>[src.hasSpecialRole(i) ? "Yes" : "No"]</a><br>"
 				if(is_donator(user.client))
 					dat += "<b>Quiet round:</b> <a href='?_src_=prefs;preference=donor;task=quiet_round'>[(src.toggles & QUIET_ROUND) ? "Yes" : "No"]</a><br>"
 				dat += "</td></tr></table>"
@@ -1110,6 +1171,14 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 
 
 			else
+				for (var/i in spec_roles)
+					var/item = spec_roles[i]
+					if(href_list["preference"] == "be_[item["name"]]")
+						if(!hasSpecialRole(i))
+							be_special[i] = item
+						else
+							be_special -= i
+
 				switch(href_list["preference"])
 					if("publicity")
 						if(unlock_content)
@@ -1138,9 +1207,6 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 							else
 								UI_style = "Midnight"
 */
-					if("be_special")
-						var/num = text2num(href_list["num"])
-						be_special ^= (1<<num)
 
 					if("name")
 						be_random_name = !be_random_name

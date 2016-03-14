@@ -341,7 +341,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	sexes = 0
 	ignored_by = list(/mob/living/simple_animal/hostile/faithless)
 	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/shadow
-	specflags = list(NOBREATH,NOBLOOD,RADIMMUNE)
+	specflags = list(NOBREATH,NOBLOOD,RADIMMUNE,NOGUNS)
 	dangerous_existence = 1
 
 /datum/species/shadow/spec_life(mob/living/carbon/human/H)
@@ -356,6 +356,9 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 			H.take_overall_damage(1,1)
 		else if (light_amount < 2) //heal in the dark
 			H.heal_overall_damage(1,1)
+	if(!H.darksight_init && !istype(H.dna.species,/datum/species/shadow/ling))
+		H.equip_to_slot_or_del(new /obj/item/clothing/glasses/night/shadowling(H), slot_glasses) //Initialize the shadow's powers with darksight 'glasses'
+		H.darksight_init = 1
 
 /*
  SLIMEPEOPLE
@@ -723,7 +726,6 @@ var/global/image/plasmaman_on_fire = image("icon"='icons/mob/OnFire.dmi', "icon_
 		H.adjustFireLoss(-5)
 		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
 		return 1
-
 
 
 

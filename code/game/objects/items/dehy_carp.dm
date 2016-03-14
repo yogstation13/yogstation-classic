@@ -21,6 +21,8 @@
 /obj/item/toy/carpplushie/dehy_carp/afterattack(obj/O, mob/user,proximity)
 	if(!proximity) return
 	if(istype(O,/obj/structure/sink))
+		log_game("[user]/[user.ckey] activated a dehydrated space carp at [user.x],[user.y],[user.z]")
+		message_admins("[key_name_admin(user)]<A HREF='?_src_=holder;adminmoreinfo=\ref[user]'>?</A> (<A HREF='?_src_=holder;adminplayerobservefollow=\ref[user]'>FLW</A>) activated a dehydrated space carp at ([user.x],[user.y],[user.z]) <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>(JMP)</a>")
 		user.drop_item()
 		loc = get_turf(O)
 		return Swell()

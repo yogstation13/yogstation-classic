@@ -16,6 +16,8 @@
 	speed = 0
 	maxHealth = 25
 	health = 25
+	a_intent = "harm"
+	languages = HUMAN|CARP
 
 	harm_intent_damage = 8
 	melee_damage_lower = 15

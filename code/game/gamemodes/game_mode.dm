@@ -267,7 +267,7 @@
 	intercepttext += "<B> Centcom has recently been contacted by the following syndicate affiliated organisations in your area, please investigate any information you may have:</B>"
 
 	var/list/possible_modes = list()
-	possible_modes.Add("revolution", "wizard", "nuke", "traitor", "malf", "changeling", "cult", "gang") // , "zombie"
+	possible_modes.Add("revolution", "wizard", "nuke", "traitor", "malf", "changeling", "cult", "gang", "shadowling", "cybermen") // , "zombie"
 	possible_modes -= "[ticker.mode]" //remove current gamemode to prevent it from being randomly deleted, it will be readded later
 
 	var/number = pick(1, 2)
@@ -327,7 +327,7 @@
 	for(var/mob/new_player/player in players)
 		if(player.client && player.ready)
 			var/list/bans = jobban_list_for_mob(player)
-			if((player.client.prefs.be_special & role) && !(player.mind.quiet_round))
+			if((player.client.prefs.hasSpecialRole(role)) && !(player.mind.quiet_round))
 				if(!jobban_job_in_list(bans, "Syndicate") && !jobban_job_in_list(bans, roletext)) //Nodrak/Carn: Antag Job-bans
 					if(age_check(player.client)) //Must be older than the minimum age
 						candidates += player.mind				// Get a list of all the people who want to be the antagonist for this round
@@ -342,7 +342,7 @@
 		for(var/mob/new_player/player in players)
 			if(player.client && player.ready)
 				var/list/bans = jobban_list_for_mob(player)
-				if(!(player.client.prefs.be_special & role)) // We don't have enough people who want to be antagonist, make a seperate list of people who don't want to be one
+				if(!(player.client.prefs.hasSpecialRole(role))) // We don't have enough people who want to be antagonist, make a seperate list of people who don't want to be one
 					if(!jobban_job_in_list(bans, "Syndicate") && !jobban_job_in_list(bans, roletext)) //Nodrak/Carn: Antag Job-bans
 						drafted += player.mind
 						if(player.mind.quiet_round)
@@ -398,7 +398,7 @@
 
 /*
 /datum/game_mode/proc/check_player_role_pref(var/role, var/mob/new_player/player)
-	if(player.preferences.be_special & role)
+	if(player.preferences.hasSpecialRole(role))
 		return 1
 	return 0
 */

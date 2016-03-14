@@ -105,7 +105,7 @@ var/list/slot2type = list("head" = /obj/item/clothing/head/changeling, "wear_mas
 	if(ticker.mode.changelings.len >= changelingcap) //Caps number of latejoin antagonists
 		return
 	if(ticker.mode.changelings.len <= (changelingcap - 2) || prob(100 - (config.changeling_scaling_coeff*2)))
-		if(character.client.prefs.be_special & BE_CHANGELING)
+		if(character.client.prefs.hasSpecialRole(BE_CHANGELING))
 			var/list/bans = jobban_list_for_mob(character.client)
 			if(!jobban_job_in_list(bans, "changeling") && !jobban_job_in_list(bans, "Syndicate"))
 				if(age_check(character.client))
@@ -432,7 +432,7 @@ var/list/slot2type = list("head" = /obj/item/clothing/head/changeling, "wear_mas
 	user.facial_hair_style = chosen_prof.facial_hair_style
 	user.eye_color = chosen_prof.eye_color
 	user.features = chosen_prof.features
-	
+
 	domutcheck(user)
 	user.update_body()
 	user.update_hair()
@@ -478,7 +478,7 @@ var/list/slot2type = list("head" = /obj/item/clothing/head/changeling, "wear_mas
 	var/list/exists_list = list()
 	var/list/item_color_list = list()
 	var/list/item_state_list = list()
-	
+
 	var/gender = null
 	var/skin_tone = null
 	var/hair_color = null

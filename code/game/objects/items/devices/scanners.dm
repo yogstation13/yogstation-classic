@@ -141,10 +141,16 @@ MASS SPECTROMETER
 			if(ticker.mode.is_cyberman(M.mind))
 				user << "<span class='danger'>Unknown harmful implants detected in patient's brain - recommend removal via brain surgery.</span>"
 			else
-				for(var/obj/effect/cyberman_hack/human/hack in cyberman_network.active_cybermen_hacks)
+				for(var/datum/cyberman_hack/human/hack in cyberman_network.active_cybermen_hacks)
 					if(hack.target == H)
 						user << "<span class='danger'>Unknown harmful microscopic machines detected in subject's bloodstream: Recommend treatment via Electro Magnetic Pulse or Strong Electric Shock immediately!</span>"
 						break
+
+	if(iscarbon(M))
+		var/mob/living/carbon/C = M
+		if(C.borer)
+			user << "<span class='danger'>Foreign organism detected in subjects cranium. Recommended treatment: Brain Surgery and a dosage of sucrose in solution.</span>"
+
 
 	user << "<span class='info'>Analyzing results for [M]:\n\tOverall status: [mob_status]</span>"
 

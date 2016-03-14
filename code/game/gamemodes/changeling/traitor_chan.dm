@@ -66,7 +66,7 @@
 		..()
 		return
 	if(ticker.mode.changelings.len <= (changelingcap - 2) || prob(100 / (config.changeling_scaling_coeff * 4)))
-		if(character.client.prefs.be_special & BE_CHANGELING)
+		if(character.client.prefs.hasSpecialRole(BE_CHANGELING))
 			var/list/bans = jobban_list_for_mob(character.client)
 			if(!jobban_job_in_list(bans, "changeling") && !jobban_job_in_list(bans, "Syndicate"))
 				if(age_check(character.client))

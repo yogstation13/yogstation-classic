@@ -270,7 +270,7 @@ emp_act
 		src.mind.cyberman.emp_act(src, severity)
 	else
 		if(cyberman_network)
-			for(var/obj/effect/cyberman_hack/human/H in cyberman_network.active_cybermen_hacks)
+			for(var/datum/cyberman_hack/human/H in cyberman_network.active_cybermen_hacks)
 				if(H.target == src)
 					H.emp_act(severity)
 	..()
