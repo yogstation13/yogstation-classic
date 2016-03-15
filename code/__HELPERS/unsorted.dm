@@ -1580,6 +1580,7 @@ B --><-- A
 		stop_orbit()
 		sleep(2.6+world.tick_lag) //the 2 second delay at the end of the existing orbit() call, plus some lag slack.
 	orbiting = A
+	//var/angle = 0
 	var/matrix/initial_transform = matrix(transform)
 	var/lastloc = loc
 	//Head first!
@@ -1606,3 +1607,112 @@ B --><-- A
 
 /atom/movable/proc/stop_orbit()
 	orbiting = null
+
+//Key thing that stops lag. Cornerstone of performance in ss13, Just sitting here, in unsorted.dm.
+/proc/stoplag()
+	. = 1
+	sleep(world.tick_lag)
+#if DM_VERSION >= 510
+	if (world.tick_usage > TICK_LIMIT_TO_RUN) //woke up, still not enough tick, sleep for more.
+		. += 2
+		sleep(world.tick_lag*2)
+		if (world.tick_usage > TICK_LIMIT_TO_RUN) //woke up, STILL not enough tick, sleep for more.
+			. += 4
+			sleep(world.tick_lag*4)
+			//you might be thinking of adding more steps to this, or making it use a loop and a counter var
+			//	not worth it.
+#endif
+
+//similar function to range(), but with no limitations on the distance; will search spiralling outwards from the center
+/proc/spiral_range(dist=0, center=usr, orange=0)
+	if(!dist)
+		if(!orange)
+			return list(center)
+		else
+			return list()
+	var/turf/t_center = get_turf(center)
+	if(!t_center)
+		return list()
+	var/list/L = list()
+	var/turf/T
+	var/y
+	var/x
+	var/c_dist = 1
+	if(!orange)
+		L += t_center
+		L += t_center.contents
+	while( c_dist <= dist )
+		y = t_center.y + c_dist
+		x = t_center.x - c_dist + 1
+		for(x in x to t_center.x+c_dist)
+			T = locate(x,y,t_center.z)
+			if(T)
+				L += T
+				L += T.contents
+		y = t_center.y + c_dist - 1
+		x = t_center.x + c_dist
+		for(y in t_center.y-c_dist to y)
+			T = locate(x,y,t_center.z)
+			if(T)
+				L += T
+				L += T.contents
+		y = t_center.y - c_dist
+		x = t_center.x + c_dist - 1
+		for(x in t_center.x-c_dist to x)
+			T = locate(x,y,t_center.z)
+			if(T)
+				L += T
+				L += T.contents
+		y = t_center.y - c_dist + 1
+		x = t_center.x - c_dist
+		for(y in y to t_center.y+c_dist)
+			T = locate(x,y,t_center.z)
+			if(T)
+				L += T
+				L += T.contents
+		c_dist++
+	return L
+//similar function to RANGE_TURFS(), but will search spiralling outwards from the center (like the above, but only turfs)
+/proc/spiral_range_turfs(dist=0, center=usr, orange=0)
+	if(!dist)
+		if(!orange)
+			return list(center)
+		else
+			return list()
+	var/turf/t_center = get_turf(center)
+	if(!t_center)
+		return list()
+	var/list/L = list()
+	var/turf/T
+	var/y
+	var/x
+	var/c_dist = 1
+	if(!orange)
+		L += t_center
+	while( c_dist <= dist )
+		y = t_center.y + c_dist
+		x = t_center.x - c_dist + 1
+		for(x in x to t_center.x+c_dist)
+			T = locate(x,y,t_center.z)
+			if(T)
+				L += T
+		y = t_center.y + c_dist - 1
+		x = t_center.x + c_dist
+		for(y in t_center.y-c_dist to y)
+			T = locate(x,y,t_center.z)
+			if(T)
+				L += T
+		y = t_center.y - c_dist
+		x = t_center.x + c_dist - 1
+		for(x in t_center.x-c_dist to x)
+			T = locate(x,y,t_center.z)
+			if(T)
+				L += T
+		y = t_center.y - c_dist + 1
+		x = t_center.x - c_dist
+		for(y in y to t_center.y+c_dist)
+			T = locate(x,y,t_center.z)
+			if(T)
+				L += T
+		c_dist++
+	return L
