@@ -9,4 +9,4 @@ delete-after: True
 # Also, this gets changed to [] after reading.  Just remove the brackets when you add new shit.
 # Please surround your changes in  double quotes ("). It works without them, but if you use certain characters it screws up compiling. The quotes will not show up in the changelog.
 changes: 
-  - rscadd: "The Syndicate has found a way to modify Nanotrasen's drones once again! This time making it into a scouting drone which can be used for their specialized nuclear operatives."
+  - rscadd: "New drone in a syndicate element which is currently only admin spawnable."

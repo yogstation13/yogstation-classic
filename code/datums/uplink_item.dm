@@ -571,13 +571,6 @@ var/list/uplink_items = list()
 	item = /obj/item/clothing/glasses/thermal/syndi
 	cost = 6
 
-/datum/uplink_item/device_tools/scoutdrone
-	name = "Syndicate Scouting Drone"
-	desc = "A surveillance drone which is known best for scouting enemies bases and trying to discover vital information which can be used for a team's objective."
-	item = /obj/item/device/syndiscoutController
-	cost = 4
-	surplus = 0
-
 /datum/uplink_item/device_tools/binary
 	name = "Binary Translator Key"
 	desc = "A key, that when inserted into a radio headset, allows you to listen to and talk with artificial intelligences and cybernetic organisms in binary. "
