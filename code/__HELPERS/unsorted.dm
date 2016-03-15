@@ -1580,7 +1580,7 @@ B --><-- A
 		stop_orbit()
 		sleep(2.6+world.tick_lag) //the 2 second delay at the end of the existing orbit() call, plus some lag slack.
 	orbiting = A
-	var/angle = 0
+	//var/angle = 0
 	var/matrix/initial_transform = matrix(transform)
 	var/lastloc = loc
 	//Head first!
