@@ -9,16 +9,20 @@
 	storage_slots = 21
 	cant_hold = list(/obj/item/weapon/storage/tactical_harness) //muh recursive backpacks.
 	req_access = list(access_syndicate)
+	var/obj/item/weapon/stock_parts/cell/cell
+	var/shot_cost = 150
+	var/charge_rate = 10
+
 	var/list/wearable_by = list()//types of animals that can wear it. Their subtypes can also wear it. Should be a /mob/living/simple_animal/hostile.
 	var/list/wearable_by_exact = list()//types of aninals that can wear it, but their subtypes can't (i.e. carps, but not megacarps or magicarps). Should be a /mob/living/simple_animal/hostile.
 	var/icon_state_alive
 	var/icon_state_dead
 	var/animal_new_name
 	var/animal_new_desc
-	var/attack_cooldown_cap = 2
+	var/attack_cooldown_cap = 1
 	var/rapid_fire = 0
 	var/new_speed = 0
-	var/new_health = 150
+	var/new_health = 100
 	var/new_melee_damage = 15
 
 	var/emag_active = 0
@@ -33,6 +37,8 @@
 	var/obj/screen/tac_harness/toggle_nightvision/toggle_nightvision_button
 
 /obj/item/weapon/storage/tactical_harness/New()
+	SSobj.processing += src
+	cell = new /obj/item/weapon/stock_parts/cell()
 	toggle_weapon_button = new /obj/screen/tac_harness/toggle_weapon()
 	toggle_safety_button = new /obj/screen/tac_harness/toggle_safety()
 	toggle_emag_button = new /obj/screen/tac_harness/toggle_emag()
@@ -43,6 +49,22 @@
 	for(var/i=0,i<5;i++)
 		new /obj/item/weapon/reagent_containers/food/snacks/syndicake(src)
 	..()
+
+/obj/item/weapon/storage/tactical_harness/Destroy()
+	SSobj.processing -= src
+	return ..()
+
+/obj/item/weapon/storage/tactical_harness/proc/can_shoot()
+	if(cell && cell.charge >= shot_cost)
+		return 1
+	return 0
+
+/obj/item/weapon/storage/tactical_harness/proc/handle_shoot()
+	cell.use(shot_cost)
+
+/obj/item/weapon/storage/tactical_harness/process()
+	if(cell)
+		cell.give(charge_rate)
 
 /obj/item/weapon/storage/tactical_harness/allowed(mob/M)
 	if(istype(M, /mob/living/carbon/human))
@@ -400,6 +422,7 @@
 	animal_new_desc = "A highly trained space dolphin used by the syndicate to provide light fire support and space superiority for elite commando teams."
 	new_speed = -0.3 //faster than an unencumbered human, but not too much faster.
 	rapid_fire = 1
+	shot_cost = 75
 	ranged_attacks = list(/obj/item/projectile/beam = "laser")
 
 ///////////Tactical Carp///////////////////
@@ -413,4 +436,4 @@
 	animal_new_name = "tactical space carp"
 	animal_new_desc = "A highly trained space carp used by the syndicate to provide heavy fire support and space superiority for elite commando teams."
 	ranged_attacks = list(/obj/item/projectile/beam/heavylaser = "heavy laser")
-	new_health = 300
+	new_health = 150
