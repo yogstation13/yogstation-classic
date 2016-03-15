@@ -105,7 +105,7 @@ DEBUG
 			return
 
 		//Job permabans
-		var/DBQuery/query = dbcon.NewQuery("SELECT ckey, job FROM [format_table_name("ban")] WHERE bantype = 'JOB_PERMABAN' AND unbanned == 0")
+		var/DBQuery/query = dbcon.NewQuery("SELECT ckey, job FROM [format_table_name("ban")] WHERE bantype = 'JOB_PERMABAN' AND unbanned = 0")
 		query.Execute()
 
 		while(query.NextRow())
@@ -115,7 +115,7 @@ DEBUG
 			jobban_keylist.Add("[ckey] - [job]")
 
 		//Job tempbans
-		var/DBQuery/query1 = dbcon.NewQuery("SELECT ckey, job FROM [format_table_name("ban")] WHERE bantype = 'JOB_TEMPBAN' AND unbanned == 0 AND expiration_time > Now()")
+		var/DBQuery/query1 = dbcon.NewQuery("SELECT ckey, job FROM [format_table_name("ban")] WHERE bantype = 'JOB_TEMPBAN' AND unbanned = 0 AND expiration_time > Now()")
 		query1.Execute()
 
 		while(query1.NextRow())

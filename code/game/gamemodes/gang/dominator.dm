@@ -37,6 +37,9 @@
 	..()
 	if(gang && isnum(gang.dom_timer))
 		if(gang.dom_timer > 0)
+			if(!loc || loc.z != 1)
+				healthcheck(health)
+				return
 			playsound(loc, 'sound/items/timer.ogg', 10, 0)
 			if(!warned && (gang.dom_timer < 180))
 				warned = 1
@@ -232,3 +235,6 @@
 		if(I.damtype == BURN || I.damtype == BRUTE)
 			healthcheck(I.force)
 		return
+
+/obj/machinery/dominator/tesla_act()
+	qdel(src)

@@ -408,3 +408,25 @@
 	icon_state = "duffle-clown"
 	item_state = "duffle-clown"
 
+/obj/item/weapon/storage/backpack/drone
+	name = "backpack"
+	desc = "It's a tough backpack for the daily grind of miner drone life.."
+	icon_state = "engiepack"
+	item_state = "engiepack"
+	max_w_class = 4
+	max_combined_w_class = 28
+	burn_state = -1
+	flags = NODROP
+
+/obj/item/weapon/storage/backpack/drone/New()
+	..()
+	contents = list()
+	new /obj/item/weapon/storage/bag/ore(src)
+	new /obj/item/weapon/shovel/spade(src)
+	new /obj/item/weapon/pickaxe(src)
+	new /obj/item/weapon/screwdriver(src)
+	var/obj/item/weapon/card/id/point_card = new /obj/item/weapon/card/id(src)
+	var/datum/job/mining/M = new /datum/job/mining
+	point_card.name = "Mining Points Card"
+	point_card.access = M.get_access()
+	return

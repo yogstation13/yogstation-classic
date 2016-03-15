@@ -292,6 +292,7 @@
 	update_lumcount(old_lumcount)
 	baseturf = oldbaseturf
 	lighting_object = locate() in src
+	light_dim = locate() in src
 	init_lighting()
 
 	for(var/turf/space/S in RANGE_TURFS(1,src)) //RANGE_TURFS is in code\__HELPERS\game.dm

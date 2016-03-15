@@ -106,6 +106,12 @@
 		return 1
 	..()
 
+/mob/living/simple_animal/hostile/swarmer/UnarmedAttack(atom/A, proximity)
+	if(istype(A, /obj/machinery/dominator/))
+		src << "<span class='warning'>This device is attempting to corrupt our entire network; attempting to interact with it is too risky. Aborting.</span>"
+		return
+	return ..()
+
 ////CTRL CLICK FOR SWARMERS AND SWARMER_ACT()'S////
 /mob/living/simple_animal/hostile/swarmer/CtrlClickOn(atom/A)
 	face_atom(A)

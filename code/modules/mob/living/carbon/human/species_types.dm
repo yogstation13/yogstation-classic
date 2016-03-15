@@ -114,6 +114,8 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
  ANDROIDS
  */
 
+#define EATING_MESSAGE_COOLDOWN 1200//2 minutes, in deciseconds.
+
 /datum/species/android
 	//augmented half-silicon, half-human hybrids
 	//ocular augmentations (they never asked for this) give them slightly improved nightsight (and permanent meson effect)
@@ -131,15 +133,17 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	burnmod = 1.05
 	heatmod = 1.05
 	invis_sight = SEE_INVISIBLE_MINIMUM
+	var/last_eat_message = -EATING_MESSAGE_COOLDOWN
 
 /datum/species/android/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
 	if (istype(chem, /datum/reagent/consumable)) //paranoia paranoia type casting is coming to get me
 		var/datum/reagent/consumable/food = chem
 		if (food.nutriment_factor)
 			food.nutriment_factor = food.nutriment_factor * 0.2
-			if (prob(1))
+			if (world.time - last_eat_message > EATING_MESSAGE_COOLDOWN)
 				H << "<span class='info'>NOTICE: Digestive subroutines are inefficient. Seek sustenance via power-cell CONSUME induction.</span>"
-		return 1
+				last_eat_message = world.time
+		return 0
 
 /datum/species/android/handle_vision(mob/living/carbon/human/H)
 	//custom override because darksight APPARENTLY DOESN"T WORK LIKE THIS BY DEFAULT??
@@ -166,6 +170,8 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	H << "<span class='info'>Powerful ocular implants afford you greater vision in the darkness, but draw large amounts of power from your biological body. Should your stores run out, they will deactivate and leave you blind.</span>"
 	H << "<span class='info'>Normal food is worth only a fraction of its normal sustenance to you. You must instead draw your nourishment from power cells, tapping into the energy contained within. Beware electromagnetic pulses, for they would do grevious damage to your internal organs..</span>"
 	return ..()
+
+#undef EATING_MESSAGE_COOLDOWN
 /*
  PLANTPEOPLE
 */
@@ -335,7 +341,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	sexes = 0
 	ignored_by = list(/mob/living/simple_animal/hostile/faithless)
 	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/shadow
-	specflags = list(NOBREATH,NOBLOOD,RADIMMUNE)
+	specflags = list(NOBREATH,NOBLOOD,RADIMMUNE,NOGUNS)
 	dangerous_existence = 1
 
 /datum/species/shadow/spec_life(mob/living/carbon/human/H)
@@ -350,6 +356,9 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 			H.take_overall_damage(1,1)
 		else if (light_amount < 2) //heal in the dark
 			H.heal_overall_damage(1,1)
+	if(!H.darksight_init && !istype(H.dna.species,/datum/species/shadow/ling))
+		H.equip_to_slot_or_del(new /obj/item/clothing/glasses/night/shadowling(H), slot_glasses) //Initialize the shadow's powers with darksight 'glasses'
+		H.darksight_init = 1
 
 /*
  SLIMEPEOPLE
@@ -651,6 +660,8 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 /datum/species/abductor/handle_speech(message)
 	//Hacks
 	var/mob/living/carbon/human/user = usr
+	log_say("[key_name(user)] : [message]")
+	user.say_log_silent += "Abductor Chat: [message]"
 	for(var/mob/living/carbon/human/H in mob_list)
 		if(H.dna.species.id != "abductor")
 			continue
@@ -715,7 +726,6 @@ var/global/image/plasmaman_on_fire = image("icon"='icons/mob/OnFire.dmi', "icon_
 		H.adjustFireLoss(-5)
 		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
 		return 1
-
 
 
 

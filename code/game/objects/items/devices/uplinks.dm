@@ -173,14 +173,22 @@ var/list/world_uplinks = list()
 	return 0
 //Refund proc for the borg teleporter (later I'll make a general refund proc if there is demand for it)
 /obj/item/device/radio/uplink/attackby(obj/item/weapon/W, mob/user, params)
-	if(istype(W, /obj/item/weapon/antag_spawner/borg_tele))
-		var/obj/item/weapon/antag_spawner/borg_tele/S = W
+	if(istype(W, /obj/item/weapon/antag_spawner/ally_tele))
+		var/obj/item/weapon/antag_spawner/ally_tele/S = W
 		if(!S.used)
 			hidden_uplink.uses += S.TC_cost
 			qdel(S)
 			user << "<span class='notice'>Teleporter refunded.</span>"
 		else
 			user << "<span class='warning'>This teleporter is already used!</span>"
+	else if(istype(W, /obj/item/weapon/storage/tactical_harness/universal))
+		var/obj/item/weapon/storage/tactical_harness/universal/CH = W
+		if(CH.failed_to_find_player)
+			hidden_uplink.uses += CH.refund_TC
+			qdel(CH)
+			user << "<span class='notice'>Item refunded.</span>"
+		else
+			user << "<span class='warning'>This item has already been used, you cannot refund it!</span>"
 
 // PRESET UPLINKS
 // A collection of preset uplinks.

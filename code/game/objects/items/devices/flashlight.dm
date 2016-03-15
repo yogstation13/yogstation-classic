@@ -16,28 +16,26 @@
 
 /obj/item/device/flashlight/initialize()
 	..()
-	var/datum/color/col = splitHTML(lightcolor)
 	if(on)
 		icon_state = "[initial(icon_state)]-on"
-		SetLuminosity(brightness_on, col.r/255, col.g/255, col.b/255)
+		SetLuminosity(brightness_on)
 	else
 		icon_state = initial(icon_state)
 		SetLuminosity(0)
 
 /obj/item/device/flashlight/proc/update_brightness(mob/user = null)
-	var/datum/color/col = splitHTML(lightcolor)
 	if(on)
 		icon_state = "[initial(icon_state)]-on"
 		if(loc == user)
-			user.AddLuminosity(brightness_on, col.r/255, col.g/255, col.b/255)
+			user.AddLuminosity(brightness_on)
 		else if(isturf(loc))
-			SetLuminosity(brightness_on, col.r/255, col.g/255, col.b/255)
+			SetLuminosity(brightness_on)
 	else
 		icon_state = initial(icon_state)
 		if(loc == user)
-			user.AddLuminosity(-brightness_on, -col.r/255, -col.g/255, -col.b/255)
+			user.AddLuminosity(-brightness_on)
 		else if(isturf(loc))
-			SetLuminosity(0, 0, 0, 0)
+			SetLuminosity(0)
 
 /obj/item/device/flashlight/attack_self(mob/user)
 	if(!isturf(user.loc))
@@ -64,7 +62,7 @@
 
 		var/mob/living/carbon/human/H = M	//mob has protective eyewear
 		if(istype(M, /mob/living/carbon/human) && ((H.head && H.head.flags_cover & HEADCOVERSEYES) || (H.wear_mask && H.wear_mask.flags_cover & MASKCOVERSEYES) || (H.glasses && H.glasses.flags_cover & GLASSESCOVERSEYES)))
-			user << "<span class='notice'>You're going to need to remove that [(H.head && H.head.flags_cover & HEADCOVERSEYES) ? "helmet" : (H.wear_mask && H.wear_mask.flags_cover & MASKCOVERSEYES) ? "mask": "glasses"] first.</span>"
+			user << "<span class='notice'>You're going to need to remove [(H.head && H.head.flags_cover & HEADCOVERSEYES) ? "that helmet" : (H.wear_mask && H.wear_mask.flags_cover & MASKCOVERSEYES) ? "that mask": "those glasses"] first.</span>"
 			return
 
 		if(M == user)	//they're using it on themselves
@@ -79,31 +77,30 @@
 		user.visible_message("<span class='warning'>[user] directs [src] to [M]'s eyes.</span>", \
 							 "<span class='danger'>You direct [src] to [M]'s eyes.</span>")
 		M << "<span class='danger'>[user] directs [src] to your eyes.</span>"
-
 		if(istype(M, /mob/living/carbon/human) || istype(M, /mob/living/carbon/monkey))	//robots and aliens are unaffected
+			M.flash_eyes(visual = 1)//this checks for blindness itself.
 			if(M.stat == DEAD || M.disabilities & BLIND)	//mob is dead or fully blind
 				user << "<span class='warning'>[M] pupils don't react to the light!</span>"
-			else if(M.dna.check_mutation(XRAY))	//mob has X-RAY vision
+			else if(M.dna && M.dna.check_mutation(XRAY))	//mob has X-RAY vision
 				user << "<span class='danger'>[M] pupils give an eerie glow!</span>"
+			else if(M.weakeyes)
+				user << "<span class='danger'>[M]'s eyes snap shut in response to the light!</span>"
 			else	//they're okay!
-				if(M.flash_eyes(visual = 1))
-					user << "<span class='notice'>[M]'s pupils narrow.</span>"
+				user << "<span class='notice'>[M]'s pupils narrow.</span>"
 	else
 		return ..()
 
 
 /obj/item/device/flashlight/pickup(mob/user)
-	var/datum/color/col = splitHTML(lightcolor)
 	if(on)
-		user.AddLuminosity(brightness_on, col.r/255, col.g/255, col.b/255)
-		SetLuminosity(0, 0, 0, 0)
+		user.AddLuminosity(brightness_on)
+		SetLuminosity(0)
 
 
 /obj/item/device/flashlight/dropped(mob/user)
-	var/datum/color/col = splitHTML(lightcolor)
 	if(on)
-		user.AddLuminosity(-brightness_on, -col.r/255, -col.g/255, -col.b/255)
-		SetLuminosity(brightness_on, col.r/255, col.g/255, col.b/255)
+		user.AddLuminosity(-brightness_on)
+		SetLuminosity(brightness_on)
 
 
 /obj/item/device/flashlight/pen

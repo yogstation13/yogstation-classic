@@ -276,7 +276,7 @@
 	return 1
 
 /obj/structure/closet/relaymove(mob/user)
-	if(user.stat || !isturf(loc))
+	if(user.stat || !(isturf(loc) || istype(loc, /obj/structure/bodycontainer/)) )
 		return
 	if(!open())
 		user << "<span class='notice'>It won't budge!</span>"

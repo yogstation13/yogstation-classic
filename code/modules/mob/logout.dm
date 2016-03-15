@@ -7,11 +7,11 @@
 		if(!config.allow_vote_restart)
 			var/admins_number = 0
 			for(var/client/admin in admins)
-				if(check_rights_for(admin, R_SERVER))
+				if(check_rights_for(admin, R_ADMIN))
 					admins_number++
 			if(admins_number == 0)
-				log_admin("No admins left with +SERVER. Restart vote allowed.")
-				message_admins("No admins left with +SERVER. Restart vote allowed.")
+				log_admin("No staff left with +ADMIN. Restart vote allowed.")
+				message_admins("No staff left with +ADMIN. Restart vote allowed.")
 				config.allow_vote_restart = 1
 				/*var/cheesy_message = pick( list(  \
 					"I have no admins online!",\

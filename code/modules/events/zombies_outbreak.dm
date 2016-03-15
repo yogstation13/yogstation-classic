@@ -29,7 +29,7 @@
 	var/list/candidates = list()
 	for(var/mob/living/carbon/human/G in player_list)
 		if(G.mind && G.mind.current && G.mind.current.stat == CONSCIOUS)
-			if(G.client.mob && !G.client.is_afk(1200) /*&& (G.client.prefs.be_special & BE_ZOMBIE)*/)
+			if(G.client.mob && !G.client.is_afk(1200) && (G.client.prefs.hasSpecialRole(BE_ZOMBIE)))
 				candidates += G.client.mob
 
 	while(spawncount > 0 && candidates.len)

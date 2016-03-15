@@ -59,6 +59,7 @@
 			/mob/living/simple_animal/hostile/guardian/bomb,
 			/mob/living/simple_animal/hostile/guardian/shield
 			)//exclusion list for things you don't want the reaction to create.
+		var/list/specialcritters = list(/mob/living/simple_animal/borer,/obj/item/unactivated_swarmer)  //Speshul mobs for speshul reactions
 		var/list/meancritters = typesof(/mob/living/simple_animal/hostile) - blocked // list of possible hostile mobs
 		var/list/nicecritters = list(/mob/living/simple_animal/crab,
 		                        /mob/living/simple_animal/mouse,
@@ -95,14 +96,44 @@
 				if(prob(50))
 					for(var/j = 1, j <= rand(1, 3), j++)
 						step(C, pick(NORTH,SOUTH,EAST,WEST))
-			else
+			if(reaction_name == "Lesser Gold Slime" || reaction_name == "Gold Slime")
 				var/chosen = pick(meancritters)
-				var/mob/living/simple_animal/hostile/C = new chosen
+				var/mob/living/simple_animal/C = new chosen
 				C.faction |= mob_faction
 				C.loc = get_turf(holder.my_atom)
 				if(prob(50))
 					for(var/j = 1, j <= rand(1, 3), j++)
 						step(C, pick(NORTH,SOUTH,EAST,WEST))
+
+			if(reaction_name == "Strange Gold Slime")  //Sooper Sekrit, don't tell anyone!
+				var/chosen = pick(specialcritters)
+				switch(chosen)
+					if(/mob/living/simple_animal/borer)
+						//Spawn and populate a borer
+						var/mob/living/simple_animal/borer/B = new
+						B.loc = get_turf(holder.my_atom)
+						if(prob(50))
+							for(var/j = 1, j <= rand(1, 3), j++)
+								step(B, pick(NORTH,SOUTH,EAST,WEST))
+						for(var/mob/O in viewers(get_turf(holder.my_atom),null))
+							O.show_message(text("<span class='notice'>Some sort of alien slug has crawled out of the slime extract!</span>"), 1)
+
+						var/list/candidates = get_candidates(BE_ALIEN, ALIEN_AFK_BRACKET)
+						if(!candidates.len)
+							//Spawn a non player controlled borer, animatable with light pink slime potion
+							for(var/mob/O in viewers(get_turf(holder.my_atom),null))
+								O.show_message(text("<span class='notice'>You get a vague feeling that something is missing.</span>"), 1)  //Alert bystanders that their borer is braindead
+						else
+							B.transfer_personality(pick(candidates))
+
+					if(/obj/item/unactivated_swarmer)
+						var/obj/item/unactivated_swarmer/U = new
+						U.loc = get_turf(holder.my_atom)
+						if(prob(50))
+							for(var/j = 1, j <= rand(1, 3), j++)
+								step(U, pick(NORTH,SOUTH,EAST,WEST))
+						for(var/mob/O in viewers(get_turf(holder.my_atom),null))
+							O.show_message(text("<span class='notice'>The slime extract shudders, then forms some sort of alien machine!</span>"), 1)
 
 /datum/chemical_reaction/proc/goonchem_vortex(turf/simulated/T, setting_type, range)
 	for(var/atom/movable/X in orange(range, T))

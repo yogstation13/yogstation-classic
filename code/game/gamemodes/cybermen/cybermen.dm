@@ -100,6 +100,9 @@ var/datum/cyberman_network/cyberman_network
 	cyberman_network.cybermen += cyberman//careful this doesn't happen twice.
 	cyberman.cyberman = new /datum/cyberman_datum()
 	cyberman.special_role = "cyberman"
+	for(var/A in cyberman.cyberman.abilities)
+		var/datum/action/cyberman/ability = A
+		ability.Grant(cyberman.current)
 	cyberman.current.attack_log += "\[[time_stamp()]\] <span class='danger'>Became a cyberman</span>"
 
 	update_cybermen_icons_add(cyberman)
@@ -127,6 +130,8 @@ var/datum/cyberman_network/cyberman_network
 	for(var/obj/item/weapon/stock_parts/capacitor/P in cyberman.cyberman.upgrades_installed)
 		P.loc = cyberman.current.loc
 		cyberman.cyberman.upgrades_installed -= P
+	for(var/A in cyberman.cyberman.abilities)
+		qdel(A)
 	qdel(cyberman.cyberman)
 	cyberman.cyberman = null//redundant but doesn't hurt to be safe.
 	cyberman_network.cybermen -= cyberman
@@ -147,15 +152,24 @@ var/datum/cyberman_network/cyberman_network
 	return ..() || cyberman_network.cybermen_win
 
 /datum/game_mode/cybermen/check_win()
-	return cyberman_network.cybermen_win
+	return cyberman_network.cybermen_win == 1
 
 /datum/game_mode/cybermen/declare_completion()
 	..()
-	if(!cyberman_network.cybermen_win && SSshuttle.emergency.mode >= SHUTTLE_ESCAPE)
+	cyberman_network.process_cyberman_objectives()
+	var/cybermen_won = (cyberman_network.cybermen_win == 1)
+
+	#ifdef CYBERMEN_DEBUG
+	world << "Cybermen won:[cybermen_won]"
+	world << "Shuttle Escaped: [SSshuttle.emergency.mode >= SHUTTLE_ESCAPE]"
+	world << "Station was Nuked: [station_was_nuked]"
+	#endif
+
+	if(!cybermen_won && SSshuttle.emergency.mode >= SHUTTLE_ESCAPE)
 		world << "<span class='redtext'>The Cybermen failed to take control of the station!</span>"
-	else if(cyberman_network.cybermen_win && station_was_nuked)
+	else if(cybermen_won && station_was_nuked)
 		world << "<span class='greentext'>The Cybermen win! They acivated the station's self-destruct device!</span>"
-	else if(cyberman_network.cybermen_win)
+	else if(cybermen_won)
 		world << "<span class='greentext'>The Cybermen win! They have exterminated or stranded all of the non-cybermen!</span>"
 	else
 		world << "<span class='redtext'>The Cybermen have failed!</span>"
@@ -202,7 +216,7 @@ datum/game_mode/proc/update_cybermen_icons_remove(datum/mind/cyberman)
 	var/list/datum/mind/cybermen = list()
 	var/list/datum/objective/cybermen/cybermen_objectives = list()
 	var/datum/objective/cybermen/queued_cybermen_objective = null
-	var/list/obj/effect/cyberman_hack/active_cybermen_hacks = list()
+	var/list/datum/cyberman_hack/active_cybermen_hacks = list()
 	var/list/cybermen_hacked_objects = list()//used for objectives, might someday be used for faster hacks on things that have already been hacked.
 	var/list/datum/tech/cybermen_research_downloaded = list()//used for research objectives. May do other things as well someday.
 	var/list/cybermen_access_downloaded = list()//have to use this because otherwise you could hack an ID and then change its access to get the objective, which makes no sense.
@@ -230,13 +244,22 @@ datum/game_mode/proc/update_cybermen_icons_remove(datum/mind/cyberman)
 	cyberman_broadcast_log += "\[[time_stamp()]\][message]"
 
 /datum/cyberman_network/proc/process_cyberman_hacking()
-	for(var/obj/effect/cyberman_hack/H in active_cybermen_hacks)
-		if(!H || qdeleted(H))
+
+	for(var/datum/mind/cyberman in cybermen)
+		cyberman.cyberman.process_hacking(cyberman.current)
+	for(var/datum/cyberman_hack/H in active_cybermen_hacks)
+		H.process()
+
+	for(var/datum/cyberman_hack/H in active_cybermen_hacks)
+		if(!H)
 			active_cybermen_hacks -= H
+	for(var/I in cybermen_hacked_objects)
+		if(!I)
+			cybermen_hacked_objects -= I
 	#ifdef CYBERMEN_DEBUG
 	if(active_cybermen_hacks && active_cybermen_hacks.len)
 		world << "---------Active Hacks:-----------"
-		for(var/obj/effect/cyberman_hack/H in active_cybermen_hacks)
+		for(var/datum/cyberman_hack/H in active_cybermen_hacks)
 			world << "\t[H.target_name]"
 	#endif
 	for(var/datum/mind/cyberman in cybermen)
@@ -247,17 +270,14 @@ datum/game_mode/proc/update_cybermen_icons_remove(datum/mind/cyberman)
 			cyberman.cyberman.emp_hit--
 
 /datum/cyberman_network/proc/process_cyberman_objectives()
-	for(var/datum/mind/cyberman in cybermen)
-		cyberman.cyberman.process_hacking(cyberman.current)
-	for(var/obj/effect/cyberman_hack/H in active_cybermen_hacks)
-		H.process()
-
+	if(cybermen_win)
+		return
 	if(cybermen_objectives.len == 0)
 		return
 	var/datum/objective/cybermen/T = cybermen_objectives[cybermen_objectives.len]
 	if(T != null && (T.is_valid() || T.make_valid()) )
 		if(T.check_completion() )
-			if(cybermen_objectives.len < 4)
+			if(!T.win_upon_completion)
 				generate_cybermen_objective(cybermen_objectives.len+1)
 				display_current_cybermen_objective()
 			else
@@ -279,6 +299,7 @@ datum/game_mode/proc/update_cybermen_icons_remove(datum/mind/cyberman)
 	var/list/datum/objective/cybermen/exterminate_objectives = list(/datum/objective/cybermen/exterminate/nuke_station, /datum/objective/cybermen/exterminate/hijack_shuttle, /datum/objective/cybermen/exterminate/eliminate_humans)
 
 	var/datum/objective/cybermen/current_objective
+	phase_num = Clamp(phase_num, 1, 4)//You can get past 4 objectives with admin meddling in the Cyberman panel.
 	switch(phase_num)
 		if(1)
 			//Explore
@@ -335,7 +356,7 @@ datum/game_mode/proc/update_cybermen_icons_remove(datum/mind/cyberman)
 	if(cybermen_objectives.len > 0)
 		var/datum/objective/cybermen/O = cybermen_objectives[cybermen_objectives.len]
 		O.check_completion()//needed for updating explanation text.
-		message_all_cybermen("<span class='notice'>Cybermen objectives have advanced to stage [cybermen_objectives.len]:[O.phase].Your new objective is: </span>")
+		message_all_cybermen("<span class='notice'>Cybermen objectives have advanced to stage [cybermen_objectives.len]:[O.phase]. Your new objective is: </span>")
 		message_all_cybermen(O.explanation_text)
 	else
 		log_game("ERROR - [usr] attempted to display current cyberman objective when there are no objectives")
@@ -343,6 +364,16 @@ datum/game_mode/proc/update_cybermen_icons_remove(datum/mind/cyberman)
 /datum/cyberman_network/proc/message_all_cybermen(message)
 	for(var/datum/mind/cyberman in cybermen)
 		cyberman.current << message
+
+/datum/cyberman_network/proc/is_cyberman_or_being_converted(mob/living/carbon/human/H)//this one accepts mobs instead of minds, because conversion hacks target mobs, not minds.
+	if(!istype(H))
+		return 0
+	if(ticker.mode.is_cyberman(H.mind))
+		return 1
+	for(var/datum/cyberman_hack/human/hack in cyberman_network.active_cybermen_hacks)
+		if(hack.target == H)
+			return 1
+	return 0
 
 ////////////////////////////////////////////////////////
 //CYBERMAN DATUM
@@ -354,8 +385,8 @@ datum/game_mode/proc/update_cybermen_icons_remove(datum/mind/cyberman)
 /datum/cyberman_datum
 	var/emp_hit = 0//if not 0, cyberman cannot hack or use cyberman broadcast. reduced by 1 every tick if it is greater than 0. set to -1 for infinite EMPed.
 	var/quickhack = 0
-	var/obj/effect/cyberman_hack/selected_hack
-	var/obj/effect/cyberman_hack/manual_selected_hack
+	var/datum/cyberman_hack/selected_hack
+	var/datum/cyberman_hack/manual_selected_hack
 	var/hack_power_level_1 = CYBERMEN_BASE_HACK_POWER_1//might want to do all these in a single list instead of separate variables.
 	var/hack_power_level_2 = CYBERMEN_BASE_HACK_POWER_2
 	var/hack_power_level_3 = CYBERMEN_BASE_HACK_POWER_3
@@ -366,7 +397,7 @@ datum/game_mode/proc/update_cybermen_icons_remove(datum/mind/cyberman)
 	var/hack_max_start_dist = 1
 	var/hack_max_maintain_dist = CYBERMEN_BASE_HACK_MAINTAIN_RANGE
 	var/list/upgrades_installed = list()
-	var/list/obj/effect/proc_holder/cyberman/abilities = list(new /obj/effect/proc_holder/cyberman/commune(), new /obj/effect/proc_holder/cyberman/cyberman_toggle_quickhack(), new /obj/effect/proc_holder/cyberman/cyberman_disp_objectives(), new /obj/effect/proc_holder/cyberman/cyberman_cancel_hack(), new /obj/effect/proc_holder/cyberman/cyberman_manual_select_hack())
+	var/list/datum/action/cyberman/abilities = list(new /datum/action/cyberman/commune(), new /datum/action/cyberman/cyberman_disp_objectives(), new /datum/action/cyberman/cyberman_toggle_quickhack(), new /datum/action/cyberman/cyberman_cancel_hack(), new /datum/action/cyberman/cyberman_manual_select_hack())
 
 /datum/cyberman_datum/proc/validate(var/mob/living/carbon/human/user = usr)
 	if(!user)
@@ -383,8 +414,8 @@ datum/game_mode/proc/update_cybermen_icons_remove(datum/mind/cyberman)
 /datum/cyberman_datum/proc/add_cyberman_abilities_to_statpanel(var/mob/user)
 	if(!validate(user))
 		return
-	for(var/obj/effect/proc_holder/cyberman/A in abilities)
-		statpanel("[A.panel]", "", A)
+	for(var/datum/action/cyberman/A in abilities)
+		statpanel("[A.panel]", "", A.button)
 
 /datum/cyberman_datum/proc/update_processing_power(mob/living/carbon/human/user = usr)
 	if(!validate(user) )
@@ -426,7 +457,7 @@ datum/game_mode/proc/update_cybermen_icons_remove(datum/mind/cyberman)
 		selected_hack = manual_selected_hack
 	else if(cyberman_network.active_cybermen_hacks.len > 0)
 		var/best_preference = -1
-		for(var/obj/effect/cyberman_hack/current_hack in cyberman_network.active_cybermen_hacks)
+		for(var/datum/cyberman_hack/current_hack in cyberman_network.active_cybermen_hacks)
 			var/this_preference = current_hack.get_preference_for(user)
 			if(this_preference > best_preference)
 				best_preference = this_preference
@@ -452,7 +483,7 @@ datum/game_mode/proc/update_cybermen_icons_remove(datum/mind/cyberman)
 	else
 		temp.assign_obj(null, "Currently Processing Hack(auto): none")
 	status_objs += temp
-	for(var/obj/effect/cyberman_hack/hack in cyberman_network.active_cybermen_hacks)
+	for(var/datum/cyberman_hack/hack in cyberman_network.active_cybermen_hacks)
 		if(hack && hack != selected_hack)
 			temp = new /obj/status_obj()
 			temp.assign_obj(hack, hack.get_status(user))
@@ -472,7 +503,14 @@ datum/game_mode/proc/update_cybermen_icons_remove(datum/mind/cyberman)
 		return
 	return obj.DblClick()
 
+/obj/status_obj/examine(mob/user)
+	if(!obj)
+		return
+	obj.examine(user)
+
+/*
 /obj/status_obj/Click()
 	if(!obj)
 		return
 	return obj.Click()
+*/

@@ -82,3 +82,4 @@
 #define DRONE 32
 #define ZOMBIE 64
 #define SWARMER 128
+#define CARP 128

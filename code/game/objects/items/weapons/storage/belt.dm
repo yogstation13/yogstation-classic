@@ -165,16 +165,18 @@
 		)
 	var/malfunctioning = 0
 
-/obj/item/weapon/storage/belt/military/chameleon/attackby(obj/item/clothing/under/U, mob/user, params)
+/obj/item/weapon/storage/belt/military/chameleon/attackby(obj/item/U, mob/user, params)
 	..()
 	if(istype(U, /obj/item/weapon/storage/belt/military/chameleon))
 		user << "<span class='notice'>Nothing happens.</span>"
 		return
 	if(istype(U, /obj/item/weapon/storage/belt))
-		if(src.clothing_choices.Find(U))
-			user << "<span class='notice'>Pattern is already recognised by the belt.</span>"
-			return
-		src.clothing_choices += U
+		for(var/choice in clothing_choices)
+			var/obj/item/weapon/storage/belt/C = choice
+			if(U.type == C.type)
+				user << "<span class='notice'>Pattern is already recognised by the belt.</span>"
+				return
+		src.clothing_choices += new U.type()
 		user << "<span class='notice'>Pattern absorbed by the belt.</span>"
 
 
@@ -203,12 +205,9 @@
 /obj/item/weapon/storage/belt/military/chameleon/attack_self()
 	set src in usr
 
-	var/obj/item/clothing/under/A
+	var/obj/item/weapon/storage/belt/A
 	A = input("Select Colour to change it to", "BOOYEA", A) in clothing_choices
-	if(!A)
-		return
-
-	if(usr.stat != CONSCIOUS)
+	if(!A || loc != usr || usr.stat)
 		return
 
 	if(malfunctioning)
@@ -298,6 +297,10 @@
 	storage_slots = 3
 	max_w_class = 2
 
+/obj/item/weapon/storage/belt/fannypack/suicide_act(mob/user)
+	user.visible_message("<span class='suicide'>[user] is putting on [src]! It looks like \he's trying to commit social suicide.</span>")
+	return(OXYLOSS);
+
 /obj/item/weapon/storage/belt/fannypack/holding
 	name = "fannypack of holding"
 	desc = "As dorky as this device looks, it's incredibly useful."
@@ -305,7 +308,7 @@
 	item_state = "fannypack_white"
 	origin_tech = "bluespace=4"
 	storage_slots = 28
-	max_w_class = 5
+	max_w_class = 3
 	max_combined_w_class = 35
 
 	can_be_inserted(obj/item/I)

@@ -389,6 +389,15 @@
 			<b>4.</b> If you feel it necessary, detonation of a collar will kill the person wearing it while also destroying the collar.<br>\
 			<i>Do not use bomb collars solely for executions! They are expensive and not easily replacable - use lethal injections instead.</i>"
 
+/obj/item/weapon/paper/tesla
+	name = "paper- Tesla Engine Notice"
+	info = "<i>How to activate the tesla engine without frying yourself.</i><br>\
+			<b>1.</b> Place the engine part you wish to use in directly in the middle. Anchor it down with the wrench and remove the other engine.<br>\
+			<b>2.</b> Turn on the emitters and set the field up like you would normally.<br>\
+			<b>3.</b> Assemble the Particle Accellerator and activate it.<br>\
+			<b>4.</b> Harvest power. Do not forget to configure the SMES energy arrays.<br>\
+			<i>Always wear an engineering-approved space suit if you need to access the exterior while the tesla engine is active.</i>"
+
 /obj/item/weapon/paper/crumpled
 	name = "paper scrap"
 	icon_state = "scrap"

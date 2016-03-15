@@ -84,6 +84,12 @@
 		for(var/obj/item/organ/internal/I in int_organs)
 			I.Insert(O, 1)
 
+	//Transfer Borer
+	if(borer)
+		O.borer = borer
+		borer.loc = O
+		borer = null
+
 	//transfer mind and delete old mob
 	if(mind)
 		mind.transfer_to(O)
@@ -196,6 +202,13 @@
 		I.implanted = O
 
 	//O.AddDisease(new /datum/disease/transformation/rage_virus)
+
+	//Transfer Borer
+	if(borer)
+		O.borer = borer
+		borer.loc = O
+		borer = null
+
 
 	//transfer mind and delete old mob
 	if(mind)
@@ -324,6 +337,12 @@
 		I.implanted = O
 	O.sec_hud_set_implants()
 
+	//Transfer Borer
+	if(borer)
+		O.borer = borer
+		borer.loc = O
+		borer = null
+
 	if(tr_flags & TR_KEEPORGANS)
 		for(var/obj/item/organ/internal/I in O.internal_organs)
 			qdel(I)
@@ -432,6 +451,33 @@
 	qdel(src)
 	return
 
+//human -> borer
+/mob/living/carbon/human/proc/Borerize()
+	if(notransform)
+		return
+	for(var/obj/item/W in src)
+		unEquip(W)
+	regenerate_icons()
+	notransform = 1
+	canmove = 0
+	icon = null
+	invisibility = 101
+	for(var/o in organs)
+		qdel(o)
+
+	var/mob/living/simple_animal/borer/B = new /mob/living/simple_animal/borer(loc)
+
+	B.invisibility = 0
+
+	if(mind)
+		mind.transfer_to(B)
+		B.transfer_personality(src.client)
+	else
+		B.key = key
+
+	B.update_pipe_vision()
+	. = B
+	qdel(src)
 
 //human -> robot
 /mob/living/carbon/human/proc/Robotize(delete_items = 0)
@@ -507,6 +553,12 @@
 
 	new_xeno.a_intent = "harm"
 	new_xeno.key = key
+
+	//Transfer Borer
+	if(borer)
+		new_xeno.borer = borer
+		borer.loc = new_xeno
+		borer = null
 
 	new_xeno << "<B>You are now an alien.</B>"
 	new_xeno.update_pipe_vision()

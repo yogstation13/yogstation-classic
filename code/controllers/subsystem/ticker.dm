@@ -222,11 +222,11 @@ var/datum/subsystem/ticker/ticker
 		if(!config.allow_vote_restart)
 			var/admins_number = 0
 			for(var/client/admin in admins)
-				if(check_rights_for(admin, R_SERVER))
+				if(check_rights_for(admin, R_ADMIN))
 					admins_number++
 			if(admins_number == 0)
-				log_admin("No admins left with +SERVER. Restart vote allowed.")
-				message_admins("No admins left with +SERVER. Restart vote allowed.")
+				log_admin("No staff left with +ADMIN. Restart vote allowed.")
+				message_admins("No staff left with +ADMIN. Restart vote allowed.")
 				config.allow_vote_restart = 1
 
 	return 1
@@ -255,7 +255,11 @@ var/datum/subsystem/ticker/ticker
 			if(M.stat != DEAD)
 				var/turf/T = get_turf(M)
 				if(((station_missed == 0) && T && (T.z==1)) || ((station_missed > 1) && T && (T.z == station_missed)))
-					M.death(0) //no mercy
+					// The chef's meat locker is lead-lined to improve the taste of the meat
+					if (!istype(M.loc, /obj/structure/closet/secure_closet/freezer/meat))
+						M.death(0) //no mercy
+					else
+						M << "The freezer wobbles a bit, then stops. You let out a sigh of relief.";
 
 	//Now animate the cinematic
 	switch(station_missed)
@@ -465,6 +469,19 @@ var/datum/subsystem/ticker/ticker
 	for(var/i in total_antagonists)
 		log_game("[i]s[total_antagonists[i]].")
 
+	if(borers.len)
+		var/total_borers = 0
+		for(var/mob/living/simple_animal/borer/B in borers)
+			if(B.stat != DEAD)
+				total_borers++
+		if(total_borers)
+			var/total_borer_hosts = 0
+			for(var/mob/living/carbon/C in mob_list)
+				var/turf/location = get_turf(C)
+				if(location.z == ZLEVEL_CENTCOM && C.borer && C.borer.stat != DEAD)
+					total_borer_hosts++
+			world << "<b>There were [total_borers] borers alive at round end!</b>"
+			world << "<b>A total of [total_borer_hosts] borers with hosts got to centcomm alive. The borers needed [total_borer_hosts_needed] hosts on the shuttle so they [(total_borer_hosts_needed <= total_borer_hosts) ? "<span class='greentext'>Won!</span>" : "<span class='redtext'>Lost!</span>"]</b>"
 	return 1
 
 /datum/subsystem/ticker/proc/send_random_tip()

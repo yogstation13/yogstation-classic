@@ -39,6 +39,7 @@ var/const/BLOOD_VOLUME_SURVIVE = 122
 		bleedsuppress = 1
 		spawn(amount)
 			bleedsuppress = 0
+			skinmended = 0
 			if(stat != DEAD && blood_max)
 				src << "<span class='warning'>The blood soaks through your bandage.</span>"
 
@@ -121,7 +122,12 @@ var/const/BLOOD_VOLUME_SURVIVE = 122
 				blood_max += 2
 		if(bleedsuppress)
 			blood_max = 0
+		if(reagents.has_reagent("heparin") && getBruteLoss()) //Heparin is a powerful toxin that causes bleeding
+			blood_max += 3
 		drip(blood_max)
+
+		if(prob(heal_rate) && blood_max)  //Chance of healing every tick.
+			blood_max -= 0.5
 
 //Makes a blood drop, leaking amt units of blood from the mob
 /mob/living/carbon/human/proc/drip(amt as num)

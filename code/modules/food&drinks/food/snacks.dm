@@ -28,13 +28,16 @@
 
 		if(trash)
 			if(ispath(trash,/obj/item/weapon/grown))
-				var/obj/item/TrashItem = new trash(usr,src.potency)
-				usr.put_in_hands(TrashItem)
+				var/obj/item/TrashItem = new trash(usr.loc,src.potency)
+				if(usr.can_equip(TrashItem))
+					usr.put_in_hands(TrashItem)
 			else if(ispath(trash,/obj/item))
-				var/obj/item/TrashItem = new trash(usr)
-				usr.put_in_hands(TrashItem)
+				var/obj/item/TrashItem = new trash(usr.loc)
+				if(usr.can_equip(TrashItem))
+					usr.put_in_hands(TrashItem)
 			else if(istype(trash,/obj/item))
-				usr.put_in_hands(trash)
+				if(usr.can_equip(trash))
+					usr.put_in_hands(trash)
 		qdel(src)
 	return
 
