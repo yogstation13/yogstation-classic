@@ -62,7 +62,6 @@
 
 /obj/item/projectile/temp/hot
 	name = "heat beam"
-	pass_flags = PASSTABLE | PASSGLASS | PASSGRILLE
 	temperature = 400
 
 /obj/item/projectile/meteor
