@@ -252,3 +252,10 @@
 #define NO_RESULT				-4
 #define QUERY_OK				-5
 #define INSUFFICIENT_CREDITS	-6
+
+//Ghost orbit types:
+#define GHOST_ORBIT_CIRCLE		"circle"
+#define GHOST_ORBIT_TRIANGLE	"triangle"
+#define GHOST_ORBIT_HEXAGON		"hexagon"
+#define GHOST_ORBIT_SQUARE		"square"
+#define GHOST_ORBIT_PENTAGON	"pentagon"
