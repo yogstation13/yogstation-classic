@@ -57,7 +57,9 @@
 			/mob/living/simple_animal/hostile/guardian/ranged,
 			/mob/living/simple_animal/hostile/guardian/bluespace,
 			/mob/living/simple_animal/hostile/guardian/bomb,
-			/mob/living/simple_animal/hostile/guardian/shield
+			/mob/living/simple_animal/hostile/guardian/shield,
+			/mob/living/simple_animal/hostile/carp/tactical,
+			/mob/living/simple_animal/hostile/retaliate/dolphin/tactical
 			)//exclusion list for things you don't want the reaction to create.
 		var/list/specialcritters = list(/mob/living/simple_animal/borer,/obj/item/unactivated_swarmer)  //Speshul mobs for speshul reactions
 		var/list/meancritters = typesof(/mob/living/simple_animal/hostile) - blocked // list of possible hostile mobs
