@@ -1,0 +1,7 @@
+author: ToGWtF
+
+delete-after: True
+
+changes: 
+  - rscadd: "Added a Xenobiology area-locked firing pin, to be used only in the Temperature Gun."
+  - tweak: "Allows the Temperature Gun to shoot through windows and grilles."
