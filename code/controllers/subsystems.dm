@@ -47,7 +47,8 @@
 
 /datum/subsystem/proc/pause()
 	. = 1
-	master_controller.priority_queue += src
+	if (!dynamic_wait)
+		master_controller.priority_queue += src
 	paused = 1
 //used to initialize the subsystem AFTER the map has loaded
 /datum/subsystem/proc/Initialize(start_timeofday, zlevel)

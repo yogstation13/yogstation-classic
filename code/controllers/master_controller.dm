@@ -56,7 +56,7 @@ var/global/datum/controller/game_controller/master_controller = new()
 	if (zlevel && zlevel > 0 && zlevel <= world.maxz)
 		for(var/datum/subsystem/S in subsystems)
 			S.Initialize(world.timeofday, zlevel)
-			sleep(-1)
+			CHECK_TICK
 		return
 	world << "<span class='boldannounce'>Initializing Subsystems...</span>"
 
@@ -72,14 +72,14 @@ var/global/datum/controller/game_controller/master_controller = new()
 	//Eventually all this other setup stuff should be contained in subsystems and done in subsystem.Initialize()
 	for(var/datum/subsystem/S in subsystems)
 		S.Initialize(world.timeofday, zlevel)
-		sleep(-1)
+		CHECK_TICK
 
 	world << "<span class='boldannounce'>Initializations complete</span>"
 
 	world.sleep_offline = 1
 	world.fps = config.fps
 
-	sleep(-1)
+	CHECK_TICK
 
 	process()
 
@@ -94,15 +94,16 @@ var/global/datum/controller/game_controller/master_controller = new()
 		// Schedule the first run of the Subsystems.
 		var/timer = world.time
 		for(var/datum/subsystem/SS in subsystems)
-			timer += world.tick_lag
-			SS.next_fire = timer
+			if(SS.can_fire)
+				timer += world.tick_lag
+				SS.next_fire = timer
 		var/list/subsystemstorun = subsystems.Copy()
 		var/start_time
 		while(1) // More efficient than recursion.
 			if(processing) //are we processing
 				++iteration
 				start_time = world.timeofday
-				if (!subsystemstorun.len)
+				if(!subsystemstorun.len)
 					subsystemstorun = subsystems.Copy()
 				var/priorityrunning = 0 //so we know if there are priority queue items
 #if DM_VERSION >= 510
@@ -115,7 +116,7 @@ var/global/datum/controller/game_controller/master_controller = new()
 					var/datum/subsystem/SS = subsystemstorun[1]
 					subsystemstorun.Cut(1, 2)
 #if DM_VERSION >= 510
-					if (world.tick_usage > 80)
+					if (world.tick_usage > TICK_LIMIT_MC)
 #else
 					if(world.cpu >= 100)
 #endif
@@ -130,7 +131,7 @@ var/global/datum/controller/game_controller/master_controller = new()
 					if(SS.can_fire > 0)
 						if(priorityrunning || ((SS.next_fire <= world.time) && (SS.last_fire + (SS.wait * 0.75) <= world.time)))
 #if DM_VERSION >= 510
-							if(!priorityrunning && (world.tick_usage + SS.tick_usage > 75) && (SS.last_fire + (SS.wait*1.25) > world.time))
+							if(!priorityrunning && (world.tick_usage + SS.tick_usage > TICK_LIMIT_TO_RUN) && (SS.last_fire + (SS.wait*1.25) > world.time))
 								if(!SS.dynamic_wait)
 									priority_queue += SS
 								continue

@@ -20,6 +20,7 @@ var/datum/subsystem/objects/SSobj
 		if (zlevel && AM.z != zlevel)
 			continue
 		AM.initialize()
+		CHECK_TICK
 	if (zlevel)
 		return ..()
 	for(var/turf/simulated/floor/F in world)

@@ -4,10 +4,8 @@ var/datum/subsystem/lighting/SSlighting
 
 /datum/subsystem/lighting
 	name = "Lighting"
-	wait = 5
+	wait = 6
 	priority = 1
-	dynamic_wait = 1
-	dwait_delta = 3
 
 	var/list/changed_lights = list()		//list of all datum/light_source that need updating
 	var/changed_lights_workload = 0			//stats on the largest number of lights (max changed_lights.len)
@@ -60,6 +58,7 @@ var/datum/subsystem/lighting/SSlighting
 	for(var/thing in changed_lights)
 		var/datum/light_source/LS = thing
 		LS.check()
+		CHECK_TICK
 	changed_lights.Cut()
 
 	var/z_start = 1
@@ -74,6 +73,7 @@ var/datum/subsystem/lighting/SSlighting
 	for(var/thing in turfs_to_init)
 		var/turf/T = thing
 		T.init_lighting()
+		CHECK_TICK
 
 	if(z_level)
 		//we need to loop through to clear only shifted turfs from the list. or we will cause errors
@@ -82,6 +82,7 @@ var/datum/subsystem/lighting/SSlighting
 			if(T.z in z_start to z_finish)
 				continue
 			changed_turfs.Remove(thing)
+			CHECK_TICK
 	else
 		changed_turfs.Cut()
 

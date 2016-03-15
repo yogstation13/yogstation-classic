@@ -110,16 +110,14 @@ var/datum/subsystem/air/SSair
 	high_pressure_delta.len = 0
 /datum/subsystem/air/proc/process_active_turfs(resumed = 0)
 	//cache for sanic speed
-	var/fire_count = times_fired
 	if (!resumed)
 		src.currentrun = active_turfs.Copy()
 	//cache for sanic speed (lists are references anyways)
 	var/list/currentrun = src.currentrun
-	while(currentrun.len)
-		var/turf/simulated/T = currentrun[1]
+	for(var/turf/simulated/T in currentrun)
 		currentrun.Cut(1, 2)
 		if(T)
-			T.process_cell(fire_count)
+			T.process_cell()
 		if(MC_TICK_CHECK)
 			return
 /datum/subsystem/air/proc/remove_from_active(turf/simulated/T)
@@ -180,6 +178,7 @@ var/datum/subsystem/air/SSair
 		if (z_level && AM.z != z_level)
 			continue
 		AM.atmosinit()
+		CHECK_TICK
 
 //this can't be done with setup_atmos_machinery() because
 //	all atmos machinery has to initalize before the first
@@ -189,12 +188,15 @@ var/datum/subsystem/air/SSair
 		if (z_level && AM.z != z_level)
 			continue
 		AM.build_network()
+		CHECK_TICK
 
 /datum/subsystem/air/proc/setup_template_machinery(list/atmos_machines)
 	for(var/A in atmos_machines)
 		var/obj/machinery/atmospherics/AM = A
 		AM.atmosinit()
+		CHECK_TICK
 
 	for(var/A in atmos_machines)
 		var/obj/machinery/atmospherics/AM = A
 		AM.build_network()
+		CHECK_TICK
