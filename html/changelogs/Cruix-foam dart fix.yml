@@ -1,0 +1,6 @@
+author: Cruix
+
+delete-after: True
+
+changes: 
+  - bugfix: "Fixed an edge case runtime error when the clown would shoot himself with a foam dart."
