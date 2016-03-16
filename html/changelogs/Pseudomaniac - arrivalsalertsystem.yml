@@ -1,0 +1,6 @@
+author: Pseudomaniac
+
+delete-after: True
+
+changes: 
+  - rscadd: "Readds the Arrivals Annoucment System back into telecomns and remaps it to fit it."
