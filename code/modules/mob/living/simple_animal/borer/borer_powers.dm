@@ -359,6 +359,9 @@
 
 	var/punishment = input("Select a punishment:.", "Punish") as null|anything in list("Blindness","Deafness","Stun")
 
+	if(!punishment)
+		return
+
 	if(chemicals < 75)
 		src << "<span class='boldnotice'>You need 75 chems to punish your host.</span>"
 		return

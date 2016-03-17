@@ -1,0 +1,7 @@
+author: Oisin100
+
+delete-after: True
+
+changes: 
+  - bugfix: "Fixed cancelling punishments using chemicals."
+  - bugfix: "Fixed a rounding error for borer objectives."
