@@ -69,7 +69,7 @@ var/list/blacklisted_tesla_types = list(/obj/machinery/atmospherics,
 	spawn(-1)
 		for(var/i = 0, i < move_amount, i++)
 			var/move_dir = pick(alldirs)
-			for (var/mob/dead/observer/ghost in view(7))
+			for (var/mob/dead/observer/ghost in range(7))
 				if(prob(10))
 					move_dir = get_dir(src, ghost) // Ghosts are mildly conductive. For shinanigains.
 
