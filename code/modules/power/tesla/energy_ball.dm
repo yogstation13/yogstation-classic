@@ -37,6 +37,10 @@ var/list/blacklisted_tesla_types = list(/obj/machinery/atmospherics,
 	..()
 
 /obj/singularity/energy_ball/process()
+	var/b = 255 // Always blue.
+	var/r = min(rand(200, 255), b) // Random amounts of red, No more than blue however. Means it fluctates purples and blues.
+	var/g = min(rand(200, 255), r) // Like above, but with red for the green. For the same reason.
+	color = rgb(r, g, b) // Pretty Colours...
 	if(!is_orbiting)
 		handle_energy()
 		var/amount_to_move = 2 + orbiting_balls.len * 2
@@ -62,15 +66,23 @@ var/list/blacklisted_tesla_types = list(/obj/machinery/atmospherics,
 
 
 /obj/singularity/energy_ball/proc/move_the_basket_ball(var/move_amount)
-	for(var/i = 0, i < move_amount, i++)
-		var/move_dir = pick(alldirs)
-		var/turf/T = get_step(src,move_dir)
-		if(can_move(T))
-			loc = get_step(src,move_dir)
+	spawn(-1)
+		for(var/i = 0, i < move_amount, i++)
+			var/move_dir = pick(alldirs)
+			for (var/mob/dead/observer/ghost in view(7))
+				if(prob(10))
+					move_dir = get_dir(src, ghost) // Ghosts are mildly conductive. For shinanigains.
+
+			var/turf/T = get_step(src,move_dir)
+			if(can_move(T))
+				loc = get_step(src,move_dir)
+				pixel_x = -32
+				pixel_y = -32
+				if (move_amount - i <= 10) // Only do the last ten moves, so that it never starts to overlap.
+					sleep(1)
 
 /obj/singularity/energy_ball/proc/handle_energy()
-	if(energy >= 300)
-		energy = 0
+	while(energy >= 300)
 		energy -= 300
 		playsound(src.loc, 'sound/magic/lightning_chargeup.ogg', 100, 1, extrarange = 30)
 		spawn(100)
