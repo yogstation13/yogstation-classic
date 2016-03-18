@@ -345,6 +345,8 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	dangerous_existence = 1
 
 /datum/species/shadow/spec_life(mob/living/carbon/human/H)
+	if(!H.weakeyes) H.weakeyes = 1 //Makes them more vulnerable to flashes and flashbangs
+	if(!H.glasses) H.equip_to_slot_or_del(new /obj/item/clothing/glasses/night/shadowling/shadow_person(H), slot_glasses)	//Give us the sling goggles if we don't have them.
 	var/light_amount = 0
 	if(isturf(H.loc))
 		var/turf/T = H.loc

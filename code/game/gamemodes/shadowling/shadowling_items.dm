@@ -93,6 +93,9 @@
 			if (!istype(H.dna.species, /datum/species/shadow))
 				del(src) // If we're being worn by someone who isn't a shadowling.
 
+	shadow_person
+		vision_flags = 0
+
 
 /obj/structure/shadow_vortex
 	name = "vortex"
