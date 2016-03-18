@@ -266,6 +266,13 @@
 		ghost = pick(consenting_candidates)
 		if(C.contents.len) //If they used the soulstone on someone else in the meantime
 			return 0
+
+		if(imprinted != "empty") // If the soul stone is already occupied by a shade
+			return 0
+
+		if(!T)
+			return 0
+
 		if(!T.client) //If the original returns in the alloted time
 			T.client = ghost
 		for(var/obj/item/W in T)
