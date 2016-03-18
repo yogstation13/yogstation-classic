@@ -828,6 +828,8 @@
 				state_name = "standard"
 			if("mediborg")
 				overlays += "eyes-mediborg"
+			if("medihover")
+				overlays += "eyes-medihover"
 			if("toiletbot")
 				overlays += "eyes-mediborg"
 				state_name = "mediborg"
