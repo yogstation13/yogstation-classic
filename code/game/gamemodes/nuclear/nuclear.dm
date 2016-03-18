@@ -1,7 +1,6 @@
 /datum/game_mode
 	var/list/datum/mind/syndicates = list()
 
-
 /datum/game_mode/nuclear
 	name = "nuclear emergency"
 	config_tag = "nuclear"
@@ -117,10 +116,10 @@
 	synd_mind.current << "<B>You are the Syndicate [leader_title] for this mission. You are responsible for the distribution of telecrystals and your ID is the only one who can open the launch bay doors.</B>"
 	synd_mind.current << "<B>If you feel you are not up to this task, give your ID to another operative.</B>"
 	synd_mind.current << "<B>In your hand you will find a special item capable of triggering a greater challenge for your team. Examine it carefully and consult with your fellow operatives before activating it.</B>"
-	
+
 	var/obj/item/device/nuclear_challenge/challenge = new /obj/item/device/nuclear_challenge
 	synd_mind.current.equip_to_slot_or_del(challenge, slot_r_hand)
-	
+
 	var/list/foundIDs = synd_mind.current.search_contents_for(/obj/item/weapon/card/id)
 	if(foundIDs.len)
 		for(var/obj/item/weapon/card/id/ID in foundIDs)
@@ -135,7 +134,7 @@
 		P.name = "nuclear bomb code"
 		var/mob/living/carbon/human/H = synd_mind.current
 		P.loc = H.loc
-		H.equip_to_slot_or_del(P, slot_r_hand, 0)
+		H.equip_to_slot_or_del(P, slot_l_hand, 0)
 		H.update_icons()
 	else
 		nuke_code = "code will be provided later"

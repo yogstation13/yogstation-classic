@@ -110,6 +110,7 @@ var/list/uplink_items = list()
 	desc = "A small, easily concealable handgun that uses 10mm auto rounds in 8-round magazines and is compatible with suppressors."
 	item = /obj/item/weapon/gun/projectile/automatic/pistol
 	cost = 9
+	excludefrom = list(/datum/game_mode/clown_ops)
 
 /datum/uplink_item/dangerous/revolver
 	name = "Syndicate Revolver"
@@ -117,6 +118,7 @@ var/list/uplink_items = list()
 	item = /obj/item/weapon/gun/projectile/revolver
 	cost = 13
 	surplus = 50
+	excludefrom = list(/datum/game_mode/clown_ops)
 
 /datum/uplink_item/dangerous/smg
 	name = "C-20r Submachine Gun"
@@ -156,7 +158,7 @@ var/list/uplink_items = list()
 	The bow generates bolts using an internal power source but must be manually charged between shots."
 	item = /obj/item/weapon/gun/energy/kinetic_accelerator/crossbow
 	cost = 12
-	excludefrom = list(/datum/game_mode/nuclear,/datum/game_mode/gang)
+	excludefrom = list(/datum/game_mode/nuclear,/datum/game_mode/gang, /datum/game_mode/clown_ops)
 	surplus = 50
 
 /datum/uplink_item/dangerous/flamethrower
@@ -172,6 +174,7 @@ var/list/uplink_items = list()
 	desc = "The energy sword is an edged weapon with a blade of pure energy. The sword is small enough to be pocketed when inactive. Activating it produces a loud, distinctive noise."
 	item = /obj/item/weapon/melee/energy/sword/saber
 	cost = 8
+	excludefrom = list(/datum/game_mode/clown_ops)
 
 /datum/uplink_item/dangerous/emp
 	name = "EMP Kit"
@@ -184,6 +187,7 @@ var/list/uplink_items = list()
 	desc = "The Minibomb is a shaped demolitions grenade with a five-second fuse. Deals immense damage for its size to structures, and will inflict horrendous wounding on any unlucky enough to be caught in its blast."
 	item = /obj/item/weapon/grenade/syndieminibomb
 	cost = 4
+	excludefrom = list(/datum/game_mode/clown_ops)
 
 /datum/uplink_item/dangerous/foamsmg
 	name = "Toy Submachine Gun"
@@ -215,7 +219,7 @@ var/list/uplink_items = list()
 	Use with extreme caution, to prevent exposure to yourself and your fellow operatives."
 	item = /obj/item/weapon/reagent_containers/spray/chemsprayer/bioterror
 	cost = 20
-	gamemodes = list(/datum/game_mode/nuclear,/datum/game_mode/gang)
+	gamemodes = list(/datum/game_mode/nuclear,/datum/game_mode/gang, /datum/game_mode/clown_ops)
 	surplus = 0
 
 /datum/uplink_item/dangerous/gygax
@@ -271,12 +275,14 @@ var/list/uplink_items = list()
 	desc = "An additional 8-round 10mm magazine for use in the syndicate pistol. These subsonic rounds are dirt cheap but are half as effective as .357 rounds."
 	item = /obj/item/ammo_box/magazine/m10mm
 	cost = 1
+	excludefrom = list(/datum/game_mode/clown_ops)
 
 /datum/uplink_item/ammo/revolver
 	name = "Speed Loader - .357"
 	desc = "A speed loader that contains seven additional .357 Magnum rounds for the syndicate revolver. For when you really need a lot of things dead."
 	item = /obj/item/ammo_box/a357
 	cost = 4
+	excludefrom = list(/datum/game_mode/clown_ops)
 
 /datum/uplink_item/ammo/smg
 	name = "SMG Magazine - .45"
@@ -368,7 +374,7 @@ var/list/uplink_items = list()
 	desc = "A box of throwing stars with a high chance of embedding themselves in people's limbs."
 	item = /obj/item/weapon/storage/box/throwing_stars
 	cost = 6
-	excludefrom = list(/datum/game_mode/nuclear)
+	excludefrom = list(/datum/game_mode/nuclear, /datum/game_mode/clown_ops)
 
 /datum/uplink_item/stealthy_weapons/foampistol
 	name = "Toy Gun (with Stun Darts)"
@@ -412,6 +418,7 @@ var/list/uplink_items = list()
 	item = /obj/item/weapon/suppressor
 	cost = 3
 	surplus = 10
+	excludefrom = list(/datum/game_mode/clown_ops)
 
 /datum/uplink_item/stealthy_weapons/pizza_bomb
 	name = "Pizza Bomb"
@@ -432,7 +439,7 @@ var/list/uplink_items = list()
 	item = /obj/item/device/doorCharge
 	cost = 5
 	surplus = 10
-	excludefrom = list(/datum/game_mode/nuclear)
+	excludefrom = list(/datum/game_mode/nuclear, /datum/game_mode/clown_ops)
 
 // STEALTHY TOOLS
 
@@ -465,7 +472,7 @@ var/list/uplink_items = list()
 	desc = "These allow you to run on wet floors. They do not work on lubricated surfaces."
 	item = /obj/item/clothing/shoes/sneakers/syndigaloshes
 	cost = 2
-	excludefrom = list(/datum/game_mode/nuclear)
+	excludefrom = list(/datum/game_mode/nuclear, /datum/game_mode/clown_ops)
 
 /datum/uplink_item/stealthy_tools/syndigaloshes/nuke
 	name = "Tactical No-Slip Brown Shoes"
@@ -543,7 +550,7 @@ var/list/uplink_items = list()
 	and other medical supplies helpful for a medical field operative."
 	item = /obj/item/weapon/storage/firstaid/tactical
 	cost = 9
-	gamemodes = list(/datum/game_mode/nuclear,/datum/game_mode/gang)
+	gamemodes = list(/datum/game_mode/nuclear,/datum/game_mode/gang, /datum/game_mode/clown_ops)
 
 
 /datum/uplink_item/device_tools/space_suit
@@ -603,7 +610,7 @@ var/list/uplink_items = list()
 	These reverse-engineered knockoffs of Nanotrasen's 'Advanced Magboots' slow you down in simulated-gravity environments much like the standard issue variety."
 	item = /obj/item/clothing/shoes/magboots/syndie
 	cost = 3
-	gamemodes = list(/datum/game_mode/nuclear)
+	gamemodes = list(/datum/game_mode/nuclear, /datum/game_mode/clown_ops)
 
 /datum/uplink_item/device_tools/c4
 	name = "Composition C-4"
@@ -648,14 +655,14 @@ var/list/uplink_items = list()
 	Useful for when speed matters or you wish to synchronize multiple bomb blasts. Be sure to stand clear of the blast radius before using the detonator."
 	item = /obj/item/device/syndicatedetonator
 	cost = 3
-	gamemodes = list(/datum/game_mode/nuclear)
+	gamemodes = list(/datum/game_mode/nuclear, /datum/game_mode/clown_ops)
 
 /datum/uplink_item/device_tools/teleporter
 	name = "Teleporter Circuit Board"
 	desc = "A printed circuit board that completes the teleporter onboard the mothership. Advise you test fire the teleporter before entering it, as malfunctions can occur."
 	item = /obj/item/weapon/circuitboard/teleporter
 	cost = 40
-	gamemodes = list(/datum/game_mode/nuclear)
+	gamemodes = list(/datum/game_mode/nuclear, /datum/game_mode/clown_ops)
 	surplus = 0
 
 /datum/uplink_item/device_tools/shield
@@ -663,7 +670,7 @@ var/list/uplink_items = list()
 	desc = "An incredibly useful personal shield projector, capable of reflecting energy projectiles and defending against other attacks."
 	item = /obj/item/weapon/shield/energy
 	cost = 16
-	gamemodes = list(/datum/game_mode/nuclear,/datum/game_mode/gang)
+	gamemodes = list(/datum/game_mode/nuclear,/datum/game_mode/gang, /datum/game_mode/clown_ops)
 	surplus = 20
 
 
@@ -704,7 +711,7 @@ var/list/uplink_items = list()
 	Will permanently destroy your body, however."
 	item = /obj/item/weapon/storage/box/syndie_kit/imp_microbomb
 	cost = 2
-	gamemodes = list(/datum/game_mode/nuclear)
+	gamemodes = list(/datum/game_mode/nuclear, /datum/game_mode/clown_ops)
 
 /datum/uplink_item/implants/zombie
 	name = "Zombie Implant"
@@ -724,7 +731,7 @@ var/list/uplink_items = list()
 
 /datum/uplink_item/cyber_implants
 	category = "Cybernetic Implants"
-	gamemodes = list(/datum/game_mode/nuclear)
+	gamemodes = list(/datum/game_mode/nuclear, /datum/game_mode/clown_ops)
 	surplus = 0
 
 /datum/uplink_item/cyber_implants/thermals
@@ -775,7 +782,7 @@ var/list/uplink_items = list()
 	desc = "Syndicate Bundles are specialised groups of items that arrive in a plain box. These items are collectively worth more than 20 telecrystals, but you do not know which specialisation you will receive."
 	item = /obj/item/weapon/storage/box/syndicate
 	cost = 20
-	excludefrom = list(/datum/game_mode/nuclear,/datum/game_mode/gang)
+	excludefrom = list(/datum/game_mode/nuclear,/datum/game_mode/gang, /datum/game_mode/clown_ops)
 
 /datum/uplink_item/badass/syndiecards
 	name = "Syndicate Playing Cards"
@@ -804,7 +811,7 @@ var/list/uplink_items = list()
 	desc = "An implant injected into the body, and later activated either manually or automatically upon death. Maximum explosion power."
 	item = /obj/item/weapon/storage/box/syndie_kit/imp_macrobomb
 	cost = 20
-	gamemodes = list(/datum/game_mode/nuclear)
+	gamemodes = list(/datum/game_mode/nuclear, /datum/game_mode/clown_ops)
 
 /datum/uplink_item/badass/random
 	name = "Random Item"
@@ -836,7 +843,7 @@ var/list/uplink_items = list()
 	desc = "A crate containing 50 telecrystals worth of random syndicate leftovers."
 	cost = 20
 	item = /obj/item/weapon/storage/box/syndicate
-	excludefrom = list(/datum/game_mode/nuclear)
+	excludefrom = list(/datum/game_mode/nuclear, /datum/game_mode/clown_ops)
 
 /datum/uplink_item/badass/surplus_crate/spawn_item(turf/loc, obj/item/device/uplink/U)
 	var/obj/structure/closet/crate/C = new(loc)
