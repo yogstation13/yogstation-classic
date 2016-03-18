@@ -1,6 +1,8 @@
 #define TESLA_DEFAULT_POWER 3476520
 #define TESLA_MINI_POWER 1738260
 
+var/tesla_ghost_bias = 5;
+
 var/list/blacklisted_tesla_types = list(/obj/machinery/atmospherics,
 										/obj/machinery/power/emitter,
 										/obj/machinery/field/generator,
@@ -69,8 +71,8 @@ var/list/blacklisted_tesla_types = list(/obj/machinery/atmospherics,
 	spawn(-1)
 		for(var/i = 0, i < move_amount, i++)
 			var/move_dir = pick(alldirs)
-			for (var/mob/dead/observer/ghost in range(7))
-				if(prob(10))
+			for (var/mob/dead/observer/ghost in range(21, get_turf(src)))
+				if(prob(tesla_ghost_bias))
 					move_dir = get_dir(src, ghost) // Ghosts are mildly conductive. For shinanigains.
 
 			var/turf/T = get_step(src,move_dir)
