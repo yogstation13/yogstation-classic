@@ -242,6 +242,7 @@
 	feedback_add_details("changeling_powers","HS")
 	return 1
 
+/*
 /obj/effect/proc_holder/changeling/sting/stamina
 	name = "Enfeebling Sting"
 	desc = "Exhausts, then causes the victim to collapse for a medium duration."
@@ -259,7 +260,8 @@
 	feedback_add_details("changeling_powers", "KS")
 	return 1
 
-/*/obj/effect/proc_holder/changeling/sting/cryo
+
+/obj/effect/proc_holder/changeling/sting/cryo
 	name = "Cryogenic Sting"
 	desc = "We silently sting a human with a cocktail of chemicals that freeze them."
 	helptext = "Does not provide a warning to the victim, though they will likely realize they are suddenly freezing."
