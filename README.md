@@ -24,26 +24,28 @@ Follow this: http://www.tgstation13.org/wiki/Setting_up_git
 Option 2:
 Install GitHub::windows from http://windows.github.com/
 It handles most of the setup and configuraton of Git for you.
-Then you simply search for the -tg-station repository and click the big clone
+Then you simply search for the yogstation repository and click the big clone
 button.
 
 Option 3: Download the source code as a zip by clicking the ZIP button in the
-code tab of https://github.com/tgstation/-tg-station
+code tab of https://github.com/yogstation13/yogstation
 (note: this will use a lot of bandwidth if you wish to update and is a lot of
 hassle if you want to make any changes at all, so it's not recommended.)
 
 ##INSTALLATION
 
+**Byond 510 is required for the code to compile correctly!**
+
 First-time installation should be fairly straightforward.  First, you'll need
 BYOND installed.  You can get it from http://www.byond.com/.  Once you've done 
 that, extract the game files to wherever you want to keep them.  This is a
 sourcecode-only release, so the next step is to compile the server files.
-Open tgstation.dme by double-clicking it, open the Build menu, and click
+Open yogstation.dme by double-clicking it, open the Build menu, and click
 compile.  This'll take a little while, and if everything's done right you'll get
 a message like this:
 
 ```
-saving tgstation.dmb (DEBUG mode)
+saving yogstation.dmb (DEBUG mode)
 tgstation.dmb - 0 errors, 0 warnings
 ```
 
