@@ -1,6 +1,0 @@
-author: Cruix
-
-delete-after: True
-
-changes: 
-  - bugfix: "Fixed a bug where you would not take oxy damage if you were breathing a gas mix with no oxygen in it."

@@ -1,7 +1,0 @@
-author: Oisin100
-
-delete-after: True
-
-changes: 
-  - tweak: "Borers are no longer killed when host is hit by an explosion."
-  - rscadd: "Borer hivemind is now broadcasted to the ghosts."

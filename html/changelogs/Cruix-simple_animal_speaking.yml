@@ -1,7 +1,0 @@
-author: Cruix
-
-delete-after: True
-
-changes: 
-  - bugfix: "Fixed simple animals being unable to speak."
-  - tweak: "Accidentally  broke simple animal speaking."

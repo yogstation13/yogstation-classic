@@ -201,6 +201,26 @@
 			else
 				usr << "<span class='ticket-status'>You chose not to restart the server. If you do not have permissions to restart the server normally, you can still do so by making a new ticket and resolving it again.</span>"
 
+	if(resolved)
+		if(!establish_db_connection())
+			world.log << "Admin ticket database connection failure."
+			diary << "Admin ticket database connection failure."
+			return
+
+		var/DBQuery/query = dbcon.NewQuery("SELECT id FROM [format_table_name("admin_tickets")] WHERE round_id = [yog_round_number] AND ticket_id = [ticket_id]")
+		query.Execute()
+		if(!query.NextRow())
+			var/content = ""
+			for(var/datum/ticket_log/line in log)
+				content += "[line.text]\n"
+			var/DBQuery/insert = dbcon.NewQuery("INSERT INTO [format_table_name("admin_tickets")] (round_id, ticket_id, ckey, a_ckey, content) VALUES ([yog_round_number], [ticket_id], '[owner_ckey]', '[get_client(handling_admin)]', '[content]')")
+			insert.Execute()
+
+
+
+
+
+
 /datum/admin_ticket/proc/view_log()
 	if(!owner && istext(owner_ckey))
 		owner = directory[owner_ckey]
