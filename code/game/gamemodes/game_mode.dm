@@ -35,7 +35,7 @@
 	var/reroll_friendly 	//During mode conversion only these are in the running
 	var/continuous_sanity_checked	//Catches some cases where config options could be used to suggest that modes without antagonists should end when all antagonists die
 	var/enemy_minimum_age = 7 //How many days must players have been playing before they can play this antagonist
-
+	var/crew_objective_chance = 100 //Individual percent chance of a crewmember being given an objective
 	var/const/waittime_l = 600
 	var/const/waittime_h = 1800 // started at 1800
 
@@ -402,6 +402,31 @@
 		return 1
 	return 0
 */
+
+/datum/game_mode/proc/pick_neutral_objectives()
+	var/list/obj_string_def = "/datum/objective/crew"
+	var/list/objective_types = typesof(text2path(obj_string_def))
+	var/obj_string
+	var/list/players = list()
+	for(var/mob/new_player/player in player_list)
+		if(player.client && player.ready && !player.mind.objectives.len)
+			players += player
+
+	for(var/mob/new_player/player in players)
+		if(player.client.prefs.hasSpecialRole("neutobj"))
+			players -= player
+
+	for(var/mob/new_player/player in players)
+		if(prob(crew_objective_chance))
+			shuffle(objective_types)
+			obj_string = player.job
+			obj_string = "[obj_string_def]/[obj_string]"
+			for(var/obj in objective_types)
+				if(istype(obj,text2path(obj_string)))
+					player.mind.objectives += obj
+					objective_types -= obj //Avoid duplicate objective assignments, give the poor clown a break
+					break
+
 
 /datum/game_mode/proc/num_players()
 	. = 0

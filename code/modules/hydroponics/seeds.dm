@@ -1532,3 +1532,90 @@
 	plant_type = 0
 	growthstages = 5
 	rarity = 20
+
+/obj/item/seeds/cannabis_seed
+	name = "pack of cannabis seeds"
+	desc = "These seeds grow into cannabis bushes."
+	icon_state = "seed-ambrosiavulgaris" //placeholder, because I know nothing about spriting
+	species = "cannabis"
+	plantname = "Cannabis Bush"
+	product = /obj/item/weapon/reagent_containers/food/snacks/grown/cannabis
+	lifespan = 20
+	endurance = 10
+	maturation = 5
+	production = 5
+	yield = 3
+	potency = 10
+	plant_type = 0
+	growthstages = 1 //because goon
+	rarity = 20 //be centcom's dealer
+	mutatelist = list(/obj/item/seeds/mega_cannabis_seed,/obj/item/seeds/black_cannabis_seed,/obj/item/seeds/white_cannabis_seed,/obj/item/seeds/omega_cannabis_seed)
+
+/obj/item/seeds/mega_cannabis_seed
+	name = "pack of mega cannabis seeds"
+	desc = "These seeds grow into unusually large cannabis bushes."
+	icon_state = "seed-ambrosiavulgaris" //placeholder, because I know nothing about spriting
+	species = "cannabis"
+	plantname = "Large Cannabis Bush"
+	product = /obj/item/weapon/reagent_containers/food/snacks/grown/cannabis/mega
+	lifespan = 20
+	endurance = 10
+	maturation = 5
+	production = 5
+	yield = 3
+	potency = 10
+	plant_type = 0
+	growthstages = 1
+	rarity = 30
+	mutatelist = list(/obj/item/seeds/omega_cannabis_seed)
+
+/obj/item/seeds/black_cannabis_seed
+	name = "pack of black cannabis seeds"
+	desc = "These seeds grow into unusually dark cannabis bushes."
+	icon_state = "seed-ambrosiavulgaris"
+	species = "cannabis"
+	plantname = "Dark Cannabis Bush"
+	product = /obj/item/weapon/reagent_containers/food/snacks/grown/cannabis/black
+	lifespan = 20
+	endurance = 10
+	maturation = 5
+	production = 5
+	yield = 3
+	potency = 10
+	plant_type = 0
+	growthstages = 1
+	rarity = 30
+
+/obj/item/seeds/white_cannabis_seed
+	name = "pack of white cannabis seeds"
+	desc = "These seeds grow into unusually light cannabis bushes."
+	icon_state = "seed-ambrosiavulgaris"
+	species = "cannabis"
+	plantname = "Light Cannabis Bush"
+	product = /obj/item/weapon/reagent_containers/food/snacks/grown/cannabis/white
+	lifespan = 20
+	endurance = 10
+	maturation = 5
+	production = 5
+	yield = 3
+	potency = 10
+	plant_type = 0
+	growthstages = 1
+	rarity = 30
+
+/obj/item/seeds/omega_cannabis_seed
+	name = "pack of omega cannabis seeds"
+	desc = "You're not even sure what these grow into, but it's probably worth finding out."
+	icon_state = "seed-ambrosiavulgaris"
+	species = "cannabis"
+	plantname = "Glowing Cannabis Bush"
+	product = /obj/item/weapon/reagent_containers/food/snacks/grown/cannabis/omega
+	lifespan = 20
+	endurance = 10
+	maturation = 5
+	production = 5
+	yield = 3
+	potency = 10
+	plant_type = 0
+	growthstages = 1
+	rarity = 50

@@ -1316,6 +1316,70 @@ obj/item/weapon/reagent_containers/food/snacks/grown/shell/eggy/add_juice()
 	reagents.add_reagent("salbutamol", 1 + round((potency / 20), 1))
 	reagents.add_reagent("nicotine", 1 + round((potency / 20), 1))
 
+/obj/item/weapon/reagent_containers/food/snacks/grown/cannabis
+	seed = /obj/item/seeds/cannabis_seed
+	name = "cannabis leaves"
+	desc = "Winners don't do space drugs."
+	icon_state = "cannabisleaf"
+
+/obj/item/weapon/reagent_containers/food/snacks/grown/cannabis/add_juice()
+	..()
+	reagents.add_reagent("THC", 1 + round((potency/20),1))
+
+/obj/item/weapon/reagent_containers/food/snacks/grown/cannabis/mega
+	seed = /obj/item/seeds/mega_cannabis_seed
+	name = "cannabis leaves"
+	desc = "Are they supposed to be that large?."
+	icon_state = "megaweedleaf"
+
+/obj/item/weapon/reagent_containers/food/snacks/grown/cannabis/mega/add_juice()
+	..()
+	reagents.add_reagent("THC", 1 + round((potency/10),1))
+
+/obj/item/weapon/reagent_containers/food/snacks/grown/cannabis/black
+	seed = /obj/item/seeds/black_cannabis_seed
+	name = "cannabis leaves"
+	desc = "Looks a bit dark.  Oh well."
+	icon_state = "blackweedleaf"
+
+/obj/item/weapon/reagent_containers/food/snacks/grown/cannabis/black/add_juice()
+	..()
+	reagents.add_reagent("THC", 1 + round((potency/20),1))
+	reagents.add_reagent("cyanide", 1 + round((potency/20),1))
+
+/obj/item/weapon/reagent_containers/food/snacks/grown/cannabis/white
+	seed = /obj/item/seeds/white_cannabis_seed
+	name = "cannabis leaves"
+	desc = "This cannabis is smooth, and feels nice to touch."
+	icon_state = "whiteweedleaf"
+
+/obj/item/weapon/reagent_containers/food/snacks/grown/cannabis/white/add_juice()
+	..()
+	reagents.add_reagent("THC", 1 + round((potency/20),1))
+	reagents.add_reagent("omnizine", 1 + round((potency/20),1))
+
+/obj/item/weapon/reagent_containers/food/snacks/grown/cannabis/omega
+	seed = /obj/item/seeds/omega_cannabis_seed
+	name = "glowing cannabis leaves"
+	desc = "Just looking at these leaves makes you dizzy.  What the fuck?"
+	icon_state = "omegaweedleaf"
+
+/obj/item/weapon/reagent_containers/food/snacks/grown/cannabis/omega/add_juice()
+	..()
+	//Don't smoke this shit without a genetics copy on standby
+	var/mercy_chance = 80 //The difference between high potency weed being an overdose and a suicide pill
+	reagents.add_reagent("THC", 1 + round((potency/5),1))
+	reagents.add_reagent("space_drugs", 1 + round((potency/5),1))
+	reagents.add_reagent("mercury", 1 + round((potency/5),1))
+	reagents.add_reagent("lithium", 1 + round((potency/5),1))
+	reagents.add_reagent("methamphetamine", 1 + round((potency/10),1))
+	reagents.add_reagent("bath_salts", 1 + round((potency/10),1))
+	reagents.add_reagent("krokodil", 1 + round((potency/10),1))
+	reagents.add_reagent("capsaicin", 1 + round((potency/15),1))
+	reagents.add_reagent("crank", 1 + round((potency/20),1))
+	reagents.add_reagent("[!prob(mercy_chance) ? "aranesp" : "water"]", 1 + round((potency/20),1))
+	reagents.add_reagent("[!prob(mercy_chance/4) ? "cyanide" : "water"]", 1 + round((potency/35),1))
+
 /obj/item/weapon/reagent_containers/food/snacks/grown/tea //abstract type
 	seed = /obj/item/seeds/tea_aspera_seed
 	name = "Tea tips"

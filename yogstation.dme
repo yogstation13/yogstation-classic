@@ -281,6 +281,7 @@
 #include "code\game\area\Space Station 13 areas.dm"
 #include "code\game\gamemodes\antag_hud.dm"
 #include "code\game\gamemodes\antag_spawner.dm"
+#include "code\game\gamemodes\civilian_objectives.dm"
 #include "code\game\gamemodes\events.dm"
 #include "code\game\gamemodes\factions.dm"
 #include "code\game\gamemodes\game_mode.dm"
