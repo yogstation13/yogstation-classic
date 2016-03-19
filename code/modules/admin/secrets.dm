@@ -61,6 +61,7 @@
 			<A href='?src=\ref[src];secrets=whiteout'>Fix all lights</A><BR>
 			<A href='?src=\ref[src];secrets=floorlava'>The floor is lava! (DANGEROUS: extremely lame)</A><BR>
 			<A href='?src=\ref[src];secrets=nerfwar'>Nerf War</A><BR>
+			<A href='?src=\ref[src];secrets=ghost_bias'>Set Ghost Tesla Attraction %</a><BR>
 			<BR>
 			<A href='?src=\ref[src];secrets=changebombcap'>Change bomb cap</A><BR>
 			"}
@@ -610,6 +611,13 @@
 					new /obj/item/toy/sword(get_turf(H))
 				playsound(get_turf(H),'sound/magic/Summon_guns.ogg', 50, 1)
 			message_admins("[key_name_admin(usr)] has spawned foam-force guns for the entire crew.")
+		if("ghost_bias")
+			if(!check_rights(R_FUN))
+				return
+			var/new_Bias = input("What % chance does will the Tesla be attracted to a ghost?", "Ghost Bias", tesla_ghost_bias)
+			new_Bias = min(max(text2num(new_Bias) || tesla_ghost_bias, 0), 100)
+			message_admins("[key_name_admin(usr)] has set the tesla's ghost bais to [new_Bias].")
+			tesla_ghost_bias = new_Bias
 
 	if(E)
 		E.processing = 0
