@@ -212,7 +212,7 @@
 		if(!query.NextRow())
 			var/content = ""
 			for(var/datum/ticket_log/line in log)
-				content += "[line.text]\n"
+				content += "[line.user][line.user_admin ? " A" : ""]: [line.text]\n"
 			var/DBQuery/insert = dbcon.NewQuery("INSERT INTO [format_table_name("admin_tickets")] (round_id, ticket_id, ckey, a_ckey, content) VALUES ([yog_round_number], [ticket_id], '[owner_ckey]', '[get_client(handling_admin)]', '[content]')")
 			insert.Execute()
 
