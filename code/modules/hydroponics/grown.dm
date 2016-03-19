@@ -1324,7 +1324,7 @@ obj/item/weapon/reagent_containers/food/snacks/grown/shell/eggy/add_juice()
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/cannabis/add_juice()
 	..()
-	reagents.add_reagent("THC", 1 + round((potency/20),1))
+	reagents.add_reagent("THC", 1 + round((potency/10),1))
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/cannabis/mega
 	seed = /obj/item/seeds/mega_cannabis_seed
@@ -1334,7 +1334,7 @@ obj/item/weapon/reagent_containers/food/snacks/grown/shell/eggy/add_juice()
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/cannabis/mega/add_juice()
 	..()
-	reagents.add_reagent("THC", 1 + round((potency/10),1))
+	reagents.add_reagent("THC", 1 + round((potency/5),1))
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/cannabis/black
 	seed = /obj/item/seeds/black_cannabis_seed
@@ -1344,7 +1344,7 @@ obj/item/weapon/reagent_containers/food/snacks/grown/shell/eggy/add_juice()
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/cannabis/black/add_juice()
 	..()
-	reagents.add_reagent("THC", 1 + round((potency/20),1))
+	reagents.add_reagent("THC", 1 + round((potency/10),1))
 	reagents.add_reagent("cyanide", 1 + round((potency/20),1))
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/cannabis/white
@@ -1355,7 +1355,7 @@ obj/item/weapon/reagent_containers/food/snacks/grown/shell/eggy/add_juice()
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/cannabis/white/add_juice()
 	..()
-	reagents.add_reagent("THC", 1 + round((potency/20),1))
+	reagents.add_reagent("THC", 1 + round((potency/10),1))
 	reagents.add_reagent("omnizine", 1 + round((potency/20),1))
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/cannabis/omega
@@ -1367,7 +1367,7 @@ obj/item/weapon/reagent_containers/food/snacks/grown/shell/eggy/add_juice()
 /obj/item/weapon/reagent_containers/food/snacks/grown/cannabis/omega/add_juice()
 	..()
 	//Don't smoke this shit without a genetics copy on standby
-	var/mercy_chance = 80 //The difference between high potency weed being an overdose and a suicide pill
+	var/mercy_chance = 80 //The difference between high potency weed being an overdose and a suicide pill.  Low potency is pretty safe.
 	reagents.add_reagent("THC", 1 + round((potency/5),1))
 	reagents.add_reagent("space_drugs", 1 + round((potency/5),1))
 	reagents.add_reagent("mercury", 1 + round((potency/5),1))
