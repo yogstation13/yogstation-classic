@@ -17,7 +17,7 @@
 	var/icon_on = "smartfridge"
 	var/icon_off = "smartfridge-off"
 	var/list/item_quants = list()
-	var/icon_open = "smartfridge-open"
+	var/icon_open = "smartfridge_open"
 	var/icon_closed = "smartfridge"
 
 /obj/machinery/smartfridge/New()

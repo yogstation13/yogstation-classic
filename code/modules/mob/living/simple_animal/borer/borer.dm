@@ -124,6 +124,8 @@ var/total_borer_hosts_needed = 10
 		message = copytext(message,2)
 		for(var/borer in borers)
 			borer << "<span class='borer'><b>HIVEMIND: </b>[name] says: \"[message]\""
+		for(var/mob/dead in dead_mob_list)
+			dead << "<span class='borer'><b>BORER HIVEMIND: </b>[name] says: \"[message]\""
 		return
 	if(!victim)
 		src << "<span class='boldnotice'>You cannot speak without a host.</span>"
@@ -144,6 +146,12 @@ var/total_borer_hosts_needed = 10
 
 /mob/living/simple_animal/borer/UnarmedAttack()
 	return
+
+/mob/living/simple_animal/borer/ex_act()
+	if(victim)
+		return
+
+	..()
 
 /mob/living/simple_animal/borer/proc/Infect(mob/living/carbon/victim)
 	if(!victim)
