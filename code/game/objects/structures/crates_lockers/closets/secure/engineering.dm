@@ -23,7 +23,7 @@
 	new /obj/item/device/multitool(src)
 	new /obj/item/device/flash/handheld(src)
 	new /obj/item/clothing/glasses/meson/engine(src)
-
+	new /obj/item/weapon/weldingtool/hugetank(src)
 /obj/structure/closet/secure_closet/engineering_electrical
 	name = "electrical supplies locker"
 	req_access = list(access_engine_equip)
