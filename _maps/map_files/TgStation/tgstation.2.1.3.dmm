@@ -6618,7 +6618,7 @@
 "cxn" = (/obj/structure/table,/obj/item/weapon/stock_parts/subspace/analyzer,/obj/item/weapon/stock_parts/subspace/analyzer,/obj/item/weapon/stock_parts/subspace/analyzer,/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"; pixel_x = 0; tag = ""},/turf/simulated/floor/plasteel{icon_state = "dark"},/area/ai_monitored/storage/secure{name = "\improper Telecoms Satellite"})
 "cxo" = (/obj/machinery/atmospherics/pipe/simple/supply/hidden{dir = 6; initialize_directions = 6},/turf/simulated/wall/r_wall,/area/tcommsat/computer)
 "cxp" = (/obj/structure/lattice/catwalk,/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"; pixel_y = 0; tag = ""},/turf/space,/area/space)
-"cxq" = (/obj/machinery/atmospherics/pipe/manifold/supply/hidden{tag = "icon-manifold-b-f (NORTH)"; dir = 1},/turf/simulated/wall/r_wall,/area/tcommsat/computer)
+"cxq" = (/obj/machinery/atmospherics/pipe/manifold/supply/hidden{tag = "icon-manifold-b-f (NORTH)"; dir = 1},/obj/structure/grille,/obj/structure/window/reinforced/fulltile,/turf/simulated/floor/plating,/area/tcommsat/computer)
 "cxr" = (/obj/machinery/atmospherics/components/unary/vent_pump{dir = 1; external_pressure_bound = 101.325; on = 1; pressure_checks = 1},/turf/simulated/floor/plating,/area/tcommsat/computer)
 "cxs" = (/obj/machinery/atmospherics/components/unary/tank/air,/turf/simulated/floor/plating,/area/tcommsat/computer)
 "cxt" = (/turf/simulated/wall/r_wall,/area/tcommsat/computer)
