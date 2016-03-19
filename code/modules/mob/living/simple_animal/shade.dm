@@ -43,3 +43,8 @@
 	else
 		..()
 	return
+
+/mob/living/simple_animal/shade/examine(mob/user)
+	. = ..()
+	if((iscultist(user) || iswizard(user)) && (!src.key || !src.client))
+		user << "<span class='danger'>You can also tell that they've lost all conscious awareness and have become as engaging as a blank wall.</span>"
