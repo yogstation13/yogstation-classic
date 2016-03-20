@@ -356,17 +356,10 @@
 	var/target_temperature = 300
 	var/e_cost = ""
 	origin_tech = "combat=3;materials=4;powerstorage=3;magnets=2"
-<<<<<<< origin/LasersGoPewPew
-	ammo_type = list(/obj/item/ammo_casing/energy/temp, /obj/item/ammo_casing/energy/temp/hot)
-	cell_type = "/obj/item/weapon/stock_parts/cell/high"
-	pin = /obj/item/device/firing_pin/xeno_pin
-=======
 	ammo_type = list(/obj/item/ammo_casing/energy/temp)
 	cell_type = "/obj/item/weapon/stock_parts/cell"
 	var/powercost = ""
 	var/powercostcolor = ""
->>>>>>> local
-
 	var/emagged = 0			//ups the temperature cap from 500 to 1000, targets hit by beams over 500 Kelvin will burst into flames
 	var/dat = ""
 	pin = /obj/item/device/firing_pin/xeno_pin
