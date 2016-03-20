@@ -176,6 +176,8 @@
 		src.loc.visible_message("The [src] begins to shake. Stand back!")
 		used = TRUE
 		sleep(50)
+		message_admins("A survival pod has been activated at [loc.x],[loc.y],[loc.z] (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[loc.x];Y=[loc.y];Z=[loc.z]'>JMP</A>) last touched by [fingerprintslast]")
+		log_game("A survival pod has been activated at [loc.x],[loc.y],[loc.z] last touched by [fingerprintslast]")
 		playsound(get_turf(src), 'sound/effects/phasein.ogg', 100, 1)
 		PoolOrNew(/obj/effect/effect/smoke, src.loc)
 		load()
@@ -194,9 +196,9 @@
 	start_turf = locate(start_turf.x -2, start_turf.y - 2, start_turf.z)
 
 	room = spawn_room(start_turf, x_size, y_size, walltypes, floor_type, "Emergency Shelter")
-	
+
 	start_turf = get_turf(src.loc)
-	
+
 	//Fill it
 	cur_turf = locate(start_turf.x, start_turf.y-2, start_turf.z)
 	new /obj/machinery/door/airlock/glass(cur_turf)
@@ -234,7 +236,8 @@
 	threshhold.nitrogen = 82
 	threshhold.carbon_dioxide = 0
 	threshhold.toxins = 0
-	L.contents += threshhold
+	if(!istype(threshhold.loc, /area/shuttle))
+		L.contents += threshhold
 	threshhold.overlays.Cut()
 
 	var/list/turfs = room["floors"]
@@ -253,4 +256,5 @@
 		SSair.add_to_active(A)
 		A.overlays.Cut()
 
-		L.contents += A
+		if(!istype(A.loc, /area/shuttle))
+			L.contents += A
