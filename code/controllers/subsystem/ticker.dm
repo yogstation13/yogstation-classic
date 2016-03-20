@@ -108,13 +108,11 @@ var/datum/subsystem/ticker/ticker
 				spawn(50)
 					var/unresolved_tickets = 0
 					var/admins_online = 0
-					var/unresolved_tickets_ending = 0 //this is so we can avoid having a normal round ended reboot message as well
 					for(var/datum/admin_ticket/T in tickets_list)
 						if(!T.resolved)
 							unresolved_tickets++
 
 					for(var/client/X in admins)
-						admins_online++
 						var/invalid = 0
 						if(!check_rights_for(X, R_SERVER))
 							invalid = 1
@@ -127,12 +125,12 @@ var/datum/subsystem/ticker/ticker
 						ticker.delay_end = 1
 						message_admins("Not all tickets have been resolved. Server restart delayed.")
 					else if(unresolved_tickets && !admins_online)
-						unresolved_tickets_ending = 1
 						world.Reboot("Round ended, but there were still active tickets. Please submit a player complaint if you did not receive a response.", "end_proper", "ended with open tickets")
-					if(mode.station_was_nuked && !unresolved_tickets_ending)
-						world.Reboot("Station destroyed by Nuclear Device.", "end_proper", "nuke")
-					else if(!unresolved_tickets_ending)
-						world.Reboot("Round ended.", "end_proper", "proper completion")
+					else
+						if(mode.station_was_nuked)
+							world.Reboot("Station destroyed by Nuclear Device.", "end_proper", "nuke")
+						else
+							world.Reboot("Round ended.", "end_proper", "proper completion")
 
 /datum/subsystem/ticker/proc/setup()
 		//Create and announce mode
