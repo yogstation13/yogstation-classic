@@ -121,11 +121,12 @@ var/datum/subsystem/air/SSair
 		if(MC_TICK_CHECK)
 			return
 /datum/subsystem/air/proc/remove_from_active(turf/simulated/T)
+	active_turfs -= T
 	if(istype(T))
 		T.excited = 0
-		active_turfs -= T
 		if(T.excited_group)
 			T.excited_group.garbage_collect()
+	
 /datum/subsystem/air/proc/add_to_active(turf/simulated/T, blockchanges = 1)
 	if(istype(T) && T.air)
 		T.excited = 1

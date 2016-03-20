@@ -9,6 +9,10 @@
 
 	log_admin("[key_name(src)] : [msg]")
 	msg = keywords_lookup(msg)
+
+	var/regex/R = new("#(\\d+)", "ig")
+	msg = R.Replace(msg, "<a href='?src=\ref[src];view_admin_ticket=$1'>Ticket #$1</a>")
+
 	if(check_rights(R_ADMIN,0))
 		msg = "<span class='adminobserver'><span class='prefix'>ADMIN:</span> <EM>[key_name(usr, 1)]</EM> (<a href='?_src_=holder;adminplayerobservefollow=\ref[mob]'>FLW</A>): <span class='message'>[msg]</span></span>"
 		admins << msg
@@ -17,4 +21,3 @@
 		admins << msg
 
 	feedback_add_details("admin_verb","M") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-
