@@ -1,0 +1,8 @@
+author: Oisin100
+
+delete-after: True
+
+changes: 
+  - bugfix: "Fixed borer huds breaking antag huds."
+  - tweak: "Made borer huds prettier."
+  - bugfix: "Fixed the admin 'Make Borer' verb."
