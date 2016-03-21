@@ -104,7 +104,7 @@
 	..()
 	if(istype(Proj ,/obj/item/projectile/beam)||istype(Proj,/obj/item/projectile/bullet))
 		if((Proj.damage_type == BURN) || (Proj.damage_type == BRUTE))
-			if(Proj.nodamage || istype(Proj,/obj/item/projectile/bullet/dart/syringe))
+			if(Proj.nodamage || Proj.damage < 13)
 				audible_message("<span class='alert'>[Proj] bounces off [src] and breaks.</span>")
 				return
 			message_admins("[key_name_admin(Proj.firer)] triggered a fueltank explosion.")
