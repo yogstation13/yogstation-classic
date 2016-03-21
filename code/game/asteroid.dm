@@ -30,7 +30,8 @@ var/global/max_secret_rooms = 6
 				T.ChangeTurf(floor)
 				room_turfs["floors"] += T
 
-			A.contents += T
+			if(!istype(T.loc, /area/shuttle))
+				A.contents += T
 
 	return room_turfs
 
