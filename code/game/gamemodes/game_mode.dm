@@ -311,6 +311,7 @@
 		if(BE_MONKEY)		roletext="monkey"
 		if(BE_ABDUCTOR)		roletext="abductor"
 		if(BE_CYBERMAN)		roletext="cyberman"
+		if(BE_DOUBLEAGENT) 	roletext="double agent"
 
 
 	// Ultimate randomizing code right here
