@@ -121,6 +121,9 @@
 	if(src)
 		qdel(src)
 
+/obj/structure/reagent_dispensers/fueltank/tesla_act()
+	..() //extend the zap
+	blob_act()
 
 /obj/structure/reagent_dispensers/fueltank/fire_act()
 	blob_act() //saving a few lines of copypasta
