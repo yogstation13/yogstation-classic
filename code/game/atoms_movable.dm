@@ -241,6 +241,10 @@
 		throw_impact(get_turf(src))  // we haven't hit something yet and we still must, let's hit the ground.
 	return 1
 
+/atom/movable/proc/throw_at_fast(atom/target, range, speed, mob/thrower, spin=1, diagonals_first = 0)
+	set waitfor = 0
+	throw_at(target, range, speed, thrower, spin, diagonals_first)
+
 /atom/movable/proc/hitcheck()
 	for(var/atom/movable/AM in get_turf(src))
 		if(AM == src)
