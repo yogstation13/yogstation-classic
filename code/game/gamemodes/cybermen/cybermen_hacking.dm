@@ -186,6 +186,12 @@
 
 /datum/cyberman_hack/proc/start()
 	cyberman_network.log_hacking("[usr] started a hack of \the [target_name]")
+	if(target)
+		target.hud_list |= CYBERMEN_HACK_HUD
+		target.hud_list[CYBERMEN_HACK_HUD] = image('icons/mob/hud.dmi', target, "cybermenhack0")
+	var/datum/atom_hud/data/cybermen/hud = huds[DATA_HUD_CYBERMEN_HACK]
+	hud.add_to_hud(target)
+
 	if(start_helper())
 		cyberman_network.active_cybermen_hacks += src
 		return 1
@@ -211,6 +217,11 @@
 		progress -= decay_speed
 	progress += innate_processing
 	maintained = 0
+
+	if(target)
+		var/image/hud_icon = target.hud_list[CYBERMEN_HACK_HUD]
+		hud_icon.icon_state = "cybermenhack[round(progress/cost*100, 25)]"
+
 	#ifdef CYBERMEN_DEBUG
 	world << "Hack of [target_name]: [progress]/[cost]"
 	#endif
@@ -317,6 +328,9 @@
 
 /datum/cyberman_hack/Destroy()
 	cyberman_network.active_cybermen_hacks -= src
+	if(target)
+		var/datum/atom_hud/data/cybermen/hud = huds[DATA_HUD_CYBERMEN_HACK]
+		hud.remove_from_hud(target)
 	return ..()
 
 //HACK MACHINERY
@@ -734,6 +748,8 @@
 	borg << "New law: 0. [law]"
 	var/time = time2text(world.realtime,"hh:mm:ss")
 	lawchanges.Add("[time] <B>:</B> Cybermen hacked [borg.name]([borg.key])")
+	if(borg.mind)
+		ticker.mode.update_cybermen_icons_add(borg.mind)
 	spawn(50)
 		borg.SetLockdown(0)
 	..()
@@ -804,6 +820,8 @@
 	AI << "<span class='cyberman'>New law: 0. [ai_law]</span>"
 	var/time = time2text(world.realtime,"hh:mm:ss")
 	lawchanges.Add("[time] <B>:</B> Cybermen hacked [AI.name]([AI.key])")
+	if(AI.mind)
+		ticker.mode.update_cybermen_icons_add(AI.mind)
 	/*
 	var/old_src = src
 	src = null
@@ -1018,10 +1036,10 @@
 		drop("<span class='warning'>[target_name] is already a cyberman.</span>")
 		return 0
 	else if(!H.mind || !H.key)
-		drop("<span class='warning'>[display_verb] of [target_name] failed, \he is catatonic.</span>")
+		drop("<span class='warning'>[display_verb] of [target_name] failed, they are catatonic.</span>")
 		return 0
 	else if(H.stat == DEAD)
-		drop("<span class='warning'>[display_verb] of [target_name] failed, \he is dead.</span>")
+		drop("<span class='warning'>[display_verb] of [target_name] failed, they are dead.</span>")
 		return 0
 	hallucination = new /obj/effect/hallucination/cybermen_conversion(H.loc, H)
 	return 1
@@ -1053,7 +1071,8 @@
 	H << "<span class='notice'>You feel a weight lift from your mind.</span>"
 	H.hearBinaryProb = 0
 	H.speakBinaryProb = 0
-	hallucination.percent_complete = 0
+	if(hallucination)
+		hallucination.percent_complete = 0
 	..()
 
 /datum/cyberman_hack/human/complete()
@@ -1061,7 +1080,8 @@
 	ticker.mode.add_cyberman(H.mind)
 	H.hearBinaryProb = 0
 	H.speakBinaryProb = 0
-	hallucination.percent_complete = 0
+	if(hallucination)
+		hallucination.percent_complete = 0
 	..()
 
 /datum/cyberman_hack/human/Destroy()
