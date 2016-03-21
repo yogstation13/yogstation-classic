@@ -2,7 +2,7 @@
 	name = "temperature gun"
 	icon = 'icons/obj/gun_temperature.dmi'
 	icon_state = "tempgun_4"
-	item_state = "gun"
+	item_state = "tempgun_4"
 	fire_sound = 'sound/weapons/pulse3.ogg'
 	desc = "A gun that changes the body temperature of its targets."
 	var/temperature = 300
