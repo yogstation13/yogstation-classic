@@ -79,6 +79,22 @@
 
 		return
 
+	if(href_list["view_admin_ticket"])
+		var/id = text2num(href_list["view_admin_ticket"])
+		var/client/C = usr.client
+		if(!C.holder)
+			message_admins("EXPLOIT \[admin_ticket\]: [usr] attempted to operate ticket [id].")
+			return
+
+		for(var/datum/admin_ticket/T in tickets_list)
+			if(T.ticket_id == id)
+				T.view_log()
+				return
+
+		usr << "The ticket ID #[id] doesn't exist."
+
+		return
+
 	if(href_list["toggle_be_special"])
 		var/role_flag = href_list["toggle_be_special"]
 		var/client/C = locate(href_list["_src_"])

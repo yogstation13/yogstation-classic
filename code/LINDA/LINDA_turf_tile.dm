@@ -134,10 +134,10 @@
 
 
 
+/turf/proc/process_cell()
+	SSair.remove_from_active(src)
 
-
-
-/turf/simulated/proc/process_cell()
+/turf/simulated/process_cell()
 
 	if(archived_cycle < SSair.times_fired) //archive self if not already done
 		archive()

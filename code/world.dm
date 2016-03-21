@@ -88,6 +88,9 @@
 	map_name = "Unknown"
 	#endif
 
+	// Set the default FPS and Tickcomp
+	config.Tickcomp = 0
+	world.fps = 20
 
 	return
 
