@@ -64,6 +64,10 @@
 
 //Called after a successful Move(). By this point, we've already moved
 /atom/movable/proc/Moved(atom/OldLoc, Dir)
+	var/turf/oldTurf = get_turf(OldLoc)
+	var/turf/newTurf = get_turf(loc)
+	if(!oldTurf || !newTurf || oldTurf.z != newTurf.z)
+		on_z_level_change()
 	return 1
 
 /atom/movable/Del()
@@ -278,3 +282,7 @@
 	if (src.master)
 		return src.master.attack_hand(a, b, c)
 	return
+
+/atom/movable/proc/on_z_level_change()
+	for(var/atom/movable/A in contents)
+		A.on_z_level_change()

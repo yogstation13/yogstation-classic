@@ -60,6 +60,9 @@
 
 /datum/objective/proc/give_special_equipment()
 
+/datum/objective/proc/locate_targets()//returns a list of all targets, or null if targets cannot, or should not, be located (i.e., hijack has no specific targets).
+	return null
+
 /datum/objective/assassinate
 	var/target_role_type=0
 	dangerrating = 10
@@ -77,6 +80,9 @@
 			return 1
 		return 0
 	return 1
+
+/datum/objective/assassinate/locate_targets()
+	return list(target)
 
 /datum/objective/assassinate/update_explanation_text()
 	..()
@@ -106,6 +112,9 @@
 		return 0
 	return 1
 
+/datum/objective/mutiny/locate_targets()
+	return list(target)
+
 /datum/objective/mutiny/update_explanation_text()
 	..()
 	if(target && target.current)
@@ -133,6 +142,9 @@
 		if(target.current.onCentcom() || target.current.onSyndieBase())
 			return 0
 	return 1
+
+/datum/objective/maroon/locate_targets()
+	return list(target)
 
 /datum/objective/maroon/update_explanation_text()
 	if(target && target.current)
@@ -166,6 +178,9 @@
 			return 1
 	return 0
 
+/datum/objective/debrain/locate_targets()
+	return list(target)
+
 /datum/objective/debrain/update_explanation_text()
 	..()
 	if(target && target.current)
@@ -194,6 +209,10 @@
 			return 0
 		return 1
 	return 0
+
+
+/datum/objective/mutiny/locate_targets()
+	return list(target)
 
 /datum/objective/protect/update_explanation_text()
 	..()
@@ -393,6 +412,14 @@ var/global/list/possible_items = list()
 
 /datum/objective/steal/get_target()
 	return steal_target
+
+/datum/objective/steal/locate_targets()
+	var/result = list()
+	for(var/item in antag_objective_items)
+		//world << "item: [item], == null: [item == null] istype: [istype(item, steal_target)]"
+		if(item && istype(item, steal_target))
+			result += item
+	return result
 
 /datum/objective/steal/New()
 	..()
@@ -635,6 +662,9 @@ var/global/list/possible_items_special = list()
 		return 0
 	return 1
 
+/datum/objective/destroy/locate_targets()
+	return list(target)
+
 /datum/objective/destroy/update_explanation_text()
 	..()
 	if(target && target.current)
@@ -819,7 +849,8 @@ var/global/list/possible_items_special = list()
 		return 1
 	return 0
 
-
+/datum/objective/changeling_team_objective/impersonate_department/locate_targets()
+	return department_minds.Copy()
 
 
 //A subtype of impersonate_derpartment
