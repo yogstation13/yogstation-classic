@@ -1,6 +1,7 @@
 /datum/game_mode/traitor/double_agents
 	name = "double agents"
 	config_tag = "double_agents"
+	antag_flag = BE_DOUBLEAGENT
 	restricted_jobs = list("Cyborg", "AI", "Captain", "Head of Personnel", "Chief Medical Officer", "Research Director", "Chief Engineer", "Head of Security", "Recovery Agent") // Human / Minor roles only.
 	required_players = 25
 	required_enemies = 5
@@ -103,3 +104,16 @@
 
 		// If any check fails, remove them from our list
 		late_joining_list -= M
+
+
+/datum/game_mode/traitor/make_antag_chance(mob/living/carbon/human/character) //Assigns DA to latejoiners
+	var/traitorcap = min(round(joined_player_list.len / (config.traitor_scaling_coeff * 2)) + 2 + num_modifier, round(joined_player_list.len/config.traitor_scaling_coeff) + num_modifier )
+	if(ticker.mode.traitors.len >= traitorcap) //Upper cap for number of latejoin antagonists
+		return
+	if(ticker.mode.traitors.len <= (traitorcap - 2) || prob(100 / (config.traitor_scaling_coeff * 2)))
+		if(character.client.prefs.hasSpecialRole(BE_DOUBLEAGENT)) // different check.
+			var/list/bans = jobban_list_for_mob(character.client)
+			if(!jobban_job_in_list(bans, "traitor") && !jobban_job_in_list(bans, "Syndicate"))
+				if(age_check(character.client))
+					if(!(character.job in restricted_jobs))
+						add_latejoin_traitor(character.mind)

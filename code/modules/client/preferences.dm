@@ -8,6 +8,10 @@ var/global/list/spec_roles = list(
 			"game_mode" = /datum/game_mode/traitor,
 			"name" 		= "traitor"
 		),
+	BE_DOUBLEAGENT = list(
+			"game_mode" = /datum/game_mode/traitor/double_agents,
+			"name" = "double agent"
+		),
 	BE_OPERATIVE = list(
 			"game_mode" = /datum/game_mode/nuclear,
 			"name" 		= "operative"
@@ -75,7 +79,7 @@ var/global/list/spec_roles = list(
 	BE_CYBERMAN = list(
 			"game_mode" = /datum/game_mode/cybermen,
 			"name" 		= "cyberman"
-		)
+		),
 )
 
 

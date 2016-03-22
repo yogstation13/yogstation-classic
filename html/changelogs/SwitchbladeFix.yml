@@ -1,0 +1,6 @@
+author: ToGWtF
+
+delete-after: True
+
+changes: 
+  - bugfix: "Switchblades no longer do full damage when closed."
