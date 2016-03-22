@@ -84,6 +84,18 @@
 		return 1
 	return 0
 
+//Xenobiology lab pin, only works inside Xenobiolgy
+/obj/item/device/firing_pin/xeno_pin
+	name = "Xenobiology lab pin"
+	desc = "This safety firing pin allows weapons to be fired within the proximity of the Xenobiology lab."
+	fail_message = "<span class='warning'>XENOBIOLOGY LAB CHECK FAILED.</span>"
+	pin_removeable = 1
+
+/obj/item/device/firing_pin/xeno_pin/pin_auth(mob/living/user)
+	var/area/A = get_area(user)
+	if(istype(A, /area/toxins/xenobiology))
+		return 1
+	return 0
 
 // Implant pin, checks for implant
 /obj/item/device/firing_pin/implant
