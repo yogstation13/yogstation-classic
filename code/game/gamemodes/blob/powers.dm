@@ -45,7 +45,7 @@
 	if(!can_buy(price))
 		return
 	B.color = blob_reagent_datum.color
-	var/obj/effect/blob/N = B.change_to(blobType)
+	var/obj/effect/blob/N = B.change_to(blobType, src)
 	N.overmind = src
 	N.adjustcolors(blob_reagent_datum.color)
 	return N
@@ -156,7 +156,36 @@
 	var/turf/T = get_turf(src)
 	expand_blob(T)
 
-/mob/camera/blob/proc/expand_blob(turf/T)
+/mob/camera/blob/proc/expand_blob(turf/T)//tg's nicer proc
+	if(!can_attack())
+		return
+	var/obj/effect/blob/OB = locate() in circlerange(T, 1)
+	if(!OB)
+		src << "<span class='warning'>There is no blob adjacent to the target tile!</span>"
+		return
+	if(can_buy(5))
+		var/attacksuccess = FALSE
+		last_attack = world.time
+		for(var/mob/living/L in T)
+			if("blob" in L.faction) //no friendly/dead fire
+				continue
+			if(L.stat != DEAD)
+				attacksuccess = TRUE
+			var/mob_protection = L.get_permeability_protection()
+			blob_reagent_datum.reaction_mob(L, VAPOR, 25, 1, mob_protection, src)
+			blob_reagent_datum.send_message(L)
+		var/obj/effect/blob/B = locate() in T
+		if(B)
+			if(attacksuccess) //if we successfully attacked a turf with a blob on it, don't refund shit
+				B.blob_attack_animation(T, src)
+			else
+				src << "<span class='warning'>There is a blob there!</span>"
+				add_points(5) //otherwise, refund all of the cost
+			return
+		else
+			OB.expand(T, src)
+			OB.update_icon()
+/*/mob/camera/blob/proc/expand_blob(turf/T) //yog's older proc
 	if(!T)
 		return
 
@@ -177,7 +206,7 @@
 	for(var/mob/living/L in T)
 		blob_reagent_datum.reaction_mob(L, TOUCH, 25)
 		blob_reagent_datum.send_message(L)
-	OB.color = blob_reagent_datum.color
+	OB.color = blob_reagent_datum.color*/
 
 /mob/camera/blob/verb/rally_spores_power()
 	set category = "Blob"
@@ -236,9 +265,47 @@
 	for(var/mob/living/simple_animal/hostile/blob_minion in blob_mobs)
 		blob_minion.say(speak_text)
 	return
-
-
+//new tg system
 /mob/camera/blob/verb/chemical_reroll()
+	set category = "Blob"
+	set name = "Reactive Chemical Adaptation (40)"
+	set desc = "Replaces your chemical with a random, different one."
+	if(free_chem_rerolls || can_buy(40))
+		set_chemical()
+		if(free_chem_rerolls)
+			free_chem_rerolls--
+
+/mob/camera/blob/proc/set_chemical()
+	var/datum/reagent/blob/BC = pick((subtypesof(/datum/reagent/blob) - blob_reagent_datum.type))
+	blob_reagent_datum = new BC
+	for(var/BL in blobs)
+		var/obj/effect/blob/B = BL
+		B.update_icon()
+	for(var/BLO in blob_mobs)
+		var/mob/living/simple_animal/hostile/blob/BM = BLO
+		BM.update_icons() //If it's getting a new chemical, tell it what it does!
+	src << "Your reagent is now: <b><font color=\"[blob_reagent_datum.color]\">[blob_reagent_datum.name]</b></font>!"
+	src << "The <b><font color=\"[blob_reagent_datum.color]\">[blob_reagent_datum.name]</b></font> reagent [blob_reagent_datum.description]"
+
+/mob/camera/blob/verb/blob_help()
+	set category = "Blob"
+	set name = "*Blob Help*"
+	set desc = "Help on how to blob."
+	src << "<b>As the overmind, you can control the blob!</b>"
+	src << "Your blob reagent is: <b><font color=\"[blob_reagent_datum.color]\">[blob_reagent_datum.name]</b></font>!"
+	src << "The <b><font color=\"[blob_reagent_datum.color]\">[blob_reagent_datum.name]</b></font> reagent [blob_reagent_datum.description]"
+	src << "<b>You can expand, which will attack people, damage objects, or place a Normal Blob if the tile is clear.</b>"
+	src << "<i>Normal Blobs</i> will expand your reach and can be upgraded into special blobs that perform certain functions."
+	src << "<b>You can upgrade normal blobs into the following types of blob:</b>"
+	src << "<i>Shield Blobs</i> are strong and expensive blobs which take more damage. In additon, they are fireproof and can block air, use these to protect yourself from station fires."
+	src << "<i>Resource Blobs</i> are blobs which produce more resources for you, build as many of these as possible to consume the station. This type of blob must be placed near node blobs or your core to work."
+	src << "<i>Factory Blobs</i> are blobs that spawn blob spores which will attack nearby enemies. This type of blob must be placed near node blobs or your core to work."
+	src << "<i>Blobbernauts</i> can be produced from factories for a cost, and are hard to kill, powerful, and moderately smart. The factory used to create one will become fragile and briefly unable to produce spores."
+	src << "<i>Node Blobs</i> are blobs which grow, like the core. Like the core it can activate resource and factory blobs."
+	src << "<b>In addition to the buttons on your HUD, there are a few click shortcuts to speed up expansion and defense.</b>"
+	src << "<b>CTRL Click = Expand Blob / Middle Mouse Click = Rally Spores / Alt Click = Create Shield"
+//old yog system
+/*/mob/camera/blob/verb/chemical_reroll()
 	set category = "Blob"
 	set name = "Reactive Chemical Adaptation (50)"
 	set desc = "Replaces your chemical with a different one"
@@ -252,4 +319,4 @@
 		BL.adjustcolors(blob_reagent_datum.color)
 	for(var/mob/living/simple_animal/hostile/blob/BLO)
 		BLO.adjustcolors(blob_reagent_datum.color)
-	src << "Your reagent is now: <b>[blob_reagent_datum.name]</b>!"
+	src << "Your reagent is now: <b>[blob_reagent_datum.name]</b>!"*/

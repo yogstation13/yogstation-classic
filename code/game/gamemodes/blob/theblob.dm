@@ -1,15 +1,15 @@
-//I will need to recode parts of this but I am way too tired atm
 /obj/effect/blob
 	name = "blob"
 	icon = 'icons/mob/blob.dmi'
 	luminosity = 3
-	desc = "Some blob creature thingy"
+	desc = "Some blob creature thingy made of a wriggling mass of tendrils."
 	density = 0
 	opacity = 0
 	anchored = 1
 	explosion_block = 1
 	var/health = 30
 	var/maxhealth = 30
+	var/health_regen = 2
 	var/health_timestamp = 0
 	var/brute_resist = 4
 	var/fire_resist = 1
@@ -20,9 +20,9 @@
 /obj/effect/blob/New(loc)
 	blobs += src
 	src.dir = pick(1, 2, 4, 8)
-	src.update_icon()
 	..(loc)
 	ConsumeTile()
+	src.update_icon()
 	if(atmos_block)
 		air_update_turf(1)
 	return
@@ -44,8 +44,8 @@
 		if(overmind)
 			overmind.blob_reagent_datum.death_reaction(src, cause)
 		qdel(src) //we dead now
-		return
-	return
+		return 0
+	return 1
 
 
 /obj/effect/blob/CanPass(atom/movable/mover, turf/target, height=0)
@@ -84,7 +84,7 @@
 	if(health_timestamp > world.time)
 		return 0
 	if(health < initial(health))
-		health++
+		health += health_regen
 		update_icon()
 		health_timestamp = world.time + 10 // 1 seconds
 
@@ -134,6 +134,7 @@
 	return 0
 
 
+//old Yog expand
 /*/obj/effect/blob/proc/expand(turf/T = null, prob = 1, a_color)
 	if(prob && !prob(health))	return
 	if(istype(T, /turf/space) && !(locate(/obj/structure/lattice) in T) && prob(75)) 	return
@@ -162,7 +163,9 @@
 	for(var/atom/A in T)//Hit everything in the turf
 		A.blob_act()
 	return 1*/
+//new /tg/ expand
 /obj/effect/blob/proc/expand(turf/T = null, controller = null, expand_reaction = 1)
+	src.update_icon()
 	if(!T)
 		var/list/dirs = list(1,2,4,8)
 		for(var/i = 1 to 4)
@@ -196,10 +199,12 @@
 			B.overmind = controller
 		else
 			B.overmind = overmind
+		B.update_icon()
 		B.density = 1
 		if(T.Enter(B,src)) //NOW we can attempt to move into the tile
 			B.density = initial(B.density)
 			B.loc = T
+			B.color = src.overmind.blob_reagent_datum.color
 			B.update_icon()
 			if(B.overmind && expand_reaction)
 				B.overmind.blob_reagent_datum.expand_reaction(src, B, T)
@@ -298,9 +303,18 @@
 	update_icon()
 	check_health(cause)
 
-
-/obj/effect/blob/proc/change_to(type)
+/obj/effect/blob/proc/change_to(type, controller)
 	if(!ispath(type))
+		throw EXCEPTION("change_to(): invalid type for blob")
+		return
+	var/obj/effect/blob/B = new type(src.loc)
+	if(controller)
+		B.overmind = controller
+		B.color = overmind.blob_reagent_datum.color
+	B.update_icon()
+	qdel(src)
+	return B
+/*	if(!ispath(type))
 		throw EXCEPTION("change_to(): invalid type for blob")
 		return
 	var/obj/effect/blob/B = new type(src.loc)
@@ -309,7 +323,7 @@
 	else
 		B.adjustcolors(color)
 	qdel(src)
-	return B
+	return B*/
 
 
 /obj/effect/blob/proc/adjustcolors(a_color)
@@ -320,15 +334,14 @@
 
 /obj/effect/blob/examine(mob/user)
 	..()
-	user << "It looks like it's of a [get_chem_name()] kind."
+	user << "It appears to be composed of [get_chem_name()]."
 	return
 
 
 /obj/effect/blob/proc/get_chem_name()
-	for(var/mob/camera/blob/B in mob_list)
-		if(lowertext(B.blob_reagent_datum.color) == lowertext(src.color)) // Goddamit why we use strings for these
-			return B.blob_reagent_datum.name
-	return "unknown"
+	if(overmind)
+		return overmind.blob_reagent_datum.name
+	return "an unknown variant"
 
 
 /obj/effect/blob/normal
@@ -339,12 +352,17 @@
 
 
 /obj/effect/blob/normal/update_icon()
-	if(health <= 0)
-		qdel(src)
-	else if(health <= 15)
-		icon_state = "blob_damaged"
-	else
-		icon_state = "blob"
+	if(check_health())
+		if(health <= 10)
+			icon_state = "blob_damaged"
+			name = "fragile blob"
+			desc = "A thin lattice of slightly twitching tendrils."
+			brute_resist = 2
+		else
+			icon_state = "blob"
+			name = "blob"
+			desc = "A thick wall of writhing tendrils."
+			brute_resist = 4
 
 
 /obj/effect/blob/tesla_act(power)

@@ -31,7 +31,7 @@
 /datum/reagent/blob/proc/extinguish_reaction(obj/effect/blob/B) //when the blob is hit with water, do this
 	return
 
-/*//does low toxin damage, but creates fragile spores when expanding or killed by weak attacks
+//does low toxin damage, but creates fragile spores when expanding or killed by weak attacks
 /datum/reagent/blob/sporing_pods
 	name = "Sporing Pods"
 	id = "sporing_pods"
@@ -43,10 +43,10 @@
 
 /datum/reagent/blob/sporing_pods/reaction_mob(mob/living/M, method=TOUCH, reac_volume, show_message, touch_protection, mob/camera/blob/O)
 	reac_volume = ..()
-	M.apply_damage(0.2*reac_volume, TOX)
+	M.apply_damage(0.4*reac_volume, TOX)
 
 /datum/reagent/blob/sporing_pods/damage_reaction(obj/effect/blob/B, original_health, damage, damage_type, cause)
-	if(!isnull(cause) && damage <= 20 && original_health - damage <= 0 && prob(30)) //if the cause isn't fire or a bomb, the damage is less than 21, we're going to die from that damage, 30% chance of a shitty spore.
+	if(!isnull(cause) && damage <= 25 && original_health - damage <= 0 && prob(30)) //if the cause isn't fire or a bomb, the damage is less than 26, we're going to die from that damage, 30% chance of a shitty spore.
 		B.visible_message("<span class='warning'><b>A spore floats free of the blob!</b></span>")
 		var/mob/living/simple_animal/hostile/blob/blobspore/weak/BS = new/mob/living/simple_animal/hostile/blob/blobspore/weak(B.loc)
 		BS.overmind = B.overmind
@@ -55,11 +55,11 @@
 	return ..()
 
 /datum/reagent/blob/sporing_pods/expand_reaction(obj/effect/blob/B, obj/effect/blob/newB, turf/T)
-	if(prob(10))
+	if(prob(20))
 		var/mob/living/simple_animal/hostile/blob/blobspore/weak/BS = new/mob/living/simple_animal/hostile/blob/blobspore/weak(T)
 		BS.overmind = B.overmind
 		BS.update_icons()
-		newB.overmind.blob_mobs.Add(BS)*/
+		newB.overmind.blob_mobs.Add(BS)
 
 //does brute damage but can replicate when damaged and has a chance of expanding again
 /datum/reagent/blob/replicating_foam

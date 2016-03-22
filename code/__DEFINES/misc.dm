@@ -252,3 +252,6 @@
 #define NO_RESULT				-4
 #define QUERY_OK				-5
 #define INSUFFICIENT_CREDITS	-6
+
+//subtypesof(), typesof() without the parent path //taken from /tg/, thanks.
+#define subtypesof(typepath) ( typesof(typepath) - typepath )

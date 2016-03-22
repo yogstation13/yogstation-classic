@@ -7,6 +7,16 @@
 /obj/screen/blob/MouseExited()
 	closeToolTip(usr)
 
+/obj/screen/blob/BlobHelp
+	icon_state = "ui_help"
+	name = "Blob Help"
+	desc = "Help on playing blob!"
+
+/obj/screen/blob/BlobHelp/Click()
+	if(isovermind(usr))
+		var/mob/camera/blob/B = usr
+		B.blob_help()
+
 /obj/screen/blob/JumpToNode
 	icon_state = "ui_tonode"
 	name = "Jump to Node"
@@ -34,7 +44,7 @@
 /obj/screen/blob/Blobbernaut
 	icon_state = "ui_blobbernaut"
 	name = "Produce Blobbernaut (30)"
-	desc = "Produces a strong, smart blobbernaut from a factory blob for 30 points.<br>The factory blob used will become fragile."
+	desc = "Produces a strong, semi-smart blobbernaut from a factory blob for 30 points.<br>The factory blob used will become fragile and fall apart."
 
 /obj/screen/blob/Blobbernaut/Click()
 	if(isovermind(usr))
@@ -78,7 +88,11 @@
 
 /obj/screen/blob/ReadaptChemical/MouseEntered(location,control,params)
 	if(isovermind(usr))
-		..()
+		var/mob/camera/blob/B = usr
+		if(B.free_chem_rerolls)
+			openToolTip(usr,src,params,title = "Readapt Chemical (FREE)",content = "Randomly rerolls your chemical for free.", theme = "blob")
+		else
+			..()
 
 /obj/screen/blob/ReadaptChemical/Click()
 	if(isovermind(usr))
@@ -103,14 +117,12 @@
 
 	blobpwrdisplay = new /obj/screen()
 	blobpwrdisplay.name = "blob power"
-	blobpwrdisplay.icon = 'icons/mob/screen_midnight.dmi'
 	blobpwrdisplay.icon_state = "block"
 	blobpwrdisplay.screen_loc = ui_health
 	blobpwrdisplay.layer = 20
 
 	blobhealthdisplay = new /obj/screen()
 	blobhealthdisplay.name = "blob health"
-	blobhealthdisplay.icon = 'icons/mob/screen_midnight.dmi'
 	blobhealthdisplay.icon_state = "block"
 	blobhealthdisplay.screen_loc = ui_internal
 	blobhealthdisplay.layer = 20
@@ -118,6 +130,10 @@
 	mymob.client.screen = list()
 	mymob.client.screen += list(blobpwrdisplay, blobhealthdisplay)
 	mymob.client.screen += mymob.client.void
+
+	using = new /obj/screen/blob/BlobHelp()
+	using.screen_loc = "WEST:6,NORTH:-3"
+	adding += using
 
 	using = new /obj/screen/blob/JumpToNode()
 	using.screen_loc = ui_inventory

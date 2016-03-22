@@ -25,8 +25,8 @@
 ////////////////
 
 /mob/living/simple_animal/hostile/blob/blobspore
-	name = "blob"
-	desc = "Some blob thing."
+	name = "blob spore"
+	desc = "A floating, fragile blob spore."
 	icon_state = "blobpod"
 	icon_living = "blobpod"
 	health = 40
@@ -140,17 +140,28 @@
 		overlays += I
 
 /////////////////
+//WEAK BLOB SPORE
+/////////////////
+/mob/living/simple_animal/hostile/blob/blobspore/weak
+	name = "fragile blob spore"
+	desc = "Some weak blob thing."
+	health = 20
+	maxHealth = 20
+	melee_damage_lower = 1
+	melee_damage_upper = 2
+
+/////////////////
 // BLOBBERNAUT //
 /////////////////
 
 /mob/living/simple_animal/hostile/blob/blobbernaut
 	name = "blobbernaut"
-	desc = "Some HUGE blob thing."
+	desc = "Some HUGE, hulking, mobile chunk of blobmass."
 	icon_state = "blobbernaut"
 	icon_living = "blobbernaut"
 	icon_dead = "blobbernaut_dead"
-	health = 240
-	maxHealth = 240
+	health = 225
+	maxHealth = 225
 	melee_damage_lower = 20
 	melee_damage_upper = 20
 	attacktext = "hits"
