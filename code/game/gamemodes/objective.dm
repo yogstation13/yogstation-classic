@@ -211,7 +211,7 @@
 	return 0
 
 
-/datum/objective/mutiny/locate_targets()
+/datum/objective/protect/locate_targets()
 	return list(target)
 
 /datum/objective/protect/update_explanation_text()
