@@ -3,6 +3,9 @@ First off all, let me thank you by choosing to contribute to our GitHub reposito
 
 Secondly, these are technically rules, but if you feel these are poor guidelines (rules), you're welcome to propose a new ruleset anytime you'd like.
 
+## Updates 2016-03-16
+
+If you are a part of our regular coding team, please create an issue for any new code that you are going to contribute (unless there needs to be secrecy - if so, please contact me about it). We are making this change so that our players have a chance to voice opinions on changes before coders have put too much effort into them. This lets the community have more of a hand in the direction our codebase heads. 
 
 ##### Table of Contents
 * [Coding Standards](#coding-standards)

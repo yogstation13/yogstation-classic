@@ -138,3 +138,5 @@
 			send2irc(owner.ckey, "Ticket - [title] - No admins online")
 		else
 			send2irc(owner.ckey, "Ticket - [title] - All admins AFK ([admin_number_afk]/[admin_number_total]) or skipped ([admin_number_ignored]/[admin_number_total])")
+
+	check_unclaimed()

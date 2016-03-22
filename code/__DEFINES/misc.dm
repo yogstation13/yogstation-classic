@@ -253,5 +253,13 @@
 #define QUERY_OK				-5
 #define INSUFFICIENT_CREDITS	-6
 
+
 //subtypesof(), typesof() without the parent path //taken from /tg/, thanks.
 #define subtypesof(typepath) ( typesof(typepath) - typepath )
+
+//Ghost orbit types:
+#define GHOST_ORBIT_CIRCLE		"circle"
+#define GHOST_ORBIT_TRIANGLE	"triangle"
+#define GHOST_ORBIT_HEXAGON		"hexagon"
+#define GHOST_ORBIT_SQUARE		"square"
+#define GHOST_ORBIT_PENTAGON	"pentagon"

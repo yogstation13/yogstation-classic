@@ -1,23 +1,3 @@
-// Code taken from /bay/station.
-// Modified to allow consequtive querys in one invocation, terminated with ";"
-
-// Examples
-/*
-	-- Will call the proc for all computers in the world, thats dir is 2.
-	CALL ex_act(1) ON /obj/machinery/computer IN world WHERE dir == 2
-	-- Will open a window with a list of all the closets in the world, with a link to VV them.
-	SELECT /obj/structure/closet/secure_closet/security/cargo IN world WHERE icon_off == "secoff"
-	-- Will change all the tube lights to green
-	UPDATE /obj/machinery/light IN world SET color = "#0F0" WHERE icon_state == "tube1"
-	-- Will delete all pickaxes. "IN world" is not required.
-	DELETE /obj/item/weapon/pickaxe
-	-- Will flicker the lights once, then turn all mobs green. The semicolon is important to separate the consecutive querys, but is not required for standard one-query use
-	CALL flicker(1) ON /obj/machinery/light; UPDATE /mob SET color = "#00cc00"
-
-	--You can use operators other than ==, such as >, <=, != and etc..
-
-*/
-
 /client/proc/SDQL2_query(query_text as message)
 	set category = "Debug"
 	if(!check_rights(R_DEBUG))  //Shouldn't happen... but just to be safe.
@@ -75,6 +55,7 @@
 			if(char == "/" || char == "*")
 				for(var/from in from_objs)
 					objs += SDQL_get_all(type, from)
+					CHECK_TICK
 
 			else if(char == "'" || char == "\"")
 				objs += locate(copytext(type, 2, length(type)))
@@ -85,6 +66,7 @@
 			for(var/datum/d in objs_temp)
 				if(SDQL_expression(d, query_tree["where"]))
 					objs += d
+				CHECK_TICK
 
 		switch(query_tree[1])
 			if("call")
@@ -93,14 +75,13 @@
 
 				for(var/datum/d in objs)
 					for(var/v in call_list)
-						// To stop any procs which sleep from executing slowly.
-						if(d)
-							if(hascall(d, v))
-								spawn() call(d, v)(arglist(args_list)) // Spawn in case the function sleeps.
+						SDQL_callproc(d, v, args_list)
+						CHECK_TICK
 
 			if("delete")
 				for(var/datum/d in objs)
-					del d
+					qdel(d)
+					CHECK_TICK
 
 			if("select")
 				var/text = ""
@@ -108,21 +89,15 @@
 					text += "<A HREF='?_src_=vars;Vars=\ref[t]'>\ref[t]</A>"
 					if(istype(t, /atom))
 						var/atom/a = t
-
 						if(a.x)
 							text += ": [t] at ([a.x], [a.y], [a.z])<br>"
-
 						else if(a.loc && a.loc.x)
 							text += ": [t] in [a.loc] at ([a.loc.x], [a.loc.y], [a.loc.z])<br>"
-
 						else
 							text += ": [t]<br>"
-
 					else
 						text += ": [t]<br>"
-
 				usr << browse(text, "window=SDQL-result")
-
 			if("update")
 				if("set" in query_tree)
 					var/list/set_list = query_tree["set"]
@@ -132,22 +107,19 @@
 							if(v in d.vars)
 								vals += v
 								vals[v] = SDQL_expression(d, set_list[v])
-
 						if(istype(d, /turf))
 							for(var/v in vals)
 								if(v == "x" || v == "y" || v == "z")
 									continue
-
 								d.vars[v] = vals[v]
-
 						else
 							for(var/v in vals)
 								d.vars[v] = vals[v]
-
-
-
-
-
+						CHECK_TICK
+/proc/SDQL_callproc(thing, procname, args_list)
+	set waitfor = 0
+	if(hascall(thing, procname))
+		call(thing, procname)(arglist(args_list))
 /proc/SDQL_parse(list/query_list)
 	var/datum/SDQL_parser/parser = new()
 	var/list/querys = list()
@@ -155,14 +127,12 @@
 	var/pos = 1
 	var/querys_pos = 1
 	var/do_parse = 0
-
 	for(var/val in query_list)
 		if(val == ";")
 			do_parse = 1
 		else if(pos >= query_list.len)
 			query_tree += val
 			do_parse = 1
-
 		if(do_parse)
 			parser.query = query_tree
 			var/list/parsed_tree
@@ -245,31 +215,37 @@
 		for(var/mob/d in location)
 			if(istype(d, type))
 				out += d
+			CHECK_TICK
 
 	else if(ispath(type, /turf))
 		for(var/turf/d in location)
 			if(istype(d, type))
 				out += d
+			CHECK_TICK
 
 	else if(ispath(type, /obj))
 		for(var/obj/d in location)
 			if(istype(d, type))
 				out += d
+			CHECK_TICK
 
 	else if(ispath(type, /area))
 		for(var/area/d in location)
 			if(istype(d, type))
 				out += d
+			CHECK_TICK
 
 	else if(ispath(type, /atom))
 		for(var/atom/d in location)
 			if(istype(d, type))
 				out += d
+			CHECK_TICK
 
 	else
 		for(var/datum/d in location)
 			if(istype(d, type))
 				out += d
+			CHECK_TICK
 
 	return out
 

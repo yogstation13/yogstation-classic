@@ -582,3 +582,5 @@
 		languages &= ~HUMAN
 		. = ..()
 		languages = old_langs
+		return
+	return ..()

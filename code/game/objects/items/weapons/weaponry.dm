@@ -165,9 +165,9 @@
 	icon_state = "switchblade"
 	desc = "A sharp, concealable, spring-loaded knife."
 	flags = CONDUCT
-	force = 20
+	force = 1
 	w_class = 2
-	throwforce = 15
+	throwforce = 5
 	throw_speed = 3
 	throw_range = 6
 	materials = list(MAT_METAL=12000)

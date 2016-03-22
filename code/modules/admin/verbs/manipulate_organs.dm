@@ -1,7 +1,7 @@
 /client/proc/manipulate_organs(mob/living/carbon/C in world)
 	set name = "Manipulate Organs"
 	set category = "Debug"
-	var/operation = input("Select organ operation.", "Organ Manipulation", "cancel") in list("add organ", "add implant", "drop organ/implant", "remove organ/implant", "cancel")
+	var/operation = input("Select organ operation.", "Organ Manipulation", "cancel") in list("add organ", "add implant", "drop organ/implant", "remove organ/implant", "eject organ/implant", "cancel")
 
 	var/list/organs = list()
 	switch(operation)
@@ -25,7 +25,7 @@
 			organ = new organ
 			organ.implant(C)
 
-		if("drop organ/implant", "remove organ/implant")
+		if("drop organ/implant", "remove organ/implant", "eject organ/implant")
 			for(var/obj/item/organ/internal/I in C.internal_organs)
 				organs["[I.name] ([I.type])"] = I
 
@@ -54,3 +54,10 @@
 				case.imp = I
 				I.loc = case
 				case.update_icon()
+
+			if(operation == "eject organ/implant")
+				C.adjustBruteLoss(50) // Ow, Having your organ burst out of you hurts.
+				var/target = organ.loc
+				for(var/i = 0, i < 7, i++)
+					target = get_step(target, pick(alldirs))
+				organ.throw_at(target,7,1, spin = 0)

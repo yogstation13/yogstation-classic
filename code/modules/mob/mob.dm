@@ -734,7 +734,7 @@ var/list/slot_equipment_priority = list( \
 			stat("Instances:","[world.contents.len]")
 
 			if(master_controller)
-				stat("MasterController:","[round(master_controller.cost,0.001)]ds (Interval:[master_controller.processing_interval] | Iteration:[master_controller.iteration])")
+				stat("MasterController:","[round(master_controller.cost,0.001)]ds (Interval:[world.tick_lag] | Iteration:[master_controller.iteration])")
 				stat("Subsystem cost per second:","[round(master_controller.SSCostPerSecond,0.001)]ds")
 				for(var/datum/subsystem/SS in master_controller.subsystems)
 					if(SS.can_fire)

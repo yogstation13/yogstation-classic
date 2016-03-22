@@ -82,7 +82,7 @@
 		var/y0 = epicenter.y
 		var/z0 = epicenter.z
 
-		var/list/affected_turfs = trange(max_range, epicenter)
+		var/list/affected_turfs = spiral_range_turfs(max_range, epicenter)
 
 		if(config.reactionary_explosions)
 			for(var/V in affected_turfs) // we cache the explosion block rating of every turf in the explosion area
@@ -98,8 +98,10 @@
 				for(var/obj/structure/window/W in T)
 					if(W.reinf && W.fulltile)
 						cached_exp_block[T] += W.explosion_block
+					CHECK_TICK
 
 		for(var/V in affected_turfs)
+			CHECK_TICK
 			var/turf/T = V
 			var/dist = cheap_hypotenuse(T.x, T.y, x0, y0)
 
@@ -197,7 +199,7 @@
 	var/x0 = epicenter.x
 	var/y0 = epicenter.y
 	var/list/wipe_colours = list()
-	for(var/turf/T in trange(max_range, epicenter))
+	for(var/turf/T in spiral_range_turfs(max_range, epicenter))
 		wipe_colours += T
 		var/dist = cheap_hypotenuse(T.x, T.y, x0, y0)
 
