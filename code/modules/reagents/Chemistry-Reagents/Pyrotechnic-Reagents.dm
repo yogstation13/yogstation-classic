@@ -60,7 +60,7 @@
 			F.burn_tile()
 		if(istype(F, /turf/simulated/floor/))
 			for(var/turf/turf in range(1,F))
-+				PoolOrNew(/obj/effect/hotspot, F)
+				PoolOrNew(/obj/effect/hotspot, F)
 	if(istype(T, /turf/simulated/wall/))
 		var/turf/simulated/wall/W = T
 		if(prob(reac_volume/10))
