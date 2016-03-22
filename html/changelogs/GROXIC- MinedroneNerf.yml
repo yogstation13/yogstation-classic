@@ -1,6 +1,6 @@
 author: GROXIC
 
-delete-after: true
+delete-after: True
 
 changes:
   -tweak: "The power of minedrones has been reduced and they have been given a mining points card as per Section 899B of Nanotrasen Policy to prevent inhuman robots from becoming superior to humanoids."
