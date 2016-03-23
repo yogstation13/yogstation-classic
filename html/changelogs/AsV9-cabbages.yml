@@ -1,7 +1,0 @@
-author: AsV9
-
-delete-after: True
-
-changes: 
-  - bugfix: "Plant people should now be able to use mechs without slowly dying."
-  - bugfix: "Plant people should no longer die at places such as the syndicate shuttle."
