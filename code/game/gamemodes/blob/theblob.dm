@@ -310,7 +310,7 @@
 	var/obj/effect/blob/B = new type(src.loc)
 	if(controller)
 		B.overmind = controller
-		B.color = overmind.blob_reagent_datum.color
+		B.adjustcolors(overmind.blob_reagent_datum.color)
 	B.update_icon()
 	qdel(src)
 	return B
@@ -346,9 +346,10 @@
 
 /obj/effect/blob/normal
 	icon_state = "blob"
+	desc = "A thick wall of writhing tendrils."
 	luminosity = 0
-	health = 21
-	maxhealth = 25
+	health = 30
+	maxhealth = 30
 
 
 /obj/effect/blob/normal/update_icon()
