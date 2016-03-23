@@ -392,6 +392,8 @@
 					if(!M.buckled)
 						M.Weaken(3)
 
+			if(T0.z != T1.z)
+				AM.on_z_level_change()
 
 		if (rotation)
 			T1.shuttleRotate(rotation)

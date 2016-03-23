@@ -86,6 +86,7 @@ var/global/image/fire_overlay = image("icon" = 'icons/effects/fire.dmi', "icon_s
 	)
 
 	var/flags_cover = 0 //for flags such as GLASSESCOVERSEYES
+	var/high_risk = 0 //if admins should be notified when this destoryed
 
 /obj/item/proc/check_allowed_items(atom/target, not_inside, target_self)
 	if(((src in target) && !target_self) || ((!istype(target.loc, /turf)) && (!istype(target, /turf)) && (not_inside)) || is_type_in_list(target, can_be_placed_into))
@@ -97,11 +98,32 @@ var/global/image/fire_overlay = image("icon" = 'icons/effects/fire.dmi', "icon_s
 /obj/item/device
 	icon = 'icons/obj/device.dmi'
 
+/obj/item/New()
+	if(high_risk)
+		antag_objective_items += src
+
 /obj/item/Destroy()
+	if(high_risk)
+		var/turf/T = get_turf(src)
+		message_admins("Antag objective item [src] deleted at ([T.x],[T.y],[T.z] - <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP</a>). Last associated key is [src.fingerprintslast].")
+		log_game("Antag objective item [src] deleted at ([T.x],[T.y],[T.z]). Last associated key is [src.fingerprintslast].")
+		antag_objective_items -= src
 	if(ismob(loc))
 		var/mob/m = loc
 		m.unEquip(src, 1)
 	return ..()
+
+/obj/item/on_z_level_change()
+	if(high_risk)
+		var/turf/T = get_turf(src)
+		if(T)
+			message_admins("Antag objective item [src] changed z levels at ([T.x],[T.y],[T.z] - <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP</a>). Last associated key is [src.fingerprintslast].")
+			log_game("Antag objective item [src] changed z levels at ([T.x],[T.y],[T.z]). Last associated key is [src.fingerprintslast].")
+		else
+			message_admins("Antag objective item [src] changed z levels at (no loc). Last associated key is [src.fingerprintslast].")
+			log_game("Antag objective item [src] changed z levels at (no loc). Last associated key is [src.fingerprintslast].")
+	..()
+
 
 /obj/item/blob_act()
 	qdel(src)

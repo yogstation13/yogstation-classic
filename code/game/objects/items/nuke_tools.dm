@@ -8,6 +8,7 @@
 	icon_state = "plutonium_core"
 	var/pulse = 0
 	var/cooldown = 0
+	high_risk = 1
 
 /obj/item/nuke_core/process()
 	if(cooldown < world.time - 40)

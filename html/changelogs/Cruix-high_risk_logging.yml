@@ -1,0 +1,6 @@
+author: Cruix
+
+delete-after: True
+
+changes: 
+  - rscadd: "Admins are now notified when a high-risk item is destroyed or changes z-levels."
