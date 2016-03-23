@@ -1,6 +1,0 @@
-author: XTheDark
-
-delete-after: True
-
-changes: 
-  - bugfix: "Swarmer traps now correctly stun living creatures."
