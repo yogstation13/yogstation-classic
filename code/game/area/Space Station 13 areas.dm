@@ -45,6 +45,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	var/static_equip
 	var/static_light = 0
 	var/static_environ
+	var/murders_plants = 1 //whether or not this room can murder plants if other conditions are met. 1 means yes.
 
 	var/has_gravity = 0
 	var/safe = 0 				//Is the area teleport-safe: no space / radiation / aggresive mobs / other dangers
@@ -106,6 +107,7 @@ var/list/teleportlocs = list()
 	luminosity = 1
 	lighting_use_dynamic = 1
 	has_gravity = 1
+	murders_plants = 0
 	valid_territory = 0
 	icon_state = "shuttle"
 
@@ -152,6 +154,7 @@ var/list/teleportlocs = list()
 	luminosity = 1
 	lighting_use_dynamic = 0
 	has_gravity = 1
+	murders_plants = 0
 
 // CENTCOM
 
@@ -160,6 +163,7 @@ var/list/teleportlocs = list()
 	icon_state = "centcom"
 	requires_power = 0
 	has_gravity = 1
+	murders_plants = 0
 
 /area/centcom/control
 	name = "\improper Centcom Docks"
@@ -186,6 +190,7 @@ var/list/teleportlocs = list()
 	icon_state = "syndie-ship"
 	requires_power = 0
 	has_gravity = 1
+	murders_plants = 0
 
 /area/syndicate_mothership/control
 	name = "\improper Syndicate Control Room"
@@ -231,6 +236,7 @@ var/list/teleportlocs = list()
 	icon_state = "yellow"
 	requires_power = 0
 	has_gravity = 1
+	murders_plants = 0
 
 /area/tdome/arena
 	name = "\improper Thunderdome Arena"
@@ -265,12 +271,14 @@ var/list/teleportlocs = list()
 	has_gravity = 1
 	min_lumcount = 0.4 // Shadowlng proof.
 
+
 //Abductors
 /area/abductor_ship
 	name = "\improper Abductor Ship"
 	icon_state = "yellow"
 	requires_power = 0
 	has_gravity = 1
+	murders_plants = 0
 
 
 //PRISON
@@ -978,6 +986,8 @@ var/list/teleportlocs = list()
 
 //Toxins
 
+//side note, why the fuck is this called toxins and not science. /side note
+
 /area/toxins/lab
 	name = "\improper Research and Development"
 	icon_state = "toxlab"
@@ -1319,12 +1329,13 @@ var/list/teleportlocs = list()
 	name = "\improper Bridge"
 	icon_state = "bridge"
 
-/area/generic
+/area/generic //the ab-use room.
 	name = "Unknown"
 	icon_state = "storage"
 	requires_power = 0
 	has_gravity = 1
 	luminosity = 1
+	murders_plants = 0
 
 
 // Telecommunications Satellite
