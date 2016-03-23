@@ -104,7 +104,7 @@
 	build_path = /obj/item/weapon/aiModule/core/full/asimov
 	category = list("AI Modules")
 
-/datum/design/paladin_module
+/*/datum/design/paladin_module
 	name = "Core Module Design (P.A.L.A.D.I.N.)"
 	desc = "Allows for the construction of a P.A.L.A.D.I.N. AI Core Module."
 	id = "paladin_module"
@@ -112,7 +112,7 @@
 	build_type = IMPRINTER
 	materials = list(MAT_GLASS = 1000, "sacid" = 20, MAT_DIAMOND = 100)
 	build_path = /obj/item/weapon/aiModule/core/full/paladin
-	category = list("AI Modules")
+	category = list("AI Modules")*/
 
 /datum/design/tyrant_module
 	name = "Core Module Design (T.Y.R.A.N.T.)"
@@ -132,6 +132,16 @@
 	build_type = IMPRINTER
 	materials = list(MAT_GLASS = 1000, "sacid" = 20, MAT_DIAMOND = 100)
 	build_path = /obj/item/weapon/aiModule/core/full/corp
+	category = list("AI Modules")
+
+/datum/design/drone_module
+	name = "Core Module Design (D.R.O.N.E.)"
+	desc = "Allows for the construction of a D.R.O.N.E. AI Module."
+	id = "drone_module"
+	req_tech = list("programming" = 4, "materials" = 5)
+	build_type = IMPRINTER
+	materials = list(MAT_GLASS = 1000, "sacid" = 20, MAT_DIAMOND = 100)
+	build_path = /obj/item/weapon/aiModule/core/drone
 	category = list("AI Modules")
 
 /datum/design/custom_module
