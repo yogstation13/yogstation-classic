@@ -114,8 +114,8 @@ var/datum/subsystem/ticker/ticker
 
 					for(var/client/X in admins)
 						var/invalid = 0
-						//if(!check_rights_for(X, R_SERVER))
-						//	invalid = 1
+						if(!check_rights_for(X, R_TICKET))
+							invalid = 1
 						if(X.is_afk())
 							invalid = 1
 						if(!invalid)
