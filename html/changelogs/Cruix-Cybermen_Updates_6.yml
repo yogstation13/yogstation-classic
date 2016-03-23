@@ -1,0 +1,10 @@
+author: Cruix
+
+delete-after: True
+
+changes: 
+  - rscadd: "Cybermen now get a data hud that appears over objects being hacked."
+  - rscadd: "Cyborgs and AIs hacked by cybermen now get a cyberman icon and can see cybermen icons."
+  - rscadd: "Admins can queue up a cybermen objective to see if it is valid before assigning it."
+  - bugfix: "Fixed some runtimes in cybermen hacks."
+  - bugfix: "Finally fixed the Hack AI cybermen objective."

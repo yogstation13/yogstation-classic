@@ -854,6 +854,7 @@ datum/admins/proc/cybermen_panel()
 			<A href='?_src_=holder;cybermen=2'>Force Complete Current Objective</A>(automatically displays to all cybermen)<br>
 			<A href='?_src_=holder;cybermen=3'>Set Current Objective</A><br>
 			<A href='?_src_=holder;cybermen=6'>Set Random Current Objective</A><br>
+			<A href='?_src_=holder;cybermen=11'>Set Queued Objective</A><br>
 			<A href='?_src_=holder;cybermen=4'>Display Current Objective to all Cybermen</A><br>
 			<A href='?_src_=holder;cybermen=5'>Message All Cybermen</A><br>
 			<A href='?_src_=holder;cybermen=8'>Show Broadcast Log</A><br>
@@ -873,6 +874,12 @@ datum/admins/proc/cybermen_panel()
 			dat += "<BR>"
 
 		dat += "<BR>Cybermen objectives:<BR>"
+		if(cyberman_network.queued_cybermen_objective)
+			dat += "Queued:<BR>"
+			dat += "[cyberman_network.queued_cybermen_objective.phase] (<A href='?_src_=holder;cybermen=10;editvar=toggle_win_on_complete;target=\ref[cyberman_network.queued_cybermen_objective]'>[cyberman_network.queued_cybermen_objective.win_upon_completion ? "Cybermen win on completion" : "Cybermen do not win on completion"]</A>)<BR>[cyberman_network.queued_cybermen_objective.explanation_text]"
+			dat += "<BR>[cyberman_network.queued_cybermen_objective.is_valid() ? "<font color='green'>Valid</font>" : "<font color='red'>Not Valid</font>"]<BR><BR>"
+		else
+			dat += "No queued objective<BR><BR>"
 		for(var/i = 1 to cyberman_network.cybermen_objectives.len)
 			var/datum/objective/cybermen/O = cyberman_network.cybermen_objectives[i]
 			if(O)

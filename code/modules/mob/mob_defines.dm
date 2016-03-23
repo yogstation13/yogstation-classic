@@ -3,7 +3,7 @@
 	layer = 4
 	animate_movement = 2
 	flags = HEAR
-	hud_possible = list(ANTAG_HUD)
+	hud_possible = list(ANTAG_HUD,CYBERMEN_HACK_HUD)
 	pressure_resistance = 8
 	var/datum/mind/mind
 

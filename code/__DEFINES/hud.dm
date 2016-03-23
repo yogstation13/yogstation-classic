@@ -11,6 +11,8 @@
 #define IMPTRACK_HUD	"7" // tracking implant
 //for antag huds. these are used at the /mob level
 #define ANTAG_HUD		"8"
+//allows cybermen to see in-progress hacks on atoms
+#define CYBERMEN_HACK_HUD	"9"
 
 //data HUD (medhud, sechud) defines
 //Don't forget to update human/New() if you change these!
@@ -29,3 +31,5 @@
 #define ANTAG_HUD_CYBERMEN 10
 
 #define ANTAG_HUD_BORER 11
+
+#define DATA_HUD_CYBERMEN_HACK 12
