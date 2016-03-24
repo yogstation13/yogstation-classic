@@ -34,8 +34,9 @@
 #define R_SOUNDS		2048
 #define R_SPAWN			4096
 #define R_NOJOIN		8192
+#define R_TICKET		16384
 
-#define R_MAXPERMISSION 16384 //This holds the maximum value for a permission. It is used in iteration, so keep it updated.
+#define R_MAXPERMISSION 32768 //This holds the maximum value for a permission. It is used in iteration, so keep it updated.
 
 #define TICKET_FLAG_LIST_ALL		1
 #define TICKET_FLAG_LIST_MINE		2
