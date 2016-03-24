@@ -10,6 +10,7 @@
 	throw_speed = 1
 	layer = 4
 	pressure_resistance = 1
+	high_risk = 1
 
 /obj/item/documents/nanotrasen
 	desc = "\"Top Secret\" Nanotrasen documents printed on special copy-protected paper. It is filled with complex diagrams and lists of names, dates and coordinates."

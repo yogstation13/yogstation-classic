@@ -102,6 +102,7 @@
 	blood_overlay_type = "armor"
 	armor = list(melee = 10, bullet = 10, laser = 60, energy = 50, bomb = 0, bio = 0, rad = 0)
 	var/hit_reflect_chance = 40
+	high_risk = 1
 
 /obj/item/clothing/suit/armor/laserproof/IsReflect(def_zone)
 	if(!(def_zone in list("chest", "groin"))) //If not shot where ablative is covering you, you don't get the reflection bonus!
@@ -129,6 +130,7 @@
 	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0)
 	action_button_name = "Toggle Armor"
 	unacidable = 1
+	high_risk = 1
 
 /obj/item/clothing/suit/armor/reactive/IsShield()
 	if(active)

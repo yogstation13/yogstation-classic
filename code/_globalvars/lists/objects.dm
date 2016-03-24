@@ -14,3 +14,4 @@ var/global/list/chemical_reagents_list				//list of all /datum/reagent datums in
 var/global/list/surgeries_list = list()				//list of all surgeries by name, associated with their path.
 var/global/list/table_recipes = list()				//list of all table craft recipes
 var/global/list/apcs_list = list()					//list of all Area Power Controller machines, seperate from machines for powernet speeeeeeed.
+var/global/list/antag_objective_items = list()		//all items that could be antag objecives.

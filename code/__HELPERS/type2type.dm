@@ -646,6 +646,11 @@ for(var/t in test_times)
 					if(var_source.vars.Find(A))
 						. += A
 
+// Credits: http://www.byond.com/forum/?post=132854
+/proc/list2string( l[], sep )
+    for( var/x = 1 to l.len )
+        . += ( l[x] + (x < l.len ? sep :null) )
+
 
 
 

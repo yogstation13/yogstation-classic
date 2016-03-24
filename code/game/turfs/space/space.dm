@@ -85,7 +85,9 @@
 		if(destination_y)
 			A.y = destination_y
 
-		A.z =  text2num(transition)
+		A.z = text2num(transition)
+		if(z != A.z)
+			A.on_z_level_change()
 
 		if(isliving(A))
 			var/mob/living/L = A

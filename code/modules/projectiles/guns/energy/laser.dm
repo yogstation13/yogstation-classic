@@ -32,6 +32,7 @@
 	origin_tech = null
 	var/charge_tick = 0
 	ammo_x_offset = 3
+	high_risk = 1
 
 /obj/item/weapon/gun/energy/laser/captain/New()
 	..()
