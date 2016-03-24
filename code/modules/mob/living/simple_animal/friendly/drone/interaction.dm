@@ -7,6 +7,8 @@
 
 
 /mob/living/simple_animal/drone/UnarmedAttack(atom/A, proximity)
+	if(isSSD(src))
+		return 0
 	A.attack_hand(src)
 
 
@@ -65,6 +67,9 @@
 
 
 	if(ishuman(user))
+		if(istype(src, /mob/living/simple_animal/drone/syndiscout)) // these drones are like bots! Can't be picked up.
+			..()
+			return
 		if(stat == DEAD)
 			..()
 			return

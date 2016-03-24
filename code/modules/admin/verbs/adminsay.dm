@@ -11,7 +11,7 @@
 	spawn(-1) send_discord_message("[key_name(usr)] said: [msg]", DISCORD_ASAY)
 	msg = keywords_lookup(msg)
 
-	var/regex/R = new("#(\\d+)", "ig")
+	var/regex/R = new("\[^&\]#(\\d+)", "ig")
 	msg = R.Replace(msg, "<a href='?src=\ref[src];view_admin_ticket=$1'>Ticket #$1</a>")
 
 	if(check_rights(R_ADMIN,0))

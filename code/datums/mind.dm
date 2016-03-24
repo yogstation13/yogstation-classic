@@ -599,6 +599,25 @@
 		var/obj_count = 1
 		for(var/datum/objective/objective in objectives)
 			out += "<B>[obj_count]</B>: [objective.explanation_text] <a href='?src=\ref[src];obj_edit=\ref[objective]'>Edit</a> <a href='?src=\ref[src];obj_delete=\ref[objective]'>Delete</a> <a href='?src=\ref[src];obj_completed=\ref[objective]'><font color=[objective.completed ? "green" : "red"]>Toggle Completion</font></a><br>"
+			var/list/located_targets = objective.locate_targets()
+			if(located_targets)
+				out += "<ul>"
+				for(var/i = 1, i<=min(3, located_targets.len), i++)
+					var/target = located_targets[i]
+					out += "<li>[target]: "
+					var/turf/T = get_turf(target)
+					if(T)
+						out += "[T.x], [T.y], [T.z] (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP</a>)"
+						if(T.z != 1)
+							out += "<font color='red'> Warning: Target not on station z-level.</font>"
+					else
+						out += "No loc"
+					out += "</li>"
+				if(located_targets.len > 3)
+					out += "<li>...</li>"
+				if(!located_targets.len)
+					out += "<font color='red'>Warning: No valid target in world, or target is not high-risk.</font>"
+				out += "</ul>"
 			obj_count++
 	out += "<a href='?src=\ref[src];obj_add=1'>Add objective</a><br><br>"
 

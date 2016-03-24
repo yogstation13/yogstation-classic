@@ -1,7 +1,0 @@
-author: Oisin100
-
-delete-after: True
-
-changes: 
-  - rscadd: "Survival capsules are now logged. No more avoiding punishment."
-  - bugfix: "Survival capsules no longer rip holes in the shuttles."

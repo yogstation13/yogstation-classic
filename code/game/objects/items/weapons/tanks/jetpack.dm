@@ -91,11 +91,12 @@
 	desc = "A tank of compressed oxygen for use as propulsion in zero-gravity areas. This jetpack is specially reserved for the captain."
 	icon_state = "jetpack-gold"
 	item_state = "jetpack-gold"
+	high_risk = 1
 
 /obj/item/weapon/tank/jetpack/oxygen/captain/New()
 	..()
 	air_contents.oxygen = (6*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C)
-	
+
 /obj/item/weapon/tank/jetpack/oxygen/harness
 	name = "jet harness (oxygen)"
 	desc = "A lightweight tactical harness, used by those who don't want to be weighed down by traditional jetpacks."

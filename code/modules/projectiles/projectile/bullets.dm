@@ -120,6 +120,7 @@
 	name = "dart"
 	icon_state = "cbbolt"
 	damage = 6
+	flag = "dart"
 
 /obj/item/projectile/bullet/dart/New()
 	..()

@@ -306,6 +306,10 @@ var/list/cybermen_debug_abilities = list(/datum/admins/proc/become_cyberman,
 	if(!cyberman_network)
 		usr << "There is no Cyberman network to change the objective of."
 		return
+
+	message_admins("[key_name_admin(usr)] re-rolled the current cybermen objective.")
+	log_admin("[key_name(usr)] re-rolled the current cybermen objective.")
+
 	cyberman_network.message_all_cybermen("Re-assigning current objective...")
 	cyberman_network.cybermen_objectives -= cyberman_network.cybermen_objectives[cyberman_network.cybermen_objectives.len]
 	cyberman_network.generate_cybermen_objective(cyberman_network.cybermen_objectives.len+1)
@@ -323,12 +327,12 @@ var/list/cybermen_debug_abilities = list(/datum/admins/proc/become_cyberman,
 		var/datum/objective/cybermen/O = cyberman_network.cybermen_objectives[cyberman_network.cybermen_objectives.len]
 		if(O)
 			O.completed = 1
-			message_admins("[key_name_admin(usr)] has force-completed the cyberman objective: \"[O.explanation_text]\".")
-			log_admin("[key_name(usr)] has force-completed the cyberman objective: \"[O.explanation_text]\".")
+			message_admins("[key_name_admin(usr)] has force-completed the cybermen objective: \"[O.explanation_text]\".")
+			log_admin("[key_name(usr)] has force-completed the cybermen objective: \"[O.explanation_text]\".")
 		else
-			usr << "<span class='warning'>ERROR - Current Cyberman objective is null.</span>"
+			usr << "<span class='warning'>ERROR - Current Cybermen objective is null.</span>"
 	else
-		usr << "<span class='warning'>ERROR - No cyberman objective to force-complete.</span>"
+		usr << "<span class='warning'>ERROR - No cybermen objective to force-complete.</span>"
 
 /datum/admins/proc/set_cybermen_objective()
 	set category = "Cyberman Debug"
@@ -350,11 +354,38 @@ var/list/cybermen_debug_abilities = list(/datum/admins/proc/become_cyberman,
 	var/datum/objective/cybermen/chosen_objective = objective_options[chosen_objective_name]
 	chosen_objective.admin_create_objective()
 
+	message_admins("[key_name_admin(usr)] has set the current cybermen objective to: \"[chosen_objective.explanation_text]\".")
+	log_admin("[key_name(usr)] has set the current cybermen objective to: \"[chosen_objective.explanation_text]\".")
+
 	cyberman_network.message_all_cybermen("Re-assigning current objective...")
 	cyberman_network.cybermen_objectives -= cyberman_network.cybermen_objectives[cyberman_network.cybermen_objectives.len]
 	cyberman_network.cybermen_objectives += chosen_objective
 	cyberman_network.display_current_cybermen_objective()
 
+/datum/admins/proc/set_cybermen_queued_objective()
+	set category = "Cyberman Debug"
+	set name = "Set Queued Objective"
+
+	if(!cyberman_network)
+		usr << "There is no Cyberman network to set the objective of."
+		return
+	var/list/objective_options = list()
+	for(var/type in typesof(/datum/objective/cybermen/))
+		var/datum/objective/cybermen/O = new type()
+		if(O.name == "Unnamed Objective")
+			continue
+		objective_options += O.name
+		objective_options[O.name] = O
+	var/chosen_objective_name = input("Select new objective:") as null|anything in objective_options
+	if(!chosen_objective_name)
+		return
+	var/datum/objective/cybermen/chosen_objective = objective_options[chosen_objective_name]
+	chosen_objective.admin_create_objective()
+
+	message_admins("[key_name_admin(usr)] has set the queued cybermen objective to: \"[chosen_objective.explanation_text]\".")
+	log_admin("[key_name(usr)] has set the queued cybermen objective to: \"[chosen_objective.explanation_text]\".")
+
+	cyberman_network.queued_cybermen_objective = chosen_objective
 
 /datum/admins/proc/start_auto_hack(var/atom/target in world)
 	set category = "Cyberman Debug"
