@@ -1,0 +1,8 @@
+author: GROXIC
+
+delete-after: True
+
+changes:
+  - tweak: "AI Laws are now randomized at round-start."
+  - tgs: "Some new /tg/ AI Modules are here and can be made or found in the AI Upload."
+  - tweak: "The P.A.L.A.D.I.N. Core Module board has been removed from the AI Upload, however it is still available to print."

@@ -2,7 +2,8 @@
 	name = "resource blob"
 	icon = 'icons/mob/blob.dmi'
 	icon_state = "blob_resource"
-	health = 30
+	health = 65
+	maxhealth = 65
 	fire_resist = 2
 	var/resource_delay = 0
 
