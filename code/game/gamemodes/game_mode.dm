@@ -313,6 +313,7 @@
 		if(BE_CYBERMAN)		roletext="cyberman"
 		if(BE_DOUBLEAGENT) 	roletext="double agent"
 
+
 	// Ultimate randomizing code right here
 	for(var/mob/new_player/player in player_list)
 		if(player.client && player.ready)
@@ -323,7 +324,6 @@
 	// Shuffling, the players list is now ping-independent!!!
 	// Goodbye antag dante
 	players = shuffle(players)
-	world << "players len=[players.len]"
 
 	for(var/mob/new_player/player in players)
 		if(player.client && player.ready)
@@ -333,15 +333,11 @@
 					if(age_check(player.client)) //Must be older than the minimum age
 						candidates += player.mind				// Get a list of all the people who want to be the antagonist for this round
 
-	world << "candidates len=[candidates.len] restricted_jobs=[restricted_jobs]"
-
 	if(restricted_jobs)
 		for(var/datum/mind/player in candidates)
 			for(var/job in restricted_jobs)					// Remove people who want to be antagonist but have a job already that precludes it
 				if(player.assigned_role == job)
 					candidates -= player
-
-	world << "candidates len=[candidates.len] recommended_enemies=[recommended_enemies]"
 
 	if(candidates.len < recommended_enemies)
 		for(var/mob/new_player/player in players)
@@ -354,7 +350,6 @@
 							player << "<span class='userdanger'>There aren't enough antag volunteers, so your quiet round setting will not be considered!</span>"
 							player.mind.quiet_round = 0
 
-	world << "drafted len=[drafted.len]"
 
 	if(restricted_jobs)
 		for(var/datum/mind/player in drafted)				// Remove people who can't be an antagonist
@@ -362,10 +357,17 @@
 				if(player.assigned_role == job)
 					drafted -= player
 
-	world << "drafted len=[drafted.len]"
-
 	drafted = shuffle(drafted) // Will hopefully increase randomness, Donkie
 
+	while(candidates.len < recommended_enemies)				// Pick randomlly just the number of people we need and add them to our list of candidates
+		if(drafted.len > 0)
+			applicant = pick(drafted)
+			if(applicant)
+				candidates += applicant
+				drafted.Remove(applicant)
+
+		else												// Not enough scrubs, ABORT ABORT ABORT
+			break
 /*
 	if(candidates.len < recommended_enemies && override_jobbans) //If we still don't have enough people, we're going to start drafting banned people.
 		for(var/mob/new_player/player in players)
@@ -380,7 +382,7 @@
 					drafted -= player
 
 	drafted = shuffle(drafted) // Will hopefully increase randomness, Donkie
-	// Legacy picking algo
+
 	while(candidates.len < recommended_enemies)				// Pick randomlly just the number of people we need and add them to our list of candidates
 		if(drafted.len > 0)
 			applicant = pick(drafted)
@@ -390,65 +392,6 @@
 
 		else												// Not enough scrubs, ABORT ABORT ABORT
 			break
-
-	world << "drafted len=[drafted.len]"
-
-	if(dbcon.IsConnected())
-		var/list/ckeys_to_drafted = list()
-		var/ckeys_drafted = ""
-
-		for (var/datum/mind/player in drafted)
-			world << "player=[player]"
-			world << "playerkey=[player.key]"
-			ckeys_to_drafted += get_ckey(player)
-
-		ckeys_drafted = list2string(ckeys_to_drafted, "', '")
-		world << "ckeys_drafted=[ckeys_drafted]"
-
-		var/DBQuery/query_whitelist = dbcon.NewQuery("SELECT `ckey`, `antag_weight` FROM `erro_player` WHERE `ckey` IN ('[ckeys_drafted]')")
-		world << "SELECT `ckey`, `antag_weight` FROM `erro_player` WHERE `ckey` IN ('[ckeys_drafted]')"
-
-		if(!query_whitelist.Execute())
-			return 0
-
-		var/list/output = list()
-
-		var/total = 0
-		while(query_whitelist.NextRow())
-			var/ckey = query_whitelist.item[1]
-			var/weight = text2num(query_whitelist.item[2])
-			output[ckey] = weight
-			total += weight
-			world << "[ckey] found with weight [weight] making a total of [total]"
-
-		while(candidates.len < recommended_enemies)				// Pick randomlly just the number of people we need and add them to our list of candidates
-			world << "candidates len=[candidates.len] recommended_enemies=[recommended_enemies]"
-			if(output.len > 0)
-				var/R = rand(0, total)
-				world << "randomizer=[R]"
-
-				//applicant = pick(drafted)
-
-				var/cumulativeWeight = 0
-				for(var/ckey in output)
-					var/weight = output[ckey]
-					cumulativeWeight += weight
-					world << "cumulativeWeight=[cumulativeWeight]"
-
-					if(cumulativeWeight <= R)
-						for (var/datum/mind/player in drafted)
-							if(get_ckey(player) == ckey)
-								applicant = player
-								break
-
-						if(applicant)
-							total -= weight
-							output -= ckey
-							candidates += applicant
-							drafted.Remove(applicant)
-
-			else												// Not enough scrubs, ABORT ABORT ABORT
-				break
 
 	return candidates		// Returns: The number of people who had the antagonist role set to yes, regardless of recomended_enemies, if that number is greater than recommended_enemies
 							//			recommended_enemies if the number of people with that role set to yes is less than recomended_enemies,
