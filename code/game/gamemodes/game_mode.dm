@@ -291,6 +291,58 @@
 	if(security_level < SEC_LEVEL_BLUE)
 		set_security_level(SEC_LEVEL_BLUE)
 
+/datum/game_mode/proc/pick_candidate(role)
+	if(dbcon.IsConnected())
+		var/list/ckeys_to_drafted = list()
+		var/ckeys_drafted = ""
+
+		for (var/datum/mind/player in antag_candidates)
+			ckeys_to_drafted += get_ckey(player)
+
+		ckeys_drafted = list2string(ckeys_to_drafted, "', '")
+
+		var/DBQuery/query_whitelist = dbcon.NewQuery("SELECT `ckey`, `antag_weight` FROM [format_table_name("player")] WHERE `ckey` IN ('[ckeys_drafted]')")
+
+		if(!query_whitelist.Execute())
+			return 0
+
+		var/list/output = list()
+
+		var/total = 0
+		while(query_whitelist.NextRow())
+			var/ckey = query_whitelist.item[1]
+			var/weight = text2num(query_whitelist.item[2])
+			output[ckey] = weight
+			total += weight
+
+		var/R = rand(0, total)
+
+		var/cumulativeWeight = 0
+		var/datum/mind/final_candidate
+		for(var/ckey in output)
+			var/weight = output[ckey]
+			cumulativeWeight += weight
+
+			if(R <= cumulativeWeight && !final_candidate)
+				weight = max(25, weight / 1.5)
+				var/DBQuery/query = dbcon.NewQuery("UPDATE [format_table_name("player")] SET `antag_weight` = [weight] WHERE `ckey` = '[ckey]'")
+				query.Execute()
+
+				for(var/datum/mind/candidate in antag_candidates)
+					if(lowertext(get_ckey(candidate)) == lowertext(ckey))
+						final_candidate = candidate
+						break
+			else
+				weight = min(400, weight * 1.5)
+				var/DBQuery/query = dbcon.NewQuery("UPDATE [format_table_name("player")] SET `antag_weight` = [weight] WHERE `ckey` = '[ckey]'")
+				query.Execute()
+
+		if(!final_candidate)
+			return pick(antag_candidates)
+		else
+			return final_candidate
+	else
+		return pick(antag_candidates)
 
 /datum/game_mode/proc/get_players_for_role(role)
 	var/list/players = list()
