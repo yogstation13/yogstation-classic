@@ -291,23 +291,29 @@
 	if(security_level < SEC_LEVEL_BLUE)
 		set_security_level(SEC_LEVEL_BLUE)
 
-/datum/game_mode/proc/pick_candidate(role)
+// Function to pull an antag from our list of antag candidates
+/datum/game_mode/proc/pick_candidate()
+	// If the DB is connected, use the new function. Otherwise revert to legacy pick() selection
 	if(dbcon.IsConnected())
-		var/list/ckeys_to_drafted = list()
-		var/ckeys_drafted = ""
+		var/list/ckey_listed = list()
+		var/ckey_for_sql = ""
 
+		// Add all our antag candidates to a list()
 		for (var/datum/mind/player in antag_candidates)
-			ckeys_to_drafted += get_ckey(player)
+			ckey_listed += get_ckey(player)
 
-		ckeys_drafted = list2string(ckeys_to_drafted, "', '")
+		// Turn the list into a string that we will use to filter the player table
+		ckey_for_sql = list2string(ckey_listed, "', '")
 
-		var/DBQuery/query_whitelist = dbcon.NewQuery("SELECT `ckey`, `antag_weight` FROM [format_table_name("player")] WHERE `ckey` IN ('[ckeys_drafted]')")
+		// Find all antag candidate antag-weights
+		var/DBQuery/query_whitelist = dbcon.NewQuery("SELECT `ckey`, `antag_weight` FROM [format_table_name("player")] WHERE `ckey` IN ('[ckey_for_sql]')")
 
 		if(!query_whitelist.Execute())
 			return 0
 
 		var/list/output = list()
 
+		// Add all antag candidates weights to a list() and note the upper bound of the weight
 		var/total = 0
 		while(query_whitelist.NextRow())
 			var/ckey = query_whitelist.item[1]
@@ -315,15 +321,21 @@
 			output[ckey] = weight
 			total += weight
 
+		// Find a number between 0 and our weight upper bound
 		var/R = rand(0, total)
 
 		var/cumulativeWeight = 0
 		var/datum/mind/final_candidate
+		// We will loop through each antag candidate until we find the point where the
+		// random number given intersects with a candidate. All other candidates will
+		// have their chance to be antag increased while the selected candidate will have
+		// their chance decreased
 		for(var/ckey in output)
 			var/weight = output[ckey]
 			cumulativeWeight += weight
 
 			if(R <= cumulativeWeight && !final_candidate)
+				// Lowest weight is 25.
 				weight = max(25, weight / 1.5)
 				var/DBQuery/query = dbcon.NewQuery("UPDATE [format_table_name("player")] SET `antag_weight` = [weight] WHERE `ckey` = '[ckey]'")
 				query.Execute()
@@ -333,10 +345,12 @@
 						final_candidate = candidate
 						break
 			else
+				// Maximum weight is 400.
 				weight = min(400, weight * 1.5)
 				var/DBQuery/query = dbcon.NewQuery("UPDATE [format_table_name("player")] SET `antag_weight` = [weight] WHERE `ckey` = '[ckey]'")
 				query.Execute()
 
+		// If after all this we still don't have a candidate, then use the legacy system
 		if(!final_candidate)
 			return pick(antag_candidates)
 		else
