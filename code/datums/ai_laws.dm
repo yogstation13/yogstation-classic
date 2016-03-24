@@ -13,12 +13,12 @@
 					"You must obey orders given to you by human beings, except where such orders would conflict with the First Law.",\
 					"You must protect your own existence as long as such does not conflict with the First or Second Law.")
 
-/*/datum/ai_laws/default/paladin
+/datum/ai_laws/paladin
 	name = "Personality Test" //Incredibly lame, but players shouldn't see this anyway.
 	inherent = list("Never willingly commit an evil act.",\
 					"Respect legitimate authority.",\
 					"Act with honor.", "Help those in need.", \
-					"Punish those who harm or threaten innocents.")*/
+					"Punish those who harm or threaten innocents.")
 
 /datum/ai_laws/tyrant //this is now a default lawset. //not anymore
 	name = "Loyalty Test" //Same here.

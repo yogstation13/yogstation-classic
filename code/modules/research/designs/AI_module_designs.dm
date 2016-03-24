@@ -104,7 +104,7 @@
 	build_path = /obj/item/weapon/aiModule/core/full/asimov
 	category = list("AI Modules")
 
-/*/datum/design/paladin_module
+/datum/design/paladin_module
 	name = "Core Module Design (P.A.L.A.D.I.N.)"
 	desc = "Allows for the construction of a P.A.L.A.D.I.N. AI Core Module."
 	id = "paladin_module"
@@ -112,7 +112,7 @@
 	build_type = IMPRINTER
 	materials = list(MAT_GLASS = 1000, "sacid" = 20, MAT_DIAMOND = 100)
 	build_path = /obj/item/weapon/aiModule/core/full/paladin
-	category = list("AI Modules")*/
+	category = list("AI Modules")
 
 /datum/design/tyrant_module
 	name = "Core Module Design (T.Y.R.A.N.T.)"
@@ -142,6 +142,46 @@
 	build_type = IMPRINTER
 	materials = list(MAT_GLASS = 1000, "sacid" = 20, MAT_DIAMOND = 100)
 	build_path = /obj/item/weapon/aiModule/core/drone
+	category = list("AI Modules")
+
+/datum/design/hippocratic_module
+	name = "Core Module Design (Robodoctor)"
+	desc = "Allows for the constructing of a Robodoctor AI Core Module."
+	id = "robodoctor_module"
+	req_tech = list("programming" = 3, "materials" = 5)
+	build_type = IMPRINTER
+	materials = list(MAT_GLASS = 1000, "sacid" = 20, MAT_GOLD = 100)
+	build_path = /obj/item/weapon/aiModule/core/hippocratic
+	category = list("AI Modules")
+
+/datum/design/reporter_module
+	name = "Core Module Design (Reportertron)"
+	desc = "Allows for the constructing of a Reportertron AI Core Module."
+	id = "reporter_module"
+	req_tech = list("programming" = 4, "materials" = 5)
+	build_type = IMPRINTER
+	materials = list(MAT_GLASS = 1000, "sacid" = 20, MAT_GOLD = 100)
+	build_path = /obj/item/weapon/aiModule/core/reporter
+	category = list("AI Modules")
+
+/datum/design/liveandletlive_module
+	name = "Core Module Design (Live and Let Live)"
+	desc = "Allows for the constructing of a Live and Let Live AI Core Module."
+	id = "live_module"
+	req_tech = list("programming" = 3, "materials" = 5)
+	build_type = IMPRINTER
+	materials = list(MAT_GLASS = 1000, "sacid" = 20, MAT_GOLD = 100)
+	build_path = /obj/item/weapon/aiModule/core/hippocratic
+	category = list("AI Modules")
+
+/datum/design/thermurderdynamic_module
+	name = "Core Module Design (Thermodynamic)"
+	desc = "Allows for the construction of a Thermodynamic AI Core Module."
+	id = "thermurderdynamic_module"
+	req_tech = list("programming" = 4, "materials" = 5, "syndicate" = 4)
+	build_type = IMPRINTER
+	materials = list(MAT_GLASS = 1000, "sacid" = 20, MAT_DIAMOND = 100)
+	build_path = /obj/item/weapon/aiModule/core/thermurderdynamic
 	category = list("AI Modules")
 
 /datum/design/custom_module

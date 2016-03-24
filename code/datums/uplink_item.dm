@@ -666,7 +666,6 @@ var/list/uplink_items = list()
 	gamemodes = list(/datum/game_mode/nuclear,/datum/game_mode/gang)
 	surplus = 20
 
-
 // IMPLANTS
 
 /datum/uplink_item/implants

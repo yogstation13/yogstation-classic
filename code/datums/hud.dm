@@ -13,6 +13,7 @@ var/datum/atom_hud/huds = list( \
 	ANTAG_HUD_SHADOW = new/datum/atom_hud/antag(), \
 	ANTAG_HUD_CYBERMEN = new/datum/atom_hud/antag(),\
 	ANTAG_HUD_BORER = new/datum/atom_hud/antag(),\
+	DATA_HUD_CYBERMEN_HACK = new/datum/atom_hud/data/cybermen(),\
 	)
 
 /datum/atom_hud

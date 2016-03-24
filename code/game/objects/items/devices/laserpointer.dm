@@ -17,7 +17,7 @@
 	var/recharging = 0
 	var/recharge_locked = 0
 	var/obj/item/weapon/stock_parts/micro_laser/diode //used for upgrading!
-
+	high_risk = 1
 
 /obj/item/device/laser_pointer/red
 	pointer_icon_state = "red_laser"

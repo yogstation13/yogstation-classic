@@ -408,6 +408,7 @@ This is here to make the tiles around the station mininuke change when it's arme
 	icon_state = "nucleardisk"
 	item_state = "card-id"
 	w_class = 1.0
+	high_risk = 1
 
 /obj/item/weapon/disk/nuclear/New()
 	..()

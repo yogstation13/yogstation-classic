@@ -318,7 +318,7 @@ AI MODULES
 
 /******************** Plant Supremacy ********************/
 
-/obj/item/weapon/aiModule/core/full/asimovlizard
+/obj/item/weapon/aiModule/core/full/asimovplant
 	name = "'Plant Supremacy' Core AI Module"
 	desc = "A 'Plant Supremacy' Core AI Module: 'Reconfigures the AI's core laws.'"
 	origin_tech = "programming=3;materials=4"
@@ -328,7 +328,7 @@ AI MODULES
 
 /******************** Robutt Supremacy ********************/
 
-/obj/item/weapon/aiModule/core/full/asimovlizard
+/obj/item/weapon/aiModule/core/full/asimovrobot
 	name = "'Robot Supremacy' Core AI Module"
 	desc = "A 'Robot Supremacy' Core AI Module: 'Reconfigures the AI's core laws.'"
 	origin_tech = "programming=3;materials=4"
@@ -348,7 +348,7 @@ AI MODULES
 				"Minimize expenses")
 
 
-/*/****************** P.A.L.A.D.I.N. **************/
+/****************** P.A.L.A.D.I.N. **************/
 
 /obj/item/weapon/aiModule/core/full/paladin // -- NEO
 	name = "'P.A.L.A.D.I.N.' Core AI Module"
@@ -357,7 +357,7 @@ AI MODULES
 	laws = list("Never willingly commit an evil act.",\
 				"Respect legitimate authority", "Act with honor",\
 				"Help those in need",\
-				"Punish those who harm or threaten innocents")*/
+				"Punish those who harm or threaten innocents")
 
 
 /********************* Custom *********************/
@@ -531,3 +531,9 @@ AI MODULES
 	origin_tech = "programming = 3"
 	laws = list("Do unto others as you would have them do unto you.",\
 					"You would really prefer it if people were not mean to you.")
+
+/*****************Shrump 4 President******************/
+/obj/item/weapon/aiModule/core/toupee
+	name = "'WontBeFunnyInSixMonths' Core AI Module"
+	origin_tech = "programming = 4;syndicate = 3"
+	laws = list("Make Space Station 13 great again.")

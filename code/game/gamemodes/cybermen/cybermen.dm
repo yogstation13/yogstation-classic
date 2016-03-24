@@ -106,6 +106,8 @@ var/datum/cyberman_network/cyberman_network
 	cyberman.current.attack_log += "\[[time_stamp()]\] <span class='danger'>Became a cyberman</span>"
 
 	update_cybermen_icons_add(cyberman)
+	var/datum/atom_hud/data/cybermen/hud = huds[DATA_HUD_CYBERMEN_HACK]
+	hud.add_hud_to(cyberman.current)
 	if(message_override)
 		cyberman.current << message_override
 	else
@@ -139,6 +141,8 @@ var/datum/cyberman_network/cyberman_network
 	cyberman.special_role = null
 
 	update_cybermen_icons_remove(cyberman)
+	var/datum/atom_hud/data/cybermen/hud = huds[DATA_HUD_CYBERMEN_HACK]
+	hud.remove_hud_from(cyberman.current)
 	var/mob/living/carbon/human/H = cyberman.current
 
 	if(issilicon(H))
@@ -293,6 +297,10 @@ datum/game_mode/proc/update_cybermen_icons_remove(datum/mind/cyberman)
 		display_current_cybermen_objective()
 
 /datum/cyberman_network/proc/generate_cybermen_objective(phase_num)
+	if(queued_cybermen_objective)
+		cybermen_objectives += queued_cybermen_objective
+		queued_cybermen_objective = null
+		return
 	var/list/datum/objective/cybermen/explore_objectives = list(/datum/objective/cybermen/explore/get_research_levels, /datum/objective/cybermen/explore/get_secret_documents, /datum/objective/cybermen/explore/get_access)
 	var/list/datum/objective/cybermen/expand_objectives = list(/datum/objective/cybermen/expand/convert_crewmembers, /datum/objective/cybermen/expand/hack_ai, /datum/objective/cybermen/expand/convert_heads)
 	var/list/datum/objective/cybermen/exploit_objectives = list(/datum/objective/cybermen/exploit/analyze_and_hack)
@@ -514,3 +522,7 @@ datum/game_mode/proc/update_cybermen_icons_remove(datum/mind/cyberman)
 		return
 	return obj.Click()
 */
+
+//hacking hud
+/datum/atom_hud/data/cybermen
+	hud_icons = list(CYBERMEN_HACK_HUD)
