@@ -139,6 +139,7 @@
 		M.adjustStaminaLoss(0.8*reac_volume)
 
 /datum/reagent/blob/energized_fibers/tesla_reaction(obj/effect/blob/B, power)
+	B.health += 2
 	return 0
 
 //sets you on fire, does burn damage, weak to water
