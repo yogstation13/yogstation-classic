@@ -230,6 +230,7 @@ update_label("John Doe", "Clowny")
 	item_state = "gold_id"
 	registered_name = "Captain"
 	assignment = "Captain"
+	high_risk = 1
 	New()
 		var/datum/job/captain/J = new/datum/job/captain
 		access = J.get_access()
