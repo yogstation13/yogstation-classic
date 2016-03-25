@@ -62,6 +62,7 @@
 
 	var/forbid_singulo_possession = 0
 	var/useircbot = 0
+	var/usediscordbot = 0
 
 	var/admin_legacy_system = 0	//Defines whether the server uses the legacy admin system with admins.txt or the SQL system. Config option in config.txt
 	var/ban_legacy_system = 0	//Defines whether the server uses the legacy banning system with the files in /data or the SQL system. Config option in config.txt
@@ -311,6 +312,8 @@
 					config.allow_holidays = 1
 				if("useircbot")
 					useircbot = 1
+				if("usediscordbot")
+					usediscordbot = 1
 				if("ticklag")
 					var/ticklag = text2num(value)
 					if(ticklag > 0)
