@@ -1,0 +1,7 @@
+author: Oisin100
+
+delete-after: True
+
+changes: 
+  - rscadd: "Updated discord bot to default to being off."
+  - rscadd: "Prepared server for using the advanced bot."
