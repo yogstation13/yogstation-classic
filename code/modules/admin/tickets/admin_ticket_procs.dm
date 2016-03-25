@@ -319,3 +319,10 @@
 
 	usr << browse(null, "window=ViewTicketLog[ticket_id]")
 	usr << browse(html, "window=ViewTicketLog[ticket_id]")
+
+/proc/total_unresolved_tickets()
+	var/unresolved_tickets = 0
+	for(var/datum/admin_ticket/T in tickets_list)
+		if(!T.resolved)
+			unresolved_tickets++
+	return unresolved_tickets

@@ -103,58 +103,33 @@ var/datum/subsystem/ticker/ticker
 		if(GAME_STATE_PLAYING)
 			mode.process(wait * 0.1)
 
-			var/admins_online = 0
-			for(var/client/X in admins)
-				var/invalid = 0
-				if(!check_rights_for(X, R_SERVER))
-					invalid = 1
-				if(X.is_afk())
-					invalid = 1
-				if(!invalid)
-					admins_online++
+			if(world.time > next_alert_time)
+				next_alert_time = world.time+1800 /* 6000 */
 
-			var/unresolved_tickets = 0
-			for(var/datum/admin_ticket/T in tickets_list)
-				if(!T.resolved)
-					unresolved_tickets++
+				var/admins_online = total_admins_active()
+				var/unresolved_tickets = total_unresolved_tickets()
 
-			if(!admins_online)
-				if(world.time > next_alert_time)
-					next_alert_time = world.time+6000
-					spawn(-1) send_discord_message("There are no current admins online and theres [unresolved_tickets] unresolved tickets.", DISCORD_ADMIN)
-
+				if(!admins_online)
+					spawn(-1) send_discord_message("There are no current admins active and theres [unresolved_tickets] unresolved tickets.", DISCORD_ADMIN)
 
 			if(!mode.explosion_in_progress && mode.check_finished() || force_ending)
 				current_state = GAME_STATE_FINISHED
 				toggle_ooc(1) // Turn it on
 				declare_completion(force_ending)
 				spawn(50)
-					var/unresolved_tickets = 0
-					var/admins_online = 0
-					for(var/datum/admin_ticket/T in tickets_list)
-						if(!T.resolved)
-							unresolved_tickets++
-
-					for(var/client/X in admins)
-						var/invalid = 0
-						if(!check_rights_for(X, R_TICKET))
-							invalid = 1
-						if(X.is_afk())
-							invalid = 1
-						if(!invalid)
-							admins_online++
+					var/admins_online = total_admins_active()
+					var/unresolved_tickets = total_unresolved_tickets()
 
 					if(unresolved_tickets && admins_online)
 						ticker.delay_end = 1
 						message_admins("Not all tickets have been resolved. Server restart delayed.")
 					else if(unresolved_tickets && !admins_online)
-						unresolved_tickets_ending = 1
 						world.Reboot("Round ended, but there were still active tickets. Please submit a player complaint if you did not receive a response.", "end_proper", "ended with open tickets")
-						spawn(-1) send_discord_message("There are [unresolved_tickets] unresolved tickets and no admins online. The round will end in 25 seconds.", DISCORD_ADMIN)
-					if(mode.station_was_nuked && !unresolved_tickets_ending)
-						world.Reboot("Station destroyed by Nuclear Device.", "end_proper", "nuke")
-					else if(!unresolved_tickets_ending)
-						world.Reboot("Round ended.", "end_proper", "proper completion")
+					else
+						if(mode.station_was_nuked)
+							world.Reboot("Station destroyed by Nuclear Device.", "end_proper", "nuke")
+						else
+							world.Reboot("Round ended.", "end_proper", "proper completion")
 
 /datum/subsystem/ticker/proc/setup()
 		//Create and announce mode
