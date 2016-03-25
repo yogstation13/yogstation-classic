@@ -896,3 +896,33 @@ Sorry Giacom. Please don't be mad :(
 //used in datum/reagents/reaction() proc
 /mob/living/proc/get_permeability_protection()
 	return 0
+
+/mob/proc/adjust_drugginess(amount)
+	return
+
+/mob/living/carbon/adjust_drugginess(amount)
+	var/old_druggy = druggy
+	if(amount>0)
+		druggy += amount
+		if(!old_druggy)
+			overlay_fullscreen("high", /obj/screen/fullscreen/high)
+			throw_alert("high", /obj/screen/alert/high)
+	else if(old_druggy)
+		druggy = max(eye_blurry+amount, 0)
+		if(!druggy)
+			clear_fullscreen("high")
+			clear_alert("high")
+
+/mob/proc/set_drugginess(amount)
+	return
+
+/mob/living/carbon/set_drugginess(amount)
+	var/old_druggy = druggy
+	druggy = amount
+	if(amount>0)
+		if(!old_druggy)
+			overlay_fullscreen("high", /obj/screen/fullscreen/high)
+			throw_alert("high", /obj/screen/alert/high)
+	else if(old_druggy)
+		clear_fullscreen("high")
+		clear_alert("high")

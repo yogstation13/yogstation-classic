@@ -45,7 +45,7 @@
 	icon_state = "syndrone_item"
 	drone_type = /mob/living/simple_animal/drone/syndrone
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////Minedrones////////////////////////////////////////////////////////////////////
 /mob/living/simple_animal/drone/minedrone
 	name = "Minedrone"
 	desc = "A specialized drone. This type has been created to mine and endure the arduous environment of some asteroids."
@@ -56,7 +56,7 @@
 	laws = \
 	"1. You may not in any way shape or form interact with any non-hostile, non-xenobiological life-forms on the asteroid or anywhere else, even in self defense, unless that being is another drone.\n"+\
 	"2. You may not harm or impede any non-xenobiological asteroid creatures, regardless of intent or circumstance.\n"+\
-	"3. Your goals are to mine, harvest, explore, and refine materials to the best of your abilities. You must never actively work against these goals, however you are permitted to obtain upgraded and readily available tools to complete your goals to a better ability."
+	"3. Your goals are to mine, harvest, refine materials, and explore to the best of your abilities. You must never actively work against these goals, however you may obtain tools that improve your abilities."
 	sight = (SEE_TURFS)
 	see_invisible = SEE_INVISIBLE_MINIMUM
 	picked = TRUE
@@ -65,7 +65,7 @@
 	health_repair_max = 0
 	alarms = list()
 	var/obj/item/scanner_storage
-	default_storage = /obj/item/weapon/storage/backpack/drone
+	default_storage = /obj/item/weapon/storage/backpack/minedrone
 	default_hatmask = /obj/item/clothing/head/helmet/space/hardsuit
 	var/obj/item/scanner = /obj/item/device/t_scanner/adv_mining_scanner
 	seeStatic = 0
@@ -122,12 +122,12 @@
 	if(!slot)	return
 	if(!istype(I))	return
 
+
 	if(I == l_hand)
 		l_hand = null
 	else if(I == r_hand)
 		r_hand = null
 	update_inv_hands()
-
 	I.screen_loc = null
 	I.loc = src
 	I.equipped(src, slot)
