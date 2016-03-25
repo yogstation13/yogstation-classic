@@ -32,7 +32,7 @@
 	for(var/j = 0, j < carriers_to_make, j++)
 		if (!antag_candidates.len)
 			break
-		var/datum/mind/carrier = pick(antag_candidates)
+		var/datum/mind/carrier = pick_candidate()
 		carriers += carrier
 		carrier.special_role = "zombie"
 		log_game("[carrier.key] (ckey) has been selected as a Zombie infection carrier")

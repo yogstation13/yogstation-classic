@@ -34,7 +34,7 @@
 		agent_number = n_players/2
 
 	while(agent_number > 0)
-		var/datum/mind/new_syndicate = pick(antag_candidates)
+		var/datum/mind/new_syndicate = pick_candidate()
 		syndicates += new_syndicate
 		antag_candidates -= new_syndicate //So it doesn't pick the same guy each time.
 		agent_number--
@@ -117,10 +117,10 @@
 	synd_mind.current << "<B>You are the Syndicate [leader_title] for this mission. You are responsible for the distribution of telecrystals and your ID is the only one who can open the launch bay doors.</B>"
 	synd_mind.current << "<B>If you feel you are not up to this task, give your ID to another operative.</B>"
 	synd_mind.current << "<B>In your hand you will find a special item capable of triggering a greater challenge for your team. Examine it carefully and consult with your fellow operatives before activating it.</B>"
-	
+
 	var/obj/item/device/nuclear_challenge/challenge = new /obj/item/device/nuclear_challenge
 	synd_mind.current.equip_to_slot_or_del(challenge, slot_r_hand)
-	
+
 	var/list/foundIDs = synd_mind.current.search_contents_for(/obj/item/weapon/card/id)
 	if(foundIDs.len)
 		for(var/obj/item/weapon/card/id/ID in foundIDs)
