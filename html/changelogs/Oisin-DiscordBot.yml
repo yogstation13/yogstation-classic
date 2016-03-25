@@ -1,6 +1,0 @@
-author: Oisin100
-
-delete-after: True
-
-changes: 
-  - rscadd: "Adds a discord bot what automagically posts OOC, Asay, Tickets and Round start announcements to discord."

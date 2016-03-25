@@ -1,6 +1,0 @@
-author: Cruix
-
-delete-after: True
-
-changes: 
-  - bugfix: "Fixed toggleable energy guns firing the wrong type of shot once after toggling."
