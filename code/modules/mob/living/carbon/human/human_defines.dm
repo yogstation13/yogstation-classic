@@ -58,3 +58,4 @@
 	var/heart_attack = 0
 
 	var/darksight_init = 0
+	var/safetymode = 1 //Only used for shadowlings and shadowling accessories
