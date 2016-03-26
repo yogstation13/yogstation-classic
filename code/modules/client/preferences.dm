@@ -192,6 +192,11 @@ var/global/list/spec_roles = list(
 			UI_style_ai = DEFAULT_AI_UI
 	if(loaded_preferences_successfully)
 		if(load_character())
+			if(!is_whitelisted(src))
+				job_civilian_ultra = 0
+				job_medsci_ultra = 0
+				job_engsec_ultra = 0
+				save_character()
 			return
 	//we couldn't load character data so just randomize the character appearance + name
 	random_character()		//let's create a random character then - rather than a fat, bald and naked man.
@@ -535,9 +540,6 @@ var/global/list/spec_roles = list(
 			if(job.spawn_positions == 0)
 				continue
 
-			if((job.whitelisted) && (!check_whitelist(user)))
-				continue
-
 			index += 1
 			if((index >= limit) || (job.title in splitJobs))
 				width += widthPerColumn
@@ -580,18 +582,22 @@ var/global/list/spec_roles = list(
 
 			var/prefLevelLabel = "ERROR"
 			var/prefLevelColor = "pink"
+			var/prefLevelClass = "white"
 			var/prefUpperLevel = -1 // level to assign on left click
 			var/prefLowerLevel = -1 // level to assign on right click
 
 			if(GetJobDepartment(job, 1) & job.flag)
 				prefLevelLabel = "Ultra"
-				prefLevelColor = "platinum"
+				prefLevelColor = "#E5E4E2"
 				prefUpperLevel = 5
 				prefLowerLevel = 2
 			else if(GetJobDepartment(job, 2) & job.flag)
 				prefLevelLabel = "High"
 				prefLevelColor = "slateblue"
-				prefUpperLevel = 1
+				if(job.whitelisted && is_whitelisted(user))
+					prefUpperLevel = 1
+				else
+					prefUpperLevel = 5
 				prefLowerLevel = 3
 			else if(GetJobDepartment(job, 3) & job.flag)
 				prefLevelLabel = "Medium"
@@ -607,10 +613,17 @@ var/global/list/spec_roles = list(
 				prefLevelLabel = "NEVER"
 				prefLevelColor = "red"
 				prefUpperLevel = 4
-				prefLowerLevel = 1
+				if(job.whitelisted && is_whitelisted(user))
+					prefLowerLevel = 1
+				else
+					prefLowerLevel = 2
 
-
-			HTML += "<a class='white' href='?_src_=prefs;preference=job;task=setJobLevel;level=[prefUpperLevel];text=[rank]' oncontextmenu='javascript:return setJobPrefRedirect([prefLowerLevel], \"[rank]\");'>"
+			if(job.whitelisted && is_whitelisted(user))
+				prefLevelClass = "special"
+			else
+				prefLevelClass = "white"
+				
+			HTML += "<a class='[prefLevelClass]' href='?_src_=prefs;preference=job;task=setJobLevel;level=[prefUpperLevel];text=[rank]' oncontextmenu='javascript:return setJobPrefRedirect([prefLowerLevel], \"[rank]\");'>"
 
 			if(rank == "Assistant")//Assistant is special
 				if(job_civilian_low & ASSISTANT)
@@ -1290,11 +1303,21 @@ var/global/list/spec_roles = list(
 					if("load")
 						load_preferences()
 						load_character()
+						if(!is_whitelisted(user))
+							job_civilian_ultra = 0
+							job_medsci_ultra = 0
+							job_engsec_ultra = 0
+							save_character()
 
 					if("changeslot")
 						if(!load_character(text2num(href_list["num"])))
 							random_character()
 							real_name = random_unique_name(gender)
+							save_character()
+						else if(!is_whitelisted(user))
+							job_civilian_ultra = 0
+							job_medsci_ultra = 0
+							job_engsec_ultra = 0
 							save_character()
 
 					if("tab")
