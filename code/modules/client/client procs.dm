@@ -311,6 +311,7 @@ var/next_external_rsc = 0
 			T.add_log(new /datum/ticket_log(T, src, "¤ Disconnected ¤", 1))
 
 	if(holder)
+		ticker.next_check_admin = 1
 		holder.owner = null
 		admins -= src
 	sync_logout_with_db(connection_number)
