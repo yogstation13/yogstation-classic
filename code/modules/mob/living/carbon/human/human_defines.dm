@@ -1,6 +1,6 @@
 /mob/living/carbon/human
 	languages = HUMAN
-	hud_possible = list(HEALTH_HUD,STATUS_HUD,ID_HUD,WANTED_HUD,IMPLOYAL_HUD,IMPCHEM_HUD,IMPTRACK_HUD,ANTAG_HUD)
+	hud_possible = list(HEALTH_HUD,STATUS_HUD,ID_HUD,WANTED_HUD,IMPLOYAL_HUD,IMPCHEM_HUD,IMPTRACK_HUD,ANTAG_HUD,CYBERMEN_HACK_HUD)
 	//Hair colour and style
 	var/hair_color = "000"
 	var/hair_style = "Bald"
@@ -58,4 +58,6 @@
 	var/heart_attack = 0
 
 	var/darksight_init = 0
-	var/safetymode = 1 //Only used for shadowlings and shadowling accessories
+
+	var/puppetingSSD = 0
+	//var/safetymode = 1
