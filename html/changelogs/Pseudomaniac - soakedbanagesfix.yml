@@ -1,7 +1,0 @@
-author: Pseudomaniac
-
-delete-after: True
- 
-changes: 
-  - bugfix: "The tablecraft recipe for soaked bandages now works correctly"
-  
