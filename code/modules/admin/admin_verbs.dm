@@ -79,7 +79,8 @@ var/list/admin_verbs_admin = list(
 	/client/proc/check_words,			/*displays cult-words*/
 	/client/proc/reset_all_tcs,		/*resets all telecomms scripts*/
 	/datum/admins/proc/cybermen_panel,  //lots of cybermen options
-	/client/proc/toggle_restart_vote	//moderator tool for toggling restart vote
+	/client/proc/toggle_restart_vote,	//moderator tool for toggling restart vote
+	/datum/admins/proc/toggle_high_risk_item_notifications //toggles notifying admins when objective items are destroyed or change z-levels
 	)
 var/list/admin_verbs_ban = list(
 	/client/proc/unban_panel,
@@ -240,7 +241,8 @@ var/list/admin_verbs_hideable = list(
 	/client/proc/panicbunker,
 	/client/proc/admin_change_sec_level,
 	/client/proc/toggle_nuke,
-	/client/proc/cmd_display_del_log
+	/client/proc/cmd_display_del_log,
+	/datum/admins/proc/toggle_high_risk_item_notifications
 	)
 
 /client/proc/add_admin_verbs()
