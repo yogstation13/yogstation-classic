@@ -38,7 +38,7 @@ var/list/blob_overmind_list = list()         //blob overmind list so we can keep
 	for(var/j = 0, j < cores_to_spawn, j++)
 		if (!antag_candidates.len)
 			break
-		var/datum/mind/blob = pick(antag_candidates)
+		var/datum/mind/blob = pick_candidate()
 		infected_crew += blob
 		blob.special_role = "Blob"
 		blob.restricted_roles = restricted_jobs
