@@ -131,7 +131,7 @@
 	difficulty = 3
 	excludefromjob = list("Research Director","Scientist")
 
-/datum/objective_item/slime/check_special_completion(obj/item/slime_extract/E)
+/datum/objective_item/steal/slime/check_special_completion(obj/item/slime_extract/E)
 	if(E.Uses > 0)
 		return 1
 	return 0

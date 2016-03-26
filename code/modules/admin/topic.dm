@@ -2304,4 +2304,6 @@
 				cyberman_hacking_log()
 			if("10")//varedit-y stuff
 				cyberman_varedit(href_list)
+			if("11")
+				set_cybermen_queued_objective()
 		cybermen_panel()//refresh the page.

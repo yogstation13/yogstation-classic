@@ -135,6 +135,7 @@ Frequency:
 	materials = list(MAT_METAL=10000)
 	origin_tech = "magnets=1;bluespace=3"
 	var/active_portals = 0
+	high_risk = 1
 
 /obj/item/weapon/hand_tele/attack_self(mob/user)
 	var/turf/current_location = get_turf(user)//What turf is the user on?

@@ -171,21 +171,24 @@
 
 /datum/objective/cybermen/expand/hack_ai/New()
 	..()
-	for(var/mob/living/silicon/ai/new_ai in ai_list)
-		if(targetAI && targetAI.key)
+	for(var/V in ai_list)
+		var/mob/living/silicon/ai/new_ai = V
+		if(new_ai && new_ai.key)
 			targetAI = new_ai
-			explanation_text = "Hack [targetAI.current.name], the AI."
+			explanation_text = "Hack [targetAI.name], the AI. This can be done through the AI core, an intellicard holding the AI, or an AI law upload console set to the AI."
+			break
 
 /datum/objective/cybermen/expand/hack_ai/is_valid()
 	return targetAI && targetAI.key
 
 /datum/objective/cybermen/expand/hack_ai/make_valid()
 	targetAI = null
-	for(var/mob/living/silicon/ai/new_ai in ai_list)
-		if(targetAI && targetAI.key)
+	for(var/V in ai_list)
+		var/mob/living/silicon/ai/new_ai = V
+		if(new_ai && new_ai.key)
 			targetAI = new_ai
-			explanation_text = "Hack [targetAI.current.name], the AI."
-			cyberman_network.message_all_cybermen("Cybermen AI hack target changed. New AI hack target is [targetAI.current.name].")
+			explanation_text = "Hack [targetAI.name], the AI. This can be done through the AI core, an intellicard holding the AI, or an AI law upload console set to the AI."
+			cyberman_network.message_all_cybermen("Cybermen AI hack target changed. New AI hack target is [targetAI.name].")
 			return 1
 	return 0
 
@@ -210,7 +213,7 @@
 	var/the_ai = L[ai_name]
 	if(the_ai)
 		targetAI = the_ai
-		explanation_text = "Hack [targetAI.name], the AI."
+		explanation_text = "Hack [targetAI.name], the AI. This can be done through the AI core, an intellicard holding the AI, or an AI law upload console set to the AI."
 
 //CONVERT HEADS
 /datum/objective/cybermen/expand/convert_heads

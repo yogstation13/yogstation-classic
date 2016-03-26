@@ -79,6 +79,8 @@ var/list/blacklisted_tesla_types = list(/obj/machinery/atmospherics,
 	var/first_move = dir
 	for(var/i in 0 to move_amount)
 		var/move_dir = pick(alldirs + first_move) //give the first move direction a bit of favoring.
+		if(target && prob(60))
+			move_dir = get_dir(src,target)
 		var/turf/T = get_step(src, move_dir)
 		if(can_move(T))
 			loc = T

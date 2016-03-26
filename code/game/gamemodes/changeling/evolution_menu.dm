@@ -351,7 +351,7 @@ var/list/sting_paths
 		user << "<span class='danger'>You lack the power to readapt your evolutions!</span>"
 		return 0
 
-/mob/proc/make_changeling()
+/mob/proc/make_changeling(var/createhuman = 0)
 	if(!mind)
 		return
 	if(!ishuman(src) && !ismonkey(src))
@@ -378,6 +378,8 @@ var/list/sting_paths
 	mind.changeling.purchasedpowers += revive_abilities
 
 	var/mob/living/carbon/C = src		//only carbons have dna now, so we have to typecaste
+	if(createhuman)
+		C = new /mob/living/carbon/human()
 	var/datum/changelingprofile/prof = mind.changeling.add_profile(C) //not really a point in typecasting here but somebody will probably get mad at me if i dont
 	mind.changeling.first_prof = prof
 	return 1

@@ -438,7 +438,7 @@
 		var/mob/living/L = AM
 		if(!istype(L, /mob/living/simple_animal/hostile/swarmer))
 			playsound(loc,'sound/effects/snap.ogg',50, 1, -1)
-			L.electrocute_act(0, src, 1, 1)
+			L.electrocute_act(0, src, 1, override = 1)
 			if(isrobot(L))
 				L.Weaken(5)
 			qdel(src)

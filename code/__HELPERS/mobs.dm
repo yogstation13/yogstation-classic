@@ -195,6 +195,9 @@ Proc for attack log creation, because really why not
 	else if(istype(user, /client))
 		var/client/temp = user
 		return temp.ckey
+	else if(istype(user, /datum/mind))
+		var/datum/mind/temp = user
+		return temp.key
 
 	return "* Unknown *"
 

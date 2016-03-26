@@ -160,7 +160,7 @@
 	inv_box.name = "secondary storage"
 	inv_box.icon = ui_style
 	inv_box.icon_state = "suit_storage"
-	inv_box.screen_loc = "CENTER+2:20,SOUTH:5"
+	inv_box.screen_loc = "CENTER+2:20 ,SOUTH:5"
 	inv_box.slot_id = "internal_storage_2"
 	inv_box.layer = 19
 	adding += inv_box
@@ -172,3 +172,19 @@
 	mymob.client.screen = list()
 	mymob.client.screen += mymob.client.void
 	mymob.client.screen += adding
+
+
+// syndicate scout drones:
+/datum/hud/proc/syndicate_scout_drone(ui_style = 'icons/mob/screen_midnight.dmi')
+	adding = list()
+
+	var/obj/screen/inventory/inv_box
+
+	inv_box = new /obj/screen/inventory()
+	inv_box.name = "internal storage"
+	inv_box.icon = ui_style
+	inv_box.icon_state = "suit_storage"
+	inv_box.screen_loc = ui_drone_storage
+	inv_box.slot_id = "drone_storage_slot"
+	inv_box.layer = 19
+	adding += inv_box

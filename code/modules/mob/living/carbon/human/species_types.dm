@@ -229,67 +229,68 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	if(isturf(H.loc)) //else, there's considered to be no light
 		var/turf/T = H.loc
 		var/area/A = H.loc.loc
+		if(A.murders_plants == 1)
+			if (H.mind)
+				if (H.mind.special_role == "thrall")
+					//thralled phytosians have their natural regeneration massively stunted, but their weakness to darkness removed
+					if (H.stat != UNCONSCIOUS && H.stat != DEAD)
+						H.adjustToxLoss(-0.1)
+						H.adjustOxyLoss(-0.1)
+						H.heal_overall_damage(0.2, 0.2)
+						return
 
-		if (H.mind)
-			if (H.mind.special_role == "thrall")
-				//thralled phytosians have their natural regeneration massively stunted, but their weakness to darkness removed
+			if (T.lighting_lumcount)
+				switch (T.lighting_lumcount)
+					if (0.1 to 3)
+						//very low light
+						H.nutrition -= T.lighting_lumcount/1.5
+						if (prob(10))
+							H << "<span class='warning'>There isn't enough light here, and you can feel your body protesting the fact violently.</span>"
+						H.adjustOxyLoss(3)
+					if (3.1 to 6)
+						//low light
+						H.nutrition -= T.lighting_lumcount/2
+						if (prob(3))
+							H << "<span class='warning'>The ambient light levels are too low. Your breath is coming more slowly as your insides struggle to keep up on their own.</span>"
+							H.adjustOxyLoss(6)
+					if (6.1 to 10)
+						//medium, average, doing nothing for now
+						H.nutrition += T.lighting_lumcount/10
+					if (10.1 to 22)
+						//high light, regen here
+						H.nutrition += T.lighting_lumcount/6
+						if (H.stat != UNCONSCIOUS && H.stat != DEAD)
+							H.adjustToxLoss(-0.5)
+							H.adjustOxyLoss(-0.5)
+							H.heal_overall_damage(1, 1)
+					if (22.1 to INFINITY)
+						//super high light
+						H.nutrition += T.lighting_lumcount/4
+						if (H.stat != UNCONSCIOUS && H.stat != DEAD)
+							H.adjustToxLoss(-1)
+							H.adjustOxyLoss(-0.5)
+							H.heal_overall_damage(1.5, 1.5)
+			else if(T.loc.luminosity == 1 || A.lighting_use_dynamic == 0)
+				H.nutrition += 1.4
 				if (H.stat != UNCONSCIOUS && H.stat != DEAD)
-					H.adjustToxLoss(-0.1)
-					H.adjustOxyLoss(-0.1)
-					H.heal_overall_damage(0.2, 0.2)
-					return
-
-		if (T.lighting_lumcount)
-			switch (T.lighting_lumcount)
-				if (0.1 to 3)
-					//very low light
-					H.nutrition -= T.lighting_lumcount/1.5
-					if (prob(10))
-						H << "<span class='warning'>There isn't enough light here, and you can feel your body protesting the fact violently.</span>"
-					H.adjustOxyLoss(3)
-				if (3.1 to 6)
-					//low light
-					H.nutrition -= T.lighting_lumcount/2
-					if (prob(3))
-						H << "<span class='warning'>The ambient light levels are too low. Your breath is coming more slowly as your insides struggle to keep up on their own.</span>"
-						H.adjustOxyLoss(6)
-				if (6.1 to 10)
-					//medium, average, doing nothing for now
-					H.nutrition += T.lighting_lumcount/10
-				if (10.1 to 22)
-					//high light, regen here
-					H.nutrition += T.lighting_lumcount/6
-					if (H.stat != UNCONSCIOUS && H.stat != DEAD)
-						H.adjustToxLoss(-0.5)
-						H.adjustOxyLoss(-0.5)
-						H.heal_overall_damage(1, 1)
-				if (22.1 to INFINITY)
-					//super high light
-					H.nutrition += T.lighting_lumcount/4
-					if (H.stat != UNCONSCIOUS && H.stat != DEAD)
-						H.adjustToxLoss(-1)
-						H.adjustOxyLoss(-0.5)
-						H.heal_overall_damage(1.5, 1.5)
-		else if(T.loc.luminosity == 1 || A.lighting_use_dynamic == 0)
-			H.nutrition += 1.4
-			if (H.stat != UNCONSCIOUS && H.stat != DEAD)
-				H.adjustToxLoss(-1)
-				H.adjustOxyLoss(-0.5)
-				H.heal_overall_damage(1.5, 1.5)
-		else
-			//no light, this is baaaaaad
-			H.nutrition -= 3
-			if (prob(8))
-				H << "<span class='userdanger'>Darkness! Your insides churn and your skin screams in pain!</span>"
-			H.adjustOxyLoss(3)
-			H.adjustToxLoss(1)
+					H.adjustToxLoss(-1)
+					H.adjustOxyLoss(-0.5)
+					H.heal_overall_damage(1.5, 1.5)
+			else
+				//no light, this is baaaaaad
+				H.nutrition -= 3
+				if (prob(8))
+					H << "<span class='userdanger'>Darkness! Your insides churn and your skin screams in pain!</span>"
+				H.adjustOxyLoss(3)
+				H.adjustToxLoss(1)
 	else
-		//inside a container or something else, inflict low-level light degen
-		H.nutrition -= 1.5
-		if (prob(3))
-			H << "<span class='warning'>There's not enough light reaching you in here. You start to feel very claustrophobic as your energy begins to drain away.</span>"
-			H.adjustOxyLoss(9)
-			H.adjustToxLoss(3)
+		if(H.loc != /obj/mecha)
+			//inside a container or something else, inflict low-level light degen
+			H.nutrition -= 1.5
+			if (prob(3))
+				H << "<span class='warning'>There's not enough light reaching you in here. You start to feel very claustrophobic as your energy begins to drain away.</span>"
+				H.adjustOxyLoss(9)
+				H.adjustToxLoss(3)
 
 	if(H.nutrition > NUTRITION_LEVEL_FULL)
 		H.nutrition = NUTRITION_LEVEL_FULL
