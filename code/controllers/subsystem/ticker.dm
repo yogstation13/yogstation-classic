@@ -46,6 +46,7 @@ var/datum/subsystem/ticker/ticker
 
 	var/obj/screen/cinematic = null			//used for station explosion cinematic
 	var/next_alert_time = 0
+	var/next_check_admin = 1
 
 
 /datum/subsystem/ticker/New()
@@ -103,13 +104,14 @@ var/datum/subsystem/ticker/ticker
 		if(GAME_STATE_PLAYING)
 			mode.process(wait * 0.1)
 
-			if(world.time > next_alert_time)
+			if(world.time > next_alert_time && next_check_admin)
 				next_alert_time = world.time+1800 /* 6000 */
 
 				var/admins_online = total_admins_active()
 				var/unresolved_tickets = total_unresolved_tickets()
 
 				if(!admins_online)
+					next_check_admin = 0
 					spawn(-1) send_discord_message("There are no current admins active and theres [unresolved_tickets] unresolved tickets.", DISCORD_ADMIN)
 
 			if(!mode.explosion_in_progress && mode.check_finished() || force_ending)
