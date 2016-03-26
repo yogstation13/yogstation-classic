@@ -11,4 +11,5 @@ delete-after: True
 # Also, this gets changed to [] after reading.  Just remove the brackets when you add new shit.
 # Please surround your changes in  double quotes ("). It works without them, but if you use certain characters it screws up compiling. The quotes will not show up in the changelog.
 changes: 
+  - rscadd: "Changes Engineering wardobe locker position, Adds two boxes to engineering, adds three welding goggles to engineering, adds one toner cartridge for the airlock painter, added back the portable air pump that was accidentally deleted, adds one more engineering suit storage unit."
   
