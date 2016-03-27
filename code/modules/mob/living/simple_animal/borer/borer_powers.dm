@@ -61,16 +61,188 @@
 		src << "<span class='boldnotice'>You are feeling far too docile to do that.</span>"
 		return
 
-	if(chemicals < 50)
+	/*if(chemicals < 50)
 		src << "<span class='boldnotice'>You don't have enough chemicals!</span>"
-		return
+		return*/
 
-	var/list/chemnames = list()
+	var content = ""
+	content += "<p>Chemicals: [chemicals]</p>"
+	content += "<p>Influence: [influence]%</p>"
+
+	content += "<table>"
+
 	for(var/datum in typesof(/datum/borer_chem))
 		var/datum/borer_chem/C = new datum()
-		if(C.needed_influence < influence)
-			chemnames += C.chemname
+		if(C.chemname && C.needed_influence < influence)
+			content += "<tr><td><a class='chem-select' href='?_src_=\ref[src];src=\ref[src];borer_use_chem=[C.chemname]'>[C.chemname] ([C.chemuse])</a><p>[C.chem_desc]</p></td></tr>"
 
+	content += "</table>"
+
+	var/html = {"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">
+		<html>
+		<head>
+			<title>Borer Chemicals</title>
+			<link rel='stylesheet' type='text/css' href='icons.css'>
+			<link rel='stylesheet' type='text/css' href='shared.css'>
+			<style type='text/css'>
+
+			body {
+				padding: 10;
+				margin: 0;
+				font-size: 12px;
+				color: #ffffff;
+				line-height: 170%;
+				font-family: Verdana, Geneva, sans-serif;
+				background: #272727 url(uiBackground.png) 50% 0 repeat-x;
+				overflow-x: hidden;
+			}
+
+			a, a:link, a:visited, a:active, .link, .linkOn, .linkOff, .selected, .disabled {
+				color: #ffffff;
+				text-decoration: none;
+				background: #40628a;
+				border: 1px solid #161616;
+				padding: 2px 2px 2px 2px;
+				margin: 2px 2px 2px 2px;
+				cursor:default;
+				display: inline-block;
+			}
+
+			a:hover, .linkActive:hover {
+				background: #507aac;
+				cursor: pointer;
+			}
+
+			img {
+				border: 0px;
+			}
+
+			p {
+				padding: 4px;
+				margin: 0px;
+			}
+
+			h1, h2, h3, h4, h5, h6 {
+				margin: 0;
+				padding: 16px 0 8px 0;
+				color: #517087;
+				clear: both;
+			}
+
+			h1 {
+				font-size: 15px;
+			}
+
+			h2 {
+				font-size: 14px;
+			}
+
+			h3 {
+				font-size: 13px;
+			}
+
+			h4 {
+				font-size: 12px;
+			}
+
+			#header {
+				margin: 3px;
+				padding: 0px;
+			}
+
+			table {
+				width: 570px;
+				margin: 10px;
+			}
+
+			td {
+				border: solid 1px #000;
+				width: 560px;
+			}
+
+			.chem-select {
+				width: 560px;
+				margin: 5px;
+				text-align: center;
+			}
+
+			.enabled {
+				background-color: #0a0;
+			}
+
+			.disabled {
+				background-color: #a00;
+			}
+
+			.shown {
+				display: block;
+			}
+
+			.hidden {
+				display: none;
+			}
+			</style>
+
+			<script src="libraries.min.js"></script>
+			<script type='text/javascript'>
+				function reload() {
+					jQuery.support.cors = true;
+					/*$.ajax({
+						dataType: 'json',
+						url: 'byond://?_src_=\ref[src];src=\ref[src];borer_reload=1',
+						success: function(data) {
+							$('body').append('data: '+data);
+						}
+					});*/
+
+					/*var jqxhr = $.getJSON( 'byond://?_src_=\ref[src];src=\ref[src];borer_reload=1', function() {
+					  $('body').append( '<p>success</p>' );
+					})
+					  .done(function() {
+					    $('body').append( '<p>second success</p>' );
+					  })
+					  .fail(function() {
+					    $('body').append( '<p>error</p>' );
+					  })
+					  .always(function() {
+					    $('body').append( '<p>complete</p>' );
+					  })
+					  .done(function( json ) {
+					    $('body').append( '<p>JSON Data: ' + (json) + '</p>' );
+					  })
+					  .fail(function( jqxhr, textStatus, error ) {
+					    $('body').append( '<p>Request Failed: ' + textStatus + ', ' + error + '</p>' );
+					    $('body').append( '<p>Request Failed: ' + textStatus + ', ' + (jqxhr.responseJSON) + '</p>' );
+					  });*/
+				}
+
+				function autoReload() {
+					setTimeout(autoReload, 2000);
+					reload();
+				}
+
+				$(function() {
+					autoReload();
+				});
+			</script>
+		</head>
+		<body scroll='yes'><div id='content'>
+		<h1 id='header'>Borer Chemicals</h1>
+		<br />
+
+		[content]
+
+		</div></body></html>"}
+
+	usr << browse(null, "window=ViewBorerChems;size=600x800")
+	usr << browse(html, "window=ViewBorerChems;size=600x800")
+
+
+
+
+
+
+/*
 	var/chemname = input("Select a chemical to secrete.", "Chemicals") as null|anything in chemnames
 
 	if(!chemname)
@@ -101,6 +273,9 @@
 	if(influence < 0)
 		influence = 0
 	log_game("[src]/([src.ckey]) has injected [chemname] into their host [victim]/([victim.ckey])")
+	*/
+
+	return
 
 /mob/living/simple_animal/borer/verb/hide()
 	set category = "Borer"
