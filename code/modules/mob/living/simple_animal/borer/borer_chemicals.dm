@@ -1,6 +1,6 @@
 /datum/borer_chem
 	var/chemname
-	var/chem_desc = "This ia a chemical"
+	var/chem_desc = "This is a chemical"
 	var/needed_influence = 0
 	var/influence_change = 5
 	var/chemuse = 35
