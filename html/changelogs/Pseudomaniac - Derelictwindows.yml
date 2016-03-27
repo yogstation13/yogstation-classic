@@ -1,0 +1,6 @@
+author: Pseudomaniac
+
+delete-after: True
+
+changes: 
+  - bugfix: "Fixes windows at derelict"
