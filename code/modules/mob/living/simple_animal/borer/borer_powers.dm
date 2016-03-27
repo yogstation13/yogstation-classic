@@ -66,8 +66,8 @@
 		return*/
 
 	var content = ""
-	content += "<p>Chemicals: [chemicals]</p>"
-	content += "<p>Influence: [influence]%</p>"
+	content += "<p>Chemicals: <span id='chemicals'>[chemicals]</span></p>"
+	content += "<p>Influence: <span id='influence'>[influence]</span>%</p>"
 
 	content += "<table>"
 
@@ -185,44 +185,15 @@
 
 			<script src="libraries.min.js"></script>
 			<script type='text/javascript'>
-				function reload() {
-					jQuery.support.cors = true;
-					/*$.ajax({
-						dataType: 'json',
-						url: 'byond://?_src_=\ref[src];src=\ref[src];borer_reload=1',
-						success: function(data) {
-							$('body').append('data: '+data);
-						}
-					});*/
-
-					/*var jqxhr = $.getJSON( 'byond://?_src_=\ref[src];src=\ref[src];borer_reload=1', function() {
-					  $('body').append( '<p>success</p>' );
-					})
-					  .done(function() {
-					    $('body').append( '<p>second success</p>' );
-					  })
-					  .fail(function() {
-					    $('body').append( '<p>error</p>' );
-					  })
-					  .always(function() {
-					    $('body').append( '<p>complete</p>' );
-					  })
-					  .done(function( json ) {
-					    $('body').append( '<p>JSON Data: ' + (json) + '</p>' );
-					  })
-					  .fail(function( jqxhr, textStatus, error ) {
-					    $('body').append( '<p>Request Failed: ' + textStatus + ', ' + error + '</p>' );
-					    $('body').append( '<p>Request Failed: ' + textStatus + ', ' + (jqxhr.responseJSON) + '</p>' );
-					  });*/
+				function update_chemicals(chemicals) {
+					$('#chemicals').text(chemicals);
 				}
 
-				function autoReload() {
-					setTimeout(autoReload, 2000);
-					reload();
+				function update_influence(influence) {
+					$('#influence').text(influence);
 				}
 
 				$(function() {
-					autoReload();
 				});
 			</script>
 		</head>
@@ -234,8 +205,8 @@
 
 		</div></body></html>"}
 
-	usr << browse(null, "window=ViewBorerChems;size=600x800")
-	usr << browse(html, "window=ViewBorerChems;size=600x800")
+	usr << browse(null, "window=ViewBorer\ref[src]Chems;size=600x800")
+	usr << browse(html, "window=ViewBorer\ref[src]Chems;size=600x800")
 
 
 

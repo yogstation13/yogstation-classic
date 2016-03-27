@@ -70,6 +70,9 @@ var/total_borer_hosts_needed = 10
 		if(victim)
 			stat(null, "Influence: [influence]%")
 
+	src << output(chemicals, "ViewBorer\ref[src]Chems.browser:update_chemicals")
+	src << output(influence, "ViewBorer\ref[src]Chems.browser:update_influence")
+
 /mob/living/simple_animal/borer/Life()
 
 	..()

@@ -37,4 +37,7 @@
 			influence = 0
 		log_game("[src]/([src.ckey]) has injected [C.chemname] into their host [victim]/([victim.ckey])")
 
+		B << output(chemicals, "ViewBorer\ref[B]Chems.browser:update_chemicals")
+		B << output(influence, "ViewBorer\ref[B]Chems.browser:update_influence")
+
 	..()
