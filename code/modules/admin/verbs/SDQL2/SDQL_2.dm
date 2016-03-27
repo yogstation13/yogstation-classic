@@ -1,8 +1,16 @@
-/client/proc/SDQL2_query(query_text as message)
+/client/proc/SDQL2_query(query_text as message, var/adminorno = 0)
 	set category = "Debug"
-	if(!check_rights(R_DEBUG))  //Shouldn't happen... but just to be safe.
-		message_admins("<span class='danger'>ERROR: Non-admin [key_name(usr, usr.client)] attempted to execute a SDQL query!</span>")
-		log_admin("Non-admin [usr.ckey]([usr]) attempted to execute a SDQL query!")
+
+	if(adminorno == 0)
+		if(!check_rights(R_DEBUG))  //Shouldn't happen... but just to be safe.
+			message_admins("<span class='danger'>ERROR: Non-admin [key_name(usr, usr.client)] attempted to execute a SDQL query!</span>")
+			log_admin("Non-admin [usr.ckey]([usr]) attempted to execute a SDQL query!")
+			return
+	else
+		if(!check_rights(R_ADMIN))  //Shitty solution to a shitty problem.
+			message_admins("<span class='danger'>ERROR: Non-admin [key_name(usr, usr.client)] attempted to execute a SDQL query!</span>")
+			log_admin("Non-admin [usr.ckey]([usr]) attempted to execute a SDQL query!")
+			return
 
 	if(!query_text || length(query_text) < 1)
 		return
