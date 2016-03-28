@@ -1,23 +1,12 @@
-/*
-	TODO
-
-	* Break glass instead of knocking [DONE]
-	* Venting slower
-	* Drop clothes [DONE]
-	* Give icon
-
-	* Level up predators
-	* Multiple predators working together to open doors and break down structures
-*/
 
 /mob/living/carbon/human/predator
 	name = "predator"
 	voice_name = "predator"
 	verb_say = "clicks"
 	icon = 'icons/mob/human.dmi'
-	icon_state = "skeleton_s"
+	icon_state = "pred_s"
+	languages = PREDATOR
 	gender = NEUTER
-	languages = predator
 	ventcrawler = 0
 
 /mob/living/carbon/human/predator/New()
@@ -25,7 +14,16 @@
 
 	name = text("predator ([rand(1, 1000)])")
 	real_name = name
-	gender = pick(MALE, FEMALE)
+	icon_state = "pred_s"
+	hair_color = "000"
+	hair_style = "Bald"
+	facial_hair_color = "000"
+	facial_hair_style = "Shaved"
+	update_hair()
+
+	equip_to_slot_if_possible(new /obj/item/clothing/head/helmet/space/hardsuit/predator, slot_head)
+	equip_to_slot_if_possible(new /obj/item/clothing/suit/space/hardsuit/predator, slot_wear_suit)
+	equip_to_slot_if_possible(new /obj/item/weapon/shuriken, slot_r_hand)
 
 /proc/is_predator(mob/user)
 	if(istype(user, /mob/living/carbon/human/predator))
