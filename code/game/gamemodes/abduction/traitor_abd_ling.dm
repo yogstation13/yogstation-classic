@@ -1,6 +1,6 @@
 /datum/game_mode/traitor/abduction/changeling
 	name = "traitor+abductor+changeling" //MADNESS
-	config_tag = "traitorchan"
+	config_tag = "traitorabdchan"
 	traitors_possible = 2 //hard limit on traitors if scaling is turned off
 	restricted_jobs = list("AI", "Cyborg")
 	required_players = 0
