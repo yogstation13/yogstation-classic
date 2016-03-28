@@ -1,0 +1,8 @@
+author: XTheDark
+
+delete-after: True
+
+changes: 
+  - rscadd: "Added support for Whitelisting. Currently the system is global and being whitelisted grants you 'Ultra' preference (higher priority than High) to the following positions : Captain, Head of Personnel, Chief Engineer, Research Director, Head of Security, Chief Medical Officer, AI."
+  - rscadd: "Whitelisted positions have a black background on their button in the Occupation Preferences menu for people who have been whitelisted."
+ 
