@@ -212,7 +212,10 @@ var/next_external_rsc = 0
 	if(holder)
 		admins += src
 		holder.owner = src
-
+	
+	//Need to load before we load preferences for correctly removing Ultra if user no longer whitelisted
+	is_whitelisted = is_job_whitelisted(src)
+	
 	//preferences datum - also holds some persistant data for the client (because we may as well keep these datums to a minimum)
 	prefs = preferences_datums[ckey]
 	if(!prefs)
@@ -231,7 +234,7 @@ var/next_external_rsc = 0
 
 	add_verbs_from_config()
 	set_client_age_from_db()
-
+	
 	if (isnum(player_age) && player_age == -1) //first connection
 		if (config.panic_bunker && !holder && !(ckey in deadmins))
 			log_access("Failed Login: [key] - New account attempting to connect during panic bunker")

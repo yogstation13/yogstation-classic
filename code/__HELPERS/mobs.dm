@@ -133,6 +133,16 @@ var/global/list/roundstart_species[0]
 	else
 		return 0
 
+/proc/is_whitelisted(mob/user)
+	if(ismob(user))
+		if(user.client)
+			return (user.client.is_whitelisted)
+	else if(istype(user, /client))
+		var/client/C = user
+		if(C)
+			return (C.is_whitelisted)
+	return 0
+		
 /proc/is_veteran(mob/user)
 	if(ismob(user))
 		if(user.client && user.client.prefs)
