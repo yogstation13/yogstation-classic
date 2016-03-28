@@ -1,0 +1,6 @@
+author: Cruix
+
+delete-after: True
+
+changes: 
+  - rscadd: "Made admin notifications for high-risk items toggleable to reduce spam. It defaults to off."
