@@ -3,7 +3,7 @@
 	config_tag = "traitorabdchan"
 	traitors_possible = 2 //hard limit on traitors if scaling is turned off
 	restricted_jobs = list("AI", "Cyborg")
-	required_players = 0
+	required_players = 25
 	required_enemies = 2	// how many of each type are required
 	recommended_enemies = 3 //Only affects traitor spawning
 	reroll_friendly = 1

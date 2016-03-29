@@ -3,7 +3,7 @@
 	config_tag = "traitorabd"
 	traitors_possible = 3 //hard limit on traitors if scaling is turned off
 	restricted_jobs = list("AI", "Cyborg")
-	required_players = 0    // Should only spawn traitors during extreme lowpop, but wierd things do happen
+	required_players = 20
 	required_enemies = 2	// Tries to spawn two of each at a minimum
 	recommended_enemies = 3 // Only actually effects traitor spawning, will ignore quiet mode if not this many candidates.
 	reroll_friendly = 1
