@@ -80,7 +80,8 @@ var/list/admin_verbs_admin = list(
 	/client/proc/reset_all_tcs,		/*resets all telecomms scripts*/
 	/datum/admins/proc/cybermen_panel,  //lots of cybermen options
 	/client/proc/toggle_restart_vote,	//moderator tool for toggling restart vote
-	/datum/admins/proc/toggle_high_risk_item_notifications //toggles notifying admins when objective items are destroyed or change z-levels
+	/datum/admins/proc/toggle_high_risk_item_notifications, //toggles notifying admins when objective items are destroyed or change z-levels
+	/client/proc/grief_fix
 	)
 var/list/admin_verbs_ban = list(
 	/client/proc/unban_panel,
