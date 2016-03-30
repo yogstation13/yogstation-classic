@@ -171,7 +171,7 @@
 	synd_mob.equip_to_slot_or_del(new /obj/item/weapon/storage/box/engineer(synd_mob.back), slot_in_backpack)
 	synd_mob.equip_to_slot_or_del(new /obj/item/weapon/reagent_containers/food/snacks/grown/banana(synd_mob, 100/*super potency*/), slot_in_backpack)
 	synd_mob.equip_to_slot_or_del(new /obj/item/weapon/stamp/clown(synd_mob), slot_in_backpack)
-	synd_mob.equip_to_slot_or_del(new /obj/item/weapon/reagent_containers/spray/waterflower(synd_mob), slot_in_backpack)
+	synd_mob.equip_to_slot_or_del(new /obj/item/weapon/reagent_containers/spray/waterflower/lube(synd_mob), slot_in_backpack)
 
 	synd_mob.dna.add_mutation(CLOWNMUT)//can't be a clown without being clumsy :).
 

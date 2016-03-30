@@ -1,18 +1,17 @@
-/*
-//maybe later, not a priority.
 /obj/item/weapon/reagent_containers/spray/waterflower/lube
 	name = "water flower"
-	desc = "A seemingly innocent sunflower...with a twist."
+	desc = "A seemingly innocent sunflower...with a twist. A <i>slippery</i> twist."
 	icon = 'icons/obj/hydroponics/harvest.dmi'
 	icon_state = "sunflower"
 	item_state = "sunflower"
 	amount_per_transfer_from_this = 10
+	spray_maxrange = 1
+	spray_currentrange = 1
 	volume = 100
-	list_reagents = list("Space Lube" = 100)
-*/
+	list_reagents = list("lube" = 100)
 
 //COMBAT CLOWN SHOES
-//Clown shoes with combat stats and noslip. Of course the still squeek.
+//Clown shoes with combat stats and noslip. Of course they still squeek.
 /obj/item/clothing/shoes/clown_shoes/combat
 	name = "combat clown shoes"
 	desc = "advanced clown shoes that protect the wearer and render them nearly immune to slipping on their own peels. They also squeek at 100% capacity."
@@ -20,7 +19,24 @@
 	slowdown = SHOES_SLOWDOWN
 	armor = list(melee = 25, bullet = 25, laser = 25, energy = 25, bomb = 50, bio = 10, rad = 0)
 	strip_delay = 70
-	burn_state = -1 //Won't burn in fires
+	burn_state = -1
+
+//The super annoying version
+/obj/item/clothing/shoes/clown_shoes/banana_shoes/combat
+	name = "mk-honk combat shoes"
+	desc = "The culmination of years of clown combat research, these shoes leave a trail of chaos in their wake."
+	flags = SUPERNOSLIP
+	slowdown = SHOES_SLOWDOWN
+	armor = list(melee = 25, bullet = 25, laser = 25, energy = 25, bomb = 50, bio = 10, rad = 0)
+	strip_delay = 70
+	burn_state = -1
+	banana_potency = 50
+
+/obj/item/clothing/shoes/clown_shoes/banana_shoes/combat/New()
+	..()
+	var/obj/item/stack/sheet/mineral/bananium/B = new /obj/item/stack/sheet/mineral/bananium()
+	B.amount = 5000 //50 peels worth
+	bananium.insert_stack(B)
 
 //BANANIUM SWORD
 
@@ -85,7 +101,7 @@
 		else
 			icon_state = "sword[item_color]"
 		w_class = w_class_on
-		playsound(user, 'sound/weapons/saberon.ogg', 35, 1) //changed it from 50% volume to 35% because deafness
+		playsound(user, 'sound/weapons/saberon.ogg', 35, 1)
 		user << "<span class='notice'>[src] is now active.</span>"
 	else
 		if(attack_verb_on.len)
@@ -97,6 +113,11 @@
 	add_fingerprint(user)
 	return
 
+/obj/item/weapon/melee/energy/sword/bananium/attackby(obj/item/weapon/W, mob/living/user, params)
+	..()
+	if(istype(W, /obj/item/weapon/melee/energy/sword/bananium/))
+		user << "You slap the two swords together. Sadly, they do not seem to fit."
+		playsound(src, 'sound/misc/sadtrombone.ogg', 50)
 /*
 //not dealing with this at the moment.
 /obj/item/weapon/twohanded/dualsaber/bananium
@@ -111,6 +132,41 @@
 	origin_tech = null
 	attack_verb = list("attacked", "struck", "hit")
 */
+
+//BANANIUM SHIELD
+
+/obj/item/weapon/shield/energy/bananium
+	name = "bananium energy shield"
+	desc = "A shield that stops most melee attacks, protects user from almost all energy projectiles, and can be thrown to slip opponents."
+	throw_speed = 1
+	clumsy_check = 0
+	icon_state = "bananaeshield0"
+	icon_state_base = "bananaeshield"
+	force = 0
+	throwforce = 0
+	throw_range = 5
+	on_force = 0
+	on_throwforce = 0
+	on_throw_speed = 1
+
+/obj/item/weapon/shield/energy/bananium/throw_at(atom/target, range, speed, mob/thrower, spin=1)
+	if(active)
+		if(iscarbon(thrower))
+			var/mob/living/carbon/C = thrower
+			C.throw_mode_on() //so they can catch it on the return.
+	return ..()
+
+/obj/item/weapon/shield/energy/bananium/throw_impact(atom/hit_atom)
+	if(active)
+		var/temp = hit_atom.hitby(src, 0, 0)
+		if(iscarbon(hit_atom) && !temp)//if they are a carbon and they didn't catch it
+			var/mob/living/carbon/C = hit_atom
+			C.slip(8, 5, src, GALOSHES_DONT_HELP)
+		if(thrownby && !temp)
+			spawn(1) //This protects from a bug that would make it hit the thrower twice on the return in some circumstances.
+				throw_at(thrownby, throw_range+2, throw_speed, null, 1)
+	else
+		return ..()
 
 //BOMBANANA
 
@@ -156,7 +212,7 @@
 	clumsy_check = 2
 
 /obj/item/weapon/grenade/chem_grenade/teargas/moustache/prime()
-	for(var/mob/living/carbon/M in view(5, src))
+	for(var/mob/living/carbon/M in oview(5, src))
 		if(!istype(M.wear_mask, /obj/item/clothing/mask/gas/clown_hat) && !istype(M.wear_mask, /obj/item/clothing/mask/fakemoustache) && !istype(M.wear_mask,  /obj/item/clothing/mask/gas/mime) )//Regular fake moustaches block the effect, this is intentional. Mimes have their invisible magics to protect them.
 			M.unEquip(M.wear_mask, 1)
 			var/obj/item/clothing/mask/fakemoustache/the_stash = new /obj/item/clothing/mask/fakemoustache()
@@ -164,7 +220,15 @@
 			M.equip_to_slot_if_possible(the_stash, slot_wear_mask, 1, 1)
 	..()
 
-//DARK H.O.N.K. AND TEARSTACHE MECH LAUNCHER
+//DARK H.O.N.K. AND CLOWN MECH WEAPONS
+
+/obj/item/mecha_parts/mecha_equipment/weapon/ballistic/launcher/banana_mortar/bombanana
+	name = "bombanana mortar"
+	desc = "Equipment for clown exosuits. Launches exploding banana peels."
+	icon_state = "mecha_bananamrtr"
+	projectile = /obj/item/weapon/grenade/syndieminibomb/bombanana_peel
+	projectiles = 8
+	projectile_energy_cost = 1000
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/launcher/flashbang/tearstache
 	name = "\improper HONKeR-6 grenade launcher"
@@ -187,15 +251,31 @@
 /obj/mecha/combat/honker/dark
 	desc = "Produced by \"Tyranny of Honk, INC\", this exosuit is designed as heavy clown-support. This one has been painted black for maximum fun. HONK!"
 	name = "\improper Dark H.O.N.K"
-	icon_state = "darkhonker" //I just copied and pasted the normal HONK. Will make it actually black later.
+	icon_state = "darkhonker"
 	operation_req_access = list(access_theatre, access_syndicate)
+	wreckage = /obj/structure/mecha_wreckage/honker/dark
+	health = 200 //the standard HONK mech has amazing damage_absorption so I'm not messing with it.
+
+
+/obj/mecha/combat/honker/dark/add_cell(obj/item/weapon/stock_parts/cell/C = null)
+	if(C)
+		C.forceMove(src)
+		cell = C
+		return
+	cell = new(src)
+	cell.charge = 30000
+	cell.maxcharge = 30000
 
 /obj/mecha/combat/honker/dark/loaded/New()
 	..()
 	var/obj/item/mecha_parts/mecha_equipment/ME = new /obj/item/mecha_parts/mecha_equipment/weapon/honker()
 	ME.attach(src)
-	ME = new /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/launcher/banana_mortar()
+	ME = new /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/launcher/banana_mortar/bombanana()//Needed more offensive weapons.
 	ME.attach(src)
 	ME = new /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/launcher/flashbang/tearstache()//The mousetrap mortar was not up-to-snuff.
 	ME.attach(src)
 	return
+
+/obj/structure/mecha_wreckage/honker/dark
+	name = "\improper Dark H.O.N.K wreckage"
+	icon_state = "darkhonker-broken"
