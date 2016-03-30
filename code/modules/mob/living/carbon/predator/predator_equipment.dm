@@ -44,7 +44,7 @@
 	icon_state = "pred_spear_off"
 	item_state = "pred_spear_off"
 	force = 3
-	w_class = 4
+	w_class = 1
 	slot_flags = SLOT_BELT
 	force_unwielded = 3
 	force_wielded = 7
@@ -127,4 +127,14 @@
 	action_button_name = "Toggle Bio-Mask"
 	helmettype = /obj/item/clothing/head/helmet/space/hardsuit/predator
 	//var/obj/item/weapon/tank/jetpack/suit/jetpack = null
+
+/obj/item/clothing/under/predator
+	desc = "It's a Yautja Skinsuit capable of resisting small amounts of damage, it has multiple slots for storing equipment."
+	name = "yautja skinsuit"
+	icon_state = "pred"
+	item_state = "pred"
+	armor = list(melee = 3, bullet = 3, laser = 3, energy = 3, bomb = 3, bio = 3, rad = 3)
+	has_sensor = 0
+	random_sensor = 0
+	can_adjust = 0
 
