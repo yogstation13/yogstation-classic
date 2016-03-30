@@ -74,9 +74,6 @@ var/datum/subsystem/job/SSjob
 	Debug("Running FOC, Job: [job], Level: [level], Flag: [flag]")
 	var/list/candidates = list()
 	for(var/mob/new_player/player in unassigned)
-		if(job.whitelisted && !(player.ckey in whitelist))
-			Debug("FOC whitelist failed, Player: [player]")
-			continue
 		if(jobban_check_mob(player, job.title))
 			Debug("FOC isbanned failed, Player: [player]")
 			continue
