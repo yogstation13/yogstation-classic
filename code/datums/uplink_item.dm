@@ -675,7 +675,7 @@ var/list/uplink_items = list()
 	name = "Freedom Implant"
 	desc = "An implant injected into the body and later activated using a bodily gesture to attempt to slip restraints."
 	item = /obj/item/weapon/storage/box/syndie_kit/imp_freedom
-	cost = 5
+	cost = 7
 
 /datum/uplink_item/implants/uplink
 	name = "Uplink Implant"

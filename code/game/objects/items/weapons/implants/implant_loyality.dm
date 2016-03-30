@@ -24,7 +24,11 @@
 		if(imp)
 			imp.removed(target)
 
-		if((target.mind in (ticker.mode.head_revolutionaries | ticker.mode.get_gang_bosses())) || is_shadow_or_thrall(target))
+		if(locate(/obj/item/weapon/implant/freedom) in target)
+			target << "<span class='warning'>You feel the syndicate nanobots in your bloodstream quietly deactivate the implant.  You appear to be implanted, but the implant has no effect.</span>"
+			return 1
+
+		if((target.mind in (ticker.mode.head_revolutionaries | ticker.mode.get_gang_bosses())) || is_shadow_or_thrall(target) || (target.mind.special_role))
 			target.visible_message("<span class='warning'>[target] seems to resist the implant!</span>", "<span class='warning'>You feel the corporate tendrils of Nanotrasen try to invade your mind!</span>")
 			removed(target, 1)
 			qdel(src)
