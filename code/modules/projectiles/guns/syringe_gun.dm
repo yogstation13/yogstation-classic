@@ -89,5 +89,5 @@
     ..()
     for(var/i = 1 to max_syringes)
         var/obj/item/weapon/reagent_containers/syringe/TEMP = new(src)
-        TEMP.reagents.add_reagent("tirizine", 15)
+        TEMP.reagents.add_reagent("Tirizene", 15)
         syringes.Add(TEMP)
