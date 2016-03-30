@@ -189,5 +189,5 @@
 					var/obj/item/weapon/gun/syringe/rapidsyringe/borg/borggun = R.module.emag
 					for(var/i = 1 to borggun.max_syringes)
 						var/obj/item/weapon/reagent_containers/syringe/TEMP = new(borggun)
-						TEMP.reagents.add_reagent("chloralhydrate", 15)
+						TEMP.reagents.add_reagent("tirizine", 15)
 						borggun.syringes.Add(TEMP)
