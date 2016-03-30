@@ -11,7 +11,7 @@
 	clumsy_check = 0
 	fire_sound = 'sound/items/syringeproj.ogg'
 	var/list/syringes = list()
-	var/max_syringes = 1
+	var/max_syringes = 6
 
 /obj/item/weapon/gun/syringe/New()
 	..()
@@ -78,3 +78,16 @@
 	desc = "A modification of the syringe gun design, using a rotating cylinder to store up to six syringes."
 	icon_state = "rapidsyringegun"
 	max_syringes = 6
+
+/obj/item/weapon/gun/syringe/rapidsyringe/borg
+    name = "rapid syringe gun"
+    desc = "A modification of the syringe gun design, using a rotating cylinder to store up to two hundred syringes."
+    icon_state = "rapidsyringegun"
+    max_syringes = 200
+
+/obj/item/weapon/gun/syringe/rapidsyringe/borg/New()
+    ..()
+    for(var/i = 1 to max_syringes)
+        var/obj/item/weapon/reagent_containers/syringe/TEMP = new(src)
+        TEMP.reagents.add_reagent("chloralhydrate", 15)
+        syringes.Add(TEMP)
