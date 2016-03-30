@@ -6,7 +6,7 @@
 	health = 150
 	maxhealth = 150
 	health_regen = 2
-	fire_resist = 2
+	fire_resist = 0.5
 	atmos_block = 1
 	explosion_block = 3
 

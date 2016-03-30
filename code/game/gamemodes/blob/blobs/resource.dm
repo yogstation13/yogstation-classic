@@ -4,7 +4,7 @@
 	icon_state = "blob_resource"
 	health = 65
 	maxhealth = 65
-	fire_resist = 2
+	fire_resist = 0.5
 	var/resource_delay = 0
 
 /obj/effect/blob/resource/update_icon()

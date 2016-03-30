@@ -6,7 +6,7 @@
 	health = 150
 	maxhealth = 150
 	health_regen = 3
-	fire_resist = 2
+	fire_resist = 0.5
 
 /obj/effect/blob/node/New(loc, var/h = 100)
 	blob_nodes += src
