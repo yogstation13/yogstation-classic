@@ -2,8 +2,8 @@
 	name = "Catalade"
 	id = "catalade"
 	result = "catalade"
-	required_reagents = list("oxygen" = 1, "potassium" = 2, "ephedrine" = 2, "epinephrine" = 1, "fluorine" = 2, "lithium" = 1, "methamphetamine" = 1, "lipolicide" = 1)
-	result_amount = 4
+	required_reagents = list("oxygen" = 1, "potassium" = 1, "ephedrine" = 1, "epinephrine" = 1, "fluorine" = 2, "lithium" = 1, "methamphetamine" = 1)
+	result_amount = 6
 	required_temp = 500
 	mix_message = "The mixture begins to smell of burning rubber."
 

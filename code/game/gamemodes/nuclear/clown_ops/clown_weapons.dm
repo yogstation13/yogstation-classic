@@ -54,7 +54,7 @@
 	..()
 	item_color = "yellow"
 
-/obj/item/weapon/melee/energy/sword/bananium/attack(mob/vict, mob/usr)
+/obj/item/weapon/melee/energy/sword/bananium/attack(mob/vict, mob/usr)//need this so clowns don't hurt themselves turning it on.
 	if (istype(vict, /mob/living/carbon))
 		var/blockable = 0
 		var/blockitem = null
@@ -117,7 +117,7 @@
 	..()
 	if(istype(W, /obj/item/weapon/melee/energy/sword/bananium/))
 		user << "You slap the two swords together. Sadly, they do not seem to fit."
-		playsound(src, 'sound/misc/sadtrombone.ogg', 50)
+		playsound(src, 'sound/misc/sadtrombone.ogg', 50)//very spammable, but eh, they bought two swords. They deserve it.
 /*
 //not dealing with this at the moment.
 /obj/item/weapon/twohanded/dualsaber/bananium

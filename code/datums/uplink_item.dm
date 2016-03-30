@@ -627,8 +627,8 @@ var/list/uplink_items = list()
 	cost = 10
 
 /datum/uplink_item/device_tools/singularity_beacon
-	name = "Singularity Beacon"
-	desc = "When screwed to wiring attached to an electric grid, then activated, this large device pulls the singularity towards it. \
+	name = "Power Beacon"
+	desc = "When screwed to wiring attached to an electric grid, then activated, this large device pulls the singularity or the tesla towards it. \
 	Does not work when the singularity is still in containment. A singularity beacon can cause catastrophic damage to a space station, \
 	leading to an emergency evacuation. Because of its size, it cannot be carried. Ordering this sends you a small beacon that will teleport the larger beacon to your location on activation."
 	item = /obj/item/device/sbeacondrop
@@ -672,7 +672,6 @@ var/list/uplink_items = list()
 	cost = 16
 	gamemodes = list(/datum/game_mode/nuclear,/datum/game_mode/gang)
 	surplus = 20
-
 
 // IMPLANTS
 

@@ -8,6 +8,10 @@ var/global/list/spec_roles = list(
 			"game_mode" = /datum/game_mode/traitor,
 			"name" 		= "traitor"
 		),
+	BE_DOUBLEAGENT = list(
+			"game_mode" = /datum/game_mode/traitor/double_agents,
+			"name" = "double agent"
+		),
 	BE_OPERATIVE = list(
 			"game_mode" = /datum/game_mode/nuclear,
 			"name" 		= "operative"
@@ -75,7 +79,7 @@ var/global/list/spec_roles = list(
 	BE_CYBERMAN = list(
 			"game_mode" = /datum/game_mode/cybermen,
 			"name" 		= "cyberman"
-		)
+		),
 )
 
 
@@ -100,6 +104,7 @@ var/global/list/spec_roles = list(
 	var/UI_style_ai = DEFAULT_AI_UI
 	var/toggles = TOGGLES_DEFAULT
 	var/chat_toggles = TOGGLES_DEFAULT_CHAT
+	//var/ghost_orbit = GHOST_ORBIT_CIRCLE
 	var/ghost_form = "ghost"
 	var/allow_midround_antag = 1
 
@@ -130,14 +135,17 @@ var/global/list/spec_roles = list(
 	var/icon/preview_icon_side = null
 
 		//Jobs, uses bitflags
+	var/job_civilian_ultra = 0
 	var/job_civilian_high = 0
 	var/job_civilian_med = 0
 	var/job_civilian_low = 0
-
+	
+	var/job_medsci_ultra = 0
 	var/job_medsci_high = 0
 	var/job_medsci_med = 0
 	var/job_medsci_low = 0
-
+	
+	var/job_engsec_ultra = 0
 	var/job_engsec_high = 0
 	var/job_engsec_med = 0
 	var/job_engsec_low = 0
@@ -184,6 +192,11 @@ var/global/list/spec_roles = list(
 			UI_style_ai = DEFAULT_AI_UI
 	if(loaded_preferences_successfully)
 		if(load_character())
+			if(!is_whitelisted(src))
+				job_civilian_ultra = 0
+				job_medsci_ultra = 0
+				job_engsec_ultra = 0
+				save_character()
 			return
 	//we couldn't load character data so just randomize the character appearance + name
 	random_character()		//let's create a random character then - rather than a fat, bald and naked man.
@@ -450,6 +463,7 @@ var/global/list/spec_roles = list(
 					if(unlock_content)
 						dat += "<b>BYOND Membership Publicity:</b> <a href='?_src_=prefs;preference=publicity'>[(toggles & MEMBER_PUBLIC) ? "Public" : "Hidden"]</a><br>"
 						dat += "<b>Ghost Form:</b> <a href='?_src_=prefs;task=input;preference=ghostform'>[ghost_form]</a><br>"
+						//dat += "<B>Ghost Orbit: </B> <a href='?_src_=prefs;task=input;preference=ghostorbit'>[ghost_orbit]</a><br>"
 
 
 				dat += "</td><td width='300px' height='300px' valign='top'>"
@@ -480,7 +494,7 @@ var/global/list/spec_roles = list(
 							else if(src.toggles & QUIET_ROUND)
 								dat += "<b>Be [item["name"]]:</b> <font color=blue><b>\[QUIET ROUND\]</b></font><br>"
 							else
-								dat += "<b>Be [item["name"]]:</b> <a href='?_src_=prefs;preference=be_special;num=[i]'>[src.hasSpecialRole(i) ? "Yes" : "No"]</a><br>"
+								dat += "<b>Be [item["name"]]:</b> <a href='?_src_=prefs;preference=be_[item["name"]]'>[src.hasSpecialRole(i) ? "Yes" : "No"]</a><br>"
 				if(is_donator(user.client))
 					dat += "<b>Quiet round:</b> <a href='?_src_=prefs;preference=donor;task=quiet_round'>[(src.toggles & QUIET_ROUND) ? "Yes" : "No"]</a><br>"
 				dat += "</td></tr></table>"
@@ -526,9 +540,6 @@ var/global/list/spec_roles = list(
 			if(job.spawn_positions == 0)
 				continue
 
-			if((job.whitelisted) && (!check_whitelist(user)))
-				continue
-
 			index += 1
 			if((index >= limit) || (job.title in splitJobs))
 				width += widthPerColumn
@@ -571,32 +582,48 @@ var/global/list/spec_roles = list(
 
 			var/prefLevelLabel = "ERROR"
 			var/prefLevelColor = "pink"
+			var/prefLevelClass = "white"
 			var/prefUpperLevel = -1 // level to assign on left click
 			var/prefLowerLevel = -1 // level to assign on right click
 
 			if(GetJobDepartment(job, 1) & job.flag)
-				prefLevelLabel = "High"
-				prefLevelColor = "slateblue"
-				prefUpperLevel = 4
+				prefLevelLabel = "Ultra"
+				prefLevelColor = "#E5E4E2"
+				prefUpperLevel = 5
 				prefLowerLevel = 2
 			else if(GetJobDepartment(job, 2) & job.flag)
-				prefLevelLabel = "Medium"
-				prefLevelColor = "green"
-				prefUpperLevel = 1
+				prefLevelLabel = "High"
+				prefLevelColor = "slateblue"
+				if(job.whitelisted && is_whitelisted(user))
+					prefUpperLevel = 1
+				else
+					prefUpperLevel = 5
 				prefLowerLevel = 3
 			else if(GetJobDepartment(job, 3) & job.flag)
-				prefLevelLabel = "Low"
-				prefLevelColor = "orange"
+				prefLevelLabel = "Medium"
+				prefLevelColor = "green"
 				prefUpperLevel = 2
 				prefLowerLevel = 4
+			else if(GetJobDepartment(job, 4) & job.flag)
+				prefLevelLabel = "Low"
+				prefLevelColor = "orange"
+				prefUpperLevel = 3
+				prefLowerLevel = 5
 			else
 				prefLevelLabel = "NEVER"
 				prefLevelColor = "red"
-				prefUpperLevel = 3
-				prefLowerLevel = 1
+				prefUpperLevel = 4
+				if(job.whitelisted && is_whitelisted(user))
+					prefLowerLevel = 1
+				else
+					prefLowerLevel = 2
 
-
-			HTML += "<a class='white' href='?_src_=prefs;preference=job;task=setJobLevel;level=[prefUpperLevel];text=[rank]' oncontextmenu='javascript:return setJobPrefRedirect([prefLowerLevel], \"[rank]\");'>"
+			if(job.whitelisted && is_whitelisted(user))
+				prefLevelClass = "special"
+			else
+				prefLevelClass = "white"
+				
+			HTML += "<a class='[prefLevelClass]' href='?_src_=prefs;preference=job;task=setJobLevel;level=[prefUpperLevel];text=[rank]' oncontextmenu='javascript:return setJobPrefRedirect([prefLowerLevel], \"[rank]\");'>"
 
 			if(rank == "Assistant")//Assistant is special
 				if(job_civilian_low & ASSISTANT)
@@ -631,7 +658,7 @@ var/global/list/spec_roles = list(
 		if (!job)
 			return 0
 
-		if (level == 1) // to high
+		if (level == 2) // to high
 			// remove any other job(s) set to high
 			job_civilian_med |= job_civilian_high
 			job_engsec_med |= job_engsec_high
@@ -644,13 +671,16 @@ var/global/list/spec_roles = list(
 			job_civilian_low &= ~job.flag
 			job_civilian_med &= ~job.flag
 			job_civilian_high &= ~job.flag
+			job_civilian_ultra &= ~job.flag
 
 			switch(level)
 				if (1)
-					job_civilian_high |= job.flag
+					job_civilian_ultra |= job.flag
 				if (2)
-					job_civilian_med |= job.flag
+					job_civilian_high |= job.flag
 				if (3)
+					job_civilian_med |= job.flag
+				if (4)
 					job_civilian_low |= job.flag
 
 			return 1
@@ -658,13 +688,16 @@ var/global/list/spec_roles = list(
 			job_engsec_low &= ~job.flag
 			job_engsec_med &= ~job.flag
 			job_engsec_high &= ~job.flag
+			job_engsec_ultra &= ~job.flag
 
 			switch(level)
 				if (1)
-					job_engsec_high |= job.flag
+					job_engsec_ultra |= job.flag
 				if (2)
-					job_engsec_med |= job.flag
+					job_engsec_high |= job.flag
 				if (3)
+					job_engsec_med |= job.flag
+				if (4)
 					job_engsec_low |= job.flag
 
 			return 1
@@ -672,13 +705,16 @@ var/global/list/spec_roles = list(
 			job_medsci_low &= ~job.flag
 			job_medsci_med &= ~job.flag
 			job_medsci_high &= ~job.flag
+			job_medsci_ultra &= ~job.flag
 
 			switch(level)
 				if (1)
-					job_medsci_high |= job.flag
+					job_medsci_ultra |= job.flag
 				if (2)
-					job_medsci_med |= job.flag
+					job_medsci_high |= job.flag
 				if (3)
+					job_medsci_med |= job.flag
+				if (4)
 					job_medsci_low |= job.flag
 
 			return 1
@@ -719,14 +755,17 @@ var/global/list/spec_roles = list(
 		job_civilian_high = 0
 		job_civilian_med = 0
 		job_civilian_low = 0
+		job_civilian_ultra = 0
 
 		job_medsci_high = 0
 		job_medsci_med = 0
 		job_medsci_low = 0
+		job_medsci_ultra = 0
 
 		job_engsec_high = 0
 		job_engsec_med = 0
 		job_engsec_low = 0
+		job_engsec_ultra = 0
 
 
 	proc/GetJobDepartment(datum/job/job, level)
@@ -735,26 +774,32 @@ var/global/list/spec_roles = list(
 			if(CIVILIAN)
 				switch(level)
 					if(1)
-						return job_civilian_high
+						return job_civilian_ultra
 					if(2)
-						return job_civilian_med
+						return job_civilian_high
 					if(3)
+						return job_civilian_med
+					if(4)
 						return job_civilian_low
 			if(MEDSCI)
 				switch(level)
 					if(1)
-						return job_medsci_high
+						return job_medsci_ultra
 					if(2)
-						return job_medsci_med
+						return job_medsci_high
 					if(3)
+						return job_medsci_med
+					if(4)
 						return job_medsci_low
 			if(ENGSEC)
 				switch(level)
 					if(1)
-						return job_engsec_high
+						return job_engsec_ultra
 					if(2)
-						return job_engsec_med
+						return job_engsec_high
 					if(3)
+						return job_engsec_med
+					if(4)
 						return job_engsec_low
 		return 0
 
@@ -940,6 +985,12 @@ var/global/list/spec_roles = list(
 							var/new_form = input(user, "Thanks for supporting BYOND - Choose your ghostly form:","Thanks for supporting BYOND",null) as null|anything in ghost_forms
 							if(new_form)
 								ghost_form = new_form
+					/*if("ghostorbit")
+						if(unlock_content)
+							var/new_orbit = input(user, "Thanks for supporting BYOND - Choose your ghostly orbit:","Thanks for supporting BYOND", null) as null|anything in ghost_orbits
+							if(new_orbit)
+								ghost_orbit = new_orbit
+					*/
 					if("name")
 						var/new_name = reject_bad_name( input(user, "Choose your character's name:", "Character Preference")  as text|null )
 						if(new_name)
@@ -1174,7 +1225,10 @@ var/global/list/spec_roles = list(
 				for (var/i in spec_roles)
 					var/item = spec_roles[i]
 					if(href_list["preference"] == "be_[item["name"]]")
-						be_special[i] = item
+						if(!hasSpecialRole(i))
+							be_special[i] = item
+						else
+							be_special -= i
 
 				switch(href_list["preference"])
 					if("publicity")
@@ -1249,11 +1303,21 @@ var/global/list/spec_roles = list(
 					if("load")
 						load_preferences()
 						load_character()
+						if(!is_whitelisted(user))
+							job_civilian_ultra = 0
+							job_medsci_ultra = 0
+							job_engsec_ultra = 0
+							save_character()
 
 					if("changeslot")
 						if(!load_character(text2num(href_list["num"])))
 							random_character()
 							real_name = random_unique_name(gender)
+							save_character()
+						else if(!is_whitelisted(user))
+							job_civilian_ultra = 0
+							job_medsci_ultra = 0
+							job_engsec_ultra = 0
 							save_character()
 
 					if("tab")

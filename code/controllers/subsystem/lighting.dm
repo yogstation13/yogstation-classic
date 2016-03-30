@@ -4,10 +4,8 @@ var/datum/subsystem/lighting/SSlighting
 
 /datum/subsystem/lighting
 	name = "Lighting"
-	wait = 5
+	wait = 6
 	priority = 1
-	dynamic_wait = 1
-	dwait_delta = 3
 
 	var/list/changed_lights = list()		//list of all datum/light_source that need updating
 	var/changed_lights_workload = 0			//stats on the largest number of lights (max changed_lights.len)
@@ -29,21 +27,27 @@ var/datum/subsystem/lighting/SSlighting
 //effects and then processes every turf in the queue, updating their lighting object's appearance
 //Any light that returns 1 in check() deletes itself
 //By using queues we are ensuring we don't perform more updates than are necessary
-/datum/subsystem/lighting/fire()
-	changed_lights_workload = MC_AVERAGE(changed_lights_workload, changed_lights.len)
-
-	for(var/thing in changed_lights)
-		var/datum/light_source/LS = thing
+/datum/subsystem/lighting/fire(resumed = 0)
+	var/list/changed_lights = src.changed_lights
+	if (!resumed)
+		changed_lights_workload = MC_AVERAGE(changed_lights_workload, changed_lights.len)
+	while (changed_lights.len)
+		var/datum/light_source/LS = changed_lights[1]
+		changed_lights.Cut(1, 2)
 		LS.check()
-	changed_lights.Cut()
+		if (MC_TICK_CHECK)
+			return
 
-	changed_turfs_workload = MC_AVERAGE(changed_turfs_workload, changed_turfs.len)
-	for(var/thing in changed_turfs)
-		var/turf/T = thing
+	var/list/changed_turfs = src.changed_turfs
+	if (!resumed)
+		changed_turfs_workload = MC_AVERAGE(changed_turfs_workload, changed_turfs.len)
+	while (changed_turfs.len)
+		var/turf/T = changed_turfs[1]
+		changed_turfs.Cut(1, 2)
 		if(T.lighting_changed)
 			T.redraw_lighting()
-	changed_turfs.Cut()
-
+		if (MC_TICK_CHECK)
+			return
 //same as above except it attempts to shift ALL turfs in the world regardless of lighting_changed status
 //Does not loop. Should be run prior to process() being called for the first time.
 //Note: if we get additional z-levels at runtime (e.g. if the gateway thin ever gets finished) we can initialize specific
@@ -54,6 +58,7 @@ var/datum/subsystem/lighting/SSlighting
 	for(var/thing in changed_lights)
 		var/datum/light_source/LS = thing
 		LS.check()
+		CHECK_TICK
 	changed_lights.Cut()
 
 	var/z_start = 1
@@ -68,6 +73,7 @@ var/datum/subsystem/lighting/SSlighting
 	for(var/thing in turfs_to_init)
 		var/turf/T = thing
 		T.init_lighting()
+		CHECK_TICK
 
 	if(z_level)
 		//we need to loop through to clear only shifted turfs from the list. or we will cause errors
@@ -76,6 +82,7 @@ var/datum/subsystem/lighting/SSlighting
 			if(T.z in z_start to z_finish)
 				continue
 			changed_turfs.Remove(thing)
+			CHECK_TICK
 	else
 		changed_turfs.Cut()
 

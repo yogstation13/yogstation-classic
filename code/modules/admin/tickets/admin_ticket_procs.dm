@@ -80,7 +80,6 @@
 
 			user << "<span class='ticket-text-sent'>-- [is_admin(user) ? key_name_params(user, 0, 1, null, src) : "[key_name_params(user, 0, 0, null, src)]"] -> [log_item.isAdminComment() ? get_view_link(user) : (is_admin(user) ? key_name_params(owner, 1, 1, null, src) : "[key_name_params(owner, 1, 0, null, src)]")]: [log_item.text] [is_admin(user) ? "(<a href='?src=\ref[src];user=\ref[usr];action=resolve_admin_ticket;ticket=\ref[src]'>Close</a>)" : ""]</span>"
 
-
 	for(var/M in monitors)
 		if(compare_ckey(owner_ckey, M) || compare_ckey(user, handling_admin))
 			break
@@ -129,6 +128,15 @@
 
 /datum/admin_ticket/proc/is_monitor(var/client/C)
 	return (C in monitors) ? 1 : 0
+
+/datum/admin_ticket/proc/check_unclaimed()
+	spawn(600)
+		if(!handling_admin && !resolved)
+			check_unclaimed()
+			for(var/client/X in admins)
+				X << "<span class='ticket-status'>[get_view_link(X)] is still unclaimed.</span>"
+				if(has_pref(X, SOUND_ADMINHELP))
+					X << 'sound/effects/adminhelp.ogg'
 
 /datum/admin_ticket/proc/toggle_monitor()
 	var/foundMonitor = 0
@@ -200,6 +208,21 @@
 				world.Reboot("Initiated by [usr.client.holder.fakekey ? "Admin" : usr.key].", "end_proper", "proper completion", 100)
 			else
 				usr << "<span class='ticket-status'>You chose not to restart the server. If you do not have permissions to restart the server normally, you can still do so by making a new ticket and resolving it again.</span>"
+
+	if(resolved)
+		if(!establish_db_connection())
+			world.log << "Admin ticket database connection failure."
+			diary << "Admin ticket database connection failure."
+			return
+
+		var/DBQuery/query = dbcon.NewQuery("SELECT id FROM [format_table_name("admin_tickets")] WHERE round_id = [yog_round_number] AND ticket_id = [ticket_id]")
+		query.Execute()
+		if(!query.NextRow())
+			var/content = ""
+			for(var/datum/ticket_log/line in log)
+				content += "[line.user][line.user_admin ? " A" : ""]: [line.text]\n"
+			var/DBQuery/insert = dbcon.NewQuery("INSERT INTO [format_table_name("admin_tickets")] (round_id, ticket_id, ckey, a_ckey, content) VALUES ([yog_round_number], [ticket_id], '[owner_ckey]', '[get_client(handling_admin)]', '[content]')")
+			insert.Execute()
 
 /datum/admin_ticket/proc/view_log()
 	if(!owner && istext(owner_ckey))
@@ -296,3 +319,10 @@
 
 	usr << browse(null, "window=ViewTicketLog[ticket_id]")
 	usr << browse(html, "window=ViewTicketLog[ticket_id]")
+
+/proc/total_unresolved_tickets()
+	var/unresolved_tickets = 0
+	for(var/datum/admin_ticket/T in tickets_list)
+		if(!T.resolved)
+			unresolved_tickets++
+	return unresolved_tickets

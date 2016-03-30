@@ -292,6 +292,7 @@
 	if(rights & R_SOUNDS)		. += "[seperator]+SOUND"
 	if(rights & R_SPAWN)		. += "[seperator]+SPAWN"
 	if(rights & R_NOJOIN)		. += "[seperator]+NOJOIN"
+	if(rights & R_TICKET)		. += "[seperator]+TICKET"
 
 	for(var/verbpath in adds)
 		. += "[seperator]+[verbpath]"
@@ -645,6 +646,11 @@ for(var/t in test_times)
 				for(var/A in value)
 					if(var_source.vars.Find(A))
 						. += A
+
+// Credits: http://www.byond.com/forum/?post=132854
+/proc/list2string( l[], sep )
+    for( var/x = 1 to l.len )
+        . += ( l[x] + (x < l.len ? sep :null) )
 
 
 

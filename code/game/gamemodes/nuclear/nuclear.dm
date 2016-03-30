@@ -33,7 +33,7 @@
 		agent_number = n_players/2
 
 	while(agent_number > 0)
-		var/datum/mind/new_syndicate = pick(antag_candidates)
+		var/datum/mind/new_syndicate = pick_candidate()
 		syndicates += new_syndicate
 		antag_candidates -= new_syndicate //So it doesn't pick the same guy each time.
 		agent_number--

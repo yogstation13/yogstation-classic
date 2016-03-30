@@ -78,7 +78,7 @@
 	icon = 'icons/obj/items.dmi'
 	icon_state = "blueprints"
 	fluffnotice = "Property of Nanotrasen. For heads of staff only. Store in high-secure storage."
-
+	high_risk = 1
 
 /obj/item/areaeditor/blueprints/attack_self(mob/user)
 	. = ..()

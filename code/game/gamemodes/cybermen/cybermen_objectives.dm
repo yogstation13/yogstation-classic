@@ -127,7 +127,7 @@
 /datum/objective/cybermen/expand/convert_crewmembers/is_valid()
 	var/humans_on_station = 0
 	for(var/mob/living/carbon/human/survivor in living_mob_list)
-		if(survivor.loc.z == ZLEVEL_STATION && !survivor.client.is_afk())
+		if(survivor.loc.z == ZLEVEL_STATION && survivor.key)
 			humans_on_station++
 	return target_cybermen_num <= humans_on_station
 
@@ -140,7 +140,7 @@
 	world << "Humans on station: [humans_on_station]"
 	#endif
 	if(humans_on_station > 3)//needs a somewhat sane lower limit
-		target_cybermen_num = humans_on_station
+		target_cybermen_num = min(target_cybermen_num, humans_on_station)
 		cyberman_network.message_all_cybermen("<span class='notice'>Too few humans detected aboard the station. Number of required cybermen reduced to [target_cybermen_num].</span>")
 		check_completion()//updates explanation_text.
 		return 1
@@ -171,21 +171,24 @@
 
 /datum/objective/cybermen/expand/hack_ai/New()
 	..()
-	for(var/mob/living/silicon/ai/new_ai in ai_list)
-		if(targetAI && targetAI.key)
+	for(var/V in ai_list)
+		var/mob/living/silicon/ai/new_ai = V
+		if(new_ai && new_ai.key)
 			targetAI = new_ai
-			explanation_text = "Hack [targetAI.current.name], the AI."
+			explanation_text = "Hack [targetAI.name], the AI. This can be done through the AI core, an intellicard holding the AI, or an AI law upload console set to the AI."
+			break
 
 /datum/objective/cybermen/expand/hack_ai/is_valid()
 	return targetAI && targetAI.key
 
 /datum/objective/cybermen/expand/hack_ai/make_valid()
 	targetAI = null
-	for(var/mob/living/silicon/ai/new_ai in ai_list)
-		if(targetAI && targetAI.key)
+	for(var/V in ai_list)
+		var/mob/living/silicon/ai/new_ai = V
+		if(new_ai && new_ai.key)
 			targetAI = new_ai
-			explanation_text = "Hack [targetAI.current.name], the AI."
-			cyberman_network.message_all_cybermen("Cybermen AI hack target changed. New AI hack target is [targetAI.current.name].")
+			explanation_text = "Hack [targetAI.name], the AI. This can be done through the AI core, an intellicard holding the AI, or an AI law upload console set to the AI."
+			cyberman_network.message_all_cybermen("Cybermen AI hack target changed. New AI hack target is [targetAI.name].")
 			return 1
 	return 0
 
@@ -210,7 +213,7 @@
 	var/the_ai = L[ai_name]
 	if(the_ai)
 		targetAI = the_ai
-		explanation_text = "Hack [targetAI.name], the AI."
+		explanation_text = "Hack [targetAI.name], the AI. This can be done through the AI core, an intellicard holding the AI, or an AI law upload console set to the AI."
 
 //CONVERT HEADS
 /datum/objective/cybermen/expand/convert_heads
@@ -282,18 +285,23 @@
 		#endif
 		if(candidate)
 			descriptions += candidate
-			analyze_target_candidates -= candidate
 			targets += analyze_target_candidates[candidate]
+			analyze_target_candidates -= candidate
 		remaining--
 	remaining = num_hack_targets
 	while(remaining)
 		var/candidate = pick(hack_target_candidates)
 		if(candidate)
 			descriptions += candidate
-			hack_target_candidates -= hack_target_candidates[candidate]
 			targets += hack_target_candidates[candidate]
+			hack_target_candidates -= hack_target_candidates[candidate]
 		remaining--
 	check_completion()//takes care of explanation text.
+	#ifdef CYBERMEN_DEBUG
+	world << "Targets:"
+	for(var/cur in targets)
+		world << "  [cur]"
+	#endif
 
 /datum/objective/cybermen/exploit/analyze_and_hack/is_valid()
 	//everything on the analyze list is a high-risk item, so we'll assume they haven't been spaced or destroyed.
@@ -311,6 +319,8 @@
 	for(var/current2 in targets_copy)
 		var/done_indicator = "(<font color='red'>Not Completed</font>)"
 		for(var/current in cyberman_network.cybermen_hacked_objects)
+			if(!current)
+				continue
 			if(istype(current, current2))
 				targets_copy -= current2
 				done_indicator = "(<font color='green'>Completed</font>)"

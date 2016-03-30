@@ -64,6 +64,10 @@
 
 //Called after a successful Move(). By this point, we've already moved
 /atom/movable/proc/Moved(atom/OldLoc, Dir)
+	var/turf/oldTurf = get_turf(OldLoc)
+	var/turf/newTurf = get_turf(loc)
+	if(!oldTurf || !newTurf || oldTurf.z != newTurf.z)
+		on_z_level_change()
 	return 1
 
 /atom/movable/Del()
@@ -170,7 +174,7 @@
 		SpinAnimation(5, 1)
 
 	var/dist_travelled = 0
-	var/dist_since_sleep = 0
+	var/next_sleep  = 0
 
 	var/dist_x = abs(target.x - src.x)
 	var/dist_y = abs(target.y - src.y)
@@ -195,7 +199,7 @@
 	var/init_dir = get_dir(src, target)
 
 	while(target && ((dist_travelled < range && loc != finalturf)  || !has_gravity(src))) //stop if we reached our destination (or max range) and aren't floating
-
+		var/slept = 0
 		if(!istype(loc, /turf))
 			hit = 1
 			break
@@ -217,15 +221,20 @@
 			hit = 1
 			break
 		dist_travelled++
-		dist_since_sleep++
 
 		if(dist_travelled > 600) //safety to prevent infinite while loop.
 			break
-		if(dist_since_sleep >= speed)
-			dist_since_sleep = 0
-			sleep(1)
+		if(dist_travelled >= next_sleep)
+			slept = 1
+			next_sleep += speed
+ 			sleep(1)
 
-		if(!dist_since_sleep && hitcheck()) //to catch sneaky things moving on our tile during our sleep(1)
+		if(!slept)
+			var/ticks_slept = TICK_CHECK
+			if(ticks_slept)
+				slept = 1
+				next_sleep += speed*(ticks_slept*world.tick_lag)
+		if(slept && hitcheck()) //to catch sneaky things moving on our tile during our sleep(1)
 			hit = 1
 			break
 
@@ -240,6 +249,10 @@
 
 		throw_impact(get_turf(src))  // we haven't hit something yet and we still must, let's hit the ground.
 	return 1
+
+/atom/movable/proc/throw_at_fast(atom/target, range, speed, mob/thrower, spin=1, diagonals_first = 0)
+	set waitfor = 0
+	throw_at(target, range, speed, thrower, spin, diagonals_first)
 
 /atom/movable/proc/hitcheck()
 	for(var/atom/movable/AM in get_turf(src))
@@ -273,3 +286,7 @@
 	if (src.master)
 		return src.master.attack_hand(a, b, c)
 	return
+
+/atom/movable/proc/on_z_level_change()
+	for(var/atom/movable/A in contents)
+		A.on_z_level_change()

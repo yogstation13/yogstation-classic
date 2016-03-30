@@ -70,9 +70,21 @@ var/total_borer_hosts_needed = 10
 		if(victim)
 			stat(null, "Influence: [influence]%")
 
+	src << output(chemicals, "ViewBorer\ref[src]Chems.browser:update_chemicals")
+	src << output(influence, "ViewBorer\ref[src]Chems.browser:update_influence")
+
 /mob/living/simple_animal/borer/Life()
 
 	..()
+
+	for(var/image/hud in client.images)
+		if(hud.icon_state == "borer")
+			client.images -= hud
+	for(var/mob/living/simple_animal/borer/B in borers)
+		if(B.victim)
+			client.images += image('icons/mob/hud.dmi',B.victim,"borer")
+			if(victim && victim.client)
+				victim.client.images += image('icons/mob/hud.dmi',B.victim,"borer")
 
 	if(victim)
 
@@ -124,6 +136,8 @@ var/total_borer_hosts_needed = 10
 		message = copytext(message,2)
 		for(var/borer in borers)
 			borer << "<span class='borer'><b>HIVEMIND: </b>[name] says: \"[message]\""
+		for(var/mob/dead in dead_mob_list)
+			dead << "<span class='borer'><b>BORER HIVEMIND: </b>[name] says: \"[message]\""
 		return
 	if(!victim)
 		src << "<span class='boldnotice'>You cannot speak without a host.</span>"
@@ -145,6 +159,12 @@ var/total_borer_hosts_needed = 10
 /mob/living/simple_animal/borer/UnarmedAttack()
 	return
 
+/mob/living/simple_animal/borer/ex_act()
+	if(victim)
+		return
+
+	..()
+
 /mob/living/simple_animal/borer/proc/Infect(mob/living/carbon/victim)
 	if(!victim)
 		return
@@ -157,8 +177,6 @@ var/total_borer_hosts_needed = 10
 		src << "<span class='boldnotice'>[victim]'s mind seems unresponsive. Try someone else!</span>"
 		return
 
-	update_borer_icons_add(victim)
-
 	src.victim = victim
 	victim.borer = src
 	src.loc = victim
@@ -170,8 +188,6 @@ var/total_borer_hosts_needed = 10
 
 	if(controlling)
 		detatch()
-
-	update_borer_icons_remove(victim)
 
 	src.loc = get_turf(victim)
 
@@ -189,12 +205,7 @@ var/total_borer_hosts_needed = 10
 	candidate.mob = src
 
 	if(src.mind)
-		src.mind.assigned_role = "Cortical Borer"
-		src.mind.special_role = "Cortical Borer"
 		src.mind.store_memory("You <b>MUST</b> escape with atleast [total_borer_hosts_needed] borers with hosts on the shuttle.")
-
-
-	update_borer_icons_add(src)
 
 	src << "<span class='notice'>You are a cortical borer!</span> You are a brain slug that worms its way \
 	into the head of its victim. Use stealth, persuasion and your powers of mind control to keep you, \
@@ -259,13 +270,3 @@ var/total_borer_hosts_needed = 10
 	M.assigned_role = "Cortical Borer"
 	M.special_role = "Cortical Borer"
 	return M
-
-/proc/update_borer_icons_add(mob/living/carbon/M)
-	var/datum/atom_hud/antag/borer_hud = huds[ANTAG_HUD_BORER]
-	borer_hud.join_hud(M)
-	ticker.mode.set_antag_hud(M, "borer")
-
-/proc/update_borer_icons_remove(mob/living/carbon/M)
-	var/datum/atom_hud/antag/borer_hud = huds[ANTAG_HUD_BORER]
-	borer_hud.leave_hud(M)
-	ticker.mode.set_antag_hud(M, null)

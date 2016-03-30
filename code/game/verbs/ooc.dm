@@ -45,6 +45,8 @@
 
 	log_ooc("[mob.name]/[key] : [msg]")
 
+	spawn(-1) send_discord_message("[key] has said: [msg]", DISCORD_OOC)
+
 	var/keyname = key
 	if(prefs.unlock_content && (prefs.toggles & MEMBER_PUBLIC))
 		keyname = "<font color='[prefs.ooccolor ? prefs.ooccolor : normal_ooc_colour]'>"

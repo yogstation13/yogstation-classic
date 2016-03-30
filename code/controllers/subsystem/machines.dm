@@ -5,6 +5,7 @@ var/datum/subsystem/machines/SSmachine
 	priority = 9
 
 	var/list/processing = list()
+	var/list/currentrun = list()
 	var/list/powernets = list()
 
 
@@ -32,15 +33,23 @@ var/datum/subsystem/machines/SSmachine
 	..("M:[processing.len]|PN:[powernets.len]")
 
 
-/datum/subsystem/machines/fire()
-	for(var/datum/powernet/Powernet in powernets)
-		Powernet.reset() //reset the power state.
+/datum/subsystem/machines/fire(resumed = 0)
+	if (!resumed)
+		for(var/datum/powernet/Powernet in powernets)
+			Powernet.reset() //reset the power state.
+		src.currentrun = processing.Copy()
+
+	//cache for sanic speed (lists are references anyways)
+	var/list/currentrun = src.currentrun
 
 	var/seconds = wait * 0.1
-	for(var/thing in processing)
-		if(thing && (thing:process(seconds) != PROCESS_KILL))
+	while(currentrun.len)
+		var/datum/thing = currentrun[1]
+		currentrun.Cut(1, 2)
+		if(thing && thing.process(seconds) != PROCESS_KILL)
 			if(thing:use_power)
 				thing:auto_use_power() //add back the power state
-			continue
-		processing.Remove(thing)
-
+		else
+			processing.Remove(thing)
+		if (MC_TICK_CHECK)
+			return

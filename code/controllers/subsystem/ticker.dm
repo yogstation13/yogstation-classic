@@ -45,6 +45,8 @@ var/datum/subsystem/ticker/ticker
 	var/list/queued_players = list()		//used for join queues when the server exceeds the hard population cap
 
 	var/obj/screen/cinematic = null			//used for station explosion cinematic
+	var/next_alert_time = 0
+	var/next_check_admin = 1
 
 
 /datum/subsystem/ticker/New()
@@ -61,6 +63,7 @@ var/datum/subsystem/ticker/ticker
 	if(!syndicate_code_response)	syndicate_code_response	= generate_code_phrase()
 	setupGenetics()
 	setupFactions()
+	spawn(-1) send_discord_message("A new round is about to start. http://www.yogstation.net/play.php", DISCORD_PUBLIC)
 	..()
 
 /datum/subsystem/ticker/fire()
@@ -101,38 +104,34 @@ var/datum/subsystem/ticker/ticker
 		if(GAME_STATE_PLAYING)
 			mode.process(wait * 0.1)
 
+			if(world.time > next_alert_time && next_check_admin)
+				next_alert_time = world.time+1800 /* 6000 */
+
+				var/admins_online = total_admins_active()
+				var/unresolved_tickets = total_unresolved_tickets()
+
+				if(!admins_online)
+					next_check_admin = 0
+					spawn(-1) send_discord_message("There are no current admins active and theres [unresolved_tickets] unresolved tickets.", DISCORD_ADMIN)
+
 			if(!mode.explosion_in_progress && mode.check_finished() || force_ending)
 				current_state = GAME_STATE_FINISHED
 				toggle_ooc(1) // Turn it on
 				declare_completion(force_ending)
 				spawn(50)
-					var/unresolved_tickets = 0
-					var/admins_online = 0
-					var/unresolved_tickets_ending = 0 //this is so we can avoid having a normal round ended reboot message as well
-					for(var/datum/admin_ticket/T in tickets_list)
-						if(!T.resolved)
-							unresolved_tickets++
-
-					for(var/client/X in admins)
-						admins_online++
-						var/invalid = 0
-						if(!check_rights_for(X, R_SERVER))
-							invalid = 1
-						if(X.is_afk())
-							invalid = 1
-						if(!invalid)
-							admins_online++
+					var/admins_online = total_admins_active()
+					var/unresolved_tickets = total_unresolved_tickets()
 
 					if(unresolved_tickets && admins_online)
 						ticker.delay_end = 1
 						message_admins("Not all tickets have been resolved. Server restart delayed.")
 					else if(unresolved_tickets && !admins_online)
-						unresolved_tickets_ending = 1
 						world.Reboot("Round ended, but there were still active tickets. Please submit a player complaint if you did not receive a response.", "end_proper", "ended with open tickets")
-					if(mode.station_was_nuked && !unresolved_tickets_ending)
-						world.Reboot("Station destroyed by Nuclear Device.", "end_proper", "nuke")
-					else if(!unresolved_tickets_ending)
-						world.Reboot("Round ended.", "end_proper", "proper completion")
+					else
+						if(mode.station_was_nuked)
+							world.Reboot("Station destroyed by Nuclear Device.", "end_proper", "nuke")
+						else
+							world.Reboot("Round ended.", "end_proper", "proper completion")
 
 /datum/subsystem/ticker/proc/setup()
 		//Create and announce mode

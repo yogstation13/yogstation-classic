@@ -36,7 +36,7 @@
 	name = "Bombanana"
 	desc = "This device looks and acts exactly like a banana, except that five seconds after eating it, the peel explodes with the force of a minibomb. It still slips people."
 	item = /obj/item/weapon/reagent_containers/food/snacks/grown/banana/bombanana
-	cost = 4
+	cost = 3 //This is cheap, but explosives are some of the only actually lethal weapons the clown ops have.
 
 /datum/uplink_item/clown/tearstache
 	name = "Tear-stache Grenade"

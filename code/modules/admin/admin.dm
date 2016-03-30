@@ -854,6 +854,7 @@ datum/admins/proc/cybermen_panel()
 			<A href='?_src_=holder;cybermen=2'>Force Complete Current Objective</A>(automatically displays to all cybermen)<br>
 			<A href='?_src_=holder;cybermen=3'>Set Current Objective</A><br>
 			<A href='?_src_=holder;cybermen=6'>Set Random Current Objective</A><br>
+			<A href='?_src_=holder;cybermen=11'>Set Queued Objective</A><br>
 			<A href='?_src_=holder;cybermen=4'>Display Current Objective to all Cybermen</A><br>
 			<A href='?_src_=holder;cybermen=5'>Message All Cybermen</A><br>
 			<A href='?_src_=holder;cybermen=8'>Show Broadcast Log</A><br>
@@ -873,6 +874,12 @@ datum/admins/proc/cybermen_panel()
 			dat += "<BR>"
 
 		dat += "<BR>Cybermen objectives:<BR>"
+		if(cyberman_network.queued_cybermen_objective)
+			dat += "Queued:<BR>"
+			dat += "[cyberman_network.queued_cybermen_objective.phase] (<A href='?_src_=holder;cybermen=10;editvar=toggle_win_on_complete;target=\ref[cyberman_network.queued_cybermen_objective]'>[cyberman_network.queued_cybermen_objective.win_upon_completion ? "Cybermen win on completion" : "Cybermen do not win on completion"]</A>)<BR>[cyberman_network.queued_cybermen_objective.explanation_text]"
+			dat += "<BR>[cyberman_network.queued_cybermen_objective.is_valid() ? "<font color='green'>Valid</font>" : "<font color='red'>Not Valid</font>"]<BR><BR>"
+		else
+			dat += "No queued objective<BR><BR>"
 		for(var/i = 1 to cyberman_network.cybermen_objectives.len)
 			var/datum/objective/cybermen/O = cyberman_network.cybermen_objectives[i]
 			if(O)
@@ -884,12 +891,12 @@ datum/admins/proc/cybermen_panel()
 				dat += "ERROR - null in the objective list<BR>"
 
 		dat += "<BR>Current Active Hacks:<BR>"
-		for(var/obj/effect/cyberman_hack/H in cyberman_network.active_cybermen_hacks)
+		for(var/datum/cyberman_hack/H in cyberman_network.active_cybermen_hacks)
 			if(H)
 				dat += "[H.target_name] (<A href='?_src_=holder;cybermen=10;editvar=set_progress;target=\ref[H]'>[H.progress]</A>/<A href='?_src_=holder;cybermen=10;editvar=set_cost;target=\ref[H]'>[H.cost]</A>) (+<A href='?_src_=holder;cybermen=10;editvar=set_innate;target=\ref[H]'>[H.innate_processing]</A>/tick)"
-				if(istype(H, /obj/effect/cyberman_hack/multiple_vector))
-					var/obj/effect/cyberman_hack/multiple_vector/MVH = H
-					for(var/obj/effect/cyberman_hack/CH in MVH.component_hacks)
+				if(istype(H, /datum/cyberman_hack/multiple_vector))
+					var/datum/cyberman_hack/multiple_vector/MVH = H
+					for(var/datum/cyberman_hack/CH in MVH.component_hacks)
 						dat += "<BR>---[CH.target_name]"
 				dat += "<BR>"
 			else
@@ -953,7 +960,7 @@ datum/admins/proc/cyberman_varedit(list/href_list)
 			if(istype(obj))
 				obj.win_upon_completion = !obj.win_upon_completion
 		if("set_progress")
-			var/obj/effect/cyberman_hack/hack = locate(href_list["target"])
+			var/datum/cyberman_hack/hack = locate(href_list["target"])
 			if(istype(hack))
 				var/num = input("Set progress to what?") as num
 				if(hack)
@@ -963,7 +970,7 @@ datum/admins/proc/cyberman_varedit(list/href_list)
 					else
 						hack.drop("<span class='warning'>[hack.display_verb] of \the [hack.target_name] cancelled by the Cyberman Collective.</span>")
 		if("set_cost")
-			var/obj/effect/cyberman_hack/hack = locate(href_list["target"])
+			var/datum/cyberman_hack/hack = locate(href_list["target"])
 			world << "Test"
 			world << "[hack], "
 			world << "[istype(hack)]"
@@ -973,8 +980,17 @@ datum/admins/proc/cyberman_varedit(list/href_list)
 					hack.cost = num
 					hack.maintained = 1
 		if("set_innate")
-			var/obj/effect/cyberman_hack/hack = locate(href_list["target"])
+			var/datum/cyberman_hack/hack = locate(href_list["target"])
 			if(istype(hack))
 				var/num = input("Set innate processing to what? (If this is not 0, the hack will not lose progress if no cybermen are nearby)") as num
 				if(hack)
 					hack.innate_processing = num
+
+/datum/admins/proc/toggle_high_risk_item_notifications()
+	set category = "Admin"
+	set desc="Toggle dis bitch"
+	set name="Toggle High Risk Item Notifications"
+	high_risk_item_notifications = !high_risk_item_notifications
+	var/message = "[key_name_admin(usr)] has toggled high risk item notifications [high_risk_item_notifications ? "on" : "off"]."
+	message_admins(message)
+	log_admin(message)

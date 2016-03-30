@@ -104,7 +104,9 @@
 	..()
 	if(istype(Proj ,/obj/item/projectile/beam)||istype(Proj,/obj/item/projectile/bullet))
 		if((Proj.damage_type == BURN) || (Proj.damage_type == BRUTE))
-			if(Proj.nodamage)
+			if(Proj.nodamage || Proj.damage <= 5 && Proj.damage_type != BURN)
+				return
+			if(Proj.flag == "dart")
 				return
 			message_admins("[key_name_admin(Proj.firer)] triggered a fueltank explosion.")
 			log_game("[key_name(Proj.firer)] triggered a fueltank explosion.")
@@ -120,6 +122,9 @@
 	if(src)
 		qdel(src)
 
+/obj/structure/reagent_dispensers/fueltank/tesla_act()
+	..() //extend the zap
+	blob_act()
 
 /obj/structure/reagent_dispensers/fueltank/fire_act()
 	blob_act() //saving a few lines of copypasta

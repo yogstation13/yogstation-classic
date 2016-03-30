@@ -79,6 +79,22 @@
 
 		return
 
+	if(href_list["view_admin_ticket"])
+		var/id = text2num(href_list["view_admin_ticket"])
+		var/client/C = usr.client
+		if(!C.holder)
+			message_admins("EXPLOIT \[admin_ticket\]: [usr] attempted to operate ticket [id].")
+			return
+
+		for(var/datum/admin_ticket/T in tickets_list)
+			if(T.ticket_id == id)
+				T.view_log()
+				return
+
+		usr << "The ticket ID #[id] doesn't exist."
+
+		return
+
 	if(href_list["toggle_be_special"])
 		var/role_flag = href_list["toggle_be_special"]
 		var/client/C = locate(href_list["_src_"])
@@ -196,7 +212,10 @@ var/next_external_rsc = 0
 	if(holder)
 		admins += src
 		holder.owner = src
-
+	
+	//Need to load before we load preferences for correctly removing Ultra if user no longer whitelisted
+	is_whitelisted = is_job_whitelisted(src)
+	
 	//preferences datum - also holds some persistant data for the client (because we may as well keep these datums to a minimum)
 	prefs = preferences_datums[ckey]
 	if(!prefs)
@@ -215,7 +234,7 @@ var/next_external_rsc = 0
 
 	add_verbs_from_config()
 	set_client_age_from_db()
-
+	
 	if (isnum(player_age) && player_age == -1) //first connection
 		if (config.panic_bunker && !holder && !(ckey in deadmins))
 			log_access("Failed Login: [key] - New account attempting to connect during panic bunker")
@@ -295,6 +314,7 @@ var/next_external_rsc = 0
 			T.add_log(new /datum/ticket_log(T, src, "¤ Disconnected ¤", 1))
 
 	if(holder)
+		ticker.next_check_admin = 1
 		holder.owner = null
 		admins -= src
 	sync_logout_with_db(connection_number)
