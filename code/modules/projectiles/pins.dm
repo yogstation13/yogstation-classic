@@ -145,6 +145,13 @@
 	desc = "Advanced clowntech that can convert any firearm into a far more useful object. It has a small nitrobananium charge on it."
 	selfdestruct = 1
 
+//now to fix 4-1
+/obj/item/device/firing_pin/clown/fourdashone
+	name = "really-real firing pin"
+	desc = "This is not a prank."
+	color = "yellow"
+	fail_message = "<span class='warning'>APOOL FEWLS!</span>"
+
 
 // DNA-keyed pin.
 // When you want to keep your toys for youself.

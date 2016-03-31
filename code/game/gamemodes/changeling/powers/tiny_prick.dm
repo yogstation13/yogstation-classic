@@ -242,11 +242,11 @@
 	feedback_add_details("changeling_powers","HS")
 	return 1
 
-/*
+
 /obj/effect/proc_holder/changeling/sting/stamina
 	name = "Enfeebling Sting"
-	desc = "Exhausts, then causes the victim to collapse for a medium duration."
-	helptext = "We secrete and administer a potent exhausting toxin to our victim, sapping them of their strength, before rendering them unconscious. The toxin is difficult to maintain, and infecting a target with it will damage our genomes slightly."
+	desc = "Makes your target get trippppy..."
+	helptext = "We secrete and administer a shot of drugs."
 	sting_icon = "sting_cryo"
 	chemical_cost = 30
 	dna_cost = 2
@@ -254,13 +254,13 @@
 
 /obj/effect/proc_holder/changeling/sting/stamina/sting_action(mob/user, mob/target)
 	target << "<span class='danger'>You feel a tiny prick.</span>"
-	add_logs(user, target, "stung", "knockout sting")
+	add_logs(user, target, "stung", "dank sting")
 	if(target.reagents)
-		target.reagents.add_reagent("tirizene", 22)
+		target.reagents.add_reagent("space_drugs", 22)
 	feedback_add_details("changeling_powers", "KS")
 	return 1
 
-
+/*
 /obj/effect/proc_holder/changeling/sting/cryo
 	name = "Cryogenic Sting"
 	desc = "We silently sting a human with a cocktail of chemicals that freeze them."

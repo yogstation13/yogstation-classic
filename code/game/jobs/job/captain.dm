@@ -85,6 +85,7 @@ Head of Personnel
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/head_of_personnel(H), slot_w_uniform)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/brown(H), slot_shoes)
 	H.equip_to_slot_or_del(new /obj/item/clothing/head/hopcap(H), slot_head)
+	H.equip_to_slot_or_del(new /obj/item/clothing/suit/hooded/ian_costume(H), slot_wear_suit)
 
 	//Equip ID box & telebaton
 	H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/ids(H.back), slot_in_backpack)
