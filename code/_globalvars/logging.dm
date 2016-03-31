@@ -2,7 +2,6 @@ var/diary = null
 var/admindiary = null
 var/diaryofmeanpeople = null
 var/href_logfile = null
-var/dev_log = null
 
 var/list/bombers = list(  )
 var/list/admin_log = list (  )

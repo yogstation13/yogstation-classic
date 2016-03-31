@@ -28,7 +28,6 @@
 	admindiary << "\n\nStarting up. [time2text(world.timeofday, "hh:mm.ss")]\n---------------------"
 	diaryofmeanpeople << "\n\nStarting up. [time2text(world.timeofday, "hh:mm.ss")]\n---------------------"
 	changelog_hash = md5('html/changelog.html')					//used for telling if the changelog has changed recently
-	dev_log = file("data/logs/[date_string] dev-log.log")
 
 	var/roundfile = file("data/roundcount.txt")
 	yog_round_number = text2num(file2text(roundfile))
