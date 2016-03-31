@@ -42,8 +42,10 @@
 		ticker.mode:nuke_off_station = off_station
 	ticker.station_explosion_cinematic(off_station, "HONK")
 	for(var/V in mob_list)
-		//TODO: Limit this to the bomb's Z-level
 		var/mob.M = V
+		var/turf/mob_turf = get_turf(M)
+		if(!M || !mob_turf || mob_turf.z != bomb_location.z)
+			continue
 		M.Stun(5)
 		M.Weaken(5)
 		var/mob/living/carbon/human/H = M
