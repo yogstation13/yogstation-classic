@@ -458,6 +458,23 @@
 	new /obj/item/device/firing_pin(src)
 	new /obj/item/device/firing_pin(src)
 
+/obj/item/weapon/storage/box/fourdashonepins
+	name = "box of really real firing pins"
+	desc = "A box full of firing pins which are definately real."
+	icon_state = "id"
+
+/obj/item/weapon/storage/box/fourdashonepins/New()
+	..()
+	new /obj/item/device/firing_pin/clown/fourdashone(src)
+	new /obj/item/device/firing_pin/clown/fourdashone(src)
+	new /obj/item/device/firing_pin/clown/fourdashone(src)
+	new /obj/item/device/firing_pin/clown/fourdashone(src)
+	new /obj/item/device/firing_pin/clown/fourdashone(src)
+	new /obj/item/device/firing_pin/clown/fourdashone(src)
+	new /obj/item/device/firing_pin/clown/fourdashone(src)
+
+
+
 /obj/item/weapon/storage/box/handcuffs
 	name = "box of spare handcuffs"
 	desc = "A box full of handcuffs."

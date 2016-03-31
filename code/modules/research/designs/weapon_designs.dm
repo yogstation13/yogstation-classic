@@ -22,6 +22,16 @@
 	build_path = /obj/item/device/firing_pin/implant/loyalty
 	category = list("Firing Pins")
 
+
+/datum/design/pin_honk
+	name = "really real firing pin"
+	desc = "This is a real electronic firing pin."
+	id = "pin_honk"
+	req_tech = list("combat" = 4, "materials" = 2)
+	materials = list(MAT_METAL = 100, MAT_BANANIUM=300)
+	build_path = /obj/item/device/firing_pin/clown/fourdashone
+	category = list("Firing Pins")
+
 /datum/design/stunrevolver
 	name = "Stun Revolver"
 	desc = "A high-tech revolver that fires internal, reusable taser cartridges in a revolving cylinder. The cartridges can be recharged using conventional rechargers."
