@@ -148,6 +148,9 @@
 /obj/item/weapon/restraints/handcuffs/cable/zipties/used/attack()
 	return
 
+/obj/item/weapon/restraints/handcuffs/cable/zipties/attack_self(mob/user)
+	return
+
 
 //Legcuffs
 
