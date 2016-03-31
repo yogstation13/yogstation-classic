@@ -293,9 +293,6 @@
 
 // Function to pull an antag from our list of antag candidates
 /datum/game_mode/proc/pick_candidate()
-	dev_log << "[yog_round_number] ::: ----------------------------------------------------------------"
-	dev_log << "[yog_round_number] ::: Pick Candidate Process"
-
 	// If the DB is connected, use the new function. Otherwise revert to legacy pick() selection
 	if(dbcon.IsConnected())
 		var/list/ckey_listed = list()
@@ -308,14 +305,10 @@
 		// Turn the list into a string that we will use to filter the player table
 		ckey_for_sql = list2string(ckey_listed, "', '")
 
-		var/sql = "SELECT `ckey`, `antag_weight` FROM [format_table_name("player")] WHERE `ckey` IN ('[ckey_for_sql]')"
-		dev_log << "[yog_round_number] ::: SQL: [sql]"
-
 		// Find all antag candidate antag-weights
-		var/DBQuery/query_whitelist = dbcon.NewQuery(sql)
+		var/DBQuery/query_whitelist = dbcon.NewQuery("SELECT `ckey`, `antag_weight` FROM [format_table_name("player")] WHERE `ckey` IN ('[ckey_for_sql]')")
 
 		if(!query_whitelist.Execute())
-			dev_log << "[yog_round_number] ::: SQL query honked."
 			return 0
 
 		var/list/output = list()
@@ -325,14 +318,11 @@
 		while(query_whitelist.NextRow())
 			var/ckey = query_whitelist.item[1]
 			var/weight = text2num(query_whitelist.item[2])
-			dev_log << "[yog_round_number] ::: [ckey] found with weight of [weight]"
 			output[ckey] = weight
 			total += weight
-		dev_log << "[yog_round_number] ::: Total weight is [total]"
 
 		// Find a number between 0 and our weight upper bound
 		var/R = rand(0, total)
-		dev_log << "[yog_round_number] ::: Random weight target [R]"
 
 		var/cumulativeWeight = 0
 		var/datum/mind/final_candidate
@@ -345,13 +335,10 @@
 			cumulativeWeight += weight
 
 			if(R <= cumulativeWeight && !final_candidate)
-				dev_log << "[yog_round_number] ::: Candidate [ckey] found, reduce future chances from [weight]"
 				// Lowest weight is 25.
 				weight = max(25, weight / 1.5)
-				dev_log << "[yog_round_number] ::: to [weight]"
 				var/DBQuery/query = dbcon.NewQuery("UPDATE [format_table_name("player")] SET `antag_weight` = [weight] WHERE `ckey` = '[ckey]'")
-				if(!query.Execute())
-					dev_log << "[yog_round_number] ::: Failed to update [ckey]'s weight to [weight]"
+				query.Execute()
 
 				for(var/datum/mind/candidate in antag_candidates)
 					if(lowertext(get_ckey(candidate)) == lowertext(ckey))
@@ -359,22 +346,16 @@
 						break
 			else
 				// Maximum weight is 400.
-				dev_log << "[yog_round_number] ::: Candidate [ckey] NOT PICKED, reduce future chances from [weight]"
 				weight = min(400, weight * 1.5)
-				dev_log << "[yog_round_number] ::: to [weight]"
 				var/DBQuery/query = dbcon.NewQuery("UPDATE [format_table_name("player")] SET `antag_weight` = [weight] WHERE `ckey` = '[ckey]'")
-				if(!query.Execute())
-					dev_log << "[yog_round_number] ::: Failed to update [ckey]'s weight to [weight]"
+				query.Execute()
 
 		// If after all this we still don't have a candidate, then use the legacy system
 		if(!final_candidate)
-			dev_log << "[yog_round_number] ::: No antag found - use legacy system (just pick one, derp)"
 			return pick(antag_candidates)
 		else
-			dev_log << "[yog_round_number] ::: We have picked an antag [final_candidate]"
 			return final_candidate
 	else
-		dev_log << "[yog_round_number] ::: No DB - use legacy system (just pick one, derp)"
 		return pick(antag_candidates)
 
 /datum/game_mode/proc/get_players_for_role(role)
