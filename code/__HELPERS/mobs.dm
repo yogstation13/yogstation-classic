@@ -142,7 +142,7 @@ var/global/list/roundstart_species[0]
 		if(C)
 			return (C.is_whitelisted)
 	return 0
-		
+
 /proc/is_veteran(mob/user)
 	if(ismob(user))
 		if(user.client && user.client.prefs)
@@ -207,7 +207,7 @@ Proc for attack log creation, because really why not
 		return temp.ckey
 	else if(istype(user, /datum/mind))
 		var/datum/mind/temp = user
-		return temp.key
+		return lowertext(replacetext(temp.key, " ", ""))
 
 	return "* Unknown *"
 
