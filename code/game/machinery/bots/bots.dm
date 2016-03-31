@@ -84,6 +84,9 @@
 	"Waiting for clear path", "Calculating navigation path", "Pinging beacon network", "Unable to reach destination")
 	//This holds text for what the bot is mode doing, reported on the remote bot control interface.
 
+	var/speak_prob = 5
+	var/list/say_quotes = list("I am generic!")
+
 /obj/machinery/bot/proc/get_mode()
 	if(!mode)
 		return "Idle"
@@ -248,6 +251,9 @@
 
 	if(!on)
 		return
+
+	if((emagged || hacked) ? prob(70) : prob(speak_prob))
+		say(pick(say_quotes))
 
 	switch(mode) //High-priority overrides are processed first. Bots can do nothing else while under direct command.
 		if(BOT_RESPONDING)	//Called by the AI.

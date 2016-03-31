@@ -241,6 +241,8 @@
 		stop()
 
 		for(var/obj/item/weapon/reagent_containers/food/snacks/F in contents)
+			if(istype(F, /obj/item/weapon/reagent_containers/food/snacks/egg))
+				explosion(get_turf(src), 0, 1, 2, 9)
 			if(F.cooked_type)
 				var/obj/item/weapon/reagent_containers/food/snacks/S = new F.cooked_type (get_turf(src))
 				F.initialize_cooked_food(S, efficiency)

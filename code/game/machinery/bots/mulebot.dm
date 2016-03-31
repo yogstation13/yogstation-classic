@@ -55,6 +55,7 @@ var/global/mulebot_count = 0
 
 
 	var/bloodiness = 0		// count of bloodiness
+	say_quotes = list("Please use me.", "I'm lonely", "I wouldn't run you over if you stayed out of the way", "That feel when a system of pipes steals your job...", "If you cut the right wire, I can carry you. If you cut the wrong wire, I can crush you.")
 
 /obj/machinery/bot/mulebot/New()
 	..()
@@ -519,6 +520,8 @@ obj/machinery/bot/mulebot/bot_reset()
 		start()
 
 /obj/machinery/bot/mulebot/bot_process()
+	if((emagged || hacked) ? prob(70) : prob(speak_prob))//damn snowflakes... Mulebots speak even when off, this is intentional.
+		say(pick(say_quotes))
 	if(!has_power())
 		on = 0
 		return

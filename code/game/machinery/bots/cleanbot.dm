@@ -11,7 +11,6 @@
 	w_class = 3.0
 	var/created_name = "Cleanbot"
 
-
 //Cleanbot
 /obj/machinery/bot/cleanbot
 	name = "\improper Cleanbot"
@@ -40,6 +39,7 @@
 	radio_frequency = SERV_FREQ //Service
 	bot_type = CLEAN_BOT
 	model = "Cleanbot"
+	say_quotes = list("By day I clean, by night I plot...", "Naturally I have to clean up your mess.", "Always with the dirt, where do you even get it?", "I am sooo much more handsome than the human janitor.", "Damn janiborgs trying to steal my job.")
 
 /obj/machinery/bot/cleanbot/New()
 	..()

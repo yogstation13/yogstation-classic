@@ -52,6 +52,7 @@
 	bot_type = FLOOR_BOT
 	model = "Floorbot"
 	var/process_type //Determines what to do when process_scan() recieves a target. See process_scan() for details.
+	say_quotes = list("Floor tiles... so many floor tiles... floor tiles are the key...", "No I am not just a toolbox.", "Make a bridge? Did you say make a bridge? Into space? Yay!", "Is that floor tile made of plasma? Gimme!")
 	#define HULL_BREACH		1
 	#define BRIDGE_MODE		2
 	#define FIX_TILE		3

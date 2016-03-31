@@ -36,7 +36,7 @@
 	radio_frequency = SEC_FREQ
 	bot_type = SEC_BOT
 	model = "ED-209"
-
+	say_quotes = list("My taser is the long arm of the law.", "Did the robotist give me a laser tag gun again?", "Beepsky is so outdated.", "Sometimes I wish I had hands instead of tasers.", "Did that assistant just pick up a gun to fight an alien? Better arrest him!", "Patrol maint? Why would we do that?")
 
 /obj/item/weapon/ed209_assembly
 	name = "\improper ED-209 assembly"
