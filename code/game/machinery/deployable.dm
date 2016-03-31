@@ -413,5 +413,6 @@ for reference:
 	s.start()
 
 	explosion(src.loc,-1,-1,0)
+	playsound(src.loc, 'sound/effects/Explosion1.ogg',75,1)
 	if(src)
 		qdel(src)

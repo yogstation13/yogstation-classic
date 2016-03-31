@@ -1,3 +1,6 @@
+/mob/living/carbon
+	var/nightvision = 0
+
 /mob/living/carbon/prepare_huds()
 	..()
 	prepare_data_huds()

@@ -31,6 +31,7 @@
 
 //Antag toggles
 #define BE_TRAITOR		"role_traitor"
+#define BE_DOUBLEAGENT "role_doubleagent"
 #define BE_OPERATIVE	"role_operative"
 #define BE_CHANGELING	"role_changeling"
 #define BE_WIZARD		"role_wizard"

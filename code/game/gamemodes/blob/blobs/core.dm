@@ -2,15 +2,18 @@
 	name = "blob core"
 	icon = 'icons/mob/blob.dmi'
 	icon_state = "blank_blob"
-	health = 200
-	fire_resist = 2
+	desc = "A huge, pulsating yellow mass."
+	health = 300
+	maxhealth = 300
+	health_regen = 0 //regen in Life(), instead of in RegenHealth()
+	fire_resist = 0.5
 	atmos_block = 1
 	var/overmind_get_delay = 0 // we don't want to constantly try to find an overmind, do it every 30 seconds
 	var/resource_delay = 0
 	var/point_rate = 2
 	var/is_offspring = null
 
-	
+
 /obj/effect/blob/core/New(loc, var/h = 200, var/client/new_overmind = null, var/new_rate = 2, offspring)
 	blob_cores += src
 	SSobj.processing |= src
@@ -24,7 +27,7 @@
 	point_rate = new_rate
 	..(loc, h)
 
-	
+
 /obj/effect/blob/core/adjustcolors(a_color)
 	overlays.Cut()
 	color = null
@@ -34,7 +37,7 @@
 	var/image/C = new('icons/mob/blob.dmi', "blob_core_overlay")
 	overlays += C
 
-	
+
 /obj/effect/blob/core/Destroy()
 	blob_cores -= src
 	if(overmind)
@@ -51,15 +54,15 @@
 	SSobj.processing.Remove(src)
 	..()
 
-	
+
 /obj/effect/blob/core/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	return
 
-	
+
 /obj/effect/blob/core/ex_act(severity, target)
 	return
-	
-	
+
+
 /obj/effect/blob/core/update_icon()
 	if(health <= 0)
 		qdel(src)
@@ -69,11 +72,11 @@
 		overmind.update_health()
 	return
 
-	
+
 /obj/effect/blob/core/RegenHealth()
 	return // Don't regen, we handle it in Life()
 
-	
+
 /obj/effect/blob/core/Life()
 	if(!overmind)
 		create_overmind()
@@ -90,9 +93,7 @@
 			continue
 		var/obj/effect/blob/normal/B = locate() in get_step(src, b_dir)
 		if(B)
-			var/obj/effect/blob/N = B.change_to(/obj/effect/blob/shield)
-			if(overmind)
-				N.color = overmind.blob_reagent_datum.color
+			B.change_to(/obj/effect/blob/shield, src.overmind)
 	color = null
 	..()
 

@@ -64,6 +64,10 @@
 
 //Called after a successful Move(). By this point, we've already moved
 /atom/movable/proc/Moved(atom/OldLoc, Dir)
+	var/turf/oldTurf = get_turf(OldLoc)
+	var/turf/newTurf = get_turf(loc)
+	if(!oldTurf || !newTurf || oldTurf.z != newTurf.z)
+		on_z_level_change()
 	return 1
 
 /atom/movable/Del()
@@ -246,6 +250,10 @@
 		throw_impact(get_turf(src))  // we haven't hit something yet and we still must, let's hit the ground.
 	return 1
 
+/atom/movable/proc/throw_at_fast(atom/target, range, speed, mob/thrower, spin=1, diagonals_first = 0)
+	set waitfor = 0
+	throw_at(target, range, speed, thrower, spin, diagonals_first)
+
 /atom/movable/proc/hitcheck()
 	for(var/atom/movable/AM in get_turf(src))
 		if(AM == src)
@@ -278,3 +286,7 @@
 	if (src.master)
 		return src.master.attack_hand(a, b, c)
 	return
+
+/atom/movable/proc/on_z_level_change()
+	for(var/atom/movable/A in contents)
+		A.on_z_level_change()
