@@ -1,0 +1,6 @@
+author: Oisin100
+
+delete-after: True
+
+changes: 
+  - bugfix: "Un-Authorized links no are no longer sent to discord."
