@@ -88,6 +88,14 @@
 	put_on_delay = 50
 	burn_state = -1 //Won't burn in fires
 
+/obj/item/clothing/shoes/bunny_slippers
+	name = "fuzzy bunny slippers"
+	desc = "Nanotransen-issue casual attire."
+	icon_state = "bunny_slippers"
+	item_state = "bunny_slippers"
+	strip_delay = 50
+	put_on_delay = 50
+
 /obj/item/clothing/shoes/winterboots
 	name = "winter boots"
 	desc = "Boots lined with 'synthetic' animal fur."
