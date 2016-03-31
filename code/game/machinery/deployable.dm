@@ -241,13 +241,10 @@ for reference:
 			visible_message("[src] swallows the encryption key and vibrates happily!")
 			attachedradio.set_frequency(SEC_FREQ)
 			radio_freq = SEC_FREQ
-			if(istype(W, /obj/item/device/encryptionkey/headset_sec))
-				installedkey = new /obj/item/device/encryptionkey/headset_sec
-			if (istype(W, /obj/item/device/encryptionkey/heads/captain))
-				installedkey = new /obj/item/device/encryptionkey/heads/captain
-			if (istype(W, /obj/item/device/encryptionkey/heads/hos))
-				installedkey = new /obj/item/device/encryptionkey/heads/hos
-			return qdel(W)
+			user.unEquip(W)
+			W.loc = src
+			message_admins("This was deleted")
+			return
 
 /*		Is this even needed? Only the future can tell.
 		else if(installedkey.channels.Find("Syndicate"))
@@ -280,17 +277,18 @@ for reference:
 
 		if(attachedsignaler.secured)
 			user <<"<span class='danger'>The device is secured.</span>"
+			attachedsignaler = null
 			return
 
 		if(!radio_freq)
-			user << "<span class='danger'>There isn't an encryption key associated with the barrier to signal to!</span>"
+			user << "<span class='danger'>There isn't an encryption key associated with the barrier to attach the signaler to!</span>"
+			attachedsignaler = null
 			return
 
 		else
 			user.visible_message( \
 						"[user] attaches the signaler to the barrier.", \
 						"<span class='notice'>You attach the signaler to the barrier.</span>")
-			attachedsignaler = 1
 			desc = "[src.desc] It also appears to have a remote signaling device attatched to it."
 			initialdesc = desc
 			qdel(W)
@@ -305,24 +303,6 @@ for reference:
 				src.health -= W.force * 0.5
 			else
 
-		// announcing damage taking place
-
-		if (attachedradio.frequency == SEC_FREQ && !src.emagged || attachedradio.frequency == SYND_FREQ) // security / syndicate
-			var/thebarrier = "A deployable barrier"
-			message_admins("IT FLEW.")
-			if(attachedsignaler != null)
-				var/detectedarea = get_area(src)
-				thebarrier = thebarrier + " located in [detectedarea]"
-			if(src.health <= 90 > 50)
-				attachedradio.talk_into(src, "Alert! [thebarrier] has suffered a sufficient amount of damage!!",radio_freq)
-
-			if(src.health <= 50 > 25)
-				attachedradio.talk_into(src, "Alert! [thebarrier] is suffering damage in critical state!!",radio_freq)
-
-			if(src.health <= 25 > 0)
-				attachedradio.talk_into(src, "Alert! [thebarrier] is suffering damage in a fatal state!!",radio_freq)
-
-
 		// examine damage notifiers.
 		if (src.health <= 99)
 			desc_report()
@@ -332,6 +312,36 @@ for reference:
 			attachedradio.talk_into(src, "Losing signal with the security channel!",radio_freq)
 			src.explode()
 		..()
+
+		// This will send a message to the security channel if the barrier's radio is connected to it's frequency
+
+		if (attachedradio.frequency == SEC_FREQ && !src.emagged) // security currently. emagging will disable this.
+			if(!W.force)
+				return
+
+			var/thebarrier = "A deployable barrier"
+
+			if(attachedsignaler)
+				var/detectedarea = get_area(src)
+				thebarrier = thebarrier + " located in [detectedarea]"
+
+			var/damagereport
+			if(W.force <= 5 && W.force != 0) // less or equal to 5
+				damagereport = "a small amount of damage from an external source"
+			if(W.force > 5 && W.force <= 15) // in the 5-15 range, but greater than 5
+				damagereport = "a moderate amount of damage from an external source"
+			if(W.force > 15) //greater than 15
+				damagereport = "a large amount of damage from an external source"
+
+			if(src.health <= 95 && src.health > 50)
+				attachedradio.talk_into(src, "Alert! [thebarrier] is suffering [damagereport] in a sufficient state!!",radio_freq)
+
+			if(src.health <= 50 && src.health > 25)
+				attachedradio.talk_into(src, "Alert! [thebarrier] is suffering [damagereport] while they are in need of dire repair!!",radio_freq)
+
+			if(src.health <= 25 && src.health > 0)
+				attachedradio.talk_into(src, "Alert! [thebarrier] is suffering [damagereport] at a currently fatal state!!",radio_freq)
+
 
 /obj/machinery/deployable/barrier/proc/desc_report() // something to update the description of the barrier.
 
