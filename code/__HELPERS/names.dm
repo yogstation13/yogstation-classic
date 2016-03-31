@@ -114,6 +114,10 @@ var/syndicate_name = null
 	if (syndicate_name)
 		return syndicate_name
 
+	if(istype(ticker.mode, /datum/game_mode/clown_ops))
+		syndicate_name = "Clown Syndicate"
+		return syndicate_name
+
 	var/name = ""
 
 	// Prefix

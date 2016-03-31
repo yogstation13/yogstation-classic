@@ -6,6 +6,7 @@
 	icon_state = "clown_prototype_off"
 	var/on = 0
 	var/datum/material_container/bananium
+	var/banana_potency = 5
 	action_button_name = "Toggle Shoes"
 
 /obj/item/clothing/shoes/clown_shoes/banana_shoes/New()
@@ -20,7 +21,7 @@
 		else
 			footstep++
 
-		new/obj/item/weapon/grown/bananapeel/specialpeel(get_step(src,turn(usr.dir, 180)), 5) //honk
+		new/obj/item/weapon/grown/bananapeel/specialpeel(get_step(src,turn(usr.dir, 180)), banana_potency) //honk
 		bananium.use_amount_type(100, MAT_BANANIUM)
 		if(bananium.amount(MAT_BANANIUM) < 100)
 			on = !on

@@ -18,6 +18,8 @@ var/bomb_set
 	desc = "You probably shouldn't stick around to see if this is armed."
 	icon = 'icons/obj/machines/nuke.dmi'
 	icon_state = "nuclearbomb_base"
+	var/icon_state_timing = "nuclearbomb_timing"
+	var/icon_state_exploding = "nuclearbomb_exploding"
 	density = 1
 
 	var/timeleft = 60
@@ -147,10 +149,10 @@ var/bomb_set
 				update_icon_lights()
 			if(NUKE_ON_TIMING)
 				overlays.Cut()
-				icon_state = "nuclearbomb_timing"
+				icon_state = icon_state_timing
 			if(NUKE_ON_EXPLODING)
 				overlays.Cut()
-				icon_state = "nuclearbomb_exploding"
+				icon_state = icon_state_exploding
 	else
 		update_icon_interior()
 		update_icon_lights()
@@ -365,15 +367,16 @@ var/bomb_set
 	else
 		off_station = 2
 
-	if(ticker.mode && ticker.mode.name == "nuclear emergency")
+	if(ticker.mode && istype(ticker.mode, /datum/game_mode/nuclear))
 		var/obj/docking_port/mobile/Shuttle = SSshuttle.getShuttle("syndicate")
 		ticker.mode:syndies_didnt_escape = (Shuttle && Shuttle.z == ZLEVEL_CENTCOM) ? 0 : 1
 		ticker.mode:nuke_off_station = off_station
 	ticker.station_explosion_cinematic(off_station,null)
 	if(ticker.mode)
 		ticker.mode.explosion_in_progress = 0
-		if(ticker.mode.name == "nuclear emergency")
-			ticker.mode:nukes_left --
+		if(istype(ticker.mode, /datum/game_mode/nuclear))
+			var/datum/game_mode/nuclear/GM = ticker.mode
+			GM.nukes_left --
 		else
 			world << "<B>The station was destoyed by the nuclear blast!</B>"
 		ticker.mode.station_was_nuked = (off_station<2)	//offstation==1 is a draw. the station becomes irradiated and needs to be evacuated.

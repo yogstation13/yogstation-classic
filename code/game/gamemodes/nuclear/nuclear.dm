@@ -1,7 +1,6 @@
 /datum/game_mode
 	var/list/datum/mind/syndicates = list()
 
-
 /datum/game_mode/nuclear
 	name = "nuclear emergency"
 	config_tag = "nuclear"
@@ -135,7 +134,7 @@
 		P.name = "nuclear bomb code"
 		var/mob/living/carbon/human/H = synd_mind.current
 		P.loc = H.loc
-		H.equip_to_slot_or_del(P, slot_r_hand, 0)
+		H.equip_to_slot_or_del(P, slot_l_hand, 0)
 		H.update_icons()
 	else
 		nuke_code = "code will be provided later"
