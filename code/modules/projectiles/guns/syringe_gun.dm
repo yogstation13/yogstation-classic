@@ -11,7 +11,7 @@
 	clumsy_check = 0
 	fire_sound = 'sound/items/syringeproj.ogg'
 	var/list/syringes = list()
-	var/max_syringes = 6
+	var/max_syringes = 1
 
 /obj/item/weapon/gun/syringe/New()
 	..()
@@ -83,7 +83,7 @@
     name = "rapid syringe gun"
     desc = "A modification of the syringe gun design, using a rotating cylinder to store up to two hundred syringes."
     icon_state = "rapidsyringegun"
-    max_syringes = 200
+    max_syringes = 6
 
 /obj/item/weapon/gun/syringe/rapidsyringe/borg/New()
     ..()
