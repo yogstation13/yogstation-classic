@@ -243,7 +243,6 @@ for reference:
 			radio_freq = SEC_FREQ
 			user.unEquip(W)
 			W.loc = src
-			message_admins("This was deleted")
 			return
 
 /*		Is this even needed? Only the future can tell.
