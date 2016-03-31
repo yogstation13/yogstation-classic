@@ -187,7 +187,9 @@
 						S.reagents.add_reagent("lube", 2 * coeff)
 				else if(istype(R.module.emag, /obj/item/weapon/gun/syringe/rapidsyringe))
 					var/obj/item/weapon/gun/syringe/rapidsyringe/borg/borggun = R.module.emag
-					for(var/i = 1 to borggun.max_syringes)
-						var/obj/item/weapon/reagent_containers/syringe/TEMP = new(borggun)
-						TEMP.reagents.add_reagent("tirizene", 15)
-						borggun.syringes.Add(TEMP)
+					if(borggun.syringes.len < borggun.max_syringes)
+						var/delta = max(borggun.syringes.len - borggun.max_syringes, coeff)
+						for(var/i = 1 to delta)
+							var/obj/item/weapon/reagent_containers/syringe/TEMP = new(borggun)
+							TEMP.reagents.add_reagent("tirizene", 15)
+							borggun.syringes.Add(TEMP)
