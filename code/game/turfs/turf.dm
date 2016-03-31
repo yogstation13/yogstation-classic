@@ -254,7 +254,7 @@
 			buckled_obj.unbuckle_mob()
 			step(buckled_obj, olddir)
 		else if(lube&SLIDE)
-			for(var/i=1, i<5, i++)
+			for(var/i=1, i<10, i++)
 				spawn (i)
 					step(C, olddir)
 					C.spin(1,1)

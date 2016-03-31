@@ -11,7 +11,7 @@
 	var/maxhealth = 30
 	var/health_regen = 2
 	var/health_timestamp = 0
-	var/brute_resist = 4
+	var/brute_resist = 0.5
 	var/fire_resist = 1
 	var/atmos_block = 0
 	var/mob/camera/blob/overmind
@@ -358,12 +358,12 @@
 			icon_state = "blob_damaged"
 			name = "fragile blob"
 			desc = "A thin lattice of slightly twitching tendrils."
-			brute_resist = 2
+			brute_resist = 0.5
 		else
 			icon_state = "blob"
 			name = "blob"
 			desc = "A thick wall of writhing tendrils."
-			brute_resist = 4
+			brute_resist = 0.25
 
 
 /obj/effect/blob/tesla_act(power)

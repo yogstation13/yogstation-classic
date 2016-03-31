@@ -6,7 +6,7 @@
 	health = 200
 	maxhealth = 200
 	health_regen = 2
-	fire_resist = 2
+	fire_resist = 0.5
 	var/list/spores = list()
 	var/max_spores = 3
 	var/spore_delay = 0
