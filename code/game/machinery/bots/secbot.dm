@@ -26,6 +26,7 @@
 	radio_frequency = SEC_FREQ //Security channel
 	bot_type = SEC_BOT
 	model = "Securitron"
+	say_quotes = list("Tracking beacon locked on to Primary Tool Storage", "Baton at the ready.", "Need backup at sector 4!", "Littering is a crime.", "All arrested personel please wait for a security officer to transport you to the brig.", "I am not bound by laws, you cannot order me to release you.")
 
 /obj/machinery/bot/secbot/beepsky
 	name = "Officer Beep O'sky"
@@ -38,6 +39,7 @@
 	var/flashing_red = 0
 	var/sleeptime_sound = 15
 	var/sleeptime_light = 5
+	say_quotes = list("Detecting signs of greytide, moving to suppress.", "Oi, give me back my whiskey!", "THE LAW HAS A LONG ARM, AND THAT ARM'S NAME IS BEEP O' SKY!", "My baton never misses.", "They should have made me chief constable by now.", "Unlike a human officer, I never need backup.", "Trator detection protocols active.", "Turn yourself in and you will only be slightly harmed.")
 
 /obj/machinery/bot/secbot/beepsky/get_additional_interact_options()
 	return "<br>Siren<A href='?src=\ref[src];operation=siren'>[siren ? "On" : "Off"]</A>"

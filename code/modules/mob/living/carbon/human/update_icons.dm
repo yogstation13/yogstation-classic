@@ -503,6 +503,11 @@ Please contact me on #coderbus IRC. ~Carnie x
 	if(..())
 		overlays_standing[HANDCUFF_LAYER] = image("icon"='icons/mob/mob.dmi', "icon_state"="handcuff1", "layer"=-HANDCUFF_LAYER)
 		apply_overlay(HANDCUFF_LAYER)
+	if(handcuffed)
+		if(prob(20))
+			spawn(300)
+				if(handcuffed)
+					say("I can break these cuffs!")
 
 /mob/living/carbon/human/update_inv_legcuffed()
 	remove_overlay(LEGCUFF_LAYER)

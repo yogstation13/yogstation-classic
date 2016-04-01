@@ -41,6 +41,7 @@
 	var/shut_up = 0 //self explanatory :)
 	bot_type = MED_BOT
 	model = "Medibot"
+	say_quotes = list("Only 16 patients overdosed last shift. I am getting much better.", "Oh, a new healing chemical, thank you stranger!", "No need for proper medical attention when you have my chemicals!", "The expiration date on this medicine is... three years ago. Oh well!")//I know it speaks already but MOAR QUOTES
 
 /obj/machinery/bot/medbot/mysterious
 	name = "\improper Mysterious Medibot"

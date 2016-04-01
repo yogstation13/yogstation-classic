@@ -224,3 +224,13 @@
 	materials = list(MAT_METAL = 2000, MAT_SILVER = 500)
 	build_path = /obj/item/weapon/suppressor
 	category = list("Weapons")
+
+/datum/design/dolphintrans
+	name = "Dolphin Transformer"
+	desc = "For the love of god do not make this."
+	id = "dolphintrans"
+	req_tech = list("combat" = 4, "biotech" = 4, "syndicate" = 3)
+	build_type = PROTOLATHE
+	materials = list(MAT_METAL = 2000, MAT_SILVER = 500)
+	build_path = /obj/item/weapon/antag_spawner/ally_tele/dolphin_tele/transform
+	category = list("Weapons")
