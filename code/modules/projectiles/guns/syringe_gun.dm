@@ -81,7 +81,7 @@
 
 /obj/item/weapon/gun/syringe/rapidsyringe/borg
     name = "rapid syringe gun"
-    desc = "A modification of the syringe gun design, using a rotating cylinder to store up to two hundred syringes."
+    desc = "A modification of the syringe gun design, using a rotating cylinder to store up to six syringes."
     icon_state = "rapidsyringegun"
     max_syringes = 6
 
