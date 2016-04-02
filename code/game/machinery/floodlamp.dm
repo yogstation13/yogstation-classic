@@ -52,6 +52,9 @@ obj/machinery/flood_lamp/process()
 
 obj/machinery/flood_lamp/attackby(obj/item/weapon/W, mob/user, params)
 	if(istype(W,/obj/item/device/flashlight)&&flashlights.len<3)
+		var/obj/item/device/flashlight/F = W
+		if(F.on)
+			F.attack_self(usr) // Ensure that the flashlight is off first.
 		if(!usr.unEquip(W))
 			return 0
 		flashlights += W
@@ -82,6 +85,14 @@ obj/machinery/flood_lamp/proc/toggle_light()
 
 obj/machinery/flood_lamp/get_light_range(radius)
 		return radius // No cap on these things. Intentionally.
+
+obj/machinery/flood_lamp/assembled
+	New()
+		cell = new/obj/item/weapon/stock_parts/cell/high(src)
+		flashlights += new/obj/item/device/flashlight(src)
+		flashlights += new/obj/item/device/flashlight(src)
+		flashlights += new/obj/item/device/flashlight(src)
+		..()
 
 
 /obj/item/weapon/paper/flood_lamp
