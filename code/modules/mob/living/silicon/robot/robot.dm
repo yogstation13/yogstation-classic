@@ -207,7 +207,7 @@
 			feedback_inc("cyborg_miner",1)
 
 		if("Medical")
-			var/icontype = input("Select an icon!", "Robot", "Mediborg") in list("Mediborg", "Succ Baby")
+			var/icontype = input("Select an icon!", "Robot", "Mediborg") in list("Mediborg", "Smile Screen")
 			if(!icontype) return
 			module = new /obj/item/weapon/robot_module/medical(src)
 			hands.icon_state = "medical"
@@ -215,8 +215,8 @@
 				if("Medborg")
 					icon_state = "mediborg"
 					animation_length = 35
-				if("Succ Baby")
-					icon_state = "mediborg+succ"
+				if("Smile Screen")
+					icon_state = "mediborg+smile"
 					animation_length = 28
 				else
 					icon_state = "mediborg"
