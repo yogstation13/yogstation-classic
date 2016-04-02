@@ -1,0 +1,7 @@
+author: Succ Baby
+
+delete-after: True
+
+changes: 
+  - rscadd: "Nanotrasen's recent upgrade of the cyborg hypospray has made it much more vulnerable to hacking. Word has been circulating that subverted medical cyborgs have been injecting their crew with dangerous chemicals."
+  - rscdel: "Removed the shitty fluacid spray for hacked medborgs that didn't do anything."
