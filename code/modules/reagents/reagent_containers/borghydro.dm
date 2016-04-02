@@ -28,6 +28,22 @@ Borg Hypospray
 	var/list/modes = list() //Basically the inverse of reagent_ids. Instead of having numbers as "keys" and strings as values it has strings as keys and numbers as values.
 								//Used as list for input() in shakers.
 
+/obj/item/weapon/reagent_containers/borghypo/hacked
+	name = "suspicious hypospray"
+	desc = "A hypospray outfitted with an advanced chemical synthesizer and injection system. It seems this one's synthesizer has been modieid to synthesize dangerous chemicals."
+	icon = 'icons/obj/syringe.dmi'
+	item_state = "hypo"
+	icon_state = "borghypo"
+	amount_per_transfer_from_this = 5
+	volume = 30
+	possible_transfer_amounts = null
+	mode = 1
+	charge_cost = 50
+	charge_tick = 0
+	recharge_time = 20 //Time it takes for shots to recharge (in seconds)
+
+	reagent_list = list()
+	reagent_ids = list("formaldehyde", "neurotoxin", "mutetoxin", "amatoxin", "initropidril",)
 
 /obj/item/weapon/reagent_containers/borghypo/New()
 	..()

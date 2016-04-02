@@ -97,10 +97,8 @@
 	modules += new /obj/item/weapon/extinguisher/mini(src)
 	modules += new /obj/item/roller/robo(src)
 	modules += new /obj/item/weapon/twohanded/shockpaddles/cyborg(src)
-	emag = new /obj/item/weapon/reagent_containers/spray(src)
+	emag = new /obj/item/weapon/reagent_containers/borghypo/hacked(src)
 
-	emag.reagents.add_reagent("facid", 250)
-	emag.name = "Fluacid spray"
 
 
 	var/datum/robot_energy_storage/gauze/gauzestore = new /datum/robot_energy_storage/gauze(src)
