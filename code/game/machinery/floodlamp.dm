@@ -19,10 +19,10 @@ obj/machinery/flood_lamp/New()
 	update_all()
 
 obj/machinery/flood_lamp/proc/update_all()
-	update_apperance()
+	update_appearance()
 	update_brightness()
 
-obj/machinery/flood_lamp/proc/update_apperance()
+obj/machinery/flood_lamp/proc/update_appearance()
 	overlays.Cut()
 	icon_state = "flood[opened][(opened && istype(cell)) ? 1 : 0][on]"
 	if(flashlights.len < 3)
@@ -74,7 +74,7 @@ obj/machinery/flood_lamp/attackby(obj/item/weapon/W, mob/user, params)
 			playsound(loc, 'sound/items/Wirecutter.ogg', 50, 1, -1)
 			update_all()
 			return;
-	update_apperance()
+	update_appearance()
 
 obj/machinery/flood_lamp/proc/toggle_light()
 	if(on)
