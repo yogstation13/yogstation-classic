@@ -36,7 +36,7 @@ RPD
 	src.dirtype=dt
 
 /datum/pipe_info/proc/Render(dispenser,label)
-	return "<li><a href='?src=\ref[dispenser];makepipe=[id];dir=[dir];type=[dirtype]'>[label]</a></li>"
+	return "<li><a href='?src=\ref[dispenser];device_type=RPD;makepipe=[id];dir=[dir];type=[dirtype]'>[label]</a></li>"
 
 /datum/pipe_info/meter
 	icon = 'icons/obj/atmospherics/pipes/simple.dmi'
@@ -46,7 +46,7 @@ RPD
 	return
 
 /datum/pipe_info/meter/Render(dispenser,label)
-	return "<li><a href='?src=\ref[dispenser];makemeter=1;type=[dirtype]'>[label]</a></li>" //hardcoding is no
+	return "<li><a href='?src=\ref[dispenser];device_type=RPD;makemeter=1;type=[dirtype]'>[label]</a></li>" //hardcoding is no
 
 var/global/list/disposalpipeID2State=list(
 	"pipe-s",
@@ -76,7 +76,7 @@ var/global/list/disposalpipeID2State=list(
 		icon_state = "con[icon_state]"
 
 /datum/pipe_info/disposal/Render(dispenser,label)
-	return "<li><a href='?src=\ref[dispenser];dmake=[id];type=[dirtype]'>[label]</a></li>" //avoid hardcoding.
+	return "<li><a href='?src=\ref[dispenser];device_type=RPD;dmake=[id];type=[dirtype]'>[label]</a></li>" //avoid hardcoding.
 
 //find these defines in code\game\machinery\pipe\consruction.dm
 var/global/list/RPD_recipes=list(
@@ -163,32 +163,33 @@ var/global/list/RPD_recipes=list(
 /obj/item/weapon/pipe_dispenser/attack_self(mob/user)
 	show_menu(user)
 
-/obj/item/weapon/pipe_dispenser/proc/render_dir_img(_dir,pic,title,flipped=0)
+/obj/item/weapon/pipe_dispenser/proc/render_dir_img(_dir,pic,title,flipped=0, topic_ref = src)
 	var/selected=" class=\"imglink\""
 	if(_dir == p_dir)
 		selected=" class=\"imglink selected\""
-	return "<a href=\"?src=\ref[src];setdir=[_dir];flipped=[flipped]\" title=\"[title]\"[selected]\"><img src=\"[pic]\" /></a>"
+	return "<a href=\"?src=\ref[topic_ref];device_type=RPD;setdir=[_dir];flipped=[flipped]\" title=\"[title]\"[selected]\"><img src=\"[pic]\" /></a>"
 
-/obj/item/weapon/pipe_dispenser/proc/show_menu(mob/user)
-	if(!user || !src)	return 0
+/obj/item/weapon/pipe_dispenser/proc/show_menu(mob/user, topic_ref = src)
+	if(!user || !topic_ref)
+		return 0
 	var/dat = {"<h2>Type</h2>
 <b>Utilities:</b>
 <ul>"}
 	if(p_class != EATING_MODE)
-		dat += "<li><a href='?src=\ref[src];eatpipes=1;type=-1'>Eat Pipes</a></li>"
+		dat += "<li><a href='?src=\ref[topic_ref];device_type=RPD;eatpipes=1;type=-1'>Eat Pipes</a></li>"
 	else
 		dat += "<li><span class='linkOn'>Eat Pipes</span></li>"
 	if(p_class != PAINT_MODE)
-		dat += "<li><a href='?src=\ref[src];paintpipes=1;type=-1'>Paint Pipes</a></li>"
+		dat += "<li><a href='?src=\ref[topic_ref];device_type=RPD;paintpipes=1;type=-1'>Paint Pipes</a></li>"
 	else
 		dat += "<li><span class='linkOn'>Paint Pipes</span></li>"
 	dat += "</ul>"
 
 	dat += "<b>Category:</b><ul>"
 	if(screen == CATEGORY_ATMOS)
-		dat += "<span class='linkOn'>Atmospherics</span> <A href='?src=\ref[src];screen=[CATEGORY_DISPOSALS];dmake=0;type=0'>Disposals</A><BR>"
+		dat += "<span class='linkOn'>Atmospherics</span> <A href='?src=\ref[topic_ref];device_type=RPD;screen=[CATEGORY_DISPOSALS];dmake=0;type=0'>Disposals</A><BR>"
 	else if(screen == CATEGORY_DISPOSALS)
-		dat += "<A href='?src=\ref[src];screen=[CATEGORY_ATMOS];makepipe=0;dir=1;type=0'>Atmospherics</A> <span class='linkOn'>Disposals</span><BR>"
+		dat += "<A href='?src=\ref[topic_ref];device_type=RPD;screen=[CATEGORY_ATMOS];makepipe=0;dir=1;type=0'>Atmospherics</A> <span class='linkOn'>Disposals</span><BR>"
 	dat += "</ul>"
 
 	var/icon/preview=null
@@ -209,7 +210,7 @@ var/global/list/RPD_recipes=list(
 				if(I.id == p_type && p_class >= 0)
 					datbuild += "<span class='linkOn'>[label]</span>"
 				else
-					datbuild += I.Render(src,label)
+					datbuild += I.Render(topic_ref,label)
 
 		if(length(datbuild) > 0)
 			dat += "<b>[category]:</b><ul>"
@@ -235,7 +236,7 @@ var/global/list/RPD_recipes=list(
 		var/selected=""
 		if(color_name==paint_color)
 			selected = " selected"
-		color_picker += {"<a class="color [color_name][selected]" href="?src=\ref[src];set_color=[color_name]">&bull;</a>"}
+		color_picker += {"<a class="color [color_name][selected]" href="?src=\ref[topic_ref];device_type=RPD;set_color=[color_name]">&bull;</a>"}
 
 	var/dirsel="<h2>Direction</h2>"
 	switch(p_conntype)
@@ -251,14 +252,14 @@ var/global/list/RPD_recipes=list(
 				user << browse_rsc(new /icon(preview, dir=EAST), "horizontal.png")
 
 				dirsel += "<p>"
-				dirsel += render_dir_img(1,"vertical.png","Vertical")
-				dirsel += render_dir_img(4,"horizontal.png","Horizontal")
+				dirsel += render_dir_img(1,"vertical.png","Vertical", topic_ref = topic_ref)
+				dirsel += render_dir_img(4,"horizontal.png","Horizontal", topic_ref = topic_ref)
 				dirsel += "</p>"
 			else
 				dirsel+={"
 		<p>
-			<a href="?src=\ref[src];setdir=1; flipped=0" title="vertical">&#8597;</a>
-			<a href="?src=\ref[src];setdir=4; flipped=0" title="horizontal">&harr;</a>
+			<a href="?src=\ref[topic_ref]; device_type=RPD; setdir=1; flipped=0" title="vertical">&#8597;</a>
+			<a href="?src=\ref[topic_ref]; device_type=RPD; setdir=4; flipped=0" title="horizontal">&harr;</a>
 		</p>
 				"}
 		if(PIPE_BENT) // Bent, N-W, N-E etc
@@ -269,20 +270,20 @@ var/global/list/RPD_recipes=list(
 				user << browse_rsc(new /icon(preview, dir=SOUTHEAST),  "se.png")
 
 				dirsel += "<p>"
-				dirsel += render_dir_img(9,"nw.png","West to North")
-				dirsel += render_dir_img(5,"ne.png","North to East")
+				dirsel += render_dir_img(9,"nw.png","West to North", topic_ref = topic_ref)
+				dirsel += render_dir_img(5,"ne.png","North to East", topic_ref = topic_ref)
 				dirsel += "<br />"
-				dirsel += render_dir_img(10,"sw.png","South to West")
-				dirsel += render_dir_img(6,"se.png","East to South")
+				dirsel += render_dir_img(10,"sw.png","South to West", topic_ref = topic_ref)
+				dirsel += render_dir_img(6,"se.png","East to South", topic_ref = topic_ref)
 				dirsel += "</p>"
 			else
 				dirsel+={"
 		<p>
-			<a href="?src=\ref[src];setdir=9; flipped=0" title="West to North">&#9565;</a>
-			<a href="?src=\ref[src];setdir=5; flipped=0" title="North to East">&#9562;</a>
+			<a href="?src=\ref[topic_ref]; device_type=RPD; setdir=9; flipped=0" title="West to North">&#9565;</a>
+			<a href="?src=\ref[topic_ref]; device_type=RPD; setdir=5; flipped=0" title="North to East">&#9562;</a>
 			<br />
-			<a href="?src=\ref[src];setdir=10; flipped=0" title="South to West">&#9559;</a>
-			<a href="?src=\ref[src];setdir=6; flipped=0" title="East to South">&#9556;</a>
+			<a href="?src=\ref[topic_ref]; device_type=RPD; setdir=10; flipped=0" title="South to West">&#9559;</a>
+			<a href="?src=\ref[topic_ref]; device_type=RPD; setdir=6; flipped=0" title="East to South">&#9556;</a>
 		</p>
 				"}
 		if(PIPE_TRINARY) // Manifold
@@ -293,20 +294,20 @@ var/global/list/RPD_recipes=list(
 				user << browse_rsc(new /icon(preview, dir=WEST),  "e.png")
 
 				dirsel += "<p>"
-				dirsel += render_dir_img(1,"s.png","West South East")
-				dirsel += render_dir_img(4,"w.png","North West South")
+				dirsel += render_dir_img(1,"s.png","West South East", topic_ref = topic_ref)
+				dirsel += render_dir_img(4,"w.png","North West South", topic_ref = topic_ref)
 				dirsel += "<br />"
-				dirsel += render_dir_img(2,"n.png","East North West")
-				dirsel += render_dir_img(8,"e.png","South East North")
+				dirsel += render_dir_img(2,"n.png","East North West", topic_ref = topic_ref)
+				dirsel += render_dir_img(8,"e.png","South East North", topic_ref = topic_ref)
 				dirsel += "</p>"
 			else
 				dirsel+={"
 		<p>
-			<a href="?src=\ref[src];setdir=1; flipped=0" title="West, South, East">&#9574;</a>
-			<a href="?src=\ref[src];setdir=4; flipped=0" title="North, West, South">&#9571;</a>
+			<a href="?src=\ref[topic_ref]; device_type=RPD; setdir=1; flipped=0" title="West, South, East">&#9574;</a>
+			<a href="?src=\ref[topic_ref]; device_type=RPD; setdir=4; flipped=0" title="North, West, South">&#9571;</a>
 			<br />
-			<a href="?src=\ref[src];setdir=2; flipped=0" title="East, North, West">&#9577;</a>
-			<a href="?src=\ref[src];setdir=8; flipped=0" title="South, East, North">&#9568;</a>
+			<a href="?src=\ref[topic_ref]; device_type=RPD; setdir=2; flipped=0" title="East, North, West">&#9577;</a>
+			<a href="?src=\ref[topic_ref]; device_type=RPD; setdir=8; flipped=0" title="South, East, North">&#9568;</a>
 		</p>
 				"}
 		if(PIPE_TRIN_M) // Mirrored ones
@@ -321,32 +322,32 @@ var/global/list/RPD_recipes=list(
 				user << browse_rsc(new /icon(preview, dir=SOUTHWEST),  "em.png")
 
 				dirsel += "<p>"
-				dirsel += render_dir_img(1,"s.png","West South East")
-				dirsel += render_dir_img(4,"w.png","North West South")
+				dirsel += render_dir_img(1,"s.png","West South East", topic_ref = topic_ref)
+				dirsel += render_dir_img(4,"w.png","North West South", topic_ref = topic_ref)
 				dirsel += "<br />"
-				dirsel += render_dir_img(2,"n.png","East North West")
-				dirsel += render_dir_img(8,"e.png","South East North")
+				dirsel += render_dir_img(2,"n.png","East North West", topic_ref = topic_ref)
+				dirsel += render_dir_img(8,"e.png","South East North", topic_ref = topic_ref)
 				dirsel += "<br />"
-				dirsel += render_dir_img(6,"sm.png","West South East", 1)
-				dirsel += render_dir_img(5,"wm.png","North West South", 1)
+				dirsel += render_dir_img(6,"sm.png","West South East", 1, topic_ref = topic_ref)
+				dirsel += render_dir_img(5,"wm.png","North West South", 1, topic_ref = topic_ref)
 				dirsel += "<br />"
-				dirsel += render_dir_img(9,"nm.png","East North West", 1)
-				dirsel += render_dir_img(10,"em.png","South East North", 1)
+				dirsel += render_dir_img(9,"nm.png","East North West", 1, topic_ref = topic_ref)
+				dirsel += render_dir_img(10,"em.png","South East North", 1, topic_ref = topic_ref)
 				dirsel += "</p>"
 			else
 				dirsel+={"
 		<p>
-			<a href="?src=\ref[src];setdir=1; flipped=0" title="West, South, East">&#9574;</a>
-			<a href="?src=\ref[src];setdir=4; flipped=0" title="North, West, South">&#9571;</a>
+			<a href="?src=\ref[topic_ref]; device_type=RPD; setdir=1; flipped=0" title="West, South, East">&#9574;</a>
+			<a href="?src=\ref[topic_ref]; device_type=RPD; setdir=4; flipped=0" title="North, West, South">&#9571;</a>
 			<br />
-			<a href="?src=\ref[src];setdir=2; flipped=0" title="East, North, West">&#9577;</a>
-			<a href="?src=\ref[src];setdir=8; flipped=0" title="South, East, North">&#9568;</a>
+			<a href="?src=\ref[topic_ref]; device_type=RPD; setdir=2; flipped=0" title="East, North, West">&#9577;</a>
+			<a href="?src=\ref[topic_ref]; device_type=RPD; setdir=8; flipped=0" title="South, East, North">&#9568;</a>
 			<br />
-			<a href="?src=\ref[src];setdir=6; flipped=1" title="West, South, East">&#9574;</a>
-			<a href="?src=\ref[src];setdir=5; flipped=1" title="North, West, South">&#9571;</a>
+			<a href="?src=\ref[topic_ref]; device_type=RPD; setdir=6; flipped=1" title="West, South, East">&#9574;</a>
+			<a href="?src=\ref[topic_ref]; device_type=RPD; setdir=5; flipped=1" title="North, West, South">&#9571;</a>
 			<br />
-			<a href="?src=\ref[src];setdir=9; flipped=1" title="East, North, West">&#9577;</a>
-			<a href="?src=\ref[src];setdir=10; flipped=1" title="South, East, North">&#9568;</a>
+			<a href="?src=\ref[topic_ref]; device_type=RPD; setdir=9; flipped=1" title="East, North, West">&#9577;</a>
+			<a href="?src=\ref[topic_ref]; device_type=RPD; setdir=10; flipped=1" title="South, East, North">&#9568;</a>
 		</p>
 				"}
 		if(PIPE_UNARY) // Unary
@@ -357,18 +358,18 @@ var/global/list/RPD_recipes=list(
 				user << browse_rsc(new /icon(preview, dir=WEST),  "w.png")
 
 				dirsel += "<p>"
-				dirsel += render_dir_img(NORTH,"n.png","North")
-				dirsel += render_dir_img(EAST, "e.png","East")
-				dirsel += render_dir_img(SOUTH,"s.png","South")
-				dirsel += render_dir_img(WEST, "w.png","West")
+				dirsel += render_dir_img(NORTH,"n.png","North", topic_ref = topic_ref)
+				dirsel += render_dir_img(EAST, "e.png","East", topic_ref = topic_ref)
+				dirsel += render_dir_img(SOUTH,"s.png","South", topic_ref = topic_ref)
+				dirsel += render_dir_img(WEST, "w.png","West", topic_ref = topic_ref)
 				dirsel += "</p>"
 			else
 				dirsel+={"
 		<p>
-			<a href="?src=\ref[src];setdir=[NORTH]; flipped=0" title="North">&uarr;</a>
-			<a href="?src=\ref[src];setdir=[EAST]; flipped=0" title="East">&rarr;</a>
-			<a href="?src=\ref[src];setdir=[SOUTH]; flipped=0" title="South">&darr;</a>
-			<a href="?src=\ref[src];setdir=[WEST]; flipped=0" title="West">&larr;</a>
+			<a href="?src=\ref[topic_ref]; device_type=RPD; setdir=[NORTH]; flipped=0" title="North">&uarr;</a>
+			<a href="?src=\ref[topic_ref]; device_type=RPD; setdir=[EAST]; flipped=0" title="East">&rarr;</a>
+			<a href="?src=\ref[topic_ref]; device_type=RPD; setdir=[SOUTH]; flipped=0" title="South">&darr;</a>
+			<a href="?src=\ref[topic_ref]; device_type=RPD; setdir=[WEST]; flipped=0" title="West">&larr;</a>
 		</p>
 					"}
 		if(PIPE_QUAD) // Single icon_state (eg 4-way manifolds)
@@ -376,12 +377,12 @@ var/global/list/RPD_recipes=list(
 				user << browse_rsc(new /icon(preview), "pipe.png")
 
 				dirsel += "<p>"
-				dirsel += render_dir_img(1,"pipe.png","Pipe")
+				dirsel += render_dir_img(1,"pipe.png","Pipe", topic_ref = topic_ref)
 				dirsel += "</p>"
 			else
 				dirsel+={"
 		<p>
-			<a href="?src=\ref[src];setdir=1; flipped=0" title="Pipe">&#8597;</a>
+			<a href="?src=\ref[topic_ref]; device_type=RPD; setdir=1; flipped=0" title="Pipe">&#8597;</a>
 		</p>
 				"}
 
@@ -433,20 +434,26 @@ var/global/list/RPD_recipes=list(
 	popup.open()
 	return
 
+/obj/item/weapon/pipe_dispenser/proc/handle_failed_topic(mob/user)
+	user << browse(null, "window=pipedispenser")
+
 /obj/item/weapon/pipe_dispenser/Topic(href, href_list)
 	if(!usr.canUseTopic(src))
-		usr << browse(null, "window=pipedispenser")
+		handle_failed_topic(usr)
 		return
 	usr.set_machine(src)
 	src.add_fingerprint(usr)
+	handle_topic(href, href_list)
+
+/obj/item/weapon/pipe_dispenser/proc/handle_topic(href, href_list, topic_ref = src)
 	if(href_list["screen"])
 		screen = text2num(href_list["screen"])
-		show_menu(usr)
+		show_menu(usr, topic_ref)
 
 	if(href_list["setdir"])
 		p_dir= text2num(href_list["setdir"])
 		p_flipped = text2num(href_list["flipped"])
-		show_menu(usr)
+		show_menu(usr, topic_ref)
 
 	if(href_list["eatpipes"])
 		p_class = EATING_MODE
@@ -454,7 +461,7 @@ var/global/list/RPD_recipes=list(
 		p_dir=1
 		src.spark_system.start()
 		playsound(get_turf(src), 'sound/effects/pop.ogg', 50, 0)
-		show_menu(usr)
+		show_menu(usr, topic_ref)
 
 	if(href_list["paintpipes"])
 		p_class = PAINT_MODE
@@ -462,13 +469,13 @@ var/global/list/RPD_recipes=list(
 		p_dir = 1
 		src.spark_system.start()
 		playsound(get_turf(src), 'sound/effects/pop.ogg', 50, 0)
-		show_menu(usr)
+		show_menu(usr, topic_ref)
 
 	if(href_list["set_color"])
 		paint_color = href_list["set_color"]
 		src.spark_system.start()
 		playsound(get_turf(src), 'sound/effects/pop.ogg', 50, 0)
-		show_menu(usr)
+		show_menu(usr, topic_ref)
 
 	if(href_list["makepipe"])
 		p_type = text2num(href_list["makepipe"])
@@ -477,7 +484,7 @@ var/global/list/RPD_recipes=list(
 		p_class = ATMOS_MODE
 		src.spark_system.start()
 		playsound(get_turf(src), 'sound/effects/pop.ogg', 50, 0)
-		show_menu(usr)
+		show_menu(usr, topic_ref)
 
 	if(href_list["makemeter"])
 		p_class = METER_MODE
@@ -485,7 +492,7 @@ var/global/list/RPD_recipes=list(
 		p_dir = 1
 		src.spark_system.start()
 		playsound(get_turf(src), 'sound/effects/pop.ogg', 50, 0)
-		show_menu(usr)
+		show_menu(usr, topic_ref)
 
 	if(href_list["dmake"])
 		p_type = text2num(href_list["dmake"])
@@ -494,11 +501,10 @@ var/global/list/RPD_recipes=list(
 		p_class = DISPOSALS_MODE
 		src.spark_system.start()
 		playsound(get_turf(src), 'sound/effects/pop.ogg', 50, 0)
-		show_menu(usr)
+		show_menu(usr, topic_ref)
 
-
-/obj/item/weapon/pipe_dispenser/afterattack(atom/A, mob/user)
-	if(!in_range(A,user) || loc != user)
+/obj/item/weapon/pipe_dispenser/afterattack(atom/A, mob/user, proximity)
+	if(!proximity)
 		return 0
 
 	if(!user.IsAdvancedToolUser())

@@ -23,7 +23,7 @@
 /obj/item/weapon/airlock_painter/proc/use(mob/user)
 	if(can_use(user))
 		ink.charges--
-		playsound(src.loc, 'sound/effects/spray2.ogg', 50, 1)
+		playsound(get_turf(src), 'sound/effects/spray2.ogg', 50, 1)
 		return 1
 	else
 		return 0
@@ -43,6 +43,9 @@
 
 /obj/item/weapon/airlock_painter/examine(mob/user)
 	..()
+	get_examine_info(user)
+
+/obj/item/weapon/airlock_painter/proc/get_examine_info(user)
 	if(!ink)
 		user << "<span class='notice'>It doesn't have a toner cardridge installed.</span>"
 		return
@@ -67,12 +70,12 @@
 		W.loc = src
 		user << "<span class='notice'>You install \the [W] into \the [name].</span>"
 		ink = W
-		playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
+		playsound(get_turf(src), 'sound/machines/click.ogg', 50, 1)
 
 
 /obj/item/weapon/airlock_painter/attack_self(mob/user)
 	if(ink)
-		playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
+		playsound(get_turf(src), 'sound/machines/click.ogg', 50, 1)
 		ink.loc = user.loc
 		user.put_in_hands(ink)
 		user << "<span class='notice'>You remove \the [ink] from \the [name].</span>"

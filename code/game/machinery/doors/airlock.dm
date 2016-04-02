@@ -1101,7 +1101,7 @@ About the new airlock wires panel:
 				else
 					spawn(0)	close(2)
 
-	else if(istype(C, /obj/item/weapon/airlock_painter))
+	else if(get_airlock_painter(C))
 		change_paintjob(C, user)
 	else if(istype(C, /obj/item/device/doorCharge) && p_open)
 		if(emagged)
@@ -1120,7 +1120,7 @@ About the new airlock wires panel:
 		newCharge.loc = src
 		charge = newCharge
 		return
-	else if(istype(C, /obj/item/weapon/rcd)&& istype(loc, /turf/simulated)) //Do not attack the airlock if the user is holding an RCD
+	else if(is_rcd(C) && istype(loc, /turf/simulated))
 		return
 	else
 		..()
@@ -1256,8 +1256,8 @@ About the new airlock wires panel:
 
 /obj/machinery/door/airlock/proc/change_paintjob(obj/item/C, mob/user)
 	var/obj/item/weapon/airlock_painter/W
-	if(istype(C, /obj/item/weapon/airlock_painter))
-		W = C
+	if(get_airlock_painter(C))
+		W = get_airlock_painter(C)
 	else
 		user << "If you see this, it means airlock/change_paintjob() was called with something other than an airlock painter. Check your code!"
 		return

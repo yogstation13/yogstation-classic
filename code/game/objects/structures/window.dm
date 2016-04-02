@@ -272,7 +272,7 @@
 			user << "<span class='notice'>You successfully disassemble [src].</span>"
 			adm_action_log.enqueue("[gameTimestamp()] ([user] - [I] - [src]): disassembled")
 			qdel(src)
-	else if(istype(I, /obj/item/weapon/rcd)) //Do not attack the window if the user is holding an RCD
+	else if(is_rcd(I)) //Do not attack the window if the user is holding an RCD
 		return
 
 	else
