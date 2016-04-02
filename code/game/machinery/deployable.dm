@@ -141,12 +141,22 @@ for reference:
 	var/health = 100.0
 	var/maxhealth = 100.0
 	var/locked = 0.0
+	var/obj/item/device/radio/attachedradio = null
+	var/obj/item/device/encryptionkey/installedkey = null
+	var/obj/item/device/assembly/signaler/attachedsignaler = null
+	var/radio_freq
+	var/initialdesc
+
 //	req_access = list(access_maint_tunnels)
 
 /obj/machinery/deployable/barrier/New()
 	..()
 
 	src.icon_state = "barrier[src.locked]"
+	attachedradio = new /obj/item/device/radio(src)
+	attachedradio.listening = 0
+	attachedradio.frequency = 0 // since it generally defaults to commmons.
+	initialdesc = desc
 
 /obj/machinery/deployable/barrier/attackby(obj/item/weapon/W, mob/user, params)
 	if (W.GetID())
@@ -181,16 +191,171 @@ for reference:
 			visible_message("<span class='danger'>[user] repairs \the [src]!</span>")
 			return
 		return
+
+	else if (istype(W, /obj/item/weapon/screwdriver))
+
+		if (src.locked == 1.0)
+			user << "<span class='danger'>You can't eject anything from the barrier while it's locked!</span>"
+			return
+
+		if (attachedsignaler)
+			new /obj/item/device/assembly/signaler(src.loc)
+			attachedsignaler = null
+			desc = "A deployable barrier. Swipe your ID card to lock/unlock it."
+			initialdesc = desc
+			desc_report() //puts the cherry ontop of our... codey sundae
+			user.visible_message( \
+						"[user] deattaches the signaler from the barrier.", \
+						"<span class='notice'>You unscrew the signaler from the barrier.</span>")
+			return
+
+		if (installedkey)
+			var/turf/T = get_turf(src.loc)
+			if(T)
+				installedkey.loc = T
+				installedkey = null
+			attachedradio.frequency = 0
+			user.visible_message("[user] unscrews the encryption key from the barrier.")
+			return
+
+
+		if (!installedkey && !attachedsignaler)
+			user << "<span class='danger'>[src] doesn't have anything to eject.</span>"
+			return
+
+	else if (istype(W, /obj/item/device/encryptionkey))
+
+		if (src.locked == 1.0)
+			user << "<span class='danger'>You can't install anything while the barrier is locked!</span>"
+			return
+
+		var/initialkey = installedkey
+
+		if(installedkey)
+			user << "[src] already has an encryption key installed!"
+			return
+
+		installedkey = W
+
+		if(installedkey.channels.Find("Security"))
+			visible_message("[src] swallows the encryption key and vibrates happily!")
+			attachedradio.set_frequency(SEC_FREQ)
+			radio_freq = SEC_FREQ
+			user.unEquip(W)
+			W.loc = src
+			return
+
+/*		Is this even needed? Only the future can tell.
+		else if(installedkey.channels.Find("Syndicate"))
+			if(src.emagged < 1)
+				visible_message("[src] rejects the encryption key and vibrates aggressively!")
+				installedkey = initialkey
+				return
+			else
+				visible_message("[src] swallows the encryption key and vibrates happily!")
+				attachedradio.set_frequency(SYND_FREQ)
+				radio_freq = SYND_FREQ
+				if (istype(W, /obj/item/device/encryptionkey/syndicate))
+					installedkey = new /obj/item/device/encryptionkey/syndicate
+				if (istype(W, /obj/item/device/encryptionkey))
+					installedkey = new /obj/item/device/encryptionkey/binary
+				return qdel(W) */
+
+		else
+			visible_message("[src] rejects the encryption key and vibrates angrily!")
+			installedkey = initialkey
+			return
+
+	else if(issignaler(W))
+
+		if(attachedsignaler)
+			user << "<span class='notice'>There's a signaler attatched to the barrier!</span>"
+			return
+
+		attachedsignaler = W
+
+		if(attachedsignaler.secured)
+			user <<"<span class='danger'>The device is secured.</span>"
+			attachedsignaler = null
+			return
+
+		if(!radio_freq)
+			user << "<span class='danger'>There isn't an encryption key associated with the barrier to attach the signaler to!</span>"
+			attachedsignaler = null
+			return
+
+		else
+			user.visible_message( \
+						"[user] attaches the signaler to the barrier.", \
+						"<span class='notice'>You attach the signaler to the barrier.</span>")
+			desc = "[src.desc] It also appears to have a remote signaling device attatched to it."
+			initialdesc = desc
+			qdel(W)
+		return
+
 	else
+		user.changeNext_move(CLICK_CD_MELEE)
 		switch(W.damtype)
 			if("fire")
 				src.health -= W.force * 0.75
 			if("brute")
 				src.health -= W.force * 0.5
 			else
+
+		// examine damage notifiers.
+		if (src.health <= 99)
+			desc_report()
+
+
 		if (src.health <= 0)
+			attachedradio.talk_into(src, "Losing signal with the security channel!",radio_freq)
 			src.explode()
 		..()
+
+		// This will send a message to the security channel if the barrier's radio is connected to it's frequency
+
+		if (attachedradio.frequency == SEC_FREQ && !src.emagged) // security currently. emagging will disable this.
+			if(!W.force)
+				return
+
+			var/thebarrier = "A deployable barrier"
+
+			if(attachedsignaler)
+				var/detectedarea = get_area(src)
+				thebarrier = thebarrier + " located in [detectedarea]"
+
+			var/damagereport
+			if(W.force <= 5 && W.force != 0) // less or equal to 5
+				damagereport = "a small amount of damage from an external source"
+			if(W.force > 5 && W.force <= 15) // in the 5-15 range, but greater than 5
+				damagereport = "a moderate amount of damage from an external source"
+			if(W.force > 15) //greater than 15
+				damagereport = "a large amount of damage from an external source"
+
+			if(src.health <= 95 && src.health > 50)
+				attachedradio.talk_into(src, "Alert! [thebarrier] is suffering [damagereport] in a sufficient state!!",radio_freq)
+
+			if(src.health <= 50 && src.health > 25)
+				attachedradio.talk_into(src, "Alert! [thebarrier] is suffering [damagereport] while they are in need of dire repair!!",radio_freq)
+
+			if(src.health <= 25 && src.health > 0)
+				attachedradio.talk_into(src, "Alert! [thebarrier] is suffering [damagereport] at a currently fatal state!!",radio_freq)
+
+
+/obj/machinery/deployable/barrier/proc/desc_report() // something to update the description of the barrier.
+
+	if (src.health >= 61)
+		desc = "[initialdesc] <span class='danger'>The barrier is slightly damaged.</span>"
+		return
+
+	if (src.health <= 60 && src.health >= 31)
+		desc = "[initialdesc] <span class='danger'>The barrier seems to have taken a moderate amount of damage.</span>"
+		return
+
+	if (src.health <= 30 && src.health > 1)
+		desc = "[initialdesc] <span class='danger'>The barrier appears to be severely damanged and in need of repair. </span>"
+		return
+
 
 /obj/machinery/deployable/emag_act(mob/user)
 	if (src.emagged == 0)
