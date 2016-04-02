@@ -97,4 +97,4 @@ obj/machinery/flood_lamp/assembled
 
 /obj/item/weapon/paper/flood_lamp
 	name = "paper- 'Floodlamp Operation for Dummies'"
-	info = "<b>How to Floodlamp</b><br><font size = '1'>A guide for dummies. That's you.</font><hr><ul><li>Crowbar open device.<li>Add power cell. Bigger is better.<li>Crowbar closed device.<li>Add up to 3 flashlights to device.<li>Punch device in snout to establish light.<ul><br><br><small>Don't fuck this up.</small>"
+	info = "<b>How to Floodlamp</b><br><font size = '1'>A guide for dummies. That's you.</font><hr><ul><li>Crowbar open device.<li>Add power cell. Bigger is better.<li>Crowbar closed device.<li>Add up to 3 flashlights to device.<ul>"
