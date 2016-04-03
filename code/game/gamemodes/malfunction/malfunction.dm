@@ -44,7 +44,7 @@
 /datum/game_mode/malfunction/pre_setup()
 	var/datum/mind/chosen_ai
 	for(var/i = required_enemies, i > 0, i--)
-		chosen_ai=pick(antag_candidates)
+		chosen_ai=pick_candidate()
 		malf_ai += chosen_ai
 		antag_candidates -= malf_ai
 	if (malf_ai.len < required_enemies)

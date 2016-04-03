@@ -20,6 +20,7 @@ George99	=	Council Member
 Kmc2000	=	SeniorAdmin
 Greatbigben	=	SeniorAdmin
 Groudonmaster	=	SeniorAdmin
+<<<<<<< HEAD
 CptAzure	=	SeniorAdmin
 BestMango	=	Primary Admin
 Oakboscage	=	Primary Admin
@@ -49,6 +50,37 @@ ThatOneGuyWithTheFace	=	Coder Initiate
 PineappleTerror	=	Coder Initiate
 TehFlaminTaco	=	Coder
 Super3222	=	Coder
+=======
+Kmc2000	=	Primary Admin
+CptAzure	=	Primary Admin
+Eff Chap	=	Primary Admin
+Chuggachar	=	Administrator
+Oakboscage	=	Administrator
+BestMango	=	Administrator
+Wardog390	=	Administrator
+EXOTICISME	=	Administrator
+FluffySurvivor	=	Admin Observer
+Observer	=	Admin Observer
+ 
+Adameltablawy	=	ModeratorOnProbation
+Dzlan	=	Moderator V2
+Stealthkibbler	=	Moderator V2
+Time-Green	=	Moderator V2
+Thee_Flame_Prince	=	Moderator V2
+DominusLucian	=	Moderator V2
+Klitri	=	Moderator V2
+Abdbla	=	Moderator V2
+Matskuman5	=	Moderator V2
+R3DGL4R3	=	Moderator V2
+ 
+PineappleTerror	=	Coder Initiate
+TehFlaminTaco	=	Coder Initiate
+Groxic	=	Coder Initiate
+B1gb3ast	=	Coder Initiate
+Super3222	=	Coder Initiate
+Xthedark	=	Coder
+Cruix	=	Coder
+>>>>>>> feature-predators
  
 Madventurer	=	Retired Admin
 Hadrin Alucard	=	Retired Admin
@@ -56,10 +88,17 @@ Spl99	=	Retired Admin
 20thgirl	=	Retired Admin
 Blukey	=	Retired Admin
 Rumia29	=	Retired Admin
+<<<<<<< HEAD
 Gremlen12	=	Retired Admin
 Misutto	=	Retired Admin
 Willverdrag1314	=	Retired Admin
 Alek2ander	=	Retired Admin
 Chuggachar	=	Retired Admin
+=======
+Hydre	=	Retired Admin
+Misutto	=	Retired Admin
+Willverdrag1314	=	Retired Admin
+Alek2ander	=	Retired Admin
+>>>>>>> feature-predators
  
 Yogstation13-Bot	=	Bot

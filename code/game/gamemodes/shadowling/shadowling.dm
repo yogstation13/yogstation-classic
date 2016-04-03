@@ -89,7 +89,7 @@ Made by Xhuis
 
 
 	while(shadowlings)
-		var/datum/mind/shadow = pick(antag_candidates)
+		var/datum/mind/shadow = pick_candidate()
 		shadows += shadow
 		antag_candidates -= shadow
 		modePlayer += shadow
@@ -131,9 +131,9 @@ Made by Xhuis
 
 /datum/game_mode/proc/finalize_shadowling(datum/mind/shadow_mind)
 	var/mob/living/carbon/human/S = shadow_mind.current
-	shadow_mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/shadowling_hatch(null))
-	shadow_mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/enthrall(null))
-	shadow_mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/shadowling_hivemind(null))
+	shadow_mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/shadow/shadowling_hatch(null))
+	shadow_mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/shadow/enthrall(null))
+	shadow_mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/shadow/shadowling_hivemind(null))
 	spawn(0)
 		update_shadow_icons_added(shadow_mind)
 		if(shadow_mind.assigned_role == "Clown")
@@ -148,10 +148,10 @@ Made by Xhuis
 		thralls += new_thrall_mind
 		new_thrall_mind.special_role = "thrall"
 		new_thrall_mind.current.attack_log += "\[[time_stamp()]\] <span class='danger'>Became a thrall</span>"
-		new_thrall_mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/lesser_shadowling_hivemind(null))
-		new_thrall_mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/lesser_glare(null))
-		new_thrall_mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/lesser_shadow_walk(null))
-		new_thrall_mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/thrall_vision(null))
+		new_thrall_mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/shadow/lesser_shadowling_hivemind(null))
+		new_thrall_mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/shadow/lesser_glare(null))
+		new_thrall_mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/shadow/lesser_shadow_walk(null))
+		new_thrall_mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/shadow/thrall_vision(null))
 		new_thrall_mind.current << "<span class='shadowling'><b>You see the truth. Reality has been torn away and you realize what a fool you've been.</b></span>"
 		new_thrall_mind.current << "<span class='shadowling'><b>The shadowlings are your masters.</b> Serve them above all else and ensure they complete their goals.</span>"
 		new_thrall_mind.current << "<span class='shadowling'>You may not harm other thralls or the shadowlings. However, you do not need to obey other thralls.</span>"
@@ -166,10 +166,10 @@ Made by Xhuis
 	thralls.Remove(thrall_mind)
 	thrall_mind.current.attack_log += "\[[time_stamp()]\] <span class='danger'>Dethralled</span>"
 	thrall_mind.special_role = null
-	thrall_mind.remove_spell(/obj/effect/proc_holder/spell/targeted/lesser_shadowling_hivemind)
-	thrall_mind.remove_spell(/obj/effect/proc_holder/spell/targeted/lesser_glare)
-	thrall_mind.remove_spell(/obj/effect/proc_holder/spell/targeted/lesser_shadow_walk)
-	thrall_mind.remove_spell(/obj/effect/proc_holder/spell/targeted/thrall_vision)
+	thrall_mind.remove_spell(/obj/effect/proc_holder/spell/targeted/shadow/lesser_shadowling_hivemind)
+	thrall_mind.remove_spell(/obj/effect/proc_holder/spell/targeted/shadow/lesser_glare)
+	thrall_mind.remove_spell(/obj/effect/proc_holder/spell/targeted/shadow/lesser_shadow_walk)
+	thrall_mind.remove_spell(/obj/effect/proc_holder/spell/targeted/shadow/thrall_vision)
 	if(kill && ishuman(thrall_mind.current)) //If dethrallization surgery fails, kill the mob as well as dethralling them
 		var/mob/living/carbon/human/H = thrall_mind.current
 		H.visible_message("<span class='warning'>[H] jerks violently and falls still.</span>", \

@@ -554,6 +554,17 @@ var/list/all_supply_groups = list(supply_emergency,supply_security,supply_engine
 	containername = "space suit crate"
 	access = access_eva
 
+/datum/supply_packs/engineering/flood_lamp
+	name = "Flood Lamp Assembly Crate"
+	contains = list(/obj/machinery/flood_lamp,
+					/obj/item/device/flashlight,
+					/obj/item/device/flashlight,
+					/obj/item/device/flashlight,
+					/obj/item/weapon/stock_parts/cell/high,
+					/obj/item/weapon/paper/flood_lamp)
+	cost = 15
+	containername = "floodlamp assembly crate"
+
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////// Medical /////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////

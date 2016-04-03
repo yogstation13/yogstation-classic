@@ -19,6 +19,7 @@ Head of Security
 	selection_color = "#ffdddd"
 	req_admin_notify = 1
 	minimal_player_age = 17
+	whitelisted = 1
 
 	default_id = /obj/item/weapon/card/id/silver
 	default_pda = /obj/item/device/pda/heads/hos
@@ -135,7 +136,7 @@ Detective
 
 	H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/evidence(H), slot_in_backpack)
 	H.equip_to_slot_or_del(new /obj/item/device/detective_scanner(H), slot_in_backpack)
-	H.equip_to_slot_or_del(new /obj/item/weapon/melee/classic_baton/telescopic(H), slot_in_backpack)
+	H.equip_to_slot_or_del(new /obj/item/weapon/melee/classic_baton(H), slot_in_backpack)
 
 	var/obj/item/weapon/implant/loyalty/L = new/obj/item/weapon/implant/loyalty(H)
 	L.imp_in = H

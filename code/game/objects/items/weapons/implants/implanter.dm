@@ -35,11 +35,15 @@
 			if(user && M && (get_turf(M) == T) && src && imp)
 				if(M.head && (M.head.flags & THICKMATERIAL))
 					return
-				if(imp.implant(M, user))
-					user << "<span class='notice'>You implant the implant into [M].</span>"
-					M.visible_message("[user] has implanted [M].", "<span class='notice'>[user] implants you with the implant.</span>")
-					imp = null
-					update_icon()
+				switch(imp.implant(M, user))
+					if(1) //All normal
+						user << "<span class='notice'>You implant the implant into [M].</span>"
+						M.visible_message("[user] has implanted [M].", "<span class='notice'>[user] implants you with the implant.</span>")
+						imp = null
+						update_icon()
+					if(-1) //attempted to implant traitor/changeling/headrev/gangboss - don't show implanted message (less clutter in chat)
+						imp = null
+						update_icon()
 
 /obj/item/weapon/implanter/attackby(obj/item/weapon/W, mob/user, params)
 	..()

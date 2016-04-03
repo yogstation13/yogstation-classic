@@ -985,3 +985,12 @@ datum/admins/proc/cyberman_varedit(list/href_list)
 				var/num = input("Set innate processing to what? (If this is not 0, the hack will not lose progress if no cybermen are nearby)") as num
 				if(hack)
 					hack.innate_processing = num
+
+/datum/admins/proc/toggle_high_risk_item_notifications()
+	set category = "Admin"
+	set desc="Toggle dis bitch"
+	set name="Toggle High Risk Item Notifications"
+	high_risk_item_notifications = !high_risk_item_notifications
+	var/message = "[key_name_admin(usr)] has toggled high risk item notifications [high_risk_item_notifications ? "on" : "off"]."
+	message_admins(message)
+	log_admin(message)

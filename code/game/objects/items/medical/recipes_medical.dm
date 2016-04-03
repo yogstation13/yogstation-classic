@@ -14,7 +14,7 @@
 
 /datum/table_recipe/soaked_improvised_bandage
 	name = "Improvised Bandage (Soaked)"
-	result = /obj/item/medical/bandage/improvised
+	result = /obj/item/medical/bandage/improvised_soaked
 	reqs = list(/obj/item/clothing/torncloth = 1, /datum/reagent/water = 20)
 	time = 200
 	category = CAT_MISC

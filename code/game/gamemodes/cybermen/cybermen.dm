@@ -55,7 +55,7 @@ var/datum/cyberman_network/cyberman_network
 	#endif
 
 	while(cybermen_num)
-		var/datum/mind/cyberman = pick(antag_candidates)
+		var/datum/mind/cyberman = pick_candidate()
 		cyberman_network.cybermen += cyberman
 		cyberman.cyberman = new /datum/cyberman_datum()
 		antag_candidates -= cyberman

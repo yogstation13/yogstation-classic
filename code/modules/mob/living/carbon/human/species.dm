@@ -706,6 +706,14 @@
 		H.clear_fullscreen("high")
 		H.clear_alert("high")
 
+		if(H.nightvision)
+			H.sight |= SEE_MOBS
+			H.sight &= ~SEE_TURFS
+			H.sight &= ~SEE_OBJS
+
+			H.see_in_dark = 8
+			H.see_invisible = SEE_INVISIBLE_MINIMUM
+
 	return 1
 
 /datum/species/proc/handle_hud_icons(mob/living/carbon/human/H)
