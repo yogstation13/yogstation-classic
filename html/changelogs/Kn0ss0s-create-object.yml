@@ -35,3 +35,4 @@ delete-after: True
 changes: 
   - tweak: "Dynamic searching when creating objects."
   - tweak: "Dynamic searching for whom to follow."
+  - tweak: "Dynamic searching for whom to jump to."

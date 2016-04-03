@@ -221,7 +221,8 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set name = "Follow" // "Haunt"
 	set desc = "Follow and haunt a mob."
 
-	search_mob(src)
+	if(istype(usr, /mob/dead/observer)) //Make sure they're an observer!
+		search_mob(src)
 
  // This is the ghost's follow verb with an argument
 /mob/dead/observer/proc/ManualFollow(atom/movable/target)
@@ -291,9 +292,9 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set desc = "Teleport to a mob"
 
 	if(istype(usr, /mob/dead/observer)) //Make sure they're an observer!
+		search_mob(src)
 
-
-		var/list/dest = list() //List of possible destinations (mobs)
+		/*var/list/dest = list() //List of possible destinations (mobs)
 		var/target = null	   //Chosen target.
 
 		dest += getmobs() //Fill list, prompt user with list
@@ -309,7 +310,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 			if(T && isturf(T))	//Make sure the turf exists, then move the source to that destination.
 				A.loc = T
 			else
-				A << "This mob is not located in the game world."
+				A << "This mob is not located in the game world."*/
 
 /mob/dead/observer/verb/boo()
 	set category = "Ghost"

@@ -11,6 +11,7 @@
 	return sorttext(a,b)
 
 /proc/cmp_name_asc(atom/a, atom/b)
+	if(!a || !b) return 0
 	return sorttext(b.name, a.name)
 
 /proc/cmp_name_dsc(atom/a, atom/b)
