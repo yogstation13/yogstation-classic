@@ -148,7 +148,7 @@
 	return istype(special_device) && special_device.mode == RCD_MODE
 
 /proc/is_pipe_device(obj/O)
-	if(istype(O, /obj/item/weapon/pipe_dispenser))
+	if(istype(O, /obj/item/weapon/pipe_dispenser) || istype(O, /obj/item/device/pipe_painter) )
 		return 1
 	var/obj/item/weapon/rapid_engineering_device/special_device = O
 	return istype(special_device) && special_device.mode == RPD_MODE
