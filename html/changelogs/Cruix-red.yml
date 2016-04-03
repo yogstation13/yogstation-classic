@@ -1,0 +1,7 @@
+author: Cruix
+
+delete-after: True
+
+changes: 
+  - rscadd: "The Chief Engineer has a new toy: the Rapid Engineering Device, a fusion of the RCD, RPD, and airlock painter. Use the 'change mode' verb or alt-click on the RED to change modes. Spawns in the CE's locker at roundstart."
+  - bugfix: "You can no longer set the airlock access settings on an RCD from long range."

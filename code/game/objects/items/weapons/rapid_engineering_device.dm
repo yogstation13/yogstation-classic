@@ -3,10 +3,10 @@
 #define AIRLOCK_PAINTER_MODE 3
 
 /obj/item/weapon/rapid_engineering_device
-	name = "rapid engineering device (RED)"
+	name = "Rapid Engineering Device (RED)"
 	desc = "A device used to rapidly build, paint, and deconstruct pipes, walls, floors, and doors."
 	icon = 'icons/obj/items.dmi'
-	icon_state = "rpd"
+	icon_state = "HT_RCD"
 	opacity = 0
 	density = 0
 	anchored = 0
@@ -41,6 +41,9 @@
 	painter = new /obj/item/weapon/airlock_painter(src)
 	painter.name = name
 	qdel(painter.ink)
+	painter.ink = null
+
+	update_desc()
 
 /obj/item/weapon/rapid_engineering_device/loaded/New()
 	..()
