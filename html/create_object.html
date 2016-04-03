@@ -2,6 +2,7 @@
 
 <head>
   <title>Create Object</title>
+  <script src="libraries.min.js"></script>
   <style type="text/css">
     body
     {
@@ -27,7 +28,7 @@
 	<form name="spawner" action="byond://?src=/* ref src */" method="get">
 		<input type="hidden" name="src" value="/* ref src */">
 		
-		Type <input type="text" name="filter" value="" onkeypress="submitFirst(event)" style="width:280px;height:25"> <input type = "button" value = "Search" onclick = "updateSearch()" /><br>
+		Type <input type="text" id="filter" name="filter" value="" onkeypress="submitFirst(event)" style="width:280px;height:25"> <input type = "button" value = "Search" onclick = "updateSearch()" /><br>
 		Offset: <input type="text" name="offset" value="x,y,z" style="width:250px">
 		
 		A <input type="radio" name="offset_type" value="absolute">
@@ -102,6 +103,11 @@
 				object_list.options[0].selected = 'true';
 			}
 		}
+		
+		$("#filter").keyup(function() {
+			if($("#filter").val().length > 2)
+				updateSearch();
+		});
 	</script>
 </body>
 
