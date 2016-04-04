@@ -46,7 +46,7 @@ a message like this:
 
 ```
 saving yogstation.dmb (DEBUG mode)
-.dmb - 0 errors, 0 warnings
+yogstation.dmb - 0 errors, 0 warnings
 ```
 
 If you see any errors or warnings, something has gone wrong - possibly a corrupt
