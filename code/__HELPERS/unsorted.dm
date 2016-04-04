@@ -406,8 +406,9 @@ Turf and target are seperate in case you want to teleport some distance from a t
 
 // Shows an HTML window list of mobs, use a Topic to get the result
 // Pass the SRC of the object you want to receive the Topic.
+// Param will be passed back to the Topic, it can be used to determine what function called this.
 // See /code/modules/mob/dead/observer/topic.dm for an example
-/proc/search_mob(var/source)
+/proc/search_mob(var/source, var/param)
 	var/list/mobs = getmobs()
 	var/list/listed_names = list()
 	var/list/listed_refs = list()
@@ -423,8 +424,9 @@ Turf and target are seperate in case you want to teleport some distance from a t
 	html_form = replacetext(html_form, "null /* mob_names */", "\"[names_js]\"")
 	html_form = replacetext(html_form, "null /* mob_refs */", "\"[refs_js]\"")
 	html_form = replacetext(html_form, "/* ref src */", "\ref[source]")
+	html_form = replacetext(html_form, "/* param */", param)
 
-	source << browse(html_form, "window=schmob;size=425x475")
+	source << browse(html_form, "window=schmob;size=415x445")
 
 //Returns a list of all mobs with their name
 /proc/getmobs()
