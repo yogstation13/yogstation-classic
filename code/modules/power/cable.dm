@@ -78,7 +78,8 @@ By design, d1 is the smallest direction and d2 is the highest
 
 	var/turf/T = src.loc			// hide if turf is not intact
 
-	if(level==1) hide(T.intact)
+	if(T)
+		if(level==1) hide(T.intact)
 	cable_list += src //add it to the global cable list
 
 	if(d1)
