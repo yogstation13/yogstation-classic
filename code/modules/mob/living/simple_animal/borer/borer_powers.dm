@@ -4,7 +4,7 @@
 	set desc = "Infect a adjacent human being"
 
 	if(victim)
-		src << "<span class='boldnotice'>You already have a host! leave this one if you want a new one.</span>"
+		src << "<span class='warning'>You already have a host! leave this one if you want a new one.</span>"
 
 	if(stat == DEAD)
 		return
@@ -18,14 +18,15 @@
 	if(!H) return
 
 	if(H.borer)
-		src << "<span class='usernotice'>[victim] is already infected!</span>"
+		src << "<span class='warning'>[victim] is already infected!</span>"
 		return
 
 	if(CanInfect(H))
-		src << "<span class='boldnotice'>You slither up [H] and begin probing at their ear canal...</span>"
+		src << "<span class='warning'>You slither up [H] and begin probing at their ear canal...</span>"
 		src.layer = MOB_LAYER
+		H << "<span class='userdanger'>You feel something trying to enter your ear...</span>"
 		if(!do_after(src,30))
-			src << "<span class='boldnotice'>As [H] moves away, you are dislodged and fall to the ground.</span>"
+			src << "<span class='warning'>As [H] moves away, you are dislodged and fall to the ground.</span>"
 			return
 
 		if(!H || !src) return
@@ -37,11 +38,11 @@
 		return 0
 
 	if(stat != CONSCIOUS)
-		src << "<span class='boldnotice'>I must be conscious to do this...</span>"
+		src << "<span class='warning'>I must be conscious to do this...</span>"
 		return 0
 
 	if(H.stat == DEAD)
-		src << "<span class='boldnotice'>This subject does not have a strong enough life energy...</span>"
+		src << "<span class='warning'>This subject does not have a strong enough life energy...</span>"
 		return 0
 	return 1
 
@@ -51,14 +52,14 @@
 	set desc = "Push some chemicals into your host's bloodstream."
 
 	if(!victim)
-		src << "<span class='boldnotice'>You are not inside a host body.</span>"
+		src << "<span class='warning'>You are not inside a host body!</span>"
 		return
 
 	if(stat != CONSCIOUS)
-		src << "<span class='boldnotice'>You cannot secrete chemicals in your current state.</span>"
+		src << "<span class='warning'>You cannot secrete chemicals in your current state.</span>"
 
 	if(docile)
-		src << "<span class='boldnotice'>You are feeling far too docile to do that.</span>"
+		src << "<span class='warning'>You are feeling far too docile to do that.</span>"
 		return
 
 	var content = ""
@@ -87,7 +88,7 @@
 	set desc = "Become invisible to the common eye."
 
 	if(victim)
-		src << "<span class='boldnotice'>You cannot do this whilst you are infecting a host</span>"
+		src << "<span class='warning'>You cannot do this whilst you are infecting a host</span>"
 
 	if(src.stat != CONSCIOUS)
 		return
@@ -107,15 +108,15 @@
 	set desc = "Freeze the limbs of a potential host with supernatural fear."
 
 	if(world.time - used_dominate < 150)
-		src << "<span class='boldnotice'>You cannot use that ability again so soon.</span>"
+		src << "<span class='warning'>You cannot use that ability again so soon.</span>"
 		return
 
 	if(victim)
-		src << "<span class='boldnotice'>You cannot do that from within a host body.</span>"
+		src << "<span class='warning'>You cannot do that from within a host body.</span>"
 		return
 
 	if(src.stat != CONSCIOUS)
-		src << "<span class='boldnotice'>You cannot do that in your current state.</span>"
+		src << "<span class='warning'>You cannot do that in your current state.</span>"
 		return
 
 	var/list/choices = list()
@@ -124,7 +125,7 @@
 			choices += C
 
 	if(world.time - used_dominate < dominate_cooldown)
-		src << "<span class='boldnotice'>You cannot use that ability again so soon.</span>"
+		src << "<span class='warning'>You cannot use that ability again so soon.</span>"
 		return
 
 	var/mob/living/carbon/M = input(src,"Who do you wish to dominate?") in null|choices
@@ -134,7 +135,7 @@
 	if(!Adjacent(M)) return
 
 	if(M.borer)
-		src << "<span class='boldnotice'>You cannot paralyze someone who is already infected!</span>"
+		src << "<span class='warning'>You cannot paralyze someone who is already infected!</span>"
 		return
 
 	src.layer = MOB_LAYER
@@ -195,15 +196,15 @@
 	set desc = "Brings your host back from the dead."
 
 	if(!victim)
-		src << "<span class='boldnotice'>You need a host to be able to use this.</span>"
+		src << "<span class='warning'>You need a host to be able to use this.</span>"
 		return
 
 	if(docile)
-		src << "<span class='boldnotice'>You are feeling too docile to use this!</span>"
+		src << "<span class='warning'>You are feeling too docile to use this!</span>"
 		return
 
 	if(chemicals < 250)
-		src << "<span class='boldnotice'>You need 250 chems to use this!</span>"
+		src << "<span class='warning'>You need 250 chems to use this!</span>"
 		return
 
 	chemicals -= 250
@@ -237,7 +238,7 @@
 	set desc = "Fully connect to the brain of your host."
 
 	if(!victim)
-		src << "<span class='boldnotice'>You are not inside a host body.</span>"
+		src << "<span class='warning'>You are not inside a host body.</span>"
 		return
 
 	if(src.stat != CONSCIOUS)
@@ -245,15 +246,15 @@
 		return
 
 	if(docile)
-		src << "<span class='boldnotice'>You are feeling far too docile to do that.</span>"
+		src << "<span class='warning'>You are feeling far too docile to do that.</span>"
 		return
 
 	if(world.time - used_control < control_cooldown)
-		src << "<span class='boldnotice'>Its too soon to use that again!</span>"
+		src << "<span class='warning'>Its too soon to use that again!</span>"
 		return
 
 	if(influence < 50)
-		src << "<span class='boldnotice'>You need atleast 50% influence to do this!</span>"
+		src << "<span class='warning'>You need atleast 50% influence to do this!</span>"
 		return
 
 	src << "<span class='danger'>You begin delicately adjusting your connection to the host brain...</span>"
@@ -266,7 +267,7 @@
 
 
 			log_game("[src]/([src.ckey]) assumed control of [victim]/([victim.ckey] with borer powers.")
-			src << "<span class='boldnotice'>You plunge your probosci deep into the cortex of the host brain, interfacing directly with their nervous system.</span>"
+			src << "<span class='warning'>You plunge your probosci deep into the cortex of the host brain, interfacing directly with their nervous system.</span>"
 			victim << "<span class='userdanger'>You feel a strange shifting sensation behind your eyes as an alien consciousness displaces yours.</span>"
 
 			// host -> brain
@@ -321,7 +322,7 @@
 	set desc = "Punish your victim"
 
 	if(!victim)
-		src << "<span class='boldnotice'>You are not inside a host body.</span>"
+		src << "<span class='warning'>You are not inside a host body.</span>"
 		return
 
 	if(src.stat != CONSCIOUS)
@@ -329,11 +330,11 @@
 		return
 
 	if(docile)
-		src << "<span class='boldnotice'>You are feeling far too docile to do that.</span>"
+		src << "<span class='warning'>You are feeling far too docile to do that.</span>"
 		return
 
 	if(chemicals < 75)
-		src << "<span class='boldnotice'>You need 75 chems to punish your host.</span>"
+		src << "<span class='warning'>You need 75 chems to punish your host.</span>"
 		return
 
 	var/punishment = input("Select a punishment:.", "Punish") as null|anything in list("Blindness","Deafness","Stun")
@@ -342,7 +343,7 @@
 		return
 
 	if(chemicals < 75)
-		src << "<span class='boldnotice'>You need 75 chems to punish your host.</span>"
+		src << "<span class='warning'>You need 75 chems to punish your host.</span>"
 		return
 
 	switch(punishment) //Hardcoding this stuff.
@@ -405,8 +406,8 @@ mob/living/carbon/proc/release_control()
 
 		var/mob/living/simple_animal/borer/newborer = new(get_turf(src))
 		newborer.transfer_personality(C)
-		visible_message("<span class='userdanger'>[src] heaves violently, expelling a rush of vomit and a wriggling, sluglike creature!</span>")
+		visible_message("<span class='danger'>[src] heaves violently, expelling a rush of vomit and a wriggling, sluglike creature!</span>")
 		log_game("[src]/([src.ckey]) has spawned a new borer via reproducing.")
 	else
-		src << "<span class='boldnotice'>You do not have enough chemicals stored to reproduce.</span>"
+		src << "<span class='warning'>You do not have enough chemicals stored to reproduce.</span>"
 		return
