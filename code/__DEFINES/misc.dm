@@ -263,3 +263,7 @@
 #define GHOST_ORBIT_HEXAGON		"hexagon"
 #define GHOST_ORBIT_SQUARE		"square"
 #define GHOST_ORBIT_PENTAGON	"pentagon"
+
+//Ability Resouce Types
+#define RESOURCE_ALIEN 1
+#define RESOURCE_CHANGELING 2

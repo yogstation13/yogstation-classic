@@ -1,13 +1,21 @@
-/obj/effect/proc_holder/changeling/panacea
+/obj/item/organ/internal/ability_organ/changeling/panacea
+	name = "anatomic panacea gland"
+	desc = "a miracle organ that can cure diseases, remove toxins and radiation damage, and reset the owner's genetic code."
+	slot = "panacea"
+	zone = "chest"
+	granted_powers = list(/obj/effect/proc_holder/resource_ability/changeling/panacea)
+
+/obj/effect/proc_holder/resource_ability/changeling/panacea
 	name = "Anatomic Panacea"
 	desc = "Expels impurifications from our form; curing diseases, removing toxins and radiation, and resetting our genetic code completely."
 	helptext = "Can be used while unconscious."
-	chemical_cost = 20
+	resource_cost = 20
 	dna_cost = 1
 	req_stat = UNCONSCIOUS
+	organtype = /obj/item/organ/internal/ability_organ/changeling/panacea
 
 //Heals the things that the other regenerative abilities don't.
-/obj/effect/proc_holder/changeling/panacea/sting_action(mob/user)
+/obj/effect/proc_holder/resource_ability/changeling/panacea/sting_action(mob/user)
 
 	user << "<span class='notice'>We cleanse impurities from our form.</span>"
 	user.reagents.add_reagent("mutadone", 10)

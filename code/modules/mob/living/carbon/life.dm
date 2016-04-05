@@ -12,8 +12,8 @@
 		for(var/obj/item/organ/internal/O in internal_organs)
 			O.on_life()
 
-	//Updates the number of stored chemicals for powers
-	handle_changeling()
+	if(mind && mind.changeling)
+		mind.changeling.regenerate(src)
 
 ///////////////
 // BREATHING //
@@ -203,10 +203,6 @@
 		else
 			if (internals)
 				internals.icon_state = "internal0"
-	return
-
-
-/mob/living/carbon/proc/handle_changeling()
 	return
 
 /mob/living/carbon/handle_mutations_and_radiation()

@@ -15,4 +15,4 @@
 			S << rendered
 
 /mob/living/carbon/hivecheck()
-	return getorgan(/obj/item/organ/internal/alien/hivenode)
+	return getorgan(/obj/item/organ/internal/ability_organ/alien/hivenode)

@@ -81,7 +81,7 @@
 		ready_dna(M)
 		if(!origin.changeling)
 			M.make_changeling(1)
-		origin.changeling.purchasedpowers += new /obj/effect/proc_holder/changeling/humanform(null)
+		M.AddAbility(new /obj/effect/proc_holder/resource_ability/changeling/humanform(null))
 		M.key = origin.key
 	owner.gib()
 

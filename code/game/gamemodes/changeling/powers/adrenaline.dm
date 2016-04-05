@@ -1,14 +1,22 @@
-/obj/effect/proc_holder/changeling/adrenaline
+/obj/item/organ/internal/ability_organ/changeling/adrenalin
+	name = "Adrenaline Sacs"
+	desc = "a gland that can release large amounts of adrenalin on demand."
+	slot = "adrenalin_sac"
+	zone = "chest"
+	granted_powers = list(/obj/effect/proc_holder/resource_ability/changeling/adrenaline)
+
+/obj/effect/proc_holder/resource_ability/changeling/adrenaline
 	name = "Adrenaline Sacs"
 	desc = "We evolve additional sacs of adrenaline throughout our body."
 	helptext = "Removes all stuns instantly and adds a short-term reduction in further stuns. Can be used while unconscious. Continued use poisons the body."
-	chemical_cost = 30
+	resource_cost = 30
 	dna_cost = 2
 	req_human = 1
 	req_stat = UNCONSCIOUS
+	organtype = /obj/item/organ/internal/ability_organ/changeling/adrenalin
 
 //Recover from stuns.
-/obj/effect/proc_holder/changeling/adrenaline/sting_action(mob/living/user)
+/obj/effect/proc_holder/resource_ability/changeling/adrenaline/sting_action(mob/living/user)
 	user << "<span class='notice'>Energy rushes through us.[user.lying ? " We arise." : ""]</span>"
 	user.stat = 0
 	user.SetParalysis(0)

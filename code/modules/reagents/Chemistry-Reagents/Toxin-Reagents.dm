@@ -60,7 +60,7 @@
 		holder.remove_reagent("epinephrine", 2*REM)
 	if(iscarbon(M))
 		var/mob/living/carbon/C = M
-		C.adjustPlasma(20)
+		C.adjustResource(RESOURCE_ALIEN, 20)
 	..()
 	return
 

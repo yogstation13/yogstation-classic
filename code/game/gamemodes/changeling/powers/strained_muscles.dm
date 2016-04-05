@@ -1,17 +1,25 @@
 //Strained Muscles: Temporary speed boost at the cost of rapid damage
 //Limited because of hardsuits and such; ideally, used for a quick getaway
 
-/obj/effect/proc_holder/changeling/strained_muscles
+/obj/item/organ/internal/ability_organ/changeling/strained_muscles
+	name = "muscle strain organ"
+	desc = "an organ that can stress the user's muscles past normal limits, hurting themselves in the process."
+	slot = "strength_gland"
+	zone = "chest"
+	granted_powers = list(/obj/effect/proc_holder/resource_ability/changeling/strained_muscles)
+
+/obj/effect/proc_holder/resource_ability/changeling/strained_muscles
 	name = "Strained Muscles"
 	desc = "We evolve the ability to reduce the acid buildup in our muscles, allowing us to move much faster."
 	helptext = "The strain will make us tired, and we will rapidly become fatigued. Standard weight restrictions, like hardsuits, still apply. Cannot be used in lesser form."
-	chemical_cost = 0
+	resource_cost = 0
 	dna_cost = 1
 	req_human = 1
 	var/stacks = 0 //Increments every 5 seconds; damage increases over time
 	var/active = 0 //Whether or not you are a hedgehog
+	organtype = /obj/item/organ/internal/ability_organ/changeling/strained_muscles
 
-/obj/effect/proc_holder/changeling/strained_muscles/sting_action(mob/living/carbon/user)
+/obj/effect/proc_holder/resource_ability/changeling/strained_muscles/sting_action(mob/living/carbon/user)
 	active = !active
 	if(active)
 		user << "<span class='notice'>Our muscles tense and strengthen.</span>"

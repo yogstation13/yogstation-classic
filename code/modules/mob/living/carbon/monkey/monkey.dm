@@ -186,7 +186,7 @@
 		stat(null, "Move Mode: [m_intent]")
 		if(client && mind)
 			if(mind.changeling)
-				stat("Chemical Storage", "[mind.changeling.chem_charges]/[mind.changeling.chem_storage]")
+				stat("Chemical Storage", "[getResource(RESOURCE_CHANGELING)]/[getResourceMax(RESOURCE_CHANGELING)]")
 				stat("Absorbed DNA", mind.changeling.absorbedcount)
 	return
 

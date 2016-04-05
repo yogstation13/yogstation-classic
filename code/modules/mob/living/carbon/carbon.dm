@@ -555,12 +555,14 @@ var/const/GALOSHES_DONT_HELP = 4
 		number += EFP.flash_protect
 	return number
 
-/mob/living/carbon/proc/AddAbility(obj/effect/proc_holder/alien/A)
+/mob/living/carbon/proc/AddAbility(obj/effect/proc_holder/resource_ability/A)
+	if(abilities.Find(A))
+		return
 	abilities.Add(A)
 	A.on_gain(src)
 	if(A.has_action)
 		if(!A.action)
-			A.action = new/datum/action/spell_action/alien
+			A.action = new/datum/action/spell_action/resource_action
 			A.action.target = A
 			A.action.name = A.name
 			A.action.button_icon = A.action_icon
@@ -569,20 +571,27 @@ var/const/GALOSHES_DONT_HELP = 4
 		A.action.Grant(src)
 	sortInsert(abilities, /proc/cmp_abilities_cost, 0)
 
-/mob/living/carbon/proc/RemoveAbility(obj/effect/proc_holder/alien/A)
-	abilities.Remove(A)
-	A.on_lose(src)
-	if(A.action)
-		A.action.Remove(src)
+/mob/living/carbon/proc/RemoveAbility(obj/effect/proc_holder/resource_ability/A)
+	if(abilities.Remove(A))
+		A.on_lose(src)
+		if(A.action)
+			A.action.Remove(src)
 
 /mob/living/carbon/proc/add_abilities_to_panel()
-	for(var/obj/effect/proc_holder/alien/A in abilities)
-		statpanel("[A.panel]",A.plasma_cost > 0?"([A.plasma_cost])":"",A)
+	if(mind && mind.changeling)
+		for(var/V in mind.changeling.non_organ_powers)
+			var/obj/effect/proc_holder/resource_ability/changeling/A = V
+			if(A.resource_cost >= 0 && A.can_be_used_by(src))
+				statpanel("[A.panel]",A.resource_cost > 0 ? "\[[A.resource_cost]\]" : "",A)
+	for(var/V in abilities)
+		var/obj/effect/proc_holder/resource_ability/A = V
+		if(A.resource_cost >= 0)
+			statpanel("[A.panel]",A.resource_cost > 0 ? "\[[A.resource_cost]\]" : "",A)
 
 /mob/living/carbon/Stat()
 	..()
 	if(statpanel("Status"))
-		var/obj/item/organ/internal/alien/plasmavessel/vessel = getorgan(/obj/item/organ/internal/alien/plasmavessel)
+		var/obj/item/organ/internal/ability_organ/alien/plasmavessel/vessel = getorgan(/obj/item/organ/internal/ability_organ/alien/plasmavessel)
 		if(vessel)
 			stat(null, "Plasma Stored: [vessel.storedPlasma]/[vessel.max_plasma]")
 	add_abilities_to_panel()

@@ -328,7 +328,7 @@
 	return attack_hand(user)
 
 /obj/structure/alien/egg/attack_hand(mob/living/user)
-	if(user.getorgan(/obj/item/organ/internal/alien/plasmavessel))
+	if(user.getorgan(/obj/item/organ/internal/ability_organ/alien/plasmavessel))
 		switch(status)
 			if(BURST)
 				user << "<span class='notice'>You clear the hatched egg.</span>"

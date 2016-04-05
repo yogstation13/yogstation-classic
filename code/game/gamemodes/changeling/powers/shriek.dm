@@ -1,13 +1,21 @@
-/obj/effect/proc_holder/changeling/resonant_shriek
+/obj/item/organ/internal/ability_organ/changeling/resonant_shriek
+	name = "Resonant Shriek Organ"
+	desc = "an organ that allows the owner to let out a deafening high-pitched shriek."
+	slot = "resonant_shriek_gland"
+	zone = "mouth"
+	granted_powers = list(/obj/effect/proc_holder/resource_ability/changeling/resonant_shriek)
+
+/obj/effect/proc_holder/resource_ability/changeling/resonant_shriek
 	name = "Resonant Shriek"
 	desc = "Our lungs and vocal chords shift, allowing us to briefly emit a noise that deafens and confuses the weak-minded."
 	helptext = "Emits a high-frequency sound that confuses and deafens humans, blows out nearby lights and overloads cyborg sensors."
-	chemical_cost = 20
+	resource_cost = 20
 	dna_cost = 1
 	req_human = 1
+	organtype = /obj/item/organ/internal/ability_organ/changeling/resonant_shriek
 
 //A flashy ability, good for crowd control and sewing chaos.
-/obj/effect/proc_holder/changeling/resonant_shriek/sting_action(mob/user)
+/obj/effect/proc_holder/resource_ability/changeling/resonant_shriek/sting_action(mob/user)
 	for(var/mob/living/M in get_hearers_in_view(4, user))
 		if(iscarbon(M))
 			if(!M.mind || !M.mind.changeling)
@@ -28,14 +36,22 @@
 	feedback_add_details("changeling_powers","RS")
 	return 1
 
-/obj/effect/proc_holder/changeling/dissonant_shriek
+
+/obj/item/organ/internal/ability_organ/changeling/dissonant_shriek
+	name = "Dissonant Shriek Organ"
+	desc = "an organ that allows the owner to let out a shriek that overloads electronics."
+	slot = "dissonant_shriek_gland"
+	zone = "mouth"
+	granted_powers = list(/obj/effect/proc_holder/resource_ability/changeling/dissonant_shriek)
+
+/obj/effect/proc_holder/resource_ability/changeling/dissonant_shriek
 	name = "Dissonant Shriek"
 	desc = "We shift our vocal cords to release a high-frequency sound that overloads nearby electronics."
-	chemical_cost = 25
+	resource_cost = 25
 	dna_cost = 4
 
 //A flashy ability, good for crowd control and sewing chaos.
-/obj/effect/proc_holder/changeling/dissonant_shriek/sting_action(mob/user)
+/obj/effect/proc_holder/resource_ability/changeling/dissonant_shriek/sting_action(mob/user)
 	user.visible_message("<span class='boldwarning'>An unearthly keening resounds about the area, making your vision swim!</span>", 7)
 	for(var/obj/machinery/light/L in range(5, usr))
 		L.on = 1

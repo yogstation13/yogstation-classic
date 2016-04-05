@@ -1,24 +1,25 @@
 var/list/sting_paths
+var/list/changeling_organ_paths
 // totally stolen from the new player panel.  YAYY
 
-/obj/effect/proc_holder/changeling/evolution_menu
+/obj/effect/proc_holder/resource_ability/changeling/evolution_menu
 	name = "-Evolution Menu-" //Dashes are so it's listed before all the other abilities.
 	desc = "Choose our method of subjugation."
 	dna_cost = 0
 
-/obj/effect/proc_holder/changeling/evolution_menu/Click()
+/obj/effect/proc_holder/resource_ability/changeling/evolution_menu/Click()
 	if(!usr || !usr.mind || !usr.mind.changeling)
 		return
 	var/datum/changeling/changeling = usr.mind.changeling
 
 	if(!sting_paths)
-		sting_paths = init_paths(/obj/effect/proc_holder/changeling)
+		sting_paths = init_paths(/obj/effect/proc_holder/resource_ability/changeling)
 
-	var/dat = create_menu(changeling)
+	var/dat = create_menu(changeling, usr)
 	usr << browse(dat, "window=powers;size=600x700")//900x480
 
 
-/obj/effect/proc_holder/changeling/evolution_menu/proc/create_menu(datum/changeling/changeling)
+/obj/effect/proc_holder/resource_ability/changeling/evolution_menu/proc/create_menu(datum/changeling/changeling, mob/living/carbon/user)
 	var/dat
 	dat +="<html><head><title>Changling Evolution Menu</title></head>"
 
@@ -232,11 +233,11 @@ var/list/sting_paths
 	var/i = 1
 	for(var/path in sting_paths)
 
-		var/obj/effect/proc_holder/changeling/P = new path()
+		var/obj/effect/proc_holder/resource_ability/changeling/P = new path()
 		if(P.dna_cost <= 0) //Let's skip the crap we start with. Keeps the evolution menu uncluttered.
 			continue
 
-		var/ownsthis = changeling.has_sting(P)
+		var/ownsthis = changeling.has_sting(P, user)
 
 		var/color
 		if(ownsthis)
@@ -284,7 +285,7 @@ var/list/sting_paths
 	return dat
 
 
-/obj/effect/proc_holder/changeling/evolution_menu/Topic(href, href_list)
+/obj/effect/proc_holder/resource_ability/changeling/evolution_menu/Topic(href, href_list)
 	..()
 	if(!(iscarbon(usr) && usr.mind && usr.mind.changeling))
 		return
@@ -293,65 +294,82 @@ var/list/sting_paths
 		usr.mind.changeling.purchasePower(usr, href_list["P"])
 	else if(href_list["readapt"])
 		usr.mind.changeling.lingRespec(usr)
-	var/dat = create_menu(usr.mind.changeling)
+	var/dat = create_menu(usr.mind.changeling, usr)
 	usr << browse(dat, "window=powers;size=600x700")
 /////
 
-/datum/changeling/proc/purchasePower(mob/living/carbon/user, sting_name)
+/datum/changeling/proc/purchasePower(mob/living/carbon/user, sting_name, suppress_warning = 0)
 
-	var/obj/effect/proc_holder/changeling/thepower = null
+	var/obj/effect/proc_holder/resource_ability/changeling/thepower = null
 
 	if(!sting_paths)
-		sting_paths = init_paths(/obj/effect/proc_holder/changeling)
+		sting_paths = init_paths(/obj/effect/proc_holder/resource_ability/changeling)
 	for(var/path in sting_paths)
-		var/obj/effect/proc_holder/changeling/S = new path()
+		var/obj/effect/proc_holder/resource_ability/changeling/S = new path()
 		if(S.name == sting_name)
 			thepower = S
 
 	if(thepower == null)
-		user << "This is awkward. Changeling power purchase failed, please report this bug to a coder!"
+		if(!suppress_warning)
+			user << "This is awkward. Changeling power purchase failed, please report this bug to a coder!"
 		return
 
 	if(absorbedcount < thepower.req_dna)
-		user << "We lack the energy to evolve this ability!"
+		if(!suppress_warning)
+			user << "We lack the energy to evolve this ability!"
 		return
 
-	if(has_sting(thepower))
-		user << "We have already evolved this ability!"
+	if(has_sting(thepower, user))
+		if(!suppress_warning)
+			user << "We have already evolved this ability!"
 		return
 
 	if(thepower.dna_cost < 0)
-		user << "We cannot evolve this ability."
+		if(!suppress_warning)
+			user << "We cannot evolve this ability."
 		return
 
 	if(geneticpoints < thepower.dna_cost)
-		user << "We have reached our capacity for abilities."
+		if(!suppress_warning)
+			user << "We have reached our capacity for abilities."
 		return
 
 	if(user.status_flags & FAKEDEATH)//To avoid potential exploits by buying new powers while in stasis, which clears your verblist.
-		user << "We lack the energy to evolve new abilities right now."
+		if(!suppress_warning)
+			user << "We lack the energy to evolve new abilities right now."
 		return
 
 	geneticpoints -= thepower.dna_cost
-	purchasedpowers += thepower
-	thepower.on_purchase(user)
+	if(thepower.organtype)
+		var/obj/item/organ/internal/ability_organ/changeling/theorgan = new thepower.organtype()
+		theorgan.Insert(user) //this handles adding the power.
+	else
+		thepower.on_gain(user)
+		non_organ_powers += thepower
 
 //Reselect powers
-/datum/changeling/proc/lingRespec(mob/user)
+/datum/changeling/proc/lingRespec(mob/living/carbon/user)
 	if(!ishuman(user))
 		user << "<span class='danger'>We can't remove our evolutions in this form!</span>"
 		return
 	if(canrespec)
 		user << "<span class='notice'>We have removed our evolutions from this form, and are now ready to readapt.</span>"
-		user.remove_changeling_powers(1, 1)//isn't this redundant?
+		var/refund_points = 0
+		for(var/obj/item/organ/internal/ability_organ/changeling/O in user.internal_organs)
+			for(var/obj/effect/proc_holder/resource_ability/changeling/thepower in O.granted_powers)
+				refund_points += thepower.dna_cost
+		for(var/obj/effect/proc_holder/resource_ability/changeling/thepower in user.abilities)
+			refund_points += thepower.dna_cost
+		user.remove_changeling_powers(1, 1, 0)
 		canrespec = 0
 		user.make_changeling()
+		geneticpoints = refund_points
 		return 1
 	else
 		user << "<span class='danger'>You lack the power to readapt your evolutions!</span>"
 		return 0
 
-/mob/proc/make_changeling(var/createhuman = 0)
+/mob/living/carbon/proc/make_changeling(var/createhuman = 0)
 	if(!mind)
 		return
 	if(!ishuman(src) && !ismonkey(src))
@@ -359,23 +377,21 @@ var/list/sting_paths
 	if(!mind.changeling)
 		mind.changeling = new /datum/changeling(gender)
 	if(!sting_paths)
-		sting_paths = init_paths(/obj/effect/proc_holder/changeling)
-	if(mind.changeling.purchasedpowers)
-		remove_changeling_powers(1, 1)
+		sting_paths = init_paths(/obj/effect/proc_holder/resource_ability/changeling)
+	if(!changeling_organ_paths)
+		changeling_organ_paths = init_paths(/obj/item/organ/internal/ability_organ/changeling)
+	remove_changeling_powers(1, 1, 1)
+	//get free organs
+	for(var/path in changeling_organ_paths)
+		var/obj/item/organ/internal/ability_organ/changeling/chem_storage/organ = new path()
+		if(organ.free_organ && !getorgan(path))
+			organ.Insert(src)
 	// purchase free powers.
 	for(var/path in sting_paths)
-		var/obj/effect/proc_holder/changeling/S = new path()
+		var/obj/effect/proc_holder/resource_ability/changeling/S = new path()
 		if(!S.dna_cost)
 			if(!mind.changeling.has_sting(S))
-				mind.changeling.purchasedpowers+=S
-			S.on_purchase(src)
-	//move any revive abilities to the bottom of the list, like people are used to.
-	var/revive_abilities = list()//there is only one regenerate abiliy at the moment, but there may be more in the future. Hence the list. Hopefully if more are added, the coders extend the current revive ability or add to this proc.
-	for(var/obj/effect/proc_holder/changeling/p in mind.changeling.purchasedpowers)
-		if(istype(p, /obj/effect/proc_holder/changeling/revive))
-			revive_abilities += p
-			mind.changeling.purchasedpowers -= p
-	mind.changeling.purchasedpowers += revive_abilities
+				mind.changeling.purchasePower(src, S.name, 1)
 
 	var/mob/living/carbon/C = src		//only carbons have dna now, so we have to typecaste
 	if(createhuman)
@@ -384,34 +400,45 @@ var/list/sting_paths
 	mind.changeling.first_prof = prof
 	return 1
 
-/datum/changeling/proc/reset()
+/datum/changeling/proc/reset(mob/living/carbon/the_ling)
 	chosen_sting = null
 	geneticpoints = initial(geneticpoints)
 	sting_range = initial(sting_range)
-	chem_storage = initial(chem_storage)
-	chem_recharge_rate = initial(chem_recharge_rate)
-	chem_charges = min(chem_charges, chem_storage)
-	chem_recharge_slowdown = initial(chem_recharge_slowdown)
+	var/obj/item/organ/internal/ability_organ/changeling/chem_storage/chem_store = the_ling.getorgan(/obj/item/organ/internal/ability_organ/changeling/chem_storage)
+	if(chem_store)
+		chem_store.chem_storage = initial(chem_store.chem_storage)
+		chem_store.chem_recharge_rate = initial(chem_store.chem_recharge_rate)
+		chem_store.chem_charges = min(chem_store.chem_charges, chem_store.chem_storage)
+		chem_store.chem_recharge_slowdown = initial(chem_store.chem_recharge_slowdown)
 	mimicing = ""
 
-/mob/proc/remove_changeling_powers(keep_free_powers=0, keep_revive_powers=0)
+/mob/living/carbon/proc/remove_changeling_powers(keep_free_powers = 0, keep_revive_powers = 0, keep_organs = 0)
 	if(ishuman(src) || ismonkey(src))
 		if(mind && mind.changeling)
 			digitalcamo = 0
 			mind.changeling.changeling_speak = 0
-			mind.changeling.reset()
-			for(var/obj/effect/proc_holder/changeling/p in mind.changeling.purchasedpowers)
-				if(!((p.dna_cost == 0 && keep_free_powers) || (istype(p, /obj/effect/proc_holder/changeling/revive) && keep_revive_powers)) )
-					mind.changeling.purchasedpowers -= p
-				if(istype(p,/obj/effect/proc_holder/changeling/augmented_eyesight))
-					permanent_sight_flags -= SEE_MOBS
-					sight -= SEE_MOBS
+			mind.changeling.reset(src)
+			if(mind.changeling.non_organ_powers)
+				for(var/obj/effect/proc_holder/resource_ability/changeling/p in mind.changeling.non_organ_powers)
+					if(!((p.dna_cost == 0 && keep_free_powers) || (istype(p, /obj/effect/proc_holder/resource_ability/changeling/revive) && keep_revive_powers)) )
+						mind.changeling.non_organ_powers -= p
+						p.on_lose(src)
 		if(hud_used)
 			hud_used.lingstingdisplay.icon_state = null
 			hud_used.lingstingdisplay.invisibility = 101
 
-/datum/changeling/proc/has_sting(obj/effect/proc_holder/changeling/power)
-	for(var/obj/effect/proc_holder/changeling/P in purchasedpowers)
+		if(!keep_organs)
+			for(var/obj/item/organ/internal/ability_organ/changeling/O in internal_organs)
+				if(!(keep_free_powers && O.free_organ))
+					O.Remove(src, 1)
+					qdel(O)
+
+/datum/changeling/proc/has_sting(obj/effect/proc_holder/resource_ability/changeling/power, mob/living/carbon/user)
+	for(var/obj/effect/proc_holder/resource_ability/changeling/P in non_organ_powers)
 		if(power.name == P.name)
 			return 1
+	if(user)
+		for(var/obj/effect/proc_holder/resource_ability/changeling/P in user.abilities)
+			if(power.name == P.name)
+				return 1
 	return 0

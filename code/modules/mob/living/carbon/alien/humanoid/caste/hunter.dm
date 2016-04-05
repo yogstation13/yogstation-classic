@@ -6,7 +6,7 @@
 	icon_state = "alienh_s"
 
 /mob/living/carbon/alien/humanoid/hunter/New()
-	internal_organs += new /obj/item/organ/internal/alien/plasmavessel/small
+	internal_organs += new /obj/item/organ/internal/ability_organ/alien/plasmavessel/small
 	..()
 
 /mob/living/carbon/alien/humanoid/hunter/handle_hud_icons_health()

@@ -22,11 +22,11 @@
 
 	real_name = src.name
 
-	internal_organs += new /obj/item/organ/internal/alien/plasmavessel/large/queen
-	internal_organs += new /obj/item/organ/internal/alien/resinspinner
-	internal_organs += new /obj/item/organ/internal/alien/acid
-	internal_organs += new /obj/item/organ/internal/alien/neurotoxin
-	internal_organs += new /obj/item/organ/internal/alien/eggsac
+	internal_organs += new /obj/item/organ/internal/ability_organ/alien/plasmavessel/large/queen
+	internal_organs += new /obj/item/organ/internal/ability_organ/alien/resinspinner
+	internal_organs += new /obj/item/organ/internal/ability_organ/alien/acid
+	internal_organs += new /obj/item/organ/internal/ability_organ/alien/neurotoxin
+	internal_organs += new /obj/item/organ/internal/ability_organ/alien/eggsac
 
 	..()
 
@@ -57,14 +57,13 @@
 
 
 //Queen verbs
-/obj/effect/proc_holder/alien/lay_egg
+/obj/effect/proc_holder/resource_ability/alien/plant/lay_egg
 	name = "Lay Egg"
 	desc = "Lay an egg to produce huggers to impregnate prey with."
-	plasma_cost = 75
-	check_turf = 1
+	resource_cost = 75
 	action_icon_state = "alien_egg"
 
-/obj/effect/proc_holder/alien/lay_egg/fire(mob/living/carbon/user)
+/obj/effect/proc_holder/resource_ability/alien/lay_egg/fire(mob/living/carbon/user)
 	if(locate(/obj/structure/alien/egg) in get_turf(user))
 		user << "There's already an egg here."
 		return 0

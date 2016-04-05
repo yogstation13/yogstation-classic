@@ -1,34 +1,49 @@
+/obj/item/organ/internal/ability_organ/changeling/hivemind_comms
+	name = "hivemind node"
+	desc = "A gland located in the brain that allows its user to discreetly communicate and exchange DNA with changelings."
+	slot = "hivemind_comm"
+	zone = "head"
+	granted_powers = list(/obj/effect/proc_holder/resource_ability/changeling/hivemind_comms)
+
 //HIVEMIND COMMUNICATION (:g)
-/obj/effect/proc_holder/changeling/hivemind_comms
+/obj/effect/proc_holder/resource_ability/changeling/hivemind_comms
 	name = "Hivemind Communication"
 	desc = "We tune our senses to the airwaves to allow us to discreetly communicate and exchange DNA with other changelings."
 	helptext = "We will be able to talk with other changelings with :g. Exchanged DNA do not count towards absorb objectives."
 	dna_cost = 0
-	chemical_cost = -1
+	resource_cost = -1
+	organtype = /obj/item/organ/internal/ability_organ/changeling/hivemind_comms
 
-/obj/effect/proc_holder/changeling/hivemind_comms/on_purchase(var/mob/user)
+/obj/effect/proc_holder/resource_ability/changeling/hivemind_comms/on_gain(var/mob/living/carbon/user)
 	..()
 	var/datum/changeling/changeling=user.mind.changeling
 	changeling.changeling_speak = 1
 	user << "<i><font color=#800080>Use say \":g message\" to communicate with the other changelings.</font></i>"
-	var/obj/effect/proc_holder/changeling/hivemind_upload/S1 = new
-	if(!changeling.has_sting(S1))
-		changeling.purchasedpowers+=S1
-	var/obj/effect/proc_holder/changeling/hivemind_download/S2 = new
-	if(!changeling.has_sting(S2))
-		changeling.purchasedpowers+=S2
+	var/obj/effect/proc_holder/resource_ability/changeling/hivemind_upload/S1 = new
+	if(!changeling.has_sting(S1, user))
+		changeling.non_organ_powers += (S1)
+	var/obj/effect/proc_holder/resource_ability/changeling/hivemind_download/S2 = new
+	if(!changeling.has_sting(S2, user))
+		changeling.non_organ_powers += (S2)
 	return
+
+/obj/effect/proc_holder/resource_ability/changeling/hivemind_comms/on_lose(var/mob/living/carbon/user)
+	if(user.mind && user.mind.changeling)
+		for(var/obj/effect/proc_holder/resource_ability/changeling/P in user.mind.changeling.non_organ_powers)
+			if(istype(P, /obj/effect/proc_holder/resource_ability/changeling/hivemind_upload) || istype(P, /obj/effect/proc_holder/resource_ability/changeling/hivemind_download) )
+				user.mind.changeling.non_organ_powers -= P
+				P.on_lose(user)
 
 // HIVE MIND UPLOAD/DOWNLOAD DNA
 var/list/datum/dna/hivemind_bank = list()
 
-/obj/effect/proc_holder/changeling/hivemind_upload
+/obj/effect/proc_holder/resource_ability/changeling/hivemind_upload
 	name = "Hive Channel DNA"
 	desc = "Allows us to channel DNA in the airwaves to allow other changelings to absorb it."
-	chemical_cost = 10
+	resource_cost = 10
 	dna_cost = -1
 
-/obj/effect/proc_holder/changeling/hivemind_upload/sting_action(var/mob/user)
+/obj/effect/proc_holder/resource_ability/changeling/hivemind_upload/sting_action(var/mob/user)
 	var/datum/changeling/changeling = user.mind.changeling
 	var/list/names = list()
 	for(var/datum/changelingprofile/prof in changeling.stored_profiles)
@@ -52,13 +67,13 @@ var/list/datum/dna/hivemind_bank = list()
 	feedback_add_details("changeling_powers","HU")
 	return 1
 
-/obj/effect/proc_holder/changeling/hivemind_download
+/obj/effect/proc_holder/resource_ability/changeling/hivemind_download
 	name = "Hive Absorb DNA"
 	desc = "Allows us to absorb DNA that has been channeled to the airwaves. Does not count towards absorb objectives."
-	chemical_cost = 10
+	resource_cost = 10
 	dna_cost = -1
 
-/obj/effect/proc_holder/changeling/hivemind_download/can_sting(mob/living/carbon/user)
+/obj/effect/proc_holder/resource_ability/changeling/hivemind_download/can_sting(mob/living/carbon/user)
 	if(!..())
 		return
 	var/datum/changeling/changeling = user.mind.changeling
@@ -68,7 +83,7 @@ var/list/datum/dna/hivemind_bank = list()
 		return
 	return 1
 
-/obj/effect/proc_holder/changeling/hivemind_download/sting_action(mob/user)
+/obj/effect/proc_holder/resource_ability/changeling/hivemind_download/sting_action(mob/user)
 	var/datum/changeling/changeling = user.mind.changeling
 	var/list/names = list()
 	for(var/datum/changelingprofile/prof in hivemind_bank)

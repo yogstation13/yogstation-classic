@@ -1,9 +1,9 @@
-/obj/effect/proc_holder/changeling/sting
+/obj/effect/proc_holder/resource_ability/changeling/sting
 	name = "Tiny Prick"
 	desc = "Stabby stabby"
 	var/sting_icon = null
 
-/obj/effect/proc_holder/changeling/sting/Click()
+/obj/effect/proc_holder/resource_ability/changeling/sting/Click()
 	var/mob/user = usr
 	if(!user || !user.mind || !user.mind.changeling)
 		return
@@ -13,13 +13,13 @@
 		unset_sting(user)
 	return
 
-/obj/effect/proc_holder/changeling/sting/proc/set_sting(mob/user)
+/obj/effect/proc_holder/resource_ability/changeling/sting/proc/set_sting(mob/user)
 	user << "<span class='notice'>We prepare our sting, use alt+click or middle mouse button on target to sting them.</span>"
 	user.mind.changeling.chosen_sting = src
 	user.hud_used.lingstingdisplay.icon_state = sting_icon
 	user.hud_used.lingstingdisplay.invisibility = 0
 
-/obj/effect/proc_holder/changeling/sting/proc/unset_sting(mob/user)
+/obj/effect/proc_holder/resource_ability/changeling/sting/proc/unset_sting(mob/user)
 	user << "<span class='warning'>We retract our sting, we can't sting anyone for now.</span>"
 	user.mind.changeling.chosen_sting = null
 	user.hud_used.lingstingdisplay.icon_state = null
@@ -29,7 +29,7 @@
 	if(mind && mind.changeling && mind.changeling.chosen_sting)
 		src.mind.changeling.chosen_sting.unset_sting(src)
 
-/obj/effect/proc_holder/changeling/sting/can_sting(mob/user, mob/target)
+/obj/effect/proc_holder/resource_ability/changeling/sting/can_sting(mob/living/carbon/user, mob/target)
 	if(!..())
 		return
 	if(!user.mind.changeling.chosen_sting)
@@ -44,11 +44,11 @@
 		return //hope this ancient magic still works
 	if(target.mind && target.mind.changeling)
 		sting_feedback(user,target)
-		take_chemical_cost(user.mind.changeling)
+		take_chemical_cost(user)
 		return
 	return 1
 
-/obj/effect/proc_holder/changeling/sting/sting_feedback(mob/user, mob/target)
+/obj/effect/proc_holder/resource_ability/changeling/sting/sting_feedback(mob/user, mob/target)
 	if(!target)
 		return
 	user << "<span class='notice'>We stealthily sting [target.name].</span>"
@@ -57,18 +57,18 @@
 	return 1
 
 
-/obj/effect/proc_holder/changeling/sting/transformation
+/obj/effect/proc_holder/resource_ability/changeling/sting/transformation
 	name = "Transformation Sting"
 	desc = "We silently sting a human, injecting a retrovirus that forces them to transform."
 	helptext = "The victim will transform much like a changeling would. The effects will be obvious to the victim, and the process will damage our genomes."
 	sting_icon = "sting_transform"
-	chemical_cost = 40
+	resource_cost = 40
 	dna_cost = 3
 	genetic_damage = 100
 	//var/datum/dna/selected_dna = null
 	var/datum/changelingprofile/selected_dna = null
 
-/obj/effect/proc_holder/changeling/sting/transformation/Click()
+/obj/effect/proc_holder/resource_ability/changeling/sting/transformation/Click()
 	var/mob/user = usr
 	var/datum/changeling/changeling = user.mind.changeling
 	if(changeling.chosen_sting)
@@ -79,7 +79,7 @@
 		return
 	..()
 
-/obj/effect/proc_holder/changeling/sting/transformation/can_sting(mob/user, mob/target)
+/obj/effect/proc_holder/resource_ability/changeling/sting/transformation/can_sting(mob/user, mob/target)
 	if(!..())
 		return
 	if((target.disabilities & HUSK) || !check_dna_integrity(target))
@@ -87,7 +87,7 @@
 		return 0
 	return 1
 
-/obj/effect/proc_holder/changeling/sting/transformation/sting_action(mob/user, mob/target)
+/obj/effect/proc_holder/resource_ability/changeling/sting/transformation/sting_action(mob/user, mob/target)
 	add_logs(user, target, "stung", "transformation sting", " new identity is [selected_dna.dna.real_name]")
 	var/datum/dna/NewDNA = selected_dna.dna
 	if(ismonkey(target))
@@ -171,19 +171,19 @@
 	return 1*/
 
 
-/obj/effect/proc_holder/changeling/sting/extract_dna
+/obj/effect/proc_holder/resource_ability/changeling/sting/extract_dna
 	name = "Extract DNA Sting"
 	desc = "We stealthily sting a target and extract their DNA."
 	helptext = "Will give you the DNA of your target, allowing you to transform into them."
 	sting_icon = "sting_extract"
-	chemical_cost = 25
+	resource_cost = 25
 	dna_cost = 0
 
-/obj/effect/proc_holder/changeling/sting/extract_dna/can_sting(mob/user, mob/target)
+/obj/effect/proc_holder/resource_ability/changeling/sting/extract_dna/can_sting(mob/user, mob/target)
 	if(..())
 		return user.mind.changeling.can_absorb_dna(user, target)
 
-/obj/effect/proc_holder/changeling/sting/extract_dna/sting_action(mob/user, mob/living/carbon/human/target)
+/obj/effect/proc_holder/resource_ability/changeling/sting/extract_dna/sting_action(mob/user, mob/living/carbon/human/target)
 	add_logs(user, target, "stung", "extraction sting")
 	if((user.mind.changeling.has_dna(target.dna)))
 		user.mind.changeling.remove_profile(target)
@@ -192,30 +192,46 @@
 	feedback_add_details("changeling_powers","ED")
 	return 1
 
-/obj/effect/proc_holder/changeling/sting/mute
+/obj/item/organ/internal/ability_organ/changeling/mute_stinger
+	name = "Mute Stinger"
+	desc = "a stinger that can inject muting toxin."
+	slot = "mute_stinger"
+	zone = "r_arm"
+	granted_powers = list(/obj/effect/proc_holder/resource_ability/changeling/sting/mute)
+
+/obj/effect/proc_holder/resource_ability/changeling/sting/mute
 	name = "Mute Sting"
 	desc = "We silently sting a human, completely silencing them for a short time."
 	helptext = "Does not provide a warning to the victim that they have been stung, until they try to speak and cannot."
 	sting_icon = "sting_mute"
-	chemical_cost = 20
+	resource_cost = 20
 	dna_cost = 2
+	organtype = /obj/item/organ/internal/ability_organ/changeling/mute_stinger
 
-/obj/effect/proc_holder/changeling/sting/mute/sting_action(mob/user, mob/living/carbon/target)
+/obj/effect/proc_holder/resource_ability/changeling/sting/mute/sting_action(mob/user, mob/living/carbon/target)
 	add_logs(user, target, "stung", "mute sting")
 	if(target.reagents)
 		target.reagents.add_reagent("mutetoxin", 15)
 	feedback_add_details("changeling_powers","MS")
 	return 1
 
-/obj/effect/proc_holder/changeling/sting/blind
+/obj/item/organ/internal/ability_organ/changeling/blind_stinger
+	name = "Mute Stinger"
+	desc = "a stinger that can inject blinding toxin."
+	slot = "blind_stinger"
+	zone = "r_arm"
+	granted_powers = list(/obj/effect/proc_holder/resource_ability/changeling/sting/blind)
+
+/obj/effect/proc_holder/resource_ability/changeling/sting/blind
 	name = "Blind Sting"
 	desc = "Temporarily blinds the target."
 	helptext = "This sting completely blinds a target for a short time."
 	sting_icon = "sting_blind"
-	chemical_cost = 25
+	resource_cost = 25
 	dna_cost = 1
+	organtype = /obj/item/organ/internal/ability_organ/changeling/blind_stinger
 
-/obj/effect/proc_holder/changeling/sting/blind/sting_action(mob/user, mob/target)
+/obj/effect/proc_holder/resource_ability/changeling/sting/blind/sting_action(mob/user, mob/target)
 	add_logs(user, target, "stung", "blind sting")
 	target << "<span class='danger'>Your eyes burn horrifically!</span>"
 	target.disabilities |= NEARSIGHT
@@ -224,15 +240,22 @@
 	feedback_add_details("changeling_powers","BS")
 	return 1
 
-/obj/effect/proc_holder/changeling/sting/hallucinationpathogen
+/obj/item/organ/internal/ability_organ/changeling/hallucination_stinger
+	name = "Hallucination Stinger"
+	desc = "a stinger that can inject a hallucinogenic pathogen."
+	slot = "halluc_stinger"
+	zone = "l_arm"
+	granted_powers = list(/obj/effect/proc_holder/resource_ability/changeling/sting/hallucinationpathogen)
+
+/obj/effect/proc_holder/resource_ability/changeling/sting/hallucinationpathogen
 	name = "Hallucinogenic Pathogen Sting"
 	desc = "Unleashes a potent hallucinogenic pathogen upon the crew."
 	helptext = "We invite a pathogenic genome to take residence in our target, rendering them a host to a virulent hallucinogenic disease that is transmissable by air."
 	sting_icon = "sting_lsd"
-	chemical_cost = 50
+	resource_cost = 50
 	dna_cost = 5
 
-/obj/effect/proc_holder/changeling/sting/hallucinationpathogen/sting_action(mob/user, mob/living/carbon/target)
+/obj/effect/proc_holder/resource_ability/changeling/sting/hallucinationpathogen/sting_action(mob/user, mob/living/carbon/target)
 	add_logs(user, target, "stung", "hallucination pathogen")
 	spawn(rand(300,600))
 		if(target)

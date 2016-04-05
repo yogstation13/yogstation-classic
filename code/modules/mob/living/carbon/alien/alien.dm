@@ -30,11 +30,11 @@
 	verbs += /mob/living/proc/lay_down
 
 	internal_organs += new /obj/item/organ/internal/brain/alien
-	internal_organs += new /obj/item/organ/internal/alien/hivenode
+	internal_organs += new /obj/item/organ/internal/ability_organ/alien/hivenode
 	for(var/obj/item/organ/internal/I in internal_organs)
 		I.Insert(src)
 
-	AddAbility(new/obj/effect/proc_holder/alien/nightvisiontoggle(null))
+	AddAbility(new/obj/effect/proc_holder/resource_ability/alien/nightvisiontoggle(null))
 	..()
 
 /mob/living/carbon/alien/adjustToxLoss(amount)

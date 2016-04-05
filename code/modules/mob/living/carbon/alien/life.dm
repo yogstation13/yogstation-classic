@@ -14,7 +14,7 @@
 	var/Toxins_pp = (breath.toxins/breath.total_moles())*breath_pressure
 
 	if(Toxins_pp) // Detect toxins in air
-		adjustPlasma(breath.toxins*250)
+		adjustResource(RESOURCE_ALIEN, breath.toxins*250)
 		throw_alert("alien_tox")
 
 		toxins_used = breath.toxins

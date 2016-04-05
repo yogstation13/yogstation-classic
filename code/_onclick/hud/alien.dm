@@ -16,7 +16,7 @@
 
 /obj/screen/alien/nightvision/Click()
 	var/mob/living/carbon/alien/A = usr
-	var/obj/effect/proc_holder/alien/nightvisiontoggle/T = locate() in A.abilities
+	var/obj/effect/proc_holder/resource_ability/alien/nightvisiontoggle/T = locate() in A.abilities
 	if(T)
 		T.fire(A)
 

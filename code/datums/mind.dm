@@ -110,7 +110,8 @@
 /datum/mind/proc/remove_changeling()
 	if(src in ticker.mode.changelings)
 		ticker.mode.changelings -= src
-		current.remove_changeling_powers()
+		var/mob/living/carbon/C = current
+		C.remove_changeling_powers()
 		if(changeling)
 			qdel(changeling)
 			changeling = null
@@ -999,12 +1000,14 @@
 				log_admin("[key_name(usr)] has de-changeling'ed [current].")
 			if("changeling")
 				if(!(src in ticker.mode.changelings))
-					ticker.mode.changelings += src
-					current.make_changeling()
-					special_role = "Changeling"
-					current << "<span class='boldannounce'>Your powers are awoken. A flash of memory returns to us...we are [changeling.changelingID], a changeling!</span>"
-					message_admins("[key_name_admin(usr)] has changeling'ed [current].")
-					log_admin("[key_name(usr)] has changeling'ed [current].")
+					var/mob/living/carbon/C = current
+					if(istype(C))
+						ticker.mode.changelings += src
+						C.make_changeling()
+						special_role = "Changeling"
+						current << "<span class='boldannounce'>Your powers are awoken. A flash of memory returns to us...we are [changeling.changelingID], a changeling!</span>"
+						message_admins("[key_name_admin(usr)] has changeling'ed [current].")
+						log_admin("[key_name(usr)] has changeling'ed [current].")
 			if("autoobjectives")
 				ticker.mode.forge_changeling_objectives(src)
 				usr << "<span class='notice'>The objectives for changeling [key] have been generated. You can edit them and anounce manually.</span>"
@@ -1364,8 +1367,11 @@
 	if(quiet_round)
 		return
 	if(!(src in ticker.mode.changelings))
+		var/mob/living/carbon/H = current
+		if(!istype(H))
+			return
 		ticker.mode.changelings += src
-		current.make_changeling()
+		H.make_changeling()
 		special_role = "Changeling"
 		ticker.mode.forge_changeling_objectives(src)
 		ticker.mode.greet_changeling(src)
