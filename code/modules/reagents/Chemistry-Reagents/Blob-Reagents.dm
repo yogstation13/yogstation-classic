@@ -514,7 +514,7 @@
 	name = "Pressurized Slime"
 	id = "pressurized_slime"
 	description = "will do medium brute and low oxygen damage, and wets tiles when damaged or killed."
-	shortdesc = "will do low brute and oxygen, damage, and wet tiles under targets."
+	shortdesc = "will do low brute and oxygen damage, and wet tiles under targets."
 	color = "#AAAABB"
 	complementary_color = "#BBBBAA"
 	blobbernaut_message = "emits slime at"
