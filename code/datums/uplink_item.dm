@@ -122,7 +122,7 @@ var/list/uplink_items = list()
 	name = "C-20r Submachine Gun"
 	desc = "A fully-loaded Scarborough Arms bullpup submachine gun that fires .45 rounds with a 20-round magazine and is compatible with suppressors."
 	item = /obj/item/weapon/gun/projectile/automatic/c20r
-	cost = 15
+	cost = 13
 	gamemodes = list(/datum/game_mode/nuclear)
 	surplus = 40
 
@@ -489,7 +489,7 @@ var/list/uplink_items = list()
 	name = "Chameleon-Projector"
 	desc = "Projects an image across a user, disguising them as an object scanned with it, as long as they don't move the projector from their hand. Disguised users cannot run, and projectiles pass over them."
 	item = /obj/item/device/chameleon
-	cost = 4
+	cost = 5
 	excludefrom = list(/datum/game_mode/gang)
 
 /datum/uplink_item/stealthy_tools/camera_bug
@@ -522,7 +522,7 @@ var/list/uplink_items = list()
 	name = "Cryptographic Sequencer"
 	desc = "The cryptographic sequencer, or emag, is a small card that unlocks hidden functions in electronic devices, subverts intended functions and characteristically breaks security mechanisms."
 	item = /obj/item/weapon/card/emag
-	cost = 8
+	cost = 9
 	excludefrom = list(/datum/game_mode/gang)
 
 /datum/uplink_item/device_tools/toolbox
@@ -595,7 +595,7 @@ var/list/uplink_items = list()
 	name = "Hacked AI Law Upload Module"
 	desc = "When used with an upload console, this module allows you to upload priority laws to an artificial intelligence. Be careful with their wording, as artificial intelligences may look for loopholes to exploit."
 	item = /obj/item/weapon/aiModule/syndicate
-	cost = 8
+	cost = 9
 
 /datum/uplink_item/device_tools/magboots
 	name = "Blood-Red Magboots"
@@ -695,7 +695,7 @@ var/list/uplink_items = list()
 	name = "Storage Implant"
 	desc = "An implant injected into the body and later used to store up to two big items in a subspace pocket."
 	item = /obj/item/weapon/storage/box/syndie_kit/imp_storage
-	cost = 8
+	cost = 9
 
 /datum/uplink_item/implants/microbomb
 	name = "Microbomb Implant"
