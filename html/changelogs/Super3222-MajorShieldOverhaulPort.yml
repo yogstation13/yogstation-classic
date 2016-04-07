@@ -20,3 +20,4 @@ changes:
   - rscadd: "Ported tg's flamethrower update. It will now rupture if someone from a distance is shooting you with a projectile that does damage."
   - rscadd: "Ported tg's grenade update. You can shoot the grenade in someones hand, causing it to set off."
   - rscadd: "The clown now honks when punched.... if they are wearing their standard suit."
+  - rscadd: "Ported tg's simple animal death message."

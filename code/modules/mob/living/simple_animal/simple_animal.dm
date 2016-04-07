@@ -64,6 +64,9 @@
 
 	var/list/obj/item/weapon/reagent_containers/food/snacks/eats = list() //associative list, food_type = heal_per_bite e.x. list(/obj/item/weapon/reagent_containers/food/snacks/syndicake/cake = 5)
 
+	var/del_on_death = 0 //causes mob to be deleted on death, useful for mobs that spawn lootable corpses
+	var/deathmessage = ""
+
 /mob/living/simple_animal/New()
 	..()
 	create_reagents(1000)
@@ -414,12 +417,18 @@
 		return 1
 
 /mob/living/simple_animal/death(gibbed)
-	health = 0
-	icon_state = icon_dead
-	stat = DEAD
-	density = 0
-	if(!gibbed)
+	if(deathmessage && !gibbed)
+		visible_message("<span class='danger'>[deathmessage]</span>")
+	else if(!del_on_death)
 		visible_message("<span class='danger'>\the [src] stops moving...</span>")
+	if(del_on_death)
+		ghostize()
+		qdel(src)
+	else
+		health = 0
+		icon_state = icon_dead
+		stat = DEAD
+		density = 0
 	..()
 
 /mob/living/simple_animal/ex_act(severity, target)
