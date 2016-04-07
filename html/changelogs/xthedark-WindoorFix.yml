@@ -12,3 +12,4 @@ delete-after: True
 changes: 
   - tweak: "Drones can now pass through Window Doors from both sides. They can also pass through Plastic Flaps and Firedoors (the ones that drop down during a fire)."
   - rscadd: "Drone toolbox now has an 10 slots, one of which occupied by a pocket fire extinguisher (giving you 2 spare slots). The drone toolbox is not droppable anymore, though."
+  - bugfix: "Drones are no longer picked up despite moving away from the person attempting the pickup."
