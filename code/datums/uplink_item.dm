@@ -695,7 +695,7 @@ var/list/uplink_items = list()
 	name = "Storage Implant"
 	desc = "An implant injected into the body and later used to store up to two big items in a subspace pocket."
 	item = /obj/item/weapon/storage/box/syndie_kit/imp_storage
-	cost = 9
+	cost = 11
 
 /datum/uplink_item/implants/microbomb
 	name = "Microbomb Implant"
