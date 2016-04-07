@@ -1,5 +1,12 @@
 /obj/item/weapon/shield
 	name = "shield"
+	block_chance = 50
+
+/obj/item/weapon/shield/hit_reaction(mob/living/carbon/human/owner, attack_text, final_block_chance, damage, attack_type)
+	if(attack_type == THROWN_PROJECTILE_ATTACK)
+		final_block_chance += 20 // prior value 30
+	return ..()
+
 
 /obj/item/weapon/shield/riot
 	name = "riot shield"
@@ -15,10 +22,9 @@
 	materials = list(MAT_GLASS=7500, MAT_METAL=1000)
 	origin_tech = "materials=2"
 	attack_verb = list("shoved", "bashed")
+	block_chance = 60
 	var/cooldown = 0 //shield bash cooldown. based on world.time
 
-/obj/item/weapon/shield/riot/IsShield()
-	return 1
 
 /obj/item/weapon/shield/riot/attackby(obj/item/weapon/W, mob/user, params)
 	if(istype(W, /obj/item/weapon/melee/baton))
@@ -34,6 +40,7 @@
 	desc = "Bears an inscription on the inside: <i>\"Romanes venio domus\"</i>."
 	icon_state = "roman_shield"
 	item_state = "roman_shield"
+	block_chance = 40
 
 /obj/item/weapon/shield/energy
 	name = "energy combat shield"
@@ -49,8 +56,8 @@
 	attack_verb = list("shoved", "bashed")
 	var/active = 0
 
-/obj/item/weapon/shield/energy/IsShield()
-	return (active)
+/obj/item/weapon/shield/energy/hit_reaction(mob/living/carbon/human/owner, attack_text, final_block_chance)
+	return 0 // So eshields don't fucking block stunbatons.
 
 /obj/item/weapon/shield/energy/IsReflect()
 	return (active)
@@ -91,8 +98,10 @@
 	w_class = 3
 	var/active = 0
 
-/obj/item/weapon/shield/riot/tele/IsShield()
-	return (active)
+/obj/item/weapon/shield/riot/tele/hit_reaction(mob/living/carbon/human/owner, attack_text, final_block_chance)
+	if(active)
+		return ..()
+	return 0
 
 /obj/item/weapon/shield/riot/tele/attack_self(mob/living/user)
 	active = !active

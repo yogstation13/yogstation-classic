@@ -1,0 +1,22 @@
+# Your name.  
+author: Super3222
+
+# Optional: Remove this file after generating master changelog.  Useful for PR changelogs that won't get used again.
+delete-after: True
+
+# Any changes you've made.  See valid prefix list above.
+# INDENT WITH TWO SPACES.  NOT TABS.  SPACES.
+# SCREW THIS UP AND IT WON'T WORK.
+# Also, this gets changed to [] after reading.  Just remove the brackets when you add new shit.
+# Please surround your changes in  double quotes ("). It works without them, but if you use certain characters it screws up compiling. The quotes will not show up in the changelog.
+changes: 
+  - rscadd: "Ported tg's shield overhaul/revamp."
+  - rscadd: "Riot shields / Teleshields now block things like stunbatons."
+  - rscadd: "Energy shields no longer block melee energy attacks."
+  - rscadd: "Ported tg's teleportation armor and different variations. Spanning from teleport to a tesla based armor."
+  - rscadd: "Tele shield now will cost a little extra silver, and requires level 6 combat research for obvious reasons."
+  - rscadd: "You can no longer catch embedding weapons!"
+  - rscadd: "New combat flags makes it easier to have different objects react with other ones. /tg/ port."
+  - rscadd: "Ported tg's flamethrower update. It will now rupture if someone from a distance is shooting you with a projectile that does damage."
+  - rscadd: "Ported tg's grenade update. You can shoot the grenade in someones hand, causing it to set off."
+  - rscadd: "The clown now honks when punched.... if they are wearing their standard suit."
