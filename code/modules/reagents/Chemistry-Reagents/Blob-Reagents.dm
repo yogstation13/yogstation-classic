@@ -424,7 +424,7 @@
 /datum/reagent/blob/electromagnetic_web/reaction_mob(mob/living/M, method=TOUCH, reac_volume, show_message, touch_protection, mob/camera/blob/O)
 	reac_volume = ..()
 	if(prob(reac_volume*2))
-		empulse(M.loc, 1, 4)
+		empulse(M.loc, 1, 3)
 	if(M)
 		M.apply_damage(0.6*reac_volume, BURN)
 
