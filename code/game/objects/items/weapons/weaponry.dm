@@ -318,19 +318,3 @@
 			H.mind.transfer_to(C)
 			H.gib()
 
-/obj/item/weapon/knife/spacescout
-	name = "space scout pocket knife"
-	desc = "for all your adventuring needs"
-	icon = 'icons/obj/weapons.dmi'
-	icon_state = "space scout pocket knife"
-	item_state = "space scout pocket knife"
-	force = 20
-	throw_speed = 2
-	throw_range = 5
-	throwforce = 1
-	attack_verb = list("cut", "slashed" , "stabbed")
-	hitsound ='sound/weapons/slash.ogg'
-
-/obj/item/weapon/knife/spacescout/suicide_act(mob/user)
-	user.visible_message("<span class='suicide'> [user] is being a very bad scout, and stabbed them self to death with the [src.name]</span>")
-	return(BRUTELOSS)
