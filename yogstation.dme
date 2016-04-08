@@ -655,6 +655,7 @@
 #include "code\game\objects\items\stacks\sheets\mineral.dm"
 #include "code\game\objects\items\stacks\sheets\sheet_types.dm"
 #include "code\game\objects\items\stacks\sheets\sheets.dm"
+
 #include "code\game\objects\items\stacks\tiles\light.dm"
 #include "code\game\objects\items\stacks\tiles\tile_mineral.dm"
 #include "code\game\objects\items\stacks\tiles\tile_types.dm"
@@ -1296,6 +1297,7 @@
 #include "code\modules\mob\living\simple_animal\friendly\crab.dm"
 #include "code\modules\mob\living\simple_animal\friendly\dog.dm"
 #include "code\modules\mob\living\simple_animal\friendly\farm_animals.dm"
+#include "code\modules\mob\living\simple_animal\friendly\fennec.dm"
 #include "code\modules\mob\living\simple_animal\friendly\fox.dm"
 #include "code\modules\mob\living\simple_animal\friendly\gshepherd.dm"
 #include "code\modules\mob\living\simple_animal\friendly\lizard.dm"
