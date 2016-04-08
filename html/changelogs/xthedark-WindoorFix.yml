@@ -1,0 +1,15 @@
+# Your name.  
+author: xthedark
+
+# Optional: Remove this file after generating master changelog.  Useful for PR changelogs that won't get used again.
+delete-after: True
+
+# Any changes you've made.  See valid prefix list above.
+# INDENT WITH TWO SPACES.  NOT TABS.  SPACES.
+# SCREW THIS UP AND IT WON'T WORK.
+# Also, this gets changed to [] after reading.  Just remove the brackets when you add new shit.
+# Please surround your changes in  double quotes ("). It works without them, but if you use certain characters it screws up compiling. The quotes will not show up in the changelog.
+changes: 
+  - tweak: "Drones can now pass through Window Doors from both sides. They can also pass through Plastic Flaps and Firedoors (the ones that drop down during a fire)."
+  - rscadd: "Drone toolbox now has an 10 slots, one of which occupied by a pocket fire extinguisher (giving you 2 spare slots). The drone toolbox is not droppable anymore, though."
+  - bugfix: "Drones are no longer picked up despite moving away from the person attempting the pickup."
