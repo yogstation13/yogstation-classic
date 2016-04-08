@@ -139,12 +139,12 @@ var/global/list/spec_roles = list(
 	var/job_civilian_high = 0
 	var/job_civilian_med = 0
 	var/job_civilian_low = 0
-	
+
 	var/job_medsci_ultra = 0
 	var/job_medsci_high = 0
 	var/job_medsci_med = 0
 	var/job_medsci_low = 0
-	
+
 	var/job_engsec_ultra = 0
 	var/job_engsec_high = 0
 	var/job_engsec_med = 0
@@ -622,7 +622,7 @@ var/global/list/spec_roles = list(
 				prefLevelClass = "special"
 			else
 				prefLevelClass = "white"
-				
+
 			HTML += "<a class='[prefLevelClass]' href='?_src_=prefs;preference=job;task=setJobLevel;level=[prefUpperLevel];text=[rank]' oncontextmenu='javascript:return setJobPrefRedirect([prefLowerLevel], \"[rank]\");'>"
 
 			if(rank == "Assistant")//Assistant is special
@@ -913,7 +913,9 @@ var/global/list/spec_roles = list(
 							/obj/item/clothing/head/sombrero, \
 							/obj/item/clothing/head/sombrero/green, \
 							/obj/item/clothing/head/cone, \
-							/obj/item/clothing/head/collectable/beret \
+							/obj/item/clothing/head/collectable/beret, \
+
+							/obj/item/clothing/shoes/fuzzy_slippers \
 						)
 
 						var/obj/item/clothing/head/item = input(usr, "What would you like to start with?","Donator fun","Nothing") as null|anything in items
