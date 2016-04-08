@@ -607,6 +607,24 @@
 								if(!step_towards(X, pull))
 									break
 
+/datum/reagent/blob/disorienting_fluid
+	name = "Disorienting Fluid"
+	id = "disorienting_fluid"
+	description = "does low brute, toxin, and radiation damage, as well as blinding and deafening victims."
+	color = "#064d07"
+	complementary_color = "#E50034"
+	blobbernaut_message = "soaks"
+	message = "The blob soaks you with something"
+	message_living = ", and you find it hard to focus"
+
+/datum/reagent/blob/disorienting_fluid/reaction_mob(mob/living/M, method=TOUCH, reac_volume, show_message, touch_protection, mob/camera/blob/O)
+	reac_volume = ..()
+	M.irradiate(0.2*reac_volume)
+	M.apply_damage(0.2*reac_volume, TOX)
+	M.eye_blind = 1
+	M.ear_deaf = 10
+	M.eye_blurry = 10
+
 
 /datum/reagent/blob/proc/send_message(mob/living/M)
 	var/totalmessage = message
