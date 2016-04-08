@@ -619,11 +619,13 @@
 
 /datum/reagent/blob/disorienting_fluid/reaction_mob(mob/living/M, method=TOUCH, reac_volume, show_message, touch_protection, mob/camera/blob/O)
 	reac_volume = ..()
-	M.irradiate(0.2*reac_volume)
-	M.apply_damage(0.2*reac_volume, TOX)
+	M.irradiate(0.3*reac_volume)
+	M.apply_damage(0.3*reac_volume, TOX)
 	M.eye_blind = 1
 	M.ear_deaf = 10
 	M.eye_blurry = 10
+	if(prob(10))
+		M.disabilities |= CLUMSY
 
 
 /datum/reagent/blob/proc/send_message(mob/living/M)
