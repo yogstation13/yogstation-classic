@@ -317,4 +317,3 @@
 				H.unEquip(W)
 			H.mind.transfer_to(C)
 			H.gib()
-
