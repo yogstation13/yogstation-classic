@@ -32,6 +32,8 @@
 	return 1
 
 /datum/game_mode/traitor/abduction/pre_setup()
+	if(!..())
+		return 0
 	if(config.protect_roles_from_antagonist)
 		restricted_jobs += protected_jobs
 
@@ -39,6 +41,9 @@
 		restricted_jobs += "Assistant"
 
 	possible_abductors = get_players_for_role(BE_ABDUCTOR)
+	for(var/datum/mind/M in possible_abductors)
+		if(M.special_role)
+			possible_abductors -= M
 
 	abductor_teams = max(1, min(max_teams,round(num_players()/config.abductor_scaling_coeff)))
 	var/possible_teams = max(1,round(possible_abductors.len / 2))
@@ -56,19 +61,22 @@
 		for(var/i=1,i<=abductor_teams,i++)
 			if(availible_subjects < 6)
 				//message_admins("Less abductor teams than expected were created because there were not enough test subjects.")
-				return ..() //Run out of valid abductors
+				return 1 //Run out of valid abductors
 			availible_subjects -= 6 // Number to abduct
 			if(!make_abductor_team(i))
 				//message_admins("<B>Could not start mode Traitor+Abductor: Not enough players to form an abductor team.  You should never see this.</B>")
 				return 0
-		return ..()
+		return 1
 	else
 		//message_admins("<B>Could not start mode Traitor+Abductor: Not enough players with BE_ABDUCTOR.</B>")
 		return 0
 
 /datum/game_mode/traitor/abduction/proc/make_abductor_team(team_number,preset_agent=null,preset_scientist=null)
 	//Team Name
-	team_names[team_number] = "Mothership [pick(possible_changeling_IDs)]" //TODO Ensure unique and actual alieny names
+	var/list/possible_abd_team_names = list("Alpha","Beta","Delta","Gamma","Epsilon","Phi")
+	var/tname = pick(possible_abd_team_names)
+	possible_abd_team_names -= tname
+	team_names[team_number] = "Mothership [tname]"
 	//Team Objective
 	var/datum/objective/experiment/team_objective = new
 	team_objective.team = team_number
