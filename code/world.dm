@@ -216,6 +216,12 @@
 					for(var/i = tickets_list.len, i >= 1, i--)
 						var/datum/admin_ticket/ticket = tickets_list[i]
 						if(ticket.ticket_id == text2num(input["id"]))
+							var/datum/ticket_log/log_item = null
+							log_item = new /datum/ticket_log(ticket, input["admin"], input["response"], 0)
+							ticket.log += log_item
+							ticket.owner << "<span class='ticket-header-recieved'>-- Administrator private message --</span>"
+							ticket.owner << "<span class='ticket-text-received'>-- [input["admin"]] -> [key_name_params(ticket.owner, 0, 0, null, src)]: [log_item.text]</span>"
+							ticket.log += log_item
 				return msg
 
 var/feedback_set = 0
