@@ -24,8 +24,8 @@
 	if(CanInfect(H))
 		src << "<span class='warning'>You slither up [H] and begin probing at their ear canal...</span>"
 		src.layer = MOB_LAYER
-		H << "<span class='userdanger'>You feel something trying to enter your ear...</span>"
-		if(!do_after(src,30))
+		//H << "<span class='userdanger'>You feel something trying to enter your ear...</span>"
+		if(!do_after(H,30))
 			src << "<span class='warning'>As [H] moves away, you are dislodged and fall to the ground.</span>"
 			return
 
