@@ -178,10 +178,52 @@
 				for(var/client/C in clients)
 					//if(C.prefs.chat_toggles & CHAT_OOC) // Discord OOC should bypass preferences.
 					C << "<font color='[normal_ooc_colour]'><span class='ooc'><span class='prefix'>DISCORD OOC:</span> <EM>[input["admin"]]:</EM> <span class='message'>[input["ooc"]]</span></span></font>"
+	else if (copytext(T,1,7) == "reboot")
+		var/input[] = params2list(T)
+		if(global.comms_allowed)
+			if(input["key"] != global.comms_key)
+				return "Bad Key"
+			else
+				Reboot(null, null, null, null, 1)
+	else if (copytext(T,1,7) == "ticket")
+		var/input[] = params2list(T)
+		if(global.comms_allowed)
+			if(input["key"] != global.comms_key)
+				return "Bad Key"
+			else
+				var/action = input["action"]
+				var/msg = "Theres [total_unresolved_tickets()] unresolved tickets out of [tickets_list.len] tickets."
+				if(action == "list")
+					msg += "\nCurrent unresolved tickets:"
+					for(var/i = tickets_list.len, i >= 1, i--)
+						var/datum/admin_ticket/ticket = tickets_list[i]
+						if(!ticket.resolved)
+							msg += "\n    #[ticket.ticket_id]. Opened by: [ticket.owner_ckey] Title: \"[ticket.title]\""
+				if(action == "log")
+					var/datum/admin_ticket/ticket
+					for(var/i = tickets_list.len, i >= 1, i--)
+						var/datum/admin_ticket/ticket2 = tickets_list[i]
+						if(ticket2.ticket_id == text2num(input["id"]))
+							ticket = ticket2
+					if(!ticket)
+						return "Ticket not found"
+					msg += "\n Ticket #[ticket.ticket_id] log:"
+					if(ticket.ticket_id == text2num(input["id"]))
+						for(var/i = 1; i <= ticket.log.len; i++)
+							var/datum/ticket_log/item = ticket.log[i]
+							msg += "\n    [item.toString()]"
+				if(action == "reply")
+					for(var/i = tickets_list.len, i >= 1, i--)
+						var/datum/admin_ticket/ticket = tickets_list[i]
+						if(ticket.ticket_id == text2num(input["id"]))
+				return msg
 
 var/feedback_set = 0
 
-/world/Reboot(var/reason, var/feedback_c, var/feedback_r, var/time)
+/world/Reboot(var/reason, var/feedback_c, var/feedback_r, var/time, var/bypass = 0)
+
+	if(bypass)
+		..(0)
 	var/delay
 	if(time)
 		delay = time
