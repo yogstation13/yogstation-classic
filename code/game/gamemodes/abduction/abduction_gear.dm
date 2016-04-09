@@ -363,7 +363,7 @@ Congratulations! You are now trained for xenobiology research!"}
 	var/mode = BATON_STUN
 	icon = 'icons/obj/abductor.dmi'
 	icon_state = "wonderprodStun"
-	item_state = "wonderprod"
+	item_state = "wonderprodStun"
 	slot_flags = SLOT_BELT
 	origin_tech = "materials=6;combat=5;biotech=7"
 	force = 7
@@ -437,6 +437,8 @@ Congratulations! You are now trained for xenobiology research!"}
 
 /obj/item/weapon/abductor_baton/attack_self(mob/living/user)
 	toggle(user)
+	user.update_inv_l_hand()
+	user.update_inv_r_hand()
 
 /obj/item/weapon/abductor_baton/proc/StunAttack(mob/living/L,mob/living/user)
 	user.lastattacked = L

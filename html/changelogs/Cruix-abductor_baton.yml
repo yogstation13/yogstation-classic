@@ -1,0 +1,6 @@
+author: Cruix
+
+delete-after: True
+
+changes: 
+  - bugfix: "The abductor baton now starts with the correct inhands sprite, and the sprite is changed properly when the baton is toggled with the action button."
