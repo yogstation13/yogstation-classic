@@ -29,6 +29,8 @@
 /datum/ticket_log/proc/isAdminComment()
 	return !istype(user, /client) || (for_admins && !(compare_ckey(parent.owner_ckey, user) || compare_ckey(parent.handling_admin, user)) ? 1 : 0)
 
+/datum/ticket_log/proc/toSanitizedString()
+	return "[gametime] - [user] - [text]"
 /datum/ticket_log/proc/toString()
 	return "[gametime] - [isAdminComment() ? "<font color='red'>" : ""]<b>[istype(user, /client) ? key_name_params(user, 0, 0, null, parent) : user]</b>[isAdminComment() ? "</font>" : ""] - [text]"
 

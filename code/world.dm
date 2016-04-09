@@ -211,7 +211,7 @@
 					if(ticket.ticket_id == text2num(input["id"]))
 						for(var/i = 1; i <= ticket.log.len; i++)
 							var/datum/ticket_log/item = ticket.log[i]
-							msg += "\n    [item.toString()]"
+							msg += "\n    [item.toSanitizedString()]"
 				if(action == "reply")
 					for(var/i = tickets_list.len, i >= 1, i--)
 						var/datum/admin_ticket/ticket = tickets_list[i]
