@@ -29,7 +29,7 @@
 	desc = "A stock part used in the construction of various devices."
 	id = "basic_capacitor"
 	req_tech = list("powerstorage" = 1)
-	build_type = PROTOLATHE | AUTOLATHE
+	build_type = PROTOLATHE | AUTOLATHE | PARTLATHE
 	materials = list(MAT_METAL = 50, MAT_GLASS = 50)
 	build_path = /obj/item/weapon/stock_parts/capacitor
 	category = list("Stock Parts")
@@ -39,7 +39,7 @@
 	desc = "A stock part used in the construction of various devices."
 	id = "adv_capacitor"
 	req_tech = list("powerstorage" = 3)
-	build_type = PROTOLATHE
+	build_type = PROTOLATHE | PARTLATHE
 	materials = list(MAT_METAL = 50, MAT_GLASS = 50)
 	build_path = /obj/item/weapon/stock_parts/capacitor/adv
 	category = list("Stock Parts")
@@ -49,7 +49,7 @@
 	desc = "A stock part used in the construction of various devices."
 	id = "super_capacitor"
 	req_tech = list("powerstorage" = 5, "materials" = 4)
-	build_type = PROTOLATHE
+	build_type = PROTOLATHE | PARTLATHE
 	reliability = 71
 	materials = list(MAT_METAL = 50, MAT_GLASS = 50, MAT_GOLD = 20)
 	build_path = /obj/item/weapon/stock_parts/capacitor/super
@@ -60,7 +60,7 @@
 	desc = "A stock part used in the construction of various devices."
 	id = "quadratic_capacitor"
 	req_tech = list("powerstorage" = 6, "materials" = 5)
-	build_type = PROTOLATHE
+	build_type = PROTOLATHE | PARTLATHE
 	reliability = 71
 	materials = list(MAT_METAL = 100, MAT_GLASS = 100, MAT_DIAMOND = 40)
 	build_path = /obj/item/weapon/stock_parts/capacitor/quadratic
@@ -72,7 +72,7 @@
 	desc = "A stock part used in the construction of various devices."
 	id = "basic_scanning"
 	req_tech = list("magnets" = 1)
-	build_type = PROTOLATHE | AUTOLATHE
+	build_type = PROTOLATHE | AUTOLATHE | PARTLATHE
 	materials = list(MAT_METAL = 50, MAT_GLASS = 20)
 	build_path = /obj/item/weapon/stock_parts/scanning_module
 	category = list("Stock Parts")
@@ -82,7 +82,7 @@
 	desc = "A stock part used in the construction of various devices."
 	id = "adv_scanning"
 	req_tech = list("magnets" = 3)
-	build_type = PROTOLATHE
+	build_type = PROTOLATHE | PARTLATHE
 	materials = list(MAT_METAL = 50, MAT_GLASS = 20)
 	build_path = /obj/item/weapon/stock_parts/scanning_module/adv
 	category = list("Stock Parts")
@@ -92,7 +92,7 @@
 	desc = "A stock part used in the construction of various devices."
 	id = "phasic_scanning"
 	req_tech = list("magnets" = 5, "materials" = 3)
-	build_type = PROTOLATHE
+	build_type = PROTOLATHE | PARTLATHE
 	materials = list(MAT_METAL = 50, MAT_GLASS = 20, MAT_SILVER = 10)
 	reliability = 72
 	build_path = /obj/item/weapon/stock_parts/scanning_module/phasic
@@ -103,7 +103,7 @@
 	desc = "A stock part used in the construction of various devices."
 	id = "triphasic_scanning"
 	req_tech = list("magnets" = 6, "materials" = 4)
-	build_type = PROTOLATHE
+	build_type = PROTOLATHE | PARTLATHE
 	materials = list(MAT_METAL = 100, MAT_GLASS = 40, MAT_DIAMOND = 20)
 	reliability = 72
 	build_path = /obj/item/weapon/stock_parts/scanning_module/triphasic
@@ -115,7 +115,7 @@
 	desc = "A stock part used in the construction of various devices."
 	id = "micro_mani"
 	req_tech = list("materials" = 1, "programming" = 1)
-	build_type = PROTOLATHE | AUTOLATHE
+	build_type = PROTOLATHE | AUTOLATHE | PARTLATHE
 	materials = list(MAT_METAL = 30)
 	build_path = /obj/item/weapon/stock_parts/manipulator
 	category = list("Stock Parts")
@@ -125,7 +125,7 @@
 	desc = "A stock part used in the construction of various devices."
 	id = "nano_mani"
 	req_tech = list("materials" = 3, "programming" = 2)
-	build_type = PROTOLATHE
+	build_type = PROTOLATHE | PARTLATHE
 	materials = list(MAT_METAL = 30)
 	build_path = /obj/item/weapon/stock_parts/manipulator/nano
 	category = list("Stock Parts")
@@ -135,7 +135,7 @@
 	desc = "A stock part used in the construction of various devices."
 	id = "pico_mani"
 	req_tech = list("materials" = 5, "programming" = 2)
-	build_type = PROTOLATHE
+	build_type = PROTOLATHE | PARTLATHE
 	materials = list(MAT_METAL = 30)
 	reliability = 73
 	build_path = /obj/item/weapon/stock_parts/manipulator/pico
@@ -146,7 +146,7 @@
 	desc = "A stock part used in the construction of various devices."
 	id = "femto_mani"
 	req_tech = list("materials" = 6, "programming" = 3)
-	build_type = PROTOLATHE
+	build_type = PROTOLATHE | PARTLATHE
 	materials = list(MAT_METAL = 60, MAT_DIAMOND = 30)
 	reliability = 73
 	build_path = /obj/item/weapon/stock_parts/manipulator/femto
@@ -158,7 +158,7 @@
 	desc = "A stock part used in the construction of various devices."
 	id = "basic_micro_laser"
 	req_tech = list("magnets" = 1)
-	build_type = PROTOLATHE | AUTOLATHE
+	build_type = PROTOLATHE | AUTOLATHE | PARTLATHE
 	materials = list(MAT_METAL = 10, MAT_GLASS = 20)
 	build_path = /obj/item/weapon/stock_parts/micro_laser
 	category = list("Stock Parts")
@@ -168,7 +168,7 @@
 	desc = "A stock part used in the construction of various devices."
 	id = "high_micro_laser"
 	req_tech = list("magnets" = 3)
-	build_type = PROTOLATHE
+	build_type = PROTOLATHE | PARTLATHE
 	materials = list(MAT_METAL = 10, MAT_GLASS = 20)
 	build_path = /obj/item/weapon/stock_parts/micro_laser/high
 	category = list("Stock Parts")
@@ -178,7 +178,7 @@
 	desc = "A stock part used in the construction of various devices."
 	id = "ultra_micro_laser"
 	req_tech = list("magnets" = 5, "materials" = 5)
-	build_type = PROTOLATHE
+	build_type = PROTOLATHE | PARTLATHE
 	materials = list(MAT_METAL = 10, MAT_GLASS = 20, MAT_URANIUM = 10)
 	reliability = 70
 	build_path = /obj/item/weapon/stock_parts/micro_laser/ultra
@@ -189,7 +189,7 @@
 	desc = "A stock part used in the construction of various devices."
 	id = "quadultra_micro_laser"
 	req_tech = list("magnets" = 6, "materials" = 6)
-	build_type = PROTOLATHE
+	build_type = PROTOLATHE | PARTLATHE
 	materials = list(MAT_METAL = 20, MAT_GLASS = 40, MAT_URANIUM = 20, MAT_DIAMOND = 20)
 	reliability = 70
 	build_path = /obj/item/weapon/stock_parts/micro_laser/quadultra
@@ -200,7 +200,7 @@
 	desc = "A stock part used in the construction of various devices."
 	id = "basic_matter_bin"
 	req_tech = list("materials" = 1)
-	build_type = PROTOLATHE | AUTOLATHE
+	build_type = PROTOLATHE | AUTOLATHE | PARTLATHE
 	materials = list(MAT_METAL = 80)
 	build_path = /obj/item/weapon/stock_parts/matter_bin
 	category = list("Stock Parts")
@@ -210,7 +210,7 @@
 	desc = "A stock part used in the construction of various devices."
 	id = "adv_matter_bin"
 	req_tech = list("materials" = 3)
-	build_type = PROTOLATHE
+	build_type = PROTOLATHE | PARTLATHE
 	materials = list(MAT_METAL = 80)
 	build_path = /obj/item/weapon/stock_parts/matter_bin/adv
 	category = list("Stock Parts")
@@ -220,7 +220,7 @@
 	desc = "A stock part used in the construction of various devices."
 	id = "super_matter_bin"
 	req_tech = list("materials" = 5)
-	build_type = PROTOLATHE
+	build_type = PROTOLATHE | PARTLATHE
 	materials = list(MAT_METAL = 80)
 	reliability = 75
 	build_path = /obj/item/weapon/stock_parts/matter_bin/super
@@ -231,7 +231,7 @@
 	desc = "A stock part used in the construction of various devices."
 	id = "bluespace_matter_bin"
 	req_tech = list("materials" = 6)
-	build_type = PROTOLATHE
+	build_type = PROTOLATHE | PARTLATHE
 	materials = list(MAT_METAL = 160, MAT_DIAMOND = 200)
 	reliability = 75
 	build_path = /obj/item/weapon/stock_parts/matter_bin/bluespace
@@ -243,7 +243,7 @@
 	desc = "A compact module capable of sensing extradimensional activity."
 	id = "s-ansible"
 	req_tech = list("programming" = 2, "magnets" = 2, "materials" = 2, "bluespace" = 1)
-	build_type = PROTOLATHE
+	build_type = PROTOLATHE | PARTLATHE
 	materials = list(MAT_METAL = 80, MAT_SILVER = 20)
 	build_path = /obj/item/weapon/stock_parts/subspace/ansible
 	category = list("Stock Parts")
@@ -253,7 +253,7 @@
 	desc = "A tiny device capable of filtering and converting super-intense radiowaves."
 	id = "s-filter"
 	req_tech = list("programming" = 2, "magnets" = 2)
-	build_type = PROTOLATHE
+	build_type = PROTOLATHE | PARTLATHE
 	materials = list(MAT_METAL = 40, MAT_SILVER = 10)
 	build_path = /obj/item/weapon/stock_parts/subspace/filter
 	category = list("Stock Parts")
@@ -263,7 +263,7 @@
 	desc = "A compact micro-machine capable of amplifying weak subspace transmissions."
 	id = "s-amplifier"
 	req_tech = list("programming" = 2, "magnets" = 2, "materials" = 2, "bluespace" = 1)
-	build_type = PROTOLATHE
+	build_type = PROTOLATHE | PARTLATHE
 	materials = list(MAT_METAL = 10, MAT_GOLD = 30, MAT_URANIUM = 15)
 	build_path = /obj/item/weapon/stock_parts/subspace/amplifier
 	category = list("Stock Parts")
@@ -273,7 +273,7 @@
 	desc = "A compact micro-machine capable of stretching out hyper-compressed radio waves."
 	id = "s-treatment"
 	req_tech = list("programming" = 2, "magnets" = 1, "materials" = 2, "bluespace" = 1)
-	build_type = PROTOLATHE
+	build_type = PROTOLATHE | PARTLATHE
 	materials = list(MAT_METAL = 10, MAT_SILVER = 20)
 	build_path = /obj/item/weapon/stock_parts/subspace/treatment
 	category = list("Stock Parts")
@@ -283,7 +283,7 @@
 	desc = "A sophisticated analyzer capable of analyzing cryptic subspace wavelengths."
 	id = "s-analyzer"
 	req_tech = list("programming" = 2, "magnets" = 2, "materials" = 2, "bluespace" = 1)
-	build_type = PROTOLATHE
+	build_type = PROTOLATHE | PARTLATHE
 	materials = list(MAT_METAL = 10, MAT_GOLD = 15)
 	build_path = /obj/item/weapon/stock_parts/subspace/analyzer
 	category = list("Stock Parts")
@@ -293,7 +293,7 @@
 	desc = "A sophisticated analyzer capable of analyzing cryptic subspace wavelengths."
 	id = "s-crystal"
 	req_tech = list("magnets" = 2, "materials" = 2, "bluespace" = 1)
-	build_type = PROTOLATHE
+	build_type = PROTOLATHE | PARTLATHE
 	materials = list(MAT_GLASS = 1000, MAT_SILVER = 20, MAT_GOLD = 20)
 	build_path = /obj/item/weapon/stock_parts/subspace/crystal
 	category = list("Stock Parts")
@@ -303,7 +303,7 @@
 	desc = "A large piece of equipment used to open a window into the subspace dimension."
 	id = "s-transmitter"
 	req_tech = list("magnets" = 3, "materials" = 3, "bluespace" = 2)
-	build_type = PROTOLATHE
+	build_type = PROTOLATHE | PARTLATHE
 	materials = list(MAT_GLASS = 100, MAT_SILVER = 10, MAT_URANIUM = 15)
 	build_path = /obj/item/weapon/stock_parts/subspace/transmitter
 	category = list("Stock Parts")

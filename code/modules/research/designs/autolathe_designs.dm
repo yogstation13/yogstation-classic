@@ -157,18 +157,18 @@
 /datum/design/metal
 	name = "Metal"
 	id = "metal"
-	build_type = AUTOLATHE
+	build_type = AUTOLATHE | PARTLATHE
 	materials = list(MAT_METAL = MINERAL_MATERIAL_AMOUNT)
 	build_path = /obj/item/stack/sheet/metal
-	category = list("initial","Construction")
+	category = list("initial","Construction", "Eject Materials")
 
 /datum/design/glass
 	name = "Glass"
 	id = "glass"
-	build_type = AUTOLATHE
+	build_type = AUTOLATHE | PARTLATHE
 	materials = list(MAT_GLASS = MINERAL_MATERIAL_AMOUNT)
 	build_path = /obj/item/stack/sheet/glass
-	category = list("initial","Construction")
+	category = list("initial","Construction", "Eject Materials")
 
 /datum/design/rglass
 	name = "Reinforced glass"
