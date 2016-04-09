@@ -217,7 +217,10 @@
 	add_fingerprint(usr)
 
 /obj/item/device/radio/proc/isWireCut(index)
-	return wires.IsIndexCut(index)
+	if(wires)
+		return wires.IsIndexCut(index)
+	else
+		return 1
 
 /obj/item/device/radio/talk_into(atom/movable/M, message, channel, list/spans)
 	if(!on) return // the device has to be on
