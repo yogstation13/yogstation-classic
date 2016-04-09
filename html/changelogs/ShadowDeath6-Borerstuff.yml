@@ -7,5 +7,5 @@ delete-after: True
 changes: 
   - bugfix: "Borers can no longer infect liches/skeletons."
   - tweak: "Made borer messages somewhat easier on the eyes."
-  - rscadd: "Victims now get a warning when a borer tries to infest them."
+  - bugfix: "Borers no longer teleport into hosts if they move away before infection."
   - spellcheck: "Fixes a spelling error in borer messages to their hosts."
