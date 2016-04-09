@@ -4,9 +4,8 @@
 
 /obj/item/weapon/shield/hit_reaction(mob/living/carbon/human/owner, attack_text, final_block_chance, damage, attack_type)
 	if(attack_type == THROWN_PROJECTILE_ATTACK)
-		final_block_chance += 20 // prior value 30
+		final_block_chance += 30
 	return ..()
-
 
 /obj/item/weapon/shield/riot
 	name = "riot shield"
@@ -22,7 +21,6 @@
 	materials = list(MAT_GLASS=7500, MAT_METAL=1000)
 	origin_tech = "materials=2"
 	attack_verb = list("shoved", "bashed")
-	block_chance = 60
 	var/cooldown = 0 //shield bash cooldown. based on world.time
 
 
@@ -35,12 +33,24 @@
 	else
 		..()
 
+/obj/item/weapon/shield/riot/hit_reaction(mob/living/carbon/human/owner, attack_text, final_block_chance, damage, attack_type)
+	if(attack_type == PROJECTILE_ATTACK)
+		return ..()
+	else
+		return 1
+
 /obj/item/weapon/shield/riot/roman
 	name = "roman shield"
 	desc = "Bears an inscription on the inside: <i>\"Romanes venio domus\"</i>."
 	icon_state = "roman_shield"
 	item_state = "roman_shield"
-	block_chance = 40
+	block_chance = 30
+
+/obj/item/weapon/shield/riot/roman/hit_reaction(mob/living/carbon/human/owner, attack_text, final_block_chance, damage, attack_type)
+	if(attack_type == UNARMED_ATTACK)
+		return 1
+	else
+		return ..()
 
 /obj/item/weapon/shield/energy
 	name = "energy combat shield"
@@ -57,7 +67,7 @@
 	var/active = 0
 
 /obj/item/weapon/shield/energy/hit_reaction(mob/living/carbon/human/owner, attack_text, final_block_chance)
-	return 0 // So eshields don't fucking block stunbatons.
+	return 0
 
 /obj/item/weapon/shield/energy/IsReflect()
 	return (active)

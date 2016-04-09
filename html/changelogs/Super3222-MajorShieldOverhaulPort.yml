@@ -21,3 +21,5 @@ changes:
   - rscadd: "Ported tg's grenade update. You can shoot the grenade in someones hand, causing it to set off."
   - rscadd: "The clown now honks when punched.... if they are wearing their standard suit."
   - rscadd: "Ported tg's simple animal death message."
+  - rscadd: "Riot shields now defend against thrown items and xenomorphs jumping at them."
+  - rscadd: "Roman shields will not be able to block any type of baton."

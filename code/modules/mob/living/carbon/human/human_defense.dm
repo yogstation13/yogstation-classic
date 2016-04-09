@@ -71,17 +71,14 @@ emp_act
 	return (..(P , def_zone))
 
 /mob/living/carbon/human/proc/check_reflect(def_zone) //Reflection checks for anything in your l_hand, r_hand, or wear_suit based on the reflection chance of the object
-	if(wear_suit && istype(wear_suit, /obj/item/))
-		var/obj/item/I = wear_suit
-		if(I.IsReflect(def_zone) == 1)
+	if(wear_suit)
+		if(wear_suit.IsReflect(def_zone) == 1)
 			return 1
-	if(l_hand && istype(l_hand, /obj/item/))
-		var/obj/item/I = l_hand
-		if(I.IsReflect(def_zone) == 1)
+	if(l_hand)
+		if(l_hand.IsReflect(def_zone) == 1)
 			return 1
-	if(r_hand && istype(r_hand, /obj/item/))
-		var/obj/item/I = r_hand
-		if(I.IsReflect(def_zone) == 1)
+	if(r_hand)
+		if(r_hand.IsReflect(def_zone) == 1)
 			return 1
 	return 0
 
