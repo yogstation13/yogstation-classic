@@ -6,6 +6,7 @@
 	var/completed = 0					//currently only used for custom objectives.
 	var/dangerrating = 0				//How hard the objective is, essentially. Used for dishing out objectives and checking overall victory.
 	var/martyr_compatible = 0			//If the objective is compatible with martyr objective, i.e. if you can still do it while dead.
+	var/list/restricted_special_roles = list()  //Special roles that the objective cannot refer to.
 
 /datum/objective/New(var/text)
 	if(text)
@@ -28,6 +29,11 @@
 	for(var/datum/mind/possible_target in ticker.minds)
 		if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != 2) && is_unique_objective(possible_target))
 			possible_targets += possible_target
+	if(restricted_special_roles.len && possible_targets.len)
+		for(var/R in restricted_special_roles)
+			for(var/datum/mind/T in possible_targets)
+				if(T.special_role == R)
+					possible_targets -= T
 	if(possible_targets.len > 0)
 		target = pick(possible_targets)
 	update_explanation_text()
@@ -67,6 +73,7 @@
 	var/target_role_type=0
 	dangerrating = 10
 	martyr_compatible = 1
+	restricted_special_roles = list("abductor agent","abductor scientist")
 
 /datum/objective/assassinate/find_target_by_role(role, role_type=0, invert=0)
 	if(!invert)
@@ -95,6 +102,7 @@
 /datum/objective/mutiny
 	var/target_role_type=0
 	martyr_compatible = 1
+	restricted_special_roles = list("abductor agent","abductor scientist")
 
 /datum/objective/mutiny/find_target_by_role(role, role_type=0,invert=0)
 	if(!invert)
@@ -128,6 +136,7 @@
 	var/target_role_type=0
 	dangerrating = 5
 	martyr_compatible = 1
+	restricted_special_roles = list("abductor agent","abductor scientist")
 
 /datum/objective/maroon/find_target_by_role(role, role_type=0, invert=0)
 	if(!invert)
@@ -157,6 +166,7 @@
 /datum/objective/debrain//I want braaaainssss
 	var/target_role_type=0
 	dangerrating = 20
+	restricted_special_roles = list("abductor agent","abductor scientist")
 
 /datum/objective/debrain/find_target_by_role(role, role_type=0, invert=0)
 	if(!invert)
@@ -194,6 +204,7 @@
 	var/target_role_type=0
 	dangerrating = 10
 	martyr_compatible = 1
+	restricted_special_roles = list("abductor agent","abductor scientist")
 
 /datum/objective/protect/find_target_by_role(role, role_type=0, invert=0)
 	if(!invert)
@@ -340,6 +351,7 @@
 	dangerrating = 10
 	var/target_real_name // Has to be stored because the target's real_name can change over the course of the round
 	var/target_missing_id
+	restricted_special_roles = list("abductor agent","abductor scientist")
 
 /datum/objective/escape/escape_with_identity/find_target()
 	target = ..()
