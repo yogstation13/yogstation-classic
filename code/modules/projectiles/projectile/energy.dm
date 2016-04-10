@@ -131,8 +131,8 @@
 	damage = 20
 	damage_type = TOX
 	nodamage = 0
-	irradiate = 30
-	stun = 1
+	irradiate = 35
+	stun = 2
 	stutter = 5
 
 /obj/item/projectile/energy/bolt/large
