@@ -22,6 +22,7 @@
 	var/allied_targeting = ALLOW_ALLIED_TARGETING //Will allies be included on the targets list?
 
 /obj/effect/proc_holder/spell/targeted/shadow/choose_targets(mob/user = usr)
+	if(!istype(user,/mob/living/carbon/human) && !istype(user,/mob/living/simple_animal/ascendant_shadowling)) //WTF do you think ascendants are?
 		return //This should never happen, by the way.
 	var/mob/living/H = user
 	var/list/targets = list()
