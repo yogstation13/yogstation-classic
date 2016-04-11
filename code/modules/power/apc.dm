@@ -590,6 +590,21 @@
 			user << "<span class='notice'>You emag the APC interface.</span>"
 			update_icon()
 
+/obj/machinery/power/apc/proc/break_apc()
+	if(!emagged && !malfhack)
+		if(opened)
+			return
+		if(wiresexposed)
+			return
+		if(stat & (BROKEN|MAINT))
+			return
+		flick("apc-spark", src)
+		for(var/mob/O in viewers(src))
+			O << "<span class='warning'>The [src] makes crackling noises and puffs of smoke rise from it.</span>"
+		emagged = 1
+		locked = 0
+		update_icon()
+
 // attack with hand - remove cell (if cover open) or interact with the APC
 
 /obj/machinery/power/apc/attack_hand(mob/user)
