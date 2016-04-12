@@ -15,7 +15,7 @@
 
 /datum/round_event/apc_fry/announce()
 	if(prob(30))
-		priority_announce("Error Detected in the Station Electrical Grid. Malfunctioning area power controllers may follow.", "Power Grid")
+		priority_announce("Error detected in the station electrical grid. Malfunctioning area power controllers may follow.", "Power Grid")
 	else
 		message_admins("The 'Fried APC' event has fired, but the crew has not been alerted. If you are confused, this is why.")
 /datum/round_event/apc_fry/start()
