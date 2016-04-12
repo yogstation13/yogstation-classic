@@ -389,7 +389,7 @@ mob/living/carbon/proc/release_control()
 		return
 
 	if(borer.chemicals >= 100)
-		var/list/candidates = get_candidates(BE_ALIEN, ALIEN_AFK_BRACKET)
+		var/list/candidates = get_candidates(BE_BORER, ALIEN_AFK_BRACKET)
 		for(var/client/C in candidates)
 			if(jobban_check_mob(C.mob, "borer") || !(C.prefs.toggles & MIDROUND_ANTAG))
 				candidates -= C

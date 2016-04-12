@@ -169,7 +169,7 @@
 	user << "<span class='notice'>You begin to apply the potion to [M]...</span>"
 	being_used = 1
 
-	var/list/candidates = get_candidates(BE_ALIEN, ALIEN_AFK_BRACKET)
+	var/list/candidates = get_candidates(BE_OTHER, ALIEN_AFK_BRACKET)
 
 	shuffle(candidates)
 
