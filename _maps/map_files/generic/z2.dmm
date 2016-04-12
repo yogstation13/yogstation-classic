@@ -522,7 +522,7 @@
 "kb" = (/obj/machinery/computer/crew,/turf/simulated/floor/plasteel{icon_state = "wood"},/area/centcom/control)
 "kc" = (/obj/structure/closet/secure_closet/hos,/turf/simulated/floor/plasteel{icon_state = "wood"},/area/centcom/control)
 "kd" = (/obj/structure/closet/secure_closet/hop,/turf/simulated/floor/plasteel{icon_state = "wood"},/area/centcom/control)
-"ke" = (/obj/structure/closet/secure_closet/captains,/turf/simulated/floor/plasteel{icon_state = "wood"},/area/centcom/control)
+"ke" = (/obj/structure/closet/secure_closet/captains_cc,/turf/simulated/floor/plasteel{icon_state = "wood"},/area/centcom/control)
 "kf" = (/obj/structure/stool/bed/chair/office/dark,/turf/simulated/floor/plasteel{icon_state = "wood"},/area/centcom/control)
 "kg" = (/obj/structure/table/reinforced,/obj/item/weapon/clipboard,/turf/simulated/floor/plasteel{icon_state = "wood"},/area/centcom/control)
 "kh" = (/obj/structure/closet/secure_closet/personal/cabinet,/turf/simulated/floor/plasteel,/area/centcom/control)
