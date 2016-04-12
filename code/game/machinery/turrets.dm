@@ -491,6 +491,13 @@
 	A.fire()
 	return
 
+/obj/machinery/gun_turret/syndicate
+	var/enabled = 0
+
+/obj/machinery/gun_turret/syndicate/process()
+	if(!enabled)
+		return
+	..()
 
 ////////////////////////
 //Turret Control Panel//
