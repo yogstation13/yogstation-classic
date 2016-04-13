@@ -1,0 +1,7 @@
+author: AsV9
+
+delete-after: True
+
+changes: 
+  - rscadd: "Merges Malf AI and traitor AI into a single antag type, no longer has its own mode."
+  - rscadd: "Traitor AI can now use malf powers."
