@@ -32,10 +32,6 @@ var/global/list/spec_roles = list(
 			"game_mode" = /datum/game_mode/revolution,
 			"name" 		= "revolutionary"
 		),
-	BE_ALIEN = list(
-			"game_mode" = null,
-			"name" 		= "alien"
-		),
 	BE_PAI = list(
 			"game_mode" = null,
 			"name" 		= "pAI/posibrain"
@@ -72,6 +68,14 @@ var/global/list/spec_roles = list(
 			"game_mode" = null,
 			"name" 		= "revenant"
 		),
+	BE_BORER = list(
+			"game_mode" = null,
+			"name" 		= "cortical Borer"
+		),
+	BE_SLAUGHTERDEMON = list(
+			"game_mode" = null,
+			"name" 		= "slaughter Demon"
+		),
 	BE_ZOMBIE = list(
 			"game_mode" = /datum/game_mode/zombies,
 			"name" 		= "zombie"
@@ -79,6 +83,14 @@ var/global/list/spec_roles = list(
 	BE_CYBERMAN = list(
 			"game_mode" = /datum/game_mode/cybermen,
 			"name" 		= "cyberman"
+		),
+	BE_XENOMORPH = list(
+			"game_mode" = null,
+			"name" 		= "xenomorph"
+		),
+	BE_ALIEN = list(
+			"game_mode" = null,
+			"name" 		= "alien"
 		),
 )
 

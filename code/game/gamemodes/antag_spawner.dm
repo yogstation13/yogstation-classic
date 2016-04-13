@@ -206,7 +206,7 @@
 
 
 /obj/item/weapon/antag_spawner/slaughter_demon/attack_self(mob/user)
-	var/list/demon_candidates = get_candidates(BE_ALIEN)
+	var/list/demon_candidates = get_candidates(BE_SLAUGHTERDEMON)
 	if(user.z != 1)
 		user << "<span class='notice'>You should probably wait until you reach the station.</span>"
 		return

@@ -120,7 +120,7 @@
 						for(var/mob/O in viewers(get_turf(holder.my_atom),null))
 							O.show_message(text("<span class='notice'>Some sort of alien slug has crawled out of the slime extract!</span>"), 1)
 
-						var/list/candidates = get_candidates(BE_ALIEN, ALIEN_AFK_BRACKET)
+						var/list/candidates = get_candidates(BE_BORER, ALIEN_AFK_BRACKET)
 						if(!candidates.len)
 							//Spawn a non player controlled borer, animatable with light pink slime potion
 							for(var/mob/O in viewers(get_turf(holder.my_atom),null))
