@@ -151,9 +151,9 @@ var/list/uplink_items = list()
 	surplus = 0
 
 /datum/uplink_item/dangerous/crossbow
-	name = "Miniature Energy Crossbow"
-	desc = "A short bow mounted across a tiller in miniature. Small enough to fit into a pocket or slip into a bag unnoticed. It fires bolts tipped with a paralyzing toxin collected from a rare organism. \
-	The bow generates bolts using an internal power source but must be manually charged between shots."
+	name = "Miniature Radiation Crossbow"
+	desc = "A short bow mounted across a tiller in miniature. Small enough to fit into a pocket or slip into a bag unnoticed. It fires bolts tipped with a powerful toxin collected from a rare organism. \
+	The bow generates bolts using an internal power source and automatically prepares a new shot after cooling down."
 	item = /obj/item/weapon/gun/energy/kinetic_accelerator/crossbow
 	cost = 12
 	excludefrom = list(/datum/game_mode/nuclear,/datum/game_mode/gang)
