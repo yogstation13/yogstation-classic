@@ -35,8 +35,7 @@
 	for(var/obj/machinery/computer/shuttle/syndicate/S in machines)
 		S.challenge = TRUE
 		S.challenge_time = world.time
-	for(var/obj/machinery/gun_turret/syndicate/S in machines)
-		S.enabled = 1
+//		S.enabled = 1
 
 	var/obj/item/device/radio/uplink/U = new(get_turf(user))
 	U.hidden_uplink.uplink_owner = "[user.key]"
