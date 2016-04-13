@@ -52,4 +52,4 @@
 #define BE_CYBERMAN		"role_cyberman"
 #define BE_BORER        "role_borer"
 #define BE_SLAUGHTERDEMON "role_slaughterdemon"
-#define BE_OTHER		"role_other"
+
