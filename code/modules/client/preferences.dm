@@ -88,9 +88,9 @@ var/global/list/spec_roles = list(
 			"game_mode" = null,
 			"name" 		= "xenomorph"
 		),
-	BE_OTHER = list(
+	BE_ALIEN = list(
 			"game_mode" = null,
-			"name" 		= "other"
+			"name" 		= "alien"
 		),
 )
 
