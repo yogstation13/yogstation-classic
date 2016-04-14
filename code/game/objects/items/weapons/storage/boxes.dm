@@ -662,3 +662,27 @@
 	new /obj/item/stack/medical/bruise_pack(src)
 	new /obj/item/stack/medical/ointment(src)
 	new /obj/item/weapon/reagent_containers/hypospray/medipen(src)
+
+
+/obj/item/weapon/storage/box/pillow
+	name = "body pillow"
+	desc = "A pillow with some generic cartoon girl on the front. <i>Certain</i> people might like this."
+	icon_state = "pillowbox"
+	item_state = "pillowbox"
+	burn_state = -1 //nobody can burn my love
+	attack_verb = list("squished", "fluffed", "slapped", "made a smug gesture toward", "bopped", "smacked", )
+	hitsound = "sound/weapons/thudswoosh.ogg"
+	foldable = null
+
+/obj/item/weapon/storage/box/pillow/attack_self(mob/user)
+	..()
+	var/msg = pick("Uguu~", "Kyaa!", "B-baka!", "Cute!", "Aww!", "Smug!", "Kawaii!", "Desu~", "N-not there!", "Nyaa~", "Fufu~", "Sugoi!")
+	user.changeNext_move(CLICK_CD_MELEE)
+	playsound(loc, "sound/weapons/thudswoosh.ogg", 50, 1, -5)
+	user.visible_message("<span class='notice'>[user] squeezes \the [src].</span>","<span class='notice'>You squeeze \the [src]. [msg]</span>")
+	return
+
+/obj/item/weapon/storage/box/pillow/suicide_act(mob/user)
+	user.visible_message("<span class='suicide'>[user] is cuddling \ with the [src.name]! It looks like \he's trying to commit social suicide.</span>")
+	src.say("You make my kokoro go doki-doki, [user]!")
+	return (OXYLOSS)
