@@ -171,7 +171,7 @@
 	panel = "Shadowling Abilities"
 	charge_max = 250 //Short cooldown because people can just turn the lights back on
 	clothes_req = 0
-	range = 7
+	range = 5
 	action_icon_state = "veil"
 	var/blacklisted_lights = list(/obj/item/device/flashlight/flare, /obj/item/device/flashlight/slime)
 
@@ -297,7 +297,7 @@
 	if(istype(I, /obj/item/device/flashlight))
 		var/obj/item/device/flashlight/F = I
 		if(F.on)
-			if(!is_type_in_list(I, whitelisted_lights))
+			if(!is_type_in_list(I, whitelisted_lights) || prob(30))
 				return F.brightness_on //Necessary because flashlights become 0-luminosity when held.  I don't make the rules of lightcode.
 			F.visible_message("<span class='warning'>An icy wind kills [F]'s flame.</span>")
 			F.on = 0
