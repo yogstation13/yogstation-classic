@@ -173,7 +173,7 @@
 					var/area/new_area = get_area(loc)
 					if(new_area)
 						new_area.Entered(src)
-	//=================
+	//==================
 
 	else if(prob(33))
 		var/list/nearby = oview(10, src)
