@@ -407,6 +407,9 @@
 			usr << "<span class='warning'>You can only enthrall humans.</span>"
 			charge_counter = charge_max
 			return
+		if(isloyal(target))
+			usr << "<span class='warning'>The target's mind resists you!</span>"
+			return
 		if(enthralling)
 			usr << "<span class='warning'>You are already enthralling!</span>"
 			charge_counter = charge_max
