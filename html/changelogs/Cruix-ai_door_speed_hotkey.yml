@@ -1,0 +1,7 @@
+author: Cruix
+
+delete-after: True
+
+changes: 
+  - rscadd: "AIs using a mod-click on a door are now given a message if the mod-click was successful."
+  - rscadd: "AIs can now shift-alt click on doors to toggle their speed override."
