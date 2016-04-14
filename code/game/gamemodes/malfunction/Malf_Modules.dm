@@ -86,17 +86,6 @@
 	world << "<B>The AI cleansed the station of life with the doomsday device!</B>"
 	ticker.force_ending = 1
 
-/datum/AI_Module/large/fireproof_core
-	module_name = "Core Upgrade"
-	mod_pick_name = "coreup"
-	description = "An upgrade to improve core resistance, making it immune to fire and heat. This effect is permanent."
-	cost = 50
-	one_time = 1
-
-	power_type = /mob/living/silicon/ai/proc/fireproof_core
-
-
-
 //////END DOOMSDAY DEVICE
 
 /datum/AI_Module/large/fireproof_core
