@@ -198,7 +198,7 @@
 			S.poison_per_bite = poison_per_bite
 			S.poison_type = poison_type
 			if(player_spiders)
-				var/list/candidates = get_candidates(BE_ALIEN, AFK_ALIEN_CANDIDATES)
+				var/list/candidates = get_candidates(BE_ALIEN, AFK_ALIEN_BRACKET)
 
 				shuffle(candidates)
 
