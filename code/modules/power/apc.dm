@@ -901,6 +901,11 @@
 		for(var/obj/item/weapon/pinpointer/point in world)
 			point.the_disk = src //the pinpointer will detect the shunted AI
 
+	if(malf.nuking == TRUE)
+		for(var/obj/machinery/doomsday_device/D in world)
+			if(D.timer > 0) //well we don't want to do this if the timeleft is 0 duh.
+				D.timer += 30 //add 30 seconds to nuke timer.
+				//I was going to add 60 seconds to that thing above. but I realized I was dealing with BYOND seconds which are twice as long.
 
 /obj/machinery/power/apc/proc/malfvacate(forced)
 	if(!src.occupier)
