@@ -173,7 +173,7 @@
 					var/area/new_area = get_area(loc)
 					if(new_area)
 						new_area.Entered(src)
-	//==================
+	//=================
 
 	else if(prob(33))
 		var/list/nearby = oview(10, src)
@@ -198,7 +198,7 @@
 			S.poison_per_bite = poison_per_bite
 			S.poison_type = poison_type
 			if(player_spiders)
-				var/list/candidates = get_candidates(BE_ALIEN, ALIEN_AFK_BRACKET)
+				var/list/candidates = get_candidates(BE_ALIEN, ALIEN_AFK_BRACKET) //i am here because travis sucks
 
 				shuffle(candidates)
 
