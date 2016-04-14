@@ -1,0 +1,6 @@
+author: AsV9
+
+delete-after: True
+
+changes: 
+  - bugfix: "Fixed missing cameras from engineering."
