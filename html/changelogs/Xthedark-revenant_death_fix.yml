@@ -1,0 +1,6 @@
+author: XTheDark
+
+delete-after: True
+
+changes: 
+  - bugfix: "Hopefully fixes revenants spontantaniously combusting for no reason."

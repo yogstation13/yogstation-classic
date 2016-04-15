@@ -44,7 +44,6 @@
 	var/list/drained_mobs = list() //Cannot harvest the same mob twice
 
 /mob/living/simple_animal/revenant/Life()
-	..()
 	if(essence < essence_min)
 		essence = essence_min
 	if(essence_regenerating && !inhibited && essence < essence_regen_cap) //While inhibited, essence will not regenerate
@@ -54,6 +53,7 @@
 	maxHealth = essence * 3
 	if(!revealed)
 		health = maxHealth //Heals to full when not revealed
+	..()
 
 /mob/living/simple_animal/revenant/ex_act(severity, target)
 	return 1 //Immune to the effects of explosions.
@@ -200,6 +200,8 @@
 	return 0
 
 /mob/living/simple_animal/revenant/death()
+	if(!revealed || stat == DEAD)
+		return 0
 	..(1)
 	src << "<span class='userdanger'><b>NO! No... it's too late, you can feel yourself fading...</b></span>"
 	notransform = 1
@@ -209,7 +211,7 @@
 	visible_message("<span class='warning'>[src] lets out a waning screech as violet mist swirls around its dissolving body!</span>")
 	icon_state = "revenant_draining"
 	for(var/i = alpha, i > 0, i -= 10)
-		sleep(0.1)
+		stoplag()
 		alpha = i
 	visible_message("<span class='danger'>[src]'s body breaks apart into blue dust.</span>")
 	new /obj/item/weapon/ectoplasm/revenant(get_turf(src))
