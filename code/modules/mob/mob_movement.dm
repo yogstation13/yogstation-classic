@@ -250,7 +250,7 @@
 /client/proc/ignore_move_delay(n,direct)
 	var/turf/target = get_step(mob, direct)
 	if(CanShadowWalk(mob))
-		return (target.get_lumcount() == null || target.get_lumcount() <= 0.3)
+		return ((target.get_lumcount() == null || target.get_lumcount() <= 0.3) && world.time+4 >= move_delay) // Compensate for the sling species slowdown.
 
 	return 0;
 
