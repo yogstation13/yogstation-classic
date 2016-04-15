@@ -10,6 +10,7 @@
 	var/opened = 0
 	var/welded = 0
 	var/locked = 0
+	var/alert_locked = SEC_LEVEL_GREEN
 	var/broken = 0
 	var/large = 1
 	var/wall_mounted = 0 //never solid (You can always pass over it)
@@ -383,7 +384,7 @@
 
 /obj/structure/closet/proc/togglelock(mob/user)
 	if(secure)
-		if(allowed(user))
+		if(allowed(user) && (!locked || (locked && alert_locked <= security_level)))
 			locked = !locked
 			add_fingerprint(user)
 			for(var/mob/O in viewers(user, 3))
@@ -391,7 +392,7 @@
 					O << "<span class='notice'>[user] has [locked ? null : "un"]locked the locker.</span>"
 			update_icon()
 		else
-			user << "<span class='notice'>Access Denied</span>"
+			user << "<span class='notice'>Access Denied [alert_locked > security_level ? "- The alert level is not severe enough" : ""]</span>"
 	else
 		return
 

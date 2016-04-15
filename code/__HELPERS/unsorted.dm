@@ -404,6 +404,30 @@ Turf and target are seperate in case you want to teleport some distance from a t
 		else		. = pick(ais)
 	return .
 
+// Shows an HTML window list of mobs, use a Topic to get the result
+// Pass the SRC of the object you want to receive the Topic.
+// Param will be passed back to the Topic, it can be used to determine what function called this.
+// See /code/modules/mob/dead/observer/topic.dm for an example
+/proc/search_mob(var/source, var/param)
+	var/list/mobs = getmobs()
+	var/list/listed_names = list()
+	var/list/listed_refs = list()
+	for(var/name in mobs)
+		var/ref = mobs[name]
+		listed_names += name
+		listed_refs += "\ref[ref]"
+
+	var/names_js = list2text(listed_names, ";")
+	var/refs_js = list2text(listed_refs, ";")
+
+	var/html_form = file2text('html/search_mob.html')
+	html_form = replacetext(html_form, "null /* mob_names */", "\"[names_js]\"")
+	html_form = replacetext(html_form, "null /* mob_refs */", "\"[refs_js]\"")
+	html_form = replacetext(html_form, "/* ref src */", "\ref[source]")
+	html_form = replacetext(html_form, "/* param */", param)
+
+	source << browse(html_form, "window=schmob;size=415x445")
+
 //Returns a list of all mobs with their name
 /proc/getmobs()
 
@@ -412,21 +436,22 @@ Turf and target are seperate in case you want to teleport some distance from a t
 	var/list/creatures = list()
 	var/list/namecounts = list()
 	for(var/mob/M in mobs)
-		var/name = M.name
-		if (name in names)
-			namecounts[name]++
-			name = "[name] ([namecounts[name]])"
-		else
-			names.Add(name)
-			namecounts[name] = 1
-		if (M.real_name && M.real_name != M.name)
-			name += " \[[M.real_name]\]"
-		if (M.stat == 2)
-			if(istype(M, /mob/dead/observer/))
-				name += " \[ghost\]"
+		if(M)
+			var/name = M.name
+			if (name in names)
+				namecounts[name]++
+				name = "[name] ([namecounts[name]])"
 			else
-				name += " \[dead\]"
-		creatures[name] = M
+				names.Add(name)
+				namecounts[name] = 1
+			if (M.real_name && M.real_name != M.name)
+				name += " \[[M.real_name]\]"
+			if (M.stat == 2)
+				if(istype(M, /mob/dead/observer/))
+					name += " \[ghost\]"
+				else
+					name += " \[dead\]"
+			creatures[name] = M
 
 	return creatures
 
@@ -877,8 +902,9 @@ Turf and target are seperate in case you want to teleport some distance from a t
 	if(current_number && goal_number && target)
 		var/image/progbar
 		progbar = image("icon" = 'icons/effects/doafter_icon.dmi', "loc" = target, "icon_state" = "prog_bar_0")
-		progbar.icon_state = "prog_bar_[round(((current_number / goal_number) * 100), 10)]"
+		progbar.icon_state = "prog_bar_[round(((current_number / goal_number) * 100), 5)]"
 		progbar.pixel_y = 32
+		progbar.appearance_flags = RESET_COLOR + RESET_ALPHA + KEEP_APART + NO_CLIENT_COLOR + RESET_TRANSFORM // So it always looks the same, ignores flips and colours and things.
 		return progbar
 
 /proc/do_after(mob/user, delay, numticks = 5, needhand = 1, atom/target = null)

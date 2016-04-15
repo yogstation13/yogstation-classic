@@ -146,6 +146,9 @@ ALLOW_HOLIDAYS
 ##Remove the # mark if you are going to use the SVN irc bot to relay adminhelps
 #USEIRCBOT
 
+##Remote the # mark if you are going to use the Discord bot.
+#USEDISCORDBOT
+
 ##Defines the ticklag for the world.  0.9 is the normal one, 0.5 is smoother.
 TICKLAG 0.625
 

@@ -58,7 +58,7 @@
 	if(chambered && !chambered.BB) //if BB is null, i.e the shot has been fired...
 		var/obj/item/ammo_casing/energy/shot = chambered
 		power_supply.use(shot.e_cost)//... drain the power_supply cell
-		chambered = null 
+		chambered = null
 		newshot()
 	else
 		chambered = null //either way, released the prepared shot
@@ -71,6 +71,11 @@
 	var/obj/item/ammo_casing/energy/shot = ammo_type[select]
 	fire_sound = shot.fire_sound
 	fire_delay = shot.delay
+	if(chambered)
+		var/obj/item/ammo_casing/energy/chambered_energy = chambered
+		if(istype(chambered_energy))
+			power_supply.give(chambered_energy.e_cost)//refund!
+	process_chamber()
 	if (shot.select_name)
 		user << "<span class='notice'>[src] is now set to [shot.select_name].</span>"
 	update_icon()

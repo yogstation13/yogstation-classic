@@ -19,7 +19,7 @@
 
 /datum/game_mode/wizard/pre_setup()
 
-	var/datum/mind/wizard = pick(antag_candidates)
+	var/datum/mind/wizard = pick_candidate()
 	wizards += wizard
 	modePlayer += wizard
 	wizard.assigned_role = "Wizard"
@@ -36,9 +36,9 @@
 /datum/game_mode/wizard/post_setup()
 	for(var/datum/mind/wizard in wizards)
 		log_game("[wizard.key] (ckey) has been selected as a Wizard")
-		forge_wizard_objectives(wizard)
 		//learn_basic_spells(wizard.current)
 		equip_wizard(wizard.current)
+		forge_wizard_objectives(wizard)
 		name_wizard(wizard.current)
 		greet_wizard(wizard)
 		if(use_huds)

@@ -11,7 +11,7 @@
 	var/maxhealth = 30
 	var/health_regen = 2
 	var/health_timestamp = 0
-	var/brute_resist = 4
+	var/brute_resist = 0.5
 	var/fire_resist = 1
 	var/atmos_block = 0
 	var/mob/camera/blob/overmind
@@ -310,7 +310,7 @@
 	var/obj/effect/blob/B = new type(src.loc)
 	if(controller)
 		B.overmind = controller
-		B.color = overmind.blob_reagent_datum.color
+		B.adjustcolors(overmind.blob_reagent_datum.color)
 	B.update_icon()
 	qdel(src)
 	return B
@@ -346,9 +346,10 @@
 
 /obj/effect/blob/normal
 	icon_state = "blob"
+	desc = "A thick wall of writhing tendrils."
 	luminosity = 0
-	health = 21
-	maxhealth = 25
+	health = 30
+	maxhealth = 30
 
 
 /obj/effect/blob/normal/update_icon()
@@ -357,12 +358,12 @@
 			icon_state = "blob_damaged"
 			name = "fragile blob"
 			desc = "A thin lattice of slightly twitching tendrils."
-			brute_resist = 2
+			brute_resist = 0.5
 		else
 			icon_state = "blob"
 			name = "blob"
 			desc = "A thick wall of writhing tendrils."
-			brute_resist = 4
+			brute_resist = 0.25
 
 
 /obj/effect/blob/tesla_act(power)

@@ -46,8 +46,6 @@
 		return
 	B.color = blob_reagent_datum.color
 	var/obj/effect/blob/N = B.change_to(blobType, src)
-	N.overmind = src
-	N.adjustcolors(blob_reagent_datum.color)
 	return N
 
 /mob/camera/blob/verb/create_shield_power()
@@ -268,7 +266,7 @@
 //new tg system
 /mob/camera/blob/verb/chemical_reroll()
 	set category = "Blob"
-	set name = "Reactive Chemical Adaptation (40)"
+	set name = "Reactivate Chemical Adaptation (40)"
 	set desc = "Replaces your chemical with a random, different one."
 	if(free_chem_rerolls || can_buy(40))
 		set_chemical()
@@ -280,30 +278,30 @@
 	blob_reagent_datum = new BC
 	for(var/BL in blobs)
 		var/obj/effect/blob/B = BL
-		B.update_icon()
+		B.adjustcolors(blob_reagent_datum.color)
 	for(var/BLO in blob_mobs)
 		var/mob/living/simple_animal/hostile/blob/BM = BLO
-		BM.update_icons() //If it's getting a new chemical, tell it what it does!
+		BM.adjustcolors(blob_reagent_datum.color) //If it's getting a new chemical, tell it what it does!
 	src << "Your reagent is now: <b><font color=\"[blob_reagent_datum.color]\">[blob_reagent_datum.name]</b></font>!"
 	src << "The <b><font color=\"[blob_reagent_datum.color]\">[blob_reagent_datum.name]</b></font> reagent [blob_reagent_datum.description]"
 
 /mob/camera/blob/verb/blob_help()
 	set category = "Blob"
 	set name = "*Blob Help*"
-	set desc = "Help on how to blob."
+	set desc = "Help on how to blub."
 	src << "<b>As the overmind, you can control the blob!</b>"
 	src << "Your blob reagent is: <b><font color=\"[blob_reagent_datum.color]\">[blob_reagent_datum.name]</b></font>!"
 	src << "The <b><font color=\"[blob_reagent_datum.color]\">[blob_reagent_datum.name]</b></font> reagent [blob_reagent_datum.description]"
 	src << "<b>You can expand, which will attack people, damage objects, or place a Normal Blob if the tile is clear.</b>"
-	src << "<i>Normal Blobs</i> will expand your reach and can be upgraded into special blobs that perform certain functions."
+	src << "<b><i>Normal Blobs</i></b> will expand your reach and can be upgraded into special blobs that perform certain functions."
 	src << "<b>You can upgrade normal blobs into the following types of blob:</b>"
-	src << "<i>Shield Blobs</i> are strong and expensive blobs which take more damage. In additon, they are fireproof and can block air, use these to protect yourself from station fires."
-	src << "<i>Resource Blobs</i> are blobs which produce more resources for you, build as many of these as possible to consume the station. This type of blob must be placed near node blobs or your core to work."
-	src << "<i>Factory Blobs</i> are blobs that spawn blob spores which will attack nearby enemies. This type of blob must be placed near node blobs or your core to work."
-	src << "<i>Blobbernauts</i> can be produced from factories for a cost, and are hard to kill, powerful, and moderately smart. The factory used to create one will become fragile and briefly unable to produce spores."
-	src << "<i>Node Blobs</i> are blobs which grow, like the core. Like the core it can activate resource and factory blobs."
+	src << "<b><i>Shield Blobs</i></b> are strong and expensive blobs which take more damage. In additon, they are fireproof and can block air, use these to protect yourself from station fires."
+	src << "<b><i>Resource Blobs</i></b> are blobs which produce more resources for you, build as many of these as possible to consume the station. This type of blob must be placed near node blobs or your core to work."
+	src << "<b><i>Factory Blobs</i></b> are blobs that spawn blob spores which will attack nearby enemies. This type of blob must be placed near node blobs or your core to work."
+	src << "<b><i>Blobbernauts</i></b> can be produced from factories for a cost, and are hard to kill, powerful, and moderately smart. The factory used to create one will become fragile and permanently unable to produce spores."
+	src << "<b><i>Node Blobs</i></b> are blobs which grow, like the core. Like the core it can activate resource and factory blobs."
 	src << "<b>In addition to the buttons on your HUD, there are a few click shortcuts to speed up expansion and defense.</b>"
-	src << "<b>CTRL Click = Expand Blob / Middle Mouse Click = Rally Spores / Alt Click = Create Shield"
+	src << "<b>CTRL Click</b> = Expand Blob / <b>Middle Mouse Click</b> = Rally Spores / <b>Alt Click</b> = Create Shield"
 //old yog system
 /*/mob/camera/blob/verb/chemical_reroll()
 	set category = "Blob"

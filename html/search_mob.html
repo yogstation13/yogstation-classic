@@ -1,0 +1,118 @@
+<html>
+
+<head>
+  <title>Search Mob</title>
+  <script src="libraries.min.js"></script>
+  <style type="text/css">
+    body
+    {
+      font-size: 9pt;
+      font-family: Verdana, sans-serif;
+    }
+
+    h1, h2, h3, h4, h5, h6
+    {
+      color: #00f;
+      font-family: Georgia, Arial, sans-serif;
+    }
+    img { 
+      border: 0px; 
+    }
+    p.lic {
+      font-size: 6pt;
+    }
+  </style>
+</head>
+
+<body>
+	<form id="spawner" name="spawner" action="byond://?src=/* ref src */" method="get">
+		<input type="hidden" name="search_mob" id="search_mob" value="search_mob">
+		<input type="hidden" name="src" value="/* ref src */">
+		<input type="hidden" name="target_name" id="target_name">
+		<input type="hidden" name="target_ref" id="target_ref">
+		<input type="hidden" name="param" id="param" value="/* param */">
+		
+		<table style="width:100%; height:100%;">
+			<tr height="30">
+				<td width="80">Search</td>
+				<td><input type="text" id="filter" name="filter" value="" onkeypress="submitFirst(event)" style="width:100%;" /></td>
+			</tr>
+			<tr>
+				<td colspan="2"><select name="object_list" id="object_list" size="18" style="width:100%; height:100%;"></select></td>
+			</tr>
+		</table>
+	</form>
+	
+	<script language="JavaScript">
+		var old_search = "";
+		var object_list = document.spawner.object_list;
+		var mob_names = null /* mob_names */;
+		var mob_refs = null /* mob_refs */;
+		var names = mob_names == null ? new Array() : mob_names.split(";");
+		var refs = mob_refs == null ? new Array() : mob_refs.split(";");
+		var timeoutId = -1;
+		
+		var filtered_names = new Array();
+		var filtered_refs = new Array();
+		
+		document.spawner.filter.focus();
+		
+		function populateList() {
+			object_list.options.length = 0;
+			
+			var i;
+			for (i in filtered_names) {
+				var new_option = document.createElement("option");
+				new_option.value = filtered_refs[i];
+				new_option.text = filtered_names[i];
+				object_list.options.add(new_option);
+			}
+		}
+		
+		function updateSearch() {
+			old_search = document.spawner.filter.value;
+			
+			filtered_names = new Array();
+			filtered_refs = new Array();
+			
+			var i;
+			for (i in names) {
+				if(old_search.length > 0 && names[i].toLowerCase().search(old_search.toLowerCase()) < 0) {
+					continue;
+				}
+				
+				filtered_names.push(names[i]);
+				filtered_refs.push(refs[i]);
+			}
+			
+			populateList();
+		}
+		
+		function submitFirst(event) {
+			if (!object_list.options.length) {
+				return false;
+			}
+			
+			if (event.keyCode == 13 || event.which == 13) {
+				object_list.options[0].selected = 'true';
+			}
+		}
+		
+		$("#filter").keyup(function() {
+			updateSearch();
+		});
+		
+		$("#object_list").change(function() {
+			$("#target_name").val($("#object_list").val());
+			$("#target_ref").val($("#object_list").val());
+			$("#spawner").submit();
+		});
+		
+		$(function() {
+			updateSearch();
+		});
+
+	</script>
+</body>
+
+</html>

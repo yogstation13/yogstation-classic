@@ -86,12 +86,15 @@
 	new /obj/item/clothing/gloves/combat(src)
 
 /obj/item/weapon/storage/toolbox/drone
-	name = "mechanical toolbox"
+	name = "drone internal toolbox"
 	icon_state = "blue"
 	item_state = "toolbox_blue"
+	storage_slots = 10
+	max_combined_w_class = 20
 
 /obj/item/weapon/storage/toolbox/drone/New()
 	..()
+	flags |= NODROP
 	var/color = pick("red","yellow","green","blue","pink","orange","cyan","white")
 	new /obj/item/weapon/screwdriver(src)
 	new /obj/item/weapon/wrench(src)
@@ -100,3 +103,4 @@
 	new /obj/item/stack/cable_coil(src,30,color)
 	new /obj/item/weapon/wirecutters(src)
 	new /obj/item/device/multitool(src)
+	new /obj/item/weapon/extinguisher/mini(src)

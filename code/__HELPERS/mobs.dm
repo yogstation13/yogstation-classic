@@ -133,6 +133,16 @@ var/global/list/roundstart_species[0]
 	else
 		return 0
 
+/proc/is_whitelisted(mob/user)
+	if(ismob(user))
+		if(user.client)
+			return (user.client.is_whitelisted)
+	else if(istype(user, /client))
+		var/client/C = user
+		if(C)
+			return (C.is_whitelisted)
+	return 0
+
 /proc/is_veteran(mob/user)
 	if(ismob(user))
 		if(user.client && user.client.prefs)
@@ -195,6 +205,9 @@ Proc for attack log creation, because really why not
 	else if(istype(user, /client))
 		var/client/temp = user
 		return temp.ckey
+	else if(istype(user, /datum/mind))
+		var/datum/mind/temp = user
+		return lowertext(replacetext(temp.key, " ", ""))
 
 	return "* Unknown *"
 

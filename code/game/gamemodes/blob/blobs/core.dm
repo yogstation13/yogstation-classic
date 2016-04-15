@@ -6,7 +6,7 @@
 	health = 300
 	maxhealth = 300
 	health_regen = 0 //regen in Life(), instead of in RegenHealth()
-	fire_resist = 2
+	fire_resist = 0.5
 	atmos_block = 1
 	var/overmind_get_delay = 0 // we don't want to constantly try to find an overmind, do it every 30 seconds
 	var/resource_delay = 0
@@ -93,9 +93,7 @@
 			continue
 		var/obj/effect/blob/normal/B = locate() in get_step(src, b_dir)
 		if(B)
-			var/obj/effect/blob/N = B.change_to(/obj/effect/blob/shield, src.overmind)
-			if(overmind)
-				N.color = overmind.blob_reagent_datum.color
+			B.change_to(/obj/effect/blob/shield, src.overmind)
 	color = null
 	..()
 

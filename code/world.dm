@@ -140,6 +140,16 @@
 		s["map_name"] = map_name ? map_name : "Unknown"
 
 		return list2params(s)
+
+	else if(T == "adminwho")
+		var/msg = "Current Admins:\n"
+		for(var/client/C in admins)
+			msg += "\t[C] is a [C.holder.rank]"
+			if(C.is_afk())
+				msg += " (AFK)"
+			msg += "\n"
+		return msg
+
 	else if (copytext(T,1,9) == "announce")
 		var/input[] = params2list(T)
 		if(global.comms_allowed)
@@ -151,6 +161,23 @@
 					if(C.prefs && (C.prefs.chat_toggles & CHAT_PULLR))
 						C << "<span class='announce'>PR: [input["announce"]]</span>"
 #undef CHAT_PULLR
+	else if (copytext(T,1,5) == "asay")
+		var/input[] = params2list(T)
+		if(global.comms_allowed)
+			if(input["key"] != global.comms_key)
+				return "Bad Key"
+			else
+				var/msg = "<span class='adminobserver'><span class='prefix'>DISCORD ADMIN:</span> <EM>[input["admin"]]</EM>: <span class='message'>[input["asay"]]</span></span>"
+				admins << msg
+	else if (copytext(T,1,4) == "ooc")
+		var/input[] = params2list(T)
+		if(global.comms_allowed)
+			if(input["key"] != global.comms_key)
+				return "Bad Key"
+			else
+				for(var/client/C in clients)
+					//if(C.prefs.chat_toggles & CHAT_OOC) // Discord OOC should bypass preferences.
+					C << "<font color='[normal_ooc_colour]'><span class='ooc'><span class='prefix'>DISCORD OOC:</span> <EM>[input["admin"]]:</EM> <span class='message'>[input["ooc"]]</span></span></font>"
 
 var/feedback_set = 0
 

@@ -3,7 +3,7 @@
 	icon = 'icons/mob/blob.dmi'
 	icon_state = "blob_resource"
 	health = 30
-	fire_resist = 2
+	fire_resist = 0.5
 
 /obj/effect/blob/storage/update_icon()
 	if(health <= 0)

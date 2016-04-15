@@ -61,46 +61,25 @@
 		src << "<span class='boldnotice'>You are feeling far too docile to do that.</span>"
 		return
 
-	if(chemicals < 50)
-		src << "<span class='boldnotice'>You don't have enough chemicals!</span>"
-		return
+	var content = ""
+	content += "<p>Chemicals: <span id='chemicals'>[chemicals]</span></p>"
+	content += "<p>Influence: <span id='influence'>[influence]</span>%</p>"
 
-	var/list/chemnames = list()
+	content += "<table>"
+
 	for(var/datum in typesof(/datum/borer_chem))
 		var/datum/borer_chem/C = new datum()
-		if(C.needed_influence < influence)
-			chemnames += C.chemname
+		if(C.chemname && C.needed_influence < influence)
+			content += "<tr><td><a class='chem-select' href='?_src_=\ref[src];src=\ref[src];borer_use_chem=[C.chemname]'>[C.chemname] ([C.chemuse])</a><p>[C.chem_desc]</p></td></tr>"
 
-	var/chemname = input("Select a chemical to secrete.", "Chemicals") as null|anything in chemnames
+	content += "</table>"
 
-	if(!chemname)
-		return
+	var/html = get_html_template(content)
 
-	var/datum/borer_chem/chem
-	for(var/datum in typesof(/datum/borer_chem))
-		var/datum/borer_chem/C = new datum()
-		if(C.chemname == chemname)
-			chem = C
+	usr << browse(null, "window=ViewBorer\ref[src]Chems;size=600x800")
+	usr << browse(html, "window=ViewBorer\ref[src]Chems;size=600x800")
 
-	if(!chem || !victim || controlling || !src || stat)
-		return
-
-	if(!istype(chem, /datum/borer_chem))
-		return
-
-	if(chemicals < chem.chemuse)
-		src << "<span class='boldnotice'>You need [chem.chemuse] chemicals stored to use this chemical!</span>"
-		return
-
-	src << "<span class='userdanger'>You squirt a measure of [chem.chemname] from your reservoirs into [victim]'s bloodstream.</span>"
-	victim.reagents.add_reagent(chem.chemname, chem.quantity)
-	chemicals -= chem.chemuse
-	influence += chem.influence_change
-	if(influence > 100)
-		influence = 100
-	if(influence < 0)
-		influence = 0
-	log_game("[src]/([src.ckey]) has injected [chemname] into their host [victim]/([victim.ckey])")
+	return
 
 /mob/living/simple_animal/borer/verb/hide()
 	set category = "Borer"

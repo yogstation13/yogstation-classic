@@ -19,7 +19,7 @@
 /datum/reagent/blob/proc/damage_reaction(obj/effect/blob/B, original_health, damage, damage_type, cause) //when the blob takes damage, do this
 	return damage
 
-/datum/reagent/blob/proc/death_reaction(obj/effect/blob/B, cause) //when a blob dies, do this
+/datum/reagent/blob/proc/death_reaction(obj/effect/blob/B, cause = 1) //when a blob dies, do this
 	return
 
 /datum/reagent/blob/proc/expand_reaction(obj/effect/blob/B, obj/effect/blob/newB, turf/T) //when the blob expands, do this
@@ -87,7 +87,7 @@
 	return effectivedamage
 
 /datum/reagent/blob/replicating_foam/expand_reaction(obj/effect/blob/B, obj/effect/blob/newB, turf/T)
-	if(prob(40))
+	if(prob(30))
 		newB.expand() //do it again!
 
 //does brute damage, shifts away when damaged
@@ -134,11 +134,12 @@
 
 /datum/reagent/blob/energized_fibers/reaction_mob(mob/living/M, method=TOUCH, reac_volume, show_message, touch_protection, mob/camera/blob/O)
 	reac_volume = ..()
-	M.apply_damage(0.4*reac_volume, BURN)
+	M.apply_damage(0.5*reac_volume, BURN)
 	if(M)
 		M.adjustStaminaLoss(0.8*reac_volume)
 
 /datum/reagent/blob/energized_fibers/tesla_reaction(obj/effect/blob/B, power)
+	B.health += 2
 	return 0
 
 //sets you on fire, does burn damage, weak to water
@@ -180,12 +181,12 @@
 /datum/reagent/blob/flammable_goo/reaction_mob(mob/living/M, method=TOUCH, reac_volume, show_message, touch_protection, mob/camera/blob/O)
 	reac_volume = ..()
 	M.adjust_fire_stacks(round(reac_volume/10)) //apply, but don't ignite
-	M.apply_damage(0.4*reac_volume, TOX)
+	M.apply_damage(0.5*reac_volume, TOX)
 	if(M)
-		M.apply_damage(0.2*reac_volume, BURN)
+		M.apply_damage(0.3*reac_volume, BURN)
 
 /datum/reagent/blob/flammable_goo/damage_reaction(obj/effect/blob/B, original_health, damage, damage_type, cause)
-	if(cause && damage_type == BURN)
+	if(damage_type == BURN)
 		for(var/turf/T in range(1, B))
 			if(!(locate(/obj/effect/blob) in T) && prob(80))
 				PoolOrNew(/obj/effect/hotspot, T)
@@ -259,7 +260,7 @@
 		O.blob_mobs.Add(BS)
 		BS.Zombify(M)
 	if(M)
-		M.apply_damage(0.6*reac_volume, TOX)
+		M.apply_damage(0.7*reac_volume, TOX)
 
 //toxin, stamina, and some bonus spore toxin
 /datum/reagent/blob/envenomed_filaments
@@ -423,7 +424,7 @@
 /datum/reagent/blob/electromagnetic_web/reaction_mob(mob/living/M, method=TOUCH, reac_volume, show_message, touch_protection, mob/camera/blob/O)
 	reac_volume = ..()
 	if(prob(reac_volume*2))
-		M.emp_act(2)
+		empulse(M.loc, 1, 3)
 	if(M)
 		M.apply_damage(0.6*reac_volume, BURN)
 
@@ -438,9 +439,10 @@
 				return damage * 10
 	return damage * 1.25 //a laser will do 25 damage, which will kill any normal blob
 
-/datum/reagent/blob/electromagnetic_web/death_reaction(obj/effect/blob/B, cause)
+/datum/reagent/blob/electromagnetic_web/death_reaction(obj/effect/blob/B, cause = 1)
 	if(cause)
-		empulse(B.loc, 1, 3) //less than screen range, so you can stand out of range to avoid it
+		if(prob(75))
+			empulse(B.loc, 1, 3) //less than screen range, so you can stand out of range to avoid it
 
 //does brute damage, bonus damage for each nearby blob, and spreads damage out
 /datum/reagent/blob/synchronous_mesh
@@ -501,7 +503,7 @@
 	reac_volume = ..()
 	if(O && ishuman(M) && M.stat == UNCONSCIOUS)
 		PoolOrNew(/obj/effect/overlay/temp/revenant, get_turf(M))
-		var/points = rand(5, 10)
+		var/points = rand(8, 13)
 		O.add_points(points)
 		O << "<span class='notice'>Gained [points] resources from the death of [M].</span>"
 		M.death()
@@ -512,8 +514,8 @@
 /datum/reagent/blob/pressurized_slime
 	name = "Pressurized Slime"
 	id = "pressurized_slime"
-	description = "will do low brute, oxygen, and stamina damage, and wet tiles when damaged or killed."
-	shortdesc = "will do low brute, oxygen, and stamina damage, and wet tiles under targets."
+	description = "will do medium brute and low oxygen damage, and wets tiles when damaged or killed."
+	shortdesc = "will do low brute and oxygen damage, and wet tiles under targets."
 	color = "#AAAABB"
 	complementary_color = "#BBBBAA"
 	blobbernaut_message = "emits slime at"
@@ -525,11 +527,9 @@
 	var/turf/simulated/T = get_turf(M)
 	if(istype(T, /turf/simulated) && prob(reac_volume))
 		T.MakeSlippery(1)
-	M.apply_damage(0.2*reac_volume, BRUTE)
+	M.apply_damage(0.4*reac_volume, BRUTE)
 	if(M)
 		M.apply_damage(0.4*reac_volume, OXY)
-	if(M)
-		M.adjustStaminaLoss(0.4*reac_volume)
 
 /datum/reagent/blob/pressurized_slime/damage_reaction(obj/effect/blob/B, original_health, damage, damage_type, cause)
 	for(var/turf/simulated/T in range(1, B))

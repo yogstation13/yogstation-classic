@@ -10,6 +10,7 @@ var/list/image/ghost_darkness_images = list() //this is a list of images for thi
 	canmove = 0
 	anchored = 1	//  don't get pushed around
 	invisibility = INVISIBILITY_OBSERVER
+	appearance_flags = KEEP_TOGETHER // So they don't look weird
 	languages = ALL
 	var/can_reenter_corpse
 	var/datum/hud/living/carbon/hud = null // hud
@@ -220,10 +221,8 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set name = "Follow" // "Haunt"
 	set desc = "Follow and haunt a mob."
 
-	var/list/mobs = getmobs()
-	var/input = input("Please, select a mob!", "Haunt", null, null) as null|anything in mobs
-	var/mob/target = mobs[input]
-	ManualFollow(target)
+	if(istype(usr, /mob/dead/observer)) //Make sure they're an observer!
+		search_mob(src, "FLW")
 
  // This is the ghost's follow verb with an argument
 /mob/dead/observer/proc/ManualFollow(atom/movable/target)
@@ -293,25 +292,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set desc = "Teleport to a mob"
 
 	if(istype(usr, /mob/dead/observer)) //Make sure they're an observer!
-
-
-		var/list/dest = list() //List of possible destinations (mobs)
-		var/target = null	   //Chosen target.
-
-		dest += getmobs() //Fill list, prompt user with list
-		target = input("Please, select a player!", "Jump to Mob", null, null) as null|anything in dest
-
-		if (!target)//Make sure we actually have a target
-			return
-		else
-			var/mob/M = dest[target] //Destination mob
-			var/mob/A = src			 //Source mob
-			var/turf/T = get_turf(M) //Turf of the destination mob
-
-			if(T && isturf(T))	//Make sure the turf exists, then move the source to that destination.
-				A.loc = T
-			else
-				A << "This mob is not located in the game world."
+		search_mob(src, "JMP")
 
 /mob/dead/observer/verb/boo()
 	set category = "Ghost"
