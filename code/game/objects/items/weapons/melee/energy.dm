@@ -1,6 +1,7 @@
 /obj/item/weapon/melee/energy
 	var/active = 0
 	var/force_on = 30 //force when active
+	var/armourpenetration_on = 10 //so you can't deal high damage when deactivated
 	var/throwforce_on = 20
 	var/icon_state_on = "axe1"
 	var/list/attack_verb_on = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
@@ -94,6 +95,7 @@
 	if (active)
 		force = force_on
 		throwforce = throwforce_on
+		armour_penetration = armourpenetration_on
 		hitsound = 'sound/weapons/blade1.ogg'
 		if(attack_verb_on.len)
 			attack_verb = attack_verb_on
