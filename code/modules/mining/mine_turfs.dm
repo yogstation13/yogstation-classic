@@ -91,7 +91,7 @@ var/global/list/rockTurfEdgeCache
 		"Uranium" = 5, "Diamond" = 1, "Gold" = 10,
 		"Silver" = 12, "Plasma" = 20, "Iron" = 40,
 		"Gibtonite" = 4, "Cave" = 2, "BScrystal" = 1,
-		/*, "Adamantine" =5*/)
+		, "Adamantine" = 5 , "Copper" = 15, "Clarenkite" = 15, "Mythril" = 15, "Platnium" = 15, "Electricite" = 15, "Telecrystal" = 15, "Coal" = 15, "Nightstone" = 15)
 		//Currently, Adamantine won't spawn as it has no uses. -Durandan
 	var/mineralChance = 13
 
@@ -123,8 +123,24 @@ var/global/list/rockTurfEdgeCache
 					M = new/turf/simulated/mineral/clown(src)
 				if("BScrystal")
 					M = new/turf/simulated/mineral/bscrystal(src)
-				/*if("Adamantine")
-					M = new/turf/simulated/mineral/adamantine(src)*/
+				if ("Copper")
+					M = new/turf/simulated/mineral/copper(src)
+				if("Adamantine")
+					M = new/turf/simulated/mineral/adamantine(src)
+				if ("Mythril")
+					M = new/turf/simulated/mineral/mythril(src)
+				if ("Clarenkite")
+					M = new/turf/simulated/mineral/clarenkite(src)
+				if ("Platnium")
+					M = new/turf/simulated/mineral/platnium(src)
+				if ("Electricite")
+					M = new/turf/simulated/mineral/electrite(src)
+				if ("Telecrystal")
+					M = new/turf/simulated/mineral/telecrystal(src)
+				if ("Coal")
+					M = new/turf/simulated/mineral/coal(src)
+				if ("Nightstone")
+					M = new/turf/simulated/mineral/nightstone(src)
 			if(M)
 				src = M
 				M.levelupdate()
@@ -136,7 +152,7 @@ var/global/list/rockTurfEdgeCache
 	mineralSpawnChanceList = list(
 		"Uranium" = 35, "Diamond" = 30,
 		"Gold" = 45, "Silver" = 50, "Plasma" = 50,
-		"BScrystal" = 20)
+		"BScrystal" = 20, "Mythril" = 35, "Copper" = 50, "Adamantine" = 35, "Clarenkite" = 50, "Platnium" = 50, "Electricite" = 50, "Telecrystal" = 50, "Coal" = 50, "Nightstone" = 50)
 
 /turf/simulated/mineral/random/high_chance/New()
 	icon_state = "rock"
@@ -148,7 +164,7 @@ var/global/list/rockTurfEdgeCache
 	mineralSpawnChanceList = list(
 		"Uranium" = 2, "Diamond" = 1, "Gold" = 4,
 		"Silver" = 6, "Plasma" = 15, "Iron" = 40,
-		"Gibtonite" = 2, "BScrystal" = 1)
+		"Gibtonite" = 2, "BScrystal" = 1, "Mythril" = 5, "Copper" = 10, "Adamantine" = 5, "Clarenkite" = 10, "Platnium" = 50, "Electricite" = 50, "Telecrystal" = 50, "Coal" = 50, "Nightstone" = 50)
 
 /turf/simulated/mineral/random/low_chance/New()
 	icon_state = "rock"
@@ -222,6 +238,95 @@ var/global/list/rockTurfEdgeCache
 	hidden = 1
 	scan_state = "rock_BScrystal"
 
+/turf/simulated/mineral/mythril
+	name = "mythril deposit"
+	icon_state = "rock_Mythril"
+	mineralType = /obj/item/weapon/ore/mythril
+	mineralAmt = 1
+	spreadChance = 5
+	spread = 1
+	hidden = 1
+	scan_state = "rock_Mythril"
+
+/turf/simulated/mineral/copper
+	name = "copper deposit"
+	icon_state = "rock_Copper"
+	mineralType = /obj/item/weapon/ore/copper
+	mineralAmt = 1
+	spreadChance = 5
+	spread = 1
+	hidden = 1
+	scan_state = "rock_Copper"
+
+/turf/simulated/mineral/adamantine
+	name = "adamantine deposit"
+	icon_state = "rock_Adamantine"
+	mineralType = /obj/item/weapon/ore/adamantine
+	mineralAmt = 1
+	spreadChance = 5
+	spread = 1
+	hidden = 1
+	scan_state = "rock_Adamantine"
+
+/turf/simulated/mineral/clarenkite
+	name = "clarenkite deposit"
+	icon_state = "rock_Clarenkite"
+	mineralType = /obj/item/weapon/ore/clarenkite
+	mineralAmt = 1
+	spreadChance = 5
+	spread = 1
+	hidden = 1
+	scan_state = "rock_Clarenkite"
+
+/turf/simulated/mineral/coal
+	name = "coal deposit"
+	icon_state = "rock_Coal"
+	mineralType = /obj/item/weapon/ore/coal
+	mineralAmt = 1
+	spreadChance = 5
+	spread = 1
+	hidden = 1
+	scan_state = "rock_Coal"
+
+/turf/simulated/mineral/electrite
+	name = "electrite deposit"
+	icon_state = "rock_Electrite"
+	mineralType = /obj/item/weapon/ore/electrite
+	mineralAmt = 1
+	spreadChance = 5
+	spread = 1
+	hidden = 1
+	scan_state = "rock_Electricite"
+
+/turf/simulated/mineral/platnium
+	name = "platnium deposit"
+	icon_state = "rock_Platnium"
+	mineralType = /obj/item/weapon/ore/platnium
+	mineralAmt = 1
+	spreadChance = 5
+	spread = 1
+	hidden = 1
+	scan_state = "rock_Platnium"
+
+/turf/simulated/mineral/telecrystal
+	name = "telecrystal deposit"
+	icon_state = "rock_Telecrystal"
+	mineralType = /obj/item/weapon/ore/telecrystal
+	mineralAmt = 1
+	spreadChance = 0
+	spread = 0
+	hidden = 1
+	scan_state = "rock_Telecrystal"
+
+/turf/simulated/mineral/nightstone
+	name = "nightstone deposit"
+	icon_state = "rock_Nightsone"
+	mineralType = /obj/item/weapon/ore/nightstone
+	mineralAmt = 1
+	spreadChance = 0
+	spread = 0
+	hidden = 1
+	scan_state = "rock_Nightstone"
 ////////////////////////////////Gibtonite
 /turf/simulated/mineral/gibtonite
 	name = "gibtonite deposit"

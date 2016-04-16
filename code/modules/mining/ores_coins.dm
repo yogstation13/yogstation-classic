@@ -101,6 +101,61 @@
 	points = 27
 	refined_type = /obj/item/stack/sheet/mineral/bananium
 
+/obj/item/weapon/ore/adamantine
+	name = "adamantine ore"
+	icon_state = "Adamantine ore"
+	origin_tech = "materials=5"
+	points = 18
+
+/obj/item/weapon/ore/copper
+	name = "copper ore"
+	icon_state = "Copper ore"
+	origin_tech = "materials=5"
+	points = 18
+
+/obj/item/weapon/ore/mythril
+	name = "mythril ore"
+	icon_state = "Mythril ore"
+	origin_tech = "materials=5"
+	points = 18
+
+/obj/item/weapon/ore/clarenkite
+	name = "clarenkite ore"
+	icon_state = "Clarenkite ore"
+	origin_tech = "materials=5"
+	points = 18
+
+/obj/item/weapon/ore/coal
+	name = "coal ore"
+	icon_state = "Coal ore"
+	origin_tech = "materials=5"
+	points = 18
+
+/obj/item/weapon/ore/electrite
+	name = "electricite ore"
+	icon_state = "Electricite ore"
+	origin_tech = "materials=5"
+	points = 18
+
+/obj/item/weapon/ore/platnium
+	name = "platnuim ore"
+	icon_state = "Platnium ore"
+	origin_tech = "materials=5"
+	points = 18
+
+/obj/item/weapon/ore/nightstone
+	name = "nigthstone"
+	icon_state = "Nightstone"
+	origin_tech = "materials=5"
+	points = 18
+
+/obj/item/weapon/ore/telecrystal
+	name = "telecrystal"
+	icon_state = "Telecrystal"
+	origin_tech = "materials=5"
+	points = 18
+
+
 /obj/item/weapon/ore/slag
 	name = "slag"
 	desc = "Completely useless"
