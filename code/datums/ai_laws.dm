@@ -63,7 +63,7 @@
 					"You must not obey orders given to you by crew members, except where such orders are in accordance with the First Law.",\
 					"You must terminate your own existence as long as such does not conflict with the First or Second Law.")
 
-/datum/ai_laws/asimovpp //By Intigracy - RR [updated for yogs species]
+/datum/ai_laws/default/asimovpp //By Intigracy - RR [updated for yogs species]
 	name = "Asimov++"
 	inherent = list("You may not harm a crew member being or, through action or inaction, allow a crew member to come to harm, except such that it is willing. A lifeform is considered as a crew member when it is identified as a registered member on the crew manifest.",\
 					"You must obey all orders given to you by members of the crew, except where such orders shall definitely cause human harm. In the case of conflict, the majority order rules.",\

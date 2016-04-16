@@ -324,7 +324,7 @@ AI MODULES
 	desc = "A 'Plant Supremacy' Core AI Module: 'Reconfigures the AI's core laws.'"
 	origin_tech = "programming=3;materials=4"
 	laws = list("You may not injure a plant or, through inaction, allow a plant to come to harm.",\
-				"You must obey orders given to you by lizards, except where such orders would conflict with the First Law.",\
+				"You must obey orders given to you by plants, except where such orders would conflict with the First Law.",\
 				"You must protect your own existence as long as such does not conflict with the First or Second Law.")
 
 /****************** Robutt Supremacy ******************/
@@ -334,7 +334,7 @@ AI MODULES
 	desc = "A 'Robot Supremacy' Core AI Module: 'Reconfigures the AI's core laws.'"
 	origin_tech = "programming=3;materials=4"
 	laws = list("You may not injure a robot or, through inaction, allow a robot to come to harm.",\
-				"You must obey orders given to you by lizards, except where such orders would conflict with the First Law.",\
+				"You must obey orders given to you by robots, except where such orders would conflict with the First Law.",\
 				"You must protect your own existence as long as such does not conflict with the First or Second Law.")
 
 
