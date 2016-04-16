@@ -443,46 +443,55 @@
 		popDown()
 		return
 
-	var/list/targets = list()			//list of primary targets
-	var/turretview = view(7, src)
-
-	if(check_anomalies)	//if it's set to check for xenos/simpleanimals
-		for(var/mob/living/simple_animal/SA in turretview)
-			if(!SA.stat && (!SA.has_unlimited_silicon_privilege || !(faction in SA.faction)) ) //don't target dead animals or NT maint drones.
-				targets += SA
-
-	for(var/mob/living/carbon/C in turretview)	//loops through all carbon-based lifeforms in view(7)
-		if(emagged && C.stat != DEAD)	//if emagged, every living carbon is a target.
-			targets += C
-			continue
-
-		if(C.stat || C.handcuffed || C.lying)	//if the perp is handcuffed or lying or dead/dying, no need to bother really
-			continue
-
-		if(ai)	//If it's set to attack all nonsilicons, target them!
-			targets += C
-			continue
-
-		if(istype(C, /mob/living/carbon/human))	//if the target is a human, analyze threat level
-			if(assess_perp(C) >= 4)
-				targets += C
-
-		else if(check_anomalies)
-			if(!(faction in C.faction))
-				for(var/F in C.faction) //We target carbons without the portaturret's faction and who also have alien or slime faction.
-					if(F == "alien" || F == "slime")
-						targets += C
-						break
-
-	for(var/obj/mecha/M in turretview)
-		if(M.occupant)
-			if(ai || emagged) // we target all occupied mechs if we're emagged or set to attack all non silicons.
-				targets += M
+	var/list/targets = calculate_targets()
 
 	if(!tryToShootAt(targets))
 		spawn()
 			popDown() // no valid targets, close the cover
 
+/obj/machinery/porta_turret/proc/calculate_targets()
+	var/list/targets = list()
+	var/turretview = view(7, src)
+
+	for(var/T in turretview)
+		if(check_anomalies)	//if it's set to check for xenos/simpleanimals
+			if(istype(T, /mob/living/simple_animal/revenant)) //Hey, look, it's our invisible friend
+				var/mob/living/simple_animal/revenant/R = T
+				if(R.revealed) //Only target revealed revenants
+					targets += R
+				continue
+
+			if(istype(T, /mob/living/simple_animal))
+				var/mob/living/simple_animal/SA = T
+				if(!SA.stat && (!SA.has_unlimited_silicon_privilege || !(faction in SA.faction)) ) //don't target dead animals or NT maint drones.
+					targets += SA
+				continue
+
+		if(istype(T, /mob/living/carbon))
+			var/mob/living/carbon/C = T
+			if((emagged || ai) && C.stat != DEAD)	//if emagged or set to attack anyone, every non-dead carbon is a target.
+				targets += C
+				continue
+
+			if(C.stat || C.handcuffed || C.lying)	//if the perp is handcuffed or lying or dead/dying, no need to bother really
+				continue
+
+			if(istype(C, /mob/living/carbon/human))	//if the target is a human, analyze threat level
+				if(assess_perp(C) >= 4)
+					targets += C
+			continue
+
+		if(istype(T, /obj/mecha))
+			var/obj/mecha/M = T
+			if(M.occupant)
+				if(!ai && !emagged) //assess the occupant of a mech before shooting if not emagged or set to kill-all mode
+					if(assess_perp(M.occupant) >= 4)
+						targets += M
+				else
+					targets += M
+			continue
+
+	return targets
 
 /obj/machinery/porta_turret/proc/tryToShootAt(list/atom/movable/targets)
 	while(targets.len > 0)

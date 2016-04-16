@@ -42,6 +42,8 @@
 	var/essence_drained = 0 //How much essence the revenant has drained.
 	var/draining = 0 //If the revenant is draining someone.
 	var/list/drained_mobs = list() //Cannot harvest the same mob twice
+	
+	var/obj/effect/proc_holder/spell/targeted/revenant_transmit/revtransmit //Need to keep this here to allow revenant to "quick cast" transmit via Ctrl+Click
 
 /mob/living/simple_animal/revenant/Life()
 	if(essence < essence_min)
@@ -52,7 +54,8 @@
 			essence = essence_regen_cap
 	maxHealth = essence * 3
 	if(!revealed)
-		health = maxHealth //Heals to full when not revealed
+		if(health < maxHealth) //Heals to full when not revealed
+			heal_overall_damage(getBruteLoss(),getFireLoss())
 	..()
 
 /mob/living/simple_animal/revenant/ex_act(severity, target)
@@ -77,7 +80,13 @@
 		AltClickOn(A)
 		return
 	if(modifiers["ctrl"])
-		CtrlClickOn(A)
+		if(istype(A, /mob/living))
+			var/mob/living/LM = A
+			var/list/targets = list()
+			targets += LM
+			revtransmit.cast(targets)
+		else
+			CtrlClickOn(A)
 		return
 
 	if(world.time <= next_move)
@@ -192,7 +201,9 @@
 
 /mob/living/simple_animal/revenant/proc/giveSpells()
 	if(src.mind)
-		src.mind.spell_list += new /obj/effect/proc_holder/spell/targeted/revenant_transmit
+		var/obj/effect/proc_holder/spell/targeted/revenant_transmit/RT = new
+		revtransmit = RT
+		src.mind.spell_list += RT
 		src.mind.spell_list += new /obj/effect/proc_holder/spell/aoe_turf/revenant_light
 		src.mind.spell_list += new /obj/effect/proc_holder/spell/aoe_turf/revenant_defile
 		src.mind.spell_list += new /obj/effect/proc_holder/spell/aoe_turf/revenant_malf
