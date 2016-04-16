@@ -26,7 +26,7 @@ var/list/blob_overmind_list = list()         //blob overmind list so we can keep
 	var/players_per_core = 30
 	var/blob_point_rate = 3
 
-	var/blobwincount = 350
+	var/blobwincount = 700
 
 	var/list/infected_crew = list()
 
@@ -69,7 +69,7 @@ var/list/blob_overmind_list = list()         //blob overmind list so we can keep
 	log_game("[blob.key] (ckey) has been selected as a Blob")
 	greet_blob(blobmind)
 	blob << "<span class='userdanger'>You feel very tired and bloated!  You don't have long before you burst!</span>"
-	spawn(600)
+	spawn(1000)
 		burst_blob(blobmind)
 	return 1
 
