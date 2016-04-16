@@ -169,7 +169,7 @@ var/list/uplink_items = list()
 
 /datum/uplink_item/dangerous/sword
 	name = "Energy Sword"
-	desc = "The energy sword is an edged weapon with a blade of pure energy. The sword is small enough to be pocketed when inactive. Activating it produces a loud, distinctive noise."
+	desc = "The energy sword is an edged weapon with a blade of pure energy. The sword is small enough to be pocketed when inactive. Activating it produces a loud, distinctive noise. Ignores a small portion of the target's armor."
 	item = /obj/item/weapon/melee/energy/sword/saber
 	cost = 6
 
