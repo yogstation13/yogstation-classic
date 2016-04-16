@@ -80,13 +80,7 @@
 		AltClickOn(A)
 		return
 	if(modifiers["ctrl"])
-		if(istype(A, /mob/living))
-			var/mob/living/LM = A
-			var/list/targets = list()
-			targets += LM
-			revtransmit.cast(targets)
-		else
-			CtrlClickOn(A)
+		CtrlClickOn(A)
 		return
 
 	if(world.time <= next_move)
@@ -95,6 +89,13 @@
 	if(ishuman(A) && in_range(src, A))
 		Harvest(A)
 
+/mob/living/simple_animal/revenant/CtrlClickOn(atom/A, params) //Copypaste from ghost code - revenants can't interact with the world directly.
+	if(istype(A, /mob/living))
+		var/mob/living/LM = A
+		var/list/targets = list()
+		targets += LM
+		revtransmit.cast(targets)
+	..()
 
 /mob/living/simple_animal/revenant/proc/Harvest(mob/living/carbon/human/target)
 	if(!castcheck(0))
