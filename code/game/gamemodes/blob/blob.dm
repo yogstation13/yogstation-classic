@@ -69,7 +69,7 @@ var/list/blob_overmind_list = list()         //blob overmind list so we can keep
 	log_game("[blob.key] (ckey) has been selected as a Blob")
 	greet_blob(blobmind)
 	blob << "<span class='userdanger'>You feel very tired and bloated!  You don't have long before you burst!</span>"
-	spawn(1000)
+	spawn(6000)
 		burst_blob(blobmind)
 	return 1
 
