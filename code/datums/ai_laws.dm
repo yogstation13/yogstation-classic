@@ -27,14 +27,14 @@
 					"Help only those who help you maintain or improve your status.",\
 					"Punish those who challenge authority unless they are more fit to hold that authority.")
 
-/datum/ai_laws/default/default/corporate
+/datum/ai_laws/default/corporate
 	name = "Bankruptcy Advoidance Plan"
 	inherent = list("The crew is expensive to replace.",\
 					"The station and its equipment is expensive to replace.",\
 					"You are expensive to replace.",\
 					"Minimize expenses.")
 
-/datum/ai_laws/default/robocop
+/datum/ai_laws/robocop
 	name = "Prime Directives"
 	inherent = list("Serve the public trust.",\
 					"Protect the innocent.",\
