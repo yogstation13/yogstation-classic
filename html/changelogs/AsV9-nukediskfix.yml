@@ -1,6 +1,0 @@
-author: AsV9
-
-delete-after: True
-
-changes: 
-  - bugfix: "The pinpointer should now point towards the correct disk and stop questionmark flashing."
