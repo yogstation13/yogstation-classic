@@ -1,0 +1,8 @@
+author: XTheDark
+
+delete-after: True
+
+changes: 
+  - bugfix: "Fixes revenants dieing randomly."
+  - bugfix: "Conceiled revenants are no longer shot by turrets."
+  - rscadd: "Revenants can now Transmit to someone using Control+Click."
