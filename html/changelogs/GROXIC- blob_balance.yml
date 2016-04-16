@@ -1,0 +1,8 @@
+author: GROXIC
+
+delete-after: True
+
+changes:
+  - tweak: "Blob burst time increased to 10 minutes."
+  - tweak: "Blob win requirement increased to 700 blobs."
+  - tweak: "Blob expand now 75% chance instead of 100%."
