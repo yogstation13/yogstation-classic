@@ -2,6 +2,7 @@
 	var/active = 0
 	var/force_on = 30 //force when active
 	var/armourpenetration_on = 10 //so you can't deal high damage when deactivated
+	var/armourpenetration_off = 0 //so you don't stick with the armor pen forever
 	var/throwforce_on = 20
 	var/icon_state_on = "axe1"
 	var/list/attack_verb_on = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
@@ -109,6 +110,7 @@
 	else
 		force = initial(force)
 		throwforce = initial(throwforce)
+		armour_penetration = armourpenetration_off
 		hitsound = initial(hitsound)
 		if(attack_verb_on.len)
 			attack_verb = list()
