@@ -190,6 +190,8 @@
 			equip_revolutionary(stalin.current)
 			forge_revolutionary_objectives(stalin)
 			greet_revolutionary(stalin)
+			update_rev_icons_removed(stalin)
+			update_rev_icons_added(stalin)
 
 //////////////////////////////////////
 //Checks if the revs have won or not//
