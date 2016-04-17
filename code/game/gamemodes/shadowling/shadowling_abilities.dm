@@ -416,6 +416,7 @@
 			return
 		if(!target.client)
 			usr << "<span class='warning'>[target]'s mind is vacant of activity.</span>"
+			return
 		enthralling = 1
 		usr << "<span class='danger'>This target is valid. You begin the enthralling.</span>"
 		target << "<span class='userdanger'>[usr] stares at you. You feel your head begin to pulse.</span>"
