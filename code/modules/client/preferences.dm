@@ -24,10 +24,6 @@ var/global/list/spec_roles = list(
 			"game_mode" = /datum/game_mode/wizard,
 			"name" 		= "wizard"
 		),
-	BE_MALF = list(
-			"game_mode" = /datum/game_mode/malfunction,
-			"name" 		= "malf AI"
-		),
 	BE_REV = list(
 			"game_mode" = /datum/game_mode/revolution,
 			"name" 		= "revolutionary"
