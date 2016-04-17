@@ -3,7 +3,14 @@
 	desc = "a gland that can release large amounts of adrenalin on demand."
 	slot = "adrenalin_sac"
 	zone = "chest"
-	granted_powers = list(/obj/effect/proc_holder/resource_ability/changeling/adrenaline)
+	changeling_only_powers = list(/obj/effect/proc_holder/resource_ability/changeling/adrenaline)
+
+/obj/item/organ/internal/ability_organ/changeling/adrenalin/on_life()
+	..()
+	if(!in_changeling)
+		owner.AdjustParalysis(-2)
+		owner.AdjustStunned(-2)
+		owner.AdjustWeakened(-2)
 
 /obj/effect/proc_holder/resource_ability/changeling/adrenaline
 	name = "Adrenaline Sacs"

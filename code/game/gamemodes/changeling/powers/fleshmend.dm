@@ -3,7 +3,14 @@
 	desc = "A gland that rapidly heals the body."
 	slot = "fleshmender"
 	zone = "chest"
-	granted_powers = list(/obj/effect/proc_holder/resource_ability/changeling/fleshmend)
+	changeling_only_powers = list(/obj/effect/proc_holder/resource_ability/changeling/fleshmend)
+
+/obj/item/organ/internal/ability_organ/changeling/fleshmend/on_life()
+	..()
+	if(!in_changeling)
+		owner.adjustOxyLoss(-2)
+		owner.adjustBruteLoss(-2)
+		owner.adjustFireLoss(-2)
 
 /obj/effect/proc_holder/resource_ability/changeling/fleshmend
 	name = "Fleshmend"

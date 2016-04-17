@@ -3,7 +3,7 @@
 	desc = "A strange alien gland."
 	slot = "chameleon_skin"
 	zone = "chest"
-	granted_powers = list(/obj/effect/proc_holder/resource_ability/changeling/chameleon_skin)
+	changeling_only_powers = list(/obj/effect/proc_holder/resource_ability/changeling/chameleon_skin)
 
 /obj/effect/proc_holder/resource_ability/changeling/chameleon_skin
 	name = "Chameleon Skin"

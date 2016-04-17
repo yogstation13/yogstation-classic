@@ -1,9 +1,11 @@
+/*
 /obj/item/organ/internal/ability_organ/changeling/spiders
 	name = "spider sac"
 	desc = "a sac that can grow and release spiders."
 	slot = "spider_gland"
 	zone = "chest"
-	granted_powers = list(/obj/effect/proc_holder/resource_ability/changeling/spiders)
+	changeling_only_powers = list(/obj/effect/proc_holder/resource_ability/changeling/spiders)
+*/
 
 /obj/effect/proc_holder/resource_ability/changeling/spiders
 	name = "Spread Infestation"
@@ -12,7 +14,7 @@
 	resource_cost = 45
 	dna_cost = 1
 	req_dna = 5
-	organtype = /obj/item/organ/internal/ability_organ/changeling/spiders
+	//organtype = /obj/item/organ/internal/ability_organ/changeling/spiders
 
 //Makes some spiderlings. Good for setting traps and causing general trouble.
 /obj/effect/proc_holder/resource_ability/changeling/spiders/sting_action(mob/user)

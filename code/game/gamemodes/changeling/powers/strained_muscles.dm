@@ -6,7 +6,7 @@
 	desc = "an organ that can stress the user's muscles past normal limits, hurting themselves in the process."
 	slot = "strength_gland"
 	zone = "chest"
-	granted_powers = list(/obj/effect/proc_holder/resource_ability/changeling/strained_muscles)
+	changeling_only_powers = list(/obj/effect/proc_holder/resource_ability/changeling/strained_muscles)
 
 /obj/effect/proc_holder/resource_ability/changeling/strained_muscles
 	name = "Strained Muscles"

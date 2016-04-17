@@ -3,7 +3,7 @@
 	desc = "A strange alien gland."
 	slot = "digitalcamo"
 	zone = "chest"
-	granted_powers = list(/obj/effect/proc_holder/resource_ability/changeling/digitalcamo)
+	changeling_only_powers = list(/obj/effect/proc_holder/resource_ability/changeling/digitalcamo)
 
 /obj/effect/proc_holder/resource_ability/changeling/digitalcamo
 	name = "Digital Camouflage"

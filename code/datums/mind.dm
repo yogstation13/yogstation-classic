@@ -111,10 +111,7 @@
 	if(src in ticker.mode.changelings)
 		ticker.mode.changelings -= src
 		var/mob/living/carbon/C = current
-		C.remove_changeling_powers()
-		if(changeling)
-			qdel(changeling)
-			changeling = null
+		C.remove_changeling()
 	special_role = null
 	remove_antag_equip()
 

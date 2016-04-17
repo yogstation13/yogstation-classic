@@ -3,7 +3,7 @@
 	desc = "a miracle organ that can cure diseases, remove toxins and radiation damage, and reset the owner's genetic code."
 	slot = "panacea"
 	zone = "chest"
-	granted_powers = list(/obj/effect/proc_holder/resource_ability/changeling/panacea)
+	changeling_only_powers = list(/obj/effect/proc_holder/resource_ability/changeling/panacea)
 
 /obj/effect/proc_holder/resource_ability/changeling/panacea
 	name = "Anatomic Panacea"

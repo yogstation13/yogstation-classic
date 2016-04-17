@@ -3,7 +3,7 @@
 	desc = "an organ that allows the owner to let out a deafening high-pitched shriek."
 	slot = "resonant_shriek_gland"
 	zone = "mouth"
-	granted_powers = list(/obj/effect/proc_holder/resource_ability/changeling/resonant_shriek)
+	changeling_only_powers = list(/obj/effect/proc_holder/resource_ability/changeling/resonant_shriek)
 
 /obj/effect/proc_holder/resource_ability/changeling/resonant_shriek
 	name = "Resonant Shriek"
@@ -42,7 +42,7 @@
 	desc = "an organ that allows the owner to let out a shriek that overloads electronics."
 	slot = "dissonant_shriek_gland"
 	zone = "mouth"
-	granted_powers = list(/obj/effect/proc_holder/resource_ability/changeling/dissonant_shriek)
+	changeling_only_powers = list(/obj/effect/proc_holder/resource_ability/changeling/dissonant_shriek)
 
 /obj/effect/proc_holder/resource_ability/changeling/dissonant_shriek
 	name = "Dissonant Shriek"

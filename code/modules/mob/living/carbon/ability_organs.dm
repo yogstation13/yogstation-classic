@@ -17,13 +17,20 @@
 
 /obj/item/organ/internal/ability_organ/Insert(mob/living/carbon/M, special = 0)
 	..()
-	for(var/obj/effect/proc_holder/resource_ability/P in granted_powers)
-		M.AddAbility(P)
+	if(decay_time && decay > 0)
+		for(var/obj/effect/proc_holder/resource_ability/P in granted_powers)
+			M.AddAbility(P)
 
 
 /obj/item/organ/internal/ability_organ/Remove(mob/living/carbon/M, special = 0)
 	for(var/obj/effect/proc_holder/P in granted_powers)
 		M.RemoveAbility(P)
+	..()
+
+/obj/item/organ/internal/ability_organ/on_life()
+	if(decay_time && decay <= 0)
+		for(var/obj/effect/proc_holder/P in granted_powers)
+			owner.RemoveAbility(P)
 	..()
 
 //ACTIONS

@@ -6,7 +6,7 @@
 	desc = "optical receptors capable of seeing in the dark and detecting the heat of living creatures through walls."
 	slot = "changeling_eyes"
 	zone = "eyes"
-	granted_powers = list(/obj/effect/proc_holder/resource_ability/changeling/augmented_eyesight)
+	changeling_only_powers = list(/obj/effect/proc_holder/resource_ability/changeling/augmented_eyesight)
 
 /obj/effect/proc_holder/resource_ability/changeling/augmented_eyesight
 	name = "Augmented Eyesight"

@@ -3,7 +3,7 @@
 	desc = "a set of vocal cords that can easily mimic voices."
 	slot = "mimicvoice"
 	zone = "mouth"
-	granted_powers = list(/obj/effect/proc_holder/resource_ability/changeling/mimicvoice)
+	changeling_only_powers = list(/obj/effect/proc_holder/resource_ability/changeling/mimicvoice)
 
 /obj/effect/proc_holder/resource_ability/changeling/mimicvoice
 	name = "Mimic Voice"

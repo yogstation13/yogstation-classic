@@ -3,6 +3,7 @@
 	desc = "A gland located in the brain that allows its user to discreetly communicate and exchange DNA with changelings."
 	slot = "hivemind_comm"
 	zone = "head"
+	free_organ = 1
 	granted_powers = list(/obj/effect/proc_holder/resource_ability/changeling/hivemind_comms)
 
 //HIVEMIND COMMUNICATION (:g)

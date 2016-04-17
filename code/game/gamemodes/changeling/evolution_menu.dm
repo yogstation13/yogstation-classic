@@ -381,9 +381,12 @@ var/list/changeling_organ_paths
 	if(!changeling_organ_paths)
 		changeling_organ_paths = init_paths(/obj/item/organ/internal/ability_organ/changeling)
 	remove_changeling_powers(1, 1, 1)
+	//update their current changeling organs
+	for(var/obj/item/organ/internal/ability_organ/changeling/O in internal_organs)
+		O.changeling_check()
 	//get free organs
 	for(var/path in changeling_organ_paths)
-		var/obj/item/organ/internal/ability_organ/changeling/chem_storage/organ = new path()
+		var/obj/item/organ/internal/ability_organ/changeling/organ = new path()
 		if(organ.free_organ && !getorgan(path))
 			organ.Insert(src)
 	// purchase free powers.
@@ -399,6 +402,15 @@ var/list/changeling_organ_paths
 	var/datum/changelingprofile/prof = mind.changeling.add_profile(C) //not really a point in typecasting here but somebody will probably get mad at me if i dont
 	mind.changeling.first_prof = prof
 	return 1
+
+/mob/living/carbon/proc/remove_changeling(var/keeporgans = 0)
+	remove_changeling_powers(0, 0, keeporgans)
+	if(mind && mind.changeling)
+		qdel(mind.changeling)
+		mind.changeling = null
+	if(keeporgans)
+		for(var/obj/item/organ/internal/ability_organ/changeling/O in internal_organs)
+			O.changeling_check()
 
 /datum/changeling/proc/reset(mob/living/carbon/the_ling)
 	chosen_sting = null
