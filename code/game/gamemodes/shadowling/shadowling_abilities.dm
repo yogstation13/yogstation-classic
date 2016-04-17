@@ -468,8 +468,8 @@
 		if (target.dna.species.id == "plant")
 			target << "<span class='boldannounce'>You suddenly understand. This is the natural order of things. The light must be shunned. Your insides shift and twist as the influence of the Other takes effect. Darkness is no longer lethal to you.</span>"
 		target.setOxyLoss(0) //In case the shadowling was choking them out
-		ticker.mode.add_thrall(target.mind)
-		target.mind.special_role = "thrall"
+		var/obj/item/organ/internal/thrall_tumor/T = new/obj/item/organ/internal/thrall_tumor(target)
+		T.Insert(target)
 
 
 /obj/effect/proc_holder/spell/targeted/shadow/shadowling_hivemind //Lets a shadowling talk to its allies

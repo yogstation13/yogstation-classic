@@ -1108,7 +1108,13 @@
 					remove_spell(/obj/effect/proc_holder/spell/targeted/shadow/shadowling_hatch)
 					remove_spell(/obj/effect/proc_holder/spell/targeted/shadow/shadowling_ascend)
 				else if(src in ticker.mode.thralls)
-					ticker.mode.remove_thrall(src,0)
+					var/safty = 0
+					var/mob/living/carbon/human/H = current
+					for(var/obj/item/organ/internal/thrall_tumor/T in H.internal_organs)
+						T.Remove(current,0,1)
+						qdel(T)
+						safty = 1
+					if(!safty) ticker.mode.remove_thrall(current,0)
 					message_admins("[key_name_admin(usr)] has de-thrall'ed [current].")
 					log_admin("[key_name(usr)] has de-thrall'ed [current].")
 			if("shadowling")
@@ -1128,8 +1134,8 @@
 				if(!ishuman(current))
 					usr << "<span class='warning'>This only works on humans!</span>"
 					return
-				ticker.mode.add_thrall(src)
-				special_role = "thrall"
+				var/obj/item/organ/internal/thrall_tumor/T = new/obj/item/organ/internal/thrall_tumor(current)
+				T.Insert(current)
 				current << "<span class='deadsay'>All at once it becomes clear to you. Where others see darkness, you see an ally. You realize that the shadows are not dead and dark as one would think, but \
 				living, and breathing, and <b>eating</b>. Their children, the Shadowlings, are to be obeyed and protected at all costs.</span>"
 				current << "<span class='danger'>You may use the Hivemind Commune ability to communicate with your fellow enlightened ones.</span>"

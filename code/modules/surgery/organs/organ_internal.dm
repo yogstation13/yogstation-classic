@@ -192,3 +192,20 @@
 	if(inflamed)
 		S.reagents.add_reagent("????", 5)
 	return S
+
+/obj/item/organ/internal/thrall_tumor
+	zone = "head"
+	slot = "tumor"
+	name = "black tumor"
+	icon_state = "blacktumor"
+
+
+// Surgery stuffs, and enthralling.
+/obj/item/organ/internal/thrall_tumor/Remove(mob/living/carbon/M, special = 0, adminbus = 0)
+	ticker.mode.remove_thrall(M.mind,!adminbus && prob(30))
+	..()
+
+/obj/item/organ/internal/thrall_tumor/Insert(mob/living/carbon/M, special = 0)
+	ticker.mode.add_thrall(M.mind)
+	M.mind.special_role = "thrall"
+	..()
