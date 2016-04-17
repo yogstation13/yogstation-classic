@@ -1,8 +1,0 @@
- 
-author: ShadowDeath6
-
-delete-after: True
-
-changes: 
-  - rscadd: "Kinetic accelerators and forms of the energy crossbow now automatically recharge."
-  - tweak: "Syndicate weapon designers have tweaked the energy crossbow to now deal more damage on its own, making it much more lethal. However, this change has caused its paralyzing capabilities to be much weaker."

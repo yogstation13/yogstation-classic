@@ -89,7 +89,10 @@
 	return 1
 
 /datum/objective/assassinate/locate_targets()
-	return list(target)
+	if(target.current)
+		return list(target.current)
+	else
+		return list()
 
 /datum/objective/assassinate/update_explanation_text()
 	..()
@@ -121,7 +124,10 @@
 	return 1
 
 /datum/objective/mutiny/locate_targets()
-	return list(target)
+	if(target.current)
+		return list(target.current)
+	else
+		return list()
 
 /datum/objective/mutiny/update_explanation_text()
 	..()
@@ -153,7 +159,10 @@
 	return 1
 
 /datum/objective/maroon/locate_targets()
-	return list(target)
+	if(target.current)
+		return list(target.current)
+	else
+		return list()
 
 /datum/objective/maroon/update_explanation_text()
 	if(target && target.current)
@@ -189,7 +198,10 @@
 	return 0
 
 /datum/objective/debrain/locate_targets()
-	return list(target)
+	if(target.current)
+		return list(target.current)
+	else
+		return list()
 
 /datum/objective/debrain/update_explanation_text()
 	..()
@@ -223,7 +235,10 @@
 
 
 /datum/objective/protect/locate_targets()
-	return list(target)
+	if(target.current)
+		return list(target.current)
+	else
+		return list()
 
 /datum/objective/protect/update_explanation_text()
 	..()
@@ -332,6 +347,8 @@
 	if(!owner.current || owner.current.stat == DEAD)
 		return 0
 	if(ticker.force_ending) //This one isn't their fault, so lets just assume good faith
+		return 1
+	if(ticker.mode.station_was_nuked) //If they escaped the blast somehow, let them win
 		return 1
 	if(SSshuttle.emergency.mode < SHUTTLE_ENDGAME)
 		return 0
@@ -675,7 +692,10 @@ var/global/list/possible_items_special = list()
 	return 1
 
 /datum/objective/destroy/locate_targets()
-	return list(target)
+	if(target.current)
+		return list(target.current)
+	else
+		return list()
 
 /datum/objective/destroy/update_explanation_text()
 	..()
@@ -862,7 +882,12 @@ var/global/list/possible_items_special = list()
 	return 0
 
 /datum/objective/changeling_team_objective/impersonate_department/locate_targets()
-	return department_minds.Copy()
+	var/L = list()
+	for(var/V in department_minds)
+		var/datum/mind/M = V
+		if(M.current)
+			L += M.current
+	return L
 
 
 //A subtype of impersonate_derpartment
