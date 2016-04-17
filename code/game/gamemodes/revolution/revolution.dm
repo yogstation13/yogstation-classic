@@ -126,7 +126,8 @@
 			mob.dna.remove_mutation(CLOWNMUT)
 
 
-	var/obj/item/device/flash/T = new(mob)
+	var/obj/item/device/flash/rev/T = new(mob)
+	var/obj/item/device/revtool/RT = new(mob)
 	var/obj/item/toy/crayon/spraycan/R = new(mob)
 
 	var/list/slots = list (
@@ -138,13 +139,21 @@
 	)
 	var/where = mob.equip_in_one_of_slots(T, slots)
 	mob.equip_in_one_of_slots(R,slots)
+	var/rtwhere = mob.equip_in_one_of_slots(RT, slots)
 
 	mob.update_icons()
 
 	if (!where)
-		mob << "The Syndicate were unfortunately unable to get you a flash."
+		mob << "Unfortunately, due to budget cuts, the syndicate were unable to get you a conversion tool.  Maybe try prayer?"
 	else
-		mob << "The flash in your [where] will help you to persuade the crew to join your cause."
+		mob << "The syndicate have given you a conversion tool in your [where] to help persuade the crew to join your cause."
+
+	if(!rtwhere)
+		mob << "Unfortunately, due to budget cuts, the syndicate were unable to get you a flash hijacker.  Maybe try prayer?"
+	else
+		mob << "The syndicate have also given you a device which can convert regular flashes to conversion tools."
+
+	if(where && rtwhere)
 		return 1
 
 /////////////////////////////////
@@ -410,3 +419,10 @@
 		text += "<br>"
 
 		world << text
+
+/obj/item/device/revtool
+	name = "Electronic Flashbulb Hijacker"
+	desc = "A device designed to reconfigure standard NT issue flashbulbs into something more sinister."
+	icon = 'icons/obj/items.dmi'
+	icon_state = "implanter1"
+	item_state = "syringe_0"
