@@ -1,0 +1,6 @@
+author: Cruix
+
+delete-after: True
+
+changes: 
+  - rscadd: "Lasertag ED-209s will no longer stun people who attack them."
