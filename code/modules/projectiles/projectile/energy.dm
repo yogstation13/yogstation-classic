@@ -125,14 +125,21 @@
 	weaken = 5
 	range = 7
 
-/obj/item/projectile/energy/bolt //ebow bolts
+/obj/item/projectile/energy/bolt//ebow bolts
 	name = "bolt"
 	icon_state = "cbbolt"
-	damage = 15
+	damage = 20
 	damage_type = TOX
 	nodamage = 0
-	weaken = 5
+	irradiate = 35
+	stun = 1
 	stutter = 5
+
+/obj/item/projectile/energy/bolt/on_hit(target, blocked = 0)
+	..()
+	if(iscarbon(target))
+		var/mob/living/carbon/C = target
+		C.confused = 3
 
 /obj/item/projectile/energy/bolt/large
 	damage = 20

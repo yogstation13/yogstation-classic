@@ -440,6 +440,7 @@ var/list/admin_verbs_hideable = list(
 		var/mob/dead/observer/ghost = mob
 		ghost.can_reenter_corpse = 1			//just in-case.
 		ghost.reenter_corpse()
+		log_admin("[key_name(usr)] has used aghost to return to their body.")
 		feedback_add_details("admin_verb","P") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 	else if(istype(mob,/mob/new_player))
 		src << "<font color='red'>Error: Aghost: Can't admin-ghost whilst in the lobby. Join or Observe first.</font>"
@@ -449,6 +450,7 @@ var/list/admin_verbs_hideable = list(
 		body.ghostize(1)
 		if(body && !body.key)
 			body.key = "@[key]"	//Haaaaaaaack. But the people have spoken. If it breaks; blame adminbus
+		log_admin("[key_name(usr)] has used aghost to leave their body.")
 		feedback_add_details("admin_verb","O") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 

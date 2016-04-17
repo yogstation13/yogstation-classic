@@ -22,9 +22,9 @@
 	var/allied_targeting = ALLOW_ALLIED_TARGETING //Will allies be included on the targets list?
 
 /obj/effect/proc_holder/spell/targeted/shadow/choose_targets(mob/user = usr)
-	if(!istype(user,/mob/living/carbon/human))
-		return //This should never happen, by the way
-	var/mob/living/carbon/human/H = user
+	if(!istype(user,/mob/living/carbon/human) && !istype(user,/mob/living/simple_animal/ascendant_shadowling)) //WTF do you think ascendants are?
+		return //This should never happen, by the way.
+	var/mob/living/H = user
 	var/list/targets = list()
 
 	switch(max_targets)
@@ -902,7 +902,7 @@ datum/reagent/shadowling_blindness_smoke //Reagent used for above spell
 	sound = 'sound/magic/Staff_Chaos.ogg'
 	allied_targeting = DISALLOW_ALLIED_TARGETING
 
-/obj/effect/proc_holder/spell/targeted/annihilate/cast(list/targets)
+/obj/effect/proc_holder/spell/targeted/shadow/annihilate/cast(list/targets)
 	var/mob/living/simple_animal/ascendant_shadowling/SHA = usr
 	if(SHA.phasing)
 		usr << "<span class='warning'>You are not in the same plane of existence. Unphase first.</span>"
@@ -935,7 +935,7 @@ datum/reagent/shadowling_blindness_smoke //Reagent used for above spell
 	allied_targeting = DISALLOW_ALLIED_TARGETING
 	sa_targeting = DISALLOW_SA_TARGETING
 
-/obj/effect/proc_holder/spell/targeted/hypnosis/cast(list/targets)
+/obj/effect/proc_holder/spell/targeted/shadow/hypnosis/cast(list/targets)
 	var/mob/living/simple_animal/ascendant_shadowling/SHA = usr
 	if(SHA.phasing)
 		charge_counter = charge_max

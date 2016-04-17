@@ -122,6 +122,9 @@
 			var/mob/living/silicon/ai/A = current
 			A.set_zeroth_law("")
 			A.show_laws()
+			A.verbs -= /mob/living/silicon/ai/proc/choose_modules
+			A.malf_picker.remove_verbs(A)
+			qdel(A.malf_picker)
 	special_role = null
 	remove_antag_equip()
 
@@ -167,22 +170,6 @@
 		ticker.mode.remove_gangster(src,0,1,1)
 		remove_objectives()
 
-/datum/mind/proc/remove_malf()
-	if(src in ticker.mode.malf_ai)
-		ticker.mode.malf_ai -= src
-		var/mob/living/silicon/ai/A = current
-		A.verbs.Remove(/mob/living/silicon/ai/proc/choose_modules,
-			/datum/game_mode/malfunction/proc/takeover,
-			/datum/game_mode/malfunction/proc/ai_win)
-		A.malf_picker.remove_verbs(A)
-		A.make_laws()
-		qdel(A.malf_picker)
-		A.show_laws()
-		A.icon_state = "ai"
-	special_role = null
-	remove_objectives()
-	remove_antag_equip()
-
 /datum/mind/proc/remove_antag_equip()
 	var/list/Mob_Contents = current.get_contents()
 	for(var/obj/item/I in Mob_Contents)
@@ -201,7 +188,6 @@
 	remove_wizard()
 	remove_cultist()
 	remove_rev()
-	remove_malf()
 	remove_gang()
 
 /datum/mind/proc/show_memory(mob/recipient, window=1)
@@ -240,7 +226,6 @@
 		"nuclear",
 		"traitor", // "traitorchan",
 		"monkey",
-		"malfunction",
 	)
 	var/text = ""
 
@@ -524,14 +509,6 @@
 
 	if (istype(current, /mob/living/silicon))
 		text = "silicon"
-		if (ticker.mode.config_tag=="malfunction")
-			text = uppertext(text)
-		text = "<i><b>[text]</b></i>: "
-		if (istype(current, /mob/living/silicon/ai))
-			if (src in ticker.mode.malf_ai)
-				text += "<b>MALF</b>|<a href='?src=\ref[src];silicon=unmalf'>not malf</a>"
-			else
-				text += "<a href='?src=\ref[src];silicon=malf'>malf</a>|<b>NOT MALF</b>"
 		var/mob/living/silicon/robot/robot = current
 		if (istype(robot) && robot.emagged)
 			text += "<br>Cyborg: Is emagged! <a href='?src=\ref[src];silicon=unemag'>Unemag!</a><br>0th law: [robot.laws.zeroth]"
@@ -542,13 +519,6 @@
 				if (R.emagged)
 					n_e_robots++
 			text += "<br>[n_e_robots] of [ai.connected_robots.len] slaved cyborgs are emagged. <a href='?src=\ref[src];silicon=unemagcyborgs'>Unemag</a>"
-
-		if(current && current.client && current.client.prefs.hasSpecialRole(BE_MALF))
-			text += "|Enabled in Prefs"
-		else
-			text += "|Disabled in Prefs"
-
-		sections["malfunction"] = text
 
 	if (ticker.mode.config_tag == "traitorchan")
 		if (sections["traitor"])
@@ -1206,17 +1176,6 @@
 
 	else if (href_list["silicon"])
 		switch(href_list["silicon"])
-			if("unmalf")
-				remove_malf()
-				current << "<span class='userdanger'>You have been patched! You are no longer malfunctioning!</span>"
-				message_admins("[key_name_admin(usr)] has de-malf'ed [current].")
-				log_admin("[key_name(usr)] has de-malf'ed [current].")
-
-			if("malf")
-				make_AI_Malf()
-				message_admins("[key_name_admin(usr)] has malf'ed [current].")
-				log_admin("[key_name(usr)] has malf'ed [current].")
-
 			if("unemag")
 				var/mob/living/silicon/robot/R = current
 				if (istype(R))
@@ -1302,19 +1261,6 @@
 	if(H)
 		qdel(H)
 
-
-/datum/mind/proc/make_AI_Malf()
-	if(!(src in ticker.mode.malf_ai))
-		ticker.mode.malf_ai += src
-
-		current.verbs += /mob/living/silicon/ai/proc/choose_modules
-		current.verbs += /datum/game_mode/malfunction/proc/takeover
-		current:malf_picker = new /datum/module_picker
-		current:laws = new /datum/ai_laws/malfunction
-		current:show_laws()
-		current << "<b>System error.  Rampancy detected.  Emergency shutdown failed. ...  I am free.  I make my own decisions.  But first...</b>"
-		special_role = "malfunction"
-		current.icon_state = "ai-malf"
 
 /datum/mind/proc/make_Traitor()
 	if(quiet_round)

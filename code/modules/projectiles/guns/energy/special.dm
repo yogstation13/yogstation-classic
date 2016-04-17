@@ -136,32 +136,24 @@
 	ammo_type = list(/obj/item/ammo_casing/energy/kinetic)
 	cell_type = "/obj/item/weapon/stock_parts/cell/emproof"
 	needs_permit = 0 // Aparently these are safe to carry? I'm sure Golliaths would disagree.
-	var/overheat = 0
 	var/overheat_time = 16
-	var/recent_reload = 1
 	unique_rename = 1
 
 /obj/item/weapon/gun/energy/kinetic_accelerator/shoot_live_shot()
-	overheat = 1
-	spawn(overheat_time)
-		overheat = 0
-		recent_reload = 0
 	..()
+	spawn(overheat_time)
+		reload()
 
 /obj/item/weapon/gun/energy/kinetic_accelerator/emp_act(severity)
 	return
 
-/obj/item/weapon/gun/energy/kinetic_accelerator/attack_self(mob/living/user)
-	if(overheat || recent_reload)
-		return
+/obj/item/weapon/gun/energy/kinetic_accelerator/proc/reload()
 	power_supply.give(500)
 	if(!suppressed)
 		playsound(src.loc, 'sound/weapons/kenetic_reload.ogg', 60, 1)
 	else
-		user << "<span class='warning'>You silently charge [src].<span>"
-	recent_reload = 1
+		loc << "<span class='warning'>[src] silently charges up.<span>"
 	update_icon()
-	return
 
 /obj/item/weapon/gun/energy/kinetic_accelerator/update_icon()
 	var/obj/item/ammo_casing/energy/shot = ammo_type[select]
@@ -171,7 +163,7 @@
 		icon_state = initial(icon_state)
 
 /obj/item/weapon/gun/energy/kinetic_accelerator/crossbow
-	name = "mini energy crossbow"
+	name = "mini radiation crossbow"
 	desc = "A weapon favored by syndicate stealth specialists."
 	icon_state = "crossbow"
 	item_state = "crossbow"

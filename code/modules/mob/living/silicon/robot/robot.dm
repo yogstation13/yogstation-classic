@@ -207,7 +207,7 @@
 			feedback_inc("cyborg_miner",1)
 
 		if("Medical")
-			var/icontype = input("Select an icon!", "Robot", "Mediborg") in list("Mediborg" , "Medihover")
+			var/icontype = input("Select an icon!", "Robot", "Mediborg") in list("Mediborg" , "Medihover", "Smile Screen")
 			if(!icontype) return
 			module = new /obj/item/weapon/robot_module/medical(src)
 			hands.icon_state = "medical"
@@ -218,6 +218,9 @@
 				if("Medihover")
 					icon_state = "medihover"
 					animation_length = 8
+				if("Smile Screen")
+					icon_state = "mediborg+smile"
+					animation_length = 28
 				else
 					icon_state = "mediborg"
 					animation_length = 34
@@ -400,15 +403,6 @@
 	..()
 	if(statpanel("Status"))
 		stat("[worldtime2text()] [time2text(world.realtime, "MMM DD")] [year_integer+540]")
-		if(ticker.mode.name == "AI malfunction")
-			var/datum/game_mode/malfunction/malf = ticker.mode
-			for (var/datum/mind/malfai in malf.malf_ai)
-				if(connected_ai)
-					if((connected_ai.mind == malfai) && (malf.apcs > 0))
-						stat(null, "Time until station control secured: [max(malf.AI_win_timeleft/malf.apcs, 0)] seconds")
-				else if(malf.malf_mode_declared && (malf.apcs > 0))
-					stat(null, "Time left: [max(malf.AI_win_timeleft/malf.apcs, 0)]")
-
 		if(cell)
 			stat(null, text("Charge Left: [cell.charge]/[cell.maxcharge]"))
 		else

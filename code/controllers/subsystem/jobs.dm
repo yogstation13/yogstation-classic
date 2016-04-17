@@ -176,14 +176,8 @@ var/datum/subsystem/job/SSjob
 /datum/subsystem/job/proc/FillAIPosition()
 	var/ai_selected = 0
 	var/datum/job/job = GetJob("AI")
-	if(!job)	return 0
-	if(ticker.mode.name == "AI malfunction")	// malf. AIs are pre-selected before jobs
-		for (var/datum/mind/mAI in ticker.mode.malf_ai)
-			AssignRole(mAI.current, "AI")
-			ai_selected++
-		if(ai_selected)	return 1
+	if(!job)
 		return 0
-
 	for(var/i = job.total_positions, i > 0, i--)
 		for(var/level = 1 to 4)
 			var/list/candidates = list()
@@ -193,7 +187,8 @@ var/datum/subsystem/job/SSjob
 				if(AssignRole(candidate, "AI"))
 					ai_selected++
 					break
-	if(ai_selected)	return 1
+	if(ai_selected)
+		return 1
 	return 0
 
 
@@ -433,7 +428,7 @@ var/datum/subsystem/job/SSjob
 /datum/subsystem/job/proc/HandleFeedbackGathering()
 	for(var/datum/job/job in occupations)
 		var/tmp_str = "|[job.title]|"
-		
+
 		var/level1 = 0 //ultra
 		var/level2 = 0 //high
 		var/level3 = 0 //medium
