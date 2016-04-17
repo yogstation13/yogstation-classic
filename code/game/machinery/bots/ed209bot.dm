@@ -250,7 +250,7 @@ Auto Patrol[]"},
 				back_to_idle()
 
 			if(target)		// make sure target exists
-				if(Adjacent(target) && isturf(target.loc)) // if right next to perp
+				if(!lasercolor && Adjacent(target) && isturf(target.loc)) // if right next to perp
 					playsound(loc, 'sound/weapons/Egloves.ogg', 50, 1, -1)
 					icon_state = "[lasercolor]ed209-c"
 					spawn(2)
