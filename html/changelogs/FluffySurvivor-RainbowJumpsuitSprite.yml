@@ -1,0 +1,10 @@
+
+
+author: FluffySurvivor
+
+
+delete-after: True
+
+
+changes: 
+  - bugfix: "The rainbow jumpsuit now has a functioning sprite when worn casually."
