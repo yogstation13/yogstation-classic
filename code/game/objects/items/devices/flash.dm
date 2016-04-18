@@ -56,6 +56,22 @@
 
 	return 1
 
+/obj/item/device/flash/attackby(obj/item/W, mob/user, params)
+	if(broken)
+		user << "<span class='warning'>You cannot do this to a broken flash!</span>"
+		return
+	if(istype(W,/obj/item/device/revtool))
+		if(user.mind && (user.mind in ticker.mode.head_revolutionaries))
+			user << "<span class='warning'>You plug the device into the flash. (This will take about 30 seconds, and you need to stand still!)</span>"
+			if(do_after(user, rand(250,350), target = src))
+				var/obj/item/device/flash/rev/R = new
+				user.unEquip(src)
+				user.put_in_hands(R)
+				user << "<span class='warning'>The flash seems to elongate, and lets out a soft whistle.</span>"
+				qdel(src)
+		else
+			user << "<span class='warning'>You're not sure how to use this!</span>"
+			return
 
 /obj/item/device/flash/proc/flash_carbon(mob/living/carbon/M, mob/user = null, power = 5, targeted = 1)
 	add_logs(user, M, "flashed", src)
@@ -64,14 +80,13 @@
 			M.Weaken(3) //quick weaken bypasses eye protection but has no eye flash
 		if(M.flash_eyes(1, 1))
 			M.confused += power
-			terrible_conversion_proc(M, user)
 			M.Stun(1)
 			visible_message("<span class='disarm'>[user] blinds [M] with the flash!</span>")
 			user << "<span class='danger'>You blind [M] with the flash!</span>"
 			M << "<span class='userdanger'>[user] blinds you with the flash!</span>"
 			if(M.weakeyes)
 				M.Stun(2)
-				M.visible_message("<span class='disarm'>[M] gasps and shields their eyes!</span>", "<span class='userdanger'>You gasp and shields your eyes!</span>")
+				M.visible_message("<span class='disarm'>[M] gasps and shields their eyes!</span>", "<span class='userdanger'>You gasp and shield your eyes!</span>")
 		else
 			visible_message("<span class='disarm'>[user] fails to blind [M] with the flash!</span>")
 			user << "<span class='warning'>You fail to blind [M] with the flash!</span>"
@@ -113,31 +128,6 @@
 		flash_carbon(M, null, 10, 0)
 	burn_out()
 	..()
-
-
-/obj/item/device/flash/proc/terrible_conversion_proc(mob/M, mob/user)
-	if(ishuman(M) && ishuman(user) && M.stat != DEAD)
-		if(user.mind && (user.mind in ticker.mode.head_revolutionaries))
-			if(M.client)
-				if(M.stat == CONSCIOUS)
-					M.mind_initialize() //give them a mind datum if they don't have one.
-					var/resisted
-					if(!isloyal(M))
-						if(user.mind in ticker.mode.head_revolutionaries)
-							if(ticker.mode.add_revolutionary(M.mind))
-								times_used -- //Flashes less likely to burn out for headrevs when used for conversion
-							else
-								resisted = 1
-					else
-						resisted = 1
-
-					if(resisted)
-						user << "<span class='warning'>This mind seems resistant to the flash!</span>"
-				else
-					user << "<span class='warning'>They must be conscious before you can convert them!</span>"
-			else
-				user << "<span class='warning'>This mind is so vacant that it is not susceptible to influence!</span>"
-
 
 /obj/item/device/flash/cyborg
 	origin_tech = null

@@ -325,14 +325,14 @@
 		created_name = t
 		return
 
-	else if(istype(W, /obj/item/weapon/airlock_painter)) // |- Ricotez
+	else if(get_airlock_painter(W)) // |- Ricotez
 	//INFORMATION ABOUT ADDING A NEW AIRLOCK TO THE PAINT LIST:
 	//If your airlock has a regular version, add it to the list with regular versions.
 	//If your airlock has a glass version, add it to the list with glass versions.
 	//Don't forget to also set has_solid and has_glass to the proper value.
 	//Do NOT add your airlock to a list if it does not have a version for that list,
 	//	or you will get broken icons.
-		var/obj/item/weapon/airlock_painter/WT = W
+		var/obj/item/weapon/airlock_painter/WT = get_airlock_painter(W)
 		if(WT.can_use(user))
 			var/icontype
 			var/optionlist
