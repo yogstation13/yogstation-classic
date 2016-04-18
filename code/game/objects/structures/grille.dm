@@ -162,7 +162,7 @@
 			icon_state = "grille"
 			R.use(1)
 			return
-	else if(istype(W, /obj/item/weapon/rcd) && istype(loc, /turf/simulated)) //Do not attack the grille if the user is holding an RCD
+	else if(is_rcd(W) && istype(loc, /turf/simulated)) //Do not attack the grille if the user is holding an RCD
 		return
 
 //window placing begin
