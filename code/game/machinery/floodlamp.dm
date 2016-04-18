@@ -82,6 +82,12 @@ obj/machinery/flood_lamp/attackby(obj/item/weapon/W, mob/user, params)
 		if(!istype(loc, /turf/simulated/floor))
 			user << "<span class='warning'>A floor must be present to secure the floodlamp!</span>"
 			return
+		if(anchored && on)
+			user << "<span class='warning'>You can't do this while the light is on!</span>"
+			return
+		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
+		user << "<span class='notice'>You [anchored ? "un" : ""]secure the floodlamp.</span>"
+		anchored = !anchored
 	update_appearance()
 
 obj/machinery/flood_lamp/proc/toggle_light()
@@ -101,7 +107,6 @@ obj/machinery/flood_lamp/assembled
 		flashlights += new/obj/item/device/flashlight(src)
 		flashlights += new/obj/item/device/flashlight(src)
 		..()
-
 
 /obj/item/weapon/paper/flood_lamp
 	name = "paper- 'Floodlamp Operation for Dummies'"
