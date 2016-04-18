@@ -263,3 +263,8 @@
 #define GHOST_ORBIT_HEXAGON		"hexagon"
 #define GHOST_ORBIT_SQUARE		"square"
 #define GHOST_ORBIT_PENTAGON	"pentagon"
+
+//Turf wet states
+#define TURF_DRY		0
+#define TURF_WET_WATER	1
+#define TURF_WET_LUBE	2
