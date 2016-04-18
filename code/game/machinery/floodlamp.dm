@@ -8,6 +8,7 @@
 	icon_state = "flood000"
 
 	density = 1
+	can_be_unanchored = 1
 
 	var/list/flashlights = list();
 	var/opened = 0
@@ -36,6 +37,9 @@ obj/machinery/flood_lamp/proc/update_brightness()
 		SetLuminosity(0)
 
 obj/machinery/flood_lamp/attack_hand(mob/living/carbon/user)
+	if(!anchored)
+		user << "<span class='warning'>You need to wrench this in place before you can turn it on!</span>"
+		return
 	if(opened && cell && istype(user))
 		cell.loc = get_turf(src)
 		user.put_in_active_hand(cell)
@@ -74,6 +78,10 @@ obj/machinery/flood_lamp/attackby(obj/item/weapon/W, mob/user, params)
 			playsound(loc, 'sound/items/Wirecutter.ogg', 50, 1, -1)
 			update_all()
 			return;
+	if(istype(W, /obj/item/weapon/wrench))
+		if(!istype(loc, /turf/simulated/floor))
+			user << "<span class='warning'>A floor must be present to secure the floodlamp!</span>"
+			return
 	update_appearance()
 
 obj/machinery/flood_lamp/proc/toggle_light()
