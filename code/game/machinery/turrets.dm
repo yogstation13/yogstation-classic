@@ -491,6 +491,14 @@
 	A.fire()
 	return
 
+/obj/machinery/gun_turret/syndicate
+	projectile_type = /obj/item/projectile/bullet/weakbullet3
+//	var/enabled = 0  // Un-comment this to make it only activated during Nuclear_Challenge
+
+/obj/machinery/gun_turret/syndicate/process()
+//	if(!enabled)
+//		return
+	..()
 
 ////////////////////////
 //Turret Control Panel//

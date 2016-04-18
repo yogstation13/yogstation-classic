@@ -40,7 +40,7 @@
 		atmosanalyzer_scan(parent.air, user)
 		return
 
-	if(istype(W,/obj/item/device/pipe_painter) || istype(W,/obj/item/weapon/pipe_dispenser))
+	if(is_pipe_device(W))
 		return
 
 	return ..()

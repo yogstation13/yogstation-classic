@@ -191,6 +191,13 @@
 	modules += new /obj/item/weapon/mop/cyborg(src)
 	modules += new /obj/item/device/lightreplacer/cyborg(src)
 	modules += new /obj/item/weapon/holosign_creator(src)
+
+	var/obj/item/weapon/reagent_containers/spray/drying_agent = new(src)
+	drying_agent.reagents.add_reagent("drying_agent", 250)
+	drying_agent.name = "drying agent spray"
+	drying_agent.color = "#A000A0"
+	modules += drying_agent
+
 	emag = new /obj/item/weapon/reagent_containers/spray(src)
 
 	emag.reagents.add_reagent("lube", 250)
