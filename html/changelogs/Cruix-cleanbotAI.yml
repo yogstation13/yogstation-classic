@@ -1,0 +1,6 @@
+author: Cruix
+
+delete-after: True
+
+changes: 
+  - rscadd: "Cleanbots will now avoid targeting the same messes as other cleanbots."
