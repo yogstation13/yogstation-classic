@@ -1,0 +1,6 @@
+author: X-TheDark
+
+delete-after: True
+
+changes: 
+  - rscadd: "(Port from /tg/) Xenobiology slime processor now scoops up nearby dead slimes automatically."
