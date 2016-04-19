@@ -8,8 +8,8 @@
 	viable_mobtypes = list(/mob/living/carbon/human, /mob/living/carbon/monkey, /mob/living/carbon/alien)
 	severity = HARMFUL
 	stage_prob = 10
+	disease_flags = CURABLE|CAN_RESIST
 	visibility_flags = HIDDEN_SCANNER|HIDDEN_PANDEMIC
-	disease_flags = CURABLE
 	var/list/stage1 = list("You feel unremarkable.")
 	var/list/stage2 = list("You feel boring.")
 	var/list/stage3 = list("You feel utterly plain.")
@@ -75,12 +75,12 @@
 	viable_mobtypes = list(/mob/living/carbon/monkey, /mob/living/carbon/human)
 	permeability_mod = 1
 	cure_chance = 1
-	disease_flags = CAN_CARRY|CAN_RESIST
 	longevity = 30
 	desc = "Monkeys with this disease will bite humans, causing humans to mutate into a monkey."
 	severity = BIOHAZARD
 	stage_prob = 4
 	visibility_flags = 0
+	disease_flags = CURABLE | CAN_RESIST | CAN_CARRY
 	agent = "Kongey Vibrion M-909"
 	new_form = /mob/living/carbon/monkey
 
@@ -124,12 +124,12 @@
 	viable_mobtypes = list(/mob/living/carbon/human)
 	permeability_mod = 1
 	cure_chance = 0
-	disease_flags = CURABLE
 	longevity = 30
 	desc = "Crewmembers with this disease will bite other humans, causing them to turn into zombies."
 	severity = BIOHAZARD
 	stage_prob = 4
 	visibility_flags = 0
+	disease_flags = null
 	agent = "Rage T-1"
 	new_form = /mob/living/carbon/human/zombie
 
