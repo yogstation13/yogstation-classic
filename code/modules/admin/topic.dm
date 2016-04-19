@@ -1865,6 +1865,26 @@
 			X << "<span class='adminnotice'><b><font color=red>[msg]</font></b></span>"
 		show_player_panel(M)
 
+	else if(href_list["toggle_whitelisted"])
+		if(!check_rights(R_PERMISSIONS))	return
+
+		var/mob/M = locate(href_list["toggle_whitelisted"])
+
+		var/reason = input("","What reason are you giving for toggling the whitelist for [get_ckey(M)]?") as text
+		if(length(reason) < 5)
+			usr << "That reason isn't good enough! Cancelling."
+			return
+
+		var/client/C = get_client(M)
+		C.is_whitelisted = !C.is_whitelisted
+		set_job_whitelisted(M, C.is_whitelisted)
+
+		var/msg = "WHITELISTED [get_ckey(usr)] toggled whitelist for [get_ckey(M)]: [C.is_whitelisted] (reason: [reason])"
+		log_admin(msg)
+		for(var/client/X in admins)
+			X << "<span class='adminnotice'><b><font color=red>[msg]</font></b></span>"
+		show_player_panel(M)
+
 	else if(href_list["getmob"])
 		if(!check_rights(R_ADMIN))	return
 
