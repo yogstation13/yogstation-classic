@@ -80,11 +80,8 @@ var/list/diseases = typesof(/datum/disease) - /datum/disease
 	else
 		if(prob(cure_chance))
 			stage = max(stage - 1, 1)
-
-	if(disease_flags & CURABLE)
-		if(cure && prob(cure_chance))
+		if(prob(cure_chance))
 			cure()
-
 
 /datum/disease/proc/has_cure()
 	if(!(disease_flags & CURABLE))
