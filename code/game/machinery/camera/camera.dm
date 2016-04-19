@@ -63,6 +63,7 @@
 /obj/machinery/camera/emp_act(severity)
 	if(!isEmpProof())
 		if(prob(150/severity))
+			var/previous_icon_state = icon_state
 			icon_state = "[initial(icon_state)]emp"
 			var/list/previous_network = network
 			network = list()
@@ -72,17 +73,17 @@
 			emped = emped+1  //Increase the number of consecutive EMP's
 			var/thisemp = emped //Take note of which EMP this proc is for
 			spawn(900)
-				if(loc) //qdel limbo
+				if(!qdeleted(src)) //check if src exists or if in qdel queue
 					triggerCameraAlarm() //camera alarm triggers even if multiple EMPs are in effect.
 					if(emped == thisemp) //Only fix it if the camera hasn't been EMP'd again
 						network = previous_network
-						icon_state = initial(icon_state)
+						icon_state = previous_icon_state
 						stat &= ~EMPED
 						if(can_use())
 							cameranet.addCamera(src)
 						emped = 0 //Resets the consecutive EMP count
 						spawn(100)
-							if(!qdeleted(src))
+							if(!qdeleted(src)) //check if src exists or if in qdel queue
 								cancelCameraAlarm()
 			for(var/mob/O in mob_list)
 				if (O.client && O.client.eye == src)
