@@ -122,7 +122,7 @@
 		return 0	//This is sota the goto stop mobs from moving var
 	if(mob.control_object)
 		return Move_object(direct)
-	if(world.time < move_delay)
+	if(world.time < move_delay && !ignore_move_delay(n,direct))
 		return 0
 	if(!isliving(mob))
 		return mob.Move(n,direct)
@@ -247,6 +247,13 @@
 
 		return .
 
+/client/proc/ignore_move_delay(n,direct)
+	var/turf/target = get_step(mob, direct)
+	if(CanShadowWalk(mob))
+		return ((target.get_lumcount() == null || target.get_lumcount() <= 0.3) && world.time+4 >= move_delay) // Compensate for the sling species slowdown.
+
+	return 0;
+
 /client/proc/Process_ShadowWalk(direct)
 	var/turf/target = get_step(mob, direct)
 	var/turf/mobloc = get_turf(mob)
@@ -276,7 +283,7 @@
 	if (target.get_lumcount() == null || target.get_lumcount() <= 0.3)
 		mob.loc = target
 		mob.dir = direct
-		return 0;
+		return 1;
 
 ///Process_Grab()
 ///Called by client/Move()
