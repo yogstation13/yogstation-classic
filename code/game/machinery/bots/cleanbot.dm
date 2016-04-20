@@ -130,6 +130,9 @@ text("<A href='?src=\ref[src];power=1'>[on ? "On" : "Off"]</A>"))
 /obj/machinery/bot/cleanbot/process_scan(obj/effect/decal/cleanable/D)
 	for(var/T in target_types)
 		if(istype(D, T))
+			for(var/obj/machinery/bot/cleanbot/other_bot in SSbot.processing)
+				if(D == other_bot.target)
+					return null
 			return D
 
 /obj/machinery/bot/cleanbot/bot_process()
