@@ -1,6 +1,0 @@
-author: AsV9
-
-delete-after: True
-
-changes: 
-  - tweak: "Shunting no longer adds 30 seconds to malf nuke timer."

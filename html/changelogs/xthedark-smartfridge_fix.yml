@@ -1,6 +1,0 @@
-author: xthedark
-
-delete-after: True
-
-changes: 
-  - bugfix: "(Ported from /tg/, credit to MrStonedOne) Smarfridges work with apostrophed/ampersanted names correctly."
