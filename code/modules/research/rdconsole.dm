@@ -45,6 +45,8 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 	var/screen = 1.0	//Which screen is currently showing.
 	var/id = 0			//ID of the computer (for server restrictions).
 	var/sync = 1		//If sync = 0, it doesn't show up on Server Control Console
+	var/synctime = 30
+	var/reset_time = 20
 
 	req_access = list(access_tox)	//Data and setting manipulation requires scientist access.
 
@@ -314,35 +316,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			usr << "Unauthorized Access."
 
 	else if(href_list["sync"]) //Sync the research holder with all the R&D consoles in the game that aren't sync protected.
-		screen = 0.0
-		if(!sync)
-			usr << "<span class='danger'>You must connect to the network first!</span>"
-		else
-			griefProtection() //Putting this here because I dont trust the sync process
-			spawn(30)
-				if(src)
-					for(var/obj/machinery/r_n_d/server/S in world)
-						var/server_processed = 0
-						if(S.disabled)
-							continue
-						if((id in S.id_with_upload) || istype(S, /obj/machinery/r_n_d/server/centcom))
-							for(var/datum/tech/T in files.known_tech)
-								S.files.AddTech2Known(T)
-							for(var/datum/design/D in files.known_designs)
-								S.files.AddDesign2Known(D)
-							S.files.RefreshResearch()
-							server_processed = 1
-						if(((id in S.id_with_download) && !istype(S, /obj/machinery/r_n_d/server/centcom)) || S.hacked)
-							for(var/datum/tech/T in S.files.known_tech)
-								files.AddTech2Known(T)
-							for(var/datum/design/D in S.files.known_designs)
-								files.AddDesign2Known(D)
-							files.RefreshResearch()
-							server_processed = 1
-						if(!istype(S, /obj/machinery/r_n_d/server/centcom) && server_processed)
-							S.produce_heat(100)
-					screen = 1.6
-					updateUsrDialog()
+		sync()
 
 	else if(href_list["togglesync"]) //Prevents the console from being synced by other consoles. Can still send data.
 		sync = !sync
@@ -578,15 +552,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 				linked_imprinter = null
 
 	else if(href_list["reset"]) //Reset the R&D console's database.
-		griefProtection()
-		var/choice = alert("R&D Console Database Reset", "Are you sure you want to reset the R&D console's database? Data lost cannot be recovered.", "Continue", "Cancel")
-		if(choice == "Continue")
-			screen = 0.0
-			qdel(files)
-			files = new /datum/research(src)
-			spawn(20)
-				screen = 1.6
-				updateUsrDialog()
+		reset()
 
 	else if(href_list["search"]) //Search for designs with name matching pattern
 		var/compare
@@ -609,6 +575,47 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 	updateUsrDialog()
 	return
 
+/obj/machinery/computer/rdconsole/proc/sync()
+	screen = 0.0
+	if(!sync)
+		usr << "<span class='danger'>You must connect to the network first!</span>"
+	else
+		griefProtection() //Putting this here because I dont trust the sync process
+		spawn(synctime)
+			if(src)
+				for(var/obj/machinery/r_n_d/server/S in world)
+					var/server_processed = 0
+					if(S.disabled)
+						continue
+					if((id in S.id_with_upload) || istype(S, /obj/machinery/r_n_d/server/centcom))
+						for(var/datum/tech/T in files.known_tech)
+							S.files.AddTech2Known(T)
+						for(var/datum/design/D in files.known_designs)
+							S.files.AddDesign2Known(D)
+						S.files.RefreshResearch()
+						server_processed = 1
+					if(((id in S.id_with_download) && !istype(S, /obj/machinery/r_n_d/server/centcom)) || S.hacked)
+						for(var/datum/tech/T in S.files.known_tech)
+							files.AddTech2Known(T)
+						for(var/datum/design/D in S.files.known_designs)
+							files.AddDesign2Known(D)
+						files.RefreshResearch()
+						server_processed = 1
+					if(!istype(S, /obj/machinery/r_n_d/server/centcom) && server_processed)
+						S.produce_heat(100)
+				screen = 1.6
+				updateUsrDialog()
+
+/obj/machinery/computer/rdconsole/proc/reset()
+	griefProtection()
+	var/choice = alert("R&D Console Database Reset", "Are you sure you want to reset the R&D console's database? Data lost cannot be recovered.", "Continue", "Cancel")
+	if(choice == "Continue")
+		screen = 0.0
+		qdel(files)
+		files = new /datum/research(src)
+		spawn(reset_time)
+			screen = 1.6
+			updateUsrDialog()
 
 /obj/machinery/computer/rdconsole/attack_hand(mob/user)
 	if(..())
@@ -729,6 +736,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 					if(b_type & IMPRINTER) dat += "Circuit Imprinter<BR>"
 					if(b_type & PROTOLATHE) dat += "Proto-lathe<BR>"
 					if(b_type & AUTOLATHE) dat += "Auto-lathe<BR>"
+					if(b_type & PARTLATHE) dat += "Part-Lathe<BR>"
 					if(b_type & MECHFAB) dat += "Mech Fabricator<BR>"
 				dat += "Required Materials:<BR>"
 				for(var/M in d_disk.blueprint.materials)
@@ -1118,3 +1126,44 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 	name = "E.X.P.E.R.I-MENTOR R&D Console"
 	desc = "A console used to interface with R&D tools."
 	id = 3
+
+/obj/machinery/computer/rdconsole/partlathe
+	name = "Partlathe Console"
+	desc = "A console used to interface with the partlathe."
+	id = 4
+	var/obj/machinery/autolathe/parts/lathe
+
+/obj/machinery/computer/rdconsole/partlathe/sync()
+	if(!lathe)
+		return
+	if(!sync)
+		usr << "<span class='danger'>You must connect to the network first!</span>"
+	else
+		lathe.screen = AUTOLATHE_SYNCING
+		lathe.updateUsrDialog()
+		..()
+		spawn(synctime)
+			if(lathe)
+				lathe.files = files
+				lathe.screen = AUTOLATHE_MAIN_MENU
+				lathe.updateUsrDialog()
+
+/obj/machinery/computer/rdconsole/partlathe/reset()
+	if(!lathe)
+		return
+	griefProtection()
+	var/choice = alert("Partlathe Database Reset", "Are you sure you want to reset the partlathe's database? Data lost cannot be recovered.", "Continue", "Cancel")
+	if(choice == "Continue")
+		if(!lathe)
+			return
+		lathe.screen = AUTOLATHE_SYNCING
+		lathe.updateUsrDialog()
+		qdel(files)
+		qdel(lathe.files)
+		files = new /datum/research(src)
+		lathe.files = files
+		spawn(reset_time)
+			if(!lathe)
+				return
+			lathe.screen = AUTOLATHE_MAIN_MENU
+			lathe.updateUsrDialog()

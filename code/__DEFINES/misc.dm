@@ -267,3 +267,8 @@
 //Ability Resouce Types
 #define RESOURCE_ALIEN 1
 #define RESOURCE_CHANGELING 2
+
+//Turf wet states
+#define TURF_DRY		0
+#define TURF_WET_WATER	1
+#define TURF_WET_LUBE	2

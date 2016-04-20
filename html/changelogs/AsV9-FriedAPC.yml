@@ -1,0 +1,7 @@
+author: AsV9
+
+delete-after: True
+
+changes:
+  - rscadd: "APCs can now malfunction randomly. Yes. This means every single APC. And you will only know for sure 30% of the time."
+

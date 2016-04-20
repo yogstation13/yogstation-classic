@@ -258,7 +258,37 @@
 /datum/reagent/lube/reaction_turf(turf/simulated/T, reac_volume)
 	if (!istype(T)) return
 	if(reac_volume >= 1)
-		T.MakeSlippery(2)
+		T.MakeSlippery(TURF_WET_LUBE)
+
+/datum/reagent/drying_agent
+	name = "Drying agent"
+	id = "drying_agent"
+	description = "Used to dry things."
+	reagent_state = LIQUID
+	color = "#A70FFF"
+
+/datum/reagent/drying_agent/reaction_turf(turf/simulated/T, reac_volume)
+	if(istype(T) && T.wet)
+		T.MakeDry(TURF_WET_WATER)
+
+/datum/reagent/drying_agent/reaction_obj(obj/O, reac_volume)
+	if(O.type == /obj/item/clothing/shoes/galoshes)
+		var/obj/item/clothing/shoes/galoshes/G = O
+		if(!G.isAbsorbent)
+			G.setAbsorbent()
+
+/datum/reagent/drying_agent/reaction_mob(mob/M, method=TOUCH, reac_volume)
+	if(method == TOUCH || VAPOR)
+		if(iscarbon(M))
+			var/mob/living/carbon/C = M
+			if(C.r_hand)
+				reaction_obj(C.r_hand, reac_volume)
+			if(C.l_hand)
+				reaction_obj(C.l_hand, reac_volume)
+			if(ishuman(M))
+				var/mob/living/carbon/human/H = C
+				if(H.shoes)
+					reaction_obj(H.shoes, reac_volume)
 
 /datum/reagent/spraytan
 	name = "Spray Tan"

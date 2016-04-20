@@ -368,6 +368,7 @@
 #include "code\game\gamemodes\nuclear\nuclear_challenge.dm"
 #include "code\game\gamemodes\nuclear\nuclearbomb.dm"
 #include "code\game\gamemodes\nuclear\pinpointer.dm"
+#include "code\game\gamemodes\revolution\rev_flash.dm"
 #include "code\game\gamemodes\revolution\revolution.dm"
 #include "code\game\gamemodes\sandbox\airlock_maker.dm"
 #include "code\game\gamemodes\sandbox\h_sandbox.dm"
@@ -428,6 +429,7 @@
 #include "code\game\machinery\navbeacon.dm"
 #include "code\game\machinery\newscaster.dm"
 #include "code\game\machinery\overview.dm"
+#include "code\game\machinery\partlathe.dm"
 #include "code\game\machinery\PDApainter.dm"
 #include "code\game\machinery\portable_turret.dm"
 #include "code\game\machinery\recharger.dm"
@@ -682,6 +684,7 @@
 #include "code\game\objects\items\weapons\paint.dm"
 #include "code\game\objects\items\weapons\paiwire.dm"
 #include "code\game\objects\items\weapons\pneumaticCannon.dm"
+#include "code\game\objects\items\weapons\rapid_engineering_device.dm"
 #include "code\game\objects\items\weapons\RCD.dm"
 #include "code\game\objects\items\weapons\RPD.dm"
 #include "code\game\objects\items\weapons\RSF.dm"
@@ -1000,6 +1003,7 @@
 #include "code\modules\events\anomaly_grav.dm"
 #include "code\modules\events\anomaly_pyro.dm"
 #include "code\modules\events\anomaly_vortex.dm"
+#include "code\modules\events\apc_fry.dm"
 #include "code\modules\events\blob.dm"
 #include "code\modules\events\borer.dm"
 #include "code\modules\events\brand_intelligence.dm"
@@ -1601,3 +1605,4 @@
 #include "interface\stylesheet.dm"
 #include "interface\skin.dmf"
 // END_INCLUDE
+

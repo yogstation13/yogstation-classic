@@ -588,6 +588,21 @@
 			user << "<span class='notice'>You emag the APC interface.</span>"
 			update_icon()
 
+/obj/machinery/power/apc/proc/break_apc()
+	if(!emagged && !malfhack)
+		if(opened)
+			return
+		if(wiresexposed)
+			return
+		if(stat & (BROKEN|MAINT))
+			return
+		flick("apc-spark", src)
+		for(var/mob/O in viewers(src))
+			O << "<span class='warning'>The [src] makes crackling noises and puffs of smoke rise from it.</span>"
+		emagged = 1
+		locked = 0
+		update_icon()
+
 // attack with hand - remove cell (if cover open) or interact with the APC
 
 /obj/machinery/power/apc/attack_hand(mob/user)
@@ -900,12 +915,13 @@
 	if (seclevel2num(get_security_level()) == SEC_LEVEL_DELTA)
 		for(var/obj/item/weapon/pinpointer/point in world)
 			point.the_disk = src //the pinpointer will detect the shunted AI
-
+	/*
 	if(malf.nuking == TRUE)
 		for(var/obj/machinery/doomsday_device/D in world)
 			if(D.timer > 0) //well we don't want to do this if the timeleft is 0 duh.
 				D.timer += 30 //add 30 seconds to nuke timer.
 				//I was going to add 60 seconds to that thing above. but I realized I was dealing with BYOND seconds which are twice as long.
+	*/
 
 /obj/machinery/power/apc/proc/malfvacate(forced)
 	if(!src.occupier)
