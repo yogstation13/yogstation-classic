@@ -2,8 +2,6 @@
 	var/free_organ = 0
 	var/in_changeling = 0
 	var/list/changeling_only_powers = list()
-	var/decay_above_temp = T0C
-	decay_time = 60
 	//var/zone = "chest"
 	//var/slot
 
@@ -49,32 +47,6 @@
 	for(var/A in changeling_only_powers)
 		owner.RemoveAbility(A)
 	..()
-
-/obj/item/organ/internal/ability_organ/changeling/handle_decay()
-	if(!decay_time || decay == -1)
-		return
-	if(owner)
-		if(!(owner.stat & DEAD))
-			decay = min(decay+1, decay_time)
-		return
-
-	var/temperature
-	if(owner)
-		temperature = owner.bodytemperature
-	else if(loc)
-		var/datum/gas_mixture/environment = loc.return_air()
-		if(!environment)
-			return
-		temperature = environment.temperature
-	else
-		return
-
-	if(temperature > decay_above_temp)
-		decay = max(0, decay-1)
-	if(!decay)
-		decay = -1
-		update_icon()
-		SSobj.processing -= src
 
 //CHEMICAL STORAGE
 
