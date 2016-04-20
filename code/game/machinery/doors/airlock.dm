@@ -1356,3 +1356,24 @@ About the new airlock wires panel:
 	for (var/obj/A in contents)
 		A.HasProximity(AM)
 	return
+
+/obj/machinery/door/airlock/attack_alien(mob/living/carbon/alien/humanoid/user)
+	add_fingerprint(user)
+	if(isElectrified())
+		shock(user, 100) //Mmm, fried xeno!
+		return
+	if(!density) //already open
+		return
+	if(locked || welded)
+		user << "<span class='warning'>[src] refuses to budge!</span>"
+		return
+	user.visible_message("<span class='warning'>[user] begins prying open [src].</span>",\
+						"<span class='noticealien'>You begin digging your claws into [src] with all your might!</span>",\
+						"<span class='warning'>You hear groaning metal...</span>")
+	var/time_to_open = 30
+	if(hasPower())
+		time_to_open = 120 //Powered airlocks take longer to open
+		playsound(src.loc, 'sound/machines/airlockforced.ogg', 30, 1)
+	if(do_after(user, time_to_open, target = src))
+		if(density && !open(2)) //The airlock is still closed, but something prevented it from opening (Another player noticed and bolted/welded the airlock in time!)
+			user << "<span class='warning'>Dispite your efforts, [src] managed to resist your attempts to open it!</span>"
