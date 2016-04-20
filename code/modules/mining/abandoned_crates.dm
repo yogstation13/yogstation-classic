@@ -147,7 +147,7 @@
 			new /obj/item/weapon/gun/projectile/automatic/pistol(src)
 			new /obj/item/ammo_box/magazine/m10mm(src)
 		if(98)
-			new /obj/item/weapon/katana/cursed(src)
+			new /obj/item/clothing/suit/chickensuit(src)
 		if(99)
 			new /obj/item/weapon/storage/belt/champion(src)
 			new /obj/item/clothing/mask/luchador(src)
