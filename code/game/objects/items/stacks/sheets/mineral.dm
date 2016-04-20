@@ -8,6 +8,11 @@ Mineral Sheets
 		- Gold
 		- Silver
 		- Clown
+		- Coal
+		- Platnium
+		- Electrite
+		- Copper
+		- Clarenkite
 	Others:
 		- Adamantine
 		- Mythril
@@ -235,6 +240,63 @@ var/global/list/datum/stack_recipe/clown_recipes = list ( \
 	pixel_x = rand(0,4)-4
 	pixel_y = rand(0,4)-4
 	..()
+
+/obj/item/stack/sheet/mineral/coal
+	name = "coal"
+	icon_state = "sheet-coal"
+	singular_name = "coal sheet"
+	force = 5.0
+	throwforce = 5
+	w_class = 3.0
+	throw_speed = 1
+	throw_range = 3
+	origin_tech = "materials=4"
+
+/obj/item/stack/sheet/mineral/platnium
+	name = "platnium"
+	icon_state = "sheet-platnium"
+	singular_name = "platnium bar"
+	force = 5.0
+	throwforce = 5
+	w_class = 3.0
+	throw_speed = 1
+	throw_range = 3
+	origin_tech = "materials=4"
+
+
+/obj/item/stack/sheet/mineral/electrite
+	name = "electrite"
+	icon_state = "sheet-electrite"
+	singular_name = "electrite bar"
+	force = 5.0
+	throwforce = 5
+	w_class = 3.0
+	throw_speed = 1
+	throw_range = 3
+	origin_tech = "materials=4"
+
+/obj/item/stack/sheet/mineral/copper
+	name = "copper"
+	icon_state = "sheet-copper"
+	singular_name = "copper bar"
+	force = 5.0
+	throwforce = 5
+	w_class = 3.0
+	throw_speed = 1
+	throw_range = 3
+	origin_tech = "materials=4"
+
+/obj/item/stack/sheet/mineral/clarenkite
+	name = "clarenkite"
+	icon_state = "sheet-clarenkite"
+	singular_name = "clarenkite bar"
+	force = 5.0
+	throwforce = 5
+	w_class = 3.0
+	throw_speed = 1
+	throw_range = 3
+	origin_tech = "materials=4"
+
 
 
 /****************************** Others ****************************/
