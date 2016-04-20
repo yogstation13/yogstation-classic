@@ -1,0 +1,5 @@
+author: ToGWtF
+delete-after: True
+changes: 
+  - bugfix: "Xenomorphs devour is now logged. Attempts are not (The grabs are a good indicator though)."
+  - rscadd: "Xenomorphs have now become intelligent enough to work an airlock. They don't have the finer points down, but brute-force works just as well!"
