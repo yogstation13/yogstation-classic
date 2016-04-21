@@ -114,29 +114,30 @@ BLIND     // can't see anything
 	return message
 
 //Proc that moves gas/breath masks out of the way, disabling them and allowing pill/food consumption
-/obj/item/clothing/mask/proc/adjustmask(mob/user)
+/obj/item/clothing/mask/proc/adjustmask(mob/user, silent = 0)
 	if(!ignore_maskadjust)
 		if(user.incapacitated())
 			return
-		if(src.mask_adjusted == 1)
+		mask_adjusted = !mask_adjusted
+		if(!mask_adjusted)
 			src.icon_state = initial(icon_state)
 			gas_transfer_coefficient = initial(gas_transfer_coefficient)
 			permeability_coefficient = initial(permeability_coefficient)
 			flags |= visor_flags
 			flags_inv |= visor_flags_inv
 			flags_cover = initial(flags_cover)
-			user << "<span class='notice'>You push \the [src] back into place.</span>"
-			src.mask_adjusted = 0
+			if(!silent)
+				user << "<span class='notice'>You push \the [src] back into place.</span>"
 			slot_flags = initial(slot_flags)
 		else
 			src.icon_state += "_up"
-			user << "<span class='notice'>You push \the [src] out of the way.</span>"
+			if(!silent)
+				user << "<span class='notice'>You push \the [src] out of the way.</span>"
 			gas_transfer_coefficient = null
 			permeability_coefficient = null
 			flags &= ~visor_flags
 			flags_inv &= ~visor_flags_inv
 			flags_cover &= 0
-			src.mask_adjusted = 1
 			if(adjusted_flags)
 				slot_flags = adjusted_flags
 		usr.update_inv_wear_mask()

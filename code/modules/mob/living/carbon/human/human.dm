@@ -219,7 +219,8 @@
 		dat += "<tr><td><B>Mask:</B></td><td><A href='?src=\ref[src];item=[slot_wear_mask]'>[(wear_mask && !(wear_mask.flags&ABSTRACT)) ? wear_mask : "<font color=grey>Empty</font>"]</A>"
 		if(has_breathable_mask)
 			var/obj/item/clothing/mask/breath_mask = wear_mask
-			dat += "&nbsp;<A href='?src=\ref[src];internal=[slot_wear_mask]'>[breath_mask.mask_adjusted ? "Slide On" : "Slide Off"]</A></td></tr>"
+			if(!breath_mask.ignore_maskadjust)
+				dat += "&nbsp;<A href='?src=\ref[src];internal=[slot_wear_mask]'>[breath_mask.mask_adjusted ? "Slide On" : "Slide Off"]</A></td></tr>"
 
 	if(slot_glasses in obscured)
 		dat += "<tr><td><font color=grey><B>Eyes:</B></font></td><td><font color=grey>Obscured</font></td></tr>"

@@ -322,17 +322,17 @@
 			switch(slot)
 				if(slot_wear_mask)
 					var/obj/item/clothing/mask/breath_mask = wear_mask
-					if(!breath_mask)
+					if(!breath_mask || breath_mask.ignore_maskadjust)
 						return
 					else
 						if(!silent_internals)
 							visible_message("<span class='danger'>[usr] slides [breath_mask] [breath_mask.mask_adjusted ? "on" : "off"] [src]'s face.</span>", \
 											"<span class='userdanger'>[usr] slides [breath_mask] [breath_mask.mask_adjusted ? "on" : "off"] [src]'s face.</span>")
+							if(!do_mob(usr, src, 20)) //2 seconds to react
+								usr << "<span class='warning'>You failed to slide the mask [breath_mask.mask_adjusted ? "on" : "off"] [src]'s face.</span>"
 						else
-							usr << "<span class='notice'>You silenty slide [breath_mask] [breath_mask.mask_adjusted ? "on" : "off"] [src]'s face...but how?</span>"
-						breath_mask.adjustmask(usr)
-						if(usr.machine == src && in_range(src, usr))
-							show_inv(usr)
+							usr << "<span class='notice'>You silently slide [breath_mask] [breath_mask.mask_adjusted ? "on" : "off"] [src]'s face...but how?</span>"
+						breath_mask.adjustmask(usr, silent_internals)
 				else
 					var/obj/item/ITEM = get_item_by_slot(slot)
 					if(ITEM && istype(ITEM, /obj/item/weapon/tank) && wear_mask && (wear_mask.flags & MASKINTERNALS))
@@ -355,6 +355,8 @@
 												"<span class='userdanger'>[usr] [internal ? "opens" : "closes"] the valve on [src]'s [ITEM].</span>")
 							else
 								usr << "<span class='notice'>You silenty [internal ? "open" : "close"] the valve on [src]'s [ITEM].</span>"
+			if(usr.machine == src && in_range(src, usr))
+				show_inv(usr)
 
 /mob/living/carbon/getTrail()
 	if(getBruteLoss() < 300)
