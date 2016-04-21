@@ -12,5 +12,5 @@
 
 /mob/living/simple_animal/hostile/retaliate/dolphin/tactical/New()
 	..()
-	var/obj/item/weapon/storage/tactical_harness/tmp_harness = new /obj/item/weapon/storage/tactical_harness/dolphin()
+	var/obj/item/weapon/storage/tactical_harness/ranged/tmp_harness = new /obj/item/weapon/storage/tactical_harness/ranged/syndicate/dolphin()
 	tmp_harness.add_harness(src, null)
