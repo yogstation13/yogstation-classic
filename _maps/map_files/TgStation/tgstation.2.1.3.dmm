@@ -5981,7 +5981,7 @@
 "cla" = (/obj/machinery/door/airlock/engineering{name = "Aft Port Solar Access"; req_access_txt = "10"},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/plating,/area/maintenance/portsolar)
 "clb" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/mob/living/simple_animal/mouse,/turf/simulated/floor/plating,/area/maintenance/aft)
 "clc" = (/obj/structure/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/turf/simulated/floor/plating,/area/maintenance/aft)
-"cld" = (/obj/structure/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/obj/structure/disposalpipe/segment{dir = 1; icon_state = "pipe-c"},/obj/machinery/atmospherics/pipe/simple/supply/hidden{dir = 5},/turf/simulated/wall,/area/maintenance/aft)
+"cld" = (/obj/structure/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/obj/structure/disposalpipe/segment{dir = 1; icon_state = "pipe-c"},/obj/machinery/atmospherics/pipe/simple/supply/hidden{dir = 5},/turf/simulated/floor/plating,/area/maintenance/aft)
 "cle" = (/obj/structure/disposalpipe/sortjunction{dir = 8; icon_state = "pipe-j2s"; sortType = 4},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"; pixel_y = 0},/obj/machinery/atmospherics/pipe/simple/supply/hidden{dir = 4},/obj/machinery/atmospherics/pipe/simple/scrubbers/hidden,/turf/simulated/floor/plating,/area/maintenance/aft)
 "clf" = (/obj/structure/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/obj/structure/disposalpipe/segment{dir = 8; icon_state = "pipe-c"},/obj/machinery/atmospherics/pipe/simple/supply/hidden{dir = 10},/turf/simulated/wall/r_wall,/area/engine/engineering)
 "clg" = (/obj/machinery/shieldgen,/turf/simulated/floor/plating,/area/engine/engineering)
@@ -6817,11 +6817,11 @@
 "cBe" = (/obj/machinery/atmospherics/pipe/simple/yellow/hidden,/turf/simulated/floor/bluegrid{icon_state = "dark"; name = "Mainframe Floor"; nitrogen = 100; oxygen = 0; temperature = 80},/area/tcommsat/server)
 "cBf" = (/obj/structure/table,/turf/simulated/floor/plating,/area/maintenance/fpmaint2)
 "cBg" = (/obj/structure/disposalpipe/segment,/obj/machinery/atmospherics/pipe/simple/supply/visible,/turf/simulated/wall/r_wall,/area/engine/engineering)
-"cBh" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"; pixel_x = 0; tag = ""},/obj/structure/sign/electricshock{step_x = -31},/obj/machinery/atmospherics/pipe/simple/scrubbers/visible{dir = 4},/turf/simulated/floor/plasteel/loadingarea,/area/engine/engine_smes)
+"cBh" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"; pixel_x = 0; tag = ""},/obj/structure/sign/electricshock{step_x = -31},/obj/machinery/atmospherics/pipe/simple/scrubbers/hidden{dir = 4},/turf/simulated/floor/plasteel/loadingarea,/area/engine/engineering)
 "cBi" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/machinery/atmospherics/pipe/simple/scrubbers/hidden{dir = 4},/turf/simulated/floor/plasteel,/area/engine/engineering)
-"cBj" = (/obj/machinery/atmospherics/pipe/simple/supply/hidden{dir = 4},/turf/simulated/floor/plasteel/warning{dir = 8},/area/engine/engine_smes)
+"cBj" = (/obj/machinery/atmospherics/pipe/simple/supply/hidden{dir = 4},/turf/simulated/floor/plasteel/warning{dir = 8},/area/engine/engineering)
 "cBk" = (/obj/structure/lattice,/obj/structure/sign/biohazard{step_y = 30},/turf/space,/area/space)
-"cBl" = (/obj/structure/cable/yellow{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/structure/sign/electricshock{step_x = -31},/turf/simulated/floor/plasteel,/area/engine/engine_smes)
+"cBl" = (/obj/structure/cable/yellow{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/structure/sign/electricshock{step_x = -31},/turf/simulated/floor/plasteel,/area/engine/engineering)
 
 (1,1,1) = {"
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
