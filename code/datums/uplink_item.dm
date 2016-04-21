@@ -445,6 +445,12 @@ var/list/uplink_items = list()
 	item = /obj/item/clothing/under/chameleon
 	cost = 2
 
+/datum/uplink_item/stealthy_tools/chameleon_pickgloves
+	name = "Chameleon Pickpocketing Gloves"
+	desc = "A pair of gloves that make pickpocketing silent, speeds up stripping/planting actions (33%) and allows extra pickpocketing options. Cam camouflage as other types of gloves. Leaves very specific fibers that make it easy to tell these were used if found by detective."
+	item = /obj/item/clothing/gloves/pickpocket/chameleon
+	cost = 4
+
 /datum/uplink_item/stealthy_tools/chameleon_stamp
 	name = "Chameleon Stamp"
 	desc = "A stamp that can be activated to imitate an official Nanotrasen Stamp. The disguised stamp will work exactly like the real stamp and will allow you to forge false documents to gain access or equipment; \

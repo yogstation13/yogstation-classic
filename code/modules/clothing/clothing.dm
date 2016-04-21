@@ -8,7 +8,7 @@
 	var/visor_flags_inv = 0		// same as visor_flags, but for flags_inv
 	lefthand_file = 'icons/mob/inhands/clothing_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/clothing_righthand.dmi'
-	var/alt_desc = null
+	var/fiber_text = null
 	var/toggle_message = null
 	var/alt_toggle_message = null
 	var/active_sound = null
@@ -20,6 +20,11 @@
 	var/canbetorn //can this particular item be torn down to be used for cloth?
 	var/tearhealth = 100
 	var/scan_reagents = 0 //this variable decides if the wearer can see reagents
+
+/obj/item/clothing/New()
+	if(!fiber_text) //used in add_fibers() to set fibers to the name (so we can have different name/set of fibers left)
+		fiber_text = name
+	..()
 
 //Ears: currently only used for headsets and earmuffs
 /obj/item/clothing/ears
