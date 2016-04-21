@@ -9,7 +9,7 @@
 	severity = HARMFUL
 	stage_prob = 10
 	visibility_flags = HIDDEN_SCANNER|HIDDEN_PANDEMIC
-	disease_flags = CURABLE
+	disease_flags = CURABLE|CAN_RESIST
 	var/list/stage1 = list("You feel unremarkable.")
 	var/list/stage2 = list("You feel boring.")
 	var/list/stage3 = list("You feel utterly plain.")
@@ -74,8 +74,8 @@
 	spread_flags = SPECIAL
 	viable_mobtypes = list(/mob/living/carbon/monkey, /mob/living/carbon/human)
 	permeability_mod = 1
-	cure_chance = 1
-	disease_flags = CAN_CARRY|CAN_RESIST
+	cure_chance = 4
+	disease_flags = CAN_CARRY|CAN_RESIST|CURABLE
 	longevity = 30
 	desc = "Monkeys with this disease will bite humans, causing humans to mutate into a monkey."
 	severity = BIOHAZARD
@@ -95,6 +95,8 @@
 	if(!ismonkey(affected_mob))
 		ticker.mode.add_monkey(affected_mob.mind)
 		affected_mob.monkeyize(TR_KEEPITEMS | TR_KEEPIMPLANTS | TR_KEEPORGANS | TR_KEEPDAMAGE | TR_KEEPVIRUS | TR_KEEPSE)
+		if(stage5)
+			affected_mob << pick(stage5)
 
 /datum/disease/transformation/jungle_fever/stage_act()
 	..()
@@ -111,6 +113,8 @@
 				affected_mob.say(pick("Eeek, ook ook!", "Eee-eeek!", "Eeee!", "Ungh, ungh."))
 
 /datum/disease/transformation/jungle_fever/cure()
+	if(stage == 5)
+		return
 	ticker.mode.remove_monkey(affected_mob.mind)
 	..()
 
@@ -123,8 +127,7 @@
 	spread_flags = SPECIAL | BLOOD
 	viable_mobtypes = list(/mob/living/carbon/human)
 	permeability_mod = 1
-	cure_chance = 0
-	disease_flags = CURABLE
+	cure_chance = 4
 	longevity = 30
 	desc = "Crewmembers with this disease will bite other humans, causing them to turn into zombies."
 	severity = BIOHAZARD
@@ -144,10 +147,11 @@
 /datum/disease/transformation/rage_virus/do_disease_transformation(var/mob/living/carbon/affected_mob)
 	if(!istype(affected_mob, /mob/living/carbon/human))
 		return
-
 	if(!iszombie(affected_mob))
 		ticker.mode.add_zombie(affected_mob.mind)
 		affected_mob.zombieize(TR_KEEPITEMS | TR_KEEPIMPLANTS | TR_KEEPDAMAGE | TR_KEEPVIRUS | TR_KEEPSE | TR_HASHNAME)
+		if(stage5)
+			affected_mob << pick(stage5)
 
 /datum/disease/transformation/rage_virus/stage_act()
 	..()
@@ -164,10 +168,10 @@
 				affected_mob.say(pick("Uuuuuurrrr!", "URRrrr!", "UUhhhhhhhhhhhh!", "UUUuurrrrrrhhhhhhhhhhhhh."))
 
 /datum/disease/transformation/rage_virus/cure()
-	//ticker.mode.remove_zombie(affected_mob.mind)
-	affected_mob << "<span class='notice'>Your affliction could not be cured!</span>"
+	if(stage == 5)
+		return
+	ticker.mode.remove_zombie(affected_mob.mind)
 	..()
-
 
 /datum/disease/transformation/robot
 
