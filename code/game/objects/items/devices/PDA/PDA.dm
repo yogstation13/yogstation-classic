@@ -765,10 +765,6 @@ var/global/list/obj/item/device/pda/PDAs = list()
 
 							if(prob(difficulty * 12) || (P.hidden_uplink))
 								U.show_message("<span class='danger'>An error flashes on your [src].</span>", 1)
-							else if (prob(difficulty * 3))
-								U.show_message("<span class='danger'>Energy feeds back into your [src]!</span>", 1)
-								U << browse(null, "window=pda")
-								explode()
 							else
 								U.show_message("<span class='notice'>Success!</span>", 1)
 								P.explode()
