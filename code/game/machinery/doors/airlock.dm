@@ -1113,7 +1113,7 @@ About the new airlock wires panel:
 				else
 					spawn(0)	close(2)
 
-	else if(istype(C, /obj/item/weapon/airlock_painter))
+	else if(get_airlock_painter(C))
 		change_paintjob(C, user)
 	else if(istype(C, /obj/item/device/doorCharge) && p_open)
 		if(emagged)
@@ -1132,7 +1132,7 @@ About the new airlock wires panel:
 		newCharge.loc = src
 		charge = newCharge
 		return
-	else if(istype(C, /obj/item/weapon/rcd)&& istype(loc, /turf/simulated)) //Do not attack the airlock if the user is holding an RCD
+	else if(is_rcd(C) && istype(loc, /turf/simulated))
 		return
 	else
 		..()
@@ -1268,8 +1268,8 @@ About the new airlock wires panel:
 
 /obj/machinery/door/airlock/proc/change_paintjob(obj/item/C, mob/user)
 	var/obj/item/weapon/airlock_painter/W
-	if(istype(C, /obj/item/weapon/airlock_painter))
-		W = C
+	if(get_airlock_painter(C))
+		W = get_airlock_painter(C)
 	else
 		user << "If you see this, it means airlock/change_paintjob() was called with something other than an airlock painter. Check your code!"
 		return
@@ -1356,3 +1356,24 @@ About the new airlock wires panel:
 	for (var/obj/A in contents)
 		A.HasProximity(AM)
 	return
+
+/obj/machinery/door/airlock/attack_alien(mob/living/carbon/alien/humanoid/user)
+	add_fingerprint(user)
+	if(isElectrified())
+		shock(user, 100) //Mmm, fried xeno!
+		return
+	if(!density) //already open
+		return
+	if(locked || welded)
+		user << "<span class='warning'>[src] refuses to budge!</span>"
+		return
+	user.visible_message("<span class='warning'>[user] begins prying open [src].</span>",\
+						"<span class='noticealien'>You begin digging your claws into [src] with all your might!</span>",\
+						"<span class='warning'>You hear groaning metal...</span>")
+	var/time_to_open = 30
+	if(hasPower())
+		time_to_open = 120 //Powered airlocks take longer to open
+		playsound(src.loc, 'sound/machines/airlockforced.ogg', 30, 1)
+	if(do_after(user, time_to_open, target = src))
+		if(density && !open(2)) //The airlock is still closed, but something prevented it from opening (Another player noticed and bolted/welded the airlock in time!)
+			user << "<span class='warning'>Dispite your efforts, [src] managed to resist your attempts to open it!</span>"

@@ -8,7 +8,7 @@
 	if(!msg)	return
 
 	log_admin("[key_name(src)] : [msg]")
-	spawn(-1) send_discord_message("[key_name(usr)] said: [msg]", DISCORD_ASAY)
+	spawn(-1) send_discord_message("**[key_name(usr)]** said: [msg]", DISCORD_ASAY)
 	msg = keywords_lookup(msg)
 
 	var/regex/R = new("\[^&\]#(\\d+)", "ig")

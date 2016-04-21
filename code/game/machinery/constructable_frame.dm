@@ -546,6 +546,16 @@ to destroy them and players will be able to make replacements.
 							/obj/item/weapon/stock_parts/manipulator = 1,
 							/obj/item/weapon/stock_parts/micro_laser = 1)
 
+/obj/item/weapon/circuitboard/partlathe
+	name = "circuit board (Partlathe)"
+	build_path = /obj/machinery/autolathe/parts
+	board_type = "machine"
+	origin_tech = "engineering=2;programming=2"
+	req_components = list(
+							/obj/item/weapon/stock_parts/matter_bin = 2,
+							/obj/item/weapon/stock_parts/manipulator = 2,
+							/obj/item/weapon/stock_parts/console_screen = 1)
+
 /obj/item/weapon/circuitboard/autolathe
 	name = "circuit board (Autolathe)"
 	build_path = /obj/machinery/autolathe
