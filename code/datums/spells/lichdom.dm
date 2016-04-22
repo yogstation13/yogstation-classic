@@ -70,6 +70,8 @@
 				var/wheres_wizdo = dir2text(get_dir(get_turf(old_body), get_turf(marked_item)))
 				if(wheres_wizdo)
 					old_body.visible_message("<span class='warning'>Suddenly [old_body.name]'s corpse falls to pieces! You see a strange energy rise from the remains, and speed off towards the [wheres_wizdo]!</span>")
+					var/turf/t = get_turf(old_body)
+					t.Beam(get_turf(lich),icon_state="lichbeam",icon='icons/effects/effects.dmi',time=150,maxdistance=INFINITY)
 				old_body.dust()
 
 		if(!marked_item) //linking item to the spell
