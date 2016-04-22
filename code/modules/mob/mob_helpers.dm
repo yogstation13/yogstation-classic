@@ -546,3 +546,4 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	if(!istype(M, /mob/living/simple_animal))
 		return null
 	var/mob/living/simple_animal/A = M
+	return A.harness
