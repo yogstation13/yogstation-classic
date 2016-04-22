@@ -5,7 +5,8 @@
 	verb_say = "clicks"
 	icon = 'icons/mob/human.dmi'
 	icon_state = "pred_s"
-	languages = PREDATOR
+	languages_understood = PREDATOR
+	languages_spoken = PREDATOR
 	gender = NEUTER
 	ventcrawler = 0
 

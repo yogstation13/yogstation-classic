@@ -144,7 +144,8 @@
 			switch(randomize)
 				if("monkey")
 					new_mob = new /mob/living/carbon/monkey(M.loc)
-					new_mob.languages |= HUMAN
+					new_mob.languages_spoken |= HUMAN
+					new_mob.languages_understood |= HUMAN
 				if("robot")
 					var/robot = pick("cyborg","syndiborg","drone")
 					switch(robot)
@@ -159,19 +160,22 @@
 						Robot.mmi = new /obj/item/device/mmi(new_mob)
 						Robot.mmi.transfer_identity(M)	//Does not transfer key/client.
 					else
-						new_mob.languages |= HUMAN
+						new_mob.languages_spoken |= HUMAN
+						new_mob.languages_understood |= HUMAN
 				if("slime")
 					new_mob = new /mob/living/simple_animal/slime(M.loc)
 					if(prob(50))
 						var/mob/living/simple_animal/slime/Slime = new_mob
 						Slime.is_adult = 1
-					new_mob.languages |= HUMAN
+					new_mob.languages_understood |= HUMAN
+					new_mob.languages_spoken |= HUMAN
 				if("xeno")
 					if(prob(50))
 						new_mob = new /mob/living/carbon/alien/humanoid/hunter(M.loc)
 					else
 						new_mob = new /mob/living/carbon/alien/humanoid/sentinel(M.loc)
-					new_mob.languages |= HUMAN
+					new_mob.languages_understood |= HUMAN
+					new_mob.languages_spoken |= HUMAN
 
 					/*var/alien_caste = pick("Hunter","Sentinel","Drone","Larva")
 					switch(alien_caste)
@@ -211,7 +215,8 @@
 							if("fox") new_mob = new /mob/living/simple_animal/pet/fox(M.loc)
 							if("butterfly")	new_mob = new /mob/living/simple_animal/butterfly(M.loc)
 							else			new_mob = new /mob/living/simple_animal/chick(M.loc)
-					new_mob.languages |= HUMAN
+					new_mob.languages_spoken |= HUMAN
+					new_mob.languages_understood |= HUMAN
 				if("human")
 					new_mob = new /mob/living/carbon/human(M.loc)
 

@@ -10,13 +10,6 @@
 	return ..(message, "R")
 
 
-/mob/living/simple_animal/drone/lang_treat(atom/movable/speaker, message_langs, raw_message) //This is so drones can understand humans without being able to speak human
-	. = ..()
-	var/hear_override_langs = HUMAN
-	if(message_langs & hear_override_langs)
-		return ..(speaker, languages, raw_message)
-
-
 /mob/living/simple_animal/drone/handle_inherent_channels(message, message_mode)
 	if(message_mode == MODE_BINARY)
 		drone_chat(message)

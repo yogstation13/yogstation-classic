@@ -10,7 +10,8 @@
 	dna = null
 	faction = list("alien")
 	ventcrawler = 2
-	languages = ALIEN
+	languages_understood = ALIEN
+	languages_spoken = ALIEN
 	verb_say = "hisses"
 	type_of_meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/xeno
 
