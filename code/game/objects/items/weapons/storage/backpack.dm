@@ -33,10 +33,10 @@
 /obj/item/weapon/storage/backpack/holding
 	name = "bag of holding"
 	desc = "A backpack that opens into a localized pocket of Blue Space."
-	origin_tech = "bluespace=4"
+	origin_tech = "bluespace=5"
 	icon_state = "holdingpack"
-	max_w_class = 5
-	max_combined_w_class = 35
+	max_w_class = 15
+	max_combined_w_class = 200 //OH YES
 	burn_state = -1 // NotBurnable
 	var/pshoom = 'sound/items/PSHOOM.ogg'
 	var/alt_sound = 'sound/items/PSHOOM_2.ogg'
