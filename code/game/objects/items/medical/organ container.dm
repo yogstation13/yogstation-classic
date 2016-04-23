@@ -22,7 +22,6 @@
 /obj/item/weapon/storage/handcooler/cubicle/proc/scancheck()
 	for(var/obj/item/organ/internal/O in src)
 		if(O.loc == src)
-			message_admins("SENT BACK")
 			return 1
 		else
 			return 0 // this shouldn't ever happen. ever.
