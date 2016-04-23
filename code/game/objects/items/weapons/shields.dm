@@ -36,7 +36,7 @@
 
 /obj/item/weapon/shield/riot/hit_reaction(mob/living/carbon/human/owner, attack_text, final_block_chance, damage, attack_type)
 	if(attack_type == THROWN_PROJECTILE_ATTACK)
-		final_block_chance += 80 //This is to preserve the original thrown stuff block chance
+		final_block_chance += 50 //This is to preserve the original thrown stuff block chance
 		return ..()
 	else if(attack_type == PROJECTILE_ATTACK)
 		return ..()
