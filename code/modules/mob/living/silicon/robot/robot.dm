@@ -868,6 +868,10 @@
 	if(jetpackoverlay)
 		overlays += "minerjetpack"
 	update_fire()
+	if(stat == DEAD && icon_state == "mediborg+smile")
+		overlays += "dead-[icon_state]"
+	else if (stat != DEAD && icon_state == "mediborg+smile")
+		overlays -= "dead-[icon_state]"
 
 /mob/living/silicon/robot/proc/installed_modules()
 	if(!module)
