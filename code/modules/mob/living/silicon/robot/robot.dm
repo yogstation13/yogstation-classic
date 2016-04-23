@@ -847,6 +847,8 @@
 				overlays += "eyes-disposalbot"
 			if("minerborg")
 				overlays += "eyes-minerborg"
+			if("mediborg+smile")
+				overlays += "eyes-mediborg"
 			if("syndie_bloodhound")
 				overlays += "eyes-syndie_bloodhound"
 			else
