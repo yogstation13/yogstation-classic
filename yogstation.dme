@@ -641,6 +641,7 @@
 #include "code\game\objects\items\devices\radio\intercom.dm"
 #include "code\game\objects\items\devices\radio\radio.dm"
 #include "code\game\objects\items\medical\bandage.dm"
+#include "code\game\objects\items\medical\organ container.dm"
 #include "code\game\objects\items\medical\recipes_medical.dm"
 #include "code\game\objects\items\robot\robot_items.dm"
 #include "code\game\objects\items\robot\robot_parts.dm"
