@@ -1,0 +1,4 @@
+author: Cruix
+delete-after: True
+changes: 
+  - tgs: "Added tg's lich beam. Whenever a lich revives, there is a beam that leads from the old body to the new one for 15 seconds."
