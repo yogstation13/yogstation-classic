@@ -1642,7 +1642,7 @@
 "aFD" = (/obj/machinery/atmospherics/pipe/simple/scrubbers/hidden,/turf/simulated/floor/plasteel,/area/ai_monitored/storage/eva)
 "aFE" = (/obj/machinery/atmospherics/pipe/simple/supply/hidden,/turf/simulated/floor/plasteel,/area/ai_monitored/storage/eva)
 "aFF" = (/obj/item/stack/sheet/plasteel{amount = 10},/obj/structure/table,/turf/simulated/floor/plasteel{dir = 4; icon_state = "warning"},/area/ai_monitored/storage/eva)
-"aFG" = (/obj/machinery/suit_storage_unit/standard_unit,/turf/simulated/floor/plasteel{icon_state = "vault"; dir = 8},/area/ai_monitored/storage/eva)
+"aFG" = (/obj/machinery/suit_storage_unit/command,/turf/simulated/floor/plasteel{icon_state = "vault"; dir = 8},/area/ai_monitored/storage/eva)
 "aFH" = (/obj/machinery/door/firedoor/border_only,/turf/simulated/floor/plasteel{dir = 8; icon_state = "bluecorner"},/area/hallway/primary/fore)
 "aFI" = (/obj/machinery/door/firedoor/border_only,/turf/simulated/floor/plasteel,/area/hallway/primary/fore)
 "aFJ" = (/obj/machinery/door/firedoor/border_only,/turf/simulated/floor/plasteel{icon_state = "bluecorner"},/area/hallway/primary/fore)
