@@ -405,6 +405,7 @@ var/list/uplink_items = list()
 	The concussive effect from the explosion will knock the recipient out for a short period, and deafen them for longer. It has a chance to detonate your PDA."
 	item = /obj/item/weapon/cartridge/syndicate
 	cost = 4
+	excludefrom = list(/datum/game_mode/traitor/double_agents)
 
 /datum/uplink_item/stealthy_weapons/suppressor
 	name = "Universal Suppressor"
