@@ -57,10 +57,7 @@
 		return ..()
 
 /obj/item/weapon/shield/riot/roman/prop
-	name = "mock roman shield"
 	desc = "Made of cheap, lightweight plastic. Bears an inscription on the inside: <i>\"Romanes venio domus\"</i>."
-	icon_state = "roman_shield"
-	item_state = "roman_shield"
 	force = 3
 	throwforce = 3
 
