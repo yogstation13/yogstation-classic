@@ -200,7 +200,8 @@
 
 			var/mob/living/simple_animal/slime/new_slime = pick(babies)
 			new_slime.a_intent = "harm"
-			new_slime.languages = languages
+			new_slime.languages_understood = languages_understood
+			new_slime.languages_spoken = languages_spoken
 			if(src.mind)
 				src.mind.transfer_to(new_slime)
 			else

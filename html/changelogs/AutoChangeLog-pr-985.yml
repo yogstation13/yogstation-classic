@@ -1,0 +1,4 @@
+author: ToGWtF
+delete-after: True
+changes: 
+  - rscadd: "Randomizes the loot found in hidden wall areas of maintenance. Happy hunting!"

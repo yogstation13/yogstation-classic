@@ -63,7 +63,6 @@
 /obj/machinery/camera/emp_act(severity)
 	if(!isEmpProof())
 		if(prob(150/severity))
-			var/previous_icon_state = icon_state
 			icon_state = "[initial(icon_state)]emp"
 			var/list/previous_network = network
 			network = list()
@@ -77,7 +76,7 @@
 					triggerCameraAlarm() //camera alarm triggers even if multiple EMPs are in effect.
 					if(emped == thisemp) //Only fix it if the camera hasn't been EMP'd again
 						network = previous_network
-						icon_state = previous_icon_state
+						icon_state = (status ? initial(icon_state) : "[initial(icon_state)]1")
 						stat &= ~EMPED
 						if(can_use())
 							cameranet.addCamera(src)
@@ -241,11 +240,14 @@
 /obj/machinery/camera/proc/deactivate(mob/user, displaymessage = 1) //this should be called toggle() but doing a find and replace for this would be ass
 	status = !status
 	cameranet.updateChunk(x, y, z)
-	var/change_msg = "deactivates"
+	var/change_msg
 	if(!status)
-		icon_state = "[initial(icon_state)]1"
+		change_msg = "deactivates"
+		if(!emped)
+			icon_state = "[initial(icon_state)]1"
 	else
-		icon_state = initial(icon_state)
+		if(!emped)
+			icon_state = initial(icon_state)
 		change_msg = "reactivates"
 		triggerCameraAlarm()
 		spawn(100)

@@ -1,0 +1,7 @@
+author: Super3222
+delete-after: True
+changes: 
+  - rscadd: "Nanotrasen has upgraded their operating computers, allowing them to detect organs and implants inside of their patients. As long as those organs/implants are inside of the operating tables database."
+  - rscadd: "Nanotrasen has been able to fund a useful invention known as medical cubicles, which are able to store organs."
+  - rscadd: "Nanotrasen's new operating computers are able to scan the implants in implant cases and organs inside of cubicles to update the database."
+  - rscadd: "Nanotrasen has been provided a new manual from the United Earth Surgical Association, which explains surgical procedures for dummies."

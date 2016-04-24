@@ -1,0 +1,6 @@
+author: X-TheDark
+delete-after: True
+changes: 
+  - rscadd: "Powersink severely buffed. You can no longer hope to outproduce it's consumption ability. Powersink drains up to 8 MW per second (up from 0.6 MW) and it's capacity is increased from 100 to 400 MW."
+  - rscadd: "AI cries, Powernet dies. If you don't have the most basic power set up, you can kiss your power goodbye for the entire round, unless you find this thing."
+  - rscadd: "Careful maintenance of high-stage singularity (Stage 4 - the max containment size one) powered production will DRASTICALLY reduce the powersink lifetime, due to ridiculous amounts of energy it produces. Makes sure to plug it into the grid! And makes sure it doesn't grow any more."

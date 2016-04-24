@@ -15,7 +15,6 @@
 	var/speak_chance = 0
 	var/list/emote_hear = list()	//Hearable emotes
 	var/list/emote_see = list()		//Unlike speak_emote, the list of things in this variable only show by themselves with no spoken text. IE: Ian barks, Ian yaps
-	var/can_speak_human = 1
 	var/obj/item/weapon/storage/tactical_harness/harness = null
 	var/obj/item/device/radio/headset/headset
 
@@ -629,15 +628,6 @@
 				user << "<span class='warning'>\The [src] cannot wear that type of harness.</span>"
 		else
 			..()
-
-/mob/living/simple_animal/send_speech()
-	if(!can_speak_human)
-		var/old_langs = languages
-		languages &= ~HUMAN
-		. = ..()
-		languages = old_langs
-		return
-	return ..()
 
 /mob/living/simple_animal/unEquip(obj/item/W)
 	if(istype(W, /obj/item/weapon/storage/tactical_harness) && W == harness)

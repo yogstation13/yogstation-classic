@@ -1,0 +1,4 @@
+author: Nirnael
+delete-after: True
+changes: 
+  - bugfix: "Fix camera icons bugging out while emped."

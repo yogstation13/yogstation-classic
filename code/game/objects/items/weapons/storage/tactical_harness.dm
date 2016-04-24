@@ -432,7 +432,6 @@
 			failed_to_find_player = 0
 			animal << "<span class='notice'>You are a space [istype(animal, /mob/living/simple_animal/hostile/retaliate/dolphin) ? "dolphin" : "carp"] trained by the syndicate to assist their elite commando teams. Obey and assist your syndicate masters at all costs.</span>"
 			animal.faction += "syndicate"
-			animal.can_speak_human = 0
 		else
 			user << "<span class='warning'>\The [animal] refuses to cooperate, it looks like it won't be helping you on this mission. You can refund the harness by using it on your uplink.</span>"
 			failed_to_find_player = 1

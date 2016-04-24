@@ -123,7 +123,7 @@ var/list/allowed_custom_spans = list(SPAN_ROBOT,SPAN_YELL,SPAN_ITALICS,SPAN_SANS
 		var/curlang = HUMAN
 		if(istype(signal.data["mob"], /atom/movable))
 			var/atom/movable/M = signal.data["mob"]
-			curlang = M.languages
+			curlang = M.languages_spoken
 
 		interpreter.SetVar("$language", curlang)
 
@@ -334,7 +334,7 @@ var/const/SIGNAL_COOLDOWN = 20 // 2 seconds
 		var/atom/movable/virtualspeaker/virt = PoolOrNew(/atom/movable/virtualspeaker,null)
 		virt.name = source
 		virt.job = job
-		virt.languages = HUMAN
+		virt.languages_spoken = HUMAN
 		//END SAY REWRITE RELATED CODE.
 
 		newsign.data["mob"] = virt

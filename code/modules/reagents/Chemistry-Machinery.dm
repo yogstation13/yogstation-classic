@@ -1089,20 +1089,21 @@
 		if(istype(O, /obj/item/weapon/storage/bag))
 				var/obj/item/weapon/storage/bag/B = O
 
-				for (var/obj/item/weapon/reagent_containers/food/snacks/grown/G in B.contents)
-						B.remove_from_storage(G, src)
-						holdingitems += G
-						if(holdingitems && holdingitems.len >= limit) //Sanity checking so the blender doesn't overfill
-								user << "<span class='notice'>You fill the All-In-One grinder to the brim.</span>"
-								break
+				for (var/V in B.contents)
+						if(will_it_blend(V))
+								B.remove_from_storage(V, src)
+								holdingitems += V
+								if(holdingitems && holdingitems.len >= limit) //Sanity checking so the blender doesn't overfill
+										user << "<span class='notice'>You fill the All-In-One grinder to the brim.</span>"
+										break
 
 				if(!O.contents.len)
-						user << "<span class='notice'>You empty the plant bag into the All-In-One grinder.</span>"
+						user << "<span class='notice'>You empty the bag into the All-In-One grinder.</span>"
 
 				src.updateUsrDialog()
 				return 0
 
-		if (!is_type_in_list(O, blend_items) && !is_type_in_list(O, juice_items))
+		if (!will_it_blend(O))
 				user << "<span class='warning'>Cannot refine into a reagent!</span>"
 				return 1
 
@@ -1211,12 +1212,6 @@
 		holdingitems = list()
 		updateUsrDialog()
 
-/obj/machinery/reagentgrinder/proc/is_allowed(obj/item/weapon/reagent_containers/O)
-		for (var/i in blend_items)
-				if(istype(O, i))
-						return 1
-		return 0
-
 /obj/machinery/reagentgrinder/proc/get_allowed_by_id(obj/item/O)
 		for (var/i in blend_items)
 				if (istype(O, i))
@@ -1288,6 +1283,10 @@
 								break
 
 				remove_object(O)
+
+
+/obj/machinery/reagentgrinder/proc/will_it_blend(obj/O)
+	return is_type_in_list(O, blend_items) || is_type_in_list(O, juice_items)
 
 /obj/machinery/reagentgrinder/proc/grind()
 

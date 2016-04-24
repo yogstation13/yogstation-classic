@@ -17,7 +17,8 @@
 	maxHealth = 25
 	health = 25
 	a_intent = "harm"
-	languages = HUMAN|CARP
+	languages_understood = HUMAN|CARP
+	languages_spoken = HUMAN|CARP
 
 	environment_smash = 0
 	harm_intent_damage = 8

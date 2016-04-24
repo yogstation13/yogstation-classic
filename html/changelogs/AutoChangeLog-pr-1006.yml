@@ -1,0 +1,5 @@
+author: Super3222
+delete-after: True
+changes: 
+  - bugfix: "Choosing the smilescreen option for medical borgs will give you an animation."
+  - rscadd: "Smilescreen option will get a special deathoverlay."

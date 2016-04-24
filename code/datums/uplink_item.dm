@@ -405,6 +405,7 @@ var/list/uplink_items = list()
 	The concussive effect from the explosion will knock the recipient out for a short period, and deafen them for longer. It has a chance to detonate your PDA."
 	item = /obj/item/weapon/cartridge/syndicate
 	cost = 4
+	excludefrom = list(/datum/game_mode/traitor/double_agents)
 
 /datum/uplink_item/stealthy_weapons/suppressor
 	name = "Universal Suppressor"
@@ -444,6 +445,12 @@ var/list/uplink_items = list()
 	desc = "A jumpsuit used to imitate the uniforms of Nanotrasen crewmembers."
 	item = /obj/item/clothing/under/chameleon
 	cost = 2
+
+/datum/uplink_item/stealthy_tools/chameleon_pickgloves
+	name = "Chameleon Pickpocketing Gloves"
+	desc = "A pair of gloves that make pickpocketing silent, speeds up stripping/planting actions (33%) and allows extra pickpocketing options. Can camouflage as other types of gloves. Leaves very specific fibers that make it easy to tell these were used if found by detective."
+	item = /obj/item/clothing/gloves/pickpocket/chameleon
+	cost = 4
 
 /datum/uplink_item/stealthy_tools/chameleon_stamp
 	name = "Chameleon Stamp"
