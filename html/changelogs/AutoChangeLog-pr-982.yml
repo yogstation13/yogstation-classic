@@ -1,0 +1,4 @@
+author: Joan
+delete-after: True
+changes: 
+  - rscadd: "Removes EMP effect cap size. Ported from /tg/ by Adam El-Tablawy."
