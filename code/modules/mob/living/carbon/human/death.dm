@@ -9,7 +9,10 @@
 
 /mob/living/carbon/human/spawn_gibs()
 	if(dna)
-		hgibs(loc, viruses, dna)
+		if(dna.species.robotgibs)
+			robogibs(loc, viruses)
+		else
+			hgibs(loc, viruses, dna)
 	else
 		hgibs(loc, viruses, null)
 
