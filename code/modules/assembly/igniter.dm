@@ -17,8 +17,13 @@
 	if(!..())	return 0//Cooldown check
 	var/turf/location = get_turf(loc)
 	if(location)	location.hotspot_expose(1000,1000)
+	for(var/T in location.contents)
+		var/atom/A = T
+		A.fire_act()
+
 	sparks.start()
 	return 1
+	
 
 
 /obj/item/device/assembly/igniter/attack_self(mob/user)
