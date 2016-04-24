@@ -212,10 +212,10 @@ var/next_external_rsc = 0
 	if(holder)
 		admins += src
 		holder.owner = src
-	
+
 	//Need to load before we load preferences for correctly removing Ultra if user no longer whitelisted
 	is_whitelisted = is_job_whitelisted(src)
-	
+
 	//preferences datum - also holds some persistant data for the client (because we may as well keep these datums to a minimum)
 	prefs = preferences_datums[ckey]
 	if(!prefs)
@@ -234,7 +234,7 @@ var/next_external_rsc = 0
 
 	add_verbs_from_config()
 	set_client_age_from_db()
-	
+
 	if (isnum(player_age) && player_age == -1) //first connection
 		if (config.panic_bunker && !holder && !(ckey in deadmins))
 			log_access("Failed Login: [key] - New account attempting to connect during panic bunker")
@@ -279,6 +279,7 @@ var/next_external_rsc = 0
 		admin_memo_output("Show")
 		if((global.comms_key == "default_pwd" || length(global.comms_key) <= 6) && global.comms_allowed) //It's the default value or less than 6 characters long, but it somehow didn't disable comms.
 			src << "<span class='danger'>The server's API key is either too short or is the default value! Consider changing it immediately!</span>"
+		verbs += /client/verb/weightstats
 
 	send_resources()
 

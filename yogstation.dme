@@ -835,6 +835,7 @@
 #include "code\game\turfs\space\transit.dm"
 #include "code\game\verbs\ooc.dm"
 #include "code\game\verbs\suicide.dm"
+#include "code\game\verbs\weightinfo.dm"
 #include "code\game\verbs\who.dm"
 #include "code\js\byjax.dm"
 #include "code\js\menus.dm"
