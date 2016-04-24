@@ -363,8 +363,8 @@
 
 //EVA hardsuit
 /obj/item/clothing/head/helmet/space/hardsuit/eva/command
-	name = "command EVA hardsuit"
-	desc = "An improved EVA suit made for the commands of the station"
+	name = "command EVA hardsuit helmet"
+	desc = "An improved EVA helmet made for the heads of station"
 	icon_state = "hardsuit0-command"
 	item_state = "hardsuit0-command"
 	item_color = "command"
@@ -372,7 +372,7 @@
 
 /obj/item/clothing/suit/space/hardsuit/eva/command
 	name = "command EVA hardsuit"
-	desc = "An improved EVA suit made for the commands of the station"
+	desc = "An improved EVA suit made for the heads of station"
 	icon_state = "hardsuit-command"
 	item_state = "hardsuit-command"
 	helmettype = /obj/item/clothing/head/helmet/space/hardsuit/eva/command
