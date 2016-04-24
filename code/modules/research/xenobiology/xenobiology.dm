@@ -201,7 +201,8 @@
 		var/client/C = null
 		C = pick(consenting_candidates)
 		M.key = C.key
-		M.languages |= HUMAN
+		M.languages_understood |= HUMAN
+		M.languages_spoken |= HUMAN
 		M.faction -= "neutral"
 		M << "<span class='warning'>All at once it makes sense, you know what you are and who you are! Self awareness is yours!</span>"
 		M << "<span class='userdanger'>You are grateful to be self aware and owe [user] a great debt. Serve [user], and assist them in completing their goals at any cost.</span>"

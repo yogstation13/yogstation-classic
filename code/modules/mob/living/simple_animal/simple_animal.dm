@@ -15,7 +15,6 @@
 	var/speak_chance = 0
 	var/list/emote_hear = list()	//Hearable emotes
 	var/list/emote_see = list()		//Unlike speak_emote, the list of things in this variable only show by themselves with no spoken text. IE: Ian barks, Ian yaps
-	var/can_speak_human = 1
 
 	var/turns_per_move = 1
 	var/turns_since_move = 0
@@ -584,12 +583,3 @@
 		eat_snack(W, user)
 	else
 		return ..()
-
-/mob/living/simple_animal/send_speech()
-	if(!can_speak_human)
-		var/old_langs = languages
-		languages &= ~HUMAN
-		. = ..()
-		languages = old_langs
-		return
-	return ..()

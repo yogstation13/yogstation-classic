@@ -1,5 +1,6 @@
 /mob/living/carbon/human
-	languages = HUMAN
+	languages_understood = HUMAN
+	languages_spoken = HUMAN
 	hud_possible = list(HEALTH_HUD,STATUS_HUD,ID_HUD,WANTED_HUD,IMPLOYAL_HUD,IMPCHEM_HUD,IMPTRACK_HUD,ANTAG_HUD,CYBERMEN_HACK_HUD)
 	//Hair colour and style
 	var/hair_color = "000"
