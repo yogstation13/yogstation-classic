@@ -313,8 +313,11 @@
 			playsound(pda.loc, 'sound/machines/twobeep.ogg', 50, 1)
 			pda.audible_message("\icon[pda] [msg]", null, 3)
 
-/obj/item/weapon/cartridge/proc/cancelAlarm(class, area/A, obj/origin)
+/obj/item/weapon/cartridge/proc/cancelAlarm(class, area/A, obj/alarmsource)
 	var/msg
+	var/turf/myTurf = get_turf(src)
+	if(!alarmsource || !myTurf || (alarmsource.z != myTurf.z))
+		return
 	switch(class)
 		if("Atmosphere")
 			if(!(alert_flags & PDA_ATMOS_ALERT))
@@ -717,6 +720,13 @@ Code:
 						menu = "<FONT class='bad'>[atmosmonitor.sensors[id_tag]] can not be found!</FONT><BR>"
 
 		if(51)//alerts monitoring
+			var/turf/myTurf = get_turf(src)
+			for(var/alert in atmos_alerts|fire_alerts|power_alerts)
+				var/area/a = alert
+				if(a.z != myTurf.z)
+					atmos_alerts -= a
+					fire_alerts -= a
+					power_alerts -= a
 			menu = "<h4><img src=pda_signaler.png> Active Alerts</h4><BR>"
 			if(alert_flags & PDA_ATMOS_ALERT)
 				menu += "<b>Atmosphere Alerts:</b><ul>"
