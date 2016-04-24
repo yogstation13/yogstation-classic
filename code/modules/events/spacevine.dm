@@ -6,16 +6,21 @@
 
 /datum/round_event/spacevine/start()
 	var/list/turfs = list() //list of all the empty floor turfs in the hallway areas
+	var/obj/effect/spacevine/SV = new(null)
 
 	for(var/area/hallway/A in world)
 		for(var/turf/simulated/F in A)
-			if(!F.density && !F.contents.len)
+			if(F.Enter(SV))
 				turfs += F
+
+	qdel(SV)
 
 	if(turfs.len) //Pick a turf to spawn at if we can
 		var/turf/simulated/T = pick(turfs)
-		spawn(0)	new/obj/effect/spacevine_controller(T) //spawn a controller at turf
-
+		new/obj/effect/spacevine_controller(T) //spawn a controller at turf
+		var/message = "Spacewine has been spawned at <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>[T.loc]</a>."
+		message_admins(message)
+		log_game(message)
 
 /datum/spacevine_mutation
 	var/name = ""
@@ -302,7 +307,7 @@
 	icon_state = "Light1"
 	anchored = 1
 	density = 0
-	layer = 5
+	layer = MOB_LAYER + 1
 	mouse_opacity = 2 //Clicking anywhere on the turf is good enough
 	pass_flags = PASSTABLE | PASSGRILLE
 	var/energy = 0
