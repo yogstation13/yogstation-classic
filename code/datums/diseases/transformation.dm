@@ -114,10 +114,11 @@
 			if(prob(3))
 				affected_mob.say(pick("Eeek, ook ook!", "Eee-eeek!", "Eeee!", "Ungh, ungh."))
 
+/* in case someone cries and wants it cured
 /datum/disease/transformation/jungle_fever/cure()
 	ticker.mode.remove_monkey(affected_mob.mind)
 	..()
-
+*/
 
 /datum/disease/transformation/rage_virus
 	name = "Rage Virus"
@@ -166,10 +167,11 @@
 		if(4)
 			if(prob(3))
 				affected_mob.say(pick("Uuuuuurrrr!", "URRrrr!", "UUhhhhhhhhhhhh!", "UUUuurrrrrrhhhhhhhhhhhhh."))
-
+/* in case someone cries and wants it cured
 /datum/disease/transformation/rage_virus/cure()
 	ticker.mode.remove_zombie(affected_mob.mind)
 	..()
+*/
 
 /datum/disease/transformation/robot
 
