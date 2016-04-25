@@ -20,7 +20,7 @@
 	var/sheet_per_ore = 1
 	var/point_upgrade = 1
 	var/list/ore_values = list(("sand" = 1), ("iron" = 1), ("gold" = 20), ("silver" = 20), ("uranium" = 20), ("bananium" = 30), ("diamond" = 40), ("plasma" = 40), ("coal" = 40), ("copper" = 40),
-	("clarenkite" = 40), ("electrite" = 40), ("platnium" = 40))
+	("clarenkite" = 40), ("electrite" = 40), ("platinum" = 40) ("adamantine" = 40)
 
 /obj/machinery/mineral/ore_redemption/New()
 	..()

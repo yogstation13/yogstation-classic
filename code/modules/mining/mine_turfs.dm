@@ -91,7 +91,7 @@ var/global/list/rockTurfEdgeCache
 		"Uranium" = 5, "Diamond" = 1, "Gold" = 10,
 		"Silver" = 12, "Plasma" = 20, "Iron" = 40,
 		"Gibtonite" = 4, "Cave" = 2, "BScrystal" = 1,
-		, "Adamantine" = 5 , "Copper" = 15, "Clarenkite" = 15, "Mythril" = 15, "Platnium" = 15, "Electricite" = 15, "Telecrystal" = 15, "Coal" = 15, "Nightstone" = 15)
+		, "Adamantine" = 5 , "Copper" = 15, "Clarenkite" = 15, "Mythril" = 15, "Platinum" = 15, "Electricite" = 15, "Telecrystal" = 15, "Coal" = 15, "Nightstone" = 15)
 		//Currently, Adamantine won't spawn as it has no uses. -Durandan
 	var/mineralChance = 13
 
@@ -132,7 +132,7 @@ var/global/list/rockTurfEdgeCache
 				if ("Clarenkite")
 					M = new/turf/simulated/mineral/clarenkite(src)
 				if ("Platnium")
-					M = new/turf/simulated/mineral/platnium(src)
+					M = new/turf/simulated/mineral/platinum(src)
 				if ("Electricite")
 					M = new/turf/simulated/mineral/electrite(src)
 				if ("Telecrystal")
@@ -152,7 +152,7 @@ var/global/list/rockTurfEdgeCache
 	mineralSpawnChanceList = list(
 		"Uranium" = 35, "Diamond" = 30,
 		"Gold" = 45, "Silver" = 50, "Plasma" = 50,
-		"BScrystal" = 20, "Mythril" = 35, "Copper" = 50, "Adamantine" = 35, "Clarenkite" = 50, "Platnium" = 50, "Electricite" = 50, "Telecrystal" = 50, "Coal" = 50, "Nightstone" = 50)
+		"BScrystal" = 20, "Mythril" = 35, "Copper" = 50, "Adamantine" = 35, "Clarenkite" = 50, "Platinum" = 50, "Electricite" = 50, "Telecrystal" = 50, "Coal" = 50, "Nightstone" = 50)
 
 /turf/simulated/mineral/random/high_chance/New()
 	icon_state = "rock"
@@ -164,7 +164,7 @@ var/global/list/rockTurfEdgeCache
 	mineralSpawnChanceList = list(
 		"Uranium" = 2, "Diamond" = 1, "Gold" = 4,
 		"Silver" = 6, "Plasma" = 15, "Iron" = 40,
-		"Gibtonite" = 2, "BScrystal" = 1, "Mythril" = 5, "Copper" = 10, "Adamantine" = 5, "Clarenkite" = 10, "Platnium" = 50, "Electricite" = 50, "Telecrystal" = 50, "Coal" = 50, "Nightstone" = 50)
+		"Gibtonite" = 2, "BScrystal" = 1, "Mythril" = 5, "Copper" = 10, "Adamantine" = 5, "Clarenkite" = 10, "Platinum" = 50, "Electricite" = 50, "Telecrystal" = 50, "Coal" = 50, "Nightstone" = 50)
 
 /turf/simulated/mineral/random/low_chance/New()
 	icon_state = "rock"
@@ -298,15 +298,15 @@ var/global/list/rockTurfEdgeCache
 	hidden = 1
 	scan_state = "rock_Electricite"
 
-/turf/simulated/mineral/platnium
-	name = "platnium deposit"
-	icon_state = "rock_Platnium"
-	mineralType = /obj/item/weapon/ore/platnium
+/turf/simulated/mineral/platinum
+	name = "platinum deposit"
+	icon_state = "rock_Platinum"
+	mineralType = /obj/item/weapon/ore/platinum
 	mineralAmt = 1
 	spreadChance = 5
 	spread = 1
 	hidden = 1
-	scan_state = "rock_Platnium"
+	scan_state = "rock_Platinum"
 
 /turf/simulated/mineral/telecrystal
 	name = "telecrystal deposit"

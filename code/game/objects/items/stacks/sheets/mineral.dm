@@ -9,7 +9,7 @@ Mineral Sheets
 		- Silver
 		- Clown
 		- Coal
-		- Platnium
+		- Platinum
 		- Electrite
 		- Copper
 		- Clarenkite
@@ -251,17 +251,20 @@ var/global/list/datum/stack_recipe/clown_recipes = list ( \
 	throw_speed = 1
 	throw_range = 3
 	origin_tech = "materials=4"
+	sheettype = "coal"
 
-/obj/item/stack/sheet/mineral/platnium
-	name = "platnium"
-	icon_state = "sheet-platnium"
-	singular_name = "platnium bar"
+
+/obj/item/stack/sheet/mineral/platinum
+	name = "platinum"
+	icon_state = "sheet-platinum"
+	singular_name = "platinum bar"
 	force = 5.0
 	throwforce = 5
 	w_class = 3.0
 	throw_speed = 1
 	throw_range = 3
 	origin_tech = "materials=4"
+	sheettype = "platinum"
 
 
 /obj/item/stack/sheet/mineral/electrite
@@ -274,6 +277,7 @@ var/global/list/datum/stack_recipe/clown_recipes = list ( \
 	throw_speed = 1
 	throw_range = 3
 	origin_tech = "materials=4"
+	sheettype = "electrite"
 
 /obj/item/stack/sheet/mineral/copper
 	name = "copper"
@@ -285,6 +289,7 @@ var/global/list/datum/stack_recipe/clown_recipes = list ( \
 	throw_speed = 1
 	throw_range = 3
 	origin_tech = "materials=4"
+	sheettype = "copper"
 
 /obj/item/stack/sheet/mineral/clarenkite
 	name = "clarenkite"
@@ -296,6 +301,7 @@ var/global/list/datum/stack_recipe/clown_recipes = list ( \
 	throw_speed = 1
 	throw_range = 3
 	origin_tech = "materials=4"
+	sheettype = "clarenkite"
 
 
 
