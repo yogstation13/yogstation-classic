@@ -34,6 +34,8 @@
 				affected_mob << pick(stage4)
 		if(5)
 			do_disease_transformation(affected_mob)
+			cure_chance = 0
+			stage_prob = 0
 
 /datum/disease/transformation/proc/do_disease_transformation(mob/living/affected_mob)
 	if(istype(affected_mob, /mob/living/carbon) && affected_mob.stat != DEAD)
@@ -113,8 +115,6 @@
 				affected_mob.say(pick("Eeek, ook ook!", "Eee-eeek!", "Eeee!", "Ungh, ungh."))
 
 /datum/disease/transformation/jungle_fever/cure()
-	if(stage == 5)
-		return
 	ticker.mode.remove_monkey(affected_mob.mind)
 	..()
 
@@ -168,8 +168,6 @@
 				affected_mob.say(pick("Uuuuuurrrr!", "URRrrr!", "UUhhhhhhhhhhhh!", "UUUuurrrrrrhhhhhhhhhhhhh."))
 
 /datum/disease/transformation/rage_virus/cure()
-	if(stage == 5)
-		return
 	ticker.mode.remove_zombie(affected_mob.mind)
 	..()
 
