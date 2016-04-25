@@ -35,7 +35,6 @@
 		if(5)
 			do_disease_transformation(affected_mob)
 			cure_chance = 0
-			stage_prob = 0
 
 /datum/disease/transformation/proc/do_disease_transformation(mob/living/affected_mob)
 	if(istype(affected_mob, /mob/living/carbon) && affected_mob.stat != DEAD)
