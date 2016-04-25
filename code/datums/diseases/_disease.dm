@@ -61,7 +61,6 @@ var/list/diseases = typesof(/datum/disease) - /datum/disease
 	var/permeability_mod = 1
 	var/severity =	NONTHREAT
 	var/list/required_organs = list()
-	var/hinderInfection = 0 //lowers infectivity if on spaceacillin
 
 	var/list/strain_data = list() //dna_spread special bullshit
 
@@ -101,6 +100,10 @@ var/list/diseases = typesof(/datum/disease) - /datum/disease
 	if((spread_flags & SPECIAL || spread_flags & NON_CONTAGIOUS || spread_flags & BLOOD) && !force_spread)
 		return
 
+	if(affected_mob)
+ 		if( affected_mob.reagents.has_reagent("spaceacillin") || (affected_mob.satiety > 0 && prob(affected_mob.satiety/10)) )
+ 			return
+ 
 	var/spread_range = 1
 
 	if(force_spread)
@@ -114,7 +117,8 @@ var/list/diseases = typesof(/datum/disease) - /datum/disease
 			source = affected_mob
 		else
 			return
-	else if(isturf(source.loc))
+
+	if(isturf(source.loc))
 		for(var/mob/living/carbon/C in oview(spread_range, source))
 			if(isturf(C.loc))
 				if(AStar(source.loc, C.loc, null, /turf/proc/Distance, spread_range))
@@ -126,13 +130,10 @@ var/list/diseases = typesof(/datum/disease) - /datum/disease
 		SSdisease.processing -= src
 		return
 
-	if(affected_mob)
-		if(!hinderInfection && affected_mob.reagents.has_reagent("spaceacillin"))
-			infectivity = round(infectivity/3) //makes you actually have to quarantine people and not just ignore it
-			hinderInfection = 1
-		if(prob(infectivity))
-			spread(holder)
+	if(prob(infectivity))
+		spread(holder)
 
+	if(affected_mob)
 		for(var/datum/disease/D in affected_mob.viruses)
 			if(D != src)
 				if(IsSame(D))
