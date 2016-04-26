@@ -9,6 +9,9 @@
 	var/held_icon_state = "2"
 	var/speed = 2
 
+/obj/effect/proc_holder/spell/thrown/proc/post_summon_holder(var/obj/item/cast_holder/CH)
+	return
+
 /obj/effect/proc_holder/spell/thrown/choose_targets()
 	if(!iscarbon(usr)) return
 	var/mob/living/carbon/C = usr
@@ -25,6 +28,7 @@
 	held.icon_state = held_icon_state
 	held.name = name
 	held.desc = desc
+	post_summon_holder(held)
 	C.throw_mode_on() // So we're instantly ready to cast.
 	return
 
@@ -78,6 +82,10 @@
 		var/turf/T = get_turf(target)
 		var/obj/effect/fire_ball/F = new(get_turf(usr))
 		F.cast_at(T)
+
+/obj/effect/proc_holder/spell/thrown/fireball/post_summon_holder(var/obj/item/cast_holder/CH)
+	CH.force = 15
+	CH.damtype = "fire"
 
 /obj/effect/fire_ball
 	name = "Fireball"
