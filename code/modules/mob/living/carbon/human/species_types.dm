@@ -55,6 +55,7 @@
 	id = "manfly"
 	say_mod = "buzzes"
 	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/fly
+	use_skintones = 0
 
 /datum/species/human/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
 	if(chem.id == "pestkiller")
@@ -62,7 +63,7 @@
 		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
 		return 1
 
-/datum/species/fly/manfly/handle_speech(message)
+/datum/species/human/fly/handle_speech(message)
 	return replacetext(message, "z", stutter("zz"))
 
 //Curiosity killed the cat's wagging tail.
