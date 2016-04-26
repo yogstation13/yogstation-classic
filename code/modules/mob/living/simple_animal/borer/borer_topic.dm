@@ -1,5 +1,45 @@
 
 /mob/living/simple_animal/borer/Topic(href, href_list, hsrc)
+	if(href_list["borer_refresh"])
+		src.show_panel()
+	if(href_list["borer_evolve"])
+		if(src.stat != CONSCIOUS)
+			return
+
+		var/evolution_name = href_list["borer_evolve"]
+
+		var/datum/borer_tech/evolution = null
+
+		for(var/datum/borer_tech/tech in borer_tech_tree.techs)
+			if(tech.tech_name == evolution_name)
+				evolution = tech
+				break
+
+		if(!evolution)
+			return
+
+		var/evolve_quantity = input(usr, "How many chemicals to donate?.", "How many?") as num|null
+		if(!evolve_quantity)
+			return
+
+		if(!src || src.stat != CONSCIOUS)
+			return
+
+
+
+		evolve_quantity = min(evolution.chemicals_required_for_research - evolution.current_chemicals, evolve_quantity)
+		if(src.chemicals < evolve_quantity)
+			src << "<span class='warning'>You dont have [evolve_quantity] chemicals.</span>"
+			return
+
+		evolution.current_chemicals += evolve_quantity
+		src.chemicals -= evolve_quantity
+
+		if(evolution.current_chemicals >= evolution.chemicals_required_for_research)
+			evolution.evolveBorers()
+
+		src.show_panel()
+
 	if(href_list["borer_use_chem"])
 		var/mob/living/simple_animal/borer/B = locate(href_list["_src_"])
 		if(!istype(B, /mob/living/simple_animal/borer))

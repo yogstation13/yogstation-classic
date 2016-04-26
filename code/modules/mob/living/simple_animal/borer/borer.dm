@@ -35,12 +35,13 @@ var/total_borer_hosts_needed = 10
 	var/dominate_cooldown = 150
 	var/control_cooldown = 3000
 	var/leaving = 0
+	var/recharge_rate = 1
 
 
 /mob/living/simple_animal/borer/New()
 	..()
 	name = "[pick("Primary","Secondary","Tertiary","Quaternary")] Borer ([rand(100,999)])"
-	borer_chems += /datum/borer_chem/mannitol
+	/*borer_chems += /datum/borer_chem/mannitol
 	borer_chems += /datum/borer_chem/bicaridine
 	borer_chems += /datum/borer_chem/kelotane
 	borer_chems += /datum/borer_chem/charcoal
@@ -50,7 +51,7 @@ var/total_borer_hosts_needed = 10
 	borer_chems += /datum/borer_chem/spacedrugs
 	borer_chems += /datum/borer_chem/mutadone
 	borer_chems += /datum/borer_chem/creagent
-	borer_chems += /datum/borer_chem/ethanol
+	borer_chems += /datum/borer_chem/ethanol*/
 
 	borers += src
 
@@ -69,6 +70,9 @@ var/total_borer_hosts_needed = 10
 		stat(null, "Chemicals: [chemicals]")
 		if(victim)
 			stat(null, "Influence: [influence]%")
+			stat(null, "Host Brute Damage: [victim.bruteloss]")
+			stat(null, "Host Burn Damage: [victim.fireloss]")
+			stat(null, "Host Toxin Damage: [victim.toxloss]")
 
 	src << output(chemicals, "ViewBorer\ref[src]Chems.browser:update_chemicals")
 	src << output(influence, "ViewBorer\ref[src]Chems.browser:update_influence")
@@ -90,7 +94,7 @@ var/total_borer_hosts_needed = 10
 
 		if(stat != UNCONSCIOUS && victim.stat != UNCONSCIOUS)
 			if(chemicals < 250)
-				chemicals++
+				chemicals+=recharge_rate
 			if(influence < 100)
 				influence += 0.5
 				if(influence == 100)
@@ -206,6 +210,7 @@ var/total_borer_hosts_needed = 10
 	var/datum/mind/M = create_borer_mind(candidate.ckey)
 	M.transfer_to(src)
 
+	src.ckey = candidate.ckey
 	candidate.mob = src
 
 	if(src.mind)

@@ -68,9 +68,8 @@
 
 	content += "<table>"
 
-	for(var/datum in typesof(/datum/borer_chem))
-		var/datum/borer_chem/C = new datum()
-		if(C.chemname && C.needed_influence < influence)
+	for(var/datum/borer_chem/C in borer_chems)
+		if(C.chemname && C.needed_influence <= influence)
 			content += "<tr><td><a class='chem-select' href='?_src_=\ref[src];src=\ref[src];borer_use_chem=[C.chemname]'>[C.chemname] ([C.chemuse])</a><p>[C.chem_desc]</p></td></tr>"
 
 	content += "</table>"
@@ -411,3 +410,93 @@ mob/living/carbon/proc/release_control()
 	else
 		src << "<span class='warning'>You do not have enough chemicals stored to reproduce.</span>"
 		return
+
+/mob/living/simple_animal/borer/verb/evolve()
+	set category = "Borer"
+	set name = "Evolve"
+	set desc = "Work together with other borers to evolve new traits"
+
+	if(stat != CONSCIOUS)
+		src << "<span class='warning'>You cannot evolve in your current state.</span>"
+
+	if(docile)
+		src << "<span class='warning'>You are feeling far too docile to do that.</span>"
+		return
+
+	show_panel()
+	return
+
+/mob/living/simple_animal/borer/proc/show_panel()
+	var/box_css = {"
+	<style>
+	borertech {
+		width: 600px;
+		text-align: center;
+		padding: 2px 2px 2px 2px;
+		margin: 2px 2px 2px 2px;
+		display: inline-block;
+	}
+	td {
+		width: 600px;
+		border: solid 1px #000;
+	}
+
+	table {
+		width: 600px;
+	}
+	</style>"}
+	var/dat = ""
+	var/list/datum/borer_tech/available_tech = list()
+	var/list/datum/borer_tech/researched_tech = list()
+	var/list/datum/borer_tech/unavailable_tech = list()
+
+	for(var/datum/borer_tech/tech in borer_tech_tree.techs)
+		if(tech.chemicals_required_for_research <= tech.current_chemicals)
+			researched_tech += tech
+			continue
+
+	for(var/datum/borer_tech/tech in borer_tech_tree.techs)
+		if(tech.chemicals_required_for_research <= tech.current_chemicals)
+			continue
+
+		if(tech.required_research.len)
+			var/has_research = 0
+			for(var/datum/borer_tech/required in tech.required_research)
+				for(var/datum/borer_tech/researched in researched_tech)
+					if(researched.tech_name == required.tech_name)
+						has_research += 1
+			if(has_research >= tech.required_research.len)
+				available_tech += tech
+			else
+				unavailable_tech += tech
+		else
+			available_tech += tech
+
+	dat+="<a class='borertech' href='?src=\ref[src];borer_refresh=1'>Refresh</a>"
+
+	dat+="<h1 id='header'>Available Evolutions</h1>"
+
+	dat += "<table>"
+	for(var/datum/borer_tech/tech in available_tech)
+		dat+="<tr><td><a class='borertech' href='?src=\ref[src];borer_evolve=[tech.tech_name]'>[tech.tech_name] <b>[tech.chemicals_required_for_research]/[tech.current_chemicals]</b></a><p>[tech.desc]</p></td></tr>"
+	dat += "</table>"
+
+	dat+="<h1 id='header'>Unavailable Evolutions</h1>"
+
+	dat += "<table>"
+	for(var/datum/borer_tech/tech in unavailable_tech)
+		dat+="<tr><td><a class='borertech' style='background-color:#696969'>[tech.tech_name] <b>[tech.chemicals_required_for_research]/[tech.current_chemicals]</b></a><p>[tech.desc]</p></td></tr>"
+	dat += "</table>"
+
+	dat+="<h1 id='header'>Evolved Evolutions</h1>"
+
+	dat += "<table>"
+	for(var/datum/borer_tech/tech in researched_tech)
+		dat+="<tr><td><a class='borertech' style='background-color:#006600'>[tech.tech_name] <b>[tech.chemicals_required_for_research]/[tech.current_chemicals]</b></a><p>[tech.desc]</p></td></tr>"
+	dat += "</table>"
+
+	var/datum/browser/popup = new(src, "bevolution", "Evolution Menu", 650, 650)
+	popup.add_head_content(box_css)
+	popup.set_content(dat)
+	popup.set_title_image(src.browse_rsc_icon(src.icon, src.icon_state))
+	popup.open()
