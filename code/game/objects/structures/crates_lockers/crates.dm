@@ -44,6 +44,17 @@
 	icon_crate = "medicalcrate"
 	icon_state = "medicalcrate"
 
+/obj/structure/closet/crate/surgery_table
+	desc = "Surgery table supply crate"
+	name = "surgery table crate"
+	icon_crate = "medicalcrate"
+	icon_state = "medicalcrate"
+
+/obj/structure/closet/crate/surgery_table/New()
+	.. ()
+	var/obj/structure/optable/O = new /obj/structure/optable(src)
+	O.anchored = 0
+
 /obj/structure/closet/crate/rcd
 	desc = "A crate for the storage of an RCD."
 	name = "\improper RCD crate"

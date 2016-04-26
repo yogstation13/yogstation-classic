@@ -731,6 +731,11 @@ var/list/all_supply_groups = list(supply_emergency,supply_security,supply_engine
 	containertype = /obj/structure/closet/crate/medical
 	containername = "surgery crate"
 
+/datum/supply_packs/medical/surgery_table
+	name = "Surgery Table Crate"
+	cost = 40
+	containertype = /obj/structure/closet/crate/surgery_table
+	containername = "surgery table crate"
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////// Science /////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
