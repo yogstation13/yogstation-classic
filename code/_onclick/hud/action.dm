@@ -240,6 +240,14 @@ var/list/modifiers = params2list(params)
 	check_flags = 0
 	background_icon_state = "bg_spell"
 
+/datum/action/spell_action/Trigger()
+ 	if(!..())
+ 		return 0
+ 	if(target)
+ 		var/obj/effect/proc_holder/spell = target
+ 		spell.Click()
+ 		return 1
+
 /datum/action/spell_action/UpdateName()
 	var/obj/effect/proc_holder/spell/spell = target
 	return spell.name
@@ -261,3 +269,66 @@ var/list/modifiers = params2list(params)
 		if(target in owner.mind.spell_list)
 			return 0
 	return !(target in owner.mob_spell_list)
+
+//Preset for general and toggled actions
+ /datum/action/innate
+ 	check_flags = 0
+ 	var/active = 0
+ 
+ /datum/action/innate/Trigger()
+ 	if(!..())
+ 		return 0
+ 	if(!active)
+ 		Activate()
+ 	else
+ 		Deactivate()
+ 	return 1
+
+ /datum/action/innate/proc/Activate()
+ 	return
+ 
+ /datum/action/innate/proc/Deactivate()
+ 	return
+ 
+ //Preset for action that call specific procs (consider innate)
+ /datum/action/generic
+ 	check_flags = 0
+ 	var/procname
+ 
+ /datum/action/generic/Trigger()
+ 	if(!..())
+ 		return 0
+ 	if(target && procname)
+ 		call(target,procname)(usr)
+ 	return 1
+ 
+ //Action button controlling a mob's research examine ability.
+ /datum/action/innate/scan_mode
+ 	name = "Toggle Research Scanner"
+  	button_icon_state = "scan_mode"
+  	check_flags = AB_CHECK_RESTRAINED|AB_CHECK_STUNNED|AB_CHECK_ALIVE
+ 	action_type = AB_INNATE
+  	var/devices = 0 //How may enabled scanners the mob has
+
+ /datum/action/innate/scan_mode/Activate()
+  	active = 1
+  	owner.research_scanner = 1
+  	owner << "<span class='notice'> Research analyzer is now active.</span>"
+  
+ /datum/action/innate/scan_mode/Deactivate()
+  	active = 0
+  	owner.research_scanner = 0
+  	owner << "<span class='notice'> Research analyzer deactivated.</span>"
+ 
+ /datum/action/innate/scan_mode/Grant(mob/living/T)
+  	devices += 1
+  	..(T)
+  
+ +/datum/action/innate/scan_mode/CheckRemoval(mob/living/user)
+  	if(devices)
+  		return 0
+  	return 1
+ 
+ +/datum/action/innate/scan_mode/Remove(mob/living/T)
+  	owner.research_scanner = 0
+  	..(T) 
