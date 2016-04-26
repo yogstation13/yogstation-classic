@@ -733,6 +733,7 @@ var/list/all_supply_groups = list(supply_emergency,supply_security,supply_engine
 
 /datum/supply_packs/medical/surgery_table
 	name = "Surgery Table Crate"
+	contains = list(/obj/item/weapon/circuitboard/operating)
 	cost = 40
 	containertype = /obj/structure/closet/crate/surgery_table
 	containername = "surgery table crate"
