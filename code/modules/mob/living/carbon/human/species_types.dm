@@ -49,6 +49,22 @@
 		H.faction |= "slime"
 		return 1
 
+/datum/species/human/fly
+	// Humans turned into fly-like abominations in teleporter accidents.
+	name = "Manfly"
+	id = "manfly"
+	say_mod = "buzzes"
+	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/fly
+
+/datum/species/human/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
+	if(chem.id == "pestkiller")
+		H.adjustToxLoss(3)
+		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
+		return 1
+
+/datum/species/fly/manfly/handle_speech(message)
+	return replacetext(message, "z", stutter("zz"))
+
 //Curiosity killed the cat's wagging tail.
 datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	if(H)
@@ -103,7 +119,24 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	if(copytext(message, 1, 2) != "*")
 		message = replacetextEx(message, "s", "sss")
 		message = replacetextEx(message, "S", "SSS")
+
 	return message
+
+/datum/species/lizard/fly
+	// Humans turned into fly-like abominations in teleporter accidents.
+	name = "Unafly"
+	id = "unafly"
+	say_mod = "buzzes"
+	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/fly
+
+/datum/species/lizard/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
+	if(chem.id == "pestkiller")
+		H.adjustToxLoss(3)
+		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
+		return 1
+
+/datum/species/lizard/fly/handle_speech(message)
+	return replacetext(message, "z", stutter("zz"))
 
 //I wag in death
 /datum/species/lizard/spec_death(gibbed, mob/living/carbon/human/H)
@@ -164,6 +197,22 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 			var/obj/item/clothing/glasses/G = H.glasses
 			H.see_in_dark = G.darkness_view
 			H.see_invisible = SEE_INVISIBLE_LIVING
+
+/datum/species/android/fly
+	// Humans turned into fly-like abominations in teleporter accidents.
+	name = "Flyternis"
+	id = "flyternis"
+	say_mod = "buzzes"
+	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/fly
+
+/datum/species/android/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
+	if(chem.id == "pestkiller")
+		H.adjustToxLoss(3)
+		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
+		return 1
+
+/datum/species/android/fly/handle_speech(message)
+	return replacetext(message, "z", stutter("zz"))
 
 /datum/species/android/before_equip_job(datum/job/J, mob/living/carbon/human/H)
 	H << "<span class='info'><b>You are a Preternis.</b> Half-human, half-silicon, you lie in the nebulous between of the two lifeforms, neither one, nor the other.</span>"
@@ -300,6 +349,23 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 			if (prob(5))
 				H << "<span class='userdanger'>Your internal stores of light are depleted. Find a source to replenish your nourishment at once!</span>"
 			H.take_overall_damage(2,0)
+
+/datum/species/plant/fly
+	// Humans turned into fly-like abominations in teleporter accidents.
+	name = "Flytosian"
+	id = "flytosian"
+	say_mod = "buzzes"
+	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/fly
+
+/datum/species/plant/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
+	if(chem.id == "pestkiller")
+		H.adjustToxLoss(3)
+		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
+		return 1
+
+/datum/species/plant/fly/handle_speech(message)
+	return replacetext(message, "z", stutter("zz"))
+
 /*
  PODPEOPLE
 */
@@ -578,80 +644,9 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	id = "adamantine"
 	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/golem/adamantine
 
-/*
- FLIES
-*/
+//FLY
+/* This has been moved to Human, Phytosian, Unathi and Preternis */
 
-//MAN FLY
-
-/datum/species/fly/manfly
-	// Humans turned into fly-like abominations in teleporter accidents.
-	name = "Manfly"
-	id = "manfly"
-	say_mod = "buzzes"
-	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/fly
-
-/datum/species/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
-	if(chem.id == "pestkiller")
-		H.adjustToxLoss(3)
-		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
-		return 1
-
-/datum/species/fly/manfly/handle_speech(message)
-	return replacetext(message, "z", stutter("zz"))
-
-//FLYTOSIAN
-
-/datum/species/fly/flytosian
-	// Humans turned into fly-like abominations in teleporter accidents.
-	name = "Flytosian"
-	id = "flytosian"
-	say_mod = "buzzes"
-	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/fly
-
-/datum/species/fly/flytosian/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
-	if(chem.id == "pestkiller")
-		H.adjustToxLoss(3)
-		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
-		return 1
-
-/datum/species/fly/flytosian/handle_speech(message)
-	return replacetext(message, "z", stutter("zz"))
-
-//FLYTURNIS
-
-/datum/species/fly/flyturnis
-	// Humans turned into fly-like abominations in teleporter accidents.
-	name = "Flyturnis"
-	id = "flyturnis"
-	say_mod = "buzzes"
-	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/fly
-
-/datum/species/fly/flyturnis/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
-	if(chem.id == "pestkiller")
-		H.adjustToxLoss(3)
-		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
-		return 1
-
-/datum/species/fly/flyturnis/handle_speech(message)
-	return replacetext(message, "z", stutter("zz"))
-
-//UNAFLY
-/datum/species/fly/unafly
-	// Humans turned into fly-like abominations in teleporter accidents.
-	name = "Unafly"
-	id = "unafly"
-	say_mod = "buzzes"
-	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/fly
-
-/datum/species/fly/unafly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
-	if(chem.id == "pestkiller")
-		H.adjustToxLoss(3)
-		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
-		return 1
-
-/datum/species/fly/unafly/handle_speech(message)
-	return replacetext(message, "z", stutter("zz"))
 
 /*
  SKELETONS
