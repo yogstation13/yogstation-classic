@@ -582,10 +582,12 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
  FLIES
 */
 
-/datum/species/fly
+//MAN FLY
+
+/datum/species/fly/manfly
 	// Humans turned into fly-like abominations in teleporter accidents.
-	name = "Human?"
-	id = "fly"
+	name = "Manfly"
+	id = "manfly"
 	say_mod = "buzzes"
 	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/fly
 
@@ -595,7 +597,60 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
 		return 1
 
-/datum/species/fly/handle_speech(message)
+/datum/species/fly/manfly/handle_speech(message)
+	return replacetext(message, "z", stutter("zz"))
+
+//FLYTOSIAN
+
+/datum/species/fly/flytosian
+	// Humans turned into fly-like abominations in teleporter accidents.
+	name = "Flytosian"
+	id = "flytosian"
+	say_mod = "buzzes"
+	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/fly
+
+/datum/species/fly/flytosian/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
+	if(chem.id == "pestkiller")
+		H.adjustToxLoss(3)
+		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
+		return 1
+
+/datum/species/fly/flytosian/handle_speech(message)
+	return replacetext(message, "z", stutter("zz"))
+
+//FLYTURNIS
+
+/datum/species/fly/flyturnis
+	// Humans turned into fly-like abominations in teleporter accidents.
+	name = "Flyturnis"
+	id = "flyturnis"
+	say_mod = "buzzes"
+	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/fly
+
+/datum/species/fly/flyturnis/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
+	if(chem.id == "pestkiller")
+		H.adjustToxLoss(3)
+		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
+		return 1
+
+/datum/species/fly/flyturnis/handle_speech(message)
+	return replacetext(message, "z", stutter("zz"))
+
+//UNAFLY
+/datum/species/fly/unafly
+	// Humans turned into fly-like abominations in teleporter accidents.
+	name = "Unafly"
+	id = "unafly"
+	say_mod = "buzzes"
+	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/fly
+
+/datum/species/fly/unafly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
+	if(chem.id == "pestkiller")
+		H.adjustToxLoss(3)
+		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
+		return 1
+
+/datum/species/fly/unafly/handle_speech(message)
 	return replacetext(message, "z", stutter("zz"))
 
 /*
