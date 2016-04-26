@@ -254,6 +254,9 @@
 	set waitfor = 0
 	throw_at(target, range, speed, thrower, spin, diagonals_first)
 
+/atom/movable/proc/prethrow_at(var/target) // If an item is thrown by a mob, but it's still currently held.
+	return;
+
 /atom/movable/proc/hitcheck()
 	for(var/atom/movable/AM in get_turf(src))
 		if(AM == src)
