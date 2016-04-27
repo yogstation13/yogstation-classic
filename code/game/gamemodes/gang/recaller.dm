@@ -86,17 +86,29 @@
 			else
 				dat += "10mm Ammo<br>"
 
-			dat += "(60 Influence) "
-			if(points >= 60)
+			dat += "(40 Influence) "
+			if(points >= 40)
 				dat += "<a href='?src=\ref[src];purchase=uzi'>Uzi SMG</a><br>"
 			else
 				dat += "Uzi SMG<br>"
 
-			dat += "&nbsp;&#8627;(40 Influence) "
-			if(points >= 40)
+			dat += "&nbsp;&#8627;(15 Influence) "
+			if(points >= 15)
 				dat += "<a href='?src=\ref[src];purchase=9mmammo'>Uzi Ammo</a><br>"
 			else
 				dat += "Uzi Ammo<br>"
+
+			dat += "(60 Influence) "
+			if(points >= 60)
+				dat += "<a href='?src=\ref[src];purchase=tommy gun'>Thompson SMG</a><br>"
+			else
+				dat += "Thompson SMG<br>"
+
+			dat += "&nbsp;&#8627;(20 Influence) "
+			if(points >= 20)
+				dat += "<a href='?src=\ref[src];purchase=.45ammo'>Thompson Ammo</a><br>"
+			else
+				dat += "Thompson Ammo<br>"
 
 			dat += "<br>"
 
@@ -111,17 +123,25 @@
 			else
 				dat += "Bo Staff<br>"
 
-			dat += "(20 Influence) "
-			if(points >= 20)
+			dat += "(15 Influence) "
+			if(points >= 15)
 				dat += "<a href='?src=\ref[src];purchase=wrestlingbelt'>Wrestling Belt</a><br>"
 			else
 				dat += "Wrestling Belt<br>"
 
-			dat += "(30 Influence) "
-			if(points >= 30)
+			dat += "(25 Influence) "
+			if(points >= 25)
 				dat += "<a href='?src=\ref[src];purchase=scroll'>Sleeping Carp Scroll (one-use)</a><br>"
 			else
 				dat += "Sleeping Carp Scroll (one-use)<br>"
+
+			dat += "(50 Influence) "
+			if(points >= 50)
+				dat += "<a href='?src=\ref[src];purchase=throwing stars box'>Throwing Stars Box </a><br>"
+			else
+				dat += "Throwing Stars Box <br>"
+
+
 			dat += "<br>"
 
 		////////////////////////
@@ -130,14 +150,14 @@
 
 		dat += "<B>Purchase Equipment:</B><br>"
 
-		dat += "(5 Influence) "
-		if(points >= 5)
+		dat += "(3 Influence) "
+		if(points >= 3)
 			dat += "<a href='?src=\ref[src];purchase=spraycan'>Territory Spraycan</a><br>"
 		else
 			dat += "Territory Spraycan<br>"
 
-		dat += "(10 Influence) "
-		if(points >= 10)
+		dat += "(5 Influence) "
+		if(points >= 5)
 			dat += "<a href='?src=\ref[src];purchase=C4'>C4 Explosive</a><br>"
 		else
 			dat += "C4 Explosive<br>"
@@ -202,9 +222,9 @@
 		var/item_type
 		switch(href_list["purchase"])
 			if("spraycan")
-				if(gang.points >= 5)
+				if(gang.points >= 2)
 					item_type = /obj/item/toy/crayon/spraycan/gang
-					pointcost = 5
+					pointcost = 2
 			if("switchblade")
 				if(gang.points >= 10)
 					item_type = /obj/item/weapon/switchblade
@@ -218,18 +238,30 @@
 					item_type = /obj/item/ammo_box/magazine/m10mm
 					pointcost = 10
 			if("uzi")
-				if(gang.points >= 60)
-					item_type = /obj/item/weapon/gun/projectile/automatic/mini_uzi
-					pointcost = 60
-			if("9mmammo")
 				if(gang.points >= 40)
-					item_type = /obj/item/ammo_box/magazine/uzim9mm
+					item_type = /obj/item/weapon/gun/projectile/automatic/mini_uzi
 					pointcost = 40
+			if("9mmammo")
+				if(gang.points >= 15)
+					item_type = /obj/item/ammo_box/magazine/uzim9mm
+					pointcost = 15
+			if("tommy gun")
+				if(gang.points >= 60)
+					item_type = /obj/item/weapon/gun/projectile/automatic/tommygun
+					pointcost = 60
+			if(".45ammo")
+				if(gang.points >= 20)
+					item_type = /obj/item/ammo_box/magazine/tommygunm45
+					pointcost = 20
 			if("scroll")
-				if(gang.points >= 30)
+				if(gang.points >= 25)
 					item_type = /obj/item/weapon/sleeping_carp_scroll
 					usr << "<span class='notice'>Anyone who reads the <b>sleeping carp scroll</b> will learn secrets of the sleeping carp martial arts style.</span>"
 					pointcost = 30
+			if("throwing stars box")
+				if(gang.points >= 50)
+					item_type = /obj/item/weapon/storage/box/throwing_stars
+					pointcost = 50
 			if("wrestlingbelt")
 				if(gang.points >= 20)
 					item_type = /obj/item/weapon/storage/belt/champion/wrestling
@@ -338,7 +370,7 @@
 				gang_rank = "3rd Lieutenant"
 			else
 				gang_rank = "[gang_rank - 1]th Lieutenant"
-		var/ping = "<span class='danger'><B><i>[gang.name] [gang_rank]</i>: [message]</B></span>"
+		var/ping = "<span class='danger'><B><i>([gang.name] [gang_rank])</i> [usr.real_name]: [message]</B></span>"
 		log_say("[key_name(user)] : [message]")
 		user.say_log_silent += "Gang Chat: [message]"
 		for(var/datum/mind/ganger in members)
