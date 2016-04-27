@@ -56,6 +56,7 @@
 	say_mod = "buzzes"
 	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/fly
 	use_skintones = 0
+	specflags = list()
 
 /datum/species/human/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
 	if(chem.id == "pestkiller")
@@ -205,6 +206,8 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	id = "flyternis"
 	say_mod = "buzzes"
 	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/fly
+	default_color = "FFFFFF"
+	specflags = list()
 
 /datum/species/android/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
 	if(chem.id == "pestkiller")
