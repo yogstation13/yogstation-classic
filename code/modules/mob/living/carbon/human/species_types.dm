@@ -48,6 +48,7 @@
 		H.reagents.del_reagent(chem.type)
 		H.faction |= "slime"
 		return 1
+#define EATING_MESSAGE_COOLDOWN 1200//2 minutes, in deciseconds. I am here for the sake of androids and flies
 
 /datum/species/human/fly
 	// Humans turned into fly-like abominations in teleporter accidents.
@@ -57,6 +58,9 @@
 	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/fly
 	use_skintones = 0
 	specflags = list()
+	roundstart = 0
+	var/last_eat_message = -EATING_MESSAGE_COOLDOWN //I am here because flies
+
 
 /datum/species/human/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
 	if(chem.id == "pestkiller")
@@ -66,6 +70,25 @@
 
 /datum/species/human/fly/handle_speech(message)
 	return replacetext(message, "z", stutter("zz"))
+
+/datum/species/human/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
+	if (istype(chem, /datum/reagent/consumable)) //paranoia paranoia type casting is coming to get me
+		var/datum/reagent/consumable/food = chem
+		if (food.nutriment_factor)
+			food.nutriment_factor = food.nutriment_factor * 0.2
+			if (world.time - last_eat_message > EATING_MESSAGE_COOLDOWN)
+				H << "<span class='info'>This is disgusting, you need a real meal!</span>"
+				last_eat_message = world.time
+		return 0
+	if(chem.id == "????")
+		H.adjustBruteLoss(-1)
+		H.adjustFireLoss(-1)
+		H.adjustToxLoss(-1)
+		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
+		return 1
+
+
+
 
 //Curiosity killed the cat's wagging tail.
 datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
@@ -130,6 +153,8 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	id = "unafly"
 	say_mod = "buzzes"
 	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/fly
+	roundstart = 0
+	var/last_eat_message = -EATING_MESSAGE_COOLDOWN //I am here because flies
 
 /datum/species/lizard/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
 	if(chem.id == "pestkiller")
@@ -140,6 +165,24 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 /datum/species/lizard/fly/handle_speech(message)
 	return replacetext(message, "z", stutter("zz"))
 
+/datum/species/lizard/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
+	if (istype(chem, /datum/reagent/consumable)) //paranoia paranoia type casting is coming to get me
+		var/datum/reagent/consumable/food = chem
+		if (food.nutriment_factor)
+			food.nutriment_factor = food.nutriment_factor * 0.2
+			if (world.time - last_eat_message > EATING_MESSAGE_COOLDOWN)
+				H << "<span class='info'>This is disgusting, you need a real meal!</span>"
+				last_eat_message = world.time
+		return 0
+	if(chem.id == "????")
+		H.adjustBruteLoss(-1)
+		H.adjustFireLoss(-1)
+		H.adjustToxLoss(-1)
+		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
+		return 1
+
+
+
 //I wag in death
 /datum/species/lizard/spec_death(gibbed, mob/living/carbon/human/H)
 	if(H)
@@ -149,7 +192,6 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
  ANDROIDS
  */
 
-#define EATING_MESSAGE_COOLDOWN 1200//2 minutes, in deciseconds.
 
 /datum/species/android
 	//augmented half-silicon, half-human hybrids
@@ -208,10 +250,27 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/fly
 	default_color = "FFFFFF"
 	specflags = list()
+	roundstart = 0
 
 /datum/species/android/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
 	if(chem.id == "pestkiller")
 		H.adjustToxLoss(3)
+		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
+		return 1
+
+/datum/species/human/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
+	if (istype(chem, /datum/reagent/consumable)) //paranoia paranoia type casting is coming to get me
+		var/datum/reagent/consumable/food = chem
+		if (food.nutriment_factor)
+			food.nutriment_factor = food.nutriment_factor * 0.2
+			if (world.time - last_eat_message > EATING_MESSAGE_COOLDOWN)
+				H << "<span class='info'>This is disgusting, you need a real meal!</span>"
+				last_eat_message = world.time
+		return 0
+	if(chem.id == "????")
+		H.adjustBruteLoss(-1)
+		H.adjustFireLoss(-1)
+		H.adjustToxLoss(-1)
 		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
 		return 1
 
@@ -224,7 +283,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	H << "<span class='info'>Normal food is worth only a fraction of its normal sustenance to you. You must instead draw your nourishment from power cells, tapping into the energy contained within. Beware electromagnetic pulses, for they would do grevious damage to your internal organs..</span>"
 	return ..()
 
-#undef EATING_MESSAGE_COOLDOWN
+
 /*
  PLANTPEOPLE
 */
@@ -360,6 +419,9 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	id = "flytosian"
 	say_mod = "buzzes"
 	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/fly
+	roundstart = 0
+	var/last_eat_message = -EATING_MESSAGE_COOLDOWN //I am here because flies
+
 
 /datum/species/plant/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
 	if(chem.id == "pestkiller")
@@ -370,6 +432,23 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 /datum/species/plant/fly/handle_speech(message)
 	return replacetext(message, "z", stutter("zz"))
 
+/datum/species/human/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
+	if (istype(chem, /datum/reagent/consumable)) //paranoia paranoia type casting is coming to get me
+		var/datum/reagent/consumable/food = chem
+		if (food.nutriment_factor)
+			food.nutriment_factor = food.nutriment_factor * 0.2
+			if (world.time - last_eat_message > EATING_MESSAGE_COOLDOWN)
+				H << "<span class='info'>This is disgusting, you need a real meal!</span>"
+				last_eat_message = world.time
+		return 0
+	if(chem.id == "????")
+		H.adjustBruteLoss(-1)
+		H.adjustFireLoss(-1)
+		H.adjustToxLoss(-1)
+		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
+		return 1
+
+#undef EATING_MESSAGE_COOLDOWN
 /*
  PODPEOPLE
 */
@@ -781,6 +860,9 @@ var/global/image/plasmaman_on_fire = image("icon"='icons/mob/OnFire.dmi', "icon_
 		H.adjustFireLoss(-5)
 		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
 		return 1
+
+
+
 
 
 
