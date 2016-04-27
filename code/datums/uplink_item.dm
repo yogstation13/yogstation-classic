@@ -57,8 +57,8 @@ var/list/uplink_items = list()
 		if(istype(item, /obj/item/weapon/antag_spawner/ally_tele/))
 			var/obj/item/weapon/antag_spawner/ally_tele/T = item
 			T.TC_cost = cost
-		else if(istype(item, /obj/item/weapon/storage/tactical_harness/universal))
-			var/obj/item/weapon/storage/tactical_harness/universal/CH = item
+		else if(istype(item, /obj/item/weapon/storage/tactical_harness/syndicate))
+			var/obj/item/weapon/storage/tactical_harness/syndicate/CH = item
 			CH.refund_TC = cost
 		return new item(loc)
 
@@ -255,7 +255,7 @@ var/list/uplink_items = list()
 /datum/uplink_item/dangerous/tactical_animal_harness
 	name = "Tactical Animal Harness"
 	desc = "A harness that can be placed on any space carp or space dolphin to give it sentience and a variety of useful weapons and equipment."
-	item = /obj/item/weapon/storage/tactical_harness/universal
+	item = /obj/item/weapon/storage/tactical_harness/syndicate
 	cost = 20
 	gamemodes = list(/datum/game_mode/nuclear)
 	surplus = 0
