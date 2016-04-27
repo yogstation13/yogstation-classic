@@ -85,7 +85,7 @@
 /datum/action/proc/UpdateName()
 	return name
 
- /datum/action/proc/ApplyIcon(obj/screen/movable/action_button/current_button)
+/datum/action/proc/ApplyIcon(obj/screen/movable/action_button/current_button)
  	current_button.overlays.Cut()
  	if(button_icon && button_icon_state)
  		var/image/img
