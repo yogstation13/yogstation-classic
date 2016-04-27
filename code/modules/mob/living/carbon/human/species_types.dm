@@ -148,13 +148,15 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	return message
 
 /datum/species/lizard/fly
-	// Humans turned into fly-like abominations in teleporter accidents.
+	// lizards turned into fly-like abominations in teleporter accidents.
 	name = "Unafly"
 	id = "unafly"
 	say_mod = "buzzes"
 	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/fly
 	roundstart = 0
 	var/last_eat_message = -EATING_MESSAGE_COOLDOWN //I am here because flies
+	specflags = list()
+	default_color = "FFFFFF"
 
 /datum/species/lizard/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
 	if(chem.id == "pestkiller")
@@ -243,7 +245,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 			H.see_invisible = SEE_INVISIBLE_LIVING
 
 /datum/species/android/fly
-	// Humans turned into fly-like abominations in teleporter accidents.
+	// androids turned into fly-like abominations in teleporter accidents.
 	name = "Flyternis"
 	id = "flyternis"
 	say_mod = "buzzes"
@@ -414,7 +416,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 			H.take_overall_damage(2,0)
 
 /datum/species/plant/fly
-	// Humans turned into fly-like abominations in teleporter accidents.
+	// Phytosian turned into fly-like abominations in teleporter accidents.
 	name = "Flytosian"
 	id = "flytosian"
 	say_mod = "buzzes"

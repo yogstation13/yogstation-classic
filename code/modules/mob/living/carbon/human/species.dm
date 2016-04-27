@@ -251,6 +251,7 @@
 	var/list/relevent_layers = list(BODY_BEHIND_LAYER, BODY_ADJ_LAYER, BODY_FRONT_LAYER)
 	var/list/standing	= list()
 
+
 	H.remove_overlay(BODY_BEHIND_LAYER)
 	H.remove_overlay(BODY_ADJ_LAYER)
 	H.remove_overlay(BODY_FRONT_LAYER)
@@ -357,31 +358,59 @@
 				icon_string = "[id]_m_[bodypart]_[S.icon_state]_[layer]"
 
 			I = image("icon" = 'icons/mob/mutant_bodyparts.dmi', "icon_state" = icon_string, "layer" =- layer)
+			if(H.dna && H.dna.species.id == "unafly")
+				if(!(H.disabilities & HUSK))
+					switch(S.color_src)
+						if(MUTCOLORS)
+							I.color = "#424242"
+						if(HAIR)
+							if(hair_color == "mutcolor")
+								I.color = "#[H.dna.features["mcolor"]]"
 
-			if(!(H.disabilities & HUSK))
-				switch(S.color_src)
-					if(MUTCOLORS)
-						I.color = "#[H.dna.features["mcolor"]]"
-					if(HAIR)
-						if(hair_color == "mutcolor")
-							I.color = "#[H.dna.features["mcolor"]]"
-						else
-							I.color = "#[H.hair_color]"
-					if(FACEHAIR)
-						I.color = "#[H.facial_hair_color]"
-					if(EYECOLOR)
-						I.color = "#[H.eye_color]"
-			standing += I
-
-			if(S.hasinner)
-				if(S.gender_specific)
-					icon_string = "[id]_[g]_[bodypart]inner_[S.icon_state]_[layer]"
-				else
-					icon_string = "[id]_m_[bodypart]inner_[S.icon_state]_[layer]"
-
-				I = image("icon" = 'icons/mob/mutant_bodyparts.dmi', "icon_state" = icon_string, "layer" =- layer)
-
+							else
+								I.color = "#[H.hair_color]"
+						if(FACEHAIR)
+							I.color = "#[H.facial_hair_color]"
+						if(EYECOLOR)
+							I.color = "#[H.eye_color]"
 				standing += I
+
+				if(S.hasinner)
+					if(S.gender_specific)
+						icon_string = "[id]_[g]_[bodypart]inner_[S.icon_state]_[layer]"
+					else
+						icon_string = "[id]_m_[bodypart]inner_[S.icon_state]_[layer]"
+
+					I = image("icon" = 'icons/mob/mutant_bodyparts.dmi', "icon_state" = icon_string, "layer" =- layer)
+
+					standing += I
+
+			else
+				if(!(H.disabilities & HUSK))
+					switch(S.color_src)
+						if(MUTCOLORS)
+							I.color = "#[H.dna.features["mcolor"]]"
+						if(HAIR)
+							if(hair_color == "mutcolor")
+								I.color = "#[H.dna.features["mcolor"]]"
+
+							else
+								I.color = "#[H.hair_color]"
+						if(FACEHAIR)
+							I.color = "#[H.facial_hair_color]"
+						if(EYECOLOR)
+							I.color = "#[H.eye_color]"
+				standing += I
+
+				if(S.hasinner)
+					if(S.gender_specific)
+						icon_string = "[id]_[g]_[bodypart]inner_[S.icon_state]_[layer]"
+					else
+						icon_string = "[id]_m_[bodypart]inner_[S.icon_state]_[layer]"
+
+					I = image("icon" = 'icons/mob/mutant_bodyparts.dmi', "icon_state" = icon_string, "layer" =- layer)
+
+					standing += I
 
 		H.overlays_standing[layer] = standing.Copy()
 		standing = list()
