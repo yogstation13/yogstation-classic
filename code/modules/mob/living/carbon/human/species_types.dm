@@ -423,7 +423,8 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/fly
 	roundstart = 0
 	var/last_eat_message = -EATING_MESSAGE_COOLDOWN //I am here because flies
-
+	specflags = list()
+	default_color = "000000"
 
 /datum/species/plant/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
 	if(chem.id == "pestkiller")
