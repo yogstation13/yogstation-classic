@@ -2,7 +2,7 @@
 
 /datum/surgery/remove_cyberman
 	name = "remove illegal implants"
-	steps = list(/datum/surgery_step/incise, /datum/surgery_step/clamp_bleeders, /datum/surgery_step/retract_skin, /datum/surgery_step/saw, /datum/surgery_step/de_cybermanize)
+	steps = list(/datum/surgery_step/incise, /datum/surgery_step/retract_skin, /datum/surgery_step/saw, /datum/surgery_step/de_cybermanize)
 	possible_locs = list("head")
 	requires_organic_bodypart = 0
 
@@ -22,7 +22,6 @@
 	user.visible_message("The implants disintegrate into dust in [user]'s hands!", "<span class='notice'>The implants disintegrate to dust in your hands!</span>")
 	spawn(30)//person gets a short time to revel in their non-cyberman freedom.
 		target.adjustBrainLoss(100)//massive brain damage.
-		target.death(0)//dead.
 	ticker.mode.remove_cyberman(target.mind)
 	return 1
 
