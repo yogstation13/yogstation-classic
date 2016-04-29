@@ -165,9 +165,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 
 
 /datum/species/lizard/fly/handle_speech(message)
-	if(..())
-		return
-	return replacetext(message, "z", stutter("zz"))
+	return replacetext(..(), "z", stutter("zz"))
 
 /datum/species/lizard/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
 	if (..())
@@ -185,7 +183,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 		H.adjustFireLoss(-1)
 		H.adjustToxLoss(-1)
 		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
-		H.nutrition -= 3
+		H.nutrition -= 15 * REAGENTS_METABOLISM
 		return 1
 
 	if(chem.id == "pestkiller")
@@ -278,7 +276,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 		H.adjustFireLoss(-1)
 		H.adjustToxLoss(-1)
 		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
-		H.nutrition += 3
+		H.nutrition += 15 * REAGENTS_METABOLISM
 		return 1
 
 	if(chem.id == "pestkiller")
@@ -454,7 +452,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 		H.adjustFireLoss(-1)
 		H.adjustToxLoss(-1)
 		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
-		H.nutrition += 3
+		H.nutrition += 15 * REAGENTS_METABOLISM
 		return 1
 
 	if(chem.id == "pestkiller")
