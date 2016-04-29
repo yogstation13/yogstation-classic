@@ -2764,7 +2764,7 @@
 	pixel_y = 3
 	},
 /obj/item/weapon/gun/energy/laser/scatter,
-/obj/item/weapon/bikehorn/airhorn,
+/obj/item/device/assembly/bikehorn/airhorn,
 /obj/structure/window/reinforced{
 	dir = 8
 	},
