@@ -8,9 +8,8 @@
 	butcher_results = list(/obj/item/weapon/reagent_containers/food/snacks/carpmeat = 2, /obj/item/weapon/reagent_containers/food/snacks/syndicake = 1)
 	eats = list(/obj/item/weapon/reagent_containers/food/snacks/syndicake = 5)
 	AIStatus = AI_OFF
-	can_speak_human = 0
 
 /mob/living/simple_animal/hostile/carp/tactical/New()
 	..()
-	var/obj/item/weapon/storage/tactical_harness/tmp_harness = new /obj/item/weapon/storage/tactical_harness/carp()
+	var/obj/item/weapon/storage/tactical_harness/ranged/tmp_harness = new /obj/item/weapon/storage/tactical_harness/ranged/syndicate/carp()
 	tmp_harness.add_harness(src, null)

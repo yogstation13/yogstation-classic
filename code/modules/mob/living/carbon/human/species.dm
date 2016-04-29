@@ -48,7 +48,17 @@
 	var/burnmod = 1		// multiplier for burn damage
 	var/coldmod = 1		// multiplier for cold damage
 	var/heatmod = 1		// multiplier for heat damage
+	var/staminamod = 1
+	var/stamina_recover_normal = 2
+	var/stamina_recover_sleeping = 10
+	var/toxinmod = 1
+	var/acidmod = 1
+	var/shockmod = 1
+	var/radiation_faint_threshhold = 100
+	var/radiation_effect_prob = 1
+	var/clone_damage_mod = 1
 	var/punchmod = 0	// adds to the punch damage
+	var/robotgibs = 0
 
 	var/invis_sight = SEE_INVISIBLE_LIVING
 	var/darksight = 2
@@ -83,6 +93,21 @@
 	///////////
 	// PROCS //
 	///////////
+
+/datum/species/proc/on_species_gain(mob/living/carbon/human/H)
+	// Drop the items the new species can't wear
+	for(var/slot_id in no_equip)
+		var/obj/item/thing = H.get_item_by_slot(slot_id)
+		if(thing)
+			H.unEquip(thing)
+	if(exotic_blood)
+		H.reagents.add_reagent(exotic_blood, 80)
+
+
+/datum/species/proc/on_species_loss(mob/living/carbon/human/H)
+	if(H.dna.species && H.dna.species.exotic_blood)
+		H.reagents.del_reagent(H.dna.species.exotic_blood)
+
 
 /datum/species/proc/random_name(gender,unique,lastname)
 	if(unique)
@@ -548,9 +573,15 @@
 				return 0
 			return 1
 		if(slot_in_backpack)
-			if (H.back && istype(H.back, /obj/item/weapon/storage/backpack))
+			if(H.back && istype(H.back, /obj/item/weapon/storage/backpack))
 				var/obj/item/weapon/storage/backpack/B = H.back
-				if(B.contents.len < B.storage_slots && I.w_class <= B.max_w_class)
+				if(B.can_be_inserted(I, 1))
+					return 1
+			return 0
+		if(slot_in_belt)
+			if(H.belt && istype(H.belt, /obj/item/weapon/storage/belt))
+				var/obj/item/weapon/storage/belt/B = H.belt
+				if(B.can_be_inserted(I, 1))
 					return 1
 			return 0
 	return 0 //Unsupported slot
@@ -567,7 +598,33 @@
 /datum/species/proc/handle_speech(message, mob/living/carbon/human/H)
 	return message
 
-////////
+/datum/species/proc/handle_inherent_channels(mob/living/carbon/human/H, message, message_mode)
+	return 0
+
+/datum/species/proc/get_spans()
+	return 0
+
+
+/datum/species/proc/handle_emp(mob/living/carbon/human/H, severity)
+	var/informed = 0
+	for(var/obj/item/organ/limb/L in H.organs)
+		if(L.status == ORGAN_ROBOTIC)
+			if(!informed)
+				H << "<span class='userdanger'>You feel a sharp pain as your robotic limbs overload.</span>"
+				informed = 1
+			switch(severity)
+				if(1)
+					L.take_damage(0,10)
+					H.Stun(10)
+				if(2)
+					L.take_damage(0,5)
+					H.Stun(5)
+	return //return value does nothing.
+
+/datum/species/proc/handle_flash(mob/living/carbon/human/H, intensity = 1, override_blindness_check = 0, affect_silicon = 0, visual = 0)
+	return 0 //returning 1 will cancel all normal flash effects.
+
+	////////
 	//LIFE//
 	////////
 
@@ -776,7 +833,7 @@
 
 	if(!(RADIMMUNE in specflags))
 		if(H.radiation)
-			if (H.radiation > 100)
+			if (H.radiation > radiation_faint_threshhold)
 				H.Weaken(10)
 				H << "<span class='danger'>You feel weak.</span>"
 				H.emote("collapse")
@@ -784,11 +841,11 @@
 			switch(H.radiation)
 
 				if(50 to 75)
-					if(prob(5))
+					if(prob(radiation_effect_prob*5))
 						H.Weaken(3)
 						H << "<span class='danger'>You feel weak.</span>"
 						H.emote("collapse")
-					if(prob(15))
+					if(prob(radiation_effect_prob*15))
 						if(!( H.hair_style == "Shaved") || !(H.hair_style == "Bald") || HAIR in specflags)
 							H << "<span class='danger'>Your hair starts to fall out in clumps...<span>"
 							spawn(50)
@@ -797,7 +854,7 @@
 								H.update_hair()
 
 				if(75 to 100)
-					if(prob(1))
+					if(prob(radiation_effect_prob*1))
 						H << "<span class='danger'>You mutate!</span>"
 						randmutb(H)
 						domutcheck(H,null)
@@ -1136,13 +1193,13 @@
 			if(organ.take_damage(0, damage*burnmod))
 				H.update_damage_overlays(0)
 		if(TOX)
-			H.adjustToxLoss(damage * blocked)
+			H.adjustToxLoss(damage * toxinmod * blocked)
 		if(OXY)
 			H.adjustOxyLoss(damage * blocked)
 		if(CLONE)
-			H.adjustCloneLoss(damage * blocked)
+			H.adjustCloneLoss(damage * clone_damage_mod * blocked)
 		if(STAMINA)
-			H.adjustStaminaLoss(damage * blocked)
+			H.adjustStaminaLoss(damage * staminamod * blocked)
 
 /datum/species/proc/on_hit(obj/item/projectile/proj_type, mob/living/carbon/human/H)
 	// called when hit by a projectile

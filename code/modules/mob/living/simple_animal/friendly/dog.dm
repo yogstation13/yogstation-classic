@@ -61,6 +61,9 @@
 
 /mob/living/simple_animal/pet/dog/corgi/show_inv(mob/user)
 	user.set_machine(src)
+	if(harness)
+		..()
+		return
 	if(user.stat) return
 
 	var/dat = 	"<div align='center'><b>Inventory of [name]</b></div><p>"
@@ -275,6 +278,8 @@
 	return valid
 
 /mob/living/simple_animal/pet/dog/corgi/proc/update_corgi_fluff()
+	if(!inventory_head)
+		return
 	switch(src.inventory_head.type)
 		if(/obj/item/clothing/head/helmet)
 			name = "Sergeant [real_name]"
@@ -563,3 +568,8 @@
 		else
 			if(M && stat != DEAD) // Same check here, even though emote checks it as well (poor form to check it only in the help case)
 				emote("me", 1, "growls!")
+
+/mob/living/simple_animal/pet/dog/corgi/tactical/New()
+	..()
+	var/obj/item/weapon/storage/tactical_harness/corgi/tmp_harness = new /obj/item/weapon/storage/tactical_harness/corgi()
+	tmp_harness.add_harness(src, null)

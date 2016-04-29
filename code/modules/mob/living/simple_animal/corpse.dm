@@ -123,7 +123,7 @@
 	corpseshoes = /obj/item/clothing/shoes/clown_shoes
 	corpseradio = /obj/item/device/radio/headset
 	corpsemask = /obj/item/clothing/mask/gas/clown_hat
-	corpsepocket1 = /obj/item/weapon/bikehorn
+	corpsepocket1 = /obj/item/device/assembly/bikehorn
 	corpseback = /obj/item/weapon/storage/backpack/clown
 	corpseid = 1
 	corpseidjob = "Clown"

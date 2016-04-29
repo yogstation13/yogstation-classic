@@ -53,7 +53,8 @@
 	melee_damage_upper = 15
 	melee_damage_type = STAMINA
 	ignored_damage_types = list(BRUTE = 0, BURN = 0, TOX = 1, CLONE = 1, STAMINA = 1, OXY = 1)
-	languages = SWARMER
+	languages_understood = SWARMER
+	languages_spoken = SWARMER
 	environment_smash = 0
 	attacktext = "shocks"
 	attack_sound = 'sound/effects/EMPulse.ogg'

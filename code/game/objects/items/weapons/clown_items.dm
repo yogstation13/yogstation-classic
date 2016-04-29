@@ -70,7 +70,7 @@
  */
 
 
-/obj/item/weapon/bikehorn
+/obj/item/device/assembly/bikehorn
 	name = "bike horn"
 	desc = "A horn off of a bicycle."
 	icon = 'icons/obj/items.dmi'
@@ -86,26 +86,29 @@
 	var/honksound = 'sound/items/bikehorn.ogg'
 	var/cooldowntime = 20
 
-/obj/item/weapon/bikehorn/attack(mob/living/carbon/M, mob/living/carbon/user)
+/obj/item/device/assembly/bikehorn/attack(mob/living/carbon/M, mob/living/carbon/user)
 	if(!spam_flag)
-		playsound(loc, honksound, 50, 1, -1) //plays instead of tap.ogg!
+		playsound(get_turf(src), honksound, 50, 1, -1) //plays instead of tap.ogg!
 	return ..()
 
-/obj/item/weapon/bikehorn/attack_self(mob/user)
+/obj/item/device/assembly/bikehorn/attack_self(mob/user)
 	if(!spam_flag)
 		spam_flag = 1
-		playsound(src.loc, honksound, 50, 1)
+		playsound(get_turf(src), honksound, 50, 1)
 		src.add_fingerprint(user)
 		spawn(cooldowntime)
 			spam_flag = 0
 	return
 
-/obj/item/weapon/bikehorn/Crossed(mob/living/L)
+/obj/item/device/assembly/bikehorn/Crossed(mob/living/L)
 	if(isliving(L))
-		playsound(loc, honksound, 50, 1, -1)
+		playsound(get_turf(src), honksound, 50, 1, -1)
 	..()
 
-/obj/item/weapon/bikehorn/airhorn
+/obj/item/device/assembly/bikehorn/pulsed(radio = 0)
+	attack_self(null)
+
+/obj/item/device/assembly/bikehorn/airhorn
 	name = "air horn"
 	desc = "Damn son, where'd you find this?"
 	icon_state = "air_horn"

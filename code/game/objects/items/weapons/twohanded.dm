@@ -230,9 +230,8 @@
 		user.adjustStaminaLoss(25)
 
 /obj/item/weapon/twohanded/dualsaber/hit_reaction(mob/living/carbon/human/owner, attack_text, final_block_chance)
-	if(wielded && final_block_chance)
-		visible_message("<span class='danger'>[owner] parries [attack_text] with [src]!</span>")
-		return 1
+	if(wielded)
+		return ..()
 	return 0
 
 /obj/item/weapon/twohanded/dualsaber/attack_hulk(mob/living/carbon/human/user)  //In case thats just so happens that it is still activated on the groud, prevents hulk from picking it up
