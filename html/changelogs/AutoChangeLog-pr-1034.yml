@@ -1,0 +1,6 @@
+author: ToGWtF
+delete-after: True
+changes: 
+  - rscadd: "Adds surgery crate to cargo"
+  - rscadd: "Adds operating table to cargo"
+  - rscadd: "Operating tables may now be unanchored and moved"
