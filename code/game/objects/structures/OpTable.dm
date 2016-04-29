@@ -45,3 +45,28 @@
 			check_patient()
 			qdel(W)
 			return
+	if(istype(W, /obj/item/weapon/wrench))
+		if(!anchored)
+			user.visible_message("[user.name] begins to secure the [src.name] to the floor.",\
+								"<span class='notice'>You begin to secure the [src.name] to the floor.</span>", \
+								"<span class='italics'>You hear a ratchet.</span>")
+			playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
+			if(do_after(user, 30, target = src))
+				user.visible_message("[user.name] secured [src.name] to the floor.",\
+								"<span class='notice'>You secure the [src.name] to the floor.</span>", \
+								"<span class='italics'>You hear a ratchet.</span>")
+				playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
+				anchored = 1
+		else if(anchored)
+			user.visible_message("[user.name] begins to unsecure the [src.name] from the floor.", \
+				"<span class='notice'>You begin to unsecure the [src.name] from the floor.</span>", \
+				"<span class='italics'>You hear a ratchet.</span>")
+			playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
+			if(do_after(user, 30, target = src))
+				user.visible_message("[user.name] unsecures the [src.name] from the floor.", \
+									"<span class='notice'>You unsecure the [src.name] from the floor.</span>", \
+									"<span class='italics'>You hear a ratchet.</span>")
+				playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
+				anchored = 0
+		return
+	return ..()

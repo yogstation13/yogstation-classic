@@ -15,7 +15,8 @@
 	var/speak_chance = 0
 	var/list/emote_hear = list()	//Hearable emotes
 	var/list/emote_see = list()		//Unlike speak_emote, the list of things in this variable only show by themselves with no spoken text. IE: Ian barks, Ian yaps
-	var/can_speak_human = 1
+	var/obj/item/weapon/storage/tactical_harness/harness = null
+	var/obj/item/device/radio/headset/headset
 
 	var/turns_per_move = 1
 	var/turns_since_move = 0
@@ -91,6 +92,8 @@
 			handle_automated_action()
 			handle_automated_speech()
 		return 1
+	if(headset && !headset.emped)
+		headset.on = 1
 
 /mob/living/simple_animal/handle_regular_status_updates()
 	if(..()) //alive
@@ -414,7 +417,9 @@
 
 	if(statpanel("Status"))
 		stat(null, "Health: [round((health / maxHealth) * 100)]%")
-		return 1
+		if(harness && harness.cell)
+			stat(null, "Harness Charge: [harness.cell.charge]/[harness.cell.maxcharge] ([round((harness.cell.charge / harness.cell.maxcharge) * 100)]%)")
+			return 1
 
 /mob/living/simple_animal/death(gibbed)
 	if(deathmessage && !gibbed)
@@ -574,22 +579,104 @@
 		updatehealth()
 
 /mob/living/simple_animal/UnarmedAttack(atom/A, proximity_flag)
-	if(!stat && can_eat(A) && istype(A.loc, /turf))
+	if(stat)
+		return ..()
+	if(can_eat(A) && istype(A.loc, /turf))
 		eat_snack(A)
 	else
-		return ..()
+		if(harness && (A.loc == harness))
+			harness.remove_from_storage(A, loc)
+			return
+		if(istype(A, /obj/item/weapon/storage/tactical_harness))
+			var/obj/item/weapon/storage/tactical_harness/the_harness = A
+			if(the_harness.canWear(src))
+				if(harness)
+					usr << "<span class='warning'>You are already wearing a harness!</span>"
+					return
+				else
+					visible_message("<span class='danger'>\The [src] begins to wriggle into \the [A].</span>", "<span class='warning'>You begin to wriggle into \the [A]. You must stay still.</span>")
+					if(do_after(usr, 80, target = A))
+						the_harness.add_harness(src, src)
+					return
+			else
+				usr << "<span class='warning'>You can't wear that type of harness.</span>"
+				return
+		if(harness)
+			if(harness.emag_active && proximity_flag)
+				A.emag_act(src)
+				return
+			if(harness.on_attack(src, A, proximity_flag))
+				return
+	return ..()
+
 
 /mob/living/simple_animal/attackby(obj/item/weapon/W, mob/user, params)
 	if(!stat && can_eat(W))
 		eat_snack(W, user)
 	else
-		return ..()
+		if(istype(W, /obj/item/weapon/storage/tactical_harness))
+			var/obj/item/weapon/storage/tactical_harness/the_harness = W
+			if(the_harness.canWear(src))
+				if(harness)
+					user << "<span class='warning'>\The [src] is already wearing a harness!</span>"
+				else
+					user.visible_message("<span class='warning'>[user] starts putting \the [W] on \the [src].</span>", "<span class='notice'>You start putting \the [W] on \the [src].</span>")
+					if(do_after(user, 40, target = src))
+						the_harness.add_harness(src, user)
+					return
+			else
+				user << "<span class='warning'>\The [src] cannot wear that type of harness.</span>"
+		else
+			..()
 
-/mob/living/simple_animal/send_speech()
-	if(!can_speak_human)
-		var/old_langs = languages
-		languages &= ~HUMAN
-		. = ..()
-		languages = old_langs
-		return
+/mob/living/simple_animal/unEquip(obj/item/W)
+	if(istype(W, /obj/item/weapon/storage/tactical_harness) && W == harness)
+		var/obj/item/weapon/storage/tactical_harness/the_harness = W
+		the_harness.remove_harness(0)
 	return ..()
+
+/mob/living/simple_animal/show_inv(mob/user)
+	if(!harness)
+		..()
+		return
+	if(user.stat)
+		return
+	user.set_machine(src)
+
+	var/dat = {"<div align='center'><b>[src]</b></div><p><br>
+	<a href='?src=\ref[src];action=remove_harness'>Remove Harness</a><br>
+	<a href='?src=\ref[src];action=open_inventory'>Show Inventory</a><br>
+	<a href='?src=\ref[src];action=add_inventory'>Add to Inventory</a>
+	"}
+
+	user << browse(dat, text("window=mob[];size=325x500", real_name))
+	onclose(user, "mob[real_name]")
+	return
+
+/mob/living/simple_animal/Topic(href, href_list)
+	if(!harness)
+		..()
+		return
+	if(!usr.canUseTopic(src, 1, 0))
+		return
+	switch(href_list["action"])
+		if("remove_harness")
+			harness.attempt_remove_harness(usr)
+		if("open_inventory")
+			if(harness)
+				if(harness.allowed(usr) || (stat & DEAD))
+					harness.open_inventory(usr)
+				else
+					usr << "<span class='warning'>Access Denied</span>"
+		if("add_inventory")
+			if(harness)
+				harness.attackby(usr.get_active_hand(), usr)
+
+/mob/living/simple_animal/radio(message, message_mode, list/spans)
+	. = ..()
+	if(. != 0)
+		return .
+	if((message_mode in radiochannels) || (message_mode == MODE_HEADSET))
+		if(headset)
+			headset.talk_into(src, message, message_mode, spans)
+			return 0//can't tell if the animal is using its radio.

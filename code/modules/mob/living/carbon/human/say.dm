@@ -36,8 +36,8 @@
 	return message
 
 /mob/living/carbon/human/get_spans()
-	if (dna.species.id == "android")
-		return ..() | SPAN_ROBOT
+	if (dna.species.get_spans())
+		return ..() | dna.species.get_spans()
 	else
 		return ..() | dna.mutations_get_spans()
 
@@ -145,3 +145,10 @@
 
 					say(temp)
 				winset(client, "input", "text=[null]")
+
+/mob/living/carbon/human/handle_inherent_channels(message, message_mode)
+	if(..())
+		return 1
+	if(dna && dna.species.handle_inherent_channels(src, message, message_mode))
+		return 1
+	return 0

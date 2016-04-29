@@ -351,4 +351,23 @@
 		adjustOxyLoss(5)
 		adjustBruteLoss(1)
 
+/mob/living/carbon/human/CheckStamina()
+	if(dna)
+		if(staminaloss)
+			var/total_health = (health - staminaloss)
+			if(total_health <= config.health_threshold_crit && !stat)
+				src << "<span class='notice'>You're too exhausted to keep going...</span>"
+				Weaken(5)
+				setStaminaLoss(health - dna.species.stamina_recover_normal)
+				return
+			setStaminaLoss(max((staminaloss - dna.species.stamina_recover_normal), 0))
+	else
+		..()
+
+/mob/living/carbon/human/AdjustStaminaSleeping()
+	if(dna)
+		adjustStaminaLoss(-dna.species.stamina_recover_sleeping)
+	else
+		..()
+
 #undef HUMAN_MAX_OXYLOSS

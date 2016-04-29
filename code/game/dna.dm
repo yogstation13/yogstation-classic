@@ -134,17 +134,21 @@
 		spans |= M.get_spans()
 	return spans
 
-/proc/hardset_dna(mob/living/carbon/owner, ui, se, real_name, blood_type, datum/species/mrace, features)
+/mob/living/carbon/proc/set_species(species_type)
+	if(species_type && dna)
+		if(dna.species)
+			dna.species.on_species_loss(src)
+		dna.species = new species_type()
+		dna.species.on_species_gain(src)
+
+/proc/hardset_dna(mob/living/carbon/owner, ui, se, real_name, blood_type, mrace, features)
 	if(!ismonkey(owner) && !ishuman(owner))
 		return
 	if(!owner.dna)
 		create_dna(owner, mrace)
 
 	if(mrace && !ismonkey(owner))
-		if(owner.dna.species.exotic_blood)
-			var/datum/reagent/exotic_blood = new owner.dna.species.exotic_blood
-			owner.reagents.del_reagent(exotic_blood.id)
-		owner.dna.species = new mrace()
+		owner.set_species(mrace)
 
 	if(features)
 		owner.dna.features = features

@@ -453,16 +453,16 @@ datum/reagent/toxin/mutetoxin //the new zombie powder.
 	description = "An infamous poison known for its use in assassination. Causes small amounts of toxin damage with a small chance of oxygen damage or a stun."
 	reagent_state = LIQUID
 	color = "#CF3600"
-	metabolization_rate = 0.125 * REAGENTS_METABOLISM
-	toxpwr = 1.25
+	metabolization_rate = 0.120 * REAGENTS_METABOLISM
+	toxpwr = 1.5
 
 /datum/reagent/toxin/cyanide/on_mob_life(mob/living/M)
 	if(prob(5))
-		M.losebreath += 1
+		M.losebreath += 3
 	if(prob(8))
 		M << "You feel horrendously weak!"
 		M.Stun(2)
-		M.adjustToxLoss(2*REM)
+		M.adjustToxLoss(4*REM)
 	..()
 
 /datum/reagent/toxin/questionmark // food poisoning
@@ -711,5 +711,7 @@ datum/reagent/toxin/mutetoxin //the new zombie powder.
 	description = "Fluorosulfuric acid is a an extremely corrosive chemical substance."
 	color = "#8E18A9" // rgb: 142, 24, 169
 	toxpwr = 2
-	acidpwr = 20
+	acidpwr = 48
+/datum/reagent/toxin/acid/fluacid/on_mob_life(mob/living/M)
+	M.adjustFireLoss(current_cycle/10) // THERE'S A FIRE BURNIN' IN MY HEART
 

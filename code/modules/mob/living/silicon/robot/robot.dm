@@ -847,6 +847,8 @@
 				overlays += "eyes-disposalbot"
 			if("minerborg")
 				overlays += "eyes-minerborg"
+			if("mediborg+smile")
+				overlays += "eyes-mediborg"
 			if("syndie_bloodhound")
 				overlays += "eyes-syndie_bloodhound"
 			else
@@ -866,6 +868,10 @@
 	if(jetpackoverlay)
 		overlays += "minerjetpack"
 	update_fire()
+	if(stat == DEAD && icon_state == "mediborg+smile")
+		overlays += "dead-[icon_state]"
+	else if (stat != DEAD && icon_state == "mediborg+smile")
+		overlays -= "dead-[icon_state]"
 
 /mob/living/silicon/robot/proc/installed_modules()
 	if(!module)

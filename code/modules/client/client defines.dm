@@ -36,7 +36,7 @@
 	var/related_accounts_ip = "Requires database"	//So admins know why it isn't working - Used to determine what other accounts previously logged in from this ip
 	var/related_accounts_cid = "Requires database"	//So admins know why it isn't working - Used to determine what other accounts previously logged in from this computer id
 	var/is_whitelisted = "Requires database"	//Used to determine if the player is whitelisted - gives access to Ultra preference for command jobs + AI
-	
+
 	var/connection_number = 0
 
 	var/list/WMIData = list()
@@ -50,3 +50,6 @@
 	var/hi_last_pos
 
 	var/datum/tooltip/tooltips
+
+	var/last_cached_weight //For weight checking, prevents query spam
+	var/last_cached_total_weight //For weight checking, prevents query spam

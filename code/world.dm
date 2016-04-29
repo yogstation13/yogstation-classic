@@ -221,7 +221,6 @@
 							ticket.log += log_item
 							ticket.owner << "<span class='ticket-header-recieved'>-- Administrator private message --</span>"
 							ticket.owner << "<span class='ticket-text-received'>-- [input["admin"]] -> [key_name_params(ticket.owner, 0, 0, null, src)]: [log_item.text]</span>"
-							ticket.log += log_item
 				return msg
 
 var/feedback_set = 0

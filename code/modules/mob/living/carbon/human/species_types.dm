@@ -327,6 +327,10 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 /datum/species/android/get_spans()
 	return SPAN_ROBOT
 
+<<<<<<< HEAD
+=======
+#undef EATING_MESSAGE_COOLDOWN
+>>>>>>> 880cf67e1c96081df6daa43db013daad59b246eb
 /*
  PLANTPEOPLE
 */

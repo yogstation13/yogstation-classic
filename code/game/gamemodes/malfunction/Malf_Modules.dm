@@ -190,19 +190,38 @@
 
 	minor_announce("Automatic system reboot complete. Have a secure day.","Network reset:")
 
-/datum/AI_Module/large/disable_rcd
-	module_name = "RCD Disable"
+/datum/AI_Module/large/destroy_rcd //thanks for the better version, /tg/!
+	module_name = "RCD Destruction"
 	mod_pick_name = "rcd"
-	description = "Send a specialised pulse to break all RCD devices on the station."
+	description = "Send a specialised pulse to detonate all hand-held and exosuit Rapid Cconstruction Devices on the station."
 	cost = 50
 
 	power_type = /mob/living/silicon/ai/proc/disable_rcd
 
 /mob/living/silicon/ai/proc/disable_rcd()
 	set category = "Malfunction"
-	set name = "Disable RCDs"
+	set name = "Destroy RCDs"
+	set desc = "Detonate all RCDs on the station, while sparing onboard cyborg RCDs."
 
-	if(!canUseTopic())
+	if(!canUseTopic() || malf_cooldown)
+		return
+
+	for(var/obj/item/RCD in rcd_list)
+		if(!istype(RCD, /obj/item/weapon/rcd/borg)) //Ensures that cyborg RCDs are spared.
+			if(istype(RCD.loc, /obj/item/weapon/rapid_engineering_device))
+				RCD = RCD.loc
+			RCD.audible_message("<span class='danger'><b>[RCD] begins to vibrate and buzz loudly!</b></span>","<span class='danger'><b>[RCD] begins vibrating violently!</b></span>")
+			spawn(40) //4 seconds to get rid of it!
+				if(RCD) //Make sure it still exists (In case of chain-reaction)
+					explosion(RCD, 0, 0, 3, 1, flame_range = 1)
+					qdel(RCD)
+
+	src << "<span class='warning'>RCD detonation pulse emitted.</span>"
+	malf_cooldown = 1
+	spawn(100)
+		malf_cooldown = 0
+
+	/*if(!canUseTopic())
 		return
 
 	for(var/datum/AI_Module/large/disable_rcd/rcdmod in current_modules)
@@ -213,7 +232,7 @@
 			for(var/obj/item/mecha_parts/mecha_equipment/rcd/rcd in world)
 				rcd.disabled = 1
 			src << "<span class='warning>RCD-disabling pulse emitted.</span>"
-		else src << "<span class='notice'>Out of uses.</span>"
+		else src << "<span class='notice'>Out of uses.</span>"*/
 
 /datum/AI_Module/large/mecha_domination
 	module_name = "Viral Mech Domination"
