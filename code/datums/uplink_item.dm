@@ -469,16 +469,17 @@ var/list/uplink_items = list()
 
 /datum/uplink_item/stealthy_tools/syndigaloshes
 	name = "No-Slip Brown Shoes"
-	desc = "These allow you to run on wet floors. They do not work on lubricated surfaces."
+	desc = "These allow you to run on wet floors. They also work on lubricated surfaces."
 	item = /obj/item/clothing/shoes/sneakers/syndigaloshes
 	cost = 2
 	excludefrom = list(/datum/game_mode/nuclear)
 
 /datum/uplink_item/stealthy_tools/syndigaloshes/nuke
 	name = "Tactical No-Slip Brown Shoes"
-	desc = "These allow you to run on wet floors. They do work on lubricated surfaces, and the maker swears they're better than normal ones, somehow."
+	desc = "These allow you to run on wet floors. They also work on lubricated surfaces, and the maker swears they're better than normal ones, somehow."
 	cost = 4 //And they are, now.
 	gamemodes = list(/datum/game_mode/nuclear)
+	excludefrom = list()
 
 /datum/uplink_item/stealthy_tools/agent_card
 	name = "Agent Identification card"
