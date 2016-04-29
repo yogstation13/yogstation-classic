@@ -263,6 +263,8 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	roundstart = 0
 
 /datum/species/android/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
+	if(..())
+		return
 	if (istype(chem, /datum/reagent/consumable)) //paranoia paranoia type casting is coming to get me
 		var/datum/reagent/consumable/food = chem
 		if (food.nutriment_factor)
@@ -292,7 +294,6 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	H << "<span class='info'>Powerful ocular implants afford you greater vision in the darkness, but draw large amounts of power from your biological body. Should your stores run out, they will deactivate and leave you blind.</span>"
 	H << "<span class='info'>Normal food is worth only a fraction of its normal sustenance to you. You must instead draw your nourishment from power cells, tapping into the energy contained within. Beware electromagnetic pulses, for they would do grevious damage to your internal organs..</span>"
 	return ..()
-
 
 /*
  PLANTPEOPLE
