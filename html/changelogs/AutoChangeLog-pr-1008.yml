@@ -1,0 +1,4 @@
+author: Super3222
+delete-after: True
+changes: 
+  - tweak: "Secure crates health now is 300 aside from 1000."
