@@ -72,7 +72,7 @@
 	return replacetext(message, "z", stutter("zz"))
 
 /datum/species/human/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
-	if (istype(chem, /datum/reagent/consumable)) //paranoia paranoia type casting is coming to get me
+	if (..()(chem, /datum/reagent/consumable)) //paranoia paranoia type casting is coming to get me
 		var/datum/reagent/consumable/food = chem
 		if (food.nutriment_factor)
 			food.nutriment_factor = food.nutriment_factor * 0.2
@@ -85,6 +85,7 @@
 		H.adjustFireLoss(-1)
 		H.adjustToxLoss(-1)
 		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
+		H.nutrition += 3
 		return 1
 
 
@@ -165,10 +166,10 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 		return 1
 
 /datum/species/lizard/fly/handle_speech(message)
-	return replacetext(message, "z", stutter("zz"))
+	return replacetext(..(), "z", stutter("zz"))
 
 /datum/species/lizard/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
-	if (istype(chem, /datum/reagent/consumable)) //paranoia paranoia type casting is coming to get me
+	if (..()(chem, /datum/reagent/consumable)) //paranoia paranoia type casting is coming to get me
 		var/datum/reagent/consumable/food = chem
 		if (food.nutriment_factor)
 			food.nutriment_factor = food.nutriment_factor * 0.2
@@ -181,6 +182,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 		H.adjustFireLoss(-1)
 		H.adjustToxLoss(-1)
 		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
+		H.nutrition -= 3
 		return 1
 
 
@@ -255,13 +257,13 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	roundstart = 0
 
 /datum/species/android/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
-	if(chem.id == "pestkiller")
+	if(..() == "pestkiller")
 		H.adjustToxLoss(3)
 		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
 		return 1
 
-/datum/species/human/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
-	if (istype(chem, /datum/reagent/consumable)) //paranoia paranoia type casting is coming to get me
+/datum/species/android/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
+	if (..()(chem, /datum/reagent/consumable)) //paranoia paranoia type casting is coming to get me
 		var/datum/reagent/consumable/food = chem
 		if (food.nutriment_factor)
 			food.nutriment_factor = food.nutriment_factor * 0.2
@@ -274,6 +276,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 		H.adjustFireLoss(-1)
 		H.adjustToxLoss(-1)
 		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
+		H.nutrition += 3
 		return 1
 
 /datum/species/android/fly/handle_speech(message)
@@ -427,7 +430,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	default_color = "000000"
 
 /datum/species/plant/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
-	if(chem.id == "pestkiller")
+	if(..() == "pestkiller")
 		H.adjustToxLoss(3)
 		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
 		return 1
@@ -435,8 +438,8 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 /datum/species/plant/fly/handle_speech(message)
 	return replacetext(message, "z", stutter("zz"))
 
-/datum/species/human/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
-	if (istype(chem, /datum/reagent/consumable)) //paranoia paranoia type casting is coming to get me
+/datum/species/plant/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
+	if (..()(chem, /datum/reagent/consumable)) //paranoia paranoia type casting is coming to get me
 		var/datum/reagent/consumable/food = chem
 		if (food.nutriment_factor)
 			food.nutriment_factor = food.nutriment_factor * 0.2
@@ -449,6 +452,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 		H.adjustFireLoss(-1)
 		H.adjustToxLoss(-1)
 		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
+		H.nutrition += 3
 		return 1
 
 #undef EATING_MESSAGE_COOLDOWN
