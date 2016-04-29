@@ -157,16 +157,7 @@
 				if(new_s_tone)
 					H.skin_tone = new_s_tone
 
-			if(MUTCOLORS in H.dna.species.specflags)
-				var/new_mutantcolor = input(user, "Choose your skin color:", "Race change") as color|null
-				if(new_mutantcolor)
-					var/temp_hsv = RGBtoHSV(new_mutantcolor)
 
-					if(ReadHSV(temp_hsv)[3] >= ReadHSV("#7F7F7F")[3]) // mutantcolors must be bright
-						H.dna.features["mcolor"] = sanitize_hexcolor(new_mutantcolor)
-
-					else
-						H << "<span class='notice'>Invalid color. Your color is not bright enough.</span>"
 
 			H.regenerate_icons()
 
