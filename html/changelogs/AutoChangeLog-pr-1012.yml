@@ -1,4 +1,0 @@
-author: Cruix
-delete-after: True
-changes: 
-  - bugfix: "Deleting a security record will now set the person's security status to \"none\" instead of permanently leaving it at what is was at when the record was deleted."

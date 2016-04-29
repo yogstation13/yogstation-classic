@@ -1,5 +1,0 @@
-author: Cruix
-delete-after: True
-changes: 
-  - bugfix: "dual eswords no longer have 100% block chance."
-  - bugfix: "blocking attacks with shields or blocking weapons now properly shows a message that the attack was blocked."
