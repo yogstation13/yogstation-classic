@@ -99,12 +99,13 @@
 				return
 	if(user.s_active)
 		user.s_active.hide_from(user)
-	user.client.screen -= boxes
-	user.client.screen -= closer
-	user.client.screen -= contents
-	user.client.screen += boxes
-	user.client.screen += closer
-	user.client.screen += contents
+	if(user.client)
+		user.client.screen -= boxes
+		user.client.screen -= closer
+		user.client.screen -= contents
+		user.client.screen += boxes
+		user.client.screen += closer
+		user.client.screen += contents
 	user.s_active = src
 	is_seeing |= user
 

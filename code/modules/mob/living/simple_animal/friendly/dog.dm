@@ -108,7 +108,6 @@
 				icon_state = icon_dead
 		return
 	..()
-	update_corgi_fluff()
 
 
 
@@ -275,7 +274,7 @@
 	return valid
 
 /mob/living/simple_animal/pet/dog/corgi/proc/update_corgi_fluff()
-	switch(src.inventory_head.type)
+	switch(inventory_head.type)
 		if(/obj/item/clothing/head/helmet)
 			name = "Sergeant [real_name]"
 			desc = "The ever-loyal, the ever-vigilant."

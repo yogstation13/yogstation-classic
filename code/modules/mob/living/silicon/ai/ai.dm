@@ -4,9 +4,8 @@ var/list/ai_list = list()
 /proc/AutoUpdateAI(obj/subject)
 	var/is_in_use = 0
 	if (subject!=null)
-		for(var/A in ai_list)
-			var/mob/living/silicon/ai/M = A
-			if ((M.client && M.machine == subject))
+		for(var/mob/living/silicon/ai/M in ai_list)
+			if (M.client && M.machine == subject)
 				is_in_use = 1
 				subject.attack_ai(M)
 	return is_in_use

@@ -1110,11 +1110,14 @@
 
 /obj/effect/hallucination/cybermen_conversion/New(loc, var/mob/living/carbon/T)
 	target = T
+	matrix_turfs = new/list()
+	matrix_images = new/list()
 	..()
 
 
 /obj/effect/hallucination/cybermen_conversion/process()
-	target.client.images.Remove(matrix_images)
+	if(target.client)
+		target.client.images.Remove(matrix_images)
 	matrix_turfs.Cut()
 	matrix_images.Cut()
 	if(percent_complete > 50)
@@ -1130,8 +1133,7 @@
 		for(var/turf/T in matrix_turfs)
 			matrix_images += image(image_icon,T,image_state,MOB_LAYER)
 
-		if(target.client)
-			target.client.images |= matrix_images
+		target.client.images |= matrix_images
 
 
 /obj/effect/hallucination/cybermen_conversion/Destroy()

@@ -171,8 +171,7 @@
 
 /datum/objective/cybermen/expand/hack_ai/New()
 	..()
-	for(var/V in ai_list)
-		var/mob/living/silicon/ai/new_ai = V
+	for(var/mob/living/silicon/ai/new_ai in ai_list)
 		if(new_ai && new_ai.key)
 			targetAI = new_ai
 			explanation_text = "Hack [targetAI.name], the AI. This can be done through the AI core, an intellicard holding the AI, or an AI law upload console set to the AI."
@@ -183,8 +182,7 @@
 
 /datum/objective/cybermen/expand/hack_ai/make_valid()
 	targetAI = null
-	for(var/V in ai_list)
-		var/mob/living/silicon/ai/new_ai = V
+	for(var/mob/living/silicon/ai/new_ai in ai_list)
 		if(new_ai && new_ai.key)
 			targetAI = new_ai
 			explanation_text = "Hack [targetAI.name], the AI. This can be done through the AI core, an intellicard holding the AI, or an AI law upload console set to the AI."
@@ -201,8 +199,7 @@
 	if(alert("Select required AI?", user, "Select", "Random") == "Random")
 		return
 	var/list/L = list()
-	for(var/A in ai_list)
-		var/mob/living/silicon/AI = A
+	for(var/mob/living/silicon/ai/AI in ai_list)
 		L[AI.name] = AI
 	if(!L.len)
 		alert("No AI candidates", user)
