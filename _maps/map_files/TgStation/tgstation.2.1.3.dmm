@@ -179,7 +179,7 @@
 "adw" = (/obj/structure/table/wood,/obj/machinery/recharger,/turf/simulated/floor/carpet,/area/security/hos)
 "adx" = (/obj/machinery/light{dir = 4; icon_state = "tube1"},/obj/structure/table/wood,/obj/item/weapon/storage/box/seccarts{pixel_x = 3; pixel_y = 2},/obj/item/weapon/storage/box/deputy,/obj/item/device/radio/security,/turf/simulated/floor/carpet,/area/security/hos)
 "ady" = (/turf/simulated/wall,/area/maintenance/fsmaint)
-"adz" = (/obj/machinery/door/airlock/external{name = "Security External Airlock"; req_access_txt = "63; 13"},/turf/simulated/floor/plating,/area/maintenance/fsmaint)
+"adz" = (/obj/machinery/door/airlock/external{name = "Security External Airlock"; req_access_txt = "63"},/turf/simulated/floor/plating,/area/maintenance/fsmaint)
 "adA" = (/obj/structure/stool/bed/nest,/obj/effect/landmark{name = "blobstart"},/obj/effect/spawner/lootdrop/seekrit,/turf/simulated/floor/plasteel{tag = "icon-plasma_dam (NORTH)"; icon_state = "plasma_dam"; dir = 1},/area/security/prison)
 "adB" = (/obj/machinery/atmospherics/pipe/simple/scrubbers/hidden,/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"; pixel_y = 0; tag = ""},/turf/simulated/floor/plating,/area/security/prison)
 "adC" = (/obj/machinery/atmospherics/components/unary/vent_pump{on = 1},/obj/machinery/flasher{id = "PCell 3"; pixel_x = -28},/turf/simulated/floor/plasteel{icon_state = "floorgrime"},/area/security/prison)
