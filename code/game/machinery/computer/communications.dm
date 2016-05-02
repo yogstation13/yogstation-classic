@@ -9,7 +9,7 @@ var/const/CALL_SHUTTLE_REASON_LENGTH = 12
 	icon_screen = "comm"
 	icon_keyboard = "tech_key"
 	req_access = list(access_heads)
-	circuit = /obj/item/weapon/circuitboard/communications
+	circuit = /obj/item/weapon/circuitboard/cooldown_holder/communications
 	var/authenticated = 0
 	var/auth_id = "Unknown" //Who is currently logged in?
 	var/list/messagetitle = list()
@@ -57,7 +57,7 @@ var/const/CALL_SHUTTLE_REASON_LENGTH = 12
 
 	if(!href_list["operation"])
 		return
-	var/obj/item/weapon/circuitboard/communications/CM = circuit
+	var/obj/item/weapon/circuitboard/cooldown_holder/communications/CM = circuit
 	switch(href_list["operation"])
 		// main interface
 		if("main")
@@ -215,7 +215,7 @@ var/const/CALL_SHUTTLE_REASON_LENGTH = 12
 				Centcomm_announce(input, usr)
 				usr << "Message transmitted."
 				log_say("[key_name(usr)] has made a Centcom announcement: [input]")
-				CM.lastTimeUsed = world.time
+				CM.nextAllowedTime = world.time + 600
 
 
 		// OMG SYNDICATE ...LETTERHEAD
@@ -230,7 +230,7 @@ var/const/CALL_SHUTTLE_REASON_LENGTH = 12
 				Syndicate_announce(input, usr)
 				usr << "Message transmitted."
 				log_say("[key_name(usr)] has made a Syndicate announcement: [input]")
-				CM.lastTimeUsed = world.time
+				CM.nextAllowedTime = world.time + 600
 
 		if("RestoreBackup")
 			usr << "Backup routing data restored!"
@@ -250,7 +250,7 @@ var/const/CALL_SHUTTLE_REASON_LENGTH = 12
 				log_say("[key_name(usr)] has requested the nuclear codes from Centcomm")
 				priority_announce("The codes for the on-station nuclear self-destruct have been requested by [usr]. Confirmation or denial of this request will be sent shortly.", "Nuclear Self Destruct Codes Requested",'sound/AI/commandreport.ogg')
 
-				CM.lastTimeUsed = world.time
+				CM.nextAllowedTime = world.time + 600
 
 
 		// AI interface
