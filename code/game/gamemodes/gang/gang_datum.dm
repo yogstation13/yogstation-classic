@@ -179,7 +179,7 @@
 			dom_timer = new_time
 		message += "<b>[dom_timer] seconds remain</b> in hostile takeover.<BR>"
 	else
-		var/points_new = min(999,points + 3 + (uniformed * 4) + (territory.len * 2))
+		var/points_new = min(999,points + 3 + (uniformed * 6) + (territory.len * 2))
 		if(points_new != points)
 			message += "Gang influence has increased by [points_new - points] for defending [territory.len] territories and [uniformed] uniformed gangsters.<BR>"
 		points = points_new

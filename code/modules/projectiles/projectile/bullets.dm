@@ -20,7 +20,7 @@
 	stamina = 50
 
 /obj/item/projectile/bullet/weakbullet3
-	damage = 15
+	damage = 17
 
 /obj/item/projectile/bullet/pellet
 	name = "pellet"
@@ -33,7 +33,7 @@
 	damage = rand(10)
 
 /obj/item/projectile/bullet/midbullet
-	damage = 18
+	damage = 20
 
 /obj/item/projectile/bullet/midbullet2
 	damage = 25

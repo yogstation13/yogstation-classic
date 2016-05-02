@@ -1,7 +1,7 @@
 //gangtool device
 /obj/item/device/gangtool
 	name = "suspicious device"
-	desc = "A strange device of sorts. Hard to really make out what it actually does if you don't know how to operate it."
+	desc = "A strange device of sorts. Hard to really make out what it actually does if you don't know how to operate it. May want to test the loyalty to Nanotrasen of the owner."
 	icon_state = "gangtool-white"
 	item_state = "walkietalkie"
 	throwforce = 0
@@ -86,8 +86,8 @@
 			else
 				dat += "10mm Ammo<br>"
 
-			dat += "(40 Influence) "
-			if(points >= 40)
+			dat += "(45 Influence) "
+			if(points >= 45)
 				dat += "<a href='?src=\ref[src];purchase=uzi'>Uzi SMG</a><br>"
 			else
 				dat += "Uzi SMG<br>"
@@ -98,8 +98,8 @@
 			else
 				dat += "Uzi Ammo<br>"
 
-			dat += "(60 Influence) "
-			if(points >= 60)
+			dat += "(65 Influence) "
+			if(points >= 65)
 				dat += "<a href='?src=\ref[src];purchase=tommy gun'>Thompson SMG</a><br>"
 			else
 				dat += "Thompson SMG<br>"
@@ -109,6 +109,12 @@
 				dat += "<a href='?src=\ref[src];purchase=.45ammo'>Thompson Ammo</a><br>"
 			else
 				dat += "Thompson Ammo<br>"
+
+			dat += "(1 Influence) "
+			if(points >= 1)
+				dat += "<a href='?src=\ref[src];purchase=gold necklace'>Gold Necklace</a><br>"
+			else
+				dat += "Gold Necklace<br>"
 
 			dat += "<br>"
 
@@ -122,12 +128,6 @@
 				dat += "<a href='?src=\ref[src];purchase=bostaff'>Bo Staff</a><br>"
 			else
 				dat += "Bo Staff<br>"
-
-			dat += "(15 Influence) "
-			if(points >= 15)
-				dat += "<a href='?src=\ref[src];purchase=wrestlingbelt'>Wrestling Belt</a><br>"
-			else
-				dat += "Wrestling Belt<br>"
 
 			dat += "(25 Influence) "
 			if(points >= 25)
@@ -222,9 +222,9 @@
 		var/item_type
 		switch(href_list["purchase"])
 			if("spraycan")
-				if(gang.points >= 2)
+				if(gang.points >= 3)
 					item_type = /obj/item/toy/crayon/spraycan/gang
-					pointcost = 2
+					pointcost = 3
 			if("switchblade")
 				if(gang.points >= 10)
 					item_type = /obj/item/weapon/switchblade
@@ -238,17 +238,17 @@
 					item_type = /obj/item/ammo_box/magazine/m10mm
 					pointcost = 10
 			if("uzi")
-				if(gang.points >= 40)
+				if(gang.points >= 45)
 					item_type = /obj/item/weapon/gun/projectile/automatic/mini_uzi
-					pointcost = 40
+					pointcost = 45
 			if("9mmammo")
 				if(gang.points >= 15)
 					item_type = /obj/item/ammo_box/magazine/uzim9mm
 					pointcost = 15
 			if("tommy gun")
-				if(gang.points >= 60)
+				if(gang.points >= 65)
 					item_type = /obj/item/weapon/gun/projectile/automatic/tommygun
-					pointcost = 60
+					pointcost = 65
 			if(".45ammo")
 				if(gang.points >= 20)
 					item_type = /obj/item/ammo_box/magazine/tommygunm45
@@ -257,24 +257,23 @@
 				if(gang.points >= 25)
 					item_type = /obj/item/weapon/sleeping_carp_scroll
 					usr << "<span class='notice'>Anyone who reads the <b>sleeping carp scroll</b> will learn secrets of the sleeping carp martial arts style.</span>"
-					pointcost = 30
+					pointcost = 25
 			if("throwing stars box")
 				if(gang.points >= 50)
 					item_type = /obj/item/weapon/storage/box/throwing_stars
 					pointcost = 50
-			if("wrestlingbelt")
-				if(gang.points >= 20)
-					item_type = /obj/item/weapon/storage/belt/champion/wrestling
-					usr << "<span class='notice'>Anyone wearing the <b>wresting belt</b> will know how to be effective with wrestling.</span>"
-					pointcost = 20
+			if("gold necklace")
+				if(gang.points >= 1)
+					item_type = /obj/item/clothing/tie/dope_necklace
+					pointcost = 1
 			if("bostaff")
 				if(gang.points >= 10)
 					item_type = /obj/item/weapon/twohanded/bostaff
 					pointcost = 10
 			if("C4")
-				if(gang.points >= 10)
+				if(gang.points >= 5)
 					item_type = /obj/item/weapon/c4
-					pointcost = 10
+					pointcost = 5
 			if("pen")
 				if((gang.points >= 50) || free_pen)
 					item_type = /obj/item/weapon/pen/gang
@@ -351,9 +350,7 @@
 	var/message = stripped_input(user,"Discreetly send a gang-wide message.","Send Message") as null|text
 	if(!message || !can_use(user))
 		return
-	if(user.z > 2)
-		user << "<span class='info'>\icon[src]Error: Station out of range.</span>"
-		return
+
 	var/list/members = list()
 	members += gang.gangsters
 	members += gang.bosses
