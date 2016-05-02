@@ -377,4 +377,4 @@
 	item_state = "hardsuit-command"
 	helmettype = /obj/item/clothing/head/helmet/space/hardsuit/eva/command
 	armor = list(melee = 20, bullet = 10, laser = 20, energy = 5, bomb = 15, bio = 100, rad = 90)
-	slowdown = 1
+	slowdown = 2
