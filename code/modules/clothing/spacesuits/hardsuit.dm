@@ -362,3 +362,21 @@
 	desc = "A special bulky suit that protects against hazardous, low pressure environments. Has an additional layer of armor."
 	armor = list(melee = 45, bullet = 25, laser = 30, energy = 10, bomb = 25, bio = 100, rad = 50)
 	helmettype = /obj/item/clothing/head/helmet/space/hardsuit/security/hos
+
+//EVA hardsuit
+/obj/item/clothing/head/helmet/space/hardsuit/eva/command
+	name = "command EVA hardsuit helmet"
+	desc = "An improved EVA helmet made for the heads of station"
+	icon_state = "hardsuit0-command"
+	item_state = "hardsuit0-command"
+	item_color = "command"
+	armor = list(melee = 20, bullet = 10, laser = 20, energy = 5, bomb = 15, bio = 100, rad = 90)
+
+/obj/item/clothing/suit/space/hardsuit/eva/command
+	name = "command EVA hardsuit"
+	desc = "An improved EVA suit made for the heads of station"
+	icon_state = "hardsuit-command"
+	item_state = "hardsuit-command"
+	helmettype = /obj/item/clothing/head/helmet/space/hardsuit/eva/command
+	armor = list(melee = 20, bullet = 10, laser = 20, energy = 5, bomb = 15, bio = 100, rad = 90)
+	slowdown = 2
