@@ -91,7 +91,7 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 
 
 /obj/effect/rune
-	desc = "A strange collection of symbols drawn in blood."
+	desc = "A strange collection of symbols drawn in blood. This rune concentrates all the evil power of Nar'Sie, destined to help his followers accomplish his dark goals. You can feel the arcane energies emanating from it."
 	anchored = 1
 	icon = 'icons/obj/rune.dmi'
 	icon_state = "1"
@@ -326,7 +326,7 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 
 /obj/item/weapon/tome
 	name = "arcane tome"
-	desc = "An old, dusty tome with frayed edges and a sinister looking cover."
+	desc = "The scriptures of Nar-Sie, The One Who Sees, The Geometer of Blood. Contains the details of every ritual his followers could think of. Used by cultists to create various magic runes with their own blood, by using special symbols in an ancient dialect. "
 	icon = 'icons/obj/library.dmi'
 	icon_state ="culttome"
 	throw_speed = 2
@@ -634,7 +634,7 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 					return
 
 				for (var/mob/V in viewers(src))
-					V.show_message("<span class='danger'>[user] slices open a finger and begins to chant and paint symbols on the floor.</span>", 3, "<span class='italics'>You hear chanting.</span>", 2)
+					V.show_message("<span class='danger'>[user] slices open a finger and begins to chant and paint symbols on the floor. Dark arcane energies seem to emanate from the symbols...</span>", 3, "<span class='italics'>You hear chanting.</span>", 2)
 				user << "<span class='userdanger'>You slice open one of your fingers and begin drawing a rune on the floor whilst chanting the ritual that binds your life essence with the dark arcane energies flowing through the surrounding world.</span>"
 				user.take_overall_damage((rand(9)+1)/10) // 0.1 to 1.0 damage
 				if(do_after(user, 50, target = user))
@@ -652,7 +652,7 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 					R.blood_DNA[H.dna.unique_enzymes] = H.dna.blood_type
 				return
 	else
-		user << "The book seems full of illegible scribbles. Is this a joke?"
+		user << "As you try to open the book, you feel dark energies emanating from the strange symbols and your hands unwillingly close the tome. Your head hurts... "
 		return
 
 /obj/item/weapon/tome/attackby(obj/item/weapon/tome/T, mob/living/user, params)
@@ -668,12 +668,6 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 		for(var/entry in words)
 			words[entry] = T.words[entry]
 		user << "<span class='notice'>You copy the translation notes from your tome.</span>"
-
-
-/obj/item/weapon/tome/examine(mob/user)
-	..()
-	if(iscultist(user))
-		user << "The scriptures of Nar-Sie, The One Who Sees, The Geometer of Blood. Contains the details of every ritual his followers could think of."
 
 /obj/item/weapon/tome/imbued //admin tome, spawns working runes without waiting
 	w_class = 2.0
