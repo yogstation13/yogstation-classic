@@ -5,7 +5,7 @@
 	chemical_cost = 30 //High cost to prevent spam
 	dna_cost = 2
 	req_human = 1
-	genetic_damage = 10
+	genetic_damage = 15
 	max_genetic_damage = 0
 
 
@@ -22,7 +22,7 @@
 			return 0
 		user.visible_message("<span class='warning'>[user] vomits a glob of acid on \his [O]!</span>", \
 							 "<span class='warning'>We vomit acidic ooze onto our restraints!</span>")
-		spawn(30)
+		spawn(80)
 			if(O && user.handcuffed == O)
 				user.unEquip(O)
 				O.visible_message("<span class='warning'>[O] dissolves into a puddle of sizzling goop.</span>")
@@ -36,7 +36,7 @@
 			return 0
 		user.visible_message("<span class='warning'>[user] vomits a glob of acid across the front of \his [S]!</span>", \
 							 "<span class='warning'>We vomit acidic ooze onto our straight jacket!</span>")
-		spawn(30)
+		spawn(100)
 			if(S && user.wear_suit == S)
 				user.unEquip(S)
 				S.visible_message("<span class='warning'>[S] dissolves into a puddle of sizzling goop.</span>")
@@ -50,7 +50,7 @@
 			return 0
 		C.visible_message("<span class='warning'>[C]'s hinges suddenly begin to melt and run!</span>")
 		user << "<span class='warning'>We vomit acidic goop onto the interior of [C]!</span>"
-		spawn(70)
+		spawn(100)
 			if(C && user.loc == C)
 				C.visible_message("<span class='warning'>[C]'s door breaks and opens!</span>")
 				C.welded = 0

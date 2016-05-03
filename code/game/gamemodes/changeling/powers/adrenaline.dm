@@ -6,6 +6,7 @@
 	dna_cost = 2
 	req_human = 1
 	req_stat = UNCONSCIOUS
+	max_genetic_damage = 10
 
 //Recover from stuns.
 /obj/effect/proc_holder/changeling/adrenaline/sting_action(mob/living/user)
