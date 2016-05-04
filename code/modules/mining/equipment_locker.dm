@@ -763,7 +763,56 @@
 		SetOffenseBehavior()
 	..()
 
-/**********************Lazarus Injector**********************/
+//**********************Minebot Upgrades**********************/
+
+//Melee
+
+/obj/item/device/mine_bot_ugprade
+	name = "minebot melee upgrade"
+	desc = "A minebot upgrade."
+	icon_state = "door_electronics"
+	icon = 'icons/obj/module.dmi'
+
+/obj/item/device/mine_bot_ugprade/afterattack(mob/living/simple_animal/hostile/mining_drone/M, mob/user)
+	if(!istype(M))
+		return
+	upgrade_bot(M, user)
+
+/obj/item/device/mine_bot_ugprade/proc/upgrade_bot(mob/living/simple_animal/hostile/mining_drone/M, mob/user)
+	if(M.melee_damage_upper != initial(M.melee_damage_upper))
+		user << "[src] already has a combat upgrade installed!"
+		return
+	M.melee_damage_lower = 22
+	M.melee_damage_upper = 22
+	qdel(src)
+
+//Health
+
+/obj/item/device/mine_bot_ugprade/health
+	name = "minebot chassis upgrade"
+
+/obj/item/device/mine_bot_ugprade/health/upgrade_bot(mob/living/simple_animal/hostile/mining_drone/M, mob/user)
+	if(M.maxHealth != initial(M.maxHealth))
+		user << "[src] already has a reinforced chassis!"
+		return
+	M.maxHealth = 170
+	qdel(src)
+
+
+//Cooldown
+
+/obj/item/device/mine_bot_ugprade/cooldown
+	name = "minebot cooldown upgrade"
+
+/obj/item/device/mine_bot_ugprade/cooldown/upgrade_bot(mob/living/simple_animal/hostile/mining_drone/M, mob/user)
+	name = "minebot cooldown upgrade"
+	if(M.ranged_cooldown_cap != initial(M.ranged_cooldown_cap))
+		user << "[src] already has a decreased weapon cooldown!"
+		return
+	M.ranged_cooldown_cap = 1
+	qdel(src)
+
+//*********************Lazarus Injector**********************/
 
 /obj/item/weapon/lazarus_injector
 	name = "lazarus injector"
