@@ -770,13 +770,16 @@
 /obj/item/device/mine_bot_ugprade
 	name = "minebot melee upgrade"
 	desc = "A minebot upgrade."
-	icon_state = "door_electronics"
 	icon = 'icons/obj/module.dmi'
+	icon_state = "cyborg_upgrade3"
+
 
 /obj/item/device/mine_bot_ugprade/afterattack(mob/living/simple_animal/hostile/mining_drone/M, mob/user)
 	if(!istype(M))
 		return
 	upgrade_bot(M, user)
+	user.visible_message("[user.name] has upgraded the minebot.",\
+						"<span class='notice'>You upgrade the minebot.</span>")
 
 /obj/item/device/mine_bot_ugprade/proc/upgrade_bot(mob/living/simple_animal/hostile/mining_drone/M, mob/user)
 	if(M.melee_damage_upper != initial(M.melee_damage_upper))
@@ -797,7 +800,6 @@
 		return
 	M.maxHealth = 170
 	qdel(src)
-
 
 //Cooldown
 
