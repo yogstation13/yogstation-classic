@@ -290,8 +290,8 @@
 		new /datum/data/mining_equipment("Jetpack",             	/obj/item/weapon/tank/jetpack/carbondioxide/mining,               1500),
 		new /datum/data/mining_equipment("Space Cash",    			/obj/item/stack/spacecash/c1000,                    			  2000),
 		new /datum/data/mining_equipment("Point Transfer Card", 	/obj/item/weapon/card/mining_point_card,               			   500),
-		new /datum/data/mining_equipment("Minedrone Melee Upgrade", /obj/item/device/mine_bot_ugprade,								   300),
-		new /datum/data/mining_equipment("Minedrone Health Upgrade", /obj/item/device/mine_bot_ugprade/health,						   400),
+		new /datum/data/mining_equipment("Minedrone Melee Upgrade", /obj/item/device/mine_bot_ugprade,								   500),
+		new /datum/data/mining_equipment("Minedrone Health Upgrade", /obj/item/device/mine_bot_ugprade/health,						   500),
 		new /datum/data/mining_equipment("Minedrone Cooldown Upgrade", /obj/item/device/mine_bot_ugprade/cooldown,					   500),
 		)
 
@@ -694,15 +694,15 @@
 			M << "<span class='info'>[src] does not seem to respond.</span>"
 			return
 		switch(mode)
+			if(3)
+				SetCollectBehavior()
+				M << "<span class='info'>[src] has been set to search and store loose ore.</span>"
 			if(2)
 				SetInactiveBehavior()
 				M <<"<span class='info'>[src] has been set to idle.</span>"
 			if(1)
 				SetOffenseBehavior()
 				M << "<span class='info'>[src] has been set to attack hostile wildlife.</span>"
-			if(3)
-				SetCollectBehavior()
-				M << "<span class='info'>[src] has been set to search and store loose ore.</span>"
 		return
 	..()
 
