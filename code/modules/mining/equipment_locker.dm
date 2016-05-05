@@ -623,6 +623,7 @@
 	melee_damage_upper = 15
 	environment_smash = 0
 	var/emagged = 0 //Allow drones to be emagged.
+	var/mode = 0
 	attacktext = "drills"
 	attack_sound = 'sound/weapons/circsawhit.ogg'
 	ranged = 1
@@ -692,19 +693,23 @@
 		if(emagged == 2)
 			M << "<span class='info'>[src] does not seem to respond.</span>"
 			return
-		switch(search_objects)
-			if(0)
-				SetCollectBehavior()
-				M << "<span class='info'>[src] has been set to search and store loose ore.</span>"
+		switch(mode)
 			if(2)
+				SetInactiveBehavior()
+				M <<"<span class='info'>[src] has been set to idle.</span>"
+			if(1)
 				SetOffenseBehavior()
 				M << "<span class='info'>[src] has been set to attack hostile wildlife.</span>"
+			if(3)
+				SetCollectBehavior()
+				M << "<span class='info'>[src] has been set to search and store loose ore.</span>"
 		return
 	..()
 
 /mob/living/simple_animal/hostile/mining_drone/proc/SetCollectBehavior()
 	if(emagged == 2)
 		return
+	mode = 1
 	idle_vision_range = 9
 	search_objects = 2
 	wander = 1
@@ -716,6 +721,7 @@
 /mob/living/simple_animal/hostile/mining_drone/proc/SetOffenseBehavior()
 	if(emagged == 2)
 		return
+	mode = 2
 	idle_vision_range = 7
 	search_objects = 0
 	wander = 0
@@ -723,6 +729,19 @@
 	retreat_distance = 1
 	minimum_distance = 2
 	icon_state = "mining_drone_offense"
+
+/mob/living/simple_animal/hostile/mining_drone/proc/SetInactiveBehavior()
+	if(emagged == 2)
+		return
+	mode = 3
+	idle_vision_range = 3
+	search_objects = 0
+	wander = 0
+	ranged = 0
+	minimum_distance = 0
+	retreat_distance = null
+	icon_state = "mining_drone_idle"
+
 
 /mob/living/simple_animal/hostile/mining_drone/proc/SetEmagBehavior()
 	idle_vision_range = 9
@@ -762,7 +781,7 @@
 	return
 
 /mob/living/simple_animal/hostile/mining_drone/adjustBruteLoss()
-	if(search_objects)
+	if(mode)
 		SetOffenseBehavior()
 	..()
 
