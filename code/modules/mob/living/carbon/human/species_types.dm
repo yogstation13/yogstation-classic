@@ -287,39 +287,6 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 /datum/species/android/fly/handle_speech(message)
 	return replacetext(message, "z", stutter("zz"))
 
-/datum/species/android/fly/handle_emp(mob/living/carbon/human/H, severity)
-	..()
-	H.lastburntype = "electric"
-	switch(severity)
-		if(1)
-			H.adjustBruteLoss(10)
-			H.adjustFireLoss(10)
-			H.Stun(5)
-			H.nutrition = H.nutrition * 0.4
-			H.visible_message("<span class='danger'>Electricity ripples over [H]'s subdermal implants, smoking profusely.</span>", \
-							"<span class='userdanger'>A surge of searing pain erupts throughout your very being! As the pain subsides, a terrible sensation of emptiness is left in its wake.</span>")
-			H.attack_log += "Was hit with a severity 3(severe) EMP as an android. Lost 20 health."
-		if(2)
-			H.adjustBruteLoss(5)
-			H.adjustFireLoss(5)
-			H.Stun(2)
-			H.nutrition = H.nutrition * 0.6
-			H.visible_message("<span class='danger'>A faint fizzling emanates from [H].</span>", \
-							"<span class='userdanger'>A fit of twitching overtakes you as your subdermal implants convulse violently from the electromagnetic disruption. Your sustenance reserves have been partially depleted from the blast.</span>")
-			H.emote("twitch")
-			H.attack_log += "Was hit with a severity 2(medium) EMP as an android. Lost 10 health."
-		if(3)
-			H.adjustFireLoss(2)
-			H.adjustBruteLoss(3)
-			H.Stun(1)
-			H.nutrition = H.nutrition * 0.8
-			H.emote("scream")
-			H.attack_log += "Was hit with a severity 3(light) EMP as an android. Lost 5 health."
-
-/datum/species/android/fly/get_spans()
-	return SPAN_ROBOT
-
-
 /datum/species/android/before_equip_job(datum/job/J, mob/living/carbon/human/H)
 	H << "<span class='info'><b>You are a Preternis.</b> Half-human, half-silicon, you lie in the nebulous between of the two lifeforms, neither one, nor the other.</span>"
 	H << "<span class='info'>Powerful ocular implants afford you greater vision in the darkness, but draw large amounts of power from your biological body. Should your stores run out, they will deactivate and leave you blind.</span>"
