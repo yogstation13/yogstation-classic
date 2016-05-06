@@ -179,7 +179,7 @@ var/global/list/spec_roles = list(
 				max_save_slots = DONOR_CHARACTER_SLOTS
 	var/loaded_preferences_successfully = load_preferences()
 	//make sure they're not carrying any donator stuff from back when they were an admin.
-	if(!is_donator(C))
+	if(!is_donator(src))
 		if(UI_style_carbon in donator_carbon_uis)
 			UI_style_carbon = DEFAULT_CARBON_UI
 		if(UI_style_borg in donator_borg_uis)
@@ -188,7 +188,7 @@ var/global/list/spec_roles = list(
 			UI_style_ai = DEFAULT_AI_UI
 	if(loaded_preferences_successfully)
 		if(load_character())
-			if(!is_whitelisted(C))
+			if(!is_whitelisted(src))
 				job_civilian_ultra = 0
 				job_medsci_ultra = 0
 				job_engsec_ultra = 0
