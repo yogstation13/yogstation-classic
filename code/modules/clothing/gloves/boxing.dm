@@ -23,4 +23,4 @@
 	desc = "Knuckle up son!"
 	icon_state = "brassknuckles"
 	item_state = "brassknuckles"
-	strip_delay = 20
+	strip_delay = 20  //Super fast to strip, to counter being un-droppable

@@ -124,6 +124,39 @@
 				dat += "Sleeping Carp Scroll (one-use)<br>"
 			dat += "<br>"
 
+		else if(gang.fighting_style == "street_fighting")
+			dat += "(10 Influence) "
+			if(points >= 12)
+				dat += "<a href='?src=\ref[src];purchase=brassknuckles'>Brass Knucles</a><br>"
+			else
+				dat += "Brass Knuckles<br>"
+
+			dat += "(25 Influence) "
+			if(points >= 25)
+				dat += "<a href='?src=\ref[src];purchase=pistol'>10mm Pistol</a><br>"
+			else
+				dat += "10mm Pistol<br>"
+
+			dat += "&nbsp;&#8627;(10 Influence) "
+			if(points >= 10)
+				dat += "<a href='?src=\ref[src];purchase=10mmammo'>10mm Ammo</a><br>"
+			else
+				dat += "10mm Ammo<br>"
+
+			dat += "(60 Influence) "
+			if(points >= 60)
+				dat += "<a href='?src=\ref[src];purchase=uzi'>Uzi SMG</a><br>"
+			else
+				dat += "Uzi SMG<br>"
+
+			dat += "&nbsp;&#8627;(40 Influence) "
+			if(points >= 40)
+				dat += "<a href='?src=\ref[src];purchase=9mmammo'>Uzi Ammo</a><br>"
+			else
+				dat += "Uzi Ammo<br>"
+
+			dat += "<br>"
+
 		////////////////////////
 		// STANDARD EQUIPMENT //
 		////////////////////////
@@ -209,6 +242,10 @@
 				if(gang.points >= 10)
 					item_type = /obj/item/weapon/switchblade
 					pointcost = 10
+			if("brassknuckles")
+				if(gang.points >= 12)
+					item_type = /obj/item/clothing/gloves/brass_knuckles
+					pointcost = 12
 			if("pistol")
 				if(gang.points >= 25)
 					item_type = /obj/item/weapon/gun/projectile/automatic/pistol
