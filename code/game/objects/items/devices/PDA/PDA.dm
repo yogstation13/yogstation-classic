@@ -272,6 +272,8 @@ var/global/list/obj/item/device/pda/PDAs = list()
 
 //NOTE: graphic resources are loaded on client login
 /obj/item/device/pda/attack_self(mob/user)
+	var/datum/asset/simple/pda/assetcache = new()
+	send_asset_list(user, assetcache.assets, verify = FALSE)
 
 	user.set_machine(src)
 

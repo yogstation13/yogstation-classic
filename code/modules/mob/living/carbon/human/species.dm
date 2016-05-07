@@ -1164,8 +1164,10 @@
 	if((H.status_flags & GODMODE))
 		return
 
-	if(!breath || (breath.total_moles() == 0))
-		if(H.reagents.has_reagent("epinephrine"))
+	var/lungs = H.getorganslot("lungs")
+
+	if(!breath || (breath.total_moles() == 0) || !lungs)
+		if(H.reagents.has_reagent("epinephrine") && lungs)
 			return
 		if(H.health >= config.health_threshold_crit)
 			if(NOBREATH in specflags)	return 1

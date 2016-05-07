@@ -1238,3 +1238,9 @@
 /mob/living/silicon/robot/gutsy_standard
 	icon_state = "gutsy_standard"
 
+/mob/living/silicon/robot/canUseTopic(atom/movable/M, be_close = 0)
+	if(stat || lockcharge)
+		return
+	if(be_close && !in_range(M, src))
+		return
+	return 1

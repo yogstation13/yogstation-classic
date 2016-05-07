@@ -819,3 +819,15 @@ var/list/ai_list = list()
 
 /mob/living/silicon/ai/flash_eyes(intensity = 1, override_blindness_check = 0, affect_silicon = 0)
 	return // no eyes, no flashing
+
+/mob/living/silicon/ai/canUseTopic(atom/movable/M, be_close = 0)
+	if(stat)
+		return
+	if(be_close && !in_range(M, src))
+		return
+	//stop AIs from leaving windows open and using then after they lose vision
+	//apc_override is needed here because AIs use their own APC when powerless
+	//get_turf_pixel() is because APCs in maint aren't actually in view of the inner camera
+	if(M && cameranet && !cameranet.checkTurfVis(get_turf_pixel(M)) && !apc_override)
+		return
+	return 1
