@@ -41,6 +41,3 @@
 
 /atom/movable/proc/get_ui_data(mob/user)
 	return list()
-
-// Used by the Nano UI SubSystem (/datum/subsystem/nano) to track UIs opened by this mob
-/mob/var/list/open_uis = list()
