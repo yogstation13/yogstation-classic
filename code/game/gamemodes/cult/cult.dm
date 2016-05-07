@@ -48,7 +48,7 @@
 	antag_flag = BE_CULTIST
 	restricted_jobs = list("Chaplain","AI", "Cyborg", "Security Officer", "Warden", "Detective", "Head of Security", "Captain", "Head of Personnel", "Recovery Agent")
 	protected_jobs = list()
-	required_players = 20
+	required_players = 35 //no more low pop curbstomping
 	required_enemies = 6
 	recommended_enemies = 6
 	enemy_minimum_age = 14
@@ -61,7 +61,7 @@
 
 	var/eldergod = 1 //for the summon god objective
 
-	var/acolytes_needed = 10 //for the survive objective
+	var/acolytes_needed = 15 //for the survive objective
 	var/acolytes_survived = 0
 
 	var/global/list/tomestates = list("book", "book1", "book2", "book3", "book4", "book5", "book6", "book7", "bookHacking",
@@ -76,16 +76,12 @@
 
 
 /datum/game_mode/cult/pre_setup()
-	if(prob(50))
+	if(prob(65))
 		cult_objectives += "survive"
 		cult_objectives += "sacrifice"
 	else
 		cult_objectives += "eldergod"
 		cult_objectives += "sacrifice"
-
-	if(num_players() >= 30)
-		recommended_enemies = 9	// 3+3+3 - d' magic number o' magic numbars mon
-		acolytes_needed = 15
 
 	if(config.protect_roles_from_antagonist)
 		restricted_jobs += protected_jobs

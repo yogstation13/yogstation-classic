@@ -22,15 +22,38 @@
 
 /obj/item/weapon/nullrod
 	name = "null rod"
-	desc = "A rod of pure obsidian, its very presence disrupts and dampens the powers of Nar-Sie's followers."
+	desc = "A rod of pure obsidian, its very presence disrupts and dampens the powers of Nar-Sie's followers and is able to inflict heavy blows on them."
 	icon_state = "nullrod"
 	item_state = "nullrod"
 	slot_flags = SLOT_BELT
 	force = 15
+	var/force_vscult = 25
 	throw_speed = 3
 	throw_range = 4
 	throwforce = 10
 	w_class = 1
+
+/obj/item/weapon/nullrod/attack(mob/living/target, mob/living/carbon/human/user)
+	if(!iscultist(user) && iscultist(target))
+		force = force_vscult
+		user << "<span class='danger'>The null rod suddenly feels warm as it interacts with the black magic emanating from [target] !</span>"
+		target << "<span class='danger'>You feel drained of power as the null rod touches you! The pain is agonizing !</span>"
+		return ..()
+	else if(!iscultist(user) && !iscultist(target))
+		return ..()
+	else if(iscultist(user))
+		user.Paralyse(5)
+		user << "<span class='danger'>An unexplicable force powerfully repels the rod from [target]!</span>"
+		var/organ = ((user.hand ? "l_":"r_") + "arm")
+		var/obj/item/organ/limb/affecting = user.get_organ(organ)
+		if(affecting.take_damage(rand(force/2, force)))
+			user.update_damage_overlays(0)
+	return
+
+/obj/item/weapon/nullrod/pickup(mob/living/user)
+	if(iscultist(user))
+		user << "<span class='danger'>An overwhelming feeling of dread comes over you as you pick up the null rod. It would be wise to be rid of this debilitating item quickly.</span>"
+		user.Dizzy(120)
 
 /obj/item/weapon/nullrod/suicide_act(mob/user)
 	user.visible_message("<span class='suicide'>[user] is impaling \himself with the [src.name]! It looks like \he's trying to commit suicide.</span>")

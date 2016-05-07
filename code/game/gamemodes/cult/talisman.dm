@@ -38,7 +38,7 @@
 					qdel(src)
 			return
 		else
-			user << "You see strange symbols on the paper. Are they supposed to mean something?"
+			user << "You see strange symbols, this looks like a magic-imbued paper used by the cultists serving Nar'Sie."
 			return
 
 

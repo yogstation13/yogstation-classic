@@ -962,7 +962,7 @@ var/list/sacrificed = list()
 			else if(iscarbon(T))
 				var/mob/living/carbon/C = T
 				C.flash_eyes()
-				C.silent += 15
+				C.silent += 3
 				C.Weaken(10)
 				C.Stun(10)
 		return
