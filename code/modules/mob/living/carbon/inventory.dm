@@ -1,6 +1,14 @@
-/mob/living/carbon/get_item_by_slot(slot_id)
+/mob/living/carbon/get_item_by_slot(slot_id, obj/item/what = null)
 	switch(slot_id)
 		if(slot_back)
+			return back
+		if(slot_in_backpack)
+			if(what)
+				if(back && istype(back, /obj/item/weapon/storage/backpack))
+					var/obj/item/weapon/storage/backpack/pack = back
+					if(what in pack.contents)
+						return what
+					return null
 			return back
 		if(slot_wear_mask)
 			return wear_mask
@@ -10,12 +18,8 @@
 			return handcuffed
 		if(slot_legcuffed)
 			return legcuffed
-		if(slot_l_hand)
-			return l_hand
-		if(slot_r_hand)
-			return r_hand
-	return null
-
+		else
+			. = ..()
 
 /mob/living/carbon/unEquip(obj/item/I) //THIS PROC DID NOT CALL ..() AND THAT COST ME AN ENTIRE DAY OF DEBUGGING.
 	. = ..() //Sets the default return value to what the parent returns.

@@ -177,6 +177,12 @@
 	user.set_machine(src)
 	var/has_breathable_mask = istype(wear_mask, /obj/item/clothing/mask)
 	var/list/obscured = check_obscured_slots()
+	var/obj/item/clothing/gloves/pickpocket/usr_gloves
+
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(H.gloves && istype(H.gloves, /obj/item/clothing/gloves/pickpocket))
+			usr_gloves = H.gloves
 
 	var/dat = {"<table>
 	<tr><td><B>Left Hand:</B></td><td><A href='?src=\ref[src];item=[slot_l_hand]'>[(l_hand && !(l_hand.flags&ABSTRACT)) ? l_hand : "<font color=grey>Empty</font>"]</A></td></tr>
@@ -185,16 +191,31 @@
 
 	dat += "<tr><td><B>Back:</B></td><td><A href='?src=\ref[src];item=[slot_back]'>[(back && !(back.flags&ABSTRACT)) ? back : "<font color=grey>Empty</font>"]</A>"
 	if(has_breathable_mask && istype(back, /obj/item/weapon/tank))
-		dat += "&nbsp;<A href='?src=\ref[src];internal=[slot_back]'>[internal ? "Disable Internals" : "Set Internals"]</A>"
+		dat += "&nbsp;<A href='?src=\ref[src];internal=[slot_back]'>[internal ? "Disable Internals" : "Set Internals"]</A></td></tr>"
+	else
+		dat += "</td></tr>"
 
-	dat += "</td></tr><tr><td>&nbsp;</td></tr>"
+	if(usr_gloves && (usr_gloves.strip_visibility_flags & SEE_BACKPACK))
+		if(istype(back, /obj/item/weapon/storage/backpack))
+			var/obj/item/weapon/storage/backpack/pack = back
+			if(pack.contents.len)
+				for(var/obj/C in back.contents)
+					dat += "<tr><td>&nbsp;&#8627;<B></B></td><td><A href='?src=\ref[src];item=[slot_in_backpack];item_ref=\ref[C]'>[C]</A></td></tr>"
+			else
+				dat += "<tr><td>&nbsp;&#8627;<B></B></td><td><A href='?src=\ref[src];item=[slot_in_backpack];item_ref=0'>["<font color=grey>Empty</font>"]</A></td></tr>"
+
+	dat += "<tr><td>&nbsp;</td></tr>"
 
 	dat += "<tr><td><B>Head:</B></td><td><A href='?src=\ref[src];item=[slot_head]'>[(head && !(head.flags&ABSTRACT)) ? head : "<font color=grey>Empty</font>"]</A></td></tr>"
 
 	if(slot_wear_mask in obscured)
 		dat += "<tr><td><font color=grey><B>Mask:</B></font></td><td><font color=grey>Obscured</font></td></tr>"
 	else
-		dat += "<tr><td><B>Mask:</B></td><td><A href='?src=\ref[src];item=[slot_wear_mask]'>[(wear_mask && !(wear_mask.flags&ABSTRACT)) ? wear_mask : "<font color=grey>Empty</font>"]</A></td></tr>"
+		dat += "<tr><td><B>Mask:</B></td><td><A href='?src=\ref[src];item=[slot_wear_mask]'>[(wear_mask && !(wear_mask.flags&ABSTRACT)) ? wear_mask : "<font color=grey>Empty</font>"]</A>"
+		if(has_breathable_mask)
+			var/obj/item/clothing/mask/breath_mask = wear_mask
+			if(!breath_mask.ignore_maskadjust)
+				dat += "&nbsp;<A href='?src=\ref[src];internal=[slot_wear_mask]'>[breath_mask.mask_adjusted ? "Slide On" : "Slide Off"]</A></td></tr>"
 
 	if(slot_glasses in obscured)
 		dat += "<tr><td><font color=grey><B>Eyes:</B></font></td><td><font color=grey>Obscured</font></td></tr>"
@@ -241,8 +262,28 @@
 		if(has_breathable_mask && istype(belt, /obj/item/weapon/tank))
 			dat += "&nbsp;<A href='?src=\ref[src];internal=[slot_belt]'>[internal ? "Disable Internals" : "Set Internals"]</A>"
 		dat += "</td></tr>"
-		dat += "<tr><td>&nbsp;&#8627;<B>Pockets:</B></td><td><A href='?src=\ref[src];pockets=left'>[(l_store && !(l_store.flags&ABSTRACT)) ? "Left (Full)" : "<font color=grey>Left (Empty)</font>"]</A>"
-		dat += "&nbsp;<A href='?src=\ref[src];pockets=right'>[(r_store && !(r_store.flags&ABSTRACT)) ? "Right (Full)" : "<font color=grey>Right (Empty)</font>"]</A></td></tr>"
+
+		if(usr_gloves && (usr_gloves.strip_visibility_flags & SEE_BELT))
+			if(istype(belt, /obj/item/weapon/storage/belt))
+				var/obj/item/weapon/storage/belt/src_belt = belt
+				if(src_belt.contents.len)
+					for(var/obj/C in src_belt.contents)
+						dat += "<tr><td>&nbsp;&nbsp;&nbsp;&#8627;<B></B></td><td><A href='?src=\ref[src];item=[slot_in_belt];item_ref=\ref[C]'>[C]</A></td></tr>"
+				else
+					dat += "<tr><td>&nbsp;&nbsp;&nbsp;&#8627;<B></B></td><td><A href='?src=\ref[src];item=[slot_in_belt];item_ref=0'>["<font color=grey>Empty</font>"]</A></td></tr>"
+
+		if(usr_gloves && (usr_gloves.strip_visibility_flags & SEE_POCKETS))
+			dat += "<tr><td>&nbsp;&#8627;<B>Pocket (Left):</B></td><td><A href='?src=\ref[src];pockets=left'>[(l_store && !(l_store.flags&ABSTRACT)) ? l_store : "<font color=grey>Empty</font>"]</A>"
+			if(has_breathable_mask && istype(l_store, /obj/item/weapon/tank))
+				dat += "&nbsp;<A href='?src=\ref[src];internal=[slot_l_store]'>[internal ? "Disable Internals" : "Set Internals"]</A>"
+			dat += "</td></tr>"
+			dat += "<tr><td>&nbsp;&#8627;<B>Pocket (Right):</B></td><td><A href='?src=\ref[src];pockets=right'>[(r_store && !(r_store.flags&ABSTRACT)) ? r_store : "<font color=grey>Empty</font>"]</A>"
+			if(has_breathable_mask && istype(r_store, /obj/item/weapon/tank))
+				dat += "&nbsp;<A href='?src=\ref[src];internal=[slot_r_store]'>[internal ? "Disable Internals" : "Set Internals"]</A>"
+			dat += "</td></tr>"
+		else
+			dat += "<tr><td>&nbsp;&#8627;<B>Pockets:</B></td><td><A href='?src=\ref[src];pockets=left'>[(l_store && !(l_store.flags&ABSTRACT)) ? "Left (Full)" : "<font color=grey>Left (Empty)</font>"]</A>"
+			dat += "&nbsp;<A href='?src=\ref[src];pockets=right'>[(r_store && !(r_store.flags&ABSTRACT)) ? "Right (Full)" : "<font color=grey>Right (Empty)</font>"]</A></td></tr>"
 		dat += "<tr><td>&nbsp;&#8627;<B>ID:</B></td><td><A href='?src=\ref[src];item=[slot_wear_id]'>[(wear_id && !(wear_id.flags&ABSTRACT)) ? wear_id : "<font color=grey>Empty</font>"]</A></td></tr>"
 
 	for (var/obj/item/organ/limb/org in organs)
@@ -301,11 +342,12 @@
 			if(H.target == src)
 				H.electrocute_act()
 				break
+	if(dna)
+		shock_damage *= dna.species.shockmod
 	return ..(shock_damage,source,siemens_coeff,override)
 
 /mob/living/carbon/human/Topic(href, href_list)
 	if(usr.canUseTopic(src, BE_CLOSE, NO_DEXTERY))
-
 		if(href_list["embedded_object"])
 			var/obj/item/I = locate(href_list["embedded_object"])
 			var/obj/item/organ/limb/L = locate(href_list["embedded_limb"])
@@ -337,11 +379,29 @@
 					src << "<span class='warning'>You feel something tugging on your bandages!</span>"
 			return
 
+		var/strip_coeff = 0
+		var/silent_internals = 0
+		var/silent_strip = 0
+		var/pickpocket_gloves = 0
+		var/put_in_hand = 0
+
+		if(istype(usr, /mob/living/carbon/human))
+			var/mob/living/carbon/human/H = usr
+			if(H.gloves && istype(H.gloves, /obj/item/clothing/gloves/pickpocket/))
+				var/obj/item/clothing/gloves/pickpocket/gloves = H.gloves
+				strip_coeff = min(gloves.strip_coeff, 1)
+				silent_internals = gloves.silent_internals
+				silent_strip = gloves.silent_strip
+				pickpocket_gloves = 1
+				put_in_hand = gloves.put_in_hand
+
 		if(href_list["item"])
 			var/slot = text2num(href_list["item"])
+			if((slot == slot_in_backpack) || (slot == slot_in_belt))
+				if(!pickpocket_gloves)
+					return
 			if(slot in check_obscured_slots())
 				usr << "<span class='warning'>You can't reach that! Something is covering it.</span>"
-				return
 
 		if(href_list["pockets"])
 			var/pocket_side = href_list["pockets"]
@@ -360,10 +420,12 @@
 			else
 				return
 
-			if(do_mob(usr, src, POCKET_STRIP_DELAY/delay_denominator)) //placing an item into the pocket is 4 times faster
+			if(do_mob(usr, src, POCKET_STRIP_DELAY*(1-strip_coeff)/delay_denominator)) //placing an item into the pocket is 4 times faster
 				if(pocket_item)
 					if(pocket_item == (pocket_id == slot_r_store ? r_store : l_store)) //item still in the pocket we search
 						unEquip(pocket_item)
+						if(put_in_hand)
+							usr.put_in_hands(pocket_item)
 				else
 					if(place_item)
 						usr.unEquip(place_item)
@@ -376,7 +438,7 @@
 				// Display a warning if the user mocks up
 				src << "<span class='warning'>You feel your [pocket_side] pocket being fumbled with!</span>"
 
-		..()
+		..(href, href_list, strip_coeff, silent_strip, silent_internals, put_in_hand)
 
 
 ///////HUDs///////
@@ -862,3 +924,9 @@
 			H.bloody_hands_mob = null
 			H.update_inv_gloves()
 	update_icons()	//apply the now updated overlays to the mob
+
+/mob/living/carbon/human/flash_eyes(intensity = 1, override_blindness_check = 0, affect_silicon = 0, visual = 0)
+	if(dna)
+		if(dna.species.handle_flash(src, intensity, override_blindness_check, affect_silicon, visual))
+			return
+	return ..()

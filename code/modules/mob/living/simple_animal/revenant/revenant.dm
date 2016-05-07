@@ -13,7 +13,8 @@
 	health = 25
 	maxHealth = 25
 	see_invisible = SEE_INVISIBLE_OBSERVER
-	languages = ALL
+	languages_understood = ALL
+	languages_spoken = ALL
 	response_help   = "passes through"
 	response_disarm = "swings at"
 	response_harm   = "punches through"
@@ -42,7 +43,7 @@
 	var/essence_drained = 0 //How much essence the revenant has drained.
 	var/draining = 0 //If the revenant is draining someone.
 	var/list/drained_mobs = list() //Cannot harvest the same mob twice
-	
+
 	var/obj/effect/proc_holder/spell/targeted/revenant_transmit/revtransmit //Need to keep this here to allow revenant to "quick cast" transmit via Ctrl+Click
 
 /mob/living/simple_animal/revenant/Life()

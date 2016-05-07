@@ -11,7 +11,8 @@ var/list/image/ghost_darkness_images = list() //this is a list of images for thi
 	anchored = 1	//  don't get pushed around
 	invisibility = INVISIBILITY_OBSERVER
 	appearance_flags = KEEP_TOGETHER // So they don't look weird
-	languages = ALL
+	languages_understood = ALL
+	languages_spoken = ALL
 	var/can_reenter_corpse
 	var/datum/hud/living/carbon/hud = null // hud
 	var/bootime = 0
