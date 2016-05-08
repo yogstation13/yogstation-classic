@@ -26,5 +26,6 @@
 			reagents.trans_id_to(H, "radium", a_transfer)
 			H << "<span class='danger'>You are beginning to feel the after-effect of the injection.</span>"
 		a_boost--
+		H << "<span class='notice'>There are <B>[a_boost]</B> adrenaline injectors remaining.</span>"
 		s_coold = 3
 	return
