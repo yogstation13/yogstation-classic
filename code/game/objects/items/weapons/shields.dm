@@ -1,16 +1,26 @@
 /obj/item/weapon/shield
 	name = "shield"
+	icon = 'icons/obj/weapons.dmi'
 	block_chance = 50
+	var/block_limit = 0 // used to see whether a weapon has enough force to break a shield
 
 /obj/item/weapon/shield/hit_reaction(mob/living/carbon/human/owner, attack_text, final_block_chance, damage, attack_type)
 	if(attack_type == THROWN_PROJECTILE_ATTACK)
 		final_block_chance += 30
 	return ..(owner, attack_text, final_block_chance, damage, attack_type)
 
+/obj/item/weapon/shield/proc/shatter_reaction(mob/living/carbon/human/owner)
+	owner.visible_message("<span class='danger'>[owner]'s shield shatters after blocking an attack!</span class>")
+	var/break_location = get_turf(loc)
+	var/obj/item/weapon/shield/broken/B = new /obj/item/weapon/shield/broken(break_location)
+	owner.put_in_active_hand(B)
+	var/formershield = icon_state
+	B.generateshield(formershield)
+	qdel(src)
+
 /obj/item/weapon/shield/riot
 	name = "riot shield"
 	desc = "A shield adept at blocking blunt objects from connecting with the torso of the shield wielder."
-	icon = 'icons/obj/weapons.dmi'
 	icon_state = "riot"
 	slot_flags = SLOT_BACK
 	force = 8
@@ -22,6 +32,7 @@
 	origin_tech = "materials=2"
 	attack_verb = list("shoved", "bashed")
 	block_chance = 0
+	block_limit = 25
 	var/cooldown = 0 //shield bash cooldown. based on world.time
 
 
@@ -40,6 +51,19 @@
 		return ..()
 	else if(attack_type == PROJECTILE_ATTACK)
 		return ..()
+	else if(attack_type == MELEE_ATTACK && damage > block_limit)
+		shatter_reaction(owner)
+		return ..()
+	else if (attack_type == HULK_ATTACK) // trying to block a hulk backfires.
+		if(prob(50))
+			owner.unEquip(src)
+			var/target = src.loc
+			for(var/i = 0, i < 7, i++)
+				target = get_step(target, pick(alldirs))
+			src.throw_at(target,7,1, spin = 0)
+		else
+			owner.Weaken(2) // if it's not tossing the shield out of his hand, than it's knocking them down
+		return 0
 	else
 		return 1
 
@@ -49,6 +73,7 @@
 	icon_state = "roman_shield"
 	item_state = "roman_shield"
 	block_chance = 30
+	block_limit = 15
 
 /obj/item/weapon/shield/riot/roman/hit_reaction(mob/living/carbon/human/owner, attack_text, final_block_chance, damage, attack_type)
 	if(attack_type == UNARMED_ATTACK)
@@ -60,6 +85,7 @@
 	desc = "Made of cheap, lightweight plastic. Bears an inscription on the inside: <i>\"Romanes venio domus\"</i>."
 	force = 3
 	throwforce = 3
+	block_limit = 3
 
 /obj/item/weapon/shield/riot/roman/prop/hit_reaction(mob/living/carbon/human/owner, attack_text, final_block_chance, damage, attack_type)
 	return 0
@@ -67,7 +93,6 @@
 /obj/item/weapon/shield/energy
 	name = "energy combat shield"
 	desc = "A shield capable of stopping most melee attacks. Protects user from almost all energy projectiles. It can be retracted, expanded, and stored anywhere."
-	icon = 'icons/obj/weapons.dmi'
 	icon_state = "eshield0" // eshield1 for expanded
 	force = 3
 	throwforce = 3
@@ -78,8 +103,14 @@
 	attack_verb = list("shoved", "bashed")
 	var/active = 0
 
-/obj/item/weapon/shield/energy/hit_reaction(mob/living/carbon/human/owner, attack_text, final_block_chance)
-	return 0
+/obj/item/weapon/shield/energy/hit_reaction(mob/living/carbon/human/owner, attack_text, final_block_chance, damage, attack_type)
+	if(active)
+		if(attack_type == UNARMED_ATTACK)
+			return 1
+		else
+			return 0
+	else
+		return 0
 
 /obj/item/weapon/shield/energy/IsReflect()
 	return (active)
@@ -110,7 +141,6 @@
 /obj/item/weapon/shield/riot/tele
 	name = "telescopic shield"
 	desc = "An advanced riot shield made of lightweight materials that collapses for easy storage."
-	icon = 'icons/obj/weapons.dmi'
 	icon_state = "teleriot0"
 	slot_flags = null
 	force = 3
@@ -145,3 +175,23 @@
 		slot_flags = null
 		user << "<span class='notice'>[src] can now be concealed.</span>"
 	add_fingerprint(user)
+
+// Broken shields. Currently useless and unfixable.
+
+/obj/item/weapon/shield/broken
+	name = "broken shield"
+	desc = "Not much left to salvage here..."
+	force = 2
+	throwforce = 3
+	throw_range = 5
+	w_class = 3
+	var/formershield
+
+/obj/item/weapon/shield/broken/proc/generateshield(formershield)
+	if(formershield)
+		src.icon_state = "broken-[formershield]"
+		src.item_state = "broken-[formershield]"
+	playsound(src, "shatter", 70, 1)
+
+/obj/item/weapon/shield/broken/hit_reaction(mob/living/carbon/human/owner, attack_text, final_block_chance)
+	return 0
