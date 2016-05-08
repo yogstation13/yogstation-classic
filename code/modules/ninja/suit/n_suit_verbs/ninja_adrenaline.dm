@@ -15,6 +15,8 @@
 		H.SetWeakened(0)
 
 		H.stat = 0//At least now you should be able to teleport away or shoot ninja stars.
+		H << "<span class='notice'>Adrenaline injectors activated.</span>"
+
 		spawn(30)//Slight delay so the enemy does not immedietly know the ability was used. Due to lag, this often came before waking up.
 			H.say(pick("A CORNERED FOX IS MORE DANGEROUS THAN A JACKAL!","HURT ME MOOORRREEE!","IMPRESSIVE!"))
 		spawn(70)
