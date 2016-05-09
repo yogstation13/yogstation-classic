@@ -52,6 +52,8 @@
 	if(!owner || (src in owner.dna.mutations))
 		return 1
 	owner.dna.mutations.Add(src)
+	if(owner.dna.species.id == "abomination")
+		return
 	gain_indication(owner)
 	owner << text_gain_indication
 
@@ -116,9 +118,13 @@
 
 /datum/mutation/human/hulk/gain_indication(mob/living/carbon/human/owner)
 	var/g = (owner.gender == FEMALE) ? 1 : 2
+	if(owner.dna.species.id == "abomination")
+		return
 	owner.overlays += visual_indicators[g]
 
 /datum/mutation/human/hulk/on_life(mob/living/carbon/human/owner)
+	if(owner.dna.species.id == "abomination")
+		return
 	if(owner.health < 25)
 		on_losing(owner)
 		owner << "<span class='danger'>You suddenly feel very weak.</span>"
