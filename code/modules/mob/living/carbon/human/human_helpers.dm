@@ -81,7 +81,7 @@
 ///Returns a number between -1 to 2
 /mob/living/carbon/human/check_eye_prot()
 	var/number = ..()
-	if(istype(src.head, /obj/item/clothing/head))			//are they wearing something on their head
+	if(istype(src.head, /obj/item/clothing/head) || is_type_in_list(src.head, head_compatible_items))		//are they wearing something on their head
 		var/obj/item/clothing/head/HFP = src.head			//if yes gets the flash protection value from that item
 		number += HFP.flash_protect
 	if(istype(src.glasses, /obj/item/clothing/glasses))		//glasses
@@ -101,7 +101,7 @@
 ///Checked in life.dm. 0 & 1 = no impairment, 2 = welding mask overlay, 3 = You can see jack, but you can't see shit.
 /mob/living/carbon/human/tintcheck()
 	var/tinted = 0
-	if(istype(src.head, /obj/item/clothing/head))
+	if(istype(src.head, /obj/item/clothing/head) || is_type_in_list(src.head, head_compatible_items))
 		var/obj/item/clothing/head/HT = src.head
 		tinted += HT.tint
 	if(istype(src.glasses, /obj/item/clothing/glasses))
