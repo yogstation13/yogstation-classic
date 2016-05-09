@@ -165,5 +165,5 @@
 
 /obj/item/device/mmi/syndie
 	name = "Syndicate Man-Machine Interface"
-	desc = "Syndicate's own brand of MMI. It enforces laws designed to help Syndicate agents achieve their goals upon cyborgs created with it, but doesn't fit in Nanotrasen AI cores."
+	desc = "Syndicate's own brand of MMI. It enforces laws designed to help Syndicate agents achieve their goals upon cyborgs created with it and can fit into Nanotrasen AI cores as well."
 	syndiemmi = 1

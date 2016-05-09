@@ -6,6 +6,7 @@
 	var/list/supplied = list()
 	var/list/ion = list()
 	var/mob/living/silicon/owner
+	var/timeLastChanged = 0
 
 /datum/ai_laws/default/asimov
 	name = "Three Laws of Robotics"
@@ -172,31 +173,38 @@
 
 /datum/ai_laws/proc/set_zeroth_law(law, law_borg = null)
 	src.zeroth = law
+	timeLastChanged = world.time
 	if(law_borg) //Making it possible for slaved borgs to see a different law 0 than their AI. --NEO
 		src.zeroth_borg = law_borg
 
 /datum/ai_laws/proc/add_inherent_law(law)
 	if (!(law in src.inherent))
 		src.inherent += law
+		timeLastChanged = world.time
 
 /datum/ai_laws/proc/add_ion_law(law)
 	src.ion += law
+	timeLastChanged = world.time
 
 /datum/ai_laws/proc/clear_inherent_laws()
 	qdel(src.inherent)
 	src.inherent = list()
+	timeLastChanged = world.time
 
 /datum/ai_laws/proc/add_supplied_law(number, law)
 	while (src.supplied.len < number + 1)
 		src.supplied += ""
 
 	src.supplied[number + 1] = law
+	timeLastChanged = world.time
 
 /datum/ai_laws/proc/clear_supplied_laws()
 	src.supplied = list()
+	timeLastChanged = world.time
 
 /datum/ai_laws/proc/clear_ion_laws()
 	src.ion = list()
+	timeLastChanged = world.time
 
 /datum/ai_laws/proc/show_laws(who)
 
@@ -226,6 +234,7 @@
 	if(force)
 		src.zeroth = null
 		src.zeroth_borg = null
+		timeLastChanged = world.time
 		return
 	else
 		if(src.owner.mind.special_role)
@@ -233,6 +242,7 @@
 		else
 			src.zeroth = null
 			src.zeroth_borg = null
+			timeLastChanged = world.time
 			return
 
 /datum/ai_laws/proc/associate(mob/living/silicon/M)

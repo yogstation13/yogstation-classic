@@ -14,7 +14,8 @@ Contents:
 	name = "Space Ninja"
 	typepath = /datum/round_event/ninja
 	max_occurrences = 1
-	earliest_start = 30000 // 1 hour
+	earliest_start = 15000 // 25 minutes
+	weight = 10 //Added so it's clear what the relative weight is without needing to search
 
 
 /datum/round_event/ninja

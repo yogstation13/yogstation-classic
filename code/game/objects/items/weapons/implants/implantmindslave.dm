@@ -37,17 +37,17 @@
 		holder << "<span class='warning'>[target] seems to resist the implant!</span>"
 		return 0
 
-	target << "<span class='userdanger'><FONT size = 3>You feel a strange urge to serve [holder]. A simple thought about disobeying his/her commands makes your head feel like it is going to explode. You feel like you dont want to know what will happen if you actually disobey your new master.</FONT></span>"
+	target << "<span class='userdanger'><FONT size = 3>You feel a strange urge to serve [holder.real_name]. A simple thought about disobeying his/her commands makes your head feel like it is going to explode. You feel like you dont want to know what will happen if you actually disobey your new master.</FONT></span>"
 
 	var/datum/objective/mindslave/serve_objective = new
 	serve_objective.owner = target
-	serve_objective.explanation_text = "Serve [holder] no matter what!"
+	serve_objective.explanation_text = "Serve [holder.real_name] no matter what!"
 	serve_objective.completed = 1
 	source.mind.objectives += serve_objective
 	if(!ticker.mode.traitors.Find(source.mind))
 		ticker.mode.traitors += source.mind
 
-	log_game("[holder] enslaved [target] with a Mindslave implant")
+	log_game("[holder.ckey] enslaved [target.ckey] with a Mindslave implant")
 
 	return ..()
 
