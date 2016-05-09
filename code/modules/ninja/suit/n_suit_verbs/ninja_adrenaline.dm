@@ -14,7 +14,6 @@
 		H.SetStunned(0)
 		H.SetWeakened(0)
 		H.reagents.add_reagent("synaptizine", 1) // Adds roughly 5 seconds of stun-resistance to prevent being re-stunned
-		H.reagents.add_reagent("omnizine", 10)
 		H.reagents.add_reagent("stimulants", 1)
 		H.stat = 0//At least now you should be able to teleport away or shoot ninja stars.
 
