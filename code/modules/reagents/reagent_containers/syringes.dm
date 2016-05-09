@@ -171,7 +171,7 @@
 					investigate_log("[user.name] ([user.ckey]) injected [M.name] ([M.ckey]) with [viruslist]", "viro")
 				add_logs(user, M, "injected", object="[src.name]", addition="which had [contained]")
 				var/fraction = min(amount_per_transfer_from_this/reagents.total_volume, 1)
-				reagents.reaction(target, INGEST, fraction)
+				reagents.reaction(target, INJECT, fraction)
 			if(ismob(target) && target == user)
 				//Attack log entries are produced here due to failure to produce elsewhere. Remove them here if you have doubles from normal syringes.
 				var/list/rinject = list()
@@ -182,7 +182,7 @@
 				log_attack("<font color='red'>[user.name] ([user.ckey]) injected [M.name] ([M.ckey]) with [src.name], which had [contained] (INTENT: [uppertext(user.a_intent)])</font>")
 				M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Injected themselves ([contained]) with [src.name].</font>")
 				var/fraction = min(amount_per_transfer_from_this/reagents.total_volume, 1)
-				reagents.reaction(target, INGEST, fraction)
+				reagents.reaction(target, INJECT, fraction)
 
 			if(ismob(target))
 				var/mob/M = target
