@@ -54,7 +54,6 @@
 		update_cult_icons_added(cult_mind)
 		cult_mind.current << "<span class='notice'>You are a member of the cult!</span>"
 		memorize_cult_objectives(cult_mind)
-	..()
 
 /proc/iscultist(mob/living/M as mob)
 	return istype(M) && M.mind && ticker && ticker.mode && (M.mind in ticker.mode.cult)
@@ -136,6 +135,7 @@
 /datum/game_mode/cult/post_setup()
 	modePlayer += cult
 	post_generate_cult_objectives()
+	..()
 
 /datum/game_mode/proc/memorize_cult_objectives(datum/mind/cult_mind)
 	for(var/obj_count = 1,obj_count <= cult_objectives.len,obj_count++)
