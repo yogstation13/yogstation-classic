@@ -542,7 +542,7 @@ var/list/slot2type = list("head" = /obj/item/clothing/head/changeling, "wear_mas
 	item_state = "golem"
 	desc = "Hardened resin of some sort."
 	flags = ABSTRACT | NODROP
-	armor = list(melee = 35, bullet = 25, laser = 20,energy = 50, bomb = 10, bio = 50, rad = 0)
+	armor = list(melee = 50, bullet = 25, laser = 20,energy = 50, bomb = 10, bio = 50, rad = 0)
 	unacidable = 1
 	burn_state = -1
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH
