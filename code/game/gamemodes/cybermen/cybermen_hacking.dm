@@ -1054,10 +1054,11 @@
 		return
 	if(H.stat == DEAD)
 		drop("<span class='warning'>[display_verb] of [target_name] failed, \he is dead.</span>")
-	if(!hallucination)
-		hallucination = new /obj/effect/hallucination/cybermen_conversion(H.loc, H)
-	hallucination.percent_complete = (progress/cost)*100
-	hallucination.process()
+	if(H.client)
+		if(!hallucination)
+			hallucination = new /obj/effect/hallucination/cybermen_conversion(H.loc, H)
+		hallucination.percent_complete = (progress/cost)*100
+		hallucination.process()
 	if(progress >= cost/2)
 		H.hearBinaryProb = (progress/cost)*50//scales from 0%-50% chance at 50%-100% of hack completion
 		H.speakBinaryProb = (progress/cost)*50
@@ -1110,14 +1111,11 @@
 
 /obj/effect/hallucination/cybermen_conversion/New(loc, var/mob/living/carbon/T)
 	target = T
-	matrix_turfs = new/list()
-	matrix_images = new/list()
 	..()
 
 
 /obj/effect/hallucination/cybermen_conversion/process()
-	if(target.client)
-		target.client.images.Remove(matrix_images)
+	target.client.images.Remove(matrix_images)
 	matrix_turfs.Cut()
 	matrix_images.Cut()
 	if(percent_complete > 50)
