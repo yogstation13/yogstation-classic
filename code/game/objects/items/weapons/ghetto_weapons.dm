@@ -21,22 +21,14 @@
 	..()
 	if(smashable)
 		uses--
-
 		if(uses <= 0)
 			if(prob(40))
 				user.visible_message("<span class='notice'>You hear a slight tinkle as [src] smashes!</span>")
 				qdel(src)
 				if(istype(target, /mob/living/carbon/human))
 					var/mob/living/carbon/human/H = target
-					if(prob(60))
+					if(prob(80))
 						H.blood_max += rand(0.5, 3)
-					if(prob(10))
-						H.throw_alert("embeddedobject")
-						var/obj/item/organ/limb/L = H.get_organ(check_zone(user.zone_sel.selecting))
-						var/obj/item/weapon/shard/shard = new
-						L.embedded_objects |= shard
-						shard.loc = H
-						H.visible_message("<span class='danger'>\the glass shard embeds itself in [H]'s [L.getDisplayName()]!</span>","<span class='userdanger'>\the glass shard embeds itself in your [L.getDisplayName()]!</span>")
 
 /obj/item/weapon/ghetto/glass/shank
 	name = "glass shank"
@@ -59,22 +51,22 @@
 	w_class = 4.0
 	throwforce = 10.0
 	hitsound = 'sound/weapons/bladeslice.ogg'
-	l_item_state = "sword_left"
-	r_item_state = "sword_right"
+	l_item_state = "glass_sword_l"
+	r_item_state = "glass_sword_r"
 
 /obj/item/weapon/ghetto/glass/sword/black
 	name = "black glass sword"
-	icon_state = "glass_black"
+	icon_state = "black_sword"
 	desc = "A sword made out of shiny black glass. Perfect for slashing."
-	l_item_state = "black_left"
-	r_item_state = "black_right"
+	l_item_state = "black_sword_l"
+	r_item_state = "black_sword_r"
 
 /obj/item/weapon/ghetto/glass/sword/refined
 	name = "refined glass sword"
 	lefthand_file = 'icons/obj/ghetto_armoury.dmi'
 	righthand_file = 'icons/obj/ghetto_armoury.dmi'
-	l_item_state = "black_left"
-	r_item_state = "black_right"
+	l_item_state = "black_sword_l"
+	r_item_state = "black_sword_r"
 	icon_state = "glass_refined"
 	desc = "A sword made out of refined black glass. Can be placed on your back and its perfect for slashing."
 	force = 16.0
@@ -159,7 +151,7 @@
 	item_state = "coat"
 	burn_state = -1
 	allowed = list(/obj/item/device/flashlight,/obj/item/weapon/tank/internals/emergency_oxygen,/obj/item/toy,/obj/item/weapon/storage/fancy/cigarettes,/obj/item/weapon/lighter,/obj/item/weapon/gun/projectile/automatic/pistol,/obj/item/weapon/gun/projectile/revolver,/obj/item/weapon/gun/projectile/revolver/detective)
-	armor = list(melee = 9, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 4, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
 
 /obj/item/clothing/under/armouredjumpsuit
 	name = "armoured jumpsuit"
@@ -169,5 +161,5 @@
 	item_state = "armoured_suit"
 	item_color = "armoured_suit"
 	icon_state = "suit_icon"
-	armor = list(melee = 5, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 2, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
 	strip_delay = 40
