@@ -113,6 +113,30 @@
 	..()
 	user << "The bolt is [bolt_open ? "open" : "closed"]."
 
+/obj/item/weapon/gun/projectile/shotgun/boltaction/awp
+	name = "AWP"
+	desc = "MLG approved for 360 degree noscopes."
+	icon = 'icons/obj/guns/awp.dmi'
+	icon_state = "awpdefault"
+	item_state = "awpdefault"
+	fire_sound = "sound/weapons/AWP.ogg"
+	lefthand_file = 'icons/mob/inhands/guns_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/guns_righthand.dmi'
+	l_item_state = "moistnugget"
+	r_item_state = "moistnugget"
+
+/obj/item/weapon/gun/projectile/shotgun/boltaction/awp/asiimov
+	name = "AWP Asiimov"
+	icon_state = "awpasiimov"
+	item_state = "awpasiimov"
+
+/obj/item/weapon/gun/projectile/shotgun/boltaction/awp/dragonlore
+	name = "AWP Dragonlore"
+	icon_state = "awpdragonlore"
+	item_state = "awpdragonlore"
+
+
+
 /////////////////////////////
 // DOUBLE BARRELED SHOTGUN //
 /////////////////////////////
