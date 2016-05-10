@@ -120,7 +120,7 @@
 			if(mob.mind.gang_datum == src)
 				mob << "<span class='[warning ? "warning" : "notice"]'>\icon[tool] [message]</span>"
 				if(beep)
-					playsound(mob.loc, 'sound/machines/twobeep.ogg', 50, 1)
+					mob << sound('sound/machines/twobeep.ogg')
 
 
 //////////////////////////////////////////// INCOME
