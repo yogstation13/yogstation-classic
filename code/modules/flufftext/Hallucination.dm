@@ -185,7 +185,7 @@ Gunshots/explosions/opening doors/less rare audio (done)
 /obj/effect/hallucination/xeno_attack/New(loc,var/mob/living/carbon/T)
 	target = T
 	for(var/obj/machinery/atmospherics/components/unary/vent_pump/U in orange(7,target))
-		if(U.welded)
+		if(!U.welded)
 			pump = U
 			xeno = new(pump.loc,target)
 			sleep(10)
