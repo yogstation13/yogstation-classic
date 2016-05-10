@@ -171,7 +171,7 @@
 					investigate_log("[user.name] ([user.ckey]) injected [M.name] ([M.ckey]) with [viruslist]", "viro")
 				add_logs(user, M, "injected", object="[src.name]", addition="which had [contained]")
 				var/fraction = min(amount_per_transfer_from_this/reagents.total_volume, 1)
-				reagents.reaction(target, INGEST, fraction)
+				reagents.reaction(target, INJECT, fraction)
 			if(ismob(target) && target == user)
 				//Attack log entries are produced here due to failure to produce elsewhere. Remove them here if you have doubles from normal syringes.
 				var/list/rinject = list()
@@ -182,21 +182,7 @@
 				log_attack("<font color='red'>[user.name] ([user.ckey]) injected [M.name] ([M.ckey]) with [src.name], which had [contained] (INTENT: [uppertext(user.a_intent)])</font>")
 				M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Injected themselves ([contained]) with [src.name].</font>")
 				var/fraction = min(amount_per_transfer_from_this/reagents.total_volume, 1)
-				reagents.reaction(target, INGEST, fraction)
-
-			if(ismob(target))
-				var/mob/M = target
-				if(M.viruses)
-					for(var/datum/disease/D in M.viruses)
-						for(var/datum/reagent/A in reagents.reagent_list)
-							if(A.id in D.cures)
-								if(D.stage <= 1)
-									M << "<span class='warning'>Whatever it was wrong with you, it seems to be gone now.</span>"
-									M.viruses.Remove(D)
-									qdel(D)
-								else
-									M << "<span class='warning'>You feel a little bit better.</span>"
-									D.stage--
+				reagents.reaction(target, INJECT, fraction)
 
 			spawn(5)
 				var/datum/reagent/blood/B
@@ -212,7 +198,6 @@
 				if (reagents.total_volume <= 0 && mode==SYRINGE_INJECT)
 					mode = SYRINGE_DRAW
 					update_icon()
-
 
 /obj/item/weapon/reagent_containers/syringe/update_icon()
 	var/rounded_vol = Clamp(round(reagents.total_volume,5), 0, 15)

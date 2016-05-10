@@ -270,26 +270,29 @@
 	anchored = 1.0
 	var/obj/item/weapon/card/id/inserted_id
 	var/list/prize_list = list(
-		new /datum/data/mining_equipment("Stimpack",			/obj/item/weapon/reagent_containers/hypospray/medipen/stimpack,	    50),
-		new /datum/data/mining_equipment("Stimpack Bundle",		/obj/item/weapon/storage/box/medipens/utility,	 				   200),
-		new /datum/data/mining_equipment("Whiskey",             /obj/item/weapon/reagent_containers/food/drinks/bottle/whiskey,    100),
-		new /datum/data/mining_equipment("Cigar",               /obj/item/clothing/mask/cigarette/cigar/havana,                    150),
-		new /datum/data/mining_equipment("Soap",                /obj/item/weapon/soap/nanotrasen, 						           200),
-		new /datum/data/mining_equipment("Jaunter",             /obj/item/device/wormhole_jaunter,                                 250),
-		new /datum/data/mining_equipment("Laser Pointer",       /obj/item/device/laser_pointer, 				                   300),
-		new /datum/data/mining_equipment("Alien Toy",           /obj/item/clothing/mask/facehugger/toy, 		                   300),
-		new /datum/data/mining_equipment("Advanced Scanner",	/obj/item/device/t_scanner/adv_mining_scanner,                     400),
-		new /datum/data/mining_equipment("Mining Drone",        /mob/living/simple_animal/hostile/mining_drone,                    500),
-		new /datum/data/mining_equipment("GAR mesons",			/obj/item/clothing/glasses/meson/gar,							   500),
-		new /datum/data/mining_equipment("Survival Capsule",	/obj/item/weapon/survivalcapsule,								   700),
-		new /datum/data/mining_equipment("Kinetic Accelerator", /obj/item/weapon/gun/energy/kinetic_accelerator,               	   750),
-		new /datum/data/mining_equipment("Resonator",           /obj/item/weapon/resonator,                                    	   800),
-		new /datum/data/mining_equipment("Minedrone Shell",		/obj/item/drone_shell/minedrone,								  1000),
-		new /datum/data/mining_equipment("Lazarus Injector",    /obj/item/weapon/lazarus_injector,                                1000),
-		new /datum/data/mining_equipment("Diamond Pickaxe",		/obj/item/weapon/pickaxe/diamond,				                  1200),
-		new /datum/data/mining_equipment("Jetpack",             /obj/item/weapon/tank/jetpack/carbondioxide/mining,               1500),
-		new /datum/data/mining_equipment("Space Cash",    		/obj/item/stack/spacecash/c1000,                    			  2000),
-		new /datum/data/mining_equipment("Point Transfer Card", /obj/item/weapon/card/mining_point_card,               			   500),
+		new /datum/data/mining_equipment("Stimpack",				/obj/item/weapon/reagent_containers/hypospray/medipen/stimpack,	    50),
+		new /datum/data/mining_equipment("Stimpack Bundle",			/obj/item/weapon/storage/box/medipens/utility,	 				   200),
+		new /datum/data/mining_equipment("Whiskey",             	/obj/item/weapon/reagent_containers/food/drinks/bottle/whiskey,    100),
+		new /datum/data/mining_equipment("Cigar",               	/obj/item/clothing/mask/cigarette/cigar/havana,                    150),
+		new /datum/data/mining_equipment("Soap",                	/obj/item/weapon/soap/nanotrasen, 						           200),
+		new /datum/data/mining_equipment("Jaunter",             	/obj/item/device/wormhole_jaunter,                                 250),
+		new /datum/data/mining_equipment("Laser Pointer",       	/obj/item/device/laser_pointer, 				                   300),
+		new /datum/data/mining_equipment("Alien Toy",           	/obj/item/clothing/mask/facehugger/toy, 		                   300),
+		new /datum/data/mining_equipment("Advanced Scanner",		/obj/item/device/t_scanner/adv_mining_scanner,                     400),
+		new /datum/data/mining_equipment("Mining Drone",        	/mob/living/simple_animal/hostile/mining_drone,                    500),
+		new /datum/data/mining_equipment("GAR mesons",				/obj/item/clothing/glasses/meson/gar,							   500),
+		new /datum/data/mining_equipment("Survival Capsule",		/obj/item/weapon/survivalcapsule,								   700),
+		new /datum/data/mining_equipment("Kinetic Accelerator", 	/obj/item/weapon/gun/energy/kinetic_accelerator,               	   750),
+		new /datum/data/mining_equipment("Resonator",           	/obj/item/weapon/resonator,                                    	   800),
+		new /datum/data/mining_equipment("Minedrone Shell",			/obj/item/drone_shell/minedrone,								  1000),
+		new /datum/data/mining_equipment("Lazarus Injector",    	/obj/item/weapon/lazarus_injector,                                1000),
+		new /datum/data/mining_equipment("Diamond Pickaxe",			/obj/item/weapon/pickaxe/diamond,				                  1200),
+		new /datum/data/mining_equipment("Jetpack",             	/obj/item/weapon/tank/jetpack/carbondioxide/mining,               1500),
+		new /datum/data/mining_equipment("Space Cash",    			/obj/item/stack/spacecash/c1000,                    			  2000),
+		new /datum/data/mining_equipment("Point Transfer Card", 	/obj/item/weapon/card/mining_point_card,               			   500),
+		new /datum/data/mining_equipment("Minedrone Melee Upgrade", /obj/item/device/mine_bot_ugprade,								   500),
+		new /datum/data/mining_equipment("Minedrone Health Upgrade", /obj/item/device/mine_bot_ugprade/health,						   500),
+		new /datum/data/mining_equipment("Minedrone Cooldown Upgrade", /obj/item/device/mine_bot_ugprade/cooldown,					   500),
 		)
 
 /datum/data/mining_equipment/
@@ -620,6 +623,7 @@
 	melee_damage_upper = 15
 	environment_smash = 0
 	var/emagged = 0 //Allow drones to be emagged.
+	var/mode = 0
 	attacktext = "drills"
 	attack_sound = 'sound/weapons/circsawhit.ogg'
 	ranged = 1
@@ -689,11 +693,14 @@
 		if(emagged == 2)
 			M << "<span class='info'>[src] does not seem to respond.</span>"
 			return
-		switch(search_objects)
-			if(0)
+		switch(mode)
+			if(3)
 				SetCollectBehavior()
 				M << "<span class='info'>[src] has been set to search and store loose ore.</span>"
 			if(2)
+				SetInactiveBehavior()
+				M <<"<span class='info'>[src] has been set to idle.</span>"
+			if(1)
 				SetOffenseBehavior()
 				M << "<span class='info'>[src] has been set to attack hostile wildlife.</span>"
 		return
@@ -702,6 +709,7 @@
 /mob/living/simple_animal/hostile/mining_drone/proc/SetCollectBehavior()
 	if(emagged == 2)
 		return
+	mode = 1
 	idle_vision_range = 9
 	search_objects = 2
 	wander = 1
@@ -713,6 +721,7 @@
 /mob/living/simple_animal/hostile/mining_drone/proc/SetOffenseBehavior()
 	if(emagged == 2)
 		return
+	mode = 2
 	idle_vision_range = 7
 	search_objects = 0
 	wander = 0
@@ -720,6 +729,19 @@
 	retreat_distance = 1
 	minimum_distance = 2
 	icon_state = "mining_drone_offense"
+
+/mob/living/simple_animal/hostile/mining_drone/proc/SetInactiveBehavior()
+	if(emagged == 2)
+		return
+	mode = 3
+	idle_vision_range = 3
+	search_objects = 0
+	wander = 0
+	ranged = 0
+	minimum_distance = 0
+	retreat_distance = null
+	icon_state = "mining_drone_idle"
+
 
 /mob/living/simple_animal/hostile/mining_drone/proc/SetEmagBehavior()
 	idle_vision_range = 9
@@ -759,11 +781,62 @@
 	return
 
 /mob/living/simple_animal/hostile/mining_drone/adjustBruteLoss()
-	if(search_objects)
+	if(mode)
 		SetOffenseBehavior()
 	..()
 
-/**********************Lazarus Injector**********************/
+//**********************Minebot Upgrades**********************/
+
+//Melee
+
+/obj/item/device/mine_bot_ugprade
+	name = "minebot melee upgrade"
+	desc = "A minebot upgrade."
+	icon = 'icons/obj/module.dmi'
+	icon_state = "cyborg_upgrade3"
+
+
+/obj/item/device/mine_bot_ugprade/afterattack(mob/living/simple_animal/hostile/mining_drone/M, mob/user)
+	if(!istype(M))
+		return
+	upgrade_bot(M, user)
+	user.visible_message("[user.name] has upgraded the minebot.",\
+						"<span class='notice'>You upgrade the minebot.</span>")
+
+/obj/item/device/mine_bot_ugprade/proc/upgrade_bot(mob/living/simple_animal/hostile/mining_drone/M, mob/user)
+	if(M.melee_damage_upper != initial(M.melee_damage_upper))
+		user << "[src] already has a combat upgrade installed!"
+		return
+	M.melee_damage_lower = 22
+	M.melee_damage_upper = 22
+	qdel(src)
+
+//Health
+
+/obj/item/device/mine_bot_ugprade/health
+	name = "minebot chassis upgrade"
+
+/obj/item/device/mine_bot_ugprade/health/upgrade_bot(mob/living/simple_animal/hostile/mining_drone/M, mob/user)
+	if(M.maxHealth != initial(M.maxHealth))
+		user << "[src] already has a reinforced chassis!"
+		return
+	M.maxHealth = 170
+	qdel(src)
+
+//Cooldown
+
+/obj/item/device/mine_bot_ugprade/cooldown
+	name = "minebot cooldown upgrade"
+
+/obj/item/device/mine_bot_ugprade/cooldown/upgrade_bot(mob/living/simple_animal/hostile/mining_drone/M, mob/user)
+	name = "minebot cooldown upgrade"
+	if(M.ranged_cooldown_cap != initial(M.ranged_cooldown_cap))
+		user << "[src] already has a decreased weapon cooldown!"
+		return
+	M.ranged_cooldown_cap = 1
+	qdel(src)
+
+//*********************Lazarus Injector**********************/
 
 /obj/item/weapon/lazarus_injector
 	name = "lazarus injector"

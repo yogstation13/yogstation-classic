@@ -1,0 +1,8 @@
+author: X-TheDark
+delete-after: True
+changes: 
+  - rscadd: "Syndicate agents can now purchase Pickpocket Gloves from Stealthy Tools section for 4 TC. These gloves can disguise themselves as other gloves by holding them in-hand and clicking on them."
+  - rscadd: "Pickpocket gloves make stripping/planting_on_person 33% faster than normal. You can also remove/place items directly into belts/backpacks worn by the target. These gloves also allow you to see what's inside the targets pockets. In addition, stripping/planting items is SILENT with these (target only gets the message of the attempt if you fail). As a bonus, the item you strip from the target is placed in your hand, instead of the targets feet."
+  - rscadd: "To place an item into belt/backpack, hold whatever you want to place in your hand and click on any item in the backpack/belt contents thing. To remove an item, have your hand empty and click on any contents of the backpack/belt."
+  - rscadd: "Oh, also, toggling internals on the target is SILENT with these gloves and you can also toggle internals if the target has a emergency tank in one of the pockets."
+  - rscadd: "You can now adjust the mask on the target (Slide it in place/off of face), it takes 2 seconds. With pickpocket gloves, it's instant."

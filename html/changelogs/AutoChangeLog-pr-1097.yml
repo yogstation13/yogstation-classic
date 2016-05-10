@@ -1,0 +1,4 @@
+author: LordPidey
+delete-after: True
+changes: 
+  - rscadd: "Saline-Glucose Solution can now be used as a blood replacement (the lower your blood amount, the more effective this is). Must be applied via injection (IV Drip or Syringe). Ported by X-TheDark."

@@ -257,7 +257,10 @@
 
 				add_logs(src, M, "thrown", addition="from [start_T_descriptor] with the target [end_T_descriptor]")
 
-	if(!item) return //Grab processing has a chance of returning null
+	if (item.prethrow_at(target))
+		return;
+
+	if(!(item && istype(item))) return //Grab processing has a chance of returning null
 
 	if(!ismob(item)) //Honk mobs don't have a dropped() proc honk
 		unEquip(item)

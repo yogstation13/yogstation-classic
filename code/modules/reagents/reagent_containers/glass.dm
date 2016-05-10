@@ -47,9 +47,9 @@
 
 	if(istype(M))
 		if(user.a_intent == "harm")
-			var/R
 			M.visible_message("<span class='danger'>[user] splashes the contents of [src] onto [M]!</span>", \
 							"<span class='userdanger'>[user] splashes the contents of [src] onto [M]!</span>")
+			var/R
 			if(reagents)
 				for(var/datum/reagent/A in reagents.reagent_list)
 					R += A.id + " ("
@@ -74,18 +74,6 @@
 			spawn(5)
 				reagents.trans_to(M, 5)
 			playsound(M.loc,'sound/items/drink.ogg', rand(10,50), 1)
-
-			if(M.viruses)
-				for(var/datum/disease/D in M.viruses)
-					for(var/datum/reagent/A in reagents.reagent_list)
-						if(A.id in D.cures)
-							if(D.stage <= 1)
-								M << "<span class='warning'>Whatever it was wrong with you, it seems to be gone now.</span>"
-								M.viruses.Remove(D)
-								qdel(D)
-							else
-								M << "<span class='warning'>You feel a little bit better.</span>"
-								D.stage--
 
 /obj/item/weapon/reagent_containers/glass/afterattack(obj/target, mob/user, proximity)
 	if((!proximity) || !check_allowed_items(target,target_self=1)) return
@@ -260,7 +248,7 @@
 
 /obj/item/weapon/reagent_containers/glass/bucket
 	name = "bucket"
-	desc = "It's a bucket."
+	desc = "It's a bucket. Wear it on your head and pretend you're a knight."
 	icon = 'icons/obj/janitor.dmi'
 	icon_state = "bucket"
 	item_state = "bucket"
@@ -269,7 +257,13 @@
 	amount_per_transfer_from_this = 20
 	possible_transfer_amounts = list(10,20,30,50,70)
 	volume = 70
+	slot_flags = SLOT_HEAD
 	flags = OPENCONTAINER
+	armor = list(melee = 25, bullet = 15, laser = 25,energy = 10, bomb = 25, bio = 0, rad = 0)
+	flags_cover = HEADCOVERSMOUTH|HEADCOVERSEYES
+	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE
+	var/flash_protect = 2
+	var/tint = 3
 
 /obj/item/weapon/reagent_containers/glass/bucket/attackby(obj/O, mob/user, params)
 	if(istype(O, /obj/item/weapon/mop))
@@ -287,3 +281,19 @@
 		user.put_in_hands(new /obj/item/weapon/bucket_sensor)
 	else
 		..()
+
+/obj/item/weapon/reagent_containers/glass/bucket/equipped(mob/user, slot)
+	if(slot == slot_head)
+		user.visible_message("<span class='danger'>The contents of [src] dump onto [user]!</span>")
+		var/R
+		if(reagents)
+			for(var/datum/reagent/A in reagents.reagent_list)
+				R += A.id + " ("
+				R += num2text(A.volume) + "),"
+		reagents.reaction(user, TOUCH)
+		user.attack_log += "Had a bucket containing [R] dumped on them."
+		reagents.clear_reagents()
+		icon_state = "bucket_worn"
+
+/obj/item/weapon/reagent_containers/glass/bucket/dropped(mob/user)
+	icon_state = initial(icon_state)

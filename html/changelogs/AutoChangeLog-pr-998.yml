@@ -1,4 +1,0 @@
-author: Cruix
-delete-after: True
-changes: 
-  - bugfix: "Plant products will no longer appear to stay in plant bags after you empty them into a biogenerator."

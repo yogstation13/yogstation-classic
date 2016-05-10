@@ -437,7 +437,7 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 	..()
 	if(ticker.mode.name == "cult")
 		var/datum/game_mode/cult/cultmode = ticker.mode
-		icon_state = cultmode.tomeicon
+		icon_state = cultmode.cult_tomeicon
 
 /obj/item/weapon/tome/Topic(href,href_list[])
 	if (src.loc == usr)

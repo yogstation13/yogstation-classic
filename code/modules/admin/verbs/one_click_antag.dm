@@ -205,7 +205,9 @@
 			H = pick(candidates)
 			H.mind.make_Cultist()
 			candidates.Remove(H)
-			temp.grant_runeword(H)
+
+		ticker.mode.pre_generate_cult_objectives()
+		ticker.mode.post_generate_cult_objectives()
 
 		return 1
 

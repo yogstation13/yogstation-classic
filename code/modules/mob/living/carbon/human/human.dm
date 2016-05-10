@@ -341,6 +341,8 @@
 			if(H.target == src)
 				H.electrocute_act()
 				break
+	if(dna)
+		shock_damage *= dna.species.shockmod
 	return ..(shock_damage,source,siemens_coeff,override)
 
 /mob/living/carbon/human/Topic(href, href_list)
@@ -921,3 +923,9 @@
 			H.bloody_hands_mob = null
 			H.update_inv_gloves()
 	update_icons()	//apply the now updated overlays to the mob
+
+/mob/living/carbon/human/flash_eyes(intensity = 1, override_blindness_check = 0, affect_silicon = 0, visual = 0)
+	if(dna)
+		if(dna.species.handle_flash(src, intensity, override_blindness_check, affect_silicon, visual))
+			return
+	return ..()

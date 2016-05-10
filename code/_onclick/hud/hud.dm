@@ -163,8 +163,11 @@
 		drone_hud(ui_style)
 	else if(isswarmer(mymob))
 		swarmer_hud()
-	else if(is_wearing_tactical_harness(mymob))
-		tactical_harness_hud()
+	else if(get_tactical_harness(mymob))
+		var/obj/item/weapon/storage/tactical_harness/H = get_tactical_harness(mymob)
+		H.tactical_harness_hud(src)
+	else
+		mymob.client.screen = list(mymob.client.void)
 
 //Version denotes which style should be displayed. blank or 0 means "next version"
 /datum/hud/proc/show_hud(version = 0)
