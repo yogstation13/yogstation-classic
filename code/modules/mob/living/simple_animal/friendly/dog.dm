@@ -111,7 +111,7 @@
 				icon_state = icon_dead
 		return
 	..()
-
+	update_corgi_fluff()
 
 
 /mob/living/simple_animal/pet/dog/corgi/Topic(href, href_list)
@@ -279,7 +279,7 @@
 /mob/living/simple_animal/pet/dog/corgi/proc/update_corgi_fluff()
 	if(!inventory_head)
 		return
-	switch(src.inventory_head.type)
+	switch(inventory_head.type)
 		if(/obj/item/clothing/head/helmet)
 			name = "Sergeant [real_name]"
 			desc = "The ever-loyal, the ever-vigilant."
@@ -567,7 +567,6 @@
 		else
 			if(M && stat != DEAD) // Same check here, even though emote checks it as well (poor form to check it only in the help case)
 				emote("me", 1, "growls!")
-
 /mob/living/simple_animal/pet/dog/corgi/tactical/New()
 	..()
 	var/obj/item/weapon/storage/tactical_harness/corgi/tmp_harness = new /obj/item/weapon/storage/tactical_harness/corgi()
