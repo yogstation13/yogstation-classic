@@ -33,6 +33,7 @@
 	if(!wielded || !user) return
 	wielded = 0
 	force = force_unwielded
+	armour_penetration = armourpenetration_unwielded
 	var/sf = findtext(name," (Wielded)")
 	if(sf)
 		name = copytext(name,1,sf)
