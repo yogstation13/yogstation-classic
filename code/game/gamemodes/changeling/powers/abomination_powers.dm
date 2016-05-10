@@ -88,10 +88,10 @@
 	changeling.can_absorb_dna(user,target)
 
 	changeling.isabsorbing = 1
-	for(var/stage = 1, stage<=1, stage++)
-		if(stage == 1)
-			user << "<span class='notice'>This creature is compatible. We must hold still...</span>"
-			user.visible_message("<span class='warning'><b>[user] opens their mouth wide, lifting up [target]!</span>", "<span class='notice'>We prepare to devour [target].</span>")
+	var/stage = 1
+	if(stage == 1)
+		user << "<span class='notice'>This creature is compatible. We must hold still...</span>"
+		user.visible_message("<span class='warning'><b>[user] opens their mouth wide, lifting up [target]!</span>", "<span class='notice'>We prepare to devour [target].</span>")
 
 		feedback_add_details("changeling_powers","A[stage]")
 		if(!do_mob(user, target, 50))
