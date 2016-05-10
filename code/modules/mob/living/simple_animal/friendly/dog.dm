@@ -567,6 +567,7 @@
 		else
 			if(M && stat != DEAD) // Same check here, even though emote checks it as well (poor form to check it only in the help case)
 				emote("me", 1, "growls!")
+
 /mob/living/simple_animal/pet/dog/corgi/tactical/New()
 	..()
 	var/obj/item/weapon/storage/tactical_harness/corgi/tmp_harness = new /obj/item/weapon/storage/tactical_harness/corgi()
