@@ -6,16 +6,16 @@
 	genetic_damage = 0
 	req_human = 1
 	max_genetic_damage = 0
-	var/horrorform = 0
 
 
 /obj/effect/proc_holder/changeling/horrorform/sting_action(mob/living/user)
 	var/datum/changeling/changeling = user.mind.changeling
+	var/mob/living/carbon/human/H = user
 	if(user.stat || !ishuman(user))
 		return
-	if(changeling.absorbedcount < 5)
+	/*if(changeling.absorbedcount < 5)
 		user << "<span class='warning'>We must absorb five lifeforms before being able to use this ability.</span>"
-		return
+		return*/
 	if(user.health < 35)
 		user << "<span class='warning'>We are too hurt to sustain such power.</span>"
 		return
@@ -25,18 +25,23 @@
 			user << "<span class='warning'>You opt not to transform."
 			return
 		if("Yes")
+			if(H.dna.species.id == "abomination")
+				user << "<span class='warning'>You're already transformed!</span>"
+				return
+			if(changeling.geneticdamage > 0)
+				user << "<span class='warning'>Your genomes are too damaged to allow you to transform.</span>"
+				return
+			changeling.geneticdamage += 5
 			user.Stun(INFINITY)
-
 			for(var/obj/item/I in user) //drops all items
 				user.unEquip(I)
 			user.visible_message("<span class='warning'>[user]'s body contorts unnaturally and they slip out of their clothes!</span>")
 			user <<"<span class='warning'>You contort your body and drop any restrictive clothing.</span>"
-			sleep(40)
+			sleep(30)
 
 			playsound(user.loc, 'sound/effects/creepyshriek.ogg', 100, 1, extrarange = 30)
 			user.visible_message("<span class='warning'><b>[user] lets out an abhorrent screech as their height suddenly increases, their body parts splitting and deforming horribly!</span>")
 			user <<"<span class='notice'>You are a shambling abomination! You are amazingly powerful and have new abilities, but you cannot use any other changeling abilities and lose chemicals extremely quickly. Remember, taking too much damage or running out of chemicals will revert you and leave you vulnerable. Check the 'Abomination' spell tab to use your abilities.</span>"
-			var/mob/living/carbon/human/H = user
 			H.underwear = "Nude"
 			H.undershirt = "Nude"
 			H.socks = "Nude"
@@ -79,47 +84,44 @@
 	if(user.health < 35)
 		user.visible_message("<span class='warning'>[user] sustains too much damage to continue their transformation, and collapses!</span>")
 		user << "<span class='notice'>You could not transform back correctly, which disfigures you and scrambles your genetic code!</span>"
-		changeling.geneticdamage = 50
-		var/newNameId = "Unknown"
-		user.real_name = newNameId
-		for(var/obj/item/I in user)
-			qdel(I)
-		changeling.chem_recharge_slowdown = 0
-		hardset_dna(user, null, null, null, null, /datum/species/human)
 		var/mob/living/carbon/human/H = user
 		var/datum/mutation/human/HM = mutations_list[HULK]
 		if(H.dna && H.dna.mutations)
 			HM.force_lose(H)
-		user.apply_damage(10, CLONE)
+		changeling.reverting = 1
+		changeling.geneticdamage += 50
 		user.Weaken(20)
-		user.spellremove(user)
-		user.weakeyes = 0
-		user.sight &= ~SEE_MOBS
-		user.permanent_sight_flags &= ~SEE_MOBS
-		user.see_in_dark = 0
-		user.dna.species.invis_sight = initial(user.dna.species.invis_sight)
+		user.apply_damage(10, CLONE)
 
 	if(changeling.chem_charges == 0)
 		user.visible_message("<span class='warning'>[user] suddenly shrinks back down to a normal size.</span>")
 		user << "<span class='notice'>You ran out of chemicals before you could revert properly, disfiguring you!</span>"
-		changeling.geneticdamage = 20
-		var/newNameId = "Unknown"
-		user.real_name = newNameId
-		for(var/obj/item/I in user)
-			qdel(I)
-		changeling.chem_recharge_slowdown = 0
-		hardset_dna(user, null, null, null, null, /datum/species/human)
 		var/mob/living/carbon/human/H = user
 		var/datum/mutation/human/HM = mutations_list[HULK]
 		if(H.dna && H.dna.mutations)
 			HM.force_lose(H)
+		changeling.reverting = 1
+		changeling.geneticdamage += 20
 		user.Weaken(10)
+
+
+	if(changeling.reverting == 1)
+		var/newNameId = "Unknown"
+		user.real_name = newNameId
+		for(var/obj/item/I in user) // removes any item, the only thing I can think of is cuffs
+			user.unEquip(I)
+		for(var/obj/item/I in user) // removes the abomination armor
+			qdel(I)
+		changeling.chem_recharge_slowdown = 0
+		hardset_dna(user, null, null, null, null, /datum/species/human)
 		user.spellremove(user)
 		user.weakeyes = 0
 		user.sight &= ~SEE_MOBS
 		user.permanent_sight_flags &= ~SEE_MOBS
 		user.see_in_dark = 0
 		user.dna.species.invis_sight = initial(user.dna.species.invis_sight)
+		changeling.reverting = 0
+
 
 
 

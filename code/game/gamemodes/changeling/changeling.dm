@@ -295,6 +295,7 @@ var/list/slot2type = list("head" = /obj/item/clothing/head/changeling, "wear_mas
 	var/mimicing = ""
 	var/canrespec = 0
 	var/changeling_speak = 0
+	var/reverting = 0
 	var/datum/dna/chosen_dna
 	var/obj/effect/proc_holder/changeling/sting/chosen_sting
 
@@ -500,7 +501,6 @@ var/list/slot2type = list("head" = /obj/item/clothing/head/changeling, "wear_mas
 	armor = 0
 	punchmod = 25
 	no_equip = list(slot_w_uniform,slot_glasses, slot_back, slot_ears)
-	//var/has_fine_manipulation = 0
 	attack_verb = "slash"
 	attack_sound = 'sound/weapons/bladeslice.ogg'
 	heatmod = 1.5
@@ -511,7 +511,7 @@ var/list/slot2type = list("head" = /obj/item/clothing/head/changeling, "wear_mas
 	icon_state = "golem"
 	item_state = "golem"
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
-	armor = list(melee = 80, bullet = 50, laser = 50,energy = 100, bomb = 30, bio = 100, rad = 0)
+	armor = list(melee = 80, bullet = 50, laser = 70,energy = 100, bomb = 30, bio = 100, rad = 0)
 	unacidable = 1
 	burn_state = -1
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
@@ -542,7 +542,7 @@ var/list/slot2type = list("head" = /obj/item/clothing/head/changeling, "wear_mas
 	item_state = "golem"
 	desc = "Hardened resin of some sort."
 	flags = ABSTRACT | NODROP
-	armor = list(melee = 50, bullet = 25, laser = 20,energy = 50, bomb = 10, bio = 50, rad = 0)
+	armor = list(melee = 50, bullet = 25, laser = 40,energy = 50, bomb = 10, bio = 50, rad = 0)
 	unacidable = 1
 	burn_state = -1
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH

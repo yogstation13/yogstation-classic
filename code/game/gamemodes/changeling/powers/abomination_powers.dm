@@ -26,8 +26,12 @@
 		for(var/mob/living/carbon/M in T.contents)
 			if(M == usr) //No message for the user, of course
 				continue
+			var/mob/living/carbon/human/H = M
+			if(istype(H.ears, /obj/item/clothing/ears/earmuffs))
+				H.Stun(2)
+				continue
 			M << "<span class='userdanger'>You freeze in terror, your blood turning cold from the sound of the scream!</span>"
-			M.Stun(3)
+			M.Stun(5)
 
 /obj/effect/proc_holder/spell/targeted/abom_fleshmend
 	name = "Fleshmend"
@@ -39,20 +43,20 @@
 	include_user = 1
 
 /obj/effect/proc_holder/spell/targeted/abom_fleshmend/cast(list/targets)
-	for(var/mob/living/user in targets)
-		if(!abomination_check(usr))
-			return
-		user.visible_message("<span class='warning'>[user]'s skin shifts and pulses, any damage rapidly vanishing!</span>")
-		spawn(0)
-			if(ishuman(user))
-				var/mob/living/carbon/human/H = user
-				H.restore_blood()
-				H.remove_all_embedded_objects()
-		for(var/i = 0, i<10,i++)
-			user.adjustBruteLoss(-10)
-			user.adjustOxyLoss(-10)
-			user.adjustFireLoss(-10)
-			sleep(10)
+	if(!abomination_check(usr))
+		return
+	usr.visible_message("<span class='warning'>[usr]'s skin shifts and pulses, any damage rapidly vanishing!</span>")
+	spawn(0)
+		if(ishuman(usr))
+			var/mob/living/carbon/human/H = usr
+			H.restore_blood()
+			H.remove_all_embedded_objects()
+	var/mob/living/carbon/human/user = usr
+	for(var/i = 0, i<10,i++)
+		user.adjustBruteLoss(-10)
+		user.adjustOxyLoss(-10)
+		user.adjustFireLoss(-10)
+		sleep(10)
 
 
 
@@ -85,10 +89,9 @@
 
 	changeling.isabsorbing = 1
 	for(var/stage = 1, stage<=1, stage++)
-		switch(stage)
-			if(1)
-				user << "<span class='notice'>This creature is compatible. We must hold still...</span>"
-				user.visible_message("<span class='warning'><b>[user] Opens their mouth wide, lifting up [target]!</span>", "<span class='notice'>We prepare to devour [target].</span>")
+		if(stage == 1)
+			user << "<span class='notice'>This creature is compatible. We must hold still...</span>"
+			user.visible_message("<span class='warning'><b>[user] opens their mouth wide, lifting up [target]!</span>", "<span class='notice'>We prepare to devour [target].</span>")
 
 		feedback_add_details("changeling_powers","A[stage]")
 		if(!do_mob(user, target, 50))
@@ -170,23 +173,16 @@
 			user << "<span class='warning'>You decide not to revert."
 			return
 		if("Yes")
+			if(!abomination_check(usr))
+				user << "<span class='warning'>You're already reverted!</span>"
+				user.spellremove(user)
+				return
 			user <<"<span class='notice'>You transform back into a humanoid form, leaving you exhausted!</span>"
-			var/newNameId = "Unknown"
-			user.real_name = newNameId
-			for(var/obj/item/I in user)
-				qdel(I)
-			changeling.chem_recharge_slowdown = 0
-			changeling.geneticdamage = 10
-			hardset_dna(user, null, null, null, null, /datum/species/human)
 			var/datum/mutation/human/HM = mutations_list[HULK]
 			if(H.dna && H.dna.mutations)
 				HM.force_lose(H)
-			user.weakeyes = 0
-			user.sight &= ~SEE_MOBS
-			user.permanent_sight_flags &= ~SEE_MOBS
-			user.see_in_dark = 0
-			H.dna.species.invis_sight = initial(H.dna.species.invis_sight)
-			user.spellremove(user)
+			changeling.reverting = 1
+			changeling.geneticdamage += 10
 			user.Stun(5)
 
 
