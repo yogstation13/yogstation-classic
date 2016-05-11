@@ -78,7 +78,7 @@
 /obj/item/weapon/stock_parts/cell/attack_self(mob/user)
 	if (istype(user, /mob/living/carbon/human))
 		var/mob/living/carbon/human/maybedroid = user
-		if (maybedroid.dna.species.id == "android")
+		if (maybedroid.dna.species.id == "android" || maybedroid.dna.species.id == "flyternis")
 			//BEGIN THE NUTRITION RECHARGEEEE
 			if (charge)
 				if (rigged)

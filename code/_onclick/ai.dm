@@ -40,6 +40,12 @@
 		return
 
 	var/list/modifiers = params2list(params)
+	if(modifiers["shift"] && modifiers["alt"])
+		ShiftAltClickOn(A)
+		return
+	if(modifiers["alt"] && modifiers["ctrl"])
+		CtrlAltClickOn(A)
+		return
 	if(modifiers["shift"] && modifiers["ctrl"])
 		CtrlShiftClickOn(A)
 		return
@@ -105,6 +111,8 @@
 	A.AICtrlClick(src)
 /mob/living/silicon/ai/AltClickOn(var/atom/A)
 	A.AIAltClick(src)
+/mob/living/silicon/ai/ShiftAltClickOn(var/atom/A)
+	A.AIShiftAltClick(src)
 
 /*
 	The following criminally helpful code is just the previous code cleaned up;
@@ -121,6 +129,8 @@
 /atom/proc/AIShiftClick()
 	return
 /atom/proc/AICtrlShiftClick()
+	return
+/atom/proc/AIShiftAltClick()
 	return
 
 /* Airlocks */
@@ -157,6 +167,14 @@
 		Topic("aiEnable=11", list("aiEnable"="11"), 1) // 1 meaning no window (consistency!)
 	else
 		Topic("aiDisable=11", list("aiDisable"="11"), 1)
+	return
+/obj/machinery/door/airlock/AIShiftAltClick() //toggles speed override
+	if(emagged)
+		return
+	if(!normalspeed)
+		Topic("aiEnable=9", list("aiEnable"="9"), 1) // 1 meaning no window (consistency!)
+	else
+		Topic("aiDisable=9", list("aiDisable"="9"), 1)
 	return
 
 /* APC */

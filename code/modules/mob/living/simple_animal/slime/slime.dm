@@ -6,7 +6,8 @@
 	ventcrawler = 2
 	var/is_adult = 0
 	var/docile = 0
-	languages = SLIME | HUMAN
+	languages_understood = SLIME | HUMAN
+	languages_spoken = SLIME | HUMAN
 	faction = list("slime")
 
 	harm_intent_damage = 5

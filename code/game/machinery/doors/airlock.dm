@@ -715,6 +715,7 @@ About the new airlock wires panel:
 		//aiEnable - 1 idscan, 4 raise door bolts, 5 electrify door for 30 seconds, 6 electrify door indefinitely, 7 open door,  8 door safties, 9 door speed, 11 emergency access
 		//inorix: code to allow silicons to set airlock permissions for newly placed airlocks
 		//        see my comment up above for details
+		var/no_window_msg
 		if(href_list["set_access"])
 			set_perms(usr)
 		else if(href_list["access"])
@@ -770,6 +771,7 @@ About the new airlock wires panel:
 						usr << "You can't drop the door bolts - The door bolts have been cut."
 					else if(src.locked!=1)
 						src.locked = 1
+						no_window_msg = "Door bolts lowered."
 						update_icon()
 				if(5)
 					//un-electrify door
@@ -777,8 +779,10 @@ About the new airlock wires panel:
 						usr << text("Can't un-electrify the airlock - The electrification wire is cut.")
 					else if(src.secondsElectrified==-1)
 						src.secondsElectrified = 0
+						no_window_msg = "Door un-electrified."
 					else if(src.secondsElectrified>0)
 						src.secondsElectrified = 0
+						no_window_msg = "Door un-electrified."
 
 				if(8)
 					// Safeties!  We don't need no stinking safeties!
@@ -797,6 +801,7 @@ About the new airlock wires panel:
 						usr << text("Control to door timing circuitry has been severed.")
 					else if (src.normalspeed)
 						normalspeed = 0
+						no_window_msg = "Door speed accelerated."
 					else
 						usr << text("Door timing circurity already accellerated.")
 
@@ -824,6 +829,7 @@ About the new airlock wires panel:
 					// Emergency access
 					if (src.emergency)
 						emergency = 0
+						no_window_msg = "Airlock emergency access disabled."
 					else
 						usr << text("Emergency access is already disabled!")
 
@@ -850,6 +856,7 @@ About the new airlock wires panel:
 					else
 						if(src.hasPower())
 							src.locked = 0
+							no_window_msg = "Door bolts raised."
 							update_icon()
 						else
 							usr << text("Cannot raise door bolts due to power failure.<br>\n")
@@ -884,6 +891,7 @@ About the new airlock wires panel:
 						shockedby += text("\[[time_stamp()]\][usr](ckey:[usr.ckey])")
 						add_logs(usr, src, "electrified", addition="at [x],[y],[z]")
 						src.secondsElectrified = -1
+						no_window_msg = "Door electrified."
 
 				if (8) // Not in order >.>
 					// Safeties!  Maybe we do need some stinking safeties!
@@ -900,6 +908,7 @@ About the new airlock wires panel:
 						usr << text("Control to door timing circuitry has been severed.")
 					else if (!src.normalspeed)
 						normalspeed = 1
+						no_window_msg = "Door speed set to normal."
 					else
 						usr << text("Door timing circurity currently operating normally.")
 
@@ -927,8 +936,11 @@ About the new airlock wires panel:
 					// Emergency access
 					if (!src.emergency)
 						emergency = 1
+						no_window_msg = "Airlock emergency access enabled."
 					else
 						usr << text("Emergency access is already enabled!")
+		if(nowindow && no_window_msg)
+			usr << no_window_msg
 
 	add_fingerprint(usr)
 	update_icon()
@@ -1101,7 +1113,7 @@ About the new airlock wires panel:
 				else
 					spawn(0)	close(2)
 
-	else if(istype(C, /obj/item/weapon/airlock_painter))
+	else if(get_airlock_painter(C))
 		change_paintjob(C, user)
 	else if(istype(C, /obj/item/device/doorCharge) && p_open)
 		if(emagged)
@@ -1120,7 +1132,7 @@ About the new airlock wires panel:
 		newCharge.loc = src
 		charge = newCharge
 		return
-	else if(istype(C, /obj/item/weapon/rcd)&& istype(loc, /turf/simulated)) //Do not attack the airlock if the user is holding an RCD
+	else if(is_rcd(C) && istype(loc, /turf/simulated))
 		return
 	else
 		..()
@@ -1256,8 +1268,8 @@ About the new airlock wires panel:
 
 /obj/machinery/door/airlock/proc/change_paintjob(obj/item/C, mob/user)
 	var/obj/item/weapon/airlock_painter/W
-	if(istype(C, /obj/item/weapon/airlock_painter))
-		W = C
+	if(get_airlock_painter(C))
+		W = get_airlock_painter(C)
 	else
 		user << "If you see this, it means airlock/change_paintjob() was called with something other than an airlock painter. Check your code!"
 		return
@@ -1344,3 +1356,24 @@ About the new airlock wires panel:
 	for (var/obj/A in contents)
 		A.HasProximity(AM)
 	return
+
+/obj/machinery/door/airlock/attack_alien(mob/living/carbon/alien/humanoid/user)
+	add_fingerprint(user)
+	if(isElectrified())
+		shock(user, 100) //Mmm, fried xeno!
+		return
+	if(!density) //already open
+		return
+	if(locked || welded)
+		user << "<span class='warning'>[src] refuses to budge!</span>"
+		return
+	user.visible_message("<span class='warning'>[user] begins prying open [src].</span>",\
+						"<span class='noticealien'>You begin digging your claws into [src] with all your might!</span>",\
+						"<span class='warning'>You hear groaning metal...</span>")
+	var/time_to_open = 30
+	if(hasPower())
+		time_to_open = 120 //Powered airlocks take longer to open
+		playsound(src.loc, 'sound/machines/airlockforced.ogg', 30, 1)
+	if(do_after(user, time_to_open, target = src))
+		if(density && !open(2)) //The airlock is still closed, but something prevented it from opening (Another player noticed and bolted/welded the airlock in time!)
+			user << "<span class='warning'>Dispite your efforts, [src] managed to resist your attempts to open it!</span>"

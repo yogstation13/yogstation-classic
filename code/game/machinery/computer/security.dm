@@ -710,6 +710,9 @@ What a mess.*/
 					if("Delete Record (Security) Execute")
 						investigate_log("[usr.name] ([usr.key]) has deleted the security records for [active1.fields["name"]].", "records")
 						if(active2)
+							active2.fields["criminal"] = "None"
+							for(var/mob/living/carbon/human/H in mob_list)
+								H.sec_hud_set_security_status()
 							data_core.security -= active2
 							qdel(active2)
 
@@ -725,6 +728,9 @@ What a mess.*/
 							qdel(active1)
 
 						if(active2)
+							active2.fields["criminal"] = "None"
+							for(var/mob/living/carbon/human/H in mob_list)
+								H.sec_hud_set_security_status()
 							data_core.security -= active2
 							qdel(active2)
 					else

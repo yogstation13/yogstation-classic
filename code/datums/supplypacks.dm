@@ -532,6 +532,33 @@ var/list/all_supply_groups = list(supply_emergency,supply_security,supply_engine
 	cost = 10
 	containername = "collector crate"
 
+/datum/supply_packs/engineering/engine/tesla_collector
+	name = "Tesla Collector Crate"
+	contains = list(/obj/machinery/power/tesla_coil,
+					/obj/machinery/power/tesla_coil,
+					/obj/machinery/power/tesla_coil,
+					/obj/machinery/power/tesla_coil,
+					/obj/machinery/power/tesla_coil,
+					/obj/machinery/power/tesla_coil,
+					/obj/machinery/power/tesla_coil,
+					/obj/machinery/power/tesla_coil,
+					/obj/machinery/power/tesla_coil,
+					/obj/machinery/power/grounding_rod,
+					/obj/machinery/power/grounding_rod,
+					/obj/machinery/power/grounding_rod,
+					/obj/machinery/power/grounding_rod,
+					/obj/machinery/power/grounding_rod,
+					/obj/machinery/power/grounding_rod)
+	cost = 20
+	containername = "tesla collector crate"
+
+/datum/supply_packs/engineering/engine/tesla_gen
+	name = "Tesla Generator Crate"
+	contains = list(/obj/machinery/the_singularitygen/tesla)
+	cost = 10
+	containername = "tesla generator"
+
+
 /datum/supply_packs/engineering/engine/PA
 	name = "Particle Accelerator Crate"
 	contains = list(/obj/structure/particle_accelerator/fuel_chamber,
@@ -553,6 +580,17 @@ var/list/all_supply_groups = list(supply_emergency,supply_security,supply_engine
 	containertype = /obj/structure/closet/crate/secure
 	containername = "space suit crate"
 	access = access_eva
+
+/datum/supply_packs/engineering/flood_lamp
+	name = "Flood Lamp Assembly Crate"
+	contains = list(/obj/machinery/flood_lamp,
+					/obj/item/device/flashlight,
+					/obj/item/device/flashlight,
+					/obj/item/device/flashlight,
+					/obj/item/weapon/stock_parts/cell/high,
+					/obj/item/weapon/paper/flood_lamp)
+	cost = 15
+	containername = "floodlamp assembly crate"
 
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////// Medical /////////////////////////////////////////
@@ -678,6 +716,27 @@ var/list/all_supply_groups = list(supply_emergency,supply_security,supply_engine
 	containername = "iv drip crate"
 	access = access_cmo
 
+/datum/supply_packs/medical/surgery
+	name = "Surgery Supply Crate"
+	contains = list(/obj/item/weapon/scalpel,
+					/obj/item/weapon/hemostat,
+					/obj/item/weapon/cautery,
+					/obj/item/weapon/retractor,
+					/obj/item/weapon/circular_saw,
+					/obj/item/weapon/surgicaldrill,
+					/obj/item/weapon/surgical_drapes,
+					/obj/item/weapon/tank/internals/anesthetic,
+					/obj/item/clothing/mask/breath/medical)
+	cost = 15
+	containertype = /obj/structure/closet/crate/medical
+	containername = "surgery crate"
+
+/datum/supply_packs/medical/surgery_table
+	name = "Surgery Table Crate"
+	contains = list(/obj/item/weapon/circuitboard/operating)
+	cost = 40
+	containertype = /obj/structure/closet/crate/surgery_table
+	containername = "surgery table crate"
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////// Science /////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
@@ -1182,7 +1241,7 @@ var/list/all_supply_groups = list(supply_emergency,supply_security,supply_engine
 					/obj/item/clothing/shoes/clown_shoes,
 					/obj/item/clothing/mask/gas/clown_hat,
 					/obj/item/clothing/under/rank/clown,
-					/obj/item/weapon/bikehorn,
+					/obj/item/device/assembly/bikehorn,
 					/obj/item/clothing/under/rank/mime,
 					/obj/item/clothing/shoes/sneakers/black,
 					/obj/item/clothing/gloves/color/white,

@@ -119,7 +119,7 @@
 
 /obj/item/organ/internal/gland/pop/activate()
 	owner << "<span class='notice'>You feel unlike yourself.</span>"
-	var/species = pick(list(/datum/species/lizard,/datum/species/slime,/datum/species/plant/pod,/datum/species/fly))
+	var/species = pick(list(/datum/species/lizard,/datum/species/slime,/datum/species/plant/pod,/datum/species/human/fly))
 	hardset_dna(owner, null, null, null, null, species)
 	owner.regenerate_icons()
 	return
@@ -166,6 +166,7 @@
 	owner << "<span class='warning'>You feel a spike of pain in your head.</span>"
 	empulse(get_turf(owner), 2, 5, 1)
 
+/*
 /obj/item/organ/internal/gland/spiderman
 	origin_tech = "materials=4;biotech=6"
 	cooldown_low = 450
@@ -177,6 +178,7 @@
 	owner << "<span class='warning'>You feel something crawling in your skin.</span>"
 	owner.faction |= "spiders"
 	new /obj/effect/spider/spiderling(owner.loc)
+*/
 
 /obj/item/organ/internal/gland/egg
 	origin_tech = "materials=4;biotech=6"
@@ -212,7 +214,7 @@
 		else if(H.w_uniform)
 			H.w_uniform.add_blood(owner)
 			H.update_inv_w_uniform(0)
-
+/*
 /obj/item/organ/internal/gland/bodysnatch
 	origin_tech = "materials=4;biotech=7"
 	cooldown_low = 600
@@ -283,4 +285,4 @@
 	if(istype(T))
 		T.atmos_spawn_air(SPAWN_TOXINS|SPAWN_20C,300)
 	owner.gib()
-	return
+	return*/

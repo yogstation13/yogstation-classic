@@ -73,6 +73,11 @@
 
 		if ("Summon")
 			for(var/mob/living/simple_animal/shade/A in src)
+				if(!A.key)
+					for(var/mob/dead/observer/G in player_list)
+						if(G.name == A.name && G.name == A.real_name)
+							A.key = G.key
+							G.mind.transfer_to(A)
 				A.status_flags &= ~GODMODE
 				A.canmove = 1
 				A.loc = U.loc
@@ -281,3 +286,13 @@
 		qdel(T)
 	else
 		U << "<span class='danger'>The ghost has fled beyond your grasp.</span>"
+
+/obj/item/device/soulstone/attack_ghost(mob/user)
+	if (imprinted != user.name || imprinted != user.real_name)
+		return
+
+	for(var/mob/living/simple_animal/shade/S in src)
+		user.cancel_camera()
+		S.ckey = user.ckey
+		user.mind.transfer_to(S)
+	return

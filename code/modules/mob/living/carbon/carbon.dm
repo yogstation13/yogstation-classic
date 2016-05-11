@@ -1,3 +1,7 @@
+/mob/living/carbon/New()
+	create_reagents(1000)
+	..()
+
 /mob/living/carbon
 	var/nightvision = 0
 
@@ -253,7 +257,10 @@
 
 				add_logs(src, M, "thrown", addition="from [start_T_descriptor] with the target [end_T_descriptor]")
 
-	if(!item) return //Grab processing has a chance of returning null
+	if (item.prethrow_at(target))
+		return;
+
+	if(!(item && istype(item))) return //Grab processing has a chance of returning null
 
 	if(!ismob(item)) //Honk mobs don't have a dropped() proc honk
 		unEquip(item)
@@ -313,30 +320,50 @@
 	user << browse(dat, "window=mob\ref[src];size=325x500")
 	onclose(user, "mob\ref[src]")
 
-/mob/living/carbon/Topic(href, href_list)
-	..()
+/mob/living/carbon/Topic(href, href_list, strip_coeff = 0, silent_strip = 0, silent_internals = 0, put_in_hand = 0)
+	..(href, href_list, strip_coeff, silent_strip, put_in_hand)
 	//strip panel
 	if(usr.canUseTopic(src, BE_CLOSE, NO_DEXTERY))
 		if(href_list["internal"])
 			var/slot = text2num(href_list["internal"])
-			var/obj/item/ITEM = get_item_by_slot(slot)
-			if(ITEM && istype(ITEM, /obj/item/weapon/tank) && wear_mask && (wear_mask.flags & MASKINTERNALS))
-				visible_message("<span class='danger'>[usr] tries to [internal ? "close" : "open"] the valve on [src]'s [ITEM].</span>", \
-								"<span class='userdanger'>[usr] tries to [internal ? "close" : "open"] the valve on [src]'s [ITEM].</span>")
-				if(do_mob(usr, src, POCKET_STRIP_DELAY))
-					if(internal)
-						internal = null
-						if(internals)
-							internals.icon_state = "internal0"
-					else if(ITEM && istype(ITEM, /obj/item/weapon/tank) && wear_mask && (wear_mask.flags & MASKINTERNALS))
-						internal = ITEM
-						if(internals)
-							internals.icon_state = "internal1"
-
-					visible_message("<span class='danger'>[usr] [internal ? "opens" : "closes"] the valve on [src]'s [ITEM].</span>", \
-									"<span class='userdanger'>[usr] [internal ? "opens" : "closes"] the valve on [src]'s [ITEM].</span>")
-
-
+			switch(slot)
+				if(slot_wear_mask)
+					var/obj/item/clothing/mask/breath_mask = wear_mask
+					if(!breath_mask || breath_mask.ignore_maskadjust)
+						return
+					else
+						if(!silent_internals)
+							visible_message("<span class='danger'>[usr] slides [breath_mask] [breath_mask.mask_adjusted ? "on" : "off"] [src]'s face.</span>", \
+											"<span class='userdanger'>[usr] slides [breath_mask] [breath_mask.mask_adjusted ? "on" : "off"] [src]'s face.</span>")
+							if(!do_mob(usr, src, 20)) //2 seconds to react
+								usr << "<span class='warning'>You failed to slide the mask [breath_mask.mask_adjusted ? "on" : "off"] [src]'s face.</span>"
+						else
+							usr << "<span class='notice'>You silently slide [breath_mask] [breath_mask.mask_adjusted ? "on" : "off"] [src]'s face...but how?</span>"
+						breath_mask.adjustmask(usr, silent_internals)
+				else
+					var/obj/item/ITEM = get_item_by_slot(slot)
+					if(ITEM && istype(ITEM, /obj/item/weapon/tank) && wear_mask && (wear_mask.flags & MASKINTERNALS))
+						if(!silent_internals)
+							visible_message("<span class='danger'>[usr] tries to [internal ? "close" : "open"] the valve on [src]'s [ITEM].</span>", \
+											"<span class='userdanger'>[usr] tries to [internal ? "close" : "open"] the valve on [src]'s [ITEM].</span>")
+						else
+							usr << "<span class='notice'>You silenty try to [internal ? "close" : "open"] the valve on [src]'s [ITEM].</span>"
+						if(do_mob(usr, src, POCKET_STRIP_DELAY*(1-strip_coeff)))
+							if(internal)
+								internal = null
+								if(internals)
+									internals.icon_state = "internal0"
+							else if(ITEM && istype(ITEM, /obj/item/weapon/tank) && wear_mask && (wear_mask.flags & MASKINTERNALS))
+								internal = ITEM
+								if(internals)
+									internals.icon_state = "internal1"
+							if(!silent_internals)
+								visible_message("<span class='danger'>[usr] [internal ? "opens" : "closes"] the valve on [src]'s [ITEM].</span>", \
+												"<span class='userdanger'>[usr] [internal ? "opens" : "closes"] the valve on [src]'s [ITEM].</span>")
+							else
+								usr << "<span class='notice'>You silenty [internal ? "open" : "close"] the valve on [src]'s [ITEM].</span>"
+			if(usr.machine == src && in_range(src, usr))
+				show_inv(usr)
 
 /mob/living/carbon/getTrail()
 	if(getBruteLoss() < 300)

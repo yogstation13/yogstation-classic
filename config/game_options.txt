@@ -89,16 +89,18 @@ ALERT_DELTA The station's self-destruct mechanism has been engaged. All crew are
 # MAKE SURE THESE VALUES ADD UP TO 100! THAT WAY WE CAN REGULATE IN PERCENTAGES!
 # IF YOU INCREASE ONE, DECREASE SOMETHING ELSE BY THE SAME AMOUNT
 
-PROBABILITY TRAITOR 		7
-PROBABILITY TRAITORCHAN 	6
-PROBABILITY DOUBLE_AGENTS 	10
-PROBABILITY NUCLEAR 		10
-PROBABILITY REVOLUTION 		10
-PROBABILITY CULT 			10
+PROBABILITY TRAITOR 		6
+PROBABILITY TRAITORCHAN 	5
+PROBABILITY TRAITORABD		5
+PROBABILITY TRAITORABDCHAN	5
+PROBABILITY DOUBLE_AGENTS 	8
+PROBABILITY NUCLEAR 		9
+PROBABILITY REVOLUTION 		8
+PROBABILITY CULT 			9
 PROBABILITY CHANGELING 		0
 PROBABILITY WIZARD 			9
-PROBABILITY MALFUNCTION 	10
-PROBABILITY BLOB 			10
+PROBABILITY MALFUNCTION 	9
+PROBABILITY BLOB 			9
 PROBABILITY METEOR 			0
 PROBABILITY EXTENDED 		0
 PROBABILITY GANG 			9
@@ -127,6 +129,8 @@ CONTINUOUS WIZARD
 CONTINUOUS BLOB
 #CONTINUOUS RAGINMAGES
 #CONTINUOUS MONKEY
+CONTINUOUS TRAITORABD
+CONTINUOUS TRAITORABDCHAN
 
 ##Note: do not toggle continuous off for these modes, as they have no antagonists and would thus end immediately!
 
@@ -246,7 +250,7 @@ SECURITY_HAS_MAINT_ACCESS
 ## Set to 0/commented for "off", silicons will just start with Asimov.
 ## Set to 1 for "custom", silicons will start with the custom laws defined in silicon_laws.txt. (If silicon_laws.txt is empty, the AI will spawn with asimov and Custom boards will auto-delete.)
 ## Set to 2 for "random", silicons will start with a random lawset picked from (at the time of writing): P.A.L.A.D.I.N., Corporate, Asimov. More can be added by changing the law datum paths in ai_laws.dm.
-DEFAULT_LAWS 0
+DEFAULT_LAWS 2
 
 ### SILICON LAW MAX AMOUNT ###
 ## The maximum number of laws a silicon can have

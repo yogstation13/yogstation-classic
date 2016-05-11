@@ -106,22 +106,22 @@ var/total_borer_hosts_needed = 10
 			if(victim.reagents.has_reagent("sugar"))
 				if(!docile)
 					if(controlling)
-						victim << "<span class='boldnotice'>You feel the soporific flow of sugar in your host's blood, lulling you into docility.</span>"
+						victim << "<span class='warning'>You feel the soporific flow of sugar in your host's blood, lulling you into docility.</span>"
 					else
-						src << "<span class='boldnotice'>You feel the soporific flow of sugar in your host's blood, lulling you into docility.</span>"
+						src << "<span class='warning'>You feel the soporific flow of sugar in your host's blood, lulling you into docility.</span>"
 					docile = 1
 					influence -= 1
 			else
 				if(docile)
 					if(controlling)
-						victim << "<span class='boldnotice'>You shake off your lethargy as the sugar leaves your host's blood.</span>"
+						victim << "<span class='warning'>You shake off your lethargy as the sugar leaves your host's blood.</span>"
 					else
-						src << "<span class='boldnotice'>You shake off your lethargy as the sugar leaves your host's blood.</span>"
+						src << "<span class='warning'>You shake off your lethargy as the sugar leaves your host's blood.</span>"
 					docile = 0
 			if(controlling)
 
 				if(docile)
-					victim << "<span class='boldnotice'>You are feeling far too docile to continue controlling your host...</span>"
+					victim << "<span class='warning'>You are feeling far too docile to continue controlling your host...</span>"
 					victim.release_control()
 					return
 
@@ -135,26 +135,26 @@ var/total_borer_hosts_needed = 10
 	if(dd_hasprefix(message, ";"))
 		message = copytext(message,2)
 		for(var/borer in borers)
-			borer << "<span class='borer'><b>HIVEMIND: </b>[name] says: \"[message]\""
+			borer << "<span class='borer'><b>HIVEMIND: </b>[name] transmits: \"[message]\""
 		for(var/mob/dead in dead_mob_list)
-			dead << "<span class='borer'><b>BORER HIVEMIND: </b>[name] says: \"[message]\""
+			dead << "<span class='borer'><b>BORER HIVEMIND: </b>[name] transmits: \"[message]\""
 		return
 	if(!victim)
-		src << "<span class='boldnotice'>You cannot speak without a host.</span>"
+		src << "<span class='warning'>You cannot speak without a host!</span>"
 		return
 	if(dd_hasprefix(message, "*"))
 		message = copytext(message,2)
 		victim.say(message)
 		return
 	if(influence > 80)
-		victim << "<span class='green'><b>[name] telepathicaly shouts... </b></span><span class='userdanger'>[message]</span>"
-		src << "<span class='green'><b>[name] telepathicaly shouts... </b></span><span class='userdanger'>[message]</span>"
+		victim << "<span class='green'><b>[name] telepathically shouts... </b></span><span class='userdanger'>[message]</span>"
+		src << "<span class='green'><b>[name] telepathically shouts... </b></span><span class='userdanger'>[message]</span>"
 	else if(influence > 40)
-		victim << "<span class='green'><b>[name] telepathicaly says... </b></span>[message]"
-		src << "<span class='green'><b>[name] telepathicaly says... </b></span>[message]"
+		victim << "<span class='green'><b>[name] telepathically says... </b></span>[message]"
+		src << "<span class='green'><b>[name] telepathically says... </b></span>[message]"
 	else
-		victim << "<span class='green'><b>[name] telepathicaly whispers... </b></span><i>[message]</i>"
-		src << "<span class='green'><b>[name] telepathicaly whispers... </b></span><i>[message]</i>"
+		victim << "<span class='green'><b>[name] telepathically whispers... </b></span><i>[message]</i>"
+		src << "<span class='green'><b>[name] telepathically whispers... </b></span><i>[message]</i>"
 
 /mob/living/simple_animal/borer/UnarmedAttack()
 	return
@@ -170,11 +170,15 @@ var/total_borer_hosts_needed = 10
 		return
 
 	if(victim.borer)
-		src << "<span class='boldnotice'>[victim] is already infected!</span>"
+		src << "<span class='warning'>[victim] is already infected!</span>"
 		return
 
 	if(!victim.key || !victim.mind || !victim.client)
-		src << "<span class='boldnotice'>[victim]'s mind seems unresponsive. Try someone else!</span>"
+		src << "<span class='warning'>[victim]'s mind seems unresponsive. Try someone else!</span>"
+		return
+
+	if (victim && victim.dna && istype(victim.dna.species, /datum/species/skeleton))
+		src << "<span class='warning'>[victim] does not posess the vital systems needed to support us.</span>"
 		return
 
 	src.victim = victim
@@ -210,7 +214,7 @@ var/total_borer_hosts_needed = 10
 	src << "<span class='notice'>You are a cortical borer!</span> You are a brain slug that worms its way \
 	into the head of its victim. Use stealth, persuasion and your powers of mind control to keep you, \
 	your host and your eventual spawn safe and warm."
-	src << "You can speak to your victim with <b>say</b> and your fellow borers by prefixing your message with ';'. Checkout your borer tab to see your powers as a borer."
+	src << "You can speak to your victim with <b>say</b> and your fellow borers by prefixing your message with ';'. You can also force a host you have infested to speak by prefixing messages with *. Check out your borer tab to see your powers as a borer."
 	src << "You <b>MUST</b> escape with atleast [total_borer_hosts_needed] borers with hosts on the shuttle."
 /mob/living/simple_animal/borer/proc/detatch()
 	if(!victim || !controlling) return

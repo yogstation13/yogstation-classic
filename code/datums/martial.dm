@@ -549,8 +549,7 @@
 			return ..()
 	return ..()
 
-/obj/item/weapon/twohanded/bostaff/IsShield()
+/obj/item/weapon/twohanded/bostaff/hit_reaction(mob/living/carbon/human/owner, attack_text, final_block_chance)
 	if(wielded)
-		return 1
-	else
-		return 0
+		return ..()
+	return 0

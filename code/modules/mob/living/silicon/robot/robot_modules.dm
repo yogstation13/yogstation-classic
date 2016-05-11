@@ -97,10 +97,10 @@
 	modules += new /obj/item/weapon/extinguisher/mini(src)
 	modules += new /obj/item/roller/robo(src)
 	modules += new /obj/item/weapon/twohanded/shockpaddles/cyborg(src)
-	emag = new /obj/item/weapon/reagent_containers/spray(src)
+	emag = new /obj/item/weapon/gun/syringe/rapidsyringe/borg(src)
 
-	emag.reagents.add_reagent("facid", 250)
-	emag.name = "Fluacid spray"
+
+
 
 
 	var/datum/robot_energy_storage/gauze/gauzestore = new /datum/robot_energy_storage/gauze(src)
@@ -191,6 +191,13 @@
 	modules += new /obj/item/weapon/mop/cyborg(src)
 	modules += new /obj/item/device/lightreplacer/cyborg(src)
 	modules += new /obj/item/weapon/holosign_creator(src)
+
+	var/obj/item/weapon/reagent_containers/spray/drying_agent = new(src)
+	drying_agent.reagents.add_reagent("drying_agent", 250)
+	drying_agent.name = "drying agent spray"
+	drying_agent.color = "#A000A0"
+	modules += drying_agent
+
 	emag = new /obj/item/weapon/reagent_containers/spray(src)
 
 	emag.reagents.add_reagent("lube", 250)
@@ -249,9 +256,9 @@
 	..()
 	modules += new /obj/item/toy/crayon/rainbow(src)
 	modules += new /obj/item/weapon/extinguisher(src)
-	modules += new /obj/item/weapon/bikehorn(src)
+	modules += new /obj/item/device/assembly/bikehorn(src)
 	modules += new /obj/item/weapon/crowbar(src)
-	modules += new /obj/item/weapon/bikehorn/airhorn(src)
+	modules += new /obj/item/device/assembly/bikehorn/airhorn(src)
 	modules += new /obj/item/weapon/razor(src)
 	modules += new /obj/item/device/instrument/violin(src)
 	modules += new /obj/item/device/instrument/guitar(src)

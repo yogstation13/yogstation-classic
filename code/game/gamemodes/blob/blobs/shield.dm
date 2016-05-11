@@ -2,7 +2,7 @@
 	name = "strong blob"
 	icon = 'icons/mob/blob.dmi'
 	icon_state = "blob_idle"
-	desc = "Some stronger blob creature thingy"
+	desc = "A huge wall of writhing tendrils. It looks like it could take a lot of hits."
 	health = 150
 	maxhealth = 150
 	health_regen = 2

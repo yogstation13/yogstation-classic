@@ -65,64 +65,49 @@ emp_act
 
 			return -1 // complete projectile permutation
 
-	if(check_shields(P.damage, "the [P.name]", P))
+	if(check_shields(P.damage, "the [P.name]", P, PROJECTILE_ATTACK, P.armour_penetration))
 		P.on_hit(src, 100, def_zone)
 		return 2
 	return (..(P , def_zone))
 
 /mob/living/carbon/human/proc/check_reflect(def_zone) //Reflection checks for anything in your l_hand, r_hand, or wear_suit based on the reflection chance of the object
-	if(wear_suit && istype(wear_suit, /obj/item/))
-		var/obj/item/I = wear_suit
-		if(I.IsReflect(def_zone) == 1)
+	if(wear_suit)
+		if(wear_suit.IsReflect(def_zone) == 1)
 			return 1
-	if(l_hand && istype(l_hand, /obj/item/))
-		var/obj/item/I = l_hand
-		if(I.IsReflect(def_zone) == 1)
+	if(l_hand)
+		if(l_hand.IsReflect(def_zone) == 1)
 			return 1
-	if(r_hand && istype(r_hand, /obj/item/))
-		var/obj/item/I = r_hand
-		if(I.IsReflect(def_zone) == 1)
+	if(r_hand)
+		if(r_hand.IsReflect(def_zone) == 1)
 			return 1
 	return 0
 
 
 //End Here
 
-/mob/living/carbon/human/proc/check_shields(damage = 0, attack_text = "the attack", obj/item/O)
-	if(O)
-		if(O.flags & NOSHIELD) //weapon ignores shields altogether
+/mob/living/carbon/human/proc/check_shields(damage = 0, attack_text = "the attack", atom/movable/AM, attack_type = MELEE_ATTACK, armour_penetration = 0)
+	var/block_chance_modifier = round(damage / -3)
+	if(AM)
+		if(AM.flags & NOSHIELD) //weapon ignores shields altogether
 			return 0
-	if(l_hand && istype(l_hand, /obj/item/weapon))//Current base is the prob(50-d/3)
-		var/obj/item/weapon/I = l_hand
-		if(I.IsShield() && (prob(50 - round(damage / 3))))
-			visible_message("<span class='danger'>[src] blocks [attack_text] with [l_hand]!</span>", \
-							"<span class='userdanger'>[src] blocks [attack_text] with [l_hand]!</span>")
+	if(l_hand && !istype(l_hand, /obj/item/clothing))
+		var/final_block_chance = l_hand.block_chance - (Clamp((armour_penetration-l_hand.armour_penetration)/2,0,100)) + block_chance_modifier //So armour piercing blades can still be parried by other blades, for example
+		if(l_hand.hit_reaction(src, attack_text, final_block_chance, damage, attack_type))
 			return 1
-	if(r_hand && istype(r_hand, /obj/item/weapon))
-		var/obj/item/weapon/I = r_hand
-		if(I.IsShield() && (prob(50 - round(damage / 3))))
-			visible_message("<span class='danger'>[src] blocks [attack_text] with [r_hand]!</span>", \
-							"<span class='userdanger'>[src] blocks [attack_text] with [r_hand]!</span>")
+	if(r_hand && !istype(r_hand, /obj/item/clothing))
+		var/final_block_chance = r_hand.block_chance - (Clamp((armour_penetration-r_hand.armour_penetration)/2,0,100)) + block_chance_modifier //Need to reset the var so it doesn't carry over modifications between attempts
+		if(r_hand.hit_reaction(src, attack_text, final_block_chance, damage, attack_type))
 			return 1
-	if(wear_suit && istype(wear_suit, /obj/item/))
-		var/obj/item/I = wear_suit
-		if(I.IsShield() && (prob(50)))
-			visible_message("<span class='danger'>The reactive teleport system flings [src] clear of [attack_text]!</span>", \
-							"<span class='userdanger'>The reactive teleport system flings [src] clear of [attack_text]!</span>")
-			var/list/turfs = new/list()
-			for(var/turf/T in orange(6, src))
-				if(T.density) continue
-				if(T.x>world.maxx-6 || T.x<6)	continue
-				if(T.y>world.maxy-6 || T.y<6)	continue
-				turfs += T
-			if(!turfs.len) turfs += pick(/turf in orange(6, src))
-			var/turf/picked = pick(turfs)
-			if(!isturf(picked)) return
-			if(buckled)
-				buckled.unbuckle_mob()
-			forceMove(picked)
+	if(wear_suit)
+		var/final_block_chance = wear_suit.block_chance - (Clamp((armour_penetration-wear_suit.armour_penetration)/2,0,100)) + block_chance_modifier
+		if(wear_suit.hit_reaction(src, attack_text, final_block_chance, damage, attack_type))
+			return 1
+	if(w_uniform)
+		var/final_block_chance = w_uniform.block_chance - (Clamp((armour_penetration-w_uniform.armour_penetration)/2,0,100)) + block_chance_modifier
+		if(w_uniform.hit_reaction(src, attack_text, final_block_chance, damage, attack_type))
 			return 1
 	return 0
+
 
 /mob/living/carbon/human/attacked_by(obj/item/I, mob/living/user, def_zone)
 	if(!I || !user)	return 0
@@ -222,48 +207,9 @@ emp_act
 				forcesay(hit_appends)	//forcesay checks stat already
 
 /mob/living/carbon/human/emp_act(severity)
-	var/informed = 0
-	for(var/obj/item/organ/limb/L in src.organs)
-		if(L.status == ORGAN_ROBOTIC)
-			if(!informed)
-				src << "<span class='userdanger'>You feel a sharp pain as your robotic limbs overload.</span>"
-				informed = 1
-			switch(severity)
-				if(1)
-					L.take_damage(0,10)
-					src.Stun(10)
-				if(2)
-					L.take_damage(0,5)
-					src.Stun(5)
+	if (dna)
+		dna.species.handle_emp(src, severity)
 
-	if (src.dna.species.id == "android")
-		//androids take significant damage from EMP
-		src.lastburntype = "electric"
-		switch(severity)
-			if(1)
-				src.adjustBruteLoss(10)
-				src.adjustFireLoss(10)
-				src.Stun(5)
-				src.nutrition = src.nutrition * 0.4
-				visible_message("<span class='danger'>Electricity ripples over [src]'s subdermal implants, smoking profusely.</span>", \
-								"<span class='userdanger'>A surge of searing pain erupts throughout your very being! As the pain subsides, a terrible sensation of emptiness is left in its wake.</span>")
-				src.attack_log += "Was hit with a severity 3(severe) EMP as an android. Lost 20 health."
-			if(2)
-				src.adjustBruteLoss(5)
-				src.adjustFireLoss(5)
-				src.Stun(2)
-				src.nutrition = src.nutrition * 0.6
-				visible_message("<span class='danger'>A faint fizzling emanates from [src].</span>", \
-								"<span class='userdanger'>A fit of twitching overtakes you as your subdermal implants convulse violently from the electromagnetic disruption. Your sustenance reserves have been partially depleted from the blast.</span>")
-				src.emote("twitch")
-				src.attack_log += "Was hit with a severity 2(medium) EMP as an android. Lost 10 health."
-			if(3)
-				src.adjustFireLoss(2)
-				src.adjustBruteLoss(3)
-				src.Stun(1)
-				src.nutrition = src.nutrition * 0.8
-				src.emote("scream")
-				src.attack_log += "Was hit with a severity 3(light) EMP as an android. Lost 5 health."
 	//CYBERMEN STUFF
 	//I'd prefer to have a event-listener system set up for this, but for now this will do.
 	if(ticker.mode.is_cyberman(src.mind))
@@ -387,12 +333,15 @@ emp_act
 
 
 	//DAMAGE//
+	var/damagemod = 1
+	if(dna)
+		damagemod = dna.species.acidmod
 	for(var/obj/item/organ/limb/affecting in damaged)
-		affecting.take_damage(acidity, 2*acidity)
+		affecting.take_damage(acidity*damagemod, 2*acidity*damagemod)
 
 		if(affecting.name == "head")
 			if(prob(min(acidpwr*acid_volume/10, 90))) //Applies disfigurement
-				affecting.take_damage(acidity, 2*acidity)
+				affecting.take_damage(acidity*damagemod, 2*acidity*damagemod)
 				emote("scream")
 				facial_hair_style = "Shaved"
 				hair_style = "Bald"
@@ -495,12 +444,18 @@ emp_act
 	else
 		..()
 
-/mob/living/carbon/human/hitby(atom/movable/AM)
-	var/hitpush = 1
-	var/skipcatch = 0
-	if(AM.throw_speed >= EMBED_THROWSPEED_THRESHOLD)
-		if(istype(AM, /obj/item))
-			var/obj/item/I = AM
+/mob/living/carbon/human/hitby(atom/movable/AM, skipcatch = 0, hitpush = 1, blocked = 0)
+	var/obj/item/I
+	var/throwpower = 30
+	if(istype(AM, /obj/item))
+		I = AM
+		throwpower = I.throwforce
+	if((!I || I.thrownby != src) && check_shields(throwpower, "\the [AM.name]", AM, THROWN_PROJECTILE_ATTACK))
+		hitpush = 0
+		skipcatch = 1
+		blocked = 1
+	else if(I)
+		if(I.throw_speed >= EMBED_THROWSPEED_THRESHOLD)
 			if(can_embed(I))
 				if(prob(I.embed_chance) && !(dna && (PIERCEIMMUNE in dna.species.specflags)))
 					throw_alert("embeddedobject")
@@ -512,4 +467,5 @@ emp_act
 					visible_message("<span class='danger'>\the [I.name] embeds itself in [src]'s [L.getDisplayName()]!</span>","<span class='userdanger'>\the [I.name] embeds itself in your [L.getDisplayName()]!</span>")
 					hitpush = 0
 					skipcatch = 1 //can't catch the now embedded item
-	return ..(AM, skipcatch, hitpush)
+
+	return ..()

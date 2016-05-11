@@ -13,7 +13,8 @@
 	health = 25
 	maxHealth = 25
 	see_invisible = SEE_INVISIBLE_OBSERVER
-	languages = ALL
+	languages_understood = ALL
+	languages_spoken = ALL
 	response_help   = "passes through"
 	response_disarm = "swings at"
 	response_harm   = "punches through"
@@ -43,8 +44,9 @@
 	var/draining = 0 //If the revenant is draining someone.
 	var/list/drained_mobs = list() //Cannot harvest the same mob twice
 
+	var/obj/effect/proc_holder/spell/targeted/revenant_transmit/revtransmit //Need to keep this here to allow revenant to "quick cast" transmit via Ctrl+Click
+
 /mob/living/simple_animal/revenant/Life()
-	..()
 	if(essence < essence_min)
 		essence = essence_min
 	if(essence_regenerating && !inhibited && essence < essence_regen_cap) //While inhibited, essence will not regenerate
@@ -53,7 +55,9 @@
 			essence = essence_regen_cap
 	maxHealth = essence * 3
 	if(!revealed)
-		health = maxHealth //Heals to full when not revealed
+		if(health < maxHealth) //Heals to full when not revealed
+			heal_overall_damage(getBruteLoss(),getFireLoss())
+	..()
 
 /mob/living/simple_animal/revenant/ex_act(severity, target)
 	return 1 //Immune to the effects of explosions.
@@ -86,6 +90,13 @@
 	if(ishuman(A) && in_range(src, A))
 		Harvest(A)
 
+/mob/living/simple_animal/revenant/CtrlClickOn(atom/A, params) //Copypaste from ghost code - revenants can't interact with the world directly.
+	if(istype(A, /mob/living))
+		var/mob/living/LM = A
+		var/list/targets = list()
+		targets += LM
+		revtransmit.cast(targets)
+	..()
 
 /mob/living/simple_animal/revenant/proc/Harvest(mob/living/carbon/human/target)
 	if(!castcheck(0))
@@ -192,7 +203,9 @@
 
 /mob/living/simple_animal/revenant/proc/giveSpells()
 	if(src.mind)
-		src.mind.spell_list += new /obj/effect/proc_holder/spell/targeted/revenant_transmit
+		var/obj/effect/proc_holder/spell/targeted/revenant_transmit/RT = new
+		revtransmit = RT
+		src.mind.spell_list += RT
 		src.mind.spell_list += new /obj/effect/proc_holder/spell/aoe_turf/revenant_light
 		src.mind.spell_list += new /obj/effect/proc_holder/spell/aoe_turf/revenant_defile
 		src.mind.spell_list += new /obj/effect/proc_holder/spell/aoe_turf/revenant_malf
@@ -200,6 +213,8 @@
 	return 0
 
 /mob/living/simple_animal/revenant/death()
+	if(!revealed || stat == DEAD)
+		return 0
 	..(1)
 	src << "<span class='userdanger'><b>NO! No... it's too late, you can feel yourself fading...</b></span>"
 	notransform = 1
@@ -209,7 +224,7 @@
 	visible_message("<span class='warning'>[src] lets out a waning screech as violet mist swirls around its dissolving body!</span>")
 	icon_state = "revenant_draining"
 	for(var/i = alpha, i > 0, i -= 10)
-		sleep(0.1)
+		stoplag()
 		alpha = i
 	visible_message("<span class='danger'>[src]'s body breaks apart into blue dust.</span>")
 	new /obj/item/weapon/ectoplasm/revenant(get_turf(src))

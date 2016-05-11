@@ -35,6 +35,7 @@
 							"<span class='userdanger'>[user] is trying to put [src.name] on [C]!</span>")
 
 		playsound(loc, cuffsound, 30, 1, -2)
+		add_logs(user, C, "attempted to handcuff")
 		if(do_mob(user, C, 30))
 			apply_cuffs(C,user)
 			user << "<span class='notice'>You handcuff [C].</span>"
@@ -146,6 +147,9 @@
 	icon_state = "cuff_white_used"
 
 /obj/item/weapon/restraints/handcuffs/cable/zipties/used/attack()
+	return
+
+/obj/item/weapon/restraints/handcuffs/cable/zipties/attack_self(mob/user)
 	return
 
 

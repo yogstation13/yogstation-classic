@@ -152,6 +152,7 @@
 	if(..())
 		if(prob(30))
 			adjustBruteLoss(-1)
+		return 1
 
 /mob/living/simple_animal/slime/proc/handle_nutrition()
 

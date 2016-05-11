@@ -61,6 +61,16 @@
 	strip_delay = 50
 	put_on_delay = 50
 	burn_state = -1 //Won't burn in fires
+	var/isAbsorbent = 0
+
+/obj/item/clothing/shoes/galoshes/proc/setAbsorbent()
+	isAbsorbent = 1
+	desc += " They have a dull finish."
+
+/obj/item/clothing/shoes/galoshes/step_action()
+	var/turf/simulated/T = get_turf(src)
+	if(istype(T) && T.wet && isAbsorbent)
+		T.MakeDry(TURF_WET_WATER)
 
 /obj/item/clothing/shoes/clown_shoes
 	desc = "The prankster's standard-issue clowning shoes. Damn, they're huge!"
@@ -141,3 +151,9 @@
 	desc = "A pair of costume boots fashioned after bird talons."
 	icon_state = "griffinboots"
 	item_state = "griffinboots"
+
+/obj/item/clothing/shoes/fuzzy_slippers
+	name = "fuzzy bunny slippers"
+	desc = "No animals were harmed in the making of these fuzzy slippers"
+	icon_state = "fuzzyslippers"
+	item_state = "fuzzyslippers"

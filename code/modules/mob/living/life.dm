@@ -192,7 +192,7 @@
 
 		if(druggy)
 			overlay_fullscreen("high", /obj/screen/fullscreen/high)
-			throw_alert("high", /obj/screen/alert/high)
+			throw_alert("high")
 		else
 			clear_fullscreen("high")
 			clear_alert("high")
@@ -248,10 +248,9 @@
 	var/button_number = 0
 	for(var/datum/action/A in actions)
 		button_number++
-		if(A.button == null)
-			var/obj/screen/movable/action_button/N = new(hud_used)
-			N.owner = A
-			A.button = N
+		var/obj/screen/movable/action_button/N = new(hud_used)
+		N.owner = A
+		A.button = N
 
 		var/obj/screen/movable/action_button/B = A.button
 

@@ -72,17 +72,17 @@
 			emped = emped+1  //Increase the number of consecutive EMP's
 			var/thisemp = emped //Take note of which EMP this proc is for
 			spawn(900)
-				if(loc) //qdel limbo
+				if(!qdeleted(src)) //check if src exists or if in qdel queue
 					triggerCameraAlarm() //camera alarm triggers even if multiple EMPs are in effect.
 					if(emped == thisemp) //Only fix it if the camera hasn't been EMP'd again
 						network = previous_network
-						icon_state = initial(icon_state)
+						icon_state = (status ? initial(icon_state) : "[initial(icon_state)]1")
 						stat &= ~EMPED
 						if(can_use())
 							cameranet.addCamera(src)
 						emped = 0 //Resets the consecutive EMP count
 						spawn(100)
-							if(!qdeleted(src))
+							if(!qdeleted(src)) //check if src exists or if in qdel queue
 								cancelCameraAlarm()
 			for(var/mob/O in mob_list)
 				if (O.client && O.client.eye == src)
@@ -240,11 +240,14 @@
 /obj/machinery/camera/proc/deactivate(mob/user, displaymessage = 1) //this should be called toggle() but doing a find and replace for this would be ass
 	status = !status
 	cameranet.updateChunk(x, y, z)
-	var/change_msg = "deactivates"
+	var/change_msg
 	if(!status)
-		icon_state = "[initial(icon_state)]1"
+		change_msg = "deactivates"
+		if(!emped)
+			icon_state = "[initial(icon_state)]1"
 	else
-		icon_state = initial(icon_state)
+		if(!emped)
+			icon_state = initial(icon_state)
 		change_msg = "reactivates"
 		triggerCameraAlarm()
 		spawn(100)

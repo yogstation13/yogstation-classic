@@ -78,3 +78,16 @@
 	desc = "A modification of the syringe gun design, using a rotating cylinder to store up to six syringes."
 	icon_state = "rapidsyringegun"
 	max_syringes = 6
+
+/obj/item/weapon/gun/syringe/rapidsyringe/borg
+    name = "rapid syringe gun"
+    desc = "A modification of the syringe gun design, using a rotating cylinder to store up to six syringes."
+    icon_state = "rapidsyringegun"
+    max_syringes = 6
+
+/obj/item/weapon/gun/syringe/rapidsyringe/borg/New()
+    ..()
+    for(var/i = 1 to max_syringes)
+        var/obj/item/weapon/reagent_containers/syringe/TEMP = new(src)
+        TEMP.reagents.add_reagent("tirizene", 15)
+        syringes.Add(TEMP)

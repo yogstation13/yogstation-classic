@@ -27,6 +27,12 @@
 	var/list/records = null
 	var/frame_desc = null
 
+/obj/item/weapon/circuitboard/cooldown_holder
+	var/nextAllowedTime = 0
+
+/obj/item/weapon/circuitboard/cooldown_holder/proc/cooldownLeft()
+	return max(nextAllowedTime - world.time, 0)
+
 /obj/item/weapon/circuitboard/large_tank_control
 	name = "circuit board (Large Tank Control)"
 	build_path = /obj/machinery/computer/general_air_control/large_tank_control
@@ -35,7 +41,7 @@
 	name = "circuit board (Turbine Computer)"
 	build_path = /obj/machinery/computer/turbine_computer
 	origin_tech = "programming=4;engineering=4;powerstorage=4"
-/obj/item/weapon/circuitboard/telesci_console
+/obj/item/weapon/circuitboard/cooldown_holder/telesci_console
 	name = "circuit board (Telescience Console)"
 	build_path = /obj/machinery/computer/telescience
 	origin_tech = "programming=3;bluespace=2"
@@ -69,14 +75,10 @@
 	name = "circuit board (DNA Machine)"
 	build_path = /obj/machinery/computer/scan_consolenew
 	origin_tech = "programming=2;biotech=2"
-/obj/item/weapon/circuitboard/communications
+/obj/item/weapon/circuitboard/cooldown_holder/communications
 	name = "circuit board (Communications)"
 	build_path = /obj/machinery/computer/communications
 	origin_tech = "programming=2;magnets=2"
-	var/lastTimeUsed = 0
-/obj/item/weapon/circuitboard/communications/proc/cooldownLeft(deciseconds=600)
-	return max(deciseconds - (world.time - lastTimeUsed), 0)
-
 /obj/item/weapon/circuitboard/card
 	name = "circuit board (ID Console)"
 	build_path = /obj/machinery/computer/card

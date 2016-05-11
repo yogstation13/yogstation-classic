@@ -6,7 +6,8 @@
 	var/throw_speed = 2
 	var/throw_range = 7
 	var/mob/pulledby = null
-	var/languages = 0 //For say() and Hear()
+	var/languages_understood = 0 //For say() and Hear()
+	var/languages_spoken = 0 //For say() and Hear()
 	var/identifier = null //Only used for AI tracking.
 	var/verb_say = "says"
 	var/verb_ask = "asks"
@@ -160,7 +161,7 @@
 ///atom/movable/proc/throw_impact(atom/hit_atom)
 //	return hit_atom.hitby(src)
 
-/atom/movable/hitby(atom/movable/AM, skipcatch, hitpush = 1)
+/atom/movable/hitby(atom/movable/AM, skipcatch, hitpush = 1, blocked)
 	if(!anchored && hitpush)
 		step(src, AM.dir)
 	..()
@@ -253,6 +254,9 @@
 /atom/movable/proc/throw_at_fast(atom/target, range, speed, mob/thrower, spin=1, diagonals_first = 0)
 	set waitfor = 0
 	throw_at(target, range, speed, thrower, spin, diagonals_first)
+
+/atom/movable/proc/prethrow_at(var/target) // If an item is thrown by a mob, but it's still currently held.
+	return;
 
 /atom/movable/proc/hitcheck()
 	for(var/atom/movable/AM in get_turf(src))

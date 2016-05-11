@@ -999,7 +999,8 @@
 
 
 /obj/machinery/computer/arcade/orion_trail/proc/win()
-	playing = 0
+	if(!playing)
+		return //filthy cheater
 	say("Congratulations, you made it to Orion!")
 	if(emagged)
 		new /obj/item/weapon/orion_ship(src.loc)
@@ -1008,6 +1009,7 @@
 	else
 		prizevend()
 	emagged = 0
+	playing = 0
 	name = "The Orion Trail"
 	desc = "Learn how our ancestors got to Orion, and have fun in the process!"
 

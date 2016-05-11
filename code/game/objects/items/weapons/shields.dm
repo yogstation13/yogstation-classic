@@ -1,5 +1,11 @@
 /obj/item/weapon/shield
 	name = "shield"
+	block_chance = 50
+
+/obj/item/weapon/shield/hit_reaction(mob/living/carbon/human/owner, attack_text, final_block_chance, damage, attack_type)
+	if(attack_type == THROWN_PROJECTILE_ATTACK)
+		final_block_chance += 30
+	return ..(owner, attack_text, final_block_chance, damage, attack_type)
 
 /obj/item/weapon/shield/riot
 	name = "riot shield"
@@ -15,10 +21,9 @@
 	materials = list(MAT_GLASS=7500, MAT_METAL=1000)
 	origin_tech = "materials=2"
 	attack_verb = list("shoved", "bashed")
+	block_chance = 0
 	var/cooldown = 0 //shield bash cooldown. based on world.time
 
-/obj/item/weapon/shield/riot/IsShield()
-	return 1
 
 /obj/item/weapon/shield/riot/attackby(obj/item/weapon/W, mob/user, params)
 	if(istype(W, /obj/item/weapon/melee/baton))
@@ -29,11 +34,35 @@
 	else
 		..()
 
+/obj/item/weapon/shield/riot/hit_reaction(mob/living/carbon/human/owner, attack_text, final_block_chance, damage, attack_type)
+	if(attack_type == THROWN_PROJECTILE_ATTACK)
+		final_block_chance += 50 //This is to preserve the original thrown stuff block chance
+		return ..()
+	else if(attack_type == PROJECTILE_ATTACK)
+		return ..()
+	else
+		return 1
+
 /obj/item/weapon/shield/riot/roman
 	name = "roman shield"
 	desc = "Bears an inscription on the inside: <i>\"Romanes venio domus\"</i>."
 	icon_state = "roman_shield"
 	item_state = "roman_shield"
+	block_chance = 30
+
+/obj/item/weapon/shield/riot/roman/hit_reaction(mob/living/carbon/human/owner, attack_text, final_block_chance, damage, attack_type)
+	if(attack_type == UNARMED_ATTACK)
+		return 1
+	else
+		return ..()
+
+/obj/item/weapon/shield/riot/roman/prop
+	desc = "Made of cheap, lightweight plastic. Bears an inscription on the inside: <i>\"Romanes venio domus\"</i>."
+	force = 3
+	throwforce = 3
+
+/obj/item/weapon/shield/riot/roman/prop/hit_reaction(mob/living/carbon/human/owner, attack_text, final_block_chance, damage, attack_type)
+	return 0
 
 /obj/item/weapon/shield/energy
 	name = "energy combat shield"
@@ -49,8 +78,8 @@
 	attack_verb = list("shoved", "bashed")
 	var/active = 0
 
-/obj/item/weapon/shield/energy/IsShield()
-	return (active)
+/obj/item/weapon/shield/energy/hit_reaction(mob/living/carbon/human/owner, attack_text, final_block_chance)
+	return 0
 
 /obj/item/weapon/shield/energy/IsReflect()
 	return (active)
@@ -91,8 +120,10 @@
 	w_class = 3
 	var/active = 0
 
-/obj/item/weapon/shield/riot/tele/IsShield()
-	return (active)
+/obj/item/weapon/shield/riot/tele/hit_reaction(mob/living/carbon/human/owner, attack_text, final_block_chance)
+	if(active)
+		return ..()
+	return 0
 
 /obj/item/weapon/shield/riot/tele/attack_self(mob/living/user)
 	active = !active

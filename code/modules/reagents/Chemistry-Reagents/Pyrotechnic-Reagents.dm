@@ -43,23 +43,24 @@
 
 /datum/reagent/clf3/on_mob_life(mob/living/M)
 	M.adjust_fire_stacks(2)
-	var/burndmg = max(0.3*M.fire_stacks, 0.3)
+	var/burndmg = max(0.5*M.fire_stacks, 0.3)
 	M.adjustFireLoss(burndmg)
 	..()
 
 /datum/reagent/clf3/reaction_turf(turf/simulated/T, reac_volume)
 	if(istype(T, /turf/simulated/floor/plating))
 		var/turf/simulated/floor/plating/F = T
-		if(prob(1 + F.burnt + 5*F.broken)) //broken or burnt plating is more susceptible to being destroyed
+		if(prob(10 + F.burnt + 5*F.broken)) //broken or burnt plating is more susceptible to being destroyed
 			F.ChangeTurf(F.baseturf)
 	if(istype(T, /turf/simulated/floor/))
 		var/turf/simulated/floor/F = T
-		if(prob(reac_volume/10))
+		if(prob(reac_volume))
 			F.make_plating()
 		else if(prob(reac_volume))
 			F.burn_tile()
 		if(istype(F, /turf/simulated/floor/))
-			PoolOrNew(/obj/effect/hotspot, F)
+			for(var/turf/turf in range(1,F))
+				PoolOrNew(/obj/effect/hotspot, F)
 	if(istype(T, /turf/simulated/wall/))
 		var/turf/simulated/wall/W = T
 		if(prob(reac_volume/10))
@@ -67,7 +68,7 @@
 
 /datum/reagent/clf3/reaction_mob(mob/living/M, method=TOUCH, reac_volume)
 	if(istype(M))
-		if(method != INGEST)
+		if(method != INGEST && method != INJECT)
 			M.adjust_fire_stacks(min(reac_volume/5, 10))
 			M.IgniteMob()
 			PoolOrNew(/obj/effect/hotspot, M.loc)
@@ -134,8 +135,8 @@
 	..()
 
 /datum/reagent/phlogiston/on_mob_life(mob/living/M)
-	M.adjust_fire_stacks(1)
-	var/burndmg = max(0.3*M.fire_stacks, 0.3)
+	M.adjust_fire_stacks(2)
+	var/burndmg = max(0.4*M.fire_stacks, 0.3)
 	M.adjustFireLoss(burndmg)
 	..()
 
@@ -152,7 +153,7 @@
 
 /datum/reagent/napalm/reaction_mob(mob/living/M, method=TOUCH, reac_volume)
 	if(istype(M))
-		if(method != INGEST)
+		if(method != INGEST && method != INJECT)
 			M.adjust_fire_stacks(min(reac_volume/4, 20))
 
 /datum/reagent/cryostylane
@@ -166,12 +167,12 @@
 /datum/reagent/cryostylane/on_mob_life(mob/living/M) //TODO: code freezing into an ice cube
 	if(M.reagents.has_reagent("oxygen"))
 		M.reagents.remove_reagent("oxygen", 0.5)
-		M.bodytemperature -= 15
+		M.bodytemperature -= 20
 	..()
 
 /datum/reagent/cryostylane/on_tick()
 	if(holder.has_reagent("oxygen"))
-		holder.remove_reagent("oxygen", 1)
+		holder.remove_reagent("oxygen", 0.5)
 		holder.chem_temp -= 10
 		holder.handle_reactions()
 	..()
@@ -184,19 +185,19 @@
 /datum/reagent/pyrosium
 	name = "Pyrosium"
 	id = "pyrosium"
-	description = "Comes into existence at 20K. As long as there is sufficient oxygen for it to react with, Pyrosium slowly cools all other reagents in the mob down to 0K."
+	description = "Comes into existence at 20K. As long as there is sufficient oxygen for it to react with, Pyrosium slowly heats all other reagents in the mob up from 0K."
 	color = "#B20000" // rgb: 139, 166, 233
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
 
 /datum/reagent/pyrosium/on_mob_life(mob/living/M)
 	if(M.reagents.has_reagent("oxygen"))
 		M.reagents.remove_reagent("oxygen", 0.5)
-		M.bodytemperature += 15
+		M.bodytemperature += 20
 	..()
 
 /datum/reagent/pyrosium/on_tick()
 	if(holder.has_reagent("oxygen"))
-		holder.remove_reagent("oxygen", 1)
+		holder.remove_reagent("oxygen", 0.5)
 		holder.chem_temp += 10
 		holder.handle_reactions()
 	..()

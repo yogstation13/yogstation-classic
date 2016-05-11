@@ -145,9 +145,15 @@
 					return 0
 				return 1
 			if(slot_in_backpack)
-				if (back && istype(back, /obj/item/weapon/storage/backpack))
+				if(back && istype(back, /obj/item/weapon/storage/backpack))
 					var/obj/item/weapon/storage/backpack/B = back
-					if(B.contents.len < B.storage_slots && I.w_class <= B.max_w_class)
+					if(B.can_be_inserted(I, 1))
+						return 1
+				return 0
+			if(slot_in_belt)
+				if(belt && istype(belt, /obj/item/weapon/storage/belt))
+					var/obj/item/weapon/storage/belt/B = belt
+					if(B.can_be_inserted(I, 1))
 						return 1
 				return 0
 		return 0 //Unsupported slot
@@ -197,21 +203,17 @@
 
 
 // Return the item currently in the slot ID
-/mob/living/carbon/human/get_item_by_slot(slot_id)
+/mob/living/carbon/human/get_item_by_slot(slot_id, obj/item/what = null)
 	switch(slot_id)
-		if(slot_back)
-			return back
-		if(slot_wear_mask)
-			return wear_mask
-		if(slot_handcuffed)
-			return handcuffed
-		if(slot_legcuffed)
-			return legcuffed
-		if(slot_l_hand)
-			return l_hand
-		if(slot_r_hand)
-			return r_hand
 		if(slot_belt)
+			return belt
+		if(slot_in_belt)
+			if(what)
+				if(belt && istype(belt, /obj/item/weapon/storage/belt))
+					var/obj/item/weapon/storage/belt/item = belt
+					if(what in item.contents)
+						return what
+					return null
 			return belt
 		if(slot_wear_id)
 			return wear_id
@@ -221,8 +223,6 @@
 			return glasses
 		if(slot_gloves)
 			return gloves
-		if(slot_head)
-			return head
 		if(slot_shoes)
 			return shoes
 		if(slot_wear_suit)
@@ -235,7 +235,8 @@
 			return r_store
 		if(slot_s_store)
 			return s_store
-	return null
+		else
+			. = ..() //sets return to what parent returns
 
 
 /mob/living/carbon/human/unEquip(obj/item/I)
@@ -386,6 +387,10 @@
 			if(get_active_hand() == I)
 				unEquip(I)
 			I.loc = back
+		if(slot_in_belt)
+			if(get_active_hand() == I)
+				unEquip(I)
+			I.loc = belt
 		else
 			src << "<span class='danger'>You are trying to equip this item to an unsupported inventory slot. Report this to a coder!</span>"
 			return

@@ -1,6 +1,6 @@
 //In here: Hatch and Ascendance
 var/list/possibleShadowlingNames = list("U'ruan", "Y`shej", "Nex", "Hel-uae", "Noaey'gief", "Mii`mahza", "Amerziox", "Gyrg-mylin", "Kanet'pruunance", "Vigistaezian") //Unpronouncable 2: electric boogalo
-/obj/effect/proc_holder/spell/targeted/shadowling_hatch
+/obj/effect/proc_holder/spell/targeted/shadow/shadowling_hatch
 	name = "Hatch"
 	desc = "Casts off your disguise."
 	panel = "Shadowling Evolution"
@@ -10,7 +10,7 @@ var/list/possibleShadowlingNames = list("U'ruan", "Y`shej", "Nex", "Hel-uae", "N
 	include_user = 1
 	action_icon_state = "hatch"
 
-/obj/effect/proc_holder/spell/targeted/shadowling_hatch/cast(list/targets)
+/obj/effect/proc_holder/spell/targeted/shadow/shadowling_hatch/cast(list/targets)
 	if(usr.stat || !ishuman(usr) || !usr || !is_shadow(usr)) return
 	for(var/mob/living/carbon/human/H in targets)
 		var/hatch_or_no = alert(H,"Are you sure you want to hatch? You cannot undo this!",,"Yes","No")
@@ -88,18 +88,18 @@ var/list/possibleShadowlingNames = list("U'ruan", "Y`shej", "Nex", "Hel-uae", "N
 
 				sleep(10)
 				H << "<span class='shadowling'><b><i>Your powers are awoken. You may now live to your fullest extent. Remember your goal. Cooperate with your thralls and allies.</b></i></span>"
-				H.mind.remove_spell(/obj/effect/proc_holder/spell/targeted/shadowling_hatch)
-				H.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/glare(null))
+				H.mind.remove_spell(/obj/effect/proc_holder/spell/targeted/shadow/shadowling_hatch)
+				H.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/shadow/glare(null))
 				H.mind.AddSpell(new /obj/effect/proc_holder/spell/aoe_turf/veil(null))
-				//H.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/shadow_walk(null))	// Unneeded, No reason to have shadow_walk off.
-				//H.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/major_dark_vision(null))	//Not needed, They can tell what's pure dark and not now.
+				//H.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/shadow/shadow_walk(null))	// Unneeded, No reason to have shadow_walk off.
+				//H.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/shadow/major_dark_vision(null))	//Not needed, They can tell what's pure dark and not now.
 				H.mind.AddSpell(new /obj/effect/proc_holder/spell/aoe_turf/flashfreeze(null))
-				H.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/collective_mind(null))
-				H.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/shadowling_regenarmor(null))
+				H.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/shadow/collective_mind(null))
+				H.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/shadow/shadowling_regenarmor(null))
 
 
 
-/obj/effect/proc_holder/spell/targeted/shadowling_ascend
+/obj/effect/proc_holder/spell/targeted/shadow/shadowling_ascend
 	name = "Ascend"
 	desc = "Enters your true form."
 	panel = "Shadowling Evolution"
@@ -109,7 +109,7 @@ var/list/possibleShadowlingNames = list("U'ruan", "Y`shej", "Nex", "Hel-uae", "N
 	include_user = 1
 	action_icon_state = "ascend"
 
-/obj/effect/proc_holder/spell/targeted/shadowling_ascend/cast(list/targets)
+/obj/effect/proc_holder/spell/targeted/shadow/shadowling_ascend/cast(list/targets)
 	if(usr.stat || !ishuman(usr) || !usr || !shadowling_check(usr)) return
 	for(var/mob/living/carbon/human/H in targets)
 		var/hatch_or_no = alert(H,"It is time to ascend. Are you sure about this?",,"Yes","No")
@@ -157,12 +157,12 @@ var/list/possibleShadowlingNames = list("U'ruan", "Y`shej", "Nex", "Hel-uae", "N
 				for(var/obj/effect/proc_holder/spell/S in H.mind.spell_list)
 					if(S == src) continue
 					H.mind.remove_spell(S)
-				H.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/annihilate(null))
-				H.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/hypnosis(null))
-				H.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/shadowling_phase_shift(null))
+				H.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/shadow/annihilate(null))
+				H.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/shadow/hypnosis(null))
+				H.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/shadow/shadowling_phase_shift(null))
 				H.mind.AddSpell(new /obj/effect/proc_holder/spell/aoe_turf/ascendant_storm(null))
-				H.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/shadowling_hivemind_ascendant(null))
-				H.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/ascendant_transmit(null))
+				H.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/shadow/shadowling_hivemind_ascendant(null))
+				H.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/shadow/ascendant_transmit(null))
 				H.mind.transfer_to(A)
 				A.name = H.real_name
 				if(A.real_name)

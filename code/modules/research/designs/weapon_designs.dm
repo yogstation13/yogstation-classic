@@ -47,9 +47,9 @@
 	name = "Telescopic Riot Shield"
 	desc = "An advanced riot shield made of lightweight materials that collapses for easy storage."
 	id = "tele_shield"
-	req_tech = list("combat" = 4, "materials" = 3, "engineering" = 3)
+	req_tech = list("combat" = 6, "materials" = 3, "engineering" = 3)
 	build_type = PROTOLATHE
-	materials = list(MAT_METAL = 4000, MAT_GLASS = 5000, MAT_SILVER = 300)
+	materials = list(MAT_METAL = 4000, MAT_GLASS = 5000, MAT_SILVER = 2000)
 	build_path = /obj/item/weapon/shield/riot/tele
 	category = list("Weapons")
 
