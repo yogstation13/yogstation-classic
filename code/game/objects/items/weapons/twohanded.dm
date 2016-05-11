@@ -26,11 +26,14 @@
 	var/force_wielded = 0
 	var/wieldsound = null
 	var/unwieldsound = null
+	var/armourpenetration_wielded = 0
+	var/armourpenetration_unwielded = 0
 
 /obj/item/weapon/twohanded/proc/unwield(mob/living/carbon/user)
 	if(!wielded || !user) return
 	wielded = 0
 	force = force_unwielded
+	armour_penetration = armourpenetration_unwielded
 	var/sf = findtext(name," (Wielded)")
 	if(sf)
 		name = copytext(name,1,sf)
@@ -55,6 +58,7 @@
 		return
 	wielded = 1
 	force = force_wielded
+	armour_penetration = armourpenetration_wielded
 	name = "[name] (Wielded)"
 	update_icon()
 	user << "<span class='notice'>You grab the [name] with both hands.</span>"
@@ -190,6 +194,8 @@
 	w_class = 2.0
 	force_unwielded = 3
 	force_wielded = 34
+	armourpenetration_wielded = 10
+	armourpenetration_unwielded = 0
 	wieldsound = 'sound/weapons/saberon.ogg'
 	unwieldsound = 'sound/weapons/saberoff.ogg'
 	hitsound = "swing_hit"
@@ -230,9 +236,8 @@
 		user.adjustStaminaLoss(25)
 
 /obj/item/weapon/twohanded/dualsaber/hit_reaction(mob/living/carbon/human/owner, attack_text, final_block_chance)
-	if(wielded && final_block_chance)
-		visible_message("<span class='danger'>[owner] parries [attack_text] with [src]!</span>")
-		return 1
+	if(wielded)
+		return ..()
 	return 0
 
 /obj/item/weapon/twohanded/dualsaber/attack_hulk(mob/living/carbon/human/user)  //In case thats just so happens that it is still activated on the groud, prevents hulk from picking it up

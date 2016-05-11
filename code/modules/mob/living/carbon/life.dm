@@ -284,6 +284,9 @@
 			return
 		setStaminaLoss(max((staminaloss - 2), 0))
 
+/mob/living/carbon/proc/AdjustStaminaSleeping()
+	adjustStaminaLoss(-10)
+
 //this updates all special effects: stunned, sleeping, weakened, druggy, stuttering, etc..
 /mob/living/carbon/handle_status_effects()
 	..()
@@ -293,7 +296,7 @@
 	if(sleeping)
 		throw_alert("asleep")
 		handle_dreams()
-		adjustStaminaLoss(-10)
+		AdjustStaminaSleeping()
 		sleeping = max(sleeping-1, 0)
 		if( prob(10) && health && !hal_crit )
 			spawn(0)

@@ -207,48 +207,9 @@ emp_act
 				forcesay(hit_appends)	//forcesay checks stat already
 
 /mob/living/carbon/human/emp_act(severity)
-	var/informed = 0
-	for(var/obj/item/organ/limb/L in src.organs)
-		if(L.status == ORGAN_ROBOTIC)
-			if(!informed)
-				src << "<span class='userdanger'>You feel a sharp pain as your robotic limbs overload.</span>"
-				informed = 1
-			switch(severity)
-				if(1)
-					L.take_damage(0,10)
-					src.Stun(10)
-				if(2)
-					L.take_damage(0,5)
-					src.Stun(5)
+	if (dna)
+		dna.species.handle_emp(src, severity)
 
-	if (src.dna.species.id == "android")
-		//androids take significant damage from EMP
-		src.lastburntype = "electric"
-		switch(severity)
-			if(1)
-				src.adjustBruteLoss(10)
-				src.adjustFireLoss(10)
-				src.Stun(5)
-				src.nutrition = src.nutrition * 0.4
-				visible_message("<span class='danger'>Electricity ripples over [src]'s subdermal implants, smoking profusely.</span>", \
-								"<span class='userdanger'>A surge of searing pain erupts throughout your very being! As the pain subsides, a terrible sensation of emptiness is left in its wake.</span>")
-				src.attack_log += "Was hit with a severity 3(severe) EMP as an android. Lost 20 health."
-			if(2)
-				src.adjustBruteLoss(5)
-				src.adjustFireLoss(5)
-				src.Stun(2)
-				src.nutrition = src.nutrition * 0.6
-				visible_message("<span class='danger'>A faint fizzling emanates from [src].</span>", \
-								"<span class='userdanger'>A fit of twitching overtakes you as your subdermal implants convulse violently from the electromagnetic disruption. Your sustenance reserves have been partially depleted from the blast.</span>")
-				src.emote("twitch")
-				src.attack_log += "Was hit with a severity 2(medium) EMP as an android. Lost 10 health."
-			if(3)
-				src.adjustFireLoss(2)
-				src.adjustBruteLoss(3)
-				src.Stun(1)
-				src.nutrition = src.nutrition * 0.8
-				src.emote("scream")
-				src.attack_log += "Was hit with a severity 3(light) EMP as an android. Lost 5 health."
 	//CYBERMEN STUFF
 	//I'd prefer to have a event-listener system set up for this, but for now this will do.
 	if(ticker.mode.is_cyberman(src.mind))
@@ -372,12 +333,15 @@ emp_act
 
 
 	//DAMAGE//
+	var/damagemod = 1
+	if(dna)
+		damagemod = dna.species.acidmod
 	for(var/obj/item/organ/limb/affecting in damaged)
-		affecting.take_damage(acidity, 2*acidity)
+		affecting.take_damage(acidity*damagemod, 2*acidity*damagemod)
 
 		if(affecting.name == "head")
 			if(prob(min(acidpwr*acid_volume/10, 90))) //Applies disfigurement
-				affecting.take_damage(acidity, 2*acidity)
+				affecting.take_damage(acidity*damagemod, 2*acidity*damagemod)
 				emote("scream")
 				facial_hair_style = "Shaved"
 				hair_style = "Bald"

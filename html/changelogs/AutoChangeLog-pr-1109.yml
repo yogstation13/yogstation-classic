@@ -1,0 +1,7 @@
+author: oisin100
+delete-after: True
+changes: 
+  - tweak: "Ghetto Armoury armour values nerfed."
+  - tweak: "Increased bleed chance on glass weaponry."
+  - rscdel: "Shattered glass weaponry no longer embed glass shards."
+  - imageadd: "Updated glass weapon sprites to be nicer."

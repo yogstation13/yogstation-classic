@@ -1,4 +1,0 @@
-author: Cruix
-delete-after: True
-changes: 
-  - bugfix: "PDAs will no longer receive cleared alerts from other z-levels. Checking active alerts will remove any active alerts from other z-levels from the PDA's alert buffer."

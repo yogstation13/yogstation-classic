@@ -475,8 +475,8 @@ datum/game_mode/proc/update_cybermen_icons_remove(datum/mind/cyberman)
 	return
 
 /datum/cyberman_datum/proc/emp_act(var/mob/living/carbon/human/mob = src, var/severity)
-	mob.Stun(5)
-	mob.Weaken(5)
+	mob.Stun(5*rand(4,10)*severity)
+	mob.Weaken(5*rand(6,10)*severity)
 	mob.silent = max(60, mob.silent)
 	mob.adjustBrainLoss(40)
 	mob.visible_message("<span class='danger'>[mob] clutches their head, writhing in pain!</span>")

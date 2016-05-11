@@ -3,7 +3,7 @@
 	desc = "Used to teleport objects to and from the telescience telepad."
 	icon_screen = "teleport"
 	icon_keyboard = "teleport_key"
-	circuit = /obj/item/weapon/circuitboard/telesci_console
+	circuit = /obj/item/weapon/circuitboard/cooldown_holder/telesci_console
 	var/sending = 1
 	var/obj/machinery/telepad/telepad = null
 	var/temp_msg = "Telescience control console initialized.<BR>Welcome."
@@ -17,7 +17,6 @@
 	var/offset_y = 0
 
 	// Based on the power used
-	var/teleport_cooldown = 0 // every index requires a bluespace crystal
 	var/teleporting = 0
 	var/obj/item/device/gps/inserted_gps
 	var/last_target
@@ -169,9 +168,10 @@
 		if(offset_y < -selection.range || offset_y > selection.range)
 			temp_msg = "ERROR!<BR>Impossible y offset."
 			return
-
-	if(teleport_cooldown > world.time)
-		temp_msg = "Telepad is recharging power.<BR>Please wait [round((teleport_cooldown - world.time) / 10)] seconds."
+	var/obj/item/weapon/circuitboard/cooldown_holder/telesci_console/CM = circuit
+	var/timeleft = CM.cooldownLeft()
+	if(timeleft)
+		temp_msg = "Telepad is recharging power.<BR>Please wait [round(timeleft) / 10] seconds."
 		return
 
 	if(teleporting)
@@ -209,7 +209,7 @@
 			last_target = target
 			var/area/A = get_area(target)
 
-			teleport_cooldown = world.time + (spawn_time * 20)
+			CM.nextAllowedTime = world.time + spawn_time * 20
 
 			// use a lot of power
 			use_power(spawn_time * 20)
