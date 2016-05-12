@@ -143,8 +143,8 @@
 			else
 				dat += "10mm Ammo<br>"
 
-			dat += "(10 Influence) "
-			if(points >= 10)
+			dat += "(15 Influence) "
+			if(points >= 15)
 				dat += "<a href='?src=\ref[src];purchase=baseballbat'>Baseball Bat</a><br>"
 			else
 				dat += "Baseball Bat<br>"
@@ -269,9 +269,9 @@
 					item_type = /obj/item/weapon/twohanded/bostaff
 					pointcost = 10
 			if("baseballbat")
-				if(gang.points >= 10)
-					item_type = /obj/item/weapon/twohanded/baseballbat
-					pointcost = 10
+				if(gang.points >= 15)
+					item_type = /obj/item/weapon/twohanded/baseballbat/gang
+					pointcost = 15
 			if("C4")
 				if(gang.points >= 10)
 					item_type = /obj/item/weapon/c4
