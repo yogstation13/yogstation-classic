@@ -919,6 +919,7 @@
 					var/rules_broken = input(usr,"Which rule did they break? (Rule broken number.)",,"0.0") as text|null
 					if(!rules_broken)
 						return
+					reason += " ([rules_broken])"
 
 					var/msg
 					for(var/job in notbannedlist)
@@ -945,6 +946,7 @@
 						return
 					var/rules_broken = input(usr,"Which rule did they break? (Rule broken number.)",,"0.0") as text|null
 					if(rules_broken)
+						reason += " ([rules_broken])"
 						var/msg
 						for(var/job in notbannedlist)
 							ban_unban_log_save("[key_name(usr)] perma-jobbanned [key_name(M)] from [job]. reason: [reason]")
@@ -1110,6 +1112,7 @@
 				var/rules_broken = input(usr,"Which rule did they break? (Rule broken number.)",,"0.0") as text|null
 				if(!rules_broken)
 					return
+				reason += " ([rules_broken])"
 				AddBan(M.ckey, M.computer_id, reason, usr.ckey, 1, mins)
 				ban_unban_log_save("[usr.client.ckey] has banned [M.ckey]. - Reason: [reason] - This will be removed in [mins] minutes.")
 				M << "<span class='boldannounce'><BIG>You have been banned by [usr.client.ckey].\nReason: [reason]</BIG></span>"
@@ -1134,6 +1137,7 @@
 				var/rules_broken = input(usr,"Which rule did they break? (Rule broken number.)",,"0.0") as text|null
 				if(!rules_broken)
 					return
+				reason += " ([rules_broken])" //add them to the ban reasons.
 				switch(alert(usr,"IP ban?",,"Yes","No","Cancel"))
 					if("Cancel")	return
 					if("Yes")
