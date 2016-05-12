@@ -101,6 +101,68 @@
 	points = 27
 	refined_type = /obj/item/stack/sheet/mineral/bananium
 
+/obj/item/weapon/ore/adamantine
+	name = "adamantine ore"
+	icon_state = "Adamantine ore"
+	origin_tech = "materials=5"
+	points = 40
+	refined_type = /obj/item/stack/sheet/mineral/adamantine
+
+/obj/item/weapon/ore/copper
+	name = "copper ore"
+	icon_state = "Copper ore"
+	origin_tech = "materials=5"
+	points = 40
+	refined_type = /obj/item/stack/sheet/mineral/copper
+
+/obj/item/weapon/ore/mythril
+	name = "mythril ore"
+	icon_state = "Mythril ore"
+	origin_tech = "materials=5"
+	points = 40
+	refined_type = /obj/item/stack/sheet/mineral/mythril
+
+/obj/item/weapon/ore/clarenkite
+	name = "clarenkite ore"
+	icon_state = "Clarenkite ore"
+	origin_tech = "materials=5"
+	points = 40
+	refined_type = /obj/item/stack/sheet/mineral/clarenkite
+
+/obj/item/weapon/ore/coal
+	name = "coal ore"
+	icon_state = "Coal ore"
+	origin_tech = "materials=5"
+	points = 40
+	refined_type = /obj/item/stack/sheet/mineral/coal
+
+/obj/item/weapon/ore/electrite
+	name = "electrite ore"
+	icon_state = "Electrite ore"
+	origin_tech = "materials=5"
+	points = 40
+	refined_type = /obj/item/stack/sheet/mineral/electrite
+
+/obj/item/weapon/ore/platinum
+	name = "platinum ore"
+	icon_state = "Platinum ore"
+	origin_tech = "materials=5"
+	points = 40
+	refined_type = /obj/item/stack/sheet/mineral/platinum
+
+/obj/item/weapon/ore/nightstone
+	name = "nigthstone"
+	icon_state = "Nightstone"
+	origin_tech = "materials=5"
+
+
+/obj/item/weapon/ore/telecrystal
+	name = "telecrystal"
+	icon_state = "Telecrystal"
+	origin_tech = "materials=5"
+
+
+
 /obj/item/weapon/ore/slag
 	name = "slag"
 	desc = "Completely useless"

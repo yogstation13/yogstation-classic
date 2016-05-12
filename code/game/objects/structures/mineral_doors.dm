@@ -250,3 +250,27 @@
 		for(var/i = 1, i <= oreAmount, i++)
 			new/obj/item/stack/sheet/mineral/wood(get_turf(src))
 	qdel(src)
+
+/obj/structure/mineral_door/coal
+	mineralType = "coal"
+	hardness = 3
+
+/obj/structure/mineral_door/copper
+	mineralType = "copper"
+	hardness = 3
+
+/obj/structure/mineral_door/mythril
+	mineralType = "mythril"
+	hardness = 3
+
+/obj/structure/mineral_door/clarenkite
+	mineralType = "clarenkite"
+	hardness = 3
+
+/obj/structure/mineral_door/electrite
+	mineralType = "electrite"
+	hardness = 3
+
+/obj/structure/mineral_door/platinum
+	mineralType = "platinum"
+	hardness = 3

@@ -170,3 +170,45 @@
 			last_event = world.time
 			active = 0
 			return
+
+//PLATINUM
+/turf/simulated/floor/mineral/platinum
+	name = "platinum floor"
+	icon_state = "platinum"
+	floor_tile = /obj/item/stack/tile/mineral/platinum
+	icons = list("platinum","platinum_dam")
+
+//MYTHRIL
+/turf/simulated/floor/mineral/mythril
+	name = "mythril floor"
+	icon_state = "mythril"
+	floor_tile = /obj/item/stack/tile/mineral/mythril
+	icons = list("mythril","mythril_dam")
+
+//CLARENKITE
+/turf/simulated/floor/mineral/clarenkite
+	name = "clarenkite floor"
+	icon_state = "clarenkite"
+	floor_tile = /obj/item/stack/tile/mineral/clarenkite
+	icons = list("clarenkite","clarenkite_dam")
+
+//COAL
+/turf/simulated/floor/mineral/coal
+	name = "coal floor"
+	icon_state = "coal"
+	floor_tile = /obj/item/stack/tile/mineral/coal
+	icons = list("coal","coal_dam")
+
+//COPPER
+/turf/simulated/floor/mineral/copper
+	name = "copper floor"
+	icon_state = "copper"
+	floor_tile = /obj/item/stack/tile/mineral/copper
+	icons = list("copper","copper_dam")
+
+//ELECTRITE
+/turf/simulated/floor/mineral/electrite
+	name = "electrite floor"
+	icon_state = "electrite"
+	floor_tile = /obj/item/stack/tile/mineral/electrite
+	icons = list("electrite","electrite_dam")
