@@ -306,8 +306,8 @@
 	w_class = 4.0
 	slot_flags = SLOT_BACK
 	force_unwielded = 10
-	force_wielded = 20
-	attack_verb = list("attacked", "beat", "smashed", "landed a home run on")
+	force_wielded = 24
+	attack_verb = list("attacked", "beat", "smashed", "whacked", "thwacked", "landed a home run on")
 	hitsound = 'sound/weapons/baseballbat.ogg'
 
 /obj/item/weapon/twohanded/baseballbat/update_icon()

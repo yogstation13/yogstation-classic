@@ -126,7 +126,7 @@
 
 		else if(gang.fighting_style == "street_fighting")
 			dat += "(10 Influence) "
-			if(points >= 12)
+			if(points >= 10)
 				dat += "<a href='?src=\ref[src];purchase=brassknuckles'>Brass Knucles</a><br>"
 			else
 				dat += "Brass Knuckles<br>"
@@ -143,19 +143,11 @@
 			else
 				dat += "10mm Ammo<br>"
 
-			dat += "(60 Influence) "
-			if(points >= 60)
-				dat += "<a href='?src=\ref[src];purchase=uzi'>Uzi SMG</a><br>"
+			dat += "(10 Influence) "
+			if(points >= 10)
+				dat += "<a href='?src=\ref[src];purchase=baseballbat'>Baseball Bat</a><br>"
 			else
-				dat += "Uzi SMG<br>"
-
-			dat += "&nbsp;&#8627;(40 Influence) "
-			if(points >= 40)
-				dat += "<a href='?src=\ref[src];purchase=9mmammo'>Uzi Ammo</a><br>"
-			else
-				dat += "Uzi Ammo<br>"
-
-			dat += "<br>"
+				dat += "Baseball Bat<br>"
 
 		////////////////////////
 		// STANDARD EQUIPMENT //
@@ -243,9 +235,9 @@
 					item_type = /obj/item/weapon/switchblade
 					pointcost = 10
 			if("brassknuckles")
-				if(gang.points >= 12)
+				if(gang.points >= 10)
 					item_type = /obj/item/clothing/gloves/brass_knuckles
-					pointcost = 12
+					pointcost = 10
 			if("pistol")
 				if(gang.points >= 25)
 					item_type = /obj/item/weapon/gun/projectile/automatic/pistol
@@ -275,6 +267,10 @@
 			if("bostaff")
 				if(gang.points >= 10)
 					item_type = /obj/item/weapon/twohanded/bostaff
+					pointcost = 10
+			if("baseballbat")
+				if(gang.points >= 10)
+					item_type = /obj/item/weapon/twohanded/baseballbat
 					pointcost = 10
 			if("C4")
 				if(gang.points >= 10)
