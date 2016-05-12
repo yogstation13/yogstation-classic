@@ -4,6 +4,7 @@
  *		Fireaxe
  *		Double-Bladed Energy Swords
  *		Spears
+ *		Baseball Bat
  */
 
 /*##################################################################
@@ -296,3 +297,19 @@
 	icon_state = "spearglass[wielded]"
 	return
 
+//baseball bat
+/obj/item/weapon/twohanded/baseballbat
+	icon_state = "baseballbat0"
+	name = "baseball bat"
+	desc = "Keekville Swatter brand baseball bat"
+	force = 10
+	w_class = 4.0
+	slot_flags = SLOT_BACK
+	force_unwielded = 10
+	force_wielded = 20
+	attack_verb = list("attacked", "beat", "smashed", "landed a home run on")
+	hitsound = 'sound/weapons/baseballbat.ogg'
+
+/obj/item/weapon/twohanded/baseballbat/update_icon()
+	icon_state = "baseballbat[wielded]"
+	return
