@@ -7,7 +7,7 @@
 
 
 
-/obj/effect/proc_holder/spell/aoe_turf/screech //Stuns anyone in view range.
+/obj/effect/proc_holder/spell/aoe_turf/abomination/screech //Stuns anyone in view range.
 	name = "Screech"
 	desc = "Releases a terrifying screech, freezing those who hear."
 	panel = "Abomination"
@@ -16,7 +16,7 @@
 	clothes_req = 0
 	sound = 'sound/effects/creepyshriek.ogg'
 
-/obj/effect/proc_holder/spell/aoe_turf/screech/cast(list/targets)
+/obj/effect/proc_holder/spell/aoe_turf/abomination/screech/cast(list/targets)
 	if(!abomination_check(usr))
 		charge_counter = charge_max
 		return
@@ -33,7 +33,7 @@
 			M << "<span class='userdanger'>You freeze in terror, your blood turning cold from the sound of the scream!</span>"
 			M.Stun(5)
 
-/obj/effect/proc_holder/spell/targeted/abom_fleshmend
+/obj/effect/proc_holder/spell/targeted/abomination/abom_fleshmend
 	name = "Fleshmend"
 	desc = "Rapidly replaces damaged flesh, healing any physical damage sustained."
 	panel = "Abomination"
@@ -42,7 +42,7 @@
 	range = -1
 	include_user = 1
 
-/obj/effect/proc_holder/spell/targeted/abom_fleshmend/cast(list/targets)
+/obj/effect/proc_holder/spell/targeted/abomination/abom_fleshmend/cast(list/targets)
 	if(!abomination_check(usr))
 		return
 	usr.visible_message("<span class='warning'>[usr]'s skin shifts and pulses, any damage rapidly vanishing!</span>")
@@ -61,7 +61,7 @@
 
 
 
-/obj/effect/proc_holder/spell/targeted/devour
+/obj/effect/proc_holder/spell/targeted/abomination/devour
 	name = "Devour"
 	desc = "Eat a target, absorbing their genetic structure and completely destroying their body."
 	panel = "Abomination"
@@ -70,7 +70,7 @@
 	range = 1
 
 
-/obj/effect/proc_holder/spell/targeted/devour/cast(list/targets,mob/user = usr)
+/obj/effect/proc_holder/spell/targeted/abomination/devour/cast(list/targets,mob/user = usr)
 	if(!abomination_check(usr))
 		return
 	var/datum/changeling/changeling = user.mind.changeling
@@ -155,7 +155,7 @@
 
 
 
-/obj/effect/proc_holder/spell/targeted/abom_revert
+/obj/effect/proc_holder/spell/targeted/abomination/abom_revert
 	name = "Revert"
 	desc = "Returns you to a normal, human form."
 	panel = "Abomination"
@@ -164,7 +164,7 @@
 	range = -1
 	include_user = 1
 
-/obj/effect/proc_holder/spell/targeted/abom_revert/cast(list/targets,mob/user = usr)
+/obj/effect/proc_holder/spell/targeted/abomination/abom_revert/cast(list/targets,mob/user = usr)
 	var/mob/living/carbon/human/H = user
 	var/datum/changeling/changeling = user.mind.changeling
 	var/transform_or_no=alert(user,"Are you sure you want to revert?",,"Yes","No")
@@ -175,7 +175,10 @@
 		if("Yes")
 			if(!abomination_check(usr))
 				user << "<span class='warning'>You're already reverted!</span>"
-				user.spellremove(user)
+				for(var/spell in user.mind.spell_list)
+					if(istype(spell, /obj/effect/proc_holder/spell/targeted/abomination)|| istype(spell, /obj/effect/proc_holder/spell/aoe_turf/abomination))
+						user.mind.spell_list -= spell
+						qdel(spell)
 				return
 			user <<"<span class='notice'>You transform back into a humanoid form, leaving you exhausted!</span>"
 			var/datum/mutation/human/HM = mutations_list[HULK]

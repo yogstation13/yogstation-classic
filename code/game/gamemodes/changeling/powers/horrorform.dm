@@ -72,10 +72,10 @@
 				HM.force_give(H)
 
 //spells
-				user.mind.spell_list += new /obj/effect/proc_holder/spell/aoe_turf/screech
-				user.mind.spell_list += new /obj/effect/proc_holder/spell/targeted/abom_fleshmend
-				user.mind.spell_list += new /obj/effect/proc_holder/spell/targeted/devour
-				user.mind.spell_list += new /obj/effect/proc_holder/spell/targeted/abom_revert
+				user.mind.spell_list += new /obj/effect/proc_holder/spell/aoe_turf/abomination/screech
+				user.mind.spell_list += new /obj/effect/proc_holder/spell/targeted/abomination/abom_fleshmend
+				user.mind.spell_list += new /obj/effect/proc_holder/spell/targeted/abomination/devour
+				user.mind.spell_list += new /obj/effect/proc_holder/spell/targeted/abomination/abom_revert
 
 //forced reversion
 
@@ -114,7 +114,10 @@
 			qdel(I)
 		changeling.chem_recharge_slowdown = 0
 		hardset_dna(user, null, null, null, null, /datum/species/human)
-		user.spellremove(user)
+		for(var/spell in user.mind.spell_list)
+			if(istype(spell, /obj/effect/proc_holder/spell/targeted/abomination)|| istype(spell, /obj/effect/proc_holder/spell/aoe_turf/abomination))
+				user.mind.spell_list -= spell
+				qdel(spell)
 		user.weakeyes = 0
 		user.sight &= ~SEE_MOBS
 		user.permanent_sight_flags &= ~SEE_MOBS
