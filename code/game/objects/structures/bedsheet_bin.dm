@@ -8,7 +8,6 @@ LINEN BINS
 	name = "bedsheet"
 	desc = "A surprisingly soft linen bedsheet."
 	icon = 'icons/obj/bedsheets.dmi'
-	item_color = "white"
 	icon_state = "sheetwhite"
 	item_state = "sheetwhite"
 	slot_flags = SLOT_BACK | SLOT_HEAD
@@ -17,6 +16,7 @@ LINEN BINS
 	throw_speed = 1
 	throw_range = 2
 	w_class = 1.0
+	item_color = "white"
 	burn_state = 0 //Burnable
 
 
@@ -42,10 +42,8 @@ LINEN BINS
 
 obj/item/weapon/bedsheet/equipped(mob/user, slot)
 	if(slot == slot_head)
-//		icon = 'icons/mob/head'
 		icon_state = "sheet[item_color]"
 	if(slot == slot_back)
-//		icon = 'icons/mob/back'
 		icon_state = "sheet[item_color]"
 
 /obj/item/weapon/bedsheet/blue
@@ -144,6 +142,7 @@ obj/item/weapon/bedsheet/equipped(mob/user, slot)
 	desc = "It is decorated with a crate emblem in silver lining.  It's rather tough, and just the thing to lie on after a hard day of pushing paper."
 	icon_state = "sheetqm"
 	item_color = "qm"
+	slot_flags = SLOT_BACK
 
 /obj/item/weapon/bedsheet/brown
 	icon_state = "sheetbrown"
@@ -159,7 +158,6 @@ obj/item/weapon/bedsheet/equipped(mob/user, slot)
 /obj/item/weapon/bedsheet/syndie
 	name = "syndicate bedsheet"
 	desc = "It has a syndicate emblem and it has an aura of evil."
-	slot_flags = SLOT_BACK
 	icon_state = "sheetsyndie"
 	item_color = "syndie"
 	slot_flags = SLOT_BACK
@@ -167,7 +165,6 @@ obj/item/weapon/bedsheet/equipped(mob/user, slot)
 /obj/item/weapon/bedsheet/cult
 	name = "cultist's bedsheet"
 	desc = "You might dream of Nar'Sie if you sleep with this. It seems rather tattered and glows of an eldritch presence."
-	slot_flags = SLOT_BACK
 	icon_state = "sheetcult"
 	item_color = "cult"
 	slot_flags = SLOT_BACK
@@ -175,13 +172,11 @@ obj/item/weapon/bedsheet/equipped(mob/user, slot)
 /obj/item/weapon/bedsheet/wiz
 	name = "wizard's bedsheet"
 	desc = "A special fabric enchanted with magic so you can have an enchanted night. It even glows!"
-	slot_flags = SLOT_BACK
 	icon_state = "sheetwiz"
 	item_color = "wiz"
 	slot_flags = SLOT_BACK
 
 /obj/item/weapon/bedsheet/ian
-	slot_flags = SLOT_BACK
 	icon_state = "sheetian"
 	item_color = "ian"
 	slot_flags = SLOT_BACK
