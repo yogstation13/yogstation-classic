@@ -8,15 +8,15 @@ LINEN BINS
 	name = "bedsheet"
 	desc = "A surprisingly soft linen bedsheet."
 	icon = 'icons/obj/bedsheets.dmi'
+	item_color = "white"
 	icon_state = "sheetwhite"
-	item_state = "bedsheet"
-	slot_flags = SLOT_BACK
+	item_state = "sheetwhite"
+	slot_flags = SLOT_BACK | SLOT_HEAD
 	layer = 4.0
 	throwforce = 0
 	throw_speed = 1
 	throw_range = 2
 	w_class = 1.0
-	item_color = "white"
 	burn_state = 0 //Burnable
 
 
@@ -40,6 +40,14 @@ LINEN BINS
 		user << "<span class='notice'>You tear [src] up.</span>"
 	..()
 
+obj/item/weapon/bedsheet/equipped(mob/user, slot)
+	if(slot == slot_head)
+//		icon = 'icons/mob/head'
+		icon_state = "sheet[item_color]"
+	if(slot == slot_back)
+//		icon = 'icons/mob/back'
+		icon_state = "sheet[item_color]"
+
 /obj/item/weapon/bedsheet/blue
 	icon_state = "sheetblue"
 	item_color = "blue"
@@ -61,6 +69,7 @@ LINEN BINS
 	desc = "You've never felt more free than when sleeping on this."
 	icon_state = "sheetUSA"
 	item_color = "sheetUSA"
+	slot_flags = SLOT_BACK
 
 /obj/item/weapon/bedsheet/rainbow
 	name = "rainbow bedsheet"
@@ -143,30 +152,39 @@ LINEN BINS
 /obj/item/weapon/bedsheet/centcom
 	name = "\improper Centcom bedsheet"
 	desc = "Woven with advanced nanothread for warmth as well as being very decorated, essential for all officials."
+	slot_flags = SLOT_BACK
 	icon_state = "sheetcentcom"
 	item_color = "centcom"
 
 /obj/item/weapon/bedsheet/syndie
 	name = "syndicate bedsheet"
 	desc = "It has a syndicate emblem and it has an aura of evil."
+	slot_flags = SLOT_BACK
 	icon_state = "sheetsyndie"
 	item_color = "syndie"
+	slot_flags = SLOT_BACK
 
 /obj/item/weapon/bedsheet/cult
 	name = "cultist's bedsheet"
 	desc = "You might dream of Nar'Sie if you sleep with this. It seems rather tattered and glows of an eldritch presence."
+	slot_flags = SLOT_BACK
 	icon_state = "sheetcult"
 	item_color = "cult"
+	slot_flags = SLOT_BACK
 
 /obj/item/weapon/bedsheet/wiz
 	name = "wizard's bedsheet"
 	desc = "A special fabric enchanted with magic so you can have an enchanted night. It even glows!"
+	slot_flags = SLOT_BACK
 	icon_state = "sheetwiz"
 	item_color = "wiz"
+	slot_flags = SLOT_BACK
 
 /obj/item/weapon/bedsheet/ian
+	slot_flags = SLOT_BACK
 	icon_state = "sheetian"
 	item_color = "ian"
+	slot_flags = SLOT_BACK
 
 
 /obj/structure/bedsheetbin
