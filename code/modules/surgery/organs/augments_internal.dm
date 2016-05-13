@@ -257,17 +257,39 @@
 //BOX O' IMPLANTS
 
 /obj/item/weapon/storage/box/cyber_implants
-	name = "boxed cybernetic implants"
+	name = "boxed cybernetic implant"
 	desc = "A sleek, sturdy box."
 	icon_state = "cyber_implants"
-	var/list/boxed = list(/obj/item/organ/internal/cyberimp/eyes/xray,/obj/item/organ/internal/cyberimp/eyes/thermals,
-						/obj/item/organ/internal/cyberimp/brain/anti_stun, /obj/item/organ/internal/cyberimp/chest/reviver)
-	var/amount = 5
+	var/list/implants = list()
 
 /obj/item/weapon/storage/box/cyber_implants/New()
 	..()
+	for(var/type in implants)
+		new type(src)
+	new /obj/item/device/autoimplanter(src)
+
+/obj/item/weapon/storage/box/cyber_implants/random
+	name = "boxed cybernetic implants"
+	var/amount = 5
+	var/list/random_implants = list(/obj/item/organ/internal/cyberimp/eyes/xray,/obj/item/organ/internal/cyberimp/eyes/thermals,
+						/obj/item/organ/internal/cyberimp/brain/anti_stun, /obj/item/organ/internal/cyberimp/chest/reviver)
+
+/obj/item/weapon/storage/box/cyber_implants/random/New()
 	var/i
 	var/implant
 	for(i = 0, i < amount, i++)
-		implant = pick(boxed)
+		implant = pick(random_implants)
 		new implant(src)
+	..()
+
+/obj/item/weapon/storage/box/cyber_implants/thermals
+	implants = list(/obj/item/organ/internal/cyberimp/eyes/thermals)
+
+/obj/item/weapon/storage/box/cyber_implants/xray
+	implants = list(/obj/item/organ/internal/cyberimp/eyes/xray)
+
+/obj/item/weapon/storage/box/cyber_implants/antistun
+	implants = list(/obj/item/organ/internal/cyberimp/brain/anti_stun)
+
+/obj/item/weapon/storage/box/cyber_implants/reviver
+	implants = list(/obj/item/organ/internal/cyberimp/chest/reviver)
