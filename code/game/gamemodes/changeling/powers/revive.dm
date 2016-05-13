@@ -1,10 +1,10 @@
-/obj/effect/proc_holder/changeling/revive
+/obj/effect/proc_holder/resource_ability/changeling/revive
 	name = "Regenerate"
 	desc = "We regenerate, healing all damage from our form."
 	req_stat = DEAD
 
 //Revive from revival stasis
-/obj/effect/proc_holder/changeling/revive/sting_action(mob/living/carbon/user)
+/obj/effect/proc_holder/resource_ability/changeling/revive/sting_action(mob/living/carbon/user)
 	if(user.stat == DEAD)
 		dead_mob_list -= user
 		living_mob_list += user
@@ -25,7 +25,7 @@
 	user << "<span class='notice'>We have regenerated.</span>"
 	user.status_flags &= ~(FAKEDEATH)
 	user.update_canmove()
-	user.mind.changeling.purchasedpowers -= src
+	user.RemoveAbility(src)
 	user.med_hud_set_status()
 	user.med_hud_set_health()
 	feedback_add_details("changeling_powers","CR")

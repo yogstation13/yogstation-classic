@@ -93,7 +93,8 @@ var/list/slot2type = list("head" = /obj/item/clothing/head/changeling, "wear_mas
 
 	for(var/datum/mind/changeling in changelings)
 		log_game("[changeling.key] (ckey) has been selected as a changeling")
-		changeling.current.make_changeling()
+		var/mob/living/carbon/C = changeling.current
+		C.make_changeling()
 		changeling.special_role = "Changeling"
 		forge_changeling_objectives(changeling)
 		greet_changeling(changeling)
@@ -291,12 +292,12 @@ var/list/slot2type = list("head" = /obj/item/clothing/head/changeling, "wear_mas
 	var/geneticdamage = 0
 	var/isabsorbing = 0
 	var/geneticpoints = 10
-	var/purchasedpowers = list()
+	var/non_organ_powers = list()
 	var/mimicing = ""
 	var/canrespec = 0
 	var/changeling_speak = 0
 	var/datum/dna/chosen_dna
-	var/obj/effect/proc_holder/changeling/sting/chosen_sting
+	var/obj/effect/proc_holder/resource_ability/changeling/sting/chosen_sting
 
 /datum/changeling/New(var/gender=FEMALE)
 	..()
@@ -314,12 +315,9 @@ var/list/slot2type = list("head" = /obj/item/clothing/head/changeling, "wear_mas
 /datum/changeling/proc/regenerate(var/mob/living/carbon/the_ling)
 	if(istype(the_ling))
 		if(the_ling.stat == DEAD)
-			chem_charges = min(max(0, chem_charges + chem_recharge_rate - chem_recharge_slowdown), (chem_storage*0.5))
 			geneticdamage = max(LING_DEAD_GENETICDAMAGE_HEAL_CAP,geneticdamage-1)
-		else //not dead? no chem/geneticdamage caps.
-			chem_charges = min(max(0, chem_charges + chem_recharge_rate - chem_recharge_slowdown), chem_storage)
+		else
 			geneticdamage = max(0, geneticdamage-1)
-
 
 /datum/changeling/proc/get_dna(dna_owner)
 	for(var/datum/changelingprofile/prof in stored_profiles)

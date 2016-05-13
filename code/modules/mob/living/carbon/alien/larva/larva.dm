@@ -16,10 +16,10 @@
 //This is fine right now, if we're adding organ specific damage this needs to be updated
 /mob/living/carbon/alien/larva/New()
 	regenerate_icons()
-	internal_organs += new /obj/item/organ/internal/alien/plasmavessel/small/tiny
+	internal_organs += new /obj/item/organ/internal/ability_organ/alien/plasmavessel/small/tiny
 
-	AddAbility(new/obj/effect/proc_holder/alien/hide(null))
-	AddAbility(new/obj/effect/proc_holder/alien/larva_evolve(null))
+	AddAbility(new/obj/effect/proc_holder/resource_ability/alien/hide(null))
+	AddAbility(new/obj/effect/proc_holder/resource_ability/alien/larva_evolve(null))
 	..()
 
 //This needs to be fixed
@@ -28,10 +28,10 @@
 	if(statpanel("Status"))
 		stat(null, "Progress: [amount_grown]/[max_grown]")
 
-/mob/living/carbon/alien/larva/adjustPlasma(amount)
-	if(stat != DEAD && amount > 0)
+/mob/living/carbon/alien/larva/adjustResource(resource_type, amount)
+	if(stat != DEAD && resource_type == RESOURCE_ALIEN && amount > 0)
 		amount_grown = min(amount_grown + 1, max_grown)
-	..(amount)
+	..(resource_type, amount)
 
 //can't equip anything
 /mob/living/carbon/alien/larva/attack_ui(slot_id)

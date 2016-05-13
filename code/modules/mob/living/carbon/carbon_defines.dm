@@ -29,7 +29,7 @@
 	var/obj/item/weapon/reagent_containers/food/snacks/meat/slab/type_of_meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/
 
 	var/remote_view = 0
-	var/list/obj/effect/proc_holder/alien/abilities = list()
+	var/list/obj/effect/proc_holder/resource_ability/abilities = list()
 	var/gib_type = /obj/effect/decal/cleanable/blood/gibs
 
 	var/mob/living/simple_animal/borer/borer //Im doing this until i can think of a better way to do this without hardcoding.

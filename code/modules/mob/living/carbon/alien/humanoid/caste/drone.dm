@@ -7,25 +7,25 @@
 
 
 /mob/living/carbon/alien/humanoid/drone/New()
-	internal_organs += new /obj/item/organ/internal/alien/plasmavessel/large
-	internal_organs += new /obj/item/organ/internal/alien/resinspinner
-	internal_organs += new /obj/item/organ/internal/alien/acid
+	internal_organs += new /obj/item/organ/internal/ability_organ/alien/plasmavessel/large
+	internal_organs += new /obj/item/organ/internal/ability_organ/alien/resinspinner
+	internal_organs += new /obj/item/organ/internal/ability_organ/alien/acid
 
-	AddAbility(new/obj/effect/proc_holder/alien/evolve(null))
+	AddAbility(new/obj/effect/proc_holder/resource_ability/alien/evolve(null))
 	..()
 
 /mob/living/carbon/alien/humanoid/drone/movement_delay()
 	. = ..()
 	. += 1
 
-/obj/effect/proc_holder/alien/evolve
+/obj/effect/proc_holder/resource_ability/alien/evolve
 	name = "Evolve"
 	desc = "Produce an interal egg sac capable of spawning children. Only one queen can exist at a time."
-	plasma_cost = 500
+	resource_cost = 500
 
 	action_icon_state = "alien_evolve_drone"
 
-/obj/effect/proc_holder/alien/evolve/fire(mob/living/carbon/alien/user)
+/obj/effect/proc_holder/resource_ability/alien/evolve/fire(mob/living/carbon/alien/user)
 	var/no_queen = 1
 	for(var/mob/living/carbon/alien/humanoid/queen/Q in living_mob_list)
 		if(!Q.key || !Q.getorgan(/obj/item/organ/internal/brain))

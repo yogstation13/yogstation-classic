@@ -9,7 +9,6 @@
 	var/organ_action_name = null
 	var/decay_time = 0//Measured in BYOND seconds. By default, organs do not decay.
 	var/decay = 0
-	var/decay_above_temp = T0C
 
 /obj/item/organ/internal/New()
 	decay = decay_time
@@ -17,30 +16,10 @@
 		SSobj.processing |= src
 
 /obj/item/organ/internal/process()
-	if(!decay_time || decay == -1)
-		return
-	if(owner && !(owner.stat & DEAD))//don't decay if you are inside a living person.
-		return
+	handle_decay()
 
-	var/temperature
-	if(owner)
-		temperature = owner.bodytemperature
-	else if(loc)
-		var/datum/gas_mixture/environment = loc.return_air()
-		if(!environment)
-			return
-		temperature = environment.temperature
-	else
-		return
-
-	if(temperature > decay_above_temp)
-		decay = max(0, decay-1)
-	if(!decay)
-		on_decay()
-
-/obj/item/organ/internal/proc/on_decay()
-	decay = -1
-	SSobj.processing.Remove(src)
+/obj/item/organ/internal/proc/handle_decay()
+	return
 
 /obj/item/organ/internal/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/device/healthanalyzer))//perhaps also the PDA cartridge?
@@ -81,7 +60,6 @@
 	return
 
 /obj/item/organ/internal/proc/on_life()
-	decay = min(decay_time, decay+1)
 	return
 
 /obj/item/organ/internal/proc/prepare_eat()
@@ -128,11 +106,34 @@
 	vital = 1
 	decay_time = 600//10 BYOND minutes, same as the old defib time limit.
 	var/beating = 1
+	var/decay_above_temp = T0C
 
-/obj/item/organ/internal/heart/on_decay()
+/obj/item/organ/internal/heart/handle_decay()
 	..()
-	beating = 0
-	update_icon()
+	if(!decay_time || decay == -1)
+		return
+	if(owner && !(owner.stat & DEAD))//don't decay and heal a bit if you are inside a living person.
+		decay = min(decay+1, decay_time)
+		return
+
+	var/temperature
+	if(owner)
+		temperature = owner.bodytemperature
+	else if(loc)
+		var/datum/gas_mixture/environment = loc.return_air()
+		if(!environment)
+			return
+		temperature = environment.temperature
+	else
+		return
+
+	if(temperature > decay_above_temp)
+		decay = max(0, decay-1)
+	if(!decay)
+		decay = -1
+		beating = 0
+		update_icon()
+		SSobj.processing -= src
 
 /obj/item/organ/internal/heart/update_icon()
 	if(beating)

@@ -9,18 +9,18 @@
 
 
 //Parent to shields and blades because muh copypasted code.
-/obj/effect/proc_holder/changeling/weapon
+/obj/effect/proc_holder/resource_ability/changeling/weapon
 	name = "Organic Weapon"
 	desc = "Go tell a coder if you see this"
 	helptext = "Yell at Miauw and/or Perakp"
-	chemical_cost = 1000
+	resource_cost = 1000
 	dna_cost = -1
 	genetic_damage = 1000
 
 	var/weapon_type
 	var/weapon_name_simple
 
-/obj/effect/proc_holder/changeling/weapon/try_to_sting(mob/user, mob/target)
+/obj/effect/proc_holder/resource_ability/changeling/weapon/try_to_sting(mob/user, mob/target)
 	if(istype(user.l_hand, weapon_type)) //Not the nicest way to do it, but eh
 		playsound(user, 'sound/effects/blobattack.ogg', 30, 1)
 		qdel(user.l_hand)
@@ -35,7 +35,7 @@
 		return
 	..(user, target)
 
-/obj/effect/proc_holder/changeling/weapon/sting_action(mob/user)
+/obj/effect/proc_holder/resource_ability/changeling/weapon/sting_action(mob/user)
 	if(!user.drop_item())
 		user << "<span class='warning'>The [user.get_active_hand()] is stuck to your hand, you cannot grow a [weapon_name_simple] over it!</span>"
 		return
@@ -45,11 +45,11 @@
 	return W
 
 //Parent to space suits and armor.
-/obj/effect/proc_holder/changeling/suit
+/obj/effect/proc_holder/resource_ability/changeling/suit
 	name = "Organic Suit"
 	desc = "Go tell a coder if you see this"
 	helptext = "Yell at Miauw and/or Perakp"
-	chemical_cost = 1000
+	resource_cost = 1000
 	dna_cost = -1
 	genetic_damage = 1000
 
@@ -60,7 +60,7 @@
 	var/recharge_slowdown = 0
 	var/blood_on_castoff = 0
 
-/obj/effect/proc_holder/changeling/suit/try_to_sting(mob/user, mob/target)
+/obj/effect/proc_holder/resource_ability/changeling/suit/try_to_sting(mob/living/carbon/user, mob/target)
 	var/datum/changeling/changeling = user.mind.changeling
 	if(!ishuman(user) || !changeling)
 		return
@@ -81,11 +81,13 @@
 				playsound(H.loc, 'sound/effects/splat.ogg', 50, 1) //So real sounds
 
 		changeling.geneticdamage += genetic_damage //Casting off a space suit leaves you weak for a few seconds.
-		changeling.chem_recharge_slowdown -= recharge_slowdown
+		var/obj/item/organ/internal/ability_organ/changeling/chem_storage/chem_store = user.getorgan(/obj/item/organ/internal/ability_organ/changeling/chem_storage)
+		if(chem_store)
+			chem_store.chem_recharge_slowdown -= recharge_slowdown
 		return
 	..(H, target)
 
-/obj/effect/proc_holder/changeling/suit/sting_action(mob/living/carbon/human/user)
+/obj/effect/proc_holder/resource_ability/changeling/suit/sting_action(mob/living/carbon/human/user)
 	if(!user.canUnEquip(user.wear_suit))
 		user << "\the [user.wear_suit] is stuck to your body, you cannot grow a [suit_name_simple] over it!"
 		return
@@ -99,8 +101,9 @@
 	user.equip_to_slot_if_possible(new suit_type(user), slot_wear_suit, 1, 1, 1)
 	user.equip_to_slot_if_possible(new helmet_type(user), slot_head, 1, 1, 1)
 
-	var/datum/changeling/changeling = user.mind.changeling
-	changeling.chem_recharge_slowdown += recharge_slowdown
+	var/obj/item/organ/internal/ability_organ/changeling/chem_storage/chem_store = user.getorgan(/obj/item/organ/internal/ability_organ/changeling/chem_storage)
+	if(chem_store)
+		chem_store.chem_recharge_slowdown += recharge_slowdown
 	return 1
 
 
@@ -108,11 +111,11 @@
 /***************************************\
 |***************ARM BLADE***************|
 \***************************************/
-/obj/effect/proc_holder/changeling/weapon/arm_blade
+/obj/effect/proc_holder/resource_ability/changeling/weapon/arm_blade
 	name = "Arm Blade"
 	desc = "We reform one of our arms into a deadly blade."
 	helptext = "We may retract our armblade in the same manner as we form it. Cannot be used while in lesser form."
-	chemical_cost = 20
+	resource_cost = 20
 	dna_cost = 2
 	genetic_damage = 10
 	req_human = 1
@@ -180,11 +183,11 @@
 /***************************************\
 |****************SHIELD*****************|
 \***************************************/
-/obj/effect/proc_holder/changeling/weapon/shield
+/obj/effect/proc_holder/resource_ability/changeling/weapon/shield
 	name = "Organic Shield"
 	desc = "We reform one of our arms into a hard shield."
 	helptext = "Organic tissue cannot resist damage forever; the shield will break after it is hit too much. The more genomes we absorb, the stronger it is. Cannot be used while in lesser form."
-	chemical_cost = 20
+	resource_cost = 20
 	dna_cost = 1
 	genetic_damage = 12
 	req_human = 1
@@ -193,7 +196,7 @@
 	weapon_type = /obj/item/weapon/shield/changeling
 	weapon_name_simple = "shield"
 
-/obj/effect/proc_holder/changeling/weapon/shield/sting_action(mob/user)
+/obj/effect/proc_holder/resource_ability/changeling/weapon/shield/sting_action(mob/user)
 	var/datum/changeling/changeling = user.mind.changeling //So we can read the absorbedcount.
 	if(!changeling)
 		return
@@ -235,11 +238,11 @@
 /***************************************\
 |*********SPACE SUIT + HELMET***********|
 \***************************************/
-/obj/effect/proc_holder/changeling/suit/organic_space_suit
+/obj/effect/proc_holder/resource_ability/changeling/suit/organic_space_suit
 	name = "Organic Space Suit"
 	desc = "We grow an organic suit to protect ourselves from space exposure."
 	helptext = "We must constantly repair our form to make it space-proof, reducing chemical production while we are protected. Retreating the suit damages our genomes. Cannot be used in lesser form."
-	chemical_cost = 20
+	resource_cost = 20
 	dna_cost = 2
 	genetic_damage = 8
 	req_human = 1
@@ -289,11 +292,11 @@
 /***************************************\
 |*****************ARMOR*****************|
 \***************************************/
-/obj/effect/proc_holder/changeling/suit/armor
+/obj/effect/proc_holder/resource_ability/changeling/suit/armor
 	name = "Chitinous Armor"
 	desc = "We turn our skin into tough chitin to protect us from damage."
 	helptext = "Upkeep of the armor requires a low expenditure of chemicals. The armor is strong against brute force, but does not provide much protection from lasers. Retreating the armor damages our genomes. Cannot be used in lesser form."
-	chemical_cost = 20
+	resource_cost = 20
 	dna_cost = 2
 	genetic_damage = 11
 	req_human = 1

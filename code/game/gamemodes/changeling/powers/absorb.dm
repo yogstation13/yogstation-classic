@@ -1,12 +1,12 @@
-/obj/effect/proc_holder/changeling/absorbDNA
+/obj/effect/proc_holder/resource_ability/changeling/absorbDNA
 	name = "Absorb DNA"
 	desc = "Absorb the DNA of our victim."
-	chemical_cost = 0
+	resource_cost = 0
 	dna_cost = 0
 	req_human = 1
 	max_genetic_damage = 100
 
-/obj/effect/proc_holder/changeling/absorbDNA/can_sting(mob/living/carbon/user)
+/obj/effect/proc_holder/resource_ability/changeling/absorbDNA/can_sting(mob/living/carbon/user)
 	if(!..())
 		return
 
@@ -28,7 +28,7 @@
 
 
 
-/obj/effect/proc_holder/changeling/absorbDNA/sting_action(mob/user)
+/obj/effect/proc_holder/resource_ability/changeling/absorbDNA/sting_action(mob/living/carbon/user)
 	var/datum/changeling/changeling = user.mind.changeling
 	var/obj/item/weapon/grab/G = user.get_active_hand()
 	var/mob/living/carbon/human/target = G.affecting
@@ -87,14 +87,26 @@
 			user << "<span class='boldnotice'>We have no more knowledge of [target]'s speech patterns.</span>"
 
 		if(target.mind.changeling)//If the target was a changeling, suck out their extra juice and objective points!
-			changeling.chem_charges += min(target.mind.changeling.chem_charges, changeling.chem_storage)
+			user.adjustResource(RESOURCE_CHANGELING, target.getResource(RESOURCE_CHANGELING) )
 			changeling.absorbedcount += (target.mind.changeling.absorbedcount)
 
 			target.mind.changeling.stored_profiles.len = 1
 			target.mind.changeling.absorbedcount = 0
+		//eat any changeling organs they have for DNA points!
+		var/absorbed_organs = 0
+		for(var/obj/item/organ/internal/ability_organ/changeling/O in target.internal_organs)
+			for(var/V in O.granted_powers)
+				absorbed_organs++
+				var/obj/effect/proc_holder/resource_ability/changeling/thepower = V
+				if(!istype(thepower))
+					continue
+				user.mind.changeling.geneticpoints += thepower.dna_cost
+			O.Remove(target)
+			qdel(O)
+		if(absorbed_organs)
+			user << "<span class='notice'>We have consumed [absorbed_organs > 1 ? "changeling organs" : "a changeling organ"] from [target], increasing our supply of DNA points.</span>"
 
-
-	changeling.chem_charges=min(changeling.chem_charges+10, changeling.chem_storage)
+	user.adjustResource(RESOURCE_CHANGELING, 10)
 
 	changeling.isabsorbing = 0
 	changeling.canrespec = 1

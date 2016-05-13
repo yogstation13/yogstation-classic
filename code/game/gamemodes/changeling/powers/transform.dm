@@ -1,7 +1,7 @@
-/obj/effect/proc_holder/changeling/transform
+/obj/effect/proc_holder/resource_ability/changeling/transform
 	name = "Transform"
 	desc = "We take on the appearance and voice of one we have absorbed."
-	chemical_cost = 5
+	resource_cost = 5
 	dna_cost = 0
 	req_dna = 1
 	req_human = 1
@@ -42,7 +42,7 @@
 	allowed = list(/obj/item/changeling)
 
 //Change our DNA to that of somebody we've absorbed.
-/obj/effect/proc_holder/changeling/transform/sting_action(mob/living/carbon/human/user)
+/obj/effect/proc_holder/resource_ability/changeling/transform/sting_action(mob/living/carbon/human/user)
 	var/datum/changeling/changeling = user.mind.changeling
 	var/datum/changelingprofile/chosen_prof = changeling.select_dna("Select the target DNA: ", "Target DNA", user)
 
@@ -62,7 +62,7 @@
 	var/chosen_name = input(prompt, title, null) as null|anything in names
 	if(!chosen_name)
 		return
-	
+
 	if(chosen_name == "Drop Flesh Disguise")
 		for(var/slot in slots)
 			if(istype(user.vars[slot], slot2type[slot]))

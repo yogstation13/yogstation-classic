@@ -94,7 +94,7 @@
 	if(mind)
 		mind.transfer_to(O)
 		if(O.mind.changeling)
-			O.mind.changeling.purchasedpowers += new /obj/effect/proc_holder/changeling/humanform(null)
+			O.AddAbility(new /obj/effect/proc_holder/resource_ability/changeling/humanform(null))
 	if(O.ckey == null || O.ckey == "")
 		O.ckey = storedkey // Fix that random ghosting bug.
 	if (tr_flags & TR_DEFAULTMSG)
@@ -213,8 +213,7 @@
 	//transfer mind and delete old mob
 	if(mind)
 		mind.transfer_to(O)
-		if(O.mind.changeling)
-			O.mind.changeling.purchasedpowers += new /obj/effect/proc_holder/changeling/humanform(null)
+		O.AddAbility(new /obj/effect/proc_holder/resource_ability/changeling/humanform(null))
 	if (tr_flags & TR_DEFAULTMSG)
 		O << "<B>You are now a zombie.</B>"
 	updateappearance(O)

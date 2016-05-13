@@ -15,7 +15,7 @@
 //This is fine right now, if we're adding organ specific damage this needs to be updated
 /mob/living/carbon/alien/humanoid/New()
 	create_reagents(1000)
-	AddAbility(new/obj/effect/proc_holder/alien/regurgitate(null))
+	AddAbility(new/obj/effect/proc_holder/resource_ability/alien/regurgitate(null))
 	..()
 
 

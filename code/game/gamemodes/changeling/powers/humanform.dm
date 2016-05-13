@@ -1,14 +1,13 @@
-/obj/effect/proc_holder/changeling/humanform
+/obj/effect/proc_holder/resource_ability/changeling/humanform
 	name = "Human form"
 	desc = "We change into a human."
-	chemical_cost = 5
+	resource_cost = 5
 	genetic_damage = 3
 	req_dna = 1
 	max_genetic_damage = 3
 
-
 //Transform into a human.
-/obj/effect/proc_holder/changeling/humanform/sting_action(mob/living/carbon/user)
+/obj/effect/proc_holder/resource_ability/changeling/humanform/sting_action(mob/living/carbon/user)
 	var/datum/changeling/changeling = user.mind.changeling
 	var/list/names = list()
 	for(var/datum/changelingprofile/prof in changeling.stored_profiles)
@@ -29,7 +28,7 @@
 
 	changeling_transform(user, chosen_prof)
 
-	changeling.purchasedpowers -= src
+	user.RemoveAbility(src)
 	feedback_add_details("changeling_powers","LFT")
 	qdel(user)
 	return 1

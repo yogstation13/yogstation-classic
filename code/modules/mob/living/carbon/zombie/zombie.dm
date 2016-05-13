@@ -341,8 +341,9 @@
 	stat(null, text("Move Mode: []", m_intent))
 	if(client && mind)
 		if (client.statpanel == "Status")
+			if(getResourceMax(RESOURCE_CHANGELING))
+				stat("Chemical Storage", "[getResource(RESOURCE_CHANGELING)]/[getResourceMax(RESOURCE_CHANGELING)]")
 			if(mind.changeling)
-				stat("Chemical Storage", "[mind.changeling.chem_charges]/[mind.changeling.chem_storage]")
 				stat("Absorbed DNA", mind.changeling.absorbedcount)
 	return
 

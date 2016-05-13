@@ -264,6 +264,10 @@
 #define GHOST_ORBIT_SQUARE		"square"
 #define GHOST_ORBIT_PENTAGON	"pentagon"
 
+//Ability Resouce Types
+#define RESOURCE_ALIEN 1
+#define RESOURCE_CHANGELING 2
+
 //Turf wet states
 #define TURF_DRY		0
 #define TURF_WET_WATER	1

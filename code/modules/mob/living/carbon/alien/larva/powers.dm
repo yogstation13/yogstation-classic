@@ -1,11 +1,11 @@
-/obj/effect/proc_holder/alien/hide
+/obj/effect/proc_holder/resource_ability/alien/hide
 	name = "Hide"
 	desc = "Allows to hide beneath tables or certain items. Toggled on or off."
-	plasma_cost = 0
+	resource_cost = 0
 
 	action_icon_state = "alien_hide"
 
-/obj/effect/proc_holder/alien/hide/fire(mob/living/carbon/alien/user)
+/obj/effect/proc_holder/resource_ability/alien/hide/fire(mob/living/carbon/alien/user)
 	if(user.stat != CONSCIOUS)
 		return
 
@@ -20,14 +20,14 @@
 	return 1
 
 
-/obj/effect/proc_holder/alien/larva_evolve
+/obj/effect/proc_holder/resource_ability/alien/larva_evolve
 	name = "Evolve"
 	desc = "Evolve into a fully grown Alien."
-	plasma_cost = 0
+	resource_cost = 0
 
 	action_icon_state = "alien_evolve_larva"
 
-/obj/effect/proc_holder/alien/larva_evolve/fire(mob/living/carbon/alien/user)
+/obj/effect/proc_holder/resource_ability/alien/larva_evolve/fire(mob/living/carbon/alien/user)
 	if(!islarva(user))
 		return
 	var/mob/living/carbon/alien/larva/L = user
