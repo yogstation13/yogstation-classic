@@ -309,3 +309,8 @@ update_label("John Doe", "Clowny")
 /obj/item/weapon/card/id/prisoner/seven
 	name = "Prisoner #13-007"
 	registered_name = "Prisoner #13-007"
+
+/obj/item/weapon/card/id/wormhole
+	name = "Wormhole Access card"
+	desc = "A wrmhole room access card."
+	access = list(access_wormhole)

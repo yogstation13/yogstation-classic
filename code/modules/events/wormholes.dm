@@ -69,3 +69,4 @@
 				target = P.loc
 		if(!target)	return
 		do_teleport(M, target, 1, 1, 0, 0) ///You will appear adjacent to the beacon
+

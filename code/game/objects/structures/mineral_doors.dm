@@ -254,6 +254,8 @@
 /obj/structure/mineral_door/coal
 	mineralType = "coal"
 	hardness = 3
+	burn_state = 0 //Burnable
+	burntime = 60
 
 /obj/structure/mineral_door/copper
 	mineralType = "copper"
