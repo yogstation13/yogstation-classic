@@ -75,6 +75,10 @@
 /datum/game_mode/proc/post_setup(report=1)
 	spawn (ROUNDSTART_LOGOUT_REPORT_TIME)
 		display_roundstart_logout_report()
+	for(var/mob/antag in mob_list)
+		if(antag.mind)
+			if(antag.mind.special_role)
+				antag.mind.show_memory(Player)
 
 	feedback_set_details("round_start","[time2text(world.realtime)]")
 	if(ticker && ticker.mode)
