@@ -109,7 +109,8 @@ var/list/admin_verbs_fun = list(
 	/client/proc/forceEvent,
 	/client/proc/bluespace_artillery,
 	/client/proc/admin_change_sec_level,
-	/client/proc/toggle_nuke
+	/client/proc/toggle_nuke,
+	/client/proc/rejuv_all
 	)
 var/list/admin_verbs_spawn = list(
 	/datum/admins/proc/spawn_atom,		/*allows us to spawn instances*/
@@ -906,3 +907,24 @@ var/list/admin_verbs_hideable = list(
 		config.allow_vote_restart = 1
 		message_admins("[src] toggled the restart vote on.")
 		log_admin("[src] toggled the restart vote on.")
+
+
+/client/proc/rejuv_all()
+	set name = "Rejuvinate everyone"
+	set category = "Fun"
+	set desc = "Rejuvinate every mob/living."
+	var/revive_count = 0
+
+	var/fluff_adjective = pick("benevolent","sacred","holy","godly","magnificent","benign","generous","caring") //lol
+	var/fluff_adverb = pick("tenderly","gently","elegantly","gracefully","mercifully","affectionately","sympathetically","politely") //am having a lot of fun here
+
+	if(!check_rights(R_REJUVINATE))
+		return
+
+	for(var/mob/living/M in world)
+		M.revive()
+		revive_count++
+
+	world << "<b>The [fluff_adjective] admins have decided to [fluff_adverb] revive everyone. :)</b>"
+	message_admins("[src] revived [revive_count] mobs.")
+	log_admin("[src] revived [revive_count] mobs.")
