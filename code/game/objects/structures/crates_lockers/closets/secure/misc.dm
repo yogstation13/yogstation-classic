@@ -61,7 +61,7 @@
 	new /obj/item/stack/sheet/plasteel(src, 50)
 	new /obj/item/stack/sheet/metal(src, 50)
 	new /obj/item/stack/sheet/glass(src, 50)
-	new /obj/item/clothing/shoes/magboots(src)
+	new /obj/item/clothing/shoes/magboots/security(src)
 	new /obj/item/weapon/storage/box/metalfoam(src)
 	new /obj/item/weapon/rcd_ammo/large(src)
 	new /obj/item/weapon/rcd_ammo/large(src)

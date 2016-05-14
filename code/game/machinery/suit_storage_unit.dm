@@ -50,6 +50,7 @@
 /obj/machinery/suit_storage_unit/engine
 	SUIT_TYPE = /obj/item/clothing/suit/space/hardsuit/engine
 	MASK_TYPE = /obj/item/clothing/mask/breath
+	STORAGE_TYPE = /obj/item/clothing/shoes/magboots
 
 /obj/machinery/suit_storage_unit/ce
 	SUIT_TYPE = /obj/item/clothing/suit/space/hardsuit/engine/elite
@@ -63,6 +64,7 @@
 /obj/machinery/suit_storage_unit/hos
 	SUIT_TYPE = /obj/item/clothing/suit/space/hardsuit/security/hos
 	MASK_TYPE = /obj/item/clothing/mask/gas/sechailer
+	STORAGE_TYPE = /obj/item/clothing/shoes/magboots/security
 
 /obj/machinery/suit_storage_unit/atmos
 	SUIT_TYPE = /obj/item/clothing/suit/space/hardsuit/engine/atmos
@@ -89,12 +91,12 @@
 /obj/machinery/suit_storage_unit/ertCom
 	SUIT_TYPE = /obj/item/clothing/suit/space/hardsuit/ert
 	MASK_TYPE = /obj/item/clothing/mask/breath
-	STORAGE_TYPE = /obj/item/weapon/tank/internals/emergency_oxygen/double
+	STORAGE_TYPE = /obj/item/clothing/shoes/magboots/security
 
 /obj/machinery/suit_storage_unit/ertSec
 	SUIT_TYPE = /obj/item/clothing/suit/space/hardsuit/ert/sec
 	MASK_TYPE = /obj/item/clothing/mask/breath
-	STORAGE_TYPE = /obj/item/weapon/tank/internals/emergency_oxygen/double
+	STORAGE_TYPE = /obj/item/clothing/shoes/magboots/security
 
 /obj/machinery/suit_storage_unit/ertEngi
 	SUIT_TYPE = /obj/item/clothing/suit/space/hardsuit/ert/engi
