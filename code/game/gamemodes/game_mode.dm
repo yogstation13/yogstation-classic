@@ -78,7 +78,7 @@
 	for(var/mob/antag in mob_list)
 		if(antag.mind)
 			if(antag.mind.special_role)
-				antag.mind.show_memory(Player)
+				antag.mind.show_memory(antag)
 
 	feedback_set_details("round_start","[time2text(world.realtime)]")
 	if(ticker && ticker.mode)
