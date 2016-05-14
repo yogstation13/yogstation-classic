@@ -98,14 +98,14 @@
 			else
 				dat += "Uzi Ammo<br>"
 
-			dat += "(65 Influence) "
-			if(points >= 65)
+			dat += "(80 Influence) "
+			if(points >= 80)
 				dat += "<a href='?src=\ref[src];purchase=tommy gun'>Thompson SMG</a><br>"
 			else
 				dat += "Thompson SMG<br>"
 
-			dat += "&nbsp;&#8627;(20 Influence) "
-			if(points >= 20)
+			dat += "&nbsp;&#8627;(25 Influence) "
+			if(points >= 25)
 				dat += "<a href='?src=\ref[src];purchase=.45ammo'>Thompson Ammo</a><br>"
 			else
 				dat += "Thompson Ammo<br>"
@@ -246,13 +246,13 @@
 					item_type = /obj/item/ammo_box/magazine/uzim9mm
 					pointcost = 15
 			if("tommy gun")
-				if(gang.points >= 65)
+				if(gang.points >= 80)
 					item_type = /obj/item/weapon/gun/projectile/automatic/tommygun
-					pointcost = 65
+					pointcost = 80
 			if(".45ammo")
-				if(gang.points >= 20)
+				if(gang.points >= 25)
 					item_type = /obj/item/ammo_box/magazine/tommygunm45
-					pointcost = 20
+					pointcost = 25
 			if("scroll")
 				if(gang.points >= 25)
 					item_type = /obj/item/weapon/sleeping_carp_scroll
