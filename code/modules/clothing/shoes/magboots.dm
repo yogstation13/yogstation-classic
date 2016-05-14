@@ -55,6 +55,7 @@
 	magboot_state = "syndiemag"
 
 /obj/item/clothing/shoes/magboots/security
+	name = "combat magboots"
 	desc = "Specialized combat-issued magboots crafted for tactical NT security missions while in the depth of space or when facing a vacuum. Though they are nothing compared to the advanced verson, they will make you more mobile than the standard edition. Has embroidered letters 'NT' enscribed onto the back."
 	name = "blood-red magboots"
 	icon_state = "magboots0"
