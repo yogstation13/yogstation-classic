@@ -1,7 +1,9 @@
 /client/var/bypass_ooc_approval = 0
-/client/verb/ooc(msg as text)
-	set name = "OOC" //Gave this shit a shorter name so you only have to time out "ooc" rather than "ooc message" to use it --NeoFite
-	set category = "OOC"
+/client/verb/ooc(msg as text) //called by callOOC(callOOC appears in the verb list, not this one) or other normal calls
+	set hidden = 1
+	//saved for legacy purposes and contribution commentary, remove if you like
+	//set name = "OOC" //Gave this shit a shorter name so you only have to time out "ooc" rather than "ooc message" to use it --NeoFite
+	//set category = "OOC"
 
 	if(say_disabled)	//This is here to try to identify lag problems
 		usr << "<span class='danger'>Speech is currently admin-disabled.</span>"
@@ -77,13 +79,13 @@
 			if(holder)
 				if(!holder.fakekey || C.holder)
 					if(check_rights_for(src, R_ADMIN))
-						C << "<font color=[config.allow_admin_ooccolor && prefs.ooccolor ? prefs.ooccolor :"#b82e00" ]><b><span class='prefix'>\[Admin\] OOC:</span> <EM>[keyname][holder.fakekey ? "/([holder.fakekey])" : ""]:</EM> <span class='message'>[msg]</span></b></font>"
+						C << output("<font color=[config.allow_admin_ooccolor && prefs.ooccolor ? prefs.ooccolor :"#b82e00" ]><b><span class='prefix'>\[Admin\] OOC:</span> <EM>[keyname][holder.fakekey ? "/([holder.fakekey])" : ""]:</EM> <span class='message'>[msg]</span></b></font>", "oocoutput")
 					else
-						C << "<span class='adminobserverooc'><span class='prefix'>OOC:</span> <EM>[keyname][holder.fakekey ? "/([holder.fakekey])" : ""]:</EM> <span class='message'>[msg]</span></span>"
+						C << output("<span class='adminobserverooc'><span class='prefix'>OOC:</span> <EM>[keyname][holder.fakekey ? "/([holder.fakekey])" : ""]:</EM> <span class='message'>[msg]</span></span>", "oocoutput")
 				else
-					C << "<font color='[normal_ooc_colour]'><span class='ooc'><span class='prefix'>OOC:</span> <EM>[holder.fakekey ? holder.fakekey : key]:</EM> <span class='message'>[msg]</span></span></font>"
+					C << output("<font color='[normal_ooc_colour]'><span class='ooc'><span class='prefix'>OOC:</span> <EM>[holder.fakekey ? holder.fakekey : key]:</EM> <span class='message'>[msg]</span></span></font>", "oocoutput")
 			else
-				C << "<font color='[normal_ooc_colour]'><span class='ooc'><span class='prefix'>OOC:</span> <EM>[keyname]:</EM> <span class='message'>[msg]</span></span></font>"
+				C << output("<font color='[normal_ooc_colour]'><span class='ooc'><span class='prefix'>OOC:</span> <EM>[keyname]:</EM> <span class='message'>[msg]</span></span></font>", "oocoutput")
 
 /proc/toggle_ooc(toggle = null)
 	if(toggle != null) //if we're specifically en/disabling ooc
