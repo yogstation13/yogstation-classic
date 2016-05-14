@@ -45,7 +45,6 @@
 			return 0
 
 		else
-			message_admins("Returning 1 on check shatter")
 			return 1
 
 /obj/item/weapon/shield/riot
