@@ -525,7 +525,7 @@ var/list/uplink_items = list()
 	name = "Smuggler's body bag"
 	desc = "A body bag made to store a corpse and hide them with the body bag under floor tiles. Make sure they are dead, as they might escape."
 	item = /obj/item/bodybag/smugglers
-	cost = 2
+	cost = 3
 	surplus = 30
 
 // DEVICE AND TOOLS
