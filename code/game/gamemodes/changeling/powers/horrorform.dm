@@ -13,9 +13,9 @@
 	var/mob/living/carbon/human/H = user
 	if(user.stat || !ishuman(user))
 		return
-	/*if(changeling.absorbedcount < 5)
+	if(changeling.absorbedcount < 5)
 		user << "<span class='warning'>We must absorb five lifeforms before being able to use this ability.</span>"
-		return*/
+		return
 	if(user.health < 35)
 		user << "<span class='warning'>We are too hurt to sustain such power.</span>"
 		return
