@@ -86,9 +86,6 @@
 		if(roll_for_shatter)
 			return 1
 		else
-			if(shieldstate == SHIELD_CRACKED) // so this is when it should be blocking. instead it takes half of the damage.
-				var/newdamage = damage / 2
-				damage = newdamage
 			return 0
 	else if (attack_type == HULK_ATTACK) // trying to block a hulk backfires.
 		playsound(src, 'sound/effects/bang.ogg', 100, 1)
