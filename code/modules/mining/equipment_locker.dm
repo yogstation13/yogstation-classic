@@ -107,7 +107,7 @@
 		updateUsrDialog()
 		return
 	if(panel_open)
-		if(istype(W, /obj/item/weapon/crowbar))
+		if(istype(W, /obj/item/weapon/tool/crowbar))
 			empty_content()
 			default_deconstruction_crowbar(W)
 		return 1
@@ -384,7 +384,7 @@
 		updateUsrDialog()
 		return
 	if(panel_open)
-		if(istype(I, /obj/item/weapon/crowbar))
+		if(istype(I, /obj/item/weapon/tool/crowbar))
 			default_deconstruction_crowbar(I)
 		return 1
 	..()
@@ -400,7 +400,7 @@
 			new /obj/item/weapon/resonator(src.loc)
 		if("Mining Drone")
 			new /mob/living/simple_animal/hostile/mining_drone(src.loc)
-			new /obj/item/weapon/weldingtool/hugetank(src.loc)
+			new /obj/item/weapon/tool/weldingtool/hugetank(src.loc)
 		if("Advanced Scanner")
 			new /obj/item/device/t_scanner/adv_mining_scanner(src.loc)
 	qdel(voucher)
@@ -658,8 +658,8 @@
 	return
 
 /mob/living/simple_animal/hostile/mining_drone/attackby(obj/item/I as obj, mob/user as mob, params)
-	if(istype(I, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/W = I
+	if(istype(I, /obj/item/weapon/tool/weldingtool))
+		var/obj/item/weapon/tool/weldingtool/W = I
 		if(W.welding && !stat)
 			if(AIStatus == AI_ON)
 				user << "<span class='info'>[src] is moving around too much to repair!</span>"

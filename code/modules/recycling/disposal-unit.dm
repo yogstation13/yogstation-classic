@@ -70,7 +70,7 @@
 
 	add_fingerprint(user)
 	if(mode<=0) // It's off
-		if(istype(I, /obj/item/weapon/screwdriver))
+		if(istype(I, /obj/item/weapon/tool/screwdriver))
 			if(contents.len > 0)
 				user << "<span class='notice'>Eject the items first!</span>"
 				return
@@ -81,15 +81,15 @@
 			playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 			user << "<span class='notice'>You [mode==0?"attach":"remove"] the screws around the power connection.</span>"
 			return
-		else if(istype(I,/obj/item/weapon/weldingtool) && mode==-1)
-			var/obj/item/weapon/weldingtool/W = I
+		else if(istype(I,/obj/item/weapon/tool/weldingtool) && mode==-1)
+			var/obj/item/weapon/tool/weldingtool/W = I
 			if(W.remove_fuel(0,user))
 				if(contents.len > 0)
 					user << "<span class='notice'>Eject the items first!</span>"
 					return
 				playsound(src.loc, 'sound/items/Welder2.ogg', 100, 1)
 				user << "<span class='notice'>You start slicing the floorweld off \the [src]...</span>"
-				if(do_after(user,20, target = src))
+				if(do_after(user,20 * W.speed_coefficient, target = src))
 					if(!W.isOn())
 						return
 					user << "<span class='notice'>You slice the floorweld off \the [src].</span>"

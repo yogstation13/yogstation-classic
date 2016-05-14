@@ -418,7 +418,7 @@
 			M.buffer = src
 			user << "<span class='caution'>You download the data to the [W.name]'s buffer.</span>"
 			return
-		if(istype(W, /obj/item/weapon/wirecutters))
+		if(istype(W, /obj/item/weapon/tool/wirecutters))
 			link_console_and_hub()
 			user << "<span class='caution'>You reconnect the station to nearby machinery.</span>"
 			return

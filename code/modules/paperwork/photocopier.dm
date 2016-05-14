@@ -256,13 +256,14 @@
 		else
 			user << "<span class='warning'>This cartridge is not yet ready for replacement! Use up the rest of the toner.</span>"
 
-	else if(istype(O, /obj/item/weapon/wrench))
+	else if(istype(O, /obj/item/weapon/tool/wrench))
 		if(isinspace())
 			user << "<span class='warning'>There's nothing to fasten [src] to!</span>"
 			return
 		playsound(loc, 'sound/items/Ratchet.ogg', 50, 1)
 		user << "<span class='warning'>You start [anchored ? "unwrenching" : "wrenching"] [src]...</span>"
-		if(do_after(user, 20, target = src))
+		var/obj/item/weapon/tool/wrench/wrench = O
+		if(do_after(user, 20 * wrench.speed_coefficient, target = src))
 			if(gc_destroyed)
 				return
 			user << "<span class='notice'>You [anchored ? "unwrench" : "wrench"] [src].</span>"

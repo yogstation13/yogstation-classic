@@ -34,7 +34,7 @@
 		charging = G
 		use_power = 2
 		update_icon()
-	else if(istype(G, /obj/item/weapon/wrench))
+	else if(istype(G, /obj/item/weapon/tool/wrench))
 		if(charging)
 			user << "<span class='notice'>Remove the charging item first!</span>"
 			return

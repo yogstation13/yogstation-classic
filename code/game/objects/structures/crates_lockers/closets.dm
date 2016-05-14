@@ -208,12 +208,12 @@
 			return
 		if(istype(W,/obj/item/tk_grab))
 			return 0
-		if(istype(W, /obj/item/weapon/weldingtool))
-			var/obj/item/weapon/weldingtool/WT = W
+		if(istype(W, /obj/item/weapon/tool/weldingtool))
+			var/obj/item/weapon/tool/weldingtool/WT = W
 			if(WT.remove_fuel(0,user))
 				user << "<span class='notice'>You begin cutting \the [src] apart...</span>"
 				playsound(loc, 'sound/items/Welder.ogg', 40, 1)
-				if(do_after(user,40,5,1, target = src))
+				if(do_after(user, 40 * WT.speed_coefficient, 5, 1, target = src))
 					if( !opened || !istype(src, /obj/structure/closet) || !user || !WT || !WT.isOn() || !user.loc )
 						return
 					playsound(loc, 'sound/items/Welder2.ogg', 50, 1)
@@ -228,12 +228,12 @@
 	else
 		if(istype(W, /obj/item/stack/packageWrap))
 			return
-		if(istype(W, /obj/item/weapon/weldingtool))
-			var/obj/item/weapon/weldingtool/WT = W
+		if(istype(W, /obj/item/weapon/tool/weldingtool))
+			var/obj/item/weapon/tool/weldingtool/WT = W
 			if(WT.remove_fuel(0,user))
 				user << "<span class='notice'>You begin [welded ? "unwelding":"welding"] \the [src]...</span>"
 				playsound(loc, 'sound/items/Welder2.ogg', 40, 1)
-				if(do_after(user,40,5,1, target = src))
+				if(do_after(user, 40 * WT.speed_coefficient, 5, 1, target = src))
 					if(opened || !istype(src, /obj/structure/closet) || !user || !WT || !WT.isOn() || !user.loc )
 						return
 					playsound(loc, 'sound/items/welder.ogg', 50, 1)

@@ -77,7 +77,7 @@
 		update_icon()
 		return
 
-	else if (istype(W, /obj/item/weapon/wrench))
+	else if (istype(W, /obj/item/weapon/tool/wrench))
 		if(connected_port)
 			disconnect()
 			user << "<span class='notice'>You disconnect [name] from the port.</span>"

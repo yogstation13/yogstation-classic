@@ -99,10 +99,11 @@
 
 
 /mob/living/simple_animal/drone/attackby(obj/item/I, mob/user)
-	if(istype(I, /obj/item/weapon/screwdriver) && stat != DEAD)
+	if(istype(I, /obj/item/weapon/tool/screwdriver) && stat != DEAD)
 		if(health < health_repair_max)
 			user << "<span class='notice'>You start to tighten loose screws on [src]...</span>"
-			if(do_after(user,80))
+			var/obj/item/weapon/tool/screwdriver/sd = I
+			if(do_after(user, 80 * sd.speed_coefficient))
 				var/repair = health_repair_max - health
 				adjustBruteLoss(-repair)
 				visible_message("[user] tightens [src == user ? "their" : "[src]'s"] loose screws!", "<span class='notice'>You tighten [src == user ? "their" : "[src]'s"] loose screws.</span>")

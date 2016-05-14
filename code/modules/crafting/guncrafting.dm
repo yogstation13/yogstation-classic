@@ -38,7 +38,7 @@
 
 /obj/item/weaponcrafting/ishotgunconstruction/attackby(obj/item/I, mob/user, params)
 	..()
-	if(istype(I, /obj/item/weapon/screwdriver))
+	if(istype(I, /obj/item/weapon/tool/screwdriver))
 		var/obj/item/weaponcrafting/ishotgunconstruction2/C = new /obj/item/weaponcrafting/ishotgunconstruction2
 		user.unEquip(src)
 		user.put_in_hands(C)

@@ -141,7 +141,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 /obj/item/clothing/mask/cigarette/proc/is_lighter(obj/O, mob/user)
 	var/lighting_text = null
-	if(istype(O, /obj/item/weapon/weldingtool))
+	if(istype(O, /obj/item/weapon/tool/weldingtool))
 		lighting_text = "<span class='notice'>[user] casually lights the [name] with [O], what a badass.</span>"
 	else if(istype(O, /obj/item/weapon/lighter/greyscale)) // we have to check for this first -- zippo lighters are default
 		lighting_text = "<span class='notice'>After some fiddling, [user] manages to light their [name] with [O].</span>"

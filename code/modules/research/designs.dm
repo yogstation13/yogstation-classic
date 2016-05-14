@@ -454,5 +454,5 @@ other types of metals and chemistry for reagents).
 	req_tech = list("materials" = 4, "engineering" = 4, "bluespace" = 3, "plasmatech" = 3)
 	build_type = PROTOLATHE
 	materials = list(MAT_METAL = 1000, MAT_GLASS = 500, MAT_PLASMA = 1500, MAT_URANIUM = 200)
-	build_path = /obj/item/weapon/weldingtool/experimental
+	build_path = /obj/item/weapon/tool/weldingtool/experimental
 	category = list("Equipment")

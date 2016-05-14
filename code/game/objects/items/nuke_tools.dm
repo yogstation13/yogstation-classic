@@ -36,7 +36,7 @@
 	return 1
 
 //snowflake screwdriver, works as a key to start nuke theft, traitor only
-/obj/item/weapon/screwdriver/nuke
+/obj/item/weapon/tool/screwdriver/nuke
 	name = "screwdriver"
 	desc = "A screwdriver with an ultra thin tip."
 

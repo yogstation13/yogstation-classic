@@ -260,7 +260,7 @@
 
 
 /obj/machinery/bot/attackby(obj/item/weapon/W, mob/user, params)
-	if(istype(W, /obj/item/weapon/screwdriver))
+	if(istype(W, /obj/item/weapon/tool/screwdriver))
 		if(!locked)
 			open = !open
 			user << "<span class='notice'>Maintenance panel is now [open ? "opened" : "closed"].</span>"
@@ -268,14 +268,14 @@
 			user << "<span class='warning'>Maintenance panel is locked.</span>"
 	else
 		user.changeNext_move(CLICK_CD_MELEE)
-		if(istype(W, /obj/item/weapon/weldingtool) && user.a_intent != "harm")
+		if(istype(W, /obj/item/weapon/tool/weldingtool) && user.a_intent != "harm")
 			if(health >= maxhealth)
 				user << "<span class='warning'>[src] does not need a repair!</span>"
 				return
 			if(!open)
 				user << "<span class='warning'>Unable to repair with the maintenance panel closed!</span>"
 				return
-			var/obj/item/weapon/weldingtool/WT = W
+			var/obj/item/weapon/tool/weldingtool/WT = W
 			if(WT.remove_fuel(0, user))
 				health = min(maxhealth, health+10)
 				user.visible_message("[user] repairs [src]!","<span class='notice'>You repair [src].</span>")

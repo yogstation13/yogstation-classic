@@ -75,7 +75,7 @@ Shaft Miner
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/miner(H), slot_w_uniform)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/black(H), slot_shoes)
 
-	H.equip_to_slot_or_del(new /obj/item/weapon/crowbar(H), slot_in_backpack)
+	H.equip_to_slot_or_del(new /obj/item/weapon/tool/crowbar(H), slot_in_backpack)
 	H.equip_to_slot_or_del(new /obj/item/weapon/storage/bag/ore(H), slot_in_backpack)
 	H.equip_to_slot_or_del(new /obj/item/weapon/mining_voucher(H), slot_in_backpack)
 	H.equip_to_slot_or_del(new /obj/item/weapon/reagent_containers/pill/patch/styptic(H), slot_l_store)
