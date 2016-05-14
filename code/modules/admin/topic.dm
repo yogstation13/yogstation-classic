@@ -57,13 +57,6 @@
 				else
 					message_admins("[key_name_admin(usr)] tried to start a cult. Unfortunately, there were no candidates available.")
 					log_admin("[key_name(usr)] failed to start a cult.")
-			if("5")
-				if(src.makeMalfAImode())
-					message_admins("[key_name(usr)] caused an AI to malfunction.")
-					log_admin("[key_name(usr)] caused an AI to malfunction.")
-				else
-					message_admins("[key_name_admin(usr)] tried to cause an AI to malfunction. Unfortunately, there were no candidates available.")
-					log_admin("[key_name(usr)] failed to cause an AI to malfunction.")
 			if("6")
 				message_admins("[key_name(usr)] is creating a wizard...")
 				if(src.makeWizard())
@@ -1867,6 +1860,26 @@
 		var/mob/M = locate(href_list["antag_token_decrease"])
 		var/tokens = antag_token_use(M)
 		var/msg = "ANTAGTOKENS [get_ckey(usr)] decreased the antag token count for [get_ckey(M)]: [tokens] (reason: [reason])"
+		log_admin(msg)
+		for(var/client/X in admins)
+			X << "<span class='adminnotice'><b><font color=red>[msg]</font></b></span>"
+		show_player_panel(M)
+
+	else if(href_list["toggle_whitelisted"])
+		if(!check_rights(R_PERMISSIONS))	return
+
+		var/mob/M = locate(href_list["toggle_whitelisted"])
+
+		var/reason = input("","What reason are you giving for toggling the whitelist for [get_ckey(M)]?") as text
+		if(length(reason) < 5)
+			usr << "That reason isn't good enough! Cancelling."
+			return
+
+		var/client/C = get_client(M)
+		C.is_whitelisted = !C.is_whitelisted
+		set_job_whitelisted(M, C.is_whitelisted)
+
+		var/msg = "WHITELISTED [get_ckey(usr)] toggled whitelist for [get_ckey(M)]: [C.is_whitelisted] (reason: [reason])"
 		log_admin(msg)
 		for(var/client/X in admins)
 			X << "<span class='adminnotice'><b><font color=red>[msg]</font></b></span>"

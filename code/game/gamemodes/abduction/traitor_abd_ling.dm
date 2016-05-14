@@ -28,6 +28,8 @@
 	return 1
 
 /datum/game_mode/traitor/abduction/changeling/pre_setup()
+	if(!..())
+		return 0
 	if(config.protect_roles_from_antagonist)
 		restricted_jobs += protected_jobs
 
@@ -35,6 +37,9 @@
 		restricted_jobs += "Assistant"
 
 	var/list/datum/mind/possible_changelings = get_players_for_role(BE_CHANGELING)
+	for(var/datum/mind/cling in possible_changelings)
+		if(cling.special_role == "abductor scientist" || cling.special_role == "abductor_agent")
+			possible_changelings -= cling
 
 	var/num_changelings = 1
 
@@ -51,7 +56,7 @@
 			changelings += changeling
 			modePlayer += changelings
 			changeling.restricted_roles = restricted_jobs
-		return ..()
+		return 1
 	else
 		return 0
 

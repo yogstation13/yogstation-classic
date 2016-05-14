@@ -474,8 +474,6 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 		else if(isAI(M))
 			var/mob/living/silicon/ai/A = M
 			if(A.laws && A.laws.zeroth && A.mind && A.mind.special_role)
-				if(ticker.mode.config_tag == "malfunction" && M.mind in ticker.mode.malf_ai)//Malf law is a law 0
-					return 2
 				return 1
 		return 0
 	if(M.mind && M.mind.special_role)//If they have a mind and special role, they are some type of traitor or antagonist.
@@ -544,8 +542,8 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	else
 		return
 
-/proc/is_wearing_tactical_harness(mob/M)//returns the harness if it is wearing one, null otherwise.
-	if(!istype(M, /mob/living/simple_animal/hostile))
-		return 0
-	var/mob/living/simple_animal/hostile/A = M
+/proc/get_tactical_harness(mob/M)//returns the harness if it is wearing one, null otherwise.
+	if(!istype(M, /mob/living/simple_animal))
+		return null
+	var/mob/living/simple_animal/A = M
 	return A.harness

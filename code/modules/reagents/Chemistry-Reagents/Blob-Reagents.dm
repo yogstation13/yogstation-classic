@@ -526,7 +526,7 @@
 	reac_volume = ..()
 	var/turf/simulated/T = get_turf(M)
 	if(istype(T, /turf/simulated) && prob(reac_volume))
-		T.MakeSlippery(1)
+		T.MakeSlippery(TURF_WET_WATER)
 	M.apply_damage(0.4*reac_volume, BRUTE)
 	if(M)
 		M.apply_damage(0.4*reac_volume, OXY)
@@ -534,7 +534,7 @@
 /datum/reagent/blob/pressurized_slime/damage_reaction(obj/effect/blob/B, original_health, damage, damage_type, cause)
 	for(var/turf/simulated/T in range(1, B))
 		if(prob(damage))
-			T.MakeSlippery(1)
+			T.MakeSlippery(TURF_WET_WATER)
 	return ..()
 
 /datum/reagent/blob/pressurized_slime/death_reaction(obj/effect/blob/B, cause)
@@ -542,7 +542,7 @@
 		B.visible_message("<span class='warning'><b>The blob ruptures, spraying the area with liquid!</b></span>")
 	for(var/turf/simulated/T in range(1, B))
 		if(prob(50))
-			T.MakeSlippery(1)
+			T.MakeSlippery(TURF_WET_WATER)
 
 //does brute damage and throws or pulls nearby objects at the target
 /datum/reagent/blob/dark_matter
@@ -605,6 +605,26 @@
 								sleep(2)
 								if(!step_towards(X, pull))
 									break
+
+/datum/reagent/blob/disorienting_fluid
+	name = "Disorienting Fluid"
+	id = "disorienting_fluid"
+	description = "does low brute, toxin, and radiation damage, as well as blinding and deafening victims."
+	color = "#064d07"
+	complementary_color = "#E50034"
+	blobbernaut_message = "soaks"
+	message = "The blob soaks you with something"
+	message_living = ", and you find it hard to focus"
+
+/datum/reagent/blob/disorienting_fluid/reaction_mob(mob/living/M, method=TOUCH, reac_volume, show_message, touch_protection, mob/camera/blob/O)
+	reac_volume = ..()
+	M.irradiate(0.3*reac_volume)
+	M.apply_damage(0.3*reac_volume, TOX)
+	M.eye_blind = 1
+	M.ear_deaf = 10
+	M.eye_blurry = 10
+	if(prob(10))
+		M.disabilities |= CLUMSY
 
 
 /datum/reagent/blob/proc/send_message(mob/living/M)

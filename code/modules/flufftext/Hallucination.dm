@@ -187,20 +187,20 @@ Gunshots/explosions/opening doors/less rare audio (done)
 	for(var/obj/machinery/atmospherics/components/unary/vent_pump/U in orange(7,target))
 		if(!U.welded)
 			pump = U
+			xeno = new(pump.loc,target)
+			sleep(10)
+			xeno.update_icon("alienh_leap",'icons/mob/alienleap.dmi',-32,-32)
+			xeno.throw_at(target,7,1, spin = 0, diagonals_first = 1)
+			sleep(10)
+			xeno.update_icon("alienh_leap",'icons/mob/alienleap.dmi',-32,-32)
+			xeno.throw_at(pump,7,1, spin = 0, diagonals_first = 1)
+			sleep(10)
+			var/xeno_name = xeno.name
+			target << "<span class='notice'>[xeno_name] begins climbing into the ventilation system...</span>"
+			sleep(10)
+			qdel(xeno)
+			target << "<span class='notice'>[xeno_name] scrambles into the ventilation ducts!</span>"
 			break
-	xeno = new(pump.loc,target)
-	sleep(10)
-	xeno.update_icon("alienh_leap",'icons/mob/alienleap.dmi',-32,-32)
-	xeno.throw_at(target,7,1, spin = 0, diagonals_first = 1)
-	sleep(10)
-	xeno.update_icon("alienh_leap",'icons/mob/alienleap.dmi',-32,-32)
-	xeno.throw_at(pump,7,1, spin = 0, diagonals_first = 1)
-	sleep(10)
-	var/xeno_name = xeno.name
-	target << "<span class='notice'>[xeno_name] begins climbing into the ventilation system...</span>"
-	sleep(10)
-	qdel(xeno)
-	target << "<span class='notice'>[xeno_name] scrambles into the ventilation ducts!</span>"
 	qdel(src)
 
 /obj/effect/hallucination/singularity_scare
@@ -514,13 +514,13 @@ var/list/non_fakeattack_weapons = list(/obj/item/weapon/gun/projectile, /obj/ite
 				person = H
 		people += H
 	if(person) //Basic talk
-		target << target.compose_message(person,person.languages,pick(speak_messages),null,person.get_spans())
+		target << target.compose_message(person,person.languages_understood,pick(speak_messages),null,person.get_spans())
 	else // Radio talk
 		var/list/humans = list()
 		for(var/mob/living/carbon/human/H in living_mob_list)
 			humans += H
 		person = pick(humans)
-		target << target.compose_message(person,person.languages,pick(radio_messages),"1459",person.get_spans())
+		target << target.compose_message(person,person.languages_understood,pick(radio_messages),"1459",person.get_spans())
 	qdel(src)
 
 /obj/effect/hallucination/message

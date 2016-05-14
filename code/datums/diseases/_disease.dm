@@ -80,11 +80,10 @@ var/list/diseases = typesof(/datum/disease) - /datum/disease
 	else
 		if(prob(cure_chance))
 			stage = max(stage - 1, 1)
+			affected_mob << "<span class='warning'>You feel a little bit better.</span>"
 
-	if(disease_flags & CURABLE)
-		if(cure && prob(cure_chance))
+		if(prob(cure_chance))
 			cure()
-
 
 /datum/disease/proc/has_cure()
 	if(!(disease_flags & CURABLE))
@@ -104,7 +103,7 @@ var/list/diseases = typesof(/datum/disease) - /datum/disease
 	if(affected_mob)
 		if( affected_mob.reagents.has_reagent("spaceacillin") || (affected_mob.satiety > 0 && prob(affected_mob.satiety/10)) )
 			return
-
+ 
 	var/spread_range = 1
 
 	if(force_spread)
@@ -144,7 +143,7 @@ var/list/diseases = typesof(/datum/disease) - /datum/disease
 			if(affected_mob.stat != DEAD)
 				stage_act()
 
-	if(!affected_mob)
+	else
 		if(prob(70))
 			if(--longevity<=0)
 				cure()
@@ -156,6 +155,7 @@ var/list/diseases = typesof(/datum/disease) - /datum/disease
 			if(!(type in affected_mob.resistances))
 				affected_mob.resistances += type
 				remove_virus()
+				affected_mob << "<span class='warning'>Whatever it was wrong with you, it seems to be gone now.</span>"
 	qdel(src)
 
 

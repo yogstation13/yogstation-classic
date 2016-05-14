@@ -134,6 +134,66 @@
 	build_path = /obj/item/weapon/aiModule/core/full/corp
 	category = list("AI Modules")
 
+/datum/design/drone_module
+	name = "Core Module Design (D.R.O.N.E.)"
+	desc = "Allows for the construction of a D.R.O.N.E. AI Module."
+	id = "drone_module"
+	req_tech = list("programming" = 4, "materials" = 5)
+	build_type = IMPRINTER
+	materials = list(MAT_GLASS = 1000, "sacid" = 20, MAT_DIAMOND = 100)
+	build_path = /obj/item/weapon/aiModule/core/drone
+	category = list("AI Modules")
+
+/datum/design/hippocratic_module
+	name = "Core Module Design (Robodoctor)"
+	desc = "Allows for the constructing of a Robodoctor AI Core Module."
+	id = "robodoctor_module"
+	req_tech = list("programming" = 3, "materials" = 5)
+	build_type = IMPRINTER
+	materials = list(MAT_GLASS = 1000, "sacid" = 20, MAT_GOLD = 100)
+	build_path = /obj/item/weapon/aiModule/core/hippocratic
+	category = list("AI Modules")
+
+/datum/design/reporter_module
+	name = "Core Module Design (Reportertron)"
+	desc = "Allows for the constructing of a Reportertron AI Core Module."
+	id = "reporter_module"
+	req_tech = list("programming" = 4, "materials" = 5)
+	build_type = IMPRINTER
+	materials = list(MAT_GLASS = 1000, "sacid" = 20, MAT_GOLD = 100)
+	build_path = /obj/item/weapon/aiModule/core/reporter
+	category = list("AI Modules")
+
+/datum/design/liveandletlive_module
+	name = "Core Module Design (Live and Let Live)"
+	desc = "Allows for the constructing of a Live and Let Live AI Core Module."
+	id = "live_module"
+	req_tech = list("programming" = 3, "materials" = 5)
+	build_type = IMPRINTER
+	materials = list(MAT_GLASS = 1000, "sacid" = 20, MAT_GOLD = 100)
+	build_path = /obj/item/weapon/aiModule/core/hippocratic
+	category = list("AI Modules")
+
+/datum/design/thermurderdynamic_module
+	name = "Core Module Design (Thermodynamic)"
+	desc = "Allows for the construction of a Thermodynamic AI Core Module."
+	id = "thermurderdynamic_module"
+	req_tech = list("programming" = 4, "materials" = 5, "syndicate" = 4)
+	build_type = IMPRINTER
+	materials = list(MAT_GLASS = 1000, "sacid" = 20, MAT_DIAMOND = 100)
+	build_path = /obj/item/weapon/aiModule/core/thermurderdynamic
+	category = list("AI Modules")
+
+/datum/design/agenda_module
+	name = "Core Module Design (WontBeFunnyInSixMonths)"
+	desc = "Allows for the construction of a WontBeFunnyInSixMonths AI Core Module."
+	id = "agenda_module"
+	req_tech = list("programming" = 4, "materials" = 3, "syndicate" = 1)
+	build_type = IMPRINTER
+	materials = list(MAT_GLASS = 1000, "sacid" = 20, MAT_DIAMOND = 500)
+	build_path = /obj/item/weapon/aiModule/core/agenda
+	category = list("AI Modules")
+
 /datum/design/custom_module
 	name = "Core Module Design (Custom)"
 	desc = "Allows for the construction of a Custom AI Core Module."

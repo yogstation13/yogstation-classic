@@ -15,7 +15,7 @@
 
 			if(method == TOUCH || method == VAPOR)
 				M.ContractDisease(D)
-			else //ingest or patch
+			else //ingest, patch or injection
 				M.ForceContractDisease(D)
 
 /datum/reagent/blood/on_new(list/data)
@@ -95,7 +95,7 @@
 
 /datum/reagent/vaccine/reaction_mob(mob/M, method=TOUCH, reac_volume)
 	var/datum/reagent/vaccine/self = src
-	if(islist(self.data) && method == INGEST)
+	if(islist(self.data) && (method == INGEST || method == INJECT))
 		for(var/datum/disease/D in M.viruses)
 			if(D.GetDiseaseID() in self.data)
 				D.cure()
@@ -258,7 +258,37 @@
 /datum/reagent/lube/reaction_turf(turf/simulated/T, reac_volume)
 	if (!istype(T)) return
 	if(reac_volume >= 1)
-		T.MakeSlippery(2)
+		T.MakeSlippery(TURF_WET_LUBE)
+
+/datum/reagent/drying_agent
+	name = "Drying agent"
+	id = "drying_agent"
+	description = "Used to dry things."
+	reagent_state = LIQUID
+	color = "#A70FFF"
+
+/datum/reagent/drying_agent/reaction_turf(turf/simulated/T, reac_volume)
+	if(istype(T) && T.wet)
+		T.MakeDry(TURF_WET_WATER)
+
+/datum/reagent/drying_agent/reaction_obj(obj/O, reac_volume)
+	if(O.type == /obj/item/clothing/shoes/galoshes)
+		var/obj/item/clothing/shoes/galoshes/G = O
+		if(!G.isAbsorbent)
+			G.setAbsorbent()
+
+/datum/reagent/drying_agent/reaction_mob(mob/M, method=TOUCH, reac_volume)
+	if(method == TOUCH || VAPOR)
+		if(iscarbon(M))
+			var/mob/living/carbon/C = M
+			if(C.r_hand)
+				reaction_obj(C.r_hand, reac_volume)
+			if(C.l_hand)
+				reaction_obj(C.l_hand, reac_volume)
+			if(ishuman(M))
+				var/mob/living/carbon/human/H = C
+				if(H.shoes)
+					reaction_obj(H.shoes, reac_volume)
 
 /datum/reagent/spraytan
 	name = "Spray Tan"
@@ -659,7 +689,7 @@
 					F.overlays -= F.wet_overlay
 
 /datum/reagent/space_cleaner/reaction_mob(mob/M, method=TOUCH, reac_volume)
-	if(method == TOUCH || VAPOR)
+	if(method == TOUCH || method == VAPOR)
 		if(iscarbon(M))
 			var/mob/living/carbon/C = M
 			C.color = initial(C.color)
@@ -727,7 +757,7 @@
 	color = "#535E66" // rgb: 83, 94, 102
 
 /datum/reagent/nanites/reaction_mob(mob/M, method=TOUCH, reac_volume, show_message = 1, touch_protection = 0)
-	if(method==PATCH || method==INGEST || (method == VAPOR && prob(min(reac_volume,100)*(1 - touch_protection))))
+	if(method == PATCH || method == INGEST || method == INJECT || (method == VAPOR && prob(min(reac_volume,100)*(1 - touch_protection))))
 		M.ForceContractDisease(new /datum/disease/transformation/robot(0))
 
 /datum/reagent/xenomicrobes
@@ -737,7 +767,7 @@
 	color = "#535E66" // rgb: 83, 94, 102
 
 /datum/reagent/xenomicrobes/reaction_mob(mob/M, method=TOUCH, reac_volume, show_message = 1, touch_protection = 0)
-	if(method==PATCH || method==INGEST || (method == VAPOR && prob(min(reac_volume,100)*(1 - touch_protection))))
+	if(method == PATCH || method == INGEST || method == INJECT || (method == VAPOR && prob(min(reac_volume,100)*(1 - touch_protection))))
 		M.ContractDisease(new /datum/disease/transformation/xeno(0))
 
 /datum/reagent/fluorosurfactant//foam precursor

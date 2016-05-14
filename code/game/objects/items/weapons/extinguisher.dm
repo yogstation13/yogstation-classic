@@ -166,5 +166,11 @@
 /obj/item/weapon/extinguisher/proc/EmptyExtinguisher(var/mob/user)
 	if(loc == user && reagents.total_volume)
 		reagents.clear_reagents()
+
+		var/turf/T = get_turf(loc)
+		if(istype(T, /turf/simulated))
+			var/turf/simulated/theturf = T
+			theturf.MakeSlippery(TURF_WET_WATER)
+
 		user.visible_message("[user] empties out \the [src] onto the floor using the release valve.", "<span class='info'>You quietly empty out \the [src] using its release valve.</span>")
 	return

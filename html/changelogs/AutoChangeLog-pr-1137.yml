@@ -1,0 +1,4 @@
+author: Cruix
+delete-after: True
+changes: 
+  - bugfix: "Foam darts no longer drop two darts when shot at someone on a janicart."

@@ -350,6 +350,10 @@
 				var/DBQuery/query = dbcon.NewQuery("UPDATE [format_table_name("player")] SET `antag_weight` = [weight] WHERE `ckey` = '[ckey]'")
 				query.Execute()
 
+		for(var/client/C in clients)
+			C.last_cached_weight = output[C.ckey]
+			C.last_cached_total_weight = total
+
 		// If after all this we still don't have a candidate, then use the legacy system
 		if(!final_candidate)
 			return pick(antag_candidates)

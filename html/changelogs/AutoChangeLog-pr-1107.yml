@@ -1,0 +1,4 @@
+author: oisin100
+delete-after: True
+changes: 
+  - bugfix: "Mindslave implant is no longer fooled by wearing someone elses ID."

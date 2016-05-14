@@ -326,20 +326,22 @@ for reference:
 
 			var/damagereport
 			if(W.force <= 5 && W.force != 0) // less or equal to 5
-				damagereport = "a small amount of damage from an external source"
+				damagereport = "a small amount of damage."
 			if(W.force > 5 && W.force <= 15) // in the 5-15 range, but greater than 5
-				damagereport = "a moderate amount of damage from an external source"
+				damagereport = "a moderate amount of damage."
 			if(W.force > 15) //greater than 15
-				damagereport = "a large amount of damage from an external source"
+				damagereport = "a large amount of damage."
+			else if (!damagereport)
+				return
 
 			if(src.health <= 95 && src.health > 50)
-				attachedradio.talk_into(src, "Alert! [thebarrier] is suffering [damagereport] in a sufficient state!!",radio_freq)
+				attachedradio.talk_into(src, "Alert! [thebarrier] is suffering [damagereport] The barriers rate of functionality is at [health]%!!",radio_freq)
 
 			if(src.health <= 50 && src.health > 25)
-				attachedradio.talk_into(src, "Alert! [thebarrier] is suffering [damagereport] while they are in need of dire repair!!",radio_freq)
+				attachedradio.talk_into(src, "Alert! [thebarrier] is suffering [damagereport] The barriers rate of functionality is at [health]%!!",radio_freq)
 
 			if(src.health <= 25 && src.health > 0)
-				attachedradio.talk_into(src, "Alert! [thebarrier] is suffering [damagereport] at a currently fatal state!!",radio_freq)
+				attachedradio.talk_into(src, "Alert! [thebarrier] is suffering [damagereport] The barriers rate of functionality is at [health]%!!",radio_freq)
 
 
 /obj/machinery/deployable/barrier/proc/desc_report() // something to update the description of the barrier.

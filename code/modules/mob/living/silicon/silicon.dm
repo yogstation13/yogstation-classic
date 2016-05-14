@@ -1,7 +1,8 @@
 /mob/living/silicon
 	gender = NEUTER
 	voice_name = "synthesized voice"
-	languages = ROBOT | HUMAN
+	languages_understood = ROBOT | HUMAN
+	languages_spoken = ROBOT | HUMAN
 	has_unlimited_silicon_privilege = 1
 	verb_say = "states"
 	verb_ask = "queries"
@@ -203,8 +204,11 @@
 		checklaws()
 
 	if (href_list["laws"]) // With how my law selection code works, I changed statelaws from a verb to a proc, and call it through my law selection panel. --NeoFite
-		statelaws()
-
+		if(text2num(href_list["time"]) > laws.timeLastChanged)
+			statelaws()
+		else
+			src << "<span class='warning'>Your laws have changed since you tried to state them, please review them again.</span>"
+			checklaws()
 	return
 
 
@@ -291,7 +295,7 @@
 				src.lawcheck[number+1] = "Yes"
 			list += {"<A href='byond://?src=\ref[src];lawc=[number]'>[src.lawcheck[number+1]] [number]:</A> [law]<BR>"}
 			number++
-	list += {"<br><br><A href='byond://?src=\ref[src];laws=1'>State Laws</A>"}
+	list += {"<br><br><A href='byond://?src=\ref[src];laws=1;time=[world.time]'>State Laws</A>"}
 
 	usr << browse(list, "window=laws")
 

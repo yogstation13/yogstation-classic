@@ -35,7 +35,6 @@
 #define BE_OPERATIVE	"role_operative"
 #define BE_CHANGELING	"role_changeling"
 #define BE_WIZARD		"role_wizard"
-#define BE_MALF			"role_malfai"
 #define BE_REV			"role_rev"
 #define BE_ALIEN		"role_alien"
 #define BE_PAI			"role_pai"

@@ -1,0 +1,4 @@
+author: Adam El-Tablawy
+delete-after: True
+changes: 
+  - rscadd: "Bag of Holding can now hold anything imaginable and has increased space to boot."
