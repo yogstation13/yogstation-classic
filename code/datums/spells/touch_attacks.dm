@@ -50,9 +50,9 @@
 	hand_path = "/obj/item/weapon/melee/touch_attack/disintegrate"
 
 	school = "evocation"
-	charge_max = 600
+	charge_max = 500
 	clothes_req = 1
-	cooldown_min = 200 //100 deciseconds reduction per rank
+	cooldown_min = 100 //100 deciseconds reduction per rank
 
 	action_icon_state = "gib"
 
