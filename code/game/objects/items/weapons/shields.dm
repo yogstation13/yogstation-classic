@@ -36,7 +36,7 @@
 			shieldstate = SHIELD_BREAKING
 			owner.visible_message("<span class='danger'>[owner]'s shield begins to fall apart from the hit!<span class>")
 			shieldhealth = examinedhealth
-			return 0
+			return 1
 
 		if(examinedhealth >= 6 || examinedhealth < 4)
 			shieldstate = null
