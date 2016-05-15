@@ -1,5 +1,0 @@
-author: AsV9
-delete-after: True
-changes: 
-  - rscadd: "Adds an admin verb for reviving everyone."
-  - bugfix: "Makes soulstones always sit ontop of items."
