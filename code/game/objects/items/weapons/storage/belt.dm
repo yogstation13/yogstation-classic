@@ -275,6 +275,69 @@
 		/obj/item/ammo_casing/shotgun
 		)
 
+/obj/item/weapon/storage/belt/bandolier/security
+	name = "security bandolier"
+	desc = "A light-weight bandolier authorized towards security for"
+	icon_state = "sec_bandolier"
+	item_state = "sec_bandolier"
+	storage_slots = 13
+
+/obj/item/weapon/storage/belt/bandolier/security/rubber/New()
+	..()
+	name = "standard edition [name]"
+	desc = "[desc] non-lethal takedowns. Contains slugs filled with densly-packed rubber balls"
+	new /obj/item/ammo_casing/shotgun/rubbershot(src)
+	new /obj/item/ammo_casing/shotgun/rubbershot(src)
+	new /obj/item/ammo_casing/shotgun/rubbershot(src)
+	new /obj/item/ammo_casing/shotgun/rubbershot(src)
+	new /obj/item/ammo_casing/shotgun/rubbershot(src)
+	new /obj/item/ammo_casing/shotgun/rubbershot(src)
+	new /obj/item/ammo_casing/shotgun/rubbershot(src)
+	new /obj/item/ammo_casing/shotgun/rubbershot(src)
+	new /obj/item/ammo_casing/shotgun/rubbershot(src)
+	new /obj/item/ammo_casing/shotgun/rubbershot(src)
+	new /obj/item/ammo_casing/shotgun/rubbershot(src)
+	new /obj/item/ammo_casing/shotgun/rubbershot(src)
+	new /obj/item/ammo_casing/shotgun/rubbershot(src)
+
+
+
+/obj/item/weapon/storage/belt/bandolier/security/buckshot/New()
+	..()
+	name = "crowd-control edition [name]"
+	desc = "[desc] crowd-control. Contains slugs that contain pellets that will spread upon fire"
+	new /obj/item/ammo_casing/shotgun/buckshot(src)
+	new /obj/item/ammo_casing/shotgun/buckshot(src)
+	new /obj/item/ammo_casing/shotgun/buckshot(src)
+	new /obj/item/ammo_casing/shotgun/buckshot(src)
+	new /obj/item/ammo_casing/shotgun/buckshot(src)
+	new /obj/item/ammo_casing/shotgun/buckshot(src)
+	new /obj/item/ammo_casing/shotgun/buckshot(src)
+	new /obj/item/ammo_casing/shotgun/buckshot(src)
+	new /obj/item/ammo_casing/shotgun/buckshot(src)
+	new /obj/item/ammo_casing/shotgun/buckshot(src)
+	new /obj/item/ammo_casing/shotgun/buckshot(src)
+	new /obj/item/ammo_casing/shotgun/buckshot(src)
+	new /obj/item/ammo_casing/shotgun/buckshot(src)
+
+/obj/item/weapon/storage/belt/bandolier/security/slug/New()
+	..()
+	name = "lethal edition [name]"
+	desc = "[desc] lethal situations. Contains slugs that deal a great amount of brute damage."
+	new /obj/item/ammo_casing/shotgun(src)
+	new /obj/item/ammo_casing/shotgun(src)
+	new /obj/item/ammo_casing/shotgun(src)
+	new /obj/item/ammo_casing/shotgun(src)
+	new /obj/item/ammo_casing/shotgun(src)
+	new /obj/item/ammo_casing/shotgun(src)
+	new /obj/item/ammo_casing/shotgun(src)
+	new /obj/item/ammo_casing/shotgun(src)
+	new /obj/item/ammo_casing/shotgun(src)
+	new /obj/item/ammo_casing/shotgun(src)
+	new /obj/item/ammo_casing/shotgun(src)
+	new /obj/item/ammo_casing/shotgun(src)
+	new /obj/item/ammo_casing/shotgun(src)
+
 /obj/item/weapon/storage/belt/holster
 	name = "shoulder holster"
 	desc = "A holster to conceal a carried handgun and ammo. WARNING: Badasses only."
