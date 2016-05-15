@@ -7,8 +7,10 @@
 	w_class = 1.0
 	slot_flags = SLOT_BELT
 	origin_tech = "bluespace=4;materials=4"
+	layer = 4
 	var/imprinted = "empty"
 	var/usability = 0
+
 
 /obj/item/device/soulstone/anybody
 	usability = 1

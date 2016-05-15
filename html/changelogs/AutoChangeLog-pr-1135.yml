@@ -1,0 +1,4 @@
+author: FluffySurvivor
+delete-after: True
+changes: 
+  - bugfix: "Double eswords are now properly granted armor penetration."

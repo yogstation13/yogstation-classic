@@ -736,32 +736,32 @@ var/list/uplink_items = list()
 
 /datum/uplink_item/cyber_implants/thermals
 	name = "Thermal Vision Implant"
-	desc = "These cybernetic eyes will give you thermal vision."
-	item = /obj/item/organ/internal/cyberimp/eyes/thermals
+	desc = "These cybernetic eyes will give you thermal vision. Comes with an autoimplanter."
+	item = /obj/item/weapon/storage/box/cyber_implants/thermals
 	cost = 8
 
 /datum/uplink_item/cyber_implants/xray
 	name = "X-Ray Vision Implant"
-	desc = "These cybernetic eyes will give you X-ray vision."
-	item = /obj/item/organ/internal/cyberimp/eyes/xray
+	desc = "These cybernetic eyes will give you X-ray vision. Comes with an autoimplanter."
+	item = /obj/item/weapon/storage/box/cyber_implants/xray
 	cost = 10
 
 /datum/uplink_item/cyber_implants/antistun
 	name = "CNS Rebooter Implant"
-	desc = "This implant will help you get back up on your feet faster after being stunned."
-	item = /obj/item/organ/internal/cyberimp/brain/anti_stun
+	desc = "This implant will help you get back up on your feet faster after being stunned. Comes with an autoimplanter."
+	item = /obj/item/weapon/storage/box/cyber_implants/antistun
 	cost = 12
 
 /datum/uplink_item/cyber_implants/reviver
 	name = "Reviver Implant"
-	desc = "This implant will attempt to revive you if you lose consciousness."
-	item = /obj/item/organ/internal/cyberimp/chest/reviver
+	desc = "This implant will attempt to revive you if you lose consciousness. Comes with an autoimplanter."
+	item = /obj/item/weapon/storage/box/cyber_implants/reviver
 	cost = 8
 
 /datum/uplink_item/cyber_implants/bundle
 	name = "Cybernetic Implants Bundle"
-	desc = "A random selection of cybernetic implants. Guaranteed 5 high quality implants."
-	item = /obj/item/weapon/storage/box/cyber_implants
+	desc = "A random selection of cybernetic implants. Guaranteed 5 high quality implants. Comes with an autoimplanter."
+	item = /obj/item/weapon/storage/box/cyber_implants/random
 	cost = 40
 
 // POINTLESS BADASSERY

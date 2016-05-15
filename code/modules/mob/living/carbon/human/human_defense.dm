@@ -450,7 +450,7 @@ emp_act
 	if(istype(AM, /obj/item))
 		I = AM
 		throwpower = I.throwforce
-	if(I.thrownby != src && check_shields(throwpower, "\the [AM.name]", AM, THROWN_PROJECTILE_ATTACK))
+	if((!I || I.thrownby != src) && check_shields(throwpower, "\the [AM.name]", AM, THROWN_PROJECTILE_ATTACK))
 		hitpush = 0
 		skipcatch = 1
 		blocked = 1
@@ -458,7 +458,7 @@ emp_act
 		if(I.throw_speed >= EMBED_THROWSPEED_THRESHOLD)
 			if(can_embed(I))
 				if(prob(I.embed_chance) && !(dna && (PIERCEIMMUNE in dna.species.specflags)))
-					throw_alert("embeddedobject", /obj/screen/alert/embeddedobject)
+					throw_alert("embeddedobject")
 					var/obj/item/organ/limb/L = pick(organs)
 					L.embedded_objects |= I
 					I.add_blood(src)//it embedded itself in you, of course it's bloody!
