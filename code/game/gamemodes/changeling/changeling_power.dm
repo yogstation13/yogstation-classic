@@ -51,6 +51,10 @@
 	if(req_human && !ishuman(user))
 		user << "<span class='warning'>We cannot do that in this form!</span>"
 		return 0
+	var/mob/living/carbon/caster = user
+	if(caster.dna && caster.dna.species.id == "abomination")
+		user << "<span class='warning'>We cannot do this whilst transformed into an abomination! We must return to our previous form!</span>"
+		return 0
 	var/datum/changeling/c = user.mind.changeling
 	if(c.chem_charges<chemical_cost)
 		user << "<span class='warning'>We require at least [chemical_cost] unit\s of chemicals to do that!</span>"
