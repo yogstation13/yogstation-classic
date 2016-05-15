@@ -195,12 +195,15 @@
 		..()
 
 /obj/item/clothing/glasses/thermal/syndi
-	name = "Optical Meson Scanner"
-	desc = "Used by engineering and mining staff to see basic structural and terrain layouts through walls, regardless of lighting condition."
+	name = "Chameleon Thermal Glasses"
+	desc = "A pair of modified thermal goggles that can take the appearance of conventional Nanotrasen glasses."
 	icon_state = "meson"
 	origin_tech = "magnets=3;syndicate=4"
 	flash_protect = -1
 	darkness_view = 8
+
+/obj/item/clothing/glasses/thermal/syndi/attack_self(mob/user)
+	chameleon(user)
 
 /obj/item/clothing/glasses/thermal/monocle
 	name = "Thermoncle"
