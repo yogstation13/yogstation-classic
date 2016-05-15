@@ -1,0 +1,5 @@
+author: Super3222
+delete-after: True
+changes: 
+  - rscadd: "The Syndicate has re-engineered a stolen sechud, it operates like a normal one but can be camouflaged! It is currently being exported to gang leaders to cause strategic panic on the station!"
+  - rscadd: "Chameleon HUD's have been added, port by Super3222."
