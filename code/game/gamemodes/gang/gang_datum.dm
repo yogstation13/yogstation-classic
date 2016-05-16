@@ -15,7 +15,7 @@
 	var/list/territory_lost = list()
 	var/dom_timer = "OFFLINE"
 	var/dom_attempts = 2
-	var/points = 15
+	var/points = 25
 	var/datum/atom_hud/antag/ganghud
 
 /datum/gang/New(loc,gangname)
