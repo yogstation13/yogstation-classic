@@ -573,6 +573,7 @@
 	return src.attack_hand(user)
 
 
+
 /obj/machinery/suit_storage_unit/attack_paw(mob/user)
 	user << "<span class='warning'>The console controls are far too complicated for your tiny brain!</span>"
 	return
