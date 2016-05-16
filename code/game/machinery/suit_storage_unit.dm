@@ -105,12 +105,12 @@
 	SUIT_TYPE = /obj/item/clothing/suit/space/hardsuit/ert/med
 	MASK_TYPE = /obj/item/clothing/mask/breath
 	STORAGE_TYPE = /obj/item/weapon/tank/internals/emergency_oxygen/double
-
+	
 /obj/machinery/suit_storage_unit/command
-	SUIT_TYPE = /obj/item/clothing/suit/space/hardsuit/eva/command
+	SUIT_TYPE = /obj/item/clothing/suit/space/hardsuit/eva/command 
 	MASK_TYPE = /obj/item/clothing/mask/breath
 	STORAGE_TYPE = /obj/item/weapon/tank/internals/emergency_oxygen/double
-
+ 
 /obj/machinery/suit_storage_unit/New()
 	src.update_icon()
 	if(SUIT_TYPE)
@@ -576,4 +576,3 @@
 /obj/machinery/suit_storage_unit/attack_paw(mob/user)
 	user << "<span class='warning'>The console controls are far too complicated for your tiny brain!</span>"
 	return
-
