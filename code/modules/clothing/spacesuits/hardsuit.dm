@@ -360,7 +360,7 @@
 	desc = "A special bulky suit that protects against hazardous, low pressure environments. Has an additional layer of armor."
 	armor = list(melee = 45, bullet = 25, laser = 30, energy = 10, bomb = 25, bio = 100, rad = 50)
 	helmettype = /obj/item/clothing/head/helmet/space/hardsuit/security/hos
-
+	
 //EVA hardsuit
 /obj/item/clothing/head/helmet/space/hardsuit/eva/command
 	name = "command EVA hardsuit helmet"
