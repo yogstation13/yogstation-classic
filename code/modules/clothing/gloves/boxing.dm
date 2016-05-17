@@ -17,3 +17,10 @@
 /obj/item/clothing/gloves/boxing/yellow
 	icon_state = "boxingyellow"
 	item_state = "boxingyellow"
+
+/obj/item/clothing/gloves/brass_knuckles
+	name = "brass knuckles"
+	desc = "Knuckle up son!"
+	icon_state = "brassknuckles"
+	item_state = "brassknuckles"
+	strip_delay = 20  //Super fast to strip, to counter being un-droppable

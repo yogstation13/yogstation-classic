@@ -140,6 +140,22 @@
 			D.forcesay(hit_appends)
 	return 1
 
+/datum/martial_art/street_fighting
+	name = "Street fighting"
+
+/datum/martial_art/street_fighting/disarm_act(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	return 0
+
+/datum/martial_art/street_fighting/harm_act(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	D.visible_message("<span class='danger'>[A] [pick("punches", "beats", "smacks")] [D]!</span>", \
+					  "<span class='userdanger'>[A] hits you!</span>")
+	D.apply_damage(15, BRUTE)
+	playsound(get_turf(D), 'sound/weapons/punch1.ogg', 50, 1, -1)
+	return 1
+
+/datum/martial_art/street_fighting/grab_act(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	return 0
+
 /datum/martial_art/wrestling
 	name = "Wrestling"
 
@@ -411,6 +427,25 @@
 	return
 
 /obj/item/clothing/gloves/boxing/dropped(mob/user)
+	if(!ishuman(user))
+		return
+	var/mob/living/carbon/human/H = user
+	if(H.get_item_by_slot(slot_gloves) == src)
+		style.remove(H)
+	return
+
+/obj/item/clothing/gloves/brass_knuckles
+	var/datum/martial_art/street_fighting/style = new
+
+/obj/item/clothing/gloves/brass_knuckles/equipped(mob/user, slot)
+	if(!ishuman(user))
+		return
+	if(slot == slot_gloves)
+		var/mob/living/carbon/human/H = user
+		style.teach(H,1)
+	return
+
+/obj/item/clothing/gloves/brass_knuckles/dropped(mob/user)
 	if(!ishuman(user))
 		return
 	var/mob/living/carbon/human/H = user

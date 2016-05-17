@@ -4,6 +4,7 @@
  *		Fireaxe
  *		Double-Bladed Energy Swords
  *		Spears
+ *		Baseball Bat
  */
 
 /*##################################################################
@@ -302,3 +303,23 @@
 	icon_state = "spearglass[wielded]"
 	return
 
+//baseball bat
+/obj/item/weapon/twohanded/baseballbat
+	icon_state = "baseballbat0"
+	name = "baseball bat"
+	desc = "Keekville Swatter brand baseball bat"
+	force = 10
+	w_class = 4.0
+	slot_flags = 0 //Until I get a sprite for it. NOTE: Bostaff does not have a backsprite either yet
+	force_unwielded = 10
+	force_wielded = 15
+	attack_verb = list("attacked", "beat", "smashed", "whacked", "thwacked", "landed a home run on")
+	hitsound = 'sound/weapons/baseballbat.ogg'
+
+/obj/item/weapon/twohanded/baseballbat/update_icon()
+	icon_state = "baseballbat[wielded]"
+	return
+
+/obj/item/weapon/twohanded/baseballbat/gang
+	desc = "Keekville Swatter brand baseball bat. This one feels heavier than normal"
+	force_wielded = 24
