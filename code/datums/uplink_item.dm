@@ -572,12 +572,12 @@ var/list/uplink_items = list()
 	excludefrom = list(/datum/game_mode/gang)
 
 /datum/uplink_item/device_tools/thermal
-	name = "Thermal Imaging Glasses"
-	desc = "These glasses are thermals disguised as engineers' optical meson scanners. \
+	name = "Chameleon Thermal-Night Vision Imaging Glasses"
+	desc = "These glasses are thermals that can be disguised as any pair of glasses. \
 	They allow you to see organisms through walls by capturing the upper portion of the infrared light spectrum, emitted as heat and light by objects. \
-	Hotter objects, such as warm bodies, cybernetic organisms and artificial intelligence cores emit more of this light than cooler objects like walls and airlocks." //THEN WHY CANT THEY SEE PLASMA FIRES????
+	Hotter objects, such as warm bodies, cybernetic organisms and artificial intelligence cores emit more of this light than cooler objects like walls and airlocks. They also permit you to see clearly in the dark." //THEN WHY CANT THEY SEE PLASMA FIRES????
 	item = /obj/item/clothing/glasses/thermal/syndi
-	cost = 6
+	cost = 5
 
 /datum/uplink_item/device_tools/binary
 	name = "Binary Translator Key"
