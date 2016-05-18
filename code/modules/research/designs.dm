@@ -29,6 +29,8 @@ other types of metals and chemistry for reagents).
 - Add the AUTOLATHE tag to
 */
 
+var/list/datum/design/abstract_designs = list(/datum/design, /datum/design/biogenerator, /datum/design/biogenerator/reagent)
+
 /datum/design						//Datum for object designs, used in construction
 	var/name = "Name"					//Name of the created object.
 	var/desc = "Desc"					//Description of the created object.
