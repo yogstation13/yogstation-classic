@@ -61,23 +61,25 @@
 		return
 
 	if(src.broken > 0)
-		if(src.broken == 2 && istype(O, /obj/item/weapon/wirecutters)) // If it's broken and they're using a screwdriver
+		if(src.broken == 2 && istype(O, /obj/item/weapon/tool/wirecutters)) // If it's broken and they're using a screwdriver
 			user.visible_message( \
 				"[user] starts to fix part of the microwave.", \
 				"<span class='notice'>You start to fix part of the microwave...</span>" \
 			)
-			if (do_after(user,20, target = src))
+			var/obj/item/weapon/tool/wirecutters/wc = O
+			if (do_after(user, 20 * wc.speed_coefficient, target = src))
 				user.visible_message( \
 					"[user] fixes part of the microwave.", \
 					"<span class='notice'>You fix part of the microwave.</span>" \
 				)
 				src.broken = 1 // Fix it a bit
-		else if(src.broken == 1 && istype(O, /obj/item/weapon/weldingtool)) // If it's broken and they're doing the wrench
+		else if(src.broken == 1 && istype(O, /obj/item/weapon/tool/weldingtool)) // If it's broken and they're doing the wrench
 			user.visible_message( \
 				"[user] starts to fix part of the microwave.", \
 				"<span class='notice'>You start to fix part of the microwave...</span>" \
 			)
-			if (do_after(user,20, target = src))
+			var/obj/item/weapon/tool/weldingtool/WT = O
+			if (do_after(user, 20 * WT.speed_coefficient, target = src))
 				user.visible_message( \
 					"[user] fixes the microwave.", \
 					"<span class='notice'>You fix the microwave.</span>" \

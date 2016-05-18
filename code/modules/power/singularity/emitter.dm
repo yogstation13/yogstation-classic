@@ -176,7 +176,7 @@
 
 /obj/machinery/power/emitter/attackby(obj/item/W, mob/user, params)
 
-	if(istype(W, /obj/item/weapon/wrench))
+	if(istype(W, /obj/item/weapon/tool/wrench))
 		if(active)
 			user << "<span class='warning'>Turn off \the [src] first!</span>"
 			return
@@ -199,8 +199,8 @@
 				user << "<span class='warning'>The [src.name] needs to be unwelded from the floor!</span>"
 		return
 
-	if(istype(W, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/WT = W
+	if(istype(W, /obj/item/weapon/tool/weldingtool))
+		var/obj/item/weapon/tool/weldingtool/WT = W
 		if(active)
 			user << "Turn off \the [src] first."
 			return
@@ -213,7 +213,7 @@
 					user.visible_message("[user.name] starts to weld the [src.name] to the floor.", \
 						"<span class='notice'>You start to weld \the [src] to the floor...</span>", \
 						"<span class='italics'>You hear welding.</span>")
-					if (do_after(user,20, target = src))
+					if (do_after(user, 20 * WT.speed_coefficient, target = src))
 						if(!src || !WT.isOn()) return
 						state = 2
 						user << "<span class='notice'>You weld \the [src] to the floor.</span>"

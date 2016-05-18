@@ -82,15 +82,15 @@
 		if(T.density)
 			user << "<span class='warning'>[src] is blocked!</span>"
 			return
-		if(istype(W, /obj/item/weapon/screwdriver))
+		if(istype(W, /obj/item/weapon/tool/screwdriver))
 			if (!istype(T, /turf/simulated/floor))
 				user << "<span class='warning'>[src] bolts must be tightened on the floor!</span>"
 				return
 			adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): bolts tightened")
 			user.visible_message("<span class='notice'>[user] tightens some bolts on the wall.</span>", "<span class='notice'>You tighten the bolts on the wall.</span>")
 			ChangeToWall()
-		if(istype(W, /obj/item/weapon/weldingtool))
-			var/obj/item/weapon/weldingtool/WT = W
+		if(istype(W, /obj/item/weapon/tool/weldingtool))
+			var/obj/item/weapon/tool/weldingtool/WT = W
 			if(WT.remove_fuel(0,user))
 				dismantle(user)
 	else

@@ -19,12 +19,13 @@
 /obj/structure/statue/attackby(obj/item/weapon/W, mob/living/user, params)
 	add_fingerprint(user)
 	user.changeNext_move(CLICK_CD_MELEE)
-	if(istype(W, /obj/item/weapon/wrench))
+	if(istype(W, /obj/item/weapon/tool/wrench))
+		var/obj/item/weapon/tool/wrench/wrench = W
 		if(anchored)
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 100, 1)
 			user.visible_message("[user] is loosening the [name]'s bolts.", \
 								 "<span class='notice'>You are loosening the [name]'s bolts...</span>")
-			if(do_after(user,40, target = src))
+			if(do_after(user, 40 * wrench.speed_coefficient, target = src))
 				if(!src.loc || !anchored)
 					return
 				user.visible_message("[user] loosened the [name]'s bolts!", \
@@ -37,7 +38,7 @@
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 100, 1)
 			user.visible_message("[user] is securing the [name]'s bolts...", \
 								 "<span class='notice'>You are securing the [name]'s bolts...</span>")
-			if(do_after(user, 40, target = src))
+			if(do_after(user, 40 * wrench.speed_coefficient, target = src))
 				if(!src.loc || anchored)
 					return
 				user.visible_message("[user] has secured the [name]'s bolts.", \
@@ -64,11 +65,12 @@
 		D.playDigSound()
 		qdel(src)
 
-	else if(istype(W, /obj/item/weapon/weldingtool) && !anchored)
+	else if(istype(W, /obj/item/weapon/tool/weldingtool) && !anchored)
 		playsound(loc, 'sound/items/Welder.ogg', 40, 1)
 		user.visible_message("[user] is slicing apart the [name].", \
 							 "<span class='notice'>You are slicing apart the [name]...</span>")
-		if(do_after(user, 40, target = src))
+		var/obj/item/weapon/tool/weldingtool/WT = W
+		if(do_after(user, 40 * WT.speed_coefficient, target = src))
 			if(!src.loc)
 				return
 			playsound(loc, 'sound/items/Welder2.ogg', 50, 1)

@@ -64,7 +64,7 @@
 	if(!allowed(user))
 		user << "<span class='info'>Access denied.</span>"
 		return
-	if( istype(I, /obj/item/weapon/screwdriver))
+	if( istype(I, /obj/item/weapon/tool/screwdriver))
 		if(!panel_open)
 			user << "<span class='notice'>You open the maintenance panel.</span>"
 			set_sign(new /datum/barsign/hiddensigns/signoff)

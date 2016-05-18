@@ -93,7 +93,7 @@
 					src.Bumped(GM)
 					qdel(G)
 				break
-	if(istype(W, /obj/item/weapon/crowbar))
+	if(istype(W, /obj/item/weapon/tool/crowbar))
 		for(var/obj/structure/transit_tube_pod/pod in loc)
 			if(pod.contents)
 				user << "<span class='warning'>Empty the pod first!</span>"

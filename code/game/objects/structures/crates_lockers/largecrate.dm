@@ -31,7 +31,7 @@
 		return
 
 /obj/structure/largecrate/attackby(obj/item/weapon/W, mob/user, params)
-	if(istype(W, /obj/item/weapon/crowbar))
+	if(istype(W, /obj/item/weapon/tool/crowbar))
 		if(manifest)
 			manifest.loc = loc
 			manifest = null

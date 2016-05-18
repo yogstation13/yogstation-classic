@@ -16,11 +16,11 @@
 	var/salvage_num = 5
 
 /obj/structure/mecha_wreckage/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/weapon/weldingtool))
+	if(istype(I, /obj/item/weapon/tool/weldingtool))
 		if(salvage_num <= 0)
 			user << "<span class='warning'>You don't see anything that can be cut with [I]!</span>"
 			return
-		var/obj/item/weapon/weldingtool/WT = I
+		var/obj/item/weapon/tool/weldingtool/WT = I
 		if(welder_salvage && welder_salvage.len && WT.remove_fuel(0, user))
 			var/type = prob(70) ? pick(welder_salvage) : null
 			if(type)
@@ -34,7 +34,7 @@
 		else
 			return
 
-	if(istype(I, /obj/item/weapon/wirecutters))
+	if(istype(I, /obj/item/weapon/tool/wirecutters))
 		if(salvage_num <= 0)
 			user << "<span class='warning'>You don't see anything that can be cut with [I]!</span>"
 			return
@@ -47,7 +47,7 @@
 			else
 				user << "<span class='warning'>You fail to salvage anything valuable from [src]!</span>"
 
-	if(istype(I, /obj/item/weapon/crowbar))
+	if(istype(I, /obj/item/weapon/tool/crowbar))
 		if(crowbar_salvage && crowbar_salvage.len)
 			var/obj/S = pick(crowbar_salvage)
 			if(S)

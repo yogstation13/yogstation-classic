@@ -31,7 +31,7 @@
 		var/obj/item/weapon/twohanded/fireaxe/F = I
 		if(!F.wielded)
 			return
-	else if(!istype(I, /obj/item/weapon/crowbar))
+	else if(!istype(I, /obj/item/weapon/tool/crowbar))
 		return
 
 	if(stat & NOPOWER)

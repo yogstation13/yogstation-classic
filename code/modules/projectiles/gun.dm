@@ -245,7 +245,7 @@
 				update_gunlight(user)
 				verbs += /obj/item/weapon/gun/proc/toggle_gunlight
 
-	if(istype(A, /obj/item/weapon/screwdriver))
+	if(istype(A, /obj/item/weapon/tool/screwdriver))
 		if(F)
 			if(user.l_hand != src && user.r_hand != src)
 				user << "<span class='warning'>You'll need [src] in your hands to do that!</span>"

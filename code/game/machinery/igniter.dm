@@ -72,7 +72,7 @@
 /obj/machinery/sparker/attackby(obj/item/weapon/W, mob/user, params)
 	if(istype(W, /obj/item/device/detective_scanner))
 		return
-	if (istype(W, /obj/item/weapon/screwdriver))
+	if (istype(W, /obj/item/weapon/tool/screwdriver))
 		add_fingerprint(user)
 		src.disable = !src.disable
 		if (src.disable)

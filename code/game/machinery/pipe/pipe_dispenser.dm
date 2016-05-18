@@ -76,11 +76,12 @@
 			return
 		qdel(W)
 		return
-	else if (istype(W, /obj/item/weapon/wrench))
+	else if (istype(W, /obj/item/weapon/tool/wrench))
+		var/obj/item/weapon/tool/wrench/wrench = W
 		if (!anchored && !isinspace())
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 			user << "<span class='notice'>You begin to fasten \the [src] to the floor...</span>"
-			if (do_after(user, 40, target = src))
+			if (do_after(user, 40 * wrench.speed_coefficient, target = src))
 				add_fingerprint(user)
 				user.visible_message( \
 					"[user] fastens \the [src].", \
@@ -93,7 +94,7 @@
 		else if(anchored)
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 			user << "<span class='notice'>You begin to unfasten \the [src] from the floor...</span>"
-			if (do_after(user, 20, target = src))
+			if (do_after(user, 20 * wrench.speed_coefficient, target = src))
 				add_fingerprint(user)
 				user.visible_message( \
 					"[user] unfastens \the [src].", \

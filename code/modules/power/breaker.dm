@@ -219,7 +219,7 @@
 			user << "\red You cannot lock [src] with [W]."
 			return
 
-	if(istype(W, /obj/item/weapon/crowbar))
+	if(istype(W, /obj/item/weapon/tool/crowbar))
 		if(locked)
 			user << "\red The cover does not come off."
 			return

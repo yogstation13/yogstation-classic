@@ -55,9 +55,9 @@
 	new /obj/item/clothing/head/welding(src)
 	new /obj/item/clothing/head/welding(src)
 	new /obj/item/clothing/head/welding(src)
-	new /obj/item/weapon/weldingtool/largetank(src)
-	new /obj/item/weapon/weldingtool/largetank(src)
-	new /obj/item/weapon/weldingtool/largetank(src)
+	new /obj/item/weapon/tool/weldingtool/largetank(src)
+	new /obj/item/weapon/tool/weldingtool/largetank(src)
+	new /obj/item/weapon/tool/weldingtool/largetank(src)
 
 /obj/structure/closet/secure_closet/engineering_personal
 	name = "engineer's locker"

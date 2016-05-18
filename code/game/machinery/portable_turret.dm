@@ -251,7 +251,7 @@
 
 /obj/machinery/porta_turret/attackby(obj/item/I, mob/user, params)
 	if(stat & BROKEN)
-		if(istype(I, /obj/item/weapon/crowbar))
+		if(istype(I, /obj/item/weapon/tool/crowbar))
 			//If the turret is destroyed, you can remove it with a crowbar to
 			//try and salvage its components
 			user << "<span class='notice'>You begin prying the metal coverings off...</span>"
@@ -271,7 +271,7 @@
 				user << "<span class='notice'>You remove the turret but did not manage to salvage anything.</span>"
 			qdel(src)
 
-	else if((istype(I, /obj/item/weapon/wrench)) && (!on))
+	else if((istype(I, /obj/item/weapon/tool/wrench)) && (!on))
 		if(raised) return
 		//This code handles moving the turret around. After all, it's a portable turret!
 		if(!anchored && !isinspace())
@@ -668,14 +668,14 @@
 	//this is a bit unwieldy but self-explanatory
 	switch(build_step)
 		if(0)	//first step
-			if(istype(I, /obj/item/weapon/wrench) && !anchored)
+			if(istype(I, /obj/item/weapon/tool/wrench) && !anchored)
 				playsound(loc, 'sound/items/Ratchet.ogg', 100, 1)
 				user << "<span class='notice'>You secure the external bolts.</span>"
 				anchored = 1
 				build_step = 1
 				return
 
-			else if(istype(I, /obj/item/weapon/crowbar) && !anchored)
+			else if(istype(I, /obj/item/weapon/tool/crowbar) && !anchored)
 				playsound(loc, 'sound/items/Crowbar.ogg', 75, 1)
 				user << "<span class='notice'>You dismantle the turret construction.</span>"
 				new /obj/item/stack/sheet/metal( loc, 5)
@@ -693,7 +693,7 @@
 					user << "<span class='warning'>You need two sheets of metal to continue construction!</span>"
 				return
 
-			else if(istype(I, /obj/item/weapon/wrench))
+			else if(istype(I, /obj/item/weapon/tool/wrench))
 				playsound(loc, 'sound/items/Ratchet.ogg', 75, 1)
 				user << "<span class='notice'>You unfasten the external bolts.</span>"
 				anchored = 0
@@ -702,14 +702,14 @@
 
 
 		if(2)
-			if(istype(I, /obj/item/weapon/wrench))
+			if(istype(I, /obj/item/weapon/tool/wrench))
 				playsound(loc, 'sound/items/Ratchet.ogg', 100, 1)
 				user << "<span class='notice'>You bolt the metal armor into place.</span>"
 				build_step = 3
 				return
 
-			else if(istype(I, /obj/item/weapon/weldingtool))
-				var/obj/item/weapon/weldingtool/WT = I
+			else if(istype(I, /obj/item/weapon/tool/weldingtool))
+				var/obj/item/weapon/tool/weldingtool/WT = I
 				if(!WT.isOn())
 					return
 				if(WT.get_fuel() < 5) //uses up 5 fuel.
@@ -718,7 +718,7 @@
 
 				playsound(loc, pick('sound/items/Welder.ogg', 'sound/items/Welder2.ogg'), 50, 1)
 				user << "<span class='notice'>You start to remove the turret's interior metal armor...</span>"
-				if(do_after(user, 20, target = src))
+				if(do_after(user, 20 * WT.speed_coefficient, target = src))
 					if(!src || !WT.remove_fuel(5, user)) return
 					build_step = 1
 					user << "<span class='notice'>You remove the turret's interior metal armor.</span>"
@@ -742,7 +742,7 @@
 				qdel(I) //delete the gun :(
 				return
 
-			else if(istype(I, /obj/item/weapon/wrench))
+			else if(istype(I, /obj/item/weapon/tool/wrench))
 				playsound(loc, 'sound/items/Ratchet.ogg', 100, 1)
 				user << "<span class='notice'>You remove the turret's metal armor bolts.</span>"
 				build_step = 2
@@ -761,7 +761,7 @@
 			//attack_hand() removes the gun
 
 		if(5)
-			if(istype(I, /obj/item/weapon/screwdriver))
+			if(istype(I, /obj/item/weapon/tool/screwdriver))
 				playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
 				build_step = 6
 				user << "<span class='notice'>You close the internal access hatch.</span>"
@@ -779,22 +779,22 @@
 					user << "<span class='warning'>You need two sheets of metal to continue construction!</span>"
 				return
 
-			else if(istype(I, /obj/item/weapon/screwdriver))
+			else if(istype(I, /obj/item/weapon/tool/screwdriver))
 				playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
 				build_step = 5
 				user << "<span class='notice'>You open the internal access hatch.</span>"
 				return
 
 		if(7)
-			if(istype(I, /obj/item/weapon/weldingtool))
-				var/obj/item/weapon/weldingtool/WT = I
+			if(istype(I, /obj/item/weapon/tool/weldingtool))
+				var/obj/item/weapon/tool/weldingtool/WT = I
 				if(!WT.isOn()) return
 				if(WT.get_fuel() < 5)
 					user << "<span class='warning'>You need more fuel to complete this task!</span>"
 
 				playsound(loc, pick('sound/items/Welder.ogg', 'sound/items/Welder2.ogg'), 50, 1)
 				user << "<span class='notice'>You begin to weld the turret's armor down...</span>"
-				if(do_after(user, 30, target = src))
+				if(do_after(user, 30 * WT.speed_coefficient, target = src))
 					if(!src || !WT.remove_fuel(5, user))
 						return
 					build_step = 8
@@ -812,7 +812,7 @@
 //					Turret.cover.name = finish_name
 					qdel(src)
 
-			else if(istype(I, /obj/item/weapon/crowbar))
+			else if(istype(I, /obj/item/weapon/tool/crowbar))
 				playsound(loc, 'sound/items/Crowbar.ogg', 75, 1)
 				user << "<span class='notice'>You pry off the turret's exterior armor.</span>"
 				new /obj/item/stack/sheet/metal(loc, 2)
@@ -986,7 +986,7 @@ Status: []<BR>"},
 
 
 /obj/machinery/porta_turret_cover/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/weapon/wrench) && !Parent_Turret.on)
+	if(istype(I, /obj/item/weapon/tool/wrench) && !Parent_Turret.on)
 		if(Parent_Turret.raised) return
 
 		if(!Parent_Turret.anchored)

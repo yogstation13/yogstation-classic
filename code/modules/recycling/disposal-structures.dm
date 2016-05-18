@@ -373,14 +373,14 @@
 	if(T.intact)
 		return		// prevent interaction with T-scanner revealed pipes
 	src.add_fingerprint(user)
-	if(istype(I, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/W = I
+	if(istype(I, /obj/item/weapon/tool/weldingtool))
+		var/obj/item/weapon/tool/weldingtool/W = I
 
 		if(W.remove_fuel(0,user))
 			playsound(src.loc, 'sound/items/Welder2.ogg', 100, 1)
 			user << "<span class='notice'>You start slicing the disposal pipe...</span>"
 			// check if anything changed over 2 seconds
-			if(do_after(user,30, target = src))
+			if(do_after(user,30 * W.speed_coefficient, target = src))
 				if(!src || !W.isOn()) return
 				Deconstruct()
 				user << "<span class='notice'>You slice the disposal pipe.</span>"
@@ -684,8 +684,8 @@
 	if(T.intact)
 		return		// prevent interaction with T-scanner revealed pipes
 	src.add_fingerprint(user)
-	if(istype(I, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/W = I
+	if(istype(I, /obj/item/weapon/tool/weldingtool))
+		var/obj/item/weapon/tool/weldingtool/W = I
 
 		if(linked)
 			user << "<span class='warning'>You need to deconstruct disposal machinery above this pipe!</span>"
@@ -694,7 +694,7 @@
 		if(W.remove_fuel(0,user))
 			playsound(src.loc, 'sound/items/Welder2.ogg', 100, 1)
 			user << "<span class='notice'>You start slicing the disposal pipe...</span>"
-			if(do_after(user,30, target = src))
+			if(do_after(user,30 * W.speed_coefficient, target = src))
 				if(!src || !W.isOn()) return
 				Deconstruct()
 				user << "<span class='notice'>You slice the disposal pipe.</span>"
@@ -812,7 +812,7 @@
 	if(!I || !user)
 		return
 	src.add_fingerprint(user)
-	if(istype(I, /obj/item/weapon/screwdriver))
+	if(istype(I, /obj/item/weapon/tool/screwdriver))
 		if(mode==0)
 			mode=1
 			playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
@@ -823,12 +823,12 @@
 			playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 			user << "<span class='notice'>You attach the screws around the power connection.</span>"
 			return
-	else if(istype(I,/obj/item/weapon/weldingtool) && mode==1)
-		var/obj/item/weapon/weldingtool/W = I
+	else if(istype(I,/obj/item/weapon/tool/weldingtool) && mode==1)
+		var/obj/item/weapon/tool/weldingtool/W = I
 		if(W.remove_fuel(0,user))
 			playsound(src.loc, 'sound/items/Welder2.ogg', 100, 1)
 			user << "<span class='notice'>You start slicing the floorweld off \the [src]...</span>"
-			if(do_after(user,20, target = src))
+			if(do_after(user,20 * W.speed_coefficient, target = src))
 				if(!src || !W.isOn()) return
 				user << "<span class='notice'>You slice the floorweld off \the [src].</span>"
 				stored.loc = loc
