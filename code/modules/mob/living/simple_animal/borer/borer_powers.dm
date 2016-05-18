@@ -210,27 +210,27 @@
 	if(victim.stat == DEAD)
 		dead_mob_list -= victim
 		living_mob_list += victim
-	victim.tod = null
-	victim.setToxLoss(0)
-	victim.setOxyLoss(0)
-	victim.setCloneLoss(0)
-	victim.SetParalysis(0)
-	victim.SetStunned(0)
-	victim.SetWeakened(0)
-	victim.radiation = 0
-	victim.heal_overall_damage(victim.getBruteLoss(), victim.getFireLoss())
-	victim.reagents.clear_reagents()
-	if(istype(victim,/mob/living/carbon/human))
-		var/mob/living/carbon/human/H = victim
-		H.restore_blood()
-		H.remove_all_embedded_objects()
-	victim.update_canmove()
-	victim.med_hud_set_status()
-	victim.med_hud_set_health()
-	victim.stat = CONSCIOUS
-	log_game("[src]/([src.ckey]) has revived [victim]/([victim.ckey]")
-	chemicals -= 250
-	src << "<span class='notice'>You send a jolt of energy to your host, reviving them!</span>"
+		victim.tod = null
+		victim.setToxLoss(0)
+		victim.setOxyLoss(0)
+		victim.setCloneLoss(0)
+		victim.SetParalysis(0)
+		victim.SetStunned(0)
+		victim.SetWeakened(0)
+		victim.radiation = 0
+		victim.heal_overall_damage(victim.getBruteLoss(), victim.getFireLoss())
+		victim.reagents.clear_reagents()
+		if(istype(victim,/mob/living/carbon/human))
+			var/mob/living/carbon/human/H = victim
+			H.restore_blood()
+			H.remove_all_embedded_objects()
+		victim.update_canmove()
+		victim.med_hud_set_status()
+		victim.med_hud_set_health()
+		victim.stat = CONSCIOUS
+		log_game("[src]/([src.ckey]) has revived [victim]/([victim.ckey]")
+		chemicals -= 250
+		src << "<span class='notice'>You send a jolt of energy to your host, reviving them!</span>"
 
 /mob/living/simple_animal/borer/verb/bond_brain()
 	set category = "Borer"
