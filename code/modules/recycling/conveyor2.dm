@@ -101,19 +101,15 @@
 		return
 	if(!operating)
 		return
-	use_power(100)
+	use_power(7)
 
 	affecting = loc.contents - src		// moved items will be all in loc
-	spawn(1)	// slight delay to prevent infinite propagation due to map order	//TODO: please no spawn() in process(). It's a very bad idea
-		var/items_moved = 0
-		for(var/atom/movable/A in affecting)
-			if(!A.anchored)
-				if(A.loc == src.loc) // prevents the object from being affected if it's not currently here.
-					step(A,movedir)
-					items_moved++
-			if(items_moved >= 10)
-				break
-
+	sleep(1)
+	for(var/atom/movable/A in affecting)
+		if(!A.anchored)
+			if(A.loc == src.loc) // prevents the object from being affected if it's not currently here.
+				step(A,movedir)
+		CHECK_TICK
 // attack with item, place item on conveyor
 /obj/machinery/conveyor/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/weapon/tool/crowbar))
@@ -193,7 +189,7 @@
 
 	var/list/conveyors		// the list of converyors that are controlled by this switch
 	anchored = 1
-
+	fast_process = 1
 
 
 /obj/machinery/conveyor_switch/New(newloc, newid)
@@ -228,6 +224,7 @@
 	operated = 0
 
 	for(var/obj/machinery/conveyor/C in conveyors)
+		CHECK_TICK
 		C.operating = position
 		C.setmove()
 
@@ -256,6 +253,7 @@
 		if(S.id == src.id)
 			S.position = position
 			S.update()
+		CHECK_TICK
 
 /obj/machinery/conveyor_switch/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/weapon/tool/crowbar))
