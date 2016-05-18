@@ -1,0 +1,23 @@
+author: FluffySurvivor
+delete-after: True
+changes: 
+  - rscadd: "Gang has received several changes that are aimed at accentuating the core identities of the the gamemode: using gang outfits, tagging territory and being a pure team deathmatch. Some various quality of life improvements as well."
+  - tweak: "Uzi cost reduced to 45 from 60. Ammo cost reduced to 20 from 40."
+  - tweak: "Uzi bullet damage reduced to 17 from 20."
+  - rscadd: "Adds the Thompson SMG, uses .45 calibre drum, holding 50 rounds. Can either fire in a 3-round burst or semiautomatic mode. Bullet damage is 20. Costs 80 Influence, while ammo costs 25."
+  - tweak: "C4 cost reduced to 5 from 10."
+  - tweak: "Spraycan cost reduced to 3 from 5."
+  - rscdel: "Sleeping Carp Wrestling belt removed."
+  - rscadd: "Adds Throwing Stars boxes exclusive for the Sleeping Carp, available for 50 influence."
+  - tweak: "Sleeping Carp Martial Arts Scroll cost reduced to 25 from 30."
+  - rscadd: "Adds a dope necklace, purchasable for 1 influence. (/tg/ port)"
+  - tweak: "Base influence income reduced to 3 from 15"
+  - tweak: "Starting influence increased to 25 from 15."
+  - tweak: "Influence scaling based on gangsters with outfits and territories massively increased."
+  - tweak: "You can now see the gang you belong to in your notes."
+  - rscdel: "Gangtools now only beep for the user."
+  - rscadd: "You can now see the name of lieutenants and bosses in gang chat."
+  - rscadd: "You can now use gang comms outside the station Z-level."
+  - tweak: "Gang tools and spraycans are now more obvious upon examination."
+  - rscadd: "Gang outfits can now hold tommy guns and uzis."
+  - tweak: "Gang outfits now have slightly more laser and bullet armor."
