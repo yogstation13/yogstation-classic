@@ -6,6 +6,10 @@
 	var/chemuse = 35
 	var/quantity = 10
 
+/datum/borer_chem/epinephrine
+	chemname = "epinephrine"
+	chem_desc = "Stabilizes critical condition and slowly restores oxygen damage. If overdosed, it will deal toxin and oxyloss damage."
+
 /datum/borer_chem/mannitol
 	chemname = "mannitol"
 	chem_desc = "Quickly heals brain damage."
@@ -24,7 +28,7 @@
 
 /datum/borer_chem/ephedrine
 	chemname = "ephedrine"
-	chem_desc = "Reduces stun times, increases run speed, and stabilizes crit. If overdosed it will deal toxin and oxyloss damage."
+	chem_desc = "Reduces stun times, and increases run speed. If overdosed it will deal toxin and oxyloss damage."
 
 /datum/borer_chem/leporazine
 	chemname = "leporazine"
