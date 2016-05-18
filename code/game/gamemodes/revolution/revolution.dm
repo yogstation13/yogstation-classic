@@ -428,3 +428,4 @@
 	icon = 'icons/obj/items.dmi'
 	icon_state = "implanter1"
 	item_state = "syringe_0"
+	origin_tech = "magnets=7;syndicate=1"
