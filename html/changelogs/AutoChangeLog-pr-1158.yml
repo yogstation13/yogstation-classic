@@ -1,6 +1,0 @@
-author: FluffySurvivor
-delete-after: True
-changes: 
-  - rscadd: "Traitor thermal glasses now grant night vision."
-  - rscadd: "Thermal glasses are now disguisable as any other pair of glasses."
-  - tweak: "Thermal glasses cost reduced to 5 from 6 TC."

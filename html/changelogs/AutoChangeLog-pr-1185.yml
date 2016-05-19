@@ -1,5 +1,0 @@
-author: Cruix
-delete-after: True
-changes: 
-  - bugfix: "Minebots can now be properly repaired by welders."
-  - tweak: "Minebots now pick up sand even when it is not adjacent to ore."
