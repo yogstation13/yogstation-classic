@@ -98,7 +98,7 @@ field_generator power level display
 	if(active)
 		user << "<span class='warning'>The [src] needs to be off!</span>"
 		return
-	else if(istype(W, /obj/item/weapon/wrench))
+	else if(istype(W, /obj/item/weapon/tool/wrench))
 		switch(state)
 			if(0 && !isinspace())
 				state = 1
@@ -117,8 +117,8 @@ field_generator power level display
 			if(2)
 				user << "<span class='warning'>The [src.name] needs to be unwelded from the floor!</span>"
 				return
-	else if(istype(W, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/WT = W
+	else if(istype(W, /obj/item/weapon/tool/weldingtool))
+		var/obj/item/weapon/tool/weldingtool/WT = W
 		switch(state)
 			if(0)
 				user << "<span class='warning'>The [src.name] needs to be wrenched to the floor!</span>"
@@ -129,7 +129,7 @@ field_generator power level display
 					user.visible_message("[user.name] starts to weld the [src.name] to the floor.", \
 						"<span class='notice'>You start to weld \the [src] to the floor...</span>", \
 						"<span class='italics'>You hear welding.</span>")
-					if (do_after(user,20, target = src))
+					if (do_after(user,20 * WT.speed_coefficient, target = src))
 						if(!src || !WT.isOn()) return
 						state = 2
 						user << "<span class='notice'>You weld the field generator to the floor.</span>"

@@ -27,7 +27,7 @@
 
 		if(0)
 			// State 0
-			if(istype(W, /obj/item/weapon/wrench) && isturf(src.loc))
+			if(istype(W, /obj/item/weapon/tool/wrench) && isturf(src.loc))
 				playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 				user << "<span class='notice'>You wrench the assembly into place.</span>"
 				anchored = 1
@@ -38,14 +38,14 @@
 
 		if(1)
 			// State 1
-			if(istype(W, /obj/item/weapon/weldingtool))
+			if(istype(W, /obj/item/weapon/tool/weldingtool))
 				if(weld(W, user))
 					user << "<span class='notice'>You weld the assembly securely into place.</span>"
 					anchored = 1
 					state = 2
 				return
 
-			else if(istype(W, /obj/item/weapon/wrench))
+			else if(istype(W, /obj/item/weapon/tool/wrench))
 				playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 				user << "<span class='notice'>You unattach the assembly from its place.</span>"
 				anchored = 0
@@ -65,7 +65,7 @@
 					return
 				return
 
-			else if(istype(W, /obj/item/weapon/weldingtool))
+			else if(istype(W, /obj/item/weapon/tool/weldingtool))
 
 				if(weld(W, user))
 					user << "<span class='notice'>You unweld the assembly from its place.</span>"
@@ -76,7 +76,7 @@
 
 		if(3)
 			// State 3
-			if(istype(W, /obj/item/weapon/screwdriver))
+			if(istype(W, /obj/item/weapon/tool/screwdriver))
 				playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 
 				var/input = stripped_input(usr, "Which networks would you like to connect this camera to? Seperate networks with a comma. No Spaces!\nFor example: SS13,Security,Secret ", "Set Network", "SS13")
@@ -110,7 +110,7 @@
 							break
 				return
 
-			else if(istype(W, /obj/item/weapon/wirecutters))
+			else if(istype(W, /obj/item/weapon/tool/wirecutters))
 
 				new/obj/item/stack/cable_coil(get_turf(src), 2)
 				playsound(src.loc, 'sound/items/Wirecutter.ogg', 50, 1)
@@ -128,7 +128,7 @@
 		return
 
 	// Taking out upgrades
-	else if(istype(W, /obj/item/weapon/crowbar) && upgrades.len)
+	else if(istype(W, /obj/item/weapon/tool/crowbar) && upgrades.len)
 		var/obj/U = locate(/obj) in upgrades
 		if(U)
 			user << "<span class='notice'>You unattach an upgrade from the assembly.</span>"
@@ -149,7 +149,7 @@
 	if(!anchored)
 		..()
 
-/obj/item/weapon/camera_assembly/proc/weld(obj/item/weapon/weldingtool/WT, mob/living/user)
+/obj/item/weapon/camera_assembly/proc/weld(obj/item/weapon/tool/weldingtool/WT, mob/living/user)
 
 	if(busy)
 		return 0
@@ -159,7 +159,7 @@
 	user << "<span class='notice'>You start to weld \the [src]...</span>"
 	playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
 	busy = 1
-	if(do_after(user, 20, target = src))
+	if(do_after(user, 20 * WT.speed_coefficient, target = src))
 		busy = 0
 		if(!WT.isOn())
 			return 0

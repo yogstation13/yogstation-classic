@@ -55,7 +55,7 @@
 	SetLuminosity(0)
 
 /obj/item/device/powersink/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/weapon/screwdriver))
+	if(istype(I, /obj/item/weapon/tool/screwdriver))
 		if(mode == DISCONNECTED)
 			var/turf/T = loc
 			if(isturf(T) && !T.intact)

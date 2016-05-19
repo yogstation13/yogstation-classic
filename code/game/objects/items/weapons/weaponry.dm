@@ -115,7 +115,7 @@
 		qdel(I)
 		qdel(src)
 
-	else if(istype(I, /obj/item/weapon/wirecutters))
+	else if(istype(I, /obj/item/weapon/tool/wirecutters))
 		var/obj/item/weapon/melee/baton/cattleprod/P = new /obj/item/weapon/melee/baton/cattleprod
 
 		if(!remove_item_from_storage(user))

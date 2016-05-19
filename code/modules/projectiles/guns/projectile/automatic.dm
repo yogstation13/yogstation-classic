@@ -81,11 +81,11 @@
 
 /obj/item/weapon/gun/projectile/automatic/c20r
 	name = "syndicate SMG"
-	desc = "A bullpup two-round burst .45 SMG, designated 'C-20r'. Has a 'Scarborough Arms - Per falcis, per pravitas' buttstamp."
+	desc = "A bullpup two-round burst .50 SMG, designated 'C-20r'. Has a 'Scarborough Arms - Per falcis, per pravitas' buttstamp."
 	icon_state = "c20r"
 	item_state = "c20r"
 	origin_tech = "combat=5;materials=2;syndicate=8"
-	mag_type = /obj/item/ammo_box/magazine/smgm45
+	mag_type = /obj/item/ammo_box/magazine/smgm50
 	fire_sound = 'sound/weapons/Gunshot_smg.ogg'
 	fire_delay = 2
 	burst_size = 2
@@ -129,7 +129,7 @@
 	fire_sound = 'sound/weapons/Gunshot_smg.ogg'
 	var/cover_open = 0
 	can_suppress = 0
-	burst_size = 5
+	burst_size = 3
 	fire_delay = 3
 	pin = /obj/item/device/firing_pin/implant/pindicate
 
@@ -256,14 +256,14 @@
 	desc = "Based on the classic 'Chicago Typewriter'."
 	icon_state = "tommygun"
 	item_state = "shotgun"
-	w_class = 5
+	w_class = 4
 	slot_flags = 0
 	origin_tech = "combat=5;materials=1;syndicate=2"
 	mag_type = /obj/item/ammo_box/magazine/tommygunm45
 	fire_sound = 'sound/weapons/Gunshot_smg.ogg'
 	can_suppress = 0
-	burst_size = 4
-	fire_delay = 1
+	burst_size = 3
+	fire_delay = 2
 
 /obj/item/weapon/gun/projectile/automatic/ar
 	name = "ARG"

@@ -23,7 +23,7 @@
 		I.loc = src
 		storedorgan = I
 		user << "<span class='notice'>You insert the [I] into [src].</span>"
-	if(istype(I, /obj/item/weapon/screwdriver))
+	if(istype(I, /obj/item/weapon/tool/screwdriver))
 		if(!storedorgan)
 			user << "<span class='notice'>There's no implant in [src] for you to remove.</span>"
 		else

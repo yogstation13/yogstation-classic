@@ -9,7 +9,7 @@
 	icon_screen = "ai-fixer"
 
 /obj/machinery/computer/aifixer/attackby(obj/I, mob/user, params)
-	if(occupier && istype(I, /obj/item/weapon/screwdriver))
+	if(occupier && istype(I, /obj/item/weapon/tool/screwdriver))
 		if(stat & (NOPOWER|BROKEN))
 			user << "<span class='warning'>The screws on [name]'s screen won't budge.</span>"
 		else

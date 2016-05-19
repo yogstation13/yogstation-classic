@@ -56,8 +56,8 @@
 		T.attackby(C, user) //BubbleWrap - hand this off to the underlying turf instead (for building plating)
 	if(istype(C, /obj/item/stack/rods))
 		T.attackby(C, user) //see above, for building catwalks
-	if (istype(C, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/WT = C
+	if (istype(C, /obj/item/weapon/tool/weldingtool))
+		var/obj/item/weapon/tool/weldingtool/WT = C
 		if(WT.remove_fuel(0, user))
 			user << "<span class='notice'>Slicing [name] joints ...</span>"
 			Deconstruct()

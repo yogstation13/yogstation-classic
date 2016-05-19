@@ -63,7 +63,7 @@
 	//DECONSTRUCTION
 	switch(d_state)
 		if(0)
-			if (istype(W, /obj/item/weapon/wirecutters))
+			if (istype(W, /obj/item/weapon/tool/wirecutters))
 				playsound(src, 'sound/items/Wirecutter.ogg', 100, 1)
 				src.d_state = 1
 				update_icon()
@@ -71,11 +71,11 @@
 				return 1
 
 		if(1)
-			if (istype(W, /obj/item/weapon/screwdriver))
+			if (istype(W, /obj/item/weapon/tool/screwdriver))
 				user << "<span class='notice'>You begin removing the support lines...</span>"
 				playsound(src, 'sound/items/Screwdriver.ogg', 100, 1)
-
-				if(do_after(user, 40, target = src))
+				var/obj/item/weapon/tool/screwdriver/sd = W
+				if(do_after(user, 40 * sd.speed_coefficient, target = src))
 					if( !istype(src, /turf/simulated/wall/r_wall) || !user || !W || !T )
 						return 1
 
@@ -99,14 +99,14 @@
 				return 1
 
 		if(2)
-			if( istype(W, /obj/item/weapon/weldingtool) )
-				var/obj/item/weapon/weldingtool/WT = W
+			if( istype(W, /obj/item/weapon/tool/weldingtool) )
+				var/obj/item/weapon/tool/weldingtool/WT = W
 				if( WT.remove_fuel(0,user) )
 
 					user << "<span class='notice'>You begin slicing through the metal cover...</span>"
 					playsound(src, 'sound/items/Welder.ogg', 100, 1)
 
-					if(do_after(user, 60, target = src))
+					if(do_after(user, 60 * WT.speed_coefficient, target = src))
 						if( !istype(src, /turf/simulated/wall/r_wall) || !user || !WT || !WT.isOn() || !T )
 							return 0
 
@@ -132,12 +132,12 @@
 				return 1
 
 		if(3)
-			if (istype(W, /obj/item/weapon/crowbar))
+			if (istype(W, /obj/item/weapon/tool/crowbar))
 
 				user << "<span class='notice'>You struggle to pry off the cover...</span>"
 				playsound(src, 'sound/items/Crowbar.ogg', 100, 1)
-
-				if(do_after(user, 100, target = src))
+				var/obj/item/weapon/tool/crowbar/cb = W
+				if(do_after(user, 100 * cb.speed_coefficient, target = src))
 					if( !istype(src, /turf/simulated/wall/r_wall) || !user || !W || !T )
 						return 1
 
@@ -148,12 +148,12 @@
 				return 1
 
 		if(4)
-			if (istype(W, /obj/item/weapon/wrench))
+			if (istype(W, /obj/item/weapon/tool/wrench))
 
 				user << "<span class='notice'>You start loosening the anchoring bolts which secure the support rods to their frame...</span>"
 				playsound(src, 'sound/items/Ratchet.ogg', 100, 1)
-
-				if(do_after(user, 40, target = src))
+				var/obj/item/weapon/tool/wrench/wrench = W
+				if(do_after(user, 40 * wrench.speed_coefficient, target = src))
 					if( !istype(src, /turf/simulated/wall/r_wall) || !user || !W || !T )
 						return 1
 
@@ -164,14 +164,14 @@
 				return 1
 
 		if(5)
-			if( istype(W, /obj/item/weapon/weldingtool) )
-				var/obj/item/weapon/weldingtool/WT = W
+			if( istype(W, /obj/item/weapon/tool/weldingtool) )
+				var/obj/item/weapon/tool/weldingtool/WT = W
 				if( WT.remove_fuel(0,user) )
 
 					user << "<span class='notice'>You begin slicing through the support rods...</span>"
 					playsound(src, 'sound/items/Welder.ogg', 100, 1)
 
-					if(do_after(user, 100, target = src))
+					if(do_after(user, 100 * WT.speed_coefficient, target = src))
 						if( !istype(src, /turf/simulated/wall/r_wall) || !user || !WT || !WT.isOn() || !T )
 							return 1
 
@@ -197,12 +197,12 @@
 				return 1
 
 		if(6)
-			if( istype(W, /obj/item/weapon/crowbar) )
+			if( istype(W, /obj/item/weapon/tool/crowbar) )
 
 				user << "<span class='notice'>You struggle to pry off the outer sheath...</span>"
 				playsound(src, 'sound/items/Crowbar.ogg', 100, 1)
-
-				if(do_after(user, 100, target = src))
+				var/obj/item/weapon/tool/crowbar/cb = W
+				if(do_after(user, 100 * cb.speed_coefficient, target = src))
 					if( !istype(src, /turf/simulated/wall/r_wall) || !user || !W || !T )
 						return 1
 

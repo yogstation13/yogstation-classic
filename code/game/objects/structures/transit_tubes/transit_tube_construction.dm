@@ -78,10 +78,11 @@
 	return R
 
 /obj/structure/c_transit_tube/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/weapon/wrench))
+	if(istype(I, /obj/item/weapon/tool/wrench))
 		user << "<span class='notice'>You start attaching the [name]...</span>"
 		src.add_fingerprint(user)
-		if(do_after(user, 40, target = src))
+		var/obj/item/weapon/tool/wrench/wrench = I
+		if(do_after(user, 40 * wrench.speed_coefficient, target = src))
 			if(!src) return
 			user << "<span class='notice'>You attach the [name].</span>"
 			var/obj/structure/transit_tube/R = src.buildtube()

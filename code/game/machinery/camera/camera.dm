@@ -128,14 +128,14 @@
 	var/msg2 = "<span class='notice'>[src] already has that upgrade!</span>"
 
 	// DECONSTRUCTION
-	if(istype(W, /obj/item/weapon/screwdriver))
+	if(istype(W, /obj/item/weapon/tool/screwdriver))
 		panel_open = !panel_open
 		user << "<span class='notice'>You screw the camera's panel [panel_open ? "open" : "closed"].</span>"
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		return
 
 	if(panel_open)
-		if(istype(W, /obj/item/weapon/wirecutters)) //enable/disable the camera
+		if(istype(W, /obj/item/weapon/tool/wirecutters)) //enable/disable the camera
 			deactivate(user, 1)
 			health = initial(health) //this is a pretty simplistic way to heal the camera, but there's no reason for this to be complex.
 
@@ -143,7 +143,7 @@
 			setViewRange((view_range == initial(view_range)) ? short_range : initial(view_range))
 			user << "<span class='notice'>You [(view_range == initial(view_range)) ? "restore" : "mess up"] the camera's focus.</span>"
 
-		else if(istype(W, /obj/item/weapon/weldingtool))
+		else if(istype(W, /obj/item/weapon/tool/weldingtool))
 			if(weld(W, user))
 				visible_message("<span class='warning'>[user] unwelds [src], leaving it as just a frame screwed to the wall.</span>", "<span class='warning'>You unweld [src], leaving it as just a frame screwed to the wall</span>")
 				if(!assembly)
@@ -332,7 +332,7 @@
 
 	return null
 
-/obj/machinery/camera/proc/weld(obj/item/weapon/weldingtool/WT, mob/living/user)
+/obj/machinery/camera/proc/weld(obj/item/weapon/tool/weldingtool/WT, mob/living/user)
 	if(busy)
 		return 0
 	if(!WT.remove_fuel(0, user))
@@ -341,7 +341,7 @@
 	user << "<span class='notice'>You start to weld [src]...</span>"
 	playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
 	busy = 1
-	if(do_after(user, 100, target = src))
+	if(do_after(user, 100 * WT.speed_coefficient, target = src))
 		busy = 0
 		if(!WT.isOn())
 			return 0

@@ -538,7 +538,7 @@
 /obj/item/device/radio/attackby(obj/item/weapon/W, mob/user, params)
 	..()
 	user.set_machine(src)
-	if (!( istype(W, /obj/item/weapon/screwdriver) ))
+	if (!( istype(W, /obj/item/weapon/tool/screwdriver) ))
 		return
 	b_stat = !( b_stat )
 	if(!istype(src, /obj/item/device/radio/beacon))
@@ -586,10 +586,10 @@
 /obj/item/device/radio/borg/attackby(obj/item/weapon/W, mob/user, params)
 //	..()
 	user.set_machine(src)
-	if (!( istype(W, /obj/item/weapon/screwdriver) || (istype(W, /obj/item/device/encryptionkey/ ))))
+	if (!( istype(W, /obj/item/weapon/tool/screwdriver) || (istype(W, /obj/item/device/encryptionkey/ ))))
 		return
 
-	if(istype(W, /obj/item/weapon/screwdriver))
+	if(istype(W, /obj/item/weapon/tool/screwdriver))
 		if(keyslot)
 
 

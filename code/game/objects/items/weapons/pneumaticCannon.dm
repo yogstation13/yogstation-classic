@@ -37,7 +37,7 @@
 			return
 		updateTank(W, 0, user)
 		return
-	if(istype(W, /obj/item/weapon/wrench))
+	if(istype(W, /obj/item/weapon/tool/wrench))
 		switch(pressureSetting)
 			if(1)
 				pressureSetting = 2
@@ -47,7 +47,7 @@
 				pressureSetting = 1
 		user << "<span class='notice'>You tweak \the [src]'s pressure output to [pressureSetting].</span>"
 		return
-	if(istype(W, /obj/item/weapon/screwdriver) && tank)
+	if(istype(W, /obj/item/weapon/tool/screwdriver) && tank)
 		updateTank(tank, 1, user)
 		return
 	if(loadedWeightClass >= maxWeightClass)
@@ -109,8 +109,8 @@
 /datum/table_recipe/improvised_pneumatic_cannon //Pretty easy to obtain but
 	name = "Pneumatic Cannon"
 	result = /obj/item/weapon/pneumatic_cannon/ghetto
-	tools = list(/obj/item/weapon/weldingtool,
-				 /obj/item/weapon/wrench)
+	tools = list(/obj/item/weapon/tool/weldingtool,
+				 /obj/item/weapon/tool/wrench)
 	reqs = list(/obj/item/stack/sheet/metal = 4,
 				/obj/item/stack/packageWrap = 8,
 				/obj/item/pipe = 2)

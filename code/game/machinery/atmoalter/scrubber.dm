@@ -202,7 +202,7 @@ Power regulator: <A href='?src=\ref[src];volume_adj=-1000'>-</A> <A href='?src=\
 		icon_state = "scrubber:0"
 
 /obj/machinery/portable_atmospherics/scrubber/huge/attackby(obj/item/weapon/W, mob/user)
-	if(istype(W, /obj/item/weapon/wrench))
+	if(istype(W, /obj/item/weapon/tool/wrench))
 		if(stationary)
 			user << "<span class='warning'>The bolts are too tight for you to unscrew!</span>"
 			return

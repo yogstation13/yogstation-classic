@@ -60,10 +60,11 @@
 
 /obj/machinery/power/tracker/attackby(obj/item/weapon/W, mob/user, params)
 
-	if(istype(W, /obj/item/weapon/crowbar))
+	if(istype(W, /obj/item/weapon/tool/crowbar))
+		var/obj/item/weapon/tool/crowbar/cb = W
 		playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
 		user.visible_message("[user] begins to take the glass off the solar tracker.", "<span class='notice'>You begin to take the glass off the solar tracker...</span>")
-		if(do_after(user, 50, target = src))
+		if(do_after(user, 50 * cb.speed_coefficient, target = src))
 			var/obj/item/solar_assembly/S = locate() in src
 			if(S)
 				S.loc = src.loc
