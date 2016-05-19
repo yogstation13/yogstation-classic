@@ -14,7 +14,7 @@
 	var/efficiency = 0
 	var/productivity = 0
 	var/max_items = 40
-	var/list/datum/biogenerator_recipe/recipes_known = list()
+	var/list/datum/design/biogenerator/recipes_known = list()
 
 /obj/machinery/biogenerator/New()
 		..()
@@ -139,24 +139,25 @@
 		if(beaker)
 			var/list/sorted_recipes = list("Food" = list(), "Botany Chemicals" = list(), "Leather and Cloth" = list())
 			for(var/V in recipes_known)
-				var/datum/biogenerator_recipe/R = V
-				var/pointer = sorted_recipes[R.category]
-				if(pointer)
-					pointer += R
-				else
-					sorted_recipes += R.category
-					sorted_recipes[R.category] = list(R)
+				var/datum/design/biogenerator/R = V
+				for(var/category in R.category)
+					var/pointer = sorted_recipes[category]
+					if(pointer)
+						pointer += R
+					else
+						sorted_recipes += R.category
+						sorted_recipes[R.category] = list(R)
 			dat += "<div class='statusDisplay'>Biomass: [points] units.</div><BR>"
 			dat += "<A href='?src=\ref[src];activate=1'>Activate</A><A href='?src=\ref[src];detach=1'>Detach Container</A>"
 
 			for(var/category in sorted_recipes)
 				dat += "<h3>[category]:</h3><div class='statusDisplay'>"
 				for(var/V in sorted_recipes[category])
-					var/datum/biogenerator_recipe/R = V
+					var/datum/design/biogenerator/R = V
 					dat += "[R.name]: "
 					for(var/amt in R.possible_amounts)
 						dat += "<A href='?src=\ref[src];create=[R.name];amount=[amt]'>[amt == 1 ? "Make" : "x[amt]"]</A> "
-					dat += "([R.base_cost/efficiency])<br>"
+					dat += "([R.materials[MAT_BIOMASS]/efficiency])<br>"
 				dat += "</div>"
 		else
 			dat += "<div class='statusDisplay'>No container inside, please insert container.</div>"
@@ -213,7 +214,7 @@
 		menustat = "nobeakerspace"
 		return 1
 
-/obj/machinery/biogenerator/proc/create_product(datum/biogenerator_recipe/recipe)
+/obj/machinery/biogenerator/proc/create_product(datum/design/biogenerator/recipe)
 	if(recipe.create_item(src))
 		processing = 0
 		menustat = "complete"
@@ -228,7 +229,7 @@
 
 /obj/machinery/biogenerator/proc/get_initial_recipes()
 	var/list/L = list()
-	for(var/T in subtypesof(/datum/biogenerator_recipe) - /datum/biogenerator_recipe/reagent)
+	for(var/T in subtypesof(/datum/design/biogenerator) - abstract_designs)
 		L += new T()
 	return L
 
@@ -250,7 +251,7 @@
 		var/amount = (text2num(href_list["amount"]))
 		var/C = href_list["create"]
 		for(var/V in recipes_known)
-			var/datum/biogenerator_recipe/R = V
+			var/datum/design/biogenerator/R = V
 			if(R.name == C)
 				for(var/i=0, i<amount, i++)
 					create_product(R)

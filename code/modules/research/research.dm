@@ -55,7 +55,7 @@ research holder datum.
 /datum/research/New()		//Insert techs into possible_tech here. Known_tech automatically updated.
 	for(var/T in typesof(/datum/tech) - /datum/tech)
 		possible_tech += new T(src)
-	for(var/D in typesof(/datum/design) - /datum/design)
+	for(var/D in typesof(/datum/design) - abstract_designs)
 		possible_designs += new D(src)
 	RefreshResearch()
 
@@ -178,7 +178,7 @@ research holder datum.
 /datum/research/autolathe/New()
 	for(var/T in (typesof(/datum/tech) - /datum/tech))
 		possible_tech += new T(src)
-	for(var/path in typesof(/datum/design) - /datum/design)
+	for(var/path in typesof(/datum/design) - abstract_designs)
 		var/datum/design/D = new path(src)
 		possible_designs += D
 		if((D.build_type & AUTOLATHE) && ("initial" in D.category))  //autolathe starts without hacked designs
