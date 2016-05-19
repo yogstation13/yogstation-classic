@@ -1118,6 +1118,7 @@
 				M << "<span class='boldannounce'><BIG>You have been banned by [usr.client.ckey].\nReason: [reason]</BIG></span>"
 				M << "<span class='danger'>The broken rules were '[rules_broken]'. You should keep this information for eventual ban appeals.</span>"
 				M << "<span class='danger'>This is a temporary ban, it will be removed in [mins] minutes.</span>"
+				M << "<span class='danger'>If you need to make a account on our forums please use the codeword: assistantgreytide</span>"
 				feedback_inc("ban_tmp",1)
 				DB_ban_record(BANTYPE_TEMP, M, mins, reason)
 				feedback_inc("ban_tmp_mins",mins)
@@ -1147,6 +1148,7 @@
 				M << "<span class='boldannounce'><BIG>You have been banned by [usr.client.ckey].\nReason: [reason]</BIG></span>"
 				M << "<span class='danger'>The broken rules were '[rules_broken]'. You should keep this information for eventual ban appeals.</span>"
 				M << "<span class='danger'>This is a permanent ban.</span>"
+				M << "<span class='danger'>If you need to make a account on our forums please use the codeword: assistantgreytide</span>"
 				if(config.banappeals)
 					M << "<span class='danger'>To try to resolve this matter head to [config.banappeals]</span>"
 				else
