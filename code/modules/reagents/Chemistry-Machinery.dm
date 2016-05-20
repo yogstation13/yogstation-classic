@@ -62,16 +62,16 @@
 		qdel(src)
 
  /**
-  * The ui_interact proc is used to open and update Nano UIs
-  * If ui_interact is not used then the UI will not update correctly
-  * ui_interact is currently defined for /atom/movable
+  * The nanoui_interact proc is used to open and update Nano UIs
+  * If nanoui_interact is not used then the UI will not update correctly
+  * nanoui_interact is currently defined for /atom/movable
   *
   * @param user /mob The mob who is interacting with this ui
   * @param ui_key string A string key to use for this ui. Allows for multiple unique uis on one obj/mob (defaut value "main")
   *
   * @return nothing
   */
-/obj/machinery/chem_dispenser/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null)
+/obj/machinery/chem_dispenser/nanoui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null)
 	if(stat & (BROKEN)) return
 	if(user.stat || user.restrained()) return
 
@@ -181,7 +181,7 @@
 	if(stat & BROKEN)
 		return
 
-	ui_interact(user)
+	nanoui_interact(user)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1485,7 +1485,7 @@
 			return 1
 
 /obj/machinery/chem_heater/attack_hand(mob/user)
-	ui_interact(user)
+	nanoui_interact(user)
 
 /obj/machinery/chem_heater/Topic(href, href_list)
 	if(..())
@@ -1509,7 +1509,7 @@
 		eject_beaker()
 		. = 0 //updated in eject_beaker() already
 
-/obj/machinery/chem_heater/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null)
+/obj/machinery/chem_heater/nanoui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null)
 	if(user.stat || user.restrained()) return
 
 	ui = SSnano.push_open_or_new_ui(user, src, ui_key, ui, "chem_heater.tmpl", "ChemHeater", 350, 270, 0)
