@@ -223,73 +223,51 @@ Class Procs:
 /obj/machinery/proc/is_operational()
 	return !(stat & (NOPOWER|BROKEN|MAINT))
 
+/obj/machinery/proc/is_interactable()
+	if((stat & (NOPOWER|BROKEN)) && !interact_offline)
+		return FALSE
+	return TRUE
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 /mob/proc/canUseTopic() //TODO: once finished, place these procs on the respective mob files
 	return 0
 
-/mob/dead/observer/canUseTopic()
-	if(check_rights(R_ADMIN, 0))
-		return 0
+/obj/machinery/interact(mob/user)
+	add_fingerprint(user)
+	ui_interact(user)
 
-/mob/living/canUseTopic(atom/movable/M, be_close = 0, no_dextery = 0)
-	if(no_dextery)
-		if(be_close && in_range(M, src))
-			return 1
-	else
-		src << "<span class='warning'>You don't have the dexterity to do this!</span>"
-	return
+/obj/machinery/ui_status(mob/user)
+	if(is_interactable())
+		return ..()
+	return UI_CLOSE
 
-/mob/living/carbon/human/canUseTopic(atom/movable/M, be_close = 0)
-	if(incapacitated() || lying )
-		return 0
-	if(!Adjacent(M))
-		if((be_close == 0) && (dna.check_mutation(TK)))
-			if(tkMaxRangeCheck(src, M))
-				return 1
-		return 0
-	if(!isturf(M.loc) && M.loc != src)
-		return
-	return 1
+/obj/machinery/ui_act(action, params)
+	add_fingerprint(usr)
+	return ..()
 
-/mob/living/silicon/ai/canUseTopic(atom/movable/M, be_close = 0)
-	if(stat)
-		return 0
-	if(be_close && !in_range(M, src))
-		return 0
-	//stop AIs from leaving windows open and using then after they lose vision
-	//apc_override is needed here because AIs use their own APC when powerless
-	//get_turf_pixel() is because APCs in maint aren't actually in view of the inner camera
-	if(cameranet && !cameranet.checkTurfVis(get_turf_pixel(M)) && !apc_override)
-		return 0
-	return 1
+/obj/machinery/Topic(href, href_list)
+	..()
+	if(!is_interactable())
+		return 1
+	if(!usr.canUseTopic(src))
+		return 1
+	add_fingerprint(usr)
+	return 0
 
-/mob/living/silicon/pai/canUseTopic(atom/movable/M, be_close = 0)
-	if(stat)
-		return 0
-	if(be_close && !in_range(M, src) && !(paired == M))
-		return 0
-	return 1
 
-/mob/living/silicon/robot/canUseTopic(atom/movable/M, be_close = 0)
-	if(stat || lockcharge || stunned || weakened)
-		return 0
-	if(be_close && !in_range(M, src))
-		return 0
-	return 1
-
+////////////////////////////////////////////////////////////////////////////////////////////
 /obj/machinery/attack_ai(mob/user)
 	if(isrobot(user))
 		// For some reason attack_robot doesn't work
 		// This is to stop robots from using cameras to remotely control machines.
 		if(user.client && user.client.eye == user)
-			return src.attack_hand(user)
+			return attack_hand(user)
 	else
-		return src.attack_hand(user)
+		return attack_hand(user)
 
 /obj/machinery/attack_paw(mob/user)
-	return src.attack_hand(user)
+	return attack_hand(user)
 
 //set_machine must be 0 if clicking the machinery doesn't bring up a dialog
 /obj/machinery/attack_hand(mob/user, check_power = 1, set_machine = 1)
@@ -318,6 +296,8 @@ Class Procs:
 	src.add_fingerprint(user)
 	if(set_machine)
 		user.set_machine(src)
+	interact(user)
+	add_fingerprint(user)
 	return 0
 
 /obj/machinery/CheckParts()
@@ -379,7 +359,7 @@ Class Procs:
 	if(istype(W))
 		user << "<span class='notice'>You begin [anchored ? "un" : ""]securing [name]...</span>"
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
-		if(do_after(user, time * W.speed_coefficient, target = src))
+		if(do_after(user, time, target = src))
 			user << "<span class='notice'>You [anchored ? "un" : ""]secure [name].</span>"
 			anchored = !anchored
 			playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)

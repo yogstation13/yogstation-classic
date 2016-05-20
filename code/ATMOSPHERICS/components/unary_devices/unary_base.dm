@@ -27,7 +27,7 @@ Housekeeping and pipe network stuff below
 	node_connects.Add(dir)
 	..(node_connects)
 
-/obj/machinery/atmospherics/components/unary/default_change_direction_wrench(mob/user, obj/item/weapon/wrench/W)
+/obj/machinery/atmospherics/components/unary/default_change_direction_wrench(mob/user, obj/item/weapon/tool/wrench/W)
 	if(!..())
 		return
 	SetInitDirections()

@@ -1776,3 +1776,11 @@ B --><-- A
 				closest_distance = distance
 				closest_atom = A
 	return closest_atom
+
+
+/atom/proc/contains(var/atom/A)
+	if(!A)
+		return 0
+	for(var/atom/location = A.loc, location, location = location.loc)
+		if(location == src)
+			return 1
