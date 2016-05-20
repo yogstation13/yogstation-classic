@@ -327,6 +327,8 @@ var/list/admin_verbs_hideable = list(
 
 	remove_admin_verbs()
 	verbs += /client/proc/show_verbs
+	verbs += /client/proc/adminwho
+	verbs += /client/proc/cmd_admin_say
 
 	src << "<span class='interface'>Almost all of your adminverbs have been hidden.</span>"
 	feedback_add_details("admin_verb","TAVVH") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
