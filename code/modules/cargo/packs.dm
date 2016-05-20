@@ -36,7 +36,6 @@
 //////////////////////////////////////////////////////////////////////////////
 
 /datum/supply_packs/emergency	// Section header - use these to set default supply group and crate type for sections
-	name = "HEADER"				// Use "HEADER" to denote section headers, this is needed for the supply computers to filter them
 	containertype = /obj/structure/closet/crate/internals
 	group = "Emergency"
 
@@ -136,7 +135,6 @@
 //////////////////////////////////////////////////////////////////////////////
 
 /datum/supply_packs/security
-	name = "HEADER"
 	containertype = /obj/structure/closet/crate/secure/gear
 	access = access_security
 	group = "Security"
@@ -217,7 +215,6 @@
 ///// Armory stuff
 
 /datum/supply_packs/security/armory
-	name = "HEADER"
 	containertype = /obj/structure/closet/crate/secure/weapon
 	access = access_armory
 
@@ -389,7 +386,6 @@
 //////////////////////////////////////////////////////////////////////////////
 
 /datum/supply_packs/engineering
-	name = "HEADER"
 	group = "Engineering"
 
 
@@ -578,7 +574,6 @@
 //////////////////////////////////////////////////////////////////////////////
 
 /datum/supply_packs/medical
-	name = "HEADER"
 	containertype = /obj/structure/closet/crate/medical
 	group = "Medical"
 
@@ -703,7 +698,6 @@
 //////////////////////////////////////////////////////////////////////////////
 
 /datum/supply_packs/science
-	name = "HEADER"
 	group = "Science"
 
 
@@ -784,7 +778,6 @@
 //////////////////////////////////////////////////////////////////////////////
 
 /datum/supply_packs/organic
-	name = "HEADER"
 	group = "Food & Livestock"
 	containertype = /obj/structure/closet/crate/freezer
 
@@ -986,7 +979,6 @@
 //////////////////////////////////////////////////////////////////////////////
 
 /datum/supply_packs/materials
-	name = "HEADER"
 	group = "Raw Materials"
 
 
@@ -1038,7 +1030,6 @@
 //////////////////////////////////////////////////////////////////////////////
 
 /datum/supply_packs/misc
-	name = "HEADER"
 	group = "Miscellaneous Supplies"
 
 /datum/supply_packs/misc/mule
@@ -1202,7 +1193,7 @@
 					/obj/item/clothing/shoes/clown_shoes,
 					/obj/item/clothing/mask/gas/clown_hat,
 					/obj/item/clothing/under/rank/clown,
-					/obj/item/weapon/bikehorn,
+					/obj/item/device/assembly/bikehorn,
 					/obj/item/clothing/under/rank/mime,
 					/obj/item/clothing/shoes/sneakers/black,
 					/obj/item/clothing/gloves/color/white,

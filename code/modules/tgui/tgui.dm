@@ -325,7 +325,7 @@
   * optional force_open bool If force_open should be passed to ui_interact.
  **/
 /datum/tgui/proc/update(force_open = 0)
-	src_object.tgui_interact(user, ui_key, src, force_open, master_ui, state)
+	src_object.ui_interact(user, ui_key, src, force_open, master_ui, state)
 
  /**
   * private
@@ -335,7 +335,8 @@
   * optional push bool Push an update to the UI (an update is always sent for UI_DISABLED).
  **/
 /datum/tgui/proc/update_status(push = 0)
-	var/status = src_object.ui_status(user, state)
+	var/obj/host = src_object.ui_host()
+	var/status = host.ui_status(user, state)
 	if(master_ui)
 		status = min(status, master_ui.status)
 

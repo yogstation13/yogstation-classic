@@ -192,14 +192,14 @@
 			return
 
 	if(!shorted)
-		ui_interact(user)
+		nanoui_interact(user)
 
 	if(panel_open && (!istype(user, /mob/living/silicon/ai)))
 		wires.Interact(user)
 
 	return
 
-/obj/machinery/alarm/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null)
+/obj/machinery/alarm/nanoui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null)
 	if(stat & (BROKEN|NOPOWER))
 		return
 

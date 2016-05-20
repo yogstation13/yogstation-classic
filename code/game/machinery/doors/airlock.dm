@@ -516,7 +516,7 @@ About the new airlock wires panel:
 		user << "<span class='warning'>Unable to interface. Airlock control panel damaged.</span>"
 		return
 
-	ui_interact(user)
+	nanoui_interact(user)
 
 /obj/machinery/door/airlock/proc/set_perms(mob/user as mob)
 	//inorix: code to allow silicons to set airlock permissions for newly placed airlocks
@@ -563,7 +563,7 @@ About the new airlock wires panel:
 		popup.open()
 		onclose(user, "airlock")
 
-/obj/machinery/door/airlock/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null)
+/obj/machinery/door/airlock/nanoui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null)
 	if(!user)
 		return
 

@@ -235,7 +235,7 @@ Class Procs:
 
 /obj/machinery/interact(mob/user)
 	add_fingerprint(user)
-	tgui_interact(user)
+	ui_interact(user)
 
 /obj/machinery/ui_status(mob/user)
 	if(is_interactable())

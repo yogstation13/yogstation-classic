@@ -413,7 +413,7 @@ nanoui is used to open and update nano browser uis
 		return
 
 	if (status && (update || is_auto_updating))
-		src_object.ui_interact(user, ui_key, src) // Update the UI (update_status() is called whenever a UI is updated)
+		src_object.nanoui_interact(user, ui_key, src) // Update the UI (update_status() is called whenever a UI is updated)
 	else
 		update_status(1) // Not updating UI, so lets check here if status has changed
 

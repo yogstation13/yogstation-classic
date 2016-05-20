@@ -93,7 +93,7 @@ Passive gate is similar to the regular pump except:
 
 	return 1
 
-/obj/machinery/atmospherics/components/binary/passive_gate/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null)
+/obj/machinery/atmospherics/components/binary/passive_gate/nanoui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null)
 	if(stat & (BROKEN|NOPOWER))
 		return
 
@@ -153,7 +153,7 @@ Passive gate is similar to the regular pump except:
 		user << "<span class='danger'>Access denied.</span>"
 		return
 	usr.set_machine(src)
-	ui_interact(user)
+	nanoui_interact(user)
 	return
 
 /obj/machinery/atmospherics/components/binary/passive_gate/Topic(href,href_list)

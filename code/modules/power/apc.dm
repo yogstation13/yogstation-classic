@@ -660,7 +660,7 @@
 		wires.Interact(user)
 		return
 
-	return ui_interact(user)
+	return nanoui_interact(user)
 
 
 /obj/machinery/power/apc/proc/get_malf_status(mob/user)
@@ -678,7 +678,7 @@
 		return 0 // 0 = User is not a Malf AI
 
 
-/obj/machinery/power/apc/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null)
+/obj/machinery/power/apc/nanoui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null)
 	if(!user)
 		return
 
