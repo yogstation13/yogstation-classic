@@ -498,3 +498,22 @@
 	throw_range = 3
 	materials = list(MAT_METAL=70)
 	icon_state = "crowbar_large"
+
+/obj/item/weapon/tool/screwdriver/syndicate
+	speed_coefficient = 0.7
+/obj/item/weapon/tool/screwdriver/syndicate/New(location)
+	..(location, "red")
+
+/obj/item/weapon/tool/wirecutters/syndicate
+	speed_coefficient = 0.7
+/obj/item/weapon/tool/wirecutters/syndicate/New(location)
+	..(location, "red")
+
+/obj/item/weapon/tool/wrench/syndicate
+	speed_coefficient = 0.7
+
+/obj/item/weapon/tool/weldingtool/largetank/syndicate
+	speed_coefficient = 0.7
+
+/obj/item/weapon/tool/crowbar/red/syndicate
+	speed_coefficient = 0.7
