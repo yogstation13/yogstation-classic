@@ -266,15 +266,16 @@
 	return
 
 /obj/machinery/atmospherics/components/unary/vent_pump/attackby(obj/item/W, mob/user, params)
-	if (istype(W, /obj/item/weapon/wrench)&& !(stat & NOPOWER) && on)
+	if (istype(W, /obj/item/weapon/tool/wrench)&& !(stat & NOPOWER) && on)
 		user << "<span class='warning'>You cannot unwrench this [src], turn it off first!</span>"
 		return 1
-	if(istype(W, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/WT = W
+	if(istype(W, /obj/item/weapon/tool/weldingtool))
+		var/obj/item/weapon/tool/weldingtool/WT = W
 		if (WT.remove_fuel(0,user))
 			playsound(loc, 'sound/items/Welder.ogg', 40, 1)
 			user << "<span class='notice'>You begin welding the vent...</span>"
-			if(do_after(user, 20, target = src))
+			var/obj/item/weapon/tool/wrench/wrench = W
+			if(do_after(user, 20 * wrench.speed_coefficient, target = src))
 				if(!src || !WT.isOn()) return
 				playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
 				if(!welded)

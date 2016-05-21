@@ -106,6 +106,7 @@ var/list/gang_colors_pool = list("red","orange","yellow","green","blue","purple"
 	var/obj/item/device/gangtool/gangtool = new(mob)
 	var/obj/item/weapon/pen/gang/T = new(mob)
 	var/obj/item/toy/crayon/spraycan/gang/SC = new(mob,gang)
+	var/obj/item/clothing/glasses/hud/security/chameleon/C = new(mob,gang)
 
 	var/list/slots = list (
 		"backpack" = slot_in_backpack,
@@ -139,8 +140,14 @@ var/list/gang_colors_pool = list("red","orange","yellow","green","blue","purple"
 		. += 1
 	else
 		mob << "The <b>territory spraycan</b> in your [where3] can be used to claim areas of the station for your gang. The more territory your gang controls, the more influence you get. All gangsters can use these, so distribute them to grow your influence faster."
-	mob.update_icons()
 
+	var/where4 = mob.equip_in_one_of_slots(C, slots)
+	if (!where4)
+		mob << "Your Syndicate benefactors were unfortunately unable to get you a chameleon security HUD."
+		. += 1
+	else
+		mob << "The <b>chameleon security HUD</b> in your [where4] will help you keep track of who is loyalty-implanted, and unable to be recruited."
+	mob.update_icons()
 	return .
 
 
@@ -167,6 +174,7 @@ var/list/gang_colors_pool = list("red","orange","yellow","green","blue","purple"
 	gangster_mind.current.attack_log += "\[[time_stamp()]\] <font color='red'>Has been converted to the [G.name] Gang!</font>"
 	log_attack("[gangster_mind.current]([gangster_mind.key]) has been recruited into the [G.name] Gang!")
 	gangster_mind.special_role = "[G.name] Gangster"
+	gangster_mind.store_memory("You are a member of the [G.name] Gang!")
 	G.add_gang_hud(gangster_mind)
 	return 2
 ////////////////////////////////////////////////////////////////////
@@ -207,7 +215,7 @@ var/list/gang_colors_pool = list("red","orange","yellow","green","blue","purple"
 				gangster_mind.current.Paralyse(5)
 				gangster_mind.current.visible_message("<FONT size=3><B>[gangster_mind.current] looks like they've given up the life of crime!<B></font>")
 			gangster_mind.current << "<FONT size=3 color=red><B>You have been reformed! You are no longer a gangster!</B><BR>You try as hard as you can, but you can't seem to recall any of the identities of your former gangsters...</FONT>"
-
+			gangster_mind.memory = ""
 	gang.remove_gang_hud(gangster_mind)
 	return 1
 
@@ -243,7 +251,7 @@ var/list/gang_colors_pool = list("red","orange","yellow","green","blue","purple"
 /datum/game_mode/proc/auto_declare_completion_gang(datum/gang/winner)
 	if(gangs.len)
 		if(!winner)
-			world << "<FONT size=3 color=red><B>The station was [station_was_nuked ? "destroyed!" : "evacuated before a gang could claim it! The station wins!"]</B></FONT><br>"
+			world << "<FONT size=3 color=red><B>The station was [station_was_nuked ? "destroyed!" : "evacuated before a gang could claim it! The loyalists win!"]</B></FONT><br>"
 		else
 			world << "<FONT size=3 color=red><B>The [winner.name] Gang successfully performed a hostile takeover of the station!</B></FONT><br>"
 

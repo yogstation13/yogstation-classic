@@ -137,7 +137,7 @@
 		tablepush(I, user)
 		return
 
-	if (istype(I, /obj/item/weapon/screwdriver))
+	if (istype(I, /obj/item/weapon/tool/screwdriver))
 		if(istype(src, /obj/structure/table/reinforced))
 			var/obj/structure/table/reinforced/RT = src
 			if(RT.status == 1)
@@ -147,7 +147,7 @@
 			table_destroy(2, user)
 			return
 
-	if (istype(I, /obj/item/weapon/wrench))
+	if (istype(I, /obj/item/weapon/tool/wrench))
 		if(istype(src, /obj/structure/table/reinforced))
 			var/obj/structure/table/reinforced/RT = src
 			if(RT.status == 1)
@@ -319,20 +319,20 @@
 	canSmoothWith = list(/obj/structure/table/reinforced, /obj/structure/table)
 
 /obj/structure/table/reinforced/attackby(obj/item/weapon/W, mob/user, params)
-	if (istype(W, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/WT = W
+	if (istype(W, /obj/item/weapon/tool/weldingtool))
+		var/obj/item/weapon/tool/weldingtool/WT = W
 		if(WT.remove_fuel(0, user))
 			if(src.status == 2)
 				user << "<span class='notice'>You start weakening the reinforced table...</span>"
 				playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
-				if (do_after(user, 50, target = src))
+				if (do_after(user, 50 * WT.speed_coefficient, target = src))
 					if(!src || !WT.isOn()) return
 					user << "<span class='notice'>You weaken the table.</span>"
 					src.status = 1
 			else
 				user << "<span class='notice'>You start strengthening the reinforced table...</span>"
 				playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
-				if (do_after(user, 50, target = src))
+				if (do_after(user, 50 * WT.speed_coefficient, target = src))
 					if(!src || !WT.isOn()) return
 					user << "<span class='notice'>You strengthen the table.</span>"
 					src.status = 2
@@ -410,7 +410,7 @@
 	return
 
 /obj/structure/rack/attackby(obj/item/weapon/W, mob/user, params)
-	if (istype(W, /obj/item/weapon/wrench))
+	if (istype(W, /obj/item/weapon/tool/wrench))
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 		rack_destroy()
 		return
@@ -485,7 +485,7 @@
 
 /obj/item/weapon/rack_parts/attackby(obj/item/weapon/W, mob/user, params)
 	..()
-	if (istype(W, /obj/item/weapon/wrench))
+	if (istype(W, /obj/item/weapon/tool/wrench))
 		new /obj/item/stack/sheet/metal( user.loc )
 		qdel(src)
 		return

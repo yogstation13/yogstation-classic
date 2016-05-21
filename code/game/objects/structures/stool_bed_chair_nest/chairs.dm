@@ -89,7 +89,7 @@
 	desc = "Old is never too old to not be in fashion."
 
 /obj/structure/stool/bed/chair/wood/attackby(obj/item/weapon/W, mob/user, params)
-	if(istype(W, /obj/item/weapon/wrench))
+	if(istype(W, /obj/item/weapon/tool/wrench))
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 		new /obj/item/stack/sheet/mineral/wood(src.loc)
 		qdel(src)

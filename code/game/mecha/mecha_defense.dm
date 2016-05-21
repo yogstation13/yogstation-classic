@@ -218,7 +218,7 @@
 				user << "<span class='warning'>Invalid ID: Access denied.</span>"
 		else
 			user << "<span class='warning'>Maintenance protocols disabled by operator.</span>"
-	else if(istype(W, /obj/item/weapon/wrench))
+	else if(istype(W, /obj/item/weapon/tool/wrench))
 		if(state==1)
 			state = 2
 			user << "<span class='notice'>You undo the securing bolts.</span>"
@@ -226,7 +226,7 @@
 			state = 1
 			user << "<span class='notice'>You tighten the securing bolts.</span>"
 		return
-	else if(istype(W, /obj/item/weapon/crowbar))
+	else if(istype(W, /obj/item/weapon/tool/crowbar))
 		if(state==2)
 			state = 3
 			user << "<span class='notice'>You open the hatch to the power unit.</span>"
@@ -243,7 +243,7 @@
 			else
 				user << "<span class='warning'>You need two lengths of cable to fix this mech!</span>"
 		return
-	else if(istype(W, /obj/item/weapon/screwdriver))
+	else if(istype(W, /obj/item/weapon/tool/screwdriver))
 		if(internal_damage & MECHA_INT_TEMP_CONTROL)
 			clearInternalDamage(MECHA_INT_TEMP_CONTROL)
 			user << "<span class='notice'>You repair the damaged temperature controller.</span>"
@@ -274,9 +274,9 @@
 				user << "<span class='notice'>There's already a powercell installed.</span>"
 		return
 
-	else if(istype(W, /obj/item/weapon/weldingtool) && user.a_intent != "harm")
+	else if(istype(W, /obj/item/weapon/tool/weldingtool) && user.a_intent != "harm")
 		user.changeNext_move(CLICK_CD_MELEE)
-		var/obj/item/weapon/weldingtool/WT = W
+		var/obj/item/weapon/tool/weldingtool/WT = W
 		if(src.health<initial(src.health))
 			if (WT.remove_fuel(0,user))
 				if (internal_damage & MECHA_INT_TANK_BREACH)

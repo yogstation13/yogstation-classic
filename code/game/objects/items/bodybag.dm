@@ -55,7 +55,7 @@
 		else
 			name = "body bag"
 		return
-	else if(istype(I, /obj/item/weapon/wirecutters))
+	else if(istype(I, /obj/item/weapon/tool/wirecutters))
 		user << "<span class='notice'>You cut the tag off [src].</span>"
 		name = "body bag"
 		tagged = 0

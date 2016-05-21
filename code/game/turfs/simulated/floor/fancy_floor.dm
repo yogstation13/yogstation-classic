@@ -12,7 +12,7 @@
 /turf/simulated/floor/wood/attackby(obj/item/C, mob/user, params)
 	if(..())
 		return
-	if(istype(C, /obj/item/weapon/screwdriver))
+	if(istype(C, /obj/item/weapon/tool/screwdriver))
 		if(broken || burnt)
 			return
 		user << "<span class='danger'>You unscrew the planks.</span>"

@@ -96,7 +96,7 @@
 		else
 			user << "<span class='warning'>Both devices must be in attachable mode to be attached together.</span>"
 		return
-	if(istype(W, /obj/item/weapon/screwdriver))
+	if(istype(W, /obj/item/weapon/tool/screwdriver))
 		if(toggle_secure())
 			user << "<span class='notice'>\The [src] is ready!</span>"
 		else

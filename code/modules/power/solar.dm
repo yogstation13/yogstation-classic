@@ -57,10 +57,11 @@
 
 /obj/machinery/power/solar/attackby(obj/item/weapon/W, mob/user, params)
 
-	if(istype(W, /obj/item/weapon/crowbar))
+	if(istype(W, /obj/item/weapon/tool/crowbar))
 		playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
 		user.visible_message("[user] begins to take the glass off the solar panel.", "<span class='notice'>You begin to take the glass off the solar panel...</span>")
-		if(do_after(user, 50, target = src))
+		var/obj/item/weapon/tool/crowbar/cb = W
+		if(do_after(user, 50 * cb.speed_coefficient, target = src))
 			var/obj/item/solar_assembly/S = locate() in src
 			if(S)
 				S.loc = src.loc
@@ -223,7 +224,7 @@
 
 /obj/item/solar_assembly/attackby(obj/item/weapon/W, mob/user, params)
 
-	if(istype(W, /obj/item/weapon/wrench) && isturf(loc))
+	if(istype(W, /obj/item/weapon/tool/wrench) && isturf(loc))
 		if(isinspace())
 			user << "<span class='warning'>You can't secure [src] here.</span>"
 			return
@@ -263,7 +264,7 @@
 			user.visible_message("[user] inserts the electronics into the solar assembly.", "<span class='notice'>You insert the electronics into the solar assembly.</span>")
 			return 1
 	else
-		if(istype(W, /obj/item/weapon/crowbar))
+		if(istype(W, /obj/item/weapon/tool/crowbar))
 			new /obj/item/weapon/tracker_electronics(src.loc)
 			tracker = 0
 			user.visible_message("[user] takes out the electronics from the solar assembly.", "<span class='notice'>You take out the electronics from the solar assembly.</span>")
@@ -393,9 +394,10 @@
 	return data
 
 /obj/machinery/power/solar_control/attackby(obj/I, mob/user, params)
-	if(istype(I, /obj/item/weapon/screwdriver))
+	if(istype(I, /obj/item/weapon/tool/screwdriver))
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
-		if(do_after(user, 20, target = src))
+		var/obj/item/weapon/tool/screwdriver/sd = I
+		if(do_after(user, 20 * sd.speed_coefficient, target = src))
 			if (src.stat & BROKEN)
 				user << "<span class='notice'>The broken glass falls out.</span>"
 				var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )

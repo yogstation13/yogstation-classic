@@ -237,7 +237,7 @@
 		return
 
 	if(panel_open)
-		if(istype(I, /obj/item/weapon/crowbar))
+		if(istype(I, /obj/item/weapon/tool/crowbar))
 			if(beaker)
 				var/obj/item/weapon/reagent_containers/glass/B = beaker
 				B.loc = loc
@@ -616,7 +616,7 @@
 		return
 
 	if(panel_open)
-		if(istype(B, /obj/item/weapon/crowbar))
+		if(istype(B, /obj/item/weapon/tool/crowbar))
 			default_deconstruction_crowbar(B)
 			return 1
 		else
@@ -940,7 +940,7 @@
 		src.updateUsrDialog()
 		icon_state = "mixer1"
 
-	else if(istype(I, /obj/item/weapon/screwdriver))
+	else if(istype(I, /obj/item/weapon/tool/screwdriver))
 		if(src.beaker)
 			beaker.loc = get_turf(src)
 		..()
@@ -1479,7 +1479,7 @@
 		return
 
 	if(panel_open)
-		if(istype(I, /obj/item/weapon/crowbar))
+		if(istype(I, /obj/item/weapon/tool/crowbar))
 			eject_beaker()
 			default_deconstruction_crowbar(I)
 			return 1

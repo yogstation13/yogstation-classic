@@ -34,7 +34,7 @@ LINEN BINS
 	return
 
 /obj/item/weapon/bedsheet/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/weapon/wirecutters) || istype(I, /obj/item/weapon/shard))
+	if(istype(I, /obj/item/weapon/tool/wirecutters) || istype(I, /obj/item/weapon/shard))
 		new /obj/item/stack/medical/gauze/improvised(src.loc)
 		qdel(src)
 		user << "<span class='notice'>You tear [src] up.</span>"

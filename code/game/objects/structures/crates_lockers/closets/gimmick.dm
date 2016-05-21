@@ -121,6 +121,6 @@
 	new /obj/item/clothing/mask/breath(src)
 	new /obj/item/clothing/head/helmet/space/nasavoid(src)
 	new /obj/item/clothing/suit/space/nasavoid(src)
-	new /obj/item/weapon/crowbar(src)
+	new /obj/item/weapon/tool/crowbar(src)
 	new /obj/item/weapon/stock_parts/cell(src)
 	new /obj/item/device/multitool(src)

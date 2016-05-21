@@ -287,7 +287,7 @@
 /obj/item/weapon/storage/backpack/satchel_flat/New()
 	..()
 	new /obj/item/stack/tile/plasteel(src)
-	new /obj/item/weapon/crowbar(src)
+	new /obj/item/weapon/tool/crowbar(src)
 
 /obj/item/weapon/storage/backpack/dufflebag
 	name = "dufflebag"
@@ -425,7 +425,7 @@
 	new /obj/item/weapon/storage/bag/ore(src)
 	new /obj/item/weapon/shovel/spade(src)
 	new /obj/item/weapon/pickaxe(src)
-	new /obj/item/weapon/screwdriver(src)
+	new /obj/item/weapon/tool/screwdriver(src)
 	var/obj/item/weapon/card/id/point_card = new /obj/item/weapon/card/id(src)
 	var/datum/job/mining/M = new /datum/job/mining
 	point_card.access = M.get_access()

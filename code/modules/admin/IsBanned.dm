@@ -38,7 +38,7 @@
 				if(text2num(duration) > 0)
 					expires = " The ban is for [duration] minutes and expires on [expiration] (server time)."
 
-				var/desc = "\nReason: You, or another user of this computer or connection ([pckey]) is banned from playing here. The ban reason is:\n[reason]\nThis ban was applied by [ackey] on [bantime], [expires]"
+				var/desc = "\nReason: You, or another user of this computer or connection ([pckey]) is banned from playing here. The ban reason is:\n[reason]\nThis ban was applied by [ackey] on [bantime], [expires].\nIf you wish to register an account on the forums please use the keyword: assistantgreytide"
 
 				return list("reason"="[bantype]", "desc"="[desc]")
 
@@ -104,7 +104,7 @@
 			if(text2num(duration) > 0)
 				expires = " The ban is for [duration] minutes and expires on [expiration] (server time)."
 
-			var/desc = "\nReason: You, or another user of this computer or connection ([pckey]) is banned from playing here. The ban reason is:\n[reason]\nThis ban was applied by [ackey] on [bantime], [expires]"
+			var/desc = "\nReason: You, or another user of this computer or connection ([pckey]) is banned from playing here. The ban reason is:\n[reason]\nThis ban was applied by [ackey] on [bantime], [expires].\nIf you wish to register an account on the forums please use the keyword: assistantgreytide"
 
 			return list("reason"="[bantype]", "desc"="[desc]")
 		return ..()	//default pager ban stuff

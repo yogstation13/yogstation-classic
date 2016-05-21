@@ -34,8 +34,8 @@ var/global/list/datum/stack_recipe/rod_recipes = list ( \
 		icon_state = "rods"
 
 /obj/item/stack/rods/attackby(obj/item/W, mob/user, params)
-	if (istype(W, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/WT = W
+	if (istype(W, /obj/item/weapon/tool/weldingtool))
+		var/obj/item/weapon/tool/weldingtool/WT = W
 
 		if(get_amount() < 2)
 			user << "<span class='warning'>You need at least two rods to do this!</span>"

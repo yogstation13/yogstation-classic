@@ -20,7 +20,6 @@
 	power_channel = EQUIP
 	var/obj/item/weapon/paper/copy = null	//what's in the copier!
 	var/obj/item/weapon/photo/photocopy = null
-	var/obj/item/documents/doccopy = null
 	var/copies = 1	//how many copies to print!
 	var/toner = 40 //how much toner is left! woooooo~
 	var/maxcopies = 10	//how many copies can be copied at once- idea shamelessly stolen from bs12's copier!
@@ -38,7 +37,7 @@
 	user.set_machine(src)
 
 	var/dat = "Photocopier<BR><BR>"
-	if(copy || photocopy || doccopy || (ass && (ass.loc == src.loc)))
+	if(copy || photocopy || (ass && (ass.loc == src.loc)))
 		dat += "<a href='byond://?src=\ref[src];remove=1'>Remove Paper</a><BR>"
 		if(toner)
 			dat += "<a href='byond://?src=\ref[src];copy=1'>Copy</a><BR>"
@@ -117,17 +116,6 @@
 					busy = 0
 				else
 					break
-		else if(doccopy)
-			for(var/i = 0, i < copies, i++)
-				if(toner > 5 && !busy && doccopy)
-					new /obj/item/documents/photocopy(src.loc)
-					toner-= 6 // the sprite shows 6 papers, yes I checked
-					busy = 1
-					sleep(15)
-					busy = 0
-				else
-					break
-			updateUsrDialog()
 		else if(ass) //ASS COPY. By Miauw
 			for(var/i = 0, i < copies, i++)
 				var/icon/temp_img
@@ -184,17 +172,6 @@
 			usr << "<span class='notice'>You take [photocopy] out of [src].</span>"
 			photocopy = null
 			updateUsrDialog()
-		else if (doccopy)
-			if(!istype(usr,/mob/living/silicon/ai))
-				doccopy.loc = usr.loc
-				doccopy = null
-				usr.put_in_hands(doccopy)
-			else
-				doccopy.loc = src.loc
-				doccopy = null
-			usr << "<span class='notice'>You take [doccopy] out of [src].</span>"
-			photocopy = null
-			updateUsrDialog()
 		else if(check_ass())
 			ass << "<span class='notice'>You feel a slight pressure on your ass.</span>"
 	else if(href_list["min"])
@@ -243,19 +220,16 @@
 			greytoggle = "Greyscale"
 		updateUsrDialog()
 
-/obj/machinery/photocopier/proc/do_insertion(obj/item/O, mob/user)
-		O.loc = src
-		user << "<span class='notice'>You insert [O] into [src].</span>"
-		flick("photocopier1", src)
-		updateUsrDialog()
-
 /obj/machinery/photocopier/attackby(obj/item/O, mob/user, params)
 	if(istype(O, /obj/item/weapon/paper))
 		if(copier_empty())
 			if(!user.drop_item())
 				return
 			copy = O
-			do_insertion(O)
+			O.loc = src
+			user << "<span class='notice'>You insert [O] into [src].</span>"
+			flick("bigscanner1", src)
+			updateUsrDialog()
 		else
 			user << "<span class='warning'>There is already something in [src]!</span>"
 
@@ -264,16 +238,10 @@
 			if(!user.drop_item())
 				return
 			photocopy = O
-			do_insertion(O)
-		else
-			user << "<span class='warning'>There is already something in [src]!</span>"
-
-	else if(istype(O, /obj/item/documents))
-		if(copier_empty())
-			if(!user.drop_item())
-				return
-			doccopy = O
-			do_insertion(O)
+			O.loc = src
+			user << "<span class='notice'>You insert [O] into [src].</span>"
+			flick("bigscanner1", src)
+			updateUsrDialog()
 		else
 			user << "<span class='warning'>There is already something in [src]!</span>"
 
@@ -288,17 +256,23 @@
 		else
 			user << "<span class='warning'>This cartridge is not yet ready for replacement! Use up the rest of the toner.</span>"
 
-	else if(istype(O, /obj/item/weapon/wrench))
+	else if(istype(O, /obj/item/weapon/tool/wrench))
 		if(isinspace())
 			user << "<span class='warning'>There's nothing to fasten [src] to!</span>"
 			return
 		playsound(loc, 'sound/items/Ratchet.ogg', 50, 1)
 		user << "<span class='warning'>You start [anchored ? "unwrenching" : "wrenching"] [src]...</span>"
-		if(do_after(user, 20, target = src))
-			if(qdeleted(src))
+		var/obj/item/weapon/tool/wrench/wrench = O
+		if(do_after(user, 20 * wrench.speed_coefficient, target = src))
+			if(gc_destroyed)
 				return
 			user << "<span class='notice'>You [anchored ? "unwrench" : "wrench"] [src].</span>"
 			anchored = !anchored
+
+	else if(istype(O, /obj/item/weapon/grab)) //For ass-copying.
+		var/obj/item/weapon/grab/G = O
+		if(ismob(G.affecting) && G.affecting != ass)
+			MouseDrop_T(G.affecting, user)
 
 /obj/machinery/photocopier/ex_act(severity, target)
 	switch(severity)
@@ -337,7 +311,7 @@
 		user.visible_message("<span class='warning'>[user] starts putting [target] onto the photocopier!</span>", "<span class='notice'>You start putting [target] onto the photocopier...</span>")
 
 	if(do_after(user, 20, target = src))
-		if(!target || qdeleted(target) || qdeleted(src) || !Adjacent(target)) //check if the photocopier/target still exists.
+		if(!target || target.gc_destroyed || gc_destroyed || !Adjacent(target)) //check if the photocopier/target still exists.
 			return
 
 		if(target == user)
@@ -375,7 +349,7 @@
 		return 1
 
 /obj/machinery/photocopier/proc/copier_blocked()
-	if(qdeleted(src))
+	if(gc_destroyed)
 		return
 	if(loc.density)
 		return 1

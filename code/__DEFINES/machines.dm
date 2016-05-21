@@ -21,4 +21,5 @@
 #define	AUTOLATHE	4	//Uses glass/metal only.
 #define PARTLATHE	8	//Uses glass/metal only.
 #define MECHFAB		16 //Remember, objects utilising this flag should have construction_time and construction_cost vars.
+#define BIOGENERATOR 32 //uses biomass only.
 //Note: More then one of these can be added to a design but imprinter and lathe designs are incompatable.

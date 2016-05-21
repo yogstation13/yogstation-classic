@@ -11,7 +11,7 @@ var/savefile/Banlist
 	. = list()
 	var/appeal
 	if(config && config.banappeals)
-		appeal = "\nFor more information on your ban, or to appeal, head to <a href='[config.banappeals]'>[config.banappeals]</a>"
+		appeal = "\nFor more information on your ban, or to appeal, head to <a href='[config.banappeals]'>[config.banappeals].\nIf you need to register an account on the forums please use the keyword: assistantgreytide</a>"
 	Banlist.cd = "/base"
 	if( "[ckey][id]" in Banlist.dir )
 		Banlist.cd = "[ckey][id]"

@@ -13,32 +13,34 @@
 /obj/structure/AIcore/attackby(obj/item/P, mob/user, params)
 	switch(state)
 		if(0)
-			if(istype(P, /obj/item/weapon/wrench))
+			if(istype(P, /obj/item/weapon/tool/wrench))
 				playsound(loc, 'sound/items/Ratchet.ogg', 50, 1)
 				user << "<span class='notice'>You start wrenching the frame into place...</span>"
-				if(do_after(user, 20, target = src))
+				var/obj/item/weapon/tool/wrench/wrench = P
+				if(do_after(user, 20 * wrench.speed_coefficient, target = src))
 					user << "<span class='notice'>You wrench the frame into place.</span>"
 					adm_action_log.enqueue("[gameTimestamp()] ([user] - [user] - [src]): wrenched into place")
 					anchored = 1
 					state = 1
-			if(istype(P, /obj/item/weapon/weldingtool))
-				var/obj/item/weapon/weldingtool/WT = P
+			if(istype(P, /obj/item/weapon/tool/weldingtool))
+				var/obj/item/weapon/tool/weldingtool/WT = P
 				if(!WT.isOn())
 					user << "<span class='warning'>The welder must be on for this task!</span>"
 					return
 				playsound(loc, 'sound/items/Welder.ogg', 50, 1)
 				user << "<span class='notice'>You start to deconstruct the frame...</span>"
-				if(do_after(user, 20, target = src))
+				if(do_after(user, 20 * WT.speed_coefficient, target = src))
 					if(!src || !WT.remove_fuel(0, user)) return
 					user << "<span class='notice'>You deconstruct the frame.</span>"
 					adm_action_log.enqueue("[gameTimestamp()] ([user] - [user] - [src]): frame deconstructed")
 					new /obj/item/stack/sheet/plasteel( loc, 4)
 					qdel(src)
 		if(1)
-			if(istype(P, /obj/item/weapon/wrench))
+			if(istype(P, /obj/item/weapon/tool/wrench))
 				playsound(loc, 'sound/items/Ratchet.ogg', 50, 1)
 				user << "<span class='notice'>You start to unfasten the frame...</span>"
-				if(do_after(user, 20, target = src))
+				var/obj/item/weapon/tool/wrench/wrench = P
+				if(do_after(user, 20 * wrench.speed_coefficient, target = src))
 					user << "<span class='notice'>You unfasten the frame.</span>"
 					adm_action_log.enqueue("[gameTimestamp()] ([user] - [user] - [src]): frame unfastened")
 					anchored = 0
@@ -52,13 +54,13 @@
 				icon_state = "1"
 				circuit = P
 				P.loc = src
-			if(istype(P, /obj/item/weapon/screwdriver) && circuit)
+			if(istype(P, /obj/item/weapon/tool/screwdriver) && circuit)
 				playsound(loc, 'sound/items/Screwdriver.ogg', 50, 1)
 				user << "<span class='notice'>You screw the circuit board into place.</span>"
 				adm_action_log.enqueue("[gameTimestamp()] ([user] - [user] - [src]): circuit board screwed in")
 				state = 2
 				icon_state = "2"
-			if(istype(P, /obj/item/weapon/crowbar) && circuit)
+			if(istype(P, /obj/item/weapon/tool/crowbar) && circuit)
 				playsound(loc, 'sound/items/Crowbar.ogg', 50, 1)
 				user << "<span class='notice'>You remove the circuit board.</span>"
 				adm_action_log.enqueue("[gameTimestamp()] ([user] - [user] - [src]): circuit board removed")
@@ -67,7 +69,7 @@
 				circuit.loc = loc
 				circuit = null
 		if(2)
-			if(istype(P, /obj/item/weapon/screwdriver) && circuit)
+			if(istype(P, /obj/item/weapon/tool/screwdriver) && circuit)
 				playsound(loc, 'sound/items/Screwdriver.ogg', 50, 1)
 				user << "<span class='notice'>You unfasten the circuit board.</span>"
 				adm_action_log.enqueue("[gameTimestamp()] ([user] - [user] - [src]): circuit board unfastened")
@@ -89,7 +91,7 @@
 					user << "<span class='warning'>You need five lengths of cable to wire the AI core!</span>"
 					return
 		if(3)
-			if(istype(P, /obj/item/weapon/wirecutters))
+			if(istype(P, /obj/item/weapon/tool/wirecutters))
 				if (brain)
 					user << "<span class='warning'>Get that brain out of there first!</span>"
 				else
@@ -162,10 +164,6 @@
 					user << "<span class='warning'>This MMI does not seem to fit!</span>"
 					return
 
-				if(M.syndiemmi)
-					user << "<span class='warning'>This MMI does not seem to fit!</span>"
-					return
-
 				if(!M.brainmob.mind)
 					user << "<span class='warning'>This MMI is mindless!</span>"
 					return
@@ -183,7 +181,7 @@
 				adm_action_log.enqueue("[gameTimestamp()] ([user] - [user] - [src]): added a brain")
 				icon_state = "3b"
 
-			if(istype(P, /obj/item/weapon/crowbar) && brain)
+			if(istype(P, /obj/item/weapon/tool/crowbar) && brain)
 				playsound(loc, 'sound/items/Crowbar.ogg', 50, 1)
 				user << "<span class='notice'>You remove the brain.</span>"
 				adm_action_log.enqueue("[gameTimestamp()] ([user] - [user] - [src]): brain removed")
@@ -192,7 +190,7 @@
 				icon_state = "3"
 
 		if(4)
-			if(istype(P, /obj/item/weapon/crowbar))
+			if(istype(P, /obj/item/weapon/tool/crowbar))
 				playsound(loc, 'sound/items/Crowbar.ogg', 50, 1)
 				user << "<span class='notice'>You remove the glass panel.</span>"
 				adm_action_log.enqueue("[gameTimestamp()] ([user] - [user] - [src]): glass panel removed")
@@ -204,7 +202,7 @@
 				new /obj/item/stack/sheet/rglass(loc, 2)
 				return
 
-			if(istype(P, /obj/item/weapon/screwdriver))
+			if(istype(P, /obj/item/weapon/tool/screwdriver))
 				playsound(loc, 'sound/items/Screwdriver.ogg', 50, 1)
 				user << "<span class='notice'>You connect the monitor.</span>"
 				adm_action_log.enqueue("[gameTimestamp()] ([user] - [user] - [src]): monitor connected")
@@ -224,18 +222,19 @@
 /obj/structure/AIcore/deactivated/attackby(obj/item/A, mob/user, params)
 	if(istype(A, /obj/item/device/aicard))//Is it?
 		A.transfer_ai("INACTIVE","AICARD",src,user)
-	if(istype(A, /obj/item/weapon/wrench))
+	if(istype(A, /obj/item/weapon/tool/wrench))
 		playsound(loc, 'sound/items/Ratchet.ogg', 50, 1)
 		user.visible_message("[user] [anchored ? "fastens" : "unfastens"] [src].", \
 					 "<span class='notice'>You start to [anchored ? "fasten [src] to" : "unfasten [src] from"] the floor...</span>")
+		var/obj/item/weapon/tool/wrench/wrench = A
 		switch(anchored)
 			if(0)
-				if(do_after(user, 20, target = src))
+				if(do_after(user, 20 * wrench.speed_coefficient, target = src))
 					user << "<span class='notice'>You fasten the core into place.</span>"
 					adm_action_log.enqueue("[gameTimestamp()] ([user] - [user] - [src]): core fastened")
 					anchored = 1
 			if(1)
-				if(do_after(user, 20, target = src))
+				if(do_after(user, 20 * wrench.speed_coefficient, target = src))
 					user << "<span class='notice'>You unfasten the core.</span>"
 					adm_action_log.enqueue("[gameTimestamp()] ([user] - [user] - [src]): core unfastened")
 					anchored = 0

@@ -39,7 +39,7 @@
 	verbs -= /obj/item/clothing/mask/gas/sechailer/verb/adjust
 
 /obj/item/clothing/mask/gas/sechailer/attackby(obj/item/weapon/W, mob/user, params)
-	if(istype(W, /obj/item/weapon/screwdriver))
+	if(istype(W, /obj/item/weapon/tool/screwdriver))
 		switch(aggressiveness)
 			if(1)
 				user << "<span class='notice'>You set the restrictor to the middle position.</span>"
@@ -52,7 +52,7 @@
 				aggressiveness = 1
 			if(4)
 				user << "<span class='danger'>You adjust the restrictor but nothing happens, probably because its broken.</span>"
-	else if(istype(W, /obj/item/weapon/wirecutters))
+	else if(istype(W, /obj/item/weapon/tool/wirecutters))
 		if(aggressiveness != 4)
 			user << "<span class='danger'>You broke the restrictor!</span>"
 			aggressiveness = 4

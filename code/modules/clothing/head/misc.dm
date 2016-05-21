@@ -246,7 +246,7 @@
 	var/locked = 0 //if the collar can be removed
 
 /obj/item/clothing/head/bombCollar/attackby(obj/item/W, mob/user)
-	if(istype(W, /obj/item/weapon/screwdriver) && !locked && linked)
+	if(istype(W, /obj/item/weapon/tool/screwdriver) && !locked && linked)
 		user << "<span class='notice'>You unlink [src] from [linked].</span>"
 		linked.linkedCollars.Remove(src)
 		linked = null
