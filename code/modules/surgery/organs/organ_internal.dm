@@ -193,6 +193,26 @@
 		S.reagents.add_reagent("????", 5)
 	return S
 
+/obj/item/organ/internal/liver
+	name="liver"
+	icon_state="liver"
+	zone="chest"
+	slot="liver"
+	var/toxic = 0
+
+/obj/item/organ/internal/eye
+	name="eye balls"
+	icon_state="eyes"
+	zone="head"
+	slot="eye_sockets"
+
+/obj/item/organ/internal/lung
+	name="lung"
+	icon_state="lung"
+	zone="chest"
+	slot="lung"
+	var/diaphragmed = 1
+
 /obj/item/organ/internal/thrall_tumor
 	zone = "head"
 	slot = "tumor"
