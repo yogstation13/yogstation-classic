@@ -69,16 +69,16 @@ obj/machinery/flood_lamp/attackby(obj/item/weapon/W, mob/user, params)
 			return 0
 		cell = W
 		W.loc = src
-	if(istype(W,/obj/item/weapon/tool/crowbar))
+	if(istype(W,/obj/item/weapon/crowbar))
 		opened = !opened
-	if(istype(W,/obj/item/weapon/tool/wirecutters))
+	if(istype(W,/obj/item/weapon/wirecutters))
 		for(var/obj/item/device/flashlight/F in flashlights) // Other ways to just grab a random one and dump it?
 			F.loc = loc
 			flashlights -= F
 			playsound(loc, 'sound/items/Wirecutter.ogg', 50, 1, -1)
 			update_all()
 			return;
-	if(istype(W, /obj/item/weapon/tool/wrench))
+	if(istype(W, /obj/item/weapon/wrench))
 		if(!istype(loc, /turf/simulated/floor))
 			user << "<span class='warning'>A floor must be present to secure the floodlamp!</span>"
 			return

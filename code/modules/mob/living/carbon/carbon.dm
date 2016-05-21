@@ -1,7 +1,3 @@
-/mob/living/carbon/New()
-	create_reagents(1000)
-	..()
-
 /mob/living/carbon
 	var/nightvision = 0
 

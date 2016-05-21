@@ -70,14 +70,13 @@
 
 
 /obj/item/device/pizza_bomb/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/weapon/tool/wirecutters))
+	if(istype(I, /obj/item/weapon/wirecutters))
 		if(disarmed)
 			if(!in_range(user, src))
 				user << "<span class='warning'>You can't see the box well enough to cut the wires out!</span>"
 				return
 			user.visible_message("<span class='notice'>[user] starts removing the payload and wires from \the [src].</span>", "<span class='notice'>You start removing the payload and wires from \the [src]...</span>")
-			var/obj/item/weapon/tool/wirecutters/wc = I
-			if(do_after(user, 40 * wc.speed_coefficient, target = src))
+			if(do_after(user, 40, target = src))
 				playsound(src, 'sound/items/Wirecutter.ogg', 50, 1, 1)
 				user.unEquip(src)
 				user.visible_message("<span class='notice'>[user] removes the insides of \the [src]!</span>", "<span class='notice'>You remove the insides of \the [src].</span>")

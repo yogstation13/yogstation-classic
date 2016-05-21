@@ -76,32 +76,29 @@
 				else
 					user << "<span class='warning'>You need five length of cable to wire the frame!</span>"
 					return
-			if(istype(P, /obj/item/weapon/tool/screwdriver) && !anchored)
+			if(istype(P, /obj/item/weapon/screwdriver) && !anchored)
 				playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 				user.visible_message("<span class='warning'>[user] disassembles the frame.</span>", \
 									"<span class='notice'>You start to disassemble the frame...</span>", "You hear banging and clanking.")
-				var/obj/item/weapon/tool/screwdriver/sd = P
-				if(do_after(user, 40 * sd.speed_coefficient, target = src))
+				if(do_after(user, 40, target = src))
 					if(state == 1)
 						user << "<span class='notice'>You disassemble the frame.</span>"
 						var/obj/item/stack/sheet/metal/M = new (loc, 5)
 						M.add_fingerprint(user)
 						qdel(src)
-			if(istype(P, /obj/item/weapon/tool/wrench))
+			if(istype(P, /obj/item/weapon/wrench))
 				user << "<span class='notice'>You start [anchored ? "un" : ""]securing [name]...</span>"
 				playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
-				var/obj/item/weapon/tool/wrench/wrench = P
-				if(do_after(user, 40 * wrench.speed_coefficient, target = src))
+				if(do_after(user, 40, target = src))
 					if(state == 1)
 						user << "<span class='notice'>You [anchored ? "un" : ""]secure [name].</span>"
 						anchored = !anchored
 
 		if(2)
-			if(istype(P, /obj/item/weapon/tool/wrench))
+			if(istype(P, /obj/item/weapon/wrench))
 				user << "<span class='notice'>You start [anchored ? "un" : ""]securing [name]...</span>"
 				playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
-				var/obj/item/weapon/tool/wrench/wrench = P
-				if(do_after(user, 40 * wrench.speed_coefficient, target = src))
+				if(do_after(user, 40, target = src))
 					user << "<span class='notice'>You [anchored ? "un" : ""]secure [name].</span>"
 					anchored = !anchored
 
@@ -125,7 +122,7 @@
 					update_req_desc()
 				else
 					user << "<span class='warning'>This frame does not accept circuit boards of this type!</span>"
-			if(istype(P, /obj/item/weapon/tool/wirecutters))
+			if(istype(P, /obj/item/weapon/wirecutters))
 				playsound(src.loc, 'sound/items/Wirecutter.ogg', 50, 1)
 				user << "<span class='notice'>You remove the cables.</span>"
 				state = 1
@@ -134,7 +131,7 @@
 				A.amount = 5
 
 		if(3)
-			if(istype(P, /obj/item/weapon/tool/crowbar))
+			if(istype(P, /obj/item/weapon/crowbar))
 				playsound(src.loc, 'sound/items/Crowbar.ogg', 50, 1)
 				state = 2
 				circuit.loc = src.loc
@@ -151,7 +148,7 @@
 				components = null
 				icon_state = "box_1"
 
-			if(istype(P, /obj/item/weapon/tool/screwdriver))
+			if(istype(P, /obj/item/weapon/screwdriver))
 				var/component_check = 1
 				for(var/R in req_components)
 					if(req_components[R] > 0)
@@ -247,7 +244,7 @@ to destroy them and players will be able to make replacements.
 							/obj/machinery/vending/autodrobe = "AutoDrobe")
 
 /obj/item/weapon/circuitboard/vendor/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/weapon/tool/screwdriver))
+	if(istype(I, /obj/item/weapon/screwdriver))
 		set_type(pick(names_paths), user)
 
 
@@ -376,7 +373,7 @@ to destroy them and players will be able to make replacements.
 							/obj/item/weapon/stock_parts/console_screen = 1)
 
 /obj/item/weapon/circuitboard/thermomachine/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/weapon/tool/screwdriver))
+	if(istype(I, /obj/item/weapon/screwdriver))
 		if(build_path == /obj/machinery/atmospherics/components/unary/cold_sink/freezer)
 			build_path = /obj/machinery/atmospherics/components/unary/heat_reservoir/heater
 			name = "circuit board (Heater)"
@@ -467,7 +464,7 @@ to destroy them and players will be able to make replacements.
 		build_path = new_type
 
 /obj/item/weapon/circuitboard/smartfridge/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/weapon/tool/screwdriver))
+	if(istype(I, /obj/item/weapon/screwdriver))
 		var/list/fridges = list(/obj/machinery/smartfridge = "default",
 									 /obj/machinery/smartfridge/drinks = "drinks",
 									 /obj/machinery/smartfridge/extract = "slimes",

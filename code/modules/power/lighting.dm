@@ -22,7 +22,7 @@
 	var/sheets_refunded = 2
 
 /obj/item/light_fixture_frame/attackby(obj/item/weapon/W, mob/user, params)
-	if (istype(W, /obj/item/weapon/tool/wrench))
+	if (istype(W, /obj/item/weapon/wrench))
 		new /obj/item/stack/sheet/metal( get_turf(src.loc), sheets_refunded )
 		qdel(src)
 		return
@@ -96,12 +96,11 @@
 
 /obj/machinery/light_construct/attackby(obj/item/weapon/W, mob/user, params)
 	src.add_fingerprint(user)
-	if (istype(W, /obj/item/weapon/tool/wrench))
+	if (istype(W, /obj/item/weapon/wrench))
 		if (src.stage == 1)
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
 			usr << "<span class='notice'>You begin deconstructing [src]...</span>"
-			var/obj/item/weapon/tool/wrench/wrench = W
-			if (!do_after(usr, 30 * wrench.speed_coefficient, target = src))
+			if (!do_after(usr, 30, target = src))
 				return
 			new /obj/item/stack/sheet/metal( get_turf(src.loc), sheets_refunded )
 			user.visible_message("[user.name] deconstructs [src].", \
@@ -116,7 +115,7 @@
 			usr << "<span class='warning'>You have to unscrew the case first!</span>"
 			return
 
-	if(istype(W, /obj/item/weapon/tool/wirecutters))
+	if(istype(W, /obj/item/weapon/wirecutters))
 		if (src.stage != 2) return
 		src.stage = 1
 		switch(fixture_type)
@@ -146,7 +145,7 @@
 			user << "<span class='warning'>You need one length of cable to wire [src]!</span>"
 		return
 
-	if(istype(W, /obj/item/weapon/tool/screwdriver))
+	if(istype(W, /obj/item/weapon/screwdriver))
 		if (src.stage == 2)
 			switch(fixture_type)
 				if ("tube")
@@ -390,7 +389,7 @@
 
 	// attempt to stick weapon into light socket
 	else if(status == LIGHT_EMPTY)
-		if(istype(W, /obj/item/weapon/tool/screwdriver)) //If it's a screwdriver open it.
+		if(istype(W, /obj/item/weapon/screwdriver)) //If it's a screwdriver open it.
 			playsound(src.loc, 'sound/items/Screwdriver.ogg', 75, 1)
 			user.visible_message("[user.name] opens [src]'s casing.", \
 				"<span class='notice'>You open [src]'s casing.</span>", "<span class='italics'>You hear a noise.</span>")

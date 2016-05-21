@@ -1,0 +1,5 @@
+author: X-TheDark
+delete-after: True
+changes: 
+  - tweak: "Riot shields no longer block ranged projectiles."
+  - rscdel: "You cannot buy a basically-riot-shield from AutoDrobe anymore. Replaced with a mock version that doesn't block anything."

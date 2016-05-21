@@ -955,15 +955,15 @@ About the new airlock wires panel:
 		return
 
 	src.add_fingerprint(user)
-	if((istype(C, /obj/item/weapon/tool/weldingtool) && !( src.operating ) && src.density))
-		var/obj/item/weapon/tool/weldingtool/W = C
+	if((istype(C, /obj/item/weapon/weldingtool) && !( src.operating ) && src.density))
+		var/obj/item/weapon/weldingtool/W = C
 		if(W.remove_fuel(0,user))
 			if(boltsCut)
 				user.visible_message("<span class='warning'>[user] is repairing the airlock's bolts with their [C].</span>", \
 								"You begin repairing the airlocks bolts with your [C]...", \
 								"You hear welding.")
 				playsound(loc, 'sound/items/Welder.ogg', 40, 1)
-				if(do_after(user, 80 * W.speed_coefficient, 5, 1))
+				if(do_after(user,80,5,1))
 					if(density && !operating)//Door must be closed to weld.
 						if( !istype(src, /obj/machinery/door/airlock) || !user || !W || !W.isOn() || !user.loc )
 							return
@@ -977,7 +977,7 @@ About the new airlock wires panel:
 									"<span class='notice'>You begin [welded ? "unwelding":"welding"] the airlock...</span>", \
 									"<span class='italics'>You hear welding.</span>")
 				playsound(loc, 'sound/items/Welder.ogg', 40, 1)
-				if(do_after(user, 40 * W.speed_coefficient, 5, 1))
+				if(do_after(user,40,5,1))
 					if(density && !operating)//Door must be closed to weld.
 						if( !istype(src, /obj/machinery/door/airlock) || !user || !W || !W.isOn() || !user.loc )
 							return
@@ -1017,14 +1017,14 @@ About the new airlock wires panel:
 			update_icon()
 		else
 			user << "<span class='notice'>The bolts of this airlock are already cut.</span>"
-	else if(istype(C, /obj/item/weapon/tool/screwdriver))
+	else if(istype(C, /obj/item/weapon/screwdriver))
 		if(p_open && detonated)
 			user << "<span class='warning'>[src] has no maintenance panel!</span>"
 			return
 		src.p_open = !( src.p_open )
 		user << "<span class='notice'>You [p_open ? "open":"close"] the maintenance panel of the airlock.</span>"
 		src.update_icon()
-	else if(istype(C, /obj/item/weapon/tool/wirecutters))
+	else if(istype(C, /obj/item/weapon/wirecutters))
 		return src.attack_hand(user)
 	else if(istype(C, /obj/item/device/multitool))
 		return src.attack_hand(user)
@@ -1033,9 +1033,9 @@ About the new airlock wires panel:
 	else if(istype(C, /obj/item/weapon/pai_cable))
 		var/obj/item/weapon/pai_cable/cable = C
 		cable.plugin(src, user)
-	else if(istype(C, /obj/item/weapon/tool/crowbar) || istype(C, /obj/item/weapon/twohanded/fireaxe) )
+	else if(istype(C, /obj/item/weapon/crowbar) || istype(C, /obj/item/weapon/twohanded/fireaxe) )
 		var/beingcrowbarred = null
-		if(istype(C, /obj/item/weapon/tool/crowbar) )
+		if(istype(C, /obj/item/weapon/crowbar) )
 			beingcrowbarred = 1 //derp, Agouri
 		else
 			beingcrowbarred = 0

@@ -1,192 +1,194 @@
-/datum/design/biogenerator
-	reliability = 100				//Reliability of the device.
-	build_type = BIOGENERATOR
+/datum/biogenerator_recipe
+	var/item = /obj/item/weapon/storage/bag/ore
+	var/name = "" //should be unique
+	var/base_cost = 0
 	var/possible_amounts = list(1)
+	var/category = "Miscellaneous"
 
-/datum/design/biogenerator/proc/create_item(obj/machinery/biogenerator/gen)//returns null if build_path creation failed, 1 otherwise.
-	if(gen.check_cost(materials[MAT_BIOMASS] / gen.efficiency))
+/datum/biogenerator_recipe/proc/create_item(obj/machinery/biogenerator/gen)//returns null if item creation failed, 1 otherwise.
+	if(gen.check_cost(base_cost / gen.efficiency))
 		return 0
-	new build_path(gen.loc)
+	new item(gen.loc)
 	return 1
 
-/datum/design/biogenerator/reagent
-	build_path = "" //reusing this var as the string ID of the reagent.
+/datum/biogenerator_recipe/reagent
+	item = "" //reusing this var as the string ID of the reagent.
 	possible_amounts = list(1, 5)
 
-/datum/design/biogenerator/reagent/create_item(obj/machinery/biogenerator/gen)
-	if(gen.check_cost(materials[MAT_BIOMASS] / gen.efficiency))
+/datum/biogenerator_recipe/reagent/create_item(obj/machinery/biogenerator/gen)
+	if(gen.check_cost(base_cost / gen.efficiency))
 		return 0
 	if(gen.check_container_volume(10))
 		return 0
-	gen.beaker.reagents.add_reagent(build_path, 10)
+	gen.beaker.reagents.add_reagent(item, 10)
 	return 1
 
-/datum/design/biogenerator/reagent/milk
+/datum/biogenerator_recipe/reagent/milk
 	name = "10 Milk"
-	build_path = "milk"
-	materials = list(MAT_BIOMASS =  20)
-	category = list("Food")
+	item = "milk"
+	base_cost = 20
+	category = "Food"
 
-/datum/design/biogenerator/reagent/cream
+/datum/biogenerator_recipe/reagent/cream
 	name = "10 Cream"
-	build_path = "cream"
-	materials = list(MAT_BIOMASS =  30)
-	category = list("Food")
+	item = "cream"
+	base_cost = 30
+	category = "Food"
 
-/datum/design/biogenerator/milk_carton
+/datum/biogenerator_recipe/milk_carton
 	name = "Empty Milk Carton"
-	build_path = /obj/item/weapon/reagent_containers/food/condiment/milk
-	materials = list(MAT_BIOMASS =  100)
+	item = /obj/item/weapon/reagent_containers/food/condiment/milk
+	base_cost = 100
 	possible_amounts = list(1, 5)
-	category = list("Food")
+	category = "Food"
 
-/datum/design/biogenerator/cream_carton
+/datum/biogenerator_recipe/cream_carton
 	name = "Empty Cream Carton"
-	build_path = /obj/item/weapon/reagent_containers/food/drinks/bottle/cream
-	materials = list(MAT_BIOMASS =  300)
+	item = /obj/item/weapon/reagent_containers/food/drinks/bottle/cream
+	base_cost = 300
 	possible_amounts = list(1, 5)
-	category = list("Food")
+	category = "Food"
 
-/datum/design/biogenerator/monkey_cube
+/datum/biogenerator_recipe/monkey_cube
 	name = "Monkey Cube"
-	build_path = /obj/item/weapon/reagent_containers/food/snacks/monkeycube
-	materials = list(MAT_BIOMASS =  250)
+	item = /obj/item/weapon/reagent_containers/food/snacks/monkeycube
+	base_cost = 250
 	possible_amounts = list(1, 5)
-	category = list("Food")
+	category = "Food"
 
-/datum/design/biogenerator/ez_nutrient
+/datum/biogenerator_recipe/ez_nutrient
 	name = "EZ Nutrient"
-	build_path = /obj/item/weapon/reagent_containers/glass/bottle/nutrient/ez
-	materials = list(MAT_BIOMASS =  10)
+	item = /obj/item/weapon/reagent_containers/glass/bottle/nutrient/ez
+	base_cost = 10
 	possible_amounts = list(1, 5)
-	category = list("Botany Chemicals")
+	category = "Botany Chemicals"
 
-/datum/design/biogenerator/left_4_zed
+/datum/biogenerator_recipe/left_4_zed
 	name = "Left 4 Zed"
-	build_path = /obj/item/weapon/reagent_containers/glass/bottle/nutrient/l4z
-	materials = list(MAT_BIOMASS =  20)
+	item = /obj/item/weapon/reagent_containers/glass/bottle/nutrient/l4z
+	base_cost = 20
 	possible_amounts = list(1, 5)
-	category = list("Botany Chemicals")
+	category = "Botany Chemicals"
 
-/datum/design/biogenerator/robust_harvest
+/datum/biogenerator_recipe/robust_harvest
 	name = "Robust Harvest"
-	build_path = /obj/item/weapon/reagent_containers/glass/bottle/nutrient/rh
-	materials = list(MAT_BIOMASS =  25)
+	item = /obj/item/weapon/reagent_containers/glass/bottle/nutrient/rh
+	base_cost = 25
 	possible_amounts = list(1, 5)
-	category = list("Botany Chemicals")
+	category = "Botany Chemicals"
 
-/datum/design/biogenerator/weed_killer
+/datum/biogenerator_recipe/weed_killer
 	name = "Weedkiller"
-	build_path = /obj/item/weapon/reagent_containers/glass/bottle/weedkiller
-	materials = list(MAT_BIOMASS =  50)
+	item = /obj/item/weapon/reagent_containers/glass/bottle/weedkiller
+	base_cost = 50
 	possible_amounts = list(1, 5)
-	category = list("Botany Chemicals")
+	category = "Botany Chemicals"
 
-/datum/design/biogenerator/pest_spray
+/datum/biogenerator_recipe/pest_spray
 	name = "Pest Spray"
-	build_path = /obj/item/weapon/reagent_containers/glass/bottle/pestkiller
-	materials = list(MAT_BIOMASS =  50)
+	item = /obj/item/weapon/reagent_containers/glass/bottle/pestkiller
+	base_cost = 50
 	possible_amounts = list(1, 5)
-	category = list("Botany Chemicals")
+	category = "Botany Chemicals"
 
-/datum/design/biogenerator/wallet
+/datum/biogenerator_recipe/wallet
 	name = "Wallet"
-	build_path = /obj/item/weapon/storage/wallet
-	materials = list(MAT_BIOMASS =  100)
-	category = list("Leather and Cloth")
+	item = /obj/item/weapon/storage/wallet
+	base_cost = 100
+	category = "Leather and Cloth"
 
-/datum/design/biogenerator/bookbag
+/datum/biogenerator_recipe/bookbag
 	name = "Book Bag"
-	build_path = /obj/item/weapon/storage/bag/books
-	materials = list(MAT_BIOMASS =  200)
-	category = list("Leather and Cloth")
+	item = /obj/item/weapon/storage/bag/books
+	base_cost = 200
+	category = "Leather and Cloth"
 
-/datum/design/biogenerator/plantbag
+/datum/biogenerator_recipe/plantbag
 	name = "Plant Bag"
-	build_path = /obj/item/weapon/storage/bag/plants
-	materials = list(MAT_BIOMASS =  200)
-	category = list("Leather and Cloth")
+	item = /obj/item/weapon/storage/bag/plants
+	base_cost = 200
+	category = "Leather and Cloth"
 
-/datum/design/biogenerator/orebag
+/datum/biogenerator_recipe/orebag
 	name = "Mining Satchel"
-	build_path = /obj/item/weapon/storage/bag/ore
-	materials = list(MAT_BIOMASS =  200)
-	category = list("Leather and Cloth")
+	item = /obj/item/weapon/storage/bag/ore
+	base_cost = 200
+	category = "Leather and Cloth"
 
-/datum/design/biogenerator/chemistrybag
+/datum/biogenerator_recipe/chemistrybag
 	name = "Chemistry Bag"
-	build_path = /obj/item/weapon/storage/bag/chemistry
-	materials = list(MAT_BIOMASS =  200)
-	category = list("Leather and Cloth")
+	item = /obj/item/weapon/storage/bag/chemistry
+	base_cost = 200
+	category = "Leather and Cloth"
 
-/datum/design/biogenerator/rag
+/datum/biogenerator_recipe/rag
 	name = "Rag"
-	build_path = /obj/item/weapon/reagent_containers/glass/rag
-	materials = list(MAT_BIOMASS =  200)
-	category = list("Leather and Cloth")
+	item = /obj/item/weapon/reagent_containers/glass/rag
+	base_cost = 200
+	category = "Leather and Cloth"
 
-/datum/design/biogenerator/botany_gloves
+/datum/biogenerator_recipe/botany_gloves
 	name = "Botanical Gloves"
-	build_path = /obj/item/clothing/gloves/botanic_leather
-	materials = list(MAT_BIOMASS =  250)
-	category = list("Leather and Cloth")
+	item = /obj/item/clothing/gloves/botanic_leather
+	base_cost = 250
+	category = "Leather and Cloth"
 
-/datum/design/biogenerator/toolbelt
+/datum/biogenerator_recipe/toolbelt
 	name = "Toolbelt"
-	build_path = /obj/item/weapon/storage/belt/utility
-	materials = list(MAT_BIOMASS =  300)
-	category = list("Leather and Cloth")
+	item = /obj/item/weapon/storage/belt/utility
+	base_cost = 300
+	category = "Leather and Cloth"
 
-/datum/design/biogenerator/securitybelt
+/datum/biogenerator_recipe/securitybelt
 	name = "Security Belt"
-	build_path = /obj/item/weapon/storage/belt/security
-	materials = list(MAT_BIOMASS =  300)
-	category = list("Leather and Cloth")
+	item = /obj/item/weapon/storage/belt/security
+	base_cost = 300
+	category = "Leather and Cloth"
 
-/datum/design/biogenerator/medicalbelt
+/datum/biogenerator_recipe/medicalbelt
 	name = "Medical Belt"
-	build_path = /obj/item/weapon/storage/belt/medical
-	materials = list(MAT_BIOMASS =  300)
-	category = list("Leather and Cloth")
+	item = /obj/item/weapon/storage/belt/medical
+	base_cost = 300
+	category = "Leather and Cloth"
 
-/datum/design/biogenerator/janitorbelt
+/datum/biogenerator_recipe/janitorbelt
 	name = "Janitorial Belt"
-	build_path = /obj/item/weapon/storage/belt/janitor
-	materials = list(MAT_BIOMASS =  300)
-	category = list("Leather and Cloth")
+	item = /obj/item/weapon/storage/belt/janitor
+	base_cost = 300
+	category = "Leather and Cloth"
 
-/datum/design/biogenerator/bandolier
+/datum/biogenerator_recipe/bandolier
 	name = "Bandolier"
-	build_path = /obj/item/weapon/storage/belt/bandolier
-	materials = list(MAT_BIOMASS =  300)
-	category = list("Leather and Cloth")
+	item = /obj/item/weapon/storage/belt/bandolier
+	base_cost = 300
+	category = "Leather and Cloth"
 
-/datum/design/biogenerator/holster
+/datum/biogenerator_recipe/holster
 	name = "Shoulder Holster"
-	build_path = /obj/item/weapon/storage/belt/holster
-	materials = list(MAT_BIOMASS =  400)
-	category = list("Leather and Cloth")
+	item = /obj/item/weapon/storage/belt/holster
+	base_cost = 400
+	category = "Leather and Cloth"
 
-/datum/design/biogenerator/satchel
+/datum/biogenerator_recipe/satchel
 	name = "Leather Sachel"
-	build_path = /obj/item/weapon/storage/backpack/satchel
-	materials = list(MAT_BIOMASS =  400)
-	category = list("Leather and Cloth")
+	item = /obj/item/weapon/storage/backpack/satchel
+	base_cost = 400
+	category = "Leather and Cloth"
 
-/datum/design/biogenerator/leather_jacket
+/datum/biogenerator_recipe/leather_jacket
 	name = "Leather Jacket"
-	build_path = /obj/item/clothing/suit/jacket/leather
-	materials = list(MAT_BIOMASS =  500)
-	category = list("Leather and Cloth")
+	item = /obj/item/clothing/suit/jacket/leather
+	base_cost = 500
+	category = "Leather and Cloth"
 
-/datum/design/biogenerator/leather_overcoat
+/datum/biogenerator_recipe/leather_overcoat
 	name = "Leather Overcoat"
-	build_path = /obj/item/clothing/suit/jacket/leather/overcoat
-	materials = list(MAT_BIOMASS =  1000)
-	category = list("Leather and Cloth")
+	item = /obj/item/clothing/suit/jacket/leather/overcoat
+	base_cost = 1000
+	category = "Leather and Cloth"
 
-/datum/design/biogenerator/rice_hat
+/datum/biogenerator_recipe/rice_hat
 	name = "Rice Hat"
-	build_path = /obj/item/clothing/head/rice_hat
-	materials = list(MAT_BIOMASS =  300)
-	category = list("Leather and Cloth")
+	item = /obj/item/clothing/head/rice_hat
+	base_cost = 300
+	category = "Leather and Cloth"

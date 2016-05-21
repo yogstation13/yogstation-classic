@@ -63,17 +63,16 @@ var/bomb_set
 
 	switch(deconstruction_state)
 		if(NUKESTATE_INTACT)
-			if(istype(I, /obj/item/weapon/tool/screwdriver/nuke))
+			if(istype(I, /obj/item/weapon/screwdriver/nuke))
 				playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
 				user << "<span class='notice'>You start removing the front panel's screws...</span>"
-				var/obj/item/weapon/tool/screwdriver/nuke/screwdriver = I
-				if(do_after(user, 100 * screwdriver.speed_coefficient, target = src))
+				if(do_after(user, 100,target=src))
 					deconstruction_state = NUKESTATE_OPEN
 					user << "<span class='notice'>You remove the screws and the front panel slides open.</span>"
 					update_icon()
 				return
 		if(NUKESTATE_OPEN,NUKESTATE_OPEN_TRAP)
-			if((deconstruction_state == NUKESTATE_OPEN) && istype(I, /obj/item/weapon/tool/wirecutters))
+			if((deconstruction_state == NUKESTATE_OPEN) && istype(I, /obj/item/weapon/wirecutters))
 				playsound(loc, 'sound/effects/sparks4.ogg', 100, 1)
 				playsound(loc, 'sound/effects/EMPulse.ogg', 100, 1)
 				user << "<span class='warning'>You must have cut the wrong wire!</span>"
@@ -103,12 +102,12 @@ var/bomb_set
 					update_icon()
 				return
 		if(NUKESTATE_CUT_LINES)
-			if(istype(I, /obj/item/weapon/tool/weldingtool))
-				var/obj/item/weapon/tool/weldingtool/welder = I
+			if(istype(I, /obj/item/weapon/weldingtool))
+				var/obj/item/weapon/weldingtool/welder = I
 				playsound(loc, 'sound/items/Welder.ogg', 100, 1)
 				user << "<span class='notice'>You start cutting into [src]'s warhead...</span>"
 				if(welder.remove_fuel(1,user))
-					if(do_after(user, 50 * welder.speed_coefficient, target = src))
+					if(do_after(user,50,target=src))
 						playsound(loc, 'sound/items/Deconstruct.ogg', 100, 1)
 						user << "<span class='notice'>You cut into [src]'s warhead. You can see the core's green glow.</span>"
 						deconstruction_state = NUKESTATE_CORE_EXPOSED

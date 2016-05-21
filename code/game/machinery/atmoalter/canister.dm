@@ -233,7 +233,7 @@ update_flag
 	return
 
 /obj/machinery/portable_atmospherics/canister/attackby(obj/item/weapon/W, mob/user, params)
-	if(!istype(W, /obj/item/weapon/tool/wrench) && !istype(W, /obj/item/weapon/tank) && !istype(W, /obj/item/device/analyzer) && !istype(W, /obj/item/device/pda))
+	if(!istype(W, /obj/item/weapon/wrench) && !istype(W, /obj/item/weapon/tank) && !istype(W, /obj/item/device/analyzer) && !istype(W, /obj/item/device/pda))
 		visible_message("<span class='danger'>[user] hits \the [src] with a [W]!</span>")
 		investigate_log("was smacked with \a [W] by [key_name(user)]", "atmos")
 		src.health -= W.force

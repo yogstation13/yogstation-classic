@@ -275,7 +275,6 @@
 	body_parts_covered = CHEST|GROIN|ARMS
 	cold_protection = CHEST|GROIN|ARMS
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
-	allowed = list(/obj/item/weapon/gun/projectile/automatic/tommygun,/obj/item/weapon/gun/projectile/automatic/mini_uzi)
 
 /obj/item/clothing/suit/jacket/leather
 	name = "leather jacket"
@@ -284,7 +283,7 @@
 	item_state = "hostrench"
 	burn_state = -1 //Not Burnable
 	max_heat_protection_temperature = ARMOR_MAX_TEMP_PROTECT
-	allowed = list(/obj/item/device/flashlight,/obj/item/weapon/tank/internals/emergency_oxygen,/obj/item/toy,/obj/item/weapon/storage/fancy/cigarettes,/obj/item/weapon/lighter,/obj/item/weapon/gun/projectile/automatic/pistol,/obj/item/weapon/gun/projectile/revolver,/obj/item/weapon/gun/projectile/revolver/detective,/obj/item/weapon/gun/projectile/automatic/tommygun,/obj/item/weapon/gun/projectile/automatic/mini_uzi)
+	allowed = list(/obj/item/device/flashlight,/obj/item/weapon/tank/internals/emergency_oxygen,/obj/item/toy,/obj/item/weapon/storage/fancy/cigarettes,/obj/item/weapon/lighter,/obj/item/weapon/gun/projectile/automatic/pistol,/obj/item/weapon/gun/projectile/revolver,/obj/item/weapon/gun/projectile/revolver/detective)
 
 /obj/item/clothing/suit/jacket/leather/overcoat
 	name = "leather overcoat"
@@ -292,7 +291,6 @@
 	icon_state = "leathercoat"
 	body_parts_covered = CHEST|GROIN|ARMS|LEGS
 	cold_protection = CHEST|GROIN|ARMS|LEGS
-	allowed = list(/obj/item/weapon/gun/projectile/automatic/tommygun,/obj/item/weapon/gun/projectile/automatic/mini_uzi)
 
 /obj/item/clothing/suit/jacket/puffer
 	name = "puffer jacket"
@@ -300,7 +298,6 @@
 	icon_state = "pufferjacket"
 	item_state = "hostrench"
 	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 50, rad = 0)
-	allowed = list(/obj/item/weapon/gun/projectile/automatic/tommygun,/obj/item/weapon/gun/projectile/automatic/mini_uzi)
 
 /obj/item/clothing/suit/jacket/puffer/vest
 	name = "puffer vest"
@@ -310,14 +307,13 @@
 	body_parts_covered = CHEST|GROIN
 	cold_protection = CHEST|GROIN
 	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 30, rad = 0)
-	allowed = list(/obj/item/weapon/gun/projectile/automatic/tommygun,/obj/item/weapon/gun/projectile/automatic/mini_uzi)
 
 /obj/item/clothing/suit/jacket/miljacket
 	name = "military jacket"
 	desc = "A canvas jacket styled after classical American military garb. Feels sturdy, yet comfortable."
 	icon_state = "militaryjacket"
 	item_state = "militaryjacket"
-	allowed = list(/obj/item/device/flashlight,/obj/item/weapon/tank/internals/emergency_oxygen,/obj/item/toy,/obj/item/weapon/storage/fancy/cigarettes,/obj/item/weapon/lighter,/obj/item/weapon/gun/projectile/automatic/pistol,/obj/item/weapon/gun/projectile/revolver,/obj/item/weapon/gun/projectile/revolver/detective,/obj/item/weapon/gun/projectile/automatic/tommygun,/obj/item/weapon/gun/projectile/automatic/mini_uzi)
+	allowed = list(/obj/item/device/flashlight,/obj/item/weapon/tank/internals/emergency_oxygen,/obj/item/toy,/obj/item/weapon/storage/fancy/cigarettes,/obj/item/weapon/lighter,/obj/item/weapon/gun/projectile/automatic/pistol,/obj/item/weapon/gun/projectile/revolver,/obj/item/weapon/gun/projectile/revolver/detective)
 
 /obj/item/clothing/suit/xenos
 	name = "xenos suit"

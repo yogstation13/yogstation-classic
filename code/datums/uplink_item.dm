@@ -120,7 +120,7 @@ var/list/uplink_items = list()
 
 /datum/uplink_item/dangerous/smg
 	name = "C-20r Submachine Gun"
-	desc = "A fully-loaded Scarborough Arms bullpup submachine gun that fires .50 rounds with a 20-round magazine and is compatible with suppressors."
+	desc = "A fully-loaded Scarborough Arms bullpup submachine gun that fires .45 rounds with a 20-round magazine and is compatible with suppressors."
 	item = /obj/item/weapon/gun/projectile/automatic/c20r
 	cost = 13
 	gamemodes = list(/datum/game_mode/nuclear)
@@ -279,9 +279,9 @@ var/list/uplink_items = list()
 	cost = 2
 
 /datum/uplink_item/ammo/smg
-	name = "SMG Magazine - .50"
-	desc = "An additional 20-round .50 magazine for use in the C-20r submachine gun. These bullets pack a lot of punch that can knock most targets down, but do limited overall damage."
-	item = /obj/item/ammo_box/magazine/smgm50
+	name = "SMG Magazine - .45"
+	desc = "An additional 20-round .45 magazine for use in the C-20r submachine gun. These bullets pack a lot of punch that can knock most targets down, but do limited overall damage."
+	item = /obj/item/ammo_box/magazine/smgm45
 	cost = 2
 	gamemodes = list(/datum/game_mode/nuclear,/datum/game_mode/gang)
 
@@ -582,12 +582,12 @@ var/list/uplink_items = list()
 	gamemodes = list(/datum/game_mode/nuclear)
 
 /datum/uplink_item/device_tools/thermal
-	name = "Chameleon Thermal-Night Vision Imaging Glasses"
-	desc = "These glasses are thermals that can be disguised as any pair of glasses. \
+	name = "Thermal Imaging Glasses"
+	desc = "These glasses are thermals disguised as engineers' optical meson scanners. \
 	They allow you to see organisms through walls by capturing the upper portion of the infrared light spectrum, emitted as heat and light by objects. \
-	Hotter objects, such as warm bodies, cybernetic organisms and artificial intelligence cores emit more of this light than cooler objects like walls and airlocks. They also permit you to see clearly in the dark." //THEN WHY CANT THEY SEE PLASMA FIRES????
+	Hotter objects, such as warm bodies, cybernetic organisms and artificial intelligence cores emit more of this light than cooler objects like walls and airlocks." //THEN WHY CANT THEY SEE PLASMA FIRES????
 	item = /obj/item/clothing/glasses/thermal/syndi
-	cost = 5
+	cost = 6
 
 /datum/uplink_item/device_tools/binary
 	name = "Binary Translator Key"
@@ -746,32 +746,32 @@ var/list/uplink_items = list()
 
 /datum/uplink_item/cyber_implants/thermals
 	name = "Thermal Vision Implant"
-	desc = "These cybernetic eyes will give you thermal vision. Comes with an autoimplanter."
-	item = /obj/item/weapon/storage/box/cyber_implants/thermals
+	desc = "These cybernetic eyes will give you thermal vision."
+	item = /obj/item/organ/internal/cyberimp/eyes/thermals
 	cost = 8
 
 /datum/uplink_item/cyber_implants/xray
 	name = "X-Ray Vision Implant"
-	desc = "These cybernetic eyes will give you X-ray vision. Comes with an autoimplanter."
-	item = /obj/item/weapon/storage/box/cyber_implants/xray
+	desc = "These cybernetic eyes will give you X-ray vision."
+	item = /obj/item/organ/internal/cyberimp/eyes/xray
 	cost = 10
 
 /datum/uplink_item/cyber_implants/antistun
 	name = "CNS Rebooter Implant"
-	desc = "This implant will help you get back up on your feet faster after being stunned. Comes with an autoimplanter."
-	item = /obj/item/weapon/storage/box/cyber_implants/antistun
+	desc = "This implant will help you get back up on your feet faster after being stunned."
+	item = /obj/item/organ/internal/cyberimp/brain/anti_stun
 	cost = 12
 
 /datum/uplink_item/cyber_implants/reviver
 	name = "Reviver Implant"
-	desc = "This implant will attempt to revive you if you lose consciousness. Comes with an autoimplanter."
-	item = /obj/item/weapon/storage/box/cyber_implants/reviver
+	desc = "This implant will attempt to revive you if you lose consciousness."
+	item = /obj/item/organ/internal/cyberimp/chest/reviver
 	cost = 8
 
 /datum/uplink_item/cyber_implants/bundle
 	name = "Cybernetic Implants Bundle"
-	desc = "A random selection of cybernetic implants. Guaranteed 5 high quality implants. Comes with an autoimplanter."
-	item = /obj/item/weapon/storage/box/cyber_implants/random
+	desc = "A random selection of cybernetic implants. Guaranteed 5 high quality implants."
+	item = /obj/item/weapon/storage/box/cyber_implants
 	cost = 40
 
 // POINTLESS BADASSERY

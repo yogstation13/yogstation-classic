@@ -85,15 +85,14 @@
 
 /obj/item/weapon/gun/projectile/revolver/detective/attackby(obj/item/A, mob/user, params)
 	..()
-	if(istype(A, /obj/item/weapon/tool/screwdriver))
+	if(istype(A, /obj/item/weapon/screwdriver))
 		if(magazine.caliber == "38")
 			user << "<span class='notice'>You begin to reinforce the barrel of [src]...</span>"
 			if(magazine.ammo_count())
 				afterattack(user, user)	//you know the drill
 				user.visible_message("<span class='danger'>[src] goes off!</span>", "<span class='userdanger'>[src] goes off in your face!</span>")
 				return
-			var/obj/item/weapon/tool/screwdriver/sd = A
-			if(do_after(user, 30 * sd.speed_coefficient, target = src))
+			if(do_after(user, 30, target = src))
 				if(magazine.ammo_count())
 					user << "<span class='warning'>You can't modify it!</span>"
 					return

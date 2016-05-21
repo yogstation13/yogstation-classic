@@ -109,7 +109,7 @@
 		return
 
 	if (panel_open)
-		if(istype(O, /obj/item/weapon/tool/crowbar))
+		if(istype(O, /obj/item/weapon/crowbar))
 			materials.retrieve_all()
 			default_deconstruction_crowbar(O)
 			return 1

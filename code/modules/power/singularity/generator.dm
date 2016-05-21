@@ -17,7 +17,7 @@
 		if(src) qdel(src)
 
 /obj/machinery/the_singularitygen/attackby(obj/item/W, mob/user, params)
-	if(istype(W, /obj/item/weapon/tool/wrench))
+	if(istype(W, /obj/item/weapon/wrench))
 
 		if(!anchored && !isinspace())
 			user.visible_message("[user.name] secures [src.name] to the floor.", \

@@ -154,7 +154,7 @@
 		return
 
 	//disassembling the terminal
-	if(istype(I, /obj/item/weapon/tool/wirecutters) && terminal && panel_open)
+	if(istype(I, /obj/item/weapon/wirecutters) && terminal && panel_open)
 		terminal.dismantle(user)
 
 	//crowbarring it !
