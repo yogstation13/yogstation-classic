@@ -189,7 +189,7 @@
 		var/turf/T = pick_n_take(turfs)
 		var/datum/supply_packs/sp_obj = new crate_type()
 		var/atom/Crate = new sp_obj.containertype(T)
-		Crate.name = sp_obj.containername
+		Crate.name = sp_obj.crate_name
 		for(var/type_path in sp_obj.contains)
 			var/atom/A = new type_path(Crate)
 			if(sp_obj.amount && A.vars.Find("amount") && A:amount)

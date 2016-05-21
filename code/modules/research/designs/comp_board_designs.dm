@@ -287,7 +287,7 @@
 	req_tech = list("programming" = 2)
 	build_type = IMPRINTER
 	materials = list(MAT_GLASS = 1000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/ordercomp
+	build_path = /obj/item/weapon/circuitboard/cargo/request
 	category = list("Computer Boards")
 
 /datum/design/supplycomp
@@ -297,7 +297,7 @@
 	req_tech = list("programming" = 3)
 	build_type = IMPRINTER
 	materials = list(MAT_GLASS = 1000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/supplycomp
+	build_path = /obj/item/weapon/circuitboard/cargo
 	category = list("Computer Boards")
 
 /datum/design/mining

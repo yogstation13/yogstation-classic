@@ -91,12 +91,6 @@
 	unit_name = "heart"
 	export_types = list(/obj/item/organ/internal/heart)
 
-/datum/export/organ/human/lungs
-	cost = 400
-	unit_name = "pair"
-	message = "of lungs"
-	export_types = list(/obj/item/organ/internal/lungs)
-
 /datum/export/organ/human/appendix
 	cost = 50
 	unit_name = "appendix"

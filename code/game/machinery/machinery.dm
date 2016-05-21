@@ -114,7 +114,7 @@ Class Procs:
 	var/panel_open = 0
 	var/state_open = 0
 	var/mob/living/occupant = null
-	var/unsecuring_tool = /obj/item/weapon/wrench
+	var/unsecuring_tool = /obj/item/weapon/tool/wrench
 	var/interact_offline = 0 // Can the machine be interacted with while de-powered.
 	var/mob/living/silicon/pai/paired
 	var/paiallowed = 0
@@ -311,7 +311,7 @@ Class Procs:
 	uid = gl_uid
 	gl_uid++
 
-/obj/machinery/proc/default_pry_open(obj/item/weapon/crowbar/C)
+/obj/machinery/proc/default_pry_open(obj/item/weapon/tool/crowbar/C)
 	. = !(state_open || panel_open || is_operational()) && istype(C)
 	if(.)
 		playsound(src.loc, 'sound/items/Crowbar.ogg', 50, 1)
@@ -319,7 +319,7 @@ Class Procs:
 		open_machine()
 		return 1
 
-/obj/machinery/proc/default_deconstruction_crowbar(obj/item/weapon/crowbar/C, ignore_panel = 0)
+/obj/machinery/proc/default_deconstruction_crowbar(obj/item/weapon/tool/crowbar/C, ignore_panel = 0)
 	. = istype(C) && (panel_open || ignore_panel)
 	if(.)
 		deconstruction()
@@ -333,7 +333,7 @@ Class Procs:
 			I.loc = src.loc
 		qdel(src)
 
-/obj/machinery/proc/default_deconstruction_screwdriver(mob/user, icon_state_open, icon_state_closed, obj/item/weapon/screwdriver/S)
+/obj/machinery/proc/default_deconstruction_screwdriver(mob/user, icon_state_open, icon_state_closed, obj/item/weapon/tool/screwdriver/S)
 	if(istype(S))
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		if(!panel_open)
@@ -347,7 +347,7 @@ Class Procs:
 		return 1
 	return 0
 
-/obj/machinery/proc/default_change_direction_wrench(mob/user, obj/item/weapon/wrench/W)
+/obj/machinery/proc/default_change_direction_wrench(mob/user, obj/item/weapon/tool/wrench/W)
 	if(panel_open && istype(W))
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 		dir = turn(dir,-90)
@@ -355,7 +355,7 @@ Class Procs:
 		return 1
 	return 0
 
-/obj/machinery/proc/default_unfasten_wrench(mob/user, obj/item/weapon/wrench/W, time = 20)
+/obj/machinery/proc/default_unfasten_wrench(mob/user, obj/item/weapon/tool/wrench/W, time = 20)
 	if(istype(W))
 		user << "<span class='notice'>You begin [anchored ? "un" : ""]securing [name]...</span>"
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
