@@ -87,6 +87,7 @@
 				//Suit gear
 				stat("Energy Charge:", "[round(SN.cell.charge/100)]%")
 				stat("Smoke Bombs:", "\Roman [SN.s_bombs]")
+				stat("Adrenaline Boosters:", "[SN.a_boost]")
 				//Ninja status
 				if(dna)
 					stat("Fingerprints:", "[md5(dna.uni_identity)]")

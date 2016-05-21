@@ -138,23 +138,25 @@
 		return
 
 	if (istype(I, /obj/item/weapon/tool/screwdriver))
+		var/obj/item/weapon/tool/screwdriver/sd = I
 		if(istype(src, /obj/structure/table/reinforced))
 			var/obj/structure/table/reinforced/RT = src
 			if(RT.status == 1)
-				table_destroy(2, user)
+				table_destroy(2, user, sd.speed_coefficient)
 				return
 		else
-			table_destroy(2, user)
+			table_destroy(2, user, sd.speed_coefficient)
 			return
 
 	if (istype(I, /obj/item/weapon/tool/wrench))
+		var/obj/item/weapon/tool/wrench/wrench = I
 		if(istype(src, /obj/structure/table/reinforced))
 			var/obj/structure/table/reinforced/RT = src
 			if(RT.status == 1)
-				table_destroy(3, user)
+				table_destroy(3, user, wrench.speed_coefficient)
 				return
 		else
-			table_destroy(3, user)
+			table_destroy(3, user, wrench.speed_coefficient)
 			return
 
 	if (istype(I, /obj/item/weapon/storage/bag/tray))
@@ -193,7 +195,7 @@
 #define TBL_DISASSEMBLE 2
 #define TBL_DECONSTRUCT 3
 
-/obj/structure/table/proc/table_destroy(destroy_type, mob/user)
+/obj/structure/table/proc/table_destroy(destroy_type, mob/user, speed_coefficient = 1)
 
 	if(destroy_type == TBL_DESTROY)
 		for(var/i = 1, i <= framestackamount, i++)
@@ -206,7 +208,7 @@
 	if(destroy_type == TBL_DISASSEMBLE)
 		user << "<span class='notice'>You start disassembling [src]...</span>"
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
-		if(do_after(user, 20, target = src))
+		if(do_after(user, 20 * speed_coefficient, target = src))
 			new frame(src.loc)
 			for(var/i = 1, i <= buildstackamount, i++)
 				new buildstack(get_turf(src))
@@ -216,7 +218,7 @@
 	if(destroy_type == TBL_DECONSTRUCT)
 		user << "<span class='notice'>You start deconstructing [src]...</span>"
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
-		if(do_after(user, 40, target = src))
+		if(do_after(user, 40 * speed_coefficient, target = src))
 			for(var/i = 1, i <= framestackamount, i++)
 				new framestack(get_turf(src))
 			for(var/i = 1, i <= buildstackamount, i++)

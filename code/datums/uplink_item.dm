@@ -535,7 +535,7 @@ var/list/uplink_items = list()
 
 /datum/uplink_item/device_tools/toolbox
 	name = "Full Syndicate Toolbox"
-	desc = "The syndicate toolbox is a suspicious black and red. Aside from tools, it comes with cable and a multitool. Insulated gloves are not included."
+	desc = "The syndicate toolbox is a suspicious black and red. It comes with a full set of tools that work 30% faster than the standard variety, as well as a regular multitool and insulated combat gloves."
 	item = /obj/item/weapon/storage/toolbox/syndicate
 	cost = 1
 
@@ -569,7 +569,17 @@ var/list/uplink_items = list()
 	Nanotrasen crewmembers are trained to report red space suit sightings, these suits in particular are known to drive employees into a panic."
 	item = /obj/item/clothing/suit/space/hardsuit/syndi
 	cost = 8
-	excludefrom = list(/datum/game_mode/gang)
+	excludefrom = list(/datum/game_mode/gang, /datum/game_mode/nuclear)
+
+/datum/uplink_item/device_tools/hardsuit
+	name = "Elite Syndicate Hardsuit"
+	desc = "The elite Syndicate hardsuit is worn by only the best nuclear agents. Features much better armoring and complete fireproofing, as well as a built in jetpack. \
+	When the built in helmet is deployed your identity will be protected, even in death, as the suit cannot be removed by outside forces. Toggling the suit into combat mode \
+	will allow you all the mobility of a loose fitting uniform without sacrificing armoring. Additionally the suit is collapsible, small enough to fit within a backpack. \
+	Nanotrasen crewmembers are trained to report red space suit sightings; these suits in particular are known to drive employees into a panic."
+	item = /obj/item/clothing/suit/space/hardsuit/syndi/elite
+	cost = 8
+	gamemodes = list(/datum/game_mode/nuclear)
 
 /datum/uplink_item/device_tools/thermal
 	name = "Chameleon Thermal-Night Vision Imaging Glasses"
