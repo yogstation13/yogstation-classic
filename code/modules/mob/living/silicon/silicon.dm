@@ -204,11 +204,8 @@
 		checklaws()
 
 	if (href_list["laws"]) // With how my law selection code works, I changed statelaws from a verb to a proc, and call it through my law selection panel. --NeoFite
-		if(text2num(href_list["time"]) > laws.timeLastChanged)
-			statelaws()
-		else
-			src << "<span class='warning'>Your laws have changed since you tried to state them, please review them again.</span>"
-			checklaws()
+		statelaws()
+
 	return
 
 
@@ -295,7 +292,7 @@
 				src.lawcheck[number+1] = "Yes"
 			list += {"<A href='byond://?src=\ref[src];lawc=[number]'>[src.lawcheck[number+1]] [number]:</A> [law]<BR>"}
 			number++
-	list += {"<br><br><A href='byond://?src=\ref[src];laws=1;time=[world.time]'>State Laws</A>"}
+	list += {"<br><br><A href='byond://?src=\ref[src];laws=1'>State Laws</A>"}
 
 	usr << browse(list, "window=laws")
 

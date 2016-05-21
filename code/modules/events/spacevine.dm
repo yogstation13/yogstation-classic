@@ -371,8 +371,8 @@
 	else if(is_sharp(W))
 		qdel(src)
 
-	else if(istype(W, /obj/item/weapon/tool/weldingtool))
-		var/obj/item/weapon/tool/weldingtool/WT = W
+	else if(istype(W, /obj/item/weapon/weldingtool))
+		var/obj/item/weapon/weldingtool/WT = W
 		if(WT.remove_fuel(0, user))
 			qdel(src)
 		else

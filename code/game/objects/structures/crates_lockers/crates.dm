@@ -303,7 +303,7 @@
 			user  << "<span class='notice'>You attach [W] to [src].</span>"
 			W.loc = src
 			return
-	else if(istype(W, /obj/item/weapon/tool/wirecutters))
+	else if(istype(W, /obj/item/weapon/wirecutters))
 		if(rigged)
 			user  << "<span class='notice'>You cut away the wiring.</span>"
 			playsound(loc, 'sound/items/Wirecutter.ogg', 100, 1)

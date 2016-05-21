@@ -201,8 +201,8 @@
 	if(alert("Select required AI?", user, "Select", "Random") == "Random")
 		return
 	var/list/L = list()
-	for(var/V in ai_list)
-		var/mob/living/silicon/ai/AI = V
+	for(var/A in ai_list)
+		var/mob/living/silicon/AI = A
 		L[AI.name] = AI
 	if(!L.len)
 		alert("No AI candidates", user)

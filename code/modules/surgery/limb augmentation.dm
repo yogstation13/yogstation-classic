@@ -6,7 +6,7 @@
 
 /datum/surgery_step/replace
 	name = "sever muscules"
-	implements = list(/obj/item/weapon/scalpel = 100, /obj/item/weapon/tool/wirecutters = 55)
+	implements = list(/obj/item/weapon/scalpel = 100, /obj/item/weapon/wirecutters = 55)
 	time = 32
 
 
@@ -97,11 +97,6 @@
 						qdel(X)
 					for(var/datum/disease/appendicitis/A in H.viruses) //If they already have Appendicitis, Remove it
 						A.cure(1)
-
-					for(var/obj/item/organ/internal/I in target.getorganszone(target_zone, 1))
-						if(I.status == ORGAN_ORGANIC) // FLESH IS WEAK
-							I.Remove(target, special = 1)
-							qdel(I)
 			user.drop_item()
 			qdel(tool)
 			H.update_damage_overlays(0)

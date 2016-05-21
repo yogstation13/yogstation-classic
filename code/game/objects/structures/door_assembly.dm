@@ -420,14 +420,14 @@
 			adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): paintjob changed")
 			user << "<span class='notice'>You change the paintjob on the airlock assembly.</span>"
 
-	else if(istype(W, /obj/item/weapon/tool/weldingtool) && !anchored )
-		var/obj/item/weapon/tool/weldingtool/WT = W
+	else if(istype(W, /obj/item/weapon/weldingtool) && !anchored )
+		var/obj/item/weapon/weldingtool/WT = W
 		if(WT.remove_fuel(0,user))
 			user.visible_message("<span class='warning'>[user] disassembles the airlock assembly.</span>", \
 								"You start to disassemble the airlock assembly...")
 			playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
 
-			if(do_after(user, 40 * WT.speed_coefficient, target = src))
+			if(do_after(user, 40, target = src))
 				if( !WT.isOn() )
 					return
 				adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): airlock assembly disassembled")
@@ -447,7 +447,7 @@
 		else
 			return
 
-	else if(istype(W, /obj/item/weapon/tool/wrench) && !anchored )
+	else if(istype(W, /obj/item/weapon/wrench) && !anchored )
 		var/door_check = 1
 		for(var/obj/machinery/door/D in loc)
 			if(!D.sub_door)
@@ -459,8 +459,8 @@
 			user.visible_message("[user] secures the airlock assembly to the floor.", \
 								 "<span class='notice'>You start to secure the airlock assembly to the floor...</span>", \
 								 "<span class='italics'>You hear wrenching.</span>")
-			var/obj/item/weapon/tool/wrench/wrench = W
-			if(do_after(user, 40 * wrench.speed_coefficient, target = src))
+
+			if(do_after(user, 40, target = src))
 				if( src.anchored )
 					return
 				adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): airlock assembly secured")
@@ -470,13 +470,12 @@
 		else
 			user << "There is another door here!"
 
-	else if(istype(W, /obj/item/weapon/tool/wrench) && anchored )
+	else if(istype(W, /obj/item/weapon/wrench) && anchored )
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 100, 1)
 		user.visible_message("[user] unsecures the airlock assembly from the floor.", \
 							 "<span class='notice'>You start to unsecure the airlock assembly from the floor...</span>", \
 							 "<span class='italics'>You hear wrenching.</span>")
-		var/obj/item/weapon/tool/wrench/wrench = W
-		if(do_after(user, 40 * wrench.speed_coefficient, target = src))
+		if(do_after(user, 40, target = src))
 			if( !src.anchored )
 				return
 			adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): airlock assembly unsecured")
@@ -499,12 +498,12 @@
 			user << "<span class='notice'>You wire the airlock assembly.</span>"
 			src.name = "wired airlock assembly"
 
-	else if(istype(W, /obj/item/weapon/tool/wirecutters) && state == 1 )
+	else if(istype(W, /obj/item/weapon/wirecutters) && state == 1 )
 		playsound(src.loc, 'sound/items/Wirecutter.ogg', 100, 1)
 		user.visible_message("[user] cuts the wires from the airlock assembly.", \
 							"<span class='notice'>You start to cut the wires from the airlock assembly...</span>")
-		var/obj/item/weapon/tool/wirecutters/wc = W
-		if(do_after(user, 40 * wc.speed_coefficient, target = src))
+
+		if(do_after(user, 40, target = src))
 			if( src.state != 1 )
 				return
 			adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): airlock assembly wires cut")
@@ -531,12 +530,12 @@
 			src.electronics = W
 
 
-	else if(istype(W, /obj/item/weapon/tool/crowbar) && state == 2 )
+	else if(istype(W, /obj/item/weapon/crowbar) && state == 2 )
 		playsound(src.loc, 'sound/items/Crowbar.ogg', 100, 1)
 		user.visible_message("[user] removes the electronics from the airlock assembly.", \
 								"<span class='notice'>You start to remove electronics from the airlock assembly...</span>")
-		var/obj/item/weapon/tool/crowbar/cb = W
-		if(do_after(user, 40 * cb.speed_coefficient, target = src))
+
+		if(do_after(user, 40, target = src))
 			if( src.state != 2 )
 				return
 			adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): airlock electronics removed")
@@ -601,12 +600,12 @@
 							glass_base_icon_state = "door_as_g"
 							glass_type = /obj/machinery/door/airlock/glass
 
-	else if(istype(W, /obj/item/weapon/tool/screwdriver) && state == 2 )
+	else if(istype(W, /obj/item/weapon/screwdriver) && state == 2 )
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 100, 1)
 		user.visible_message("[user] finishes the airlock.", \
 							 "<span class='notice'>You start finishing the airlock...</span>")
-		var/obj/item/weapon/tool/screwdriver/sd = W
-		if(do_after(user, 40 * sd.speed_coefficient, target = src))
+
+		if(do_after(user, 40, target = src))
 			if(src.loc && state == 2)
 				adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): airlock finished")
 				user << "<span class='notice'>You finish the airlock.</span>"

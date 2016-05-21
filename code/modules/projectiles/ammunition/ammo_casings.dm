@@ -31,11 +31,6 @@
 	caliber = ".45"
 	projectile_type = /obj/item/projectile/bullet/midbullet
 
-/obj/item/ammo_casing/c50
-	desc = "A .50 bullet casing."
-	caliber = ".50"
-	projectile_type = /obj/item/projectile/bullet/midbullet4
-
 /obj/item/ammo_casing/shotgun
 	name = "shotgun slug"
 	desc = "A 12 gauge lead slug."
@@ -258,7 +253,7 @@
 /obj/item/ammo_casing/caseless/foam_dart/attackby(obj/item/A, mob/user, params)
 	..()
 	var/obj/item/projectile/bullet/reusable/foam_dart/FD = BB
-	if (istype(A, /obj/item/weapon/tool/screwdriver) && !modified)
+	if (istype(A, /obj/item/weapon/screwdriver) && !modified)
 		modified = 1
 		FD.damage_type = BRUTE
 		update_icon()

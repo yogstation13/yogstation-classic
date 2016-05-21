@@ -18,10 +18,15 @@
 	var/dwidth = 0	//position relative to covered area, perpendicular to dir
 	var/dheight = 0	//position relative to covered area, parallel to dir
 
+	var/launch_status = NOLAUNCH
+
 	//these objects are indestructable
 /obj/docking_port/Destroy()
 	return QDEL_HINT_LETMELIVE
-
+/obj/docking_port/singularity_pull()
+	return
+/obj/docking_port/singularity_act()
+	return 0
 /obj/docking_port/shuttleRotate()
 	return //we don't rotate with shuttles via this code.
 //returns a list(x0,y0, x1,y1) where points 0 and 1 are bounding corners of the projected rectangle
@@ -165,10 +170,10 @@
 	var/area/shuttle/areaInstance
 
 	var/timer						//used as a timer (if you want time left to complete move, use timeLeft proc)
-	var/mode = SHUTTLE_IDLE			//current shuttle mode (see global defines)
+	var/mode = SHUTTLE_IDLE			//current shuttle mode (see /__DEFINES/stat.dm)
 	var/callTime = 50				//time spent in transit (deciseconds)
-
-	var/travelDir = 0			//direction the shuttle would travel in
+	var/roundstart_move				//id of port to send shuttle to at roundstart
+	var/travelDir = 0				//direction the shuttle would travel in
 
 	var/obj/docking_port/stationary/destination
 	var/obj/docking_port/stationary/previous
@@ -177,6 +182,7 @@
 	..()
 	SSshuttle.mobile += src
 
+/obj/docking_port/mobile/initialize()
 	var/area/A = get_area(src)
 	if(istype(A, /area/shuttle))
 		areaInstance = A
@@ -287,8 +293,6 @@
 			var/oldPY = pixel_y
 			pixel_x = oldPY
 			pixel_y = (oldPX*(-1))
-
-
 
 //this is the main proc. It instantly moves our mobile port to stationary port S1
 //it handles all the generic behaviour, such as sanity checks, closing doors on the shuttle, stunning mobs, etc
@@ -414,10 +418,51 @@
 	loc = S1.loc
 	dir = S1.dir
 
+
+/atom/movable/proc/onShuttleMove(turf/T1, rotation)
+	if(rotation)
+		shuttleRotate(rotation)
+	loc = T1
+	return 1
+
+/obj/onShuttleMove()
+	if(invisibility >= 101)
+		return 0
+	. = ..()
+
+/atom/movable/light/onShuttleMove()
+	return 0
+
+/obj/machinery/door/onShuttleMove()
+	. = ..()
+	if(!.)
+		return
+	spawn(0)
+		close()
+
+/mob/onShuttleMove()
+	if(!move_on_shuttle)
+		return 0
+	. = ..()
+	if(!.)
+		return
+	if(client)
+		if(buckled)
+			shake_camera(src, 2, 1) // turn it down a bit come on
+		else
+			shake_camera(src, 7, 1)
+
+/mob/living/carbon/onShuttleMove()
+	. = ..()
+	if(!.)
+		return
+	if(!buckled)
+		Weaken(3)
+
 /*
 	if(istype(S1, /obj/docking_port/stationary/transit))
 		var/d = turn(dir, 180 + travelDir)
-		for(var/turf/space/transit/T in S1.return_ordered_turfs())
+		for(var/turf/open/space/transit/T in S1.return_ordered_turfs())
 			T.pushdirection = d
 			T.update_icon()
 */
@@ -444,19 +489,22 @@
 	if(T)
 		var/obj/machinery/door/Door = locate() in T
 		if(Door)
-			spawn(-1)
+			spawn(0)
 				Door.close()
 
 /obj/docking_port/mobile/proc/roadkill(list/L, dir, x, y)
 	for(var/turf/T in L)
 		for(var/atom/movable/AM in T)
 			if(ismob(AM))
-				if(istype(AM, /mob/living))
+				if(ishuman(AM))
 					var/mob/living/M = AM
 					M.Paralyse(10)
-					M.take_organ_damage(80)
+					M.apply_damage(60, BRUTE, "chest")
+					M.apply_damage(60, BRUTE, "head")
 					M.anchored = 0
 				else
+					var/mob/M = AM
+					M.gib()
 					continue
 
 			if(!AM.anchored)
@@ -469,13 +517,11 @@
 	var/turf/T = get_turf(A)
 	if(!T)
 		return 0
-
 	var/list/L = return_coords()
 	if(L[1] > L[3])
 		L.Swap(1,3)
 	if(L[2] > L[4])
 		L.Swap(2,4)
-
 	if(L[1] <= T.x && T.x <= L[3])
 		if(L[2] <= T.y && T.y <= L[4])
 			return 1
@@ -512,6 +558,33 @@
 		return round(callTime/divisor, 1)
 	return max( round((timer+callTime-world.time)/divisor,1), 0 )
 
+// returns 3-letter mode string, used by status screens and mob status panel
+/obj/docking_port/mobile/proc/getModeStr()
+	switch(mode)
+		if(SHUTTLE_RECALL)
+			return "RCL"
+		if(SHUTTLE_CALL)
+			return "ETA"
+		if(SHUTTLE_DOCKED)
+			return "ETD"
+		if(SHUTTLE_ESCAPE)
+			return "ESC"
+		if(SHUTTLE_STRANDED)
+			return "ERR"
+	return ""
+
+// returns 5-letter timer string, used by status screens and mob status panel
+/obj/docking_port/mobile/proc/getTimerStr()
+	if(mode == SHUTTLE_STRANDED)
+		return "--:--"
+
+	var/timeleft = timeLeft()
+	if(timeleft > 0)
+		return "[add_zero(num2text((timeleft / 60) % 60),2)]:[add_zero(num2text(timeleft % 60), 2)]"
+	else
+		return "00:00"
+
+
 /obj/docking_port/mobile/proc/getStatusText()
 	var/obj/docking_port/stationary/dockedAt = get_docked()
 	. = (dockedAt && dockedAt.name) ? dockedAt.name : "unknown"
@@ -521,102 +594,7 @@
 			dst = previous
 		else
 			dst = destination
-		. += " towards [dst ? dst.name : "unknown location"] ([timeLeft(600)]mins)"
-
-/obj/machinery/computer/shuttle
-	name = "Shuttle Console"
-	icon_screen = "shuttle"
-	icon_keyboard = "tech_key"
-	req_access = list( )
-	circuit = /obj/item/weapon/circuitboard/shuttle
-	var/shuttleId
-	var/possible_destinations = ""
-	var/admin_controlled
-
-/obj/machinery/computer/shuttle/New(location, obj/item/weapon/circuitboard/shuttle/C)
-	..()
-	if(istype(C))
-		possible_destinations = C.possible_destinations
-		shuttleId = C.shuttleId
-
-/obj/machinery/computer/shuttle/attack_hand(mob/user)
-	if(..(user))
-		return
-	src.add_fingerprint(usr)
-
-	var/list/options = params2list(possible_destinations)
-	var/obj/docking_port/mobile/M = SSshuttle.getShuttle(shuttleId)
-	var/dat = "Status: [M ? M.getStatusText() : "*Missing*"]<br><br>"
-	if(M)
-		var/destination_found
-		for(var/obj/docking_port/stationary/S in SSshuttle.stationary)
-			if(!options.Find(S.id))
-				continue
-			if(M.canDock(S))
-				continue
-			destination_found = 1
-			dat += "<A href='?src=\ref[src];move=[S.id]'>Send to [S.name]</A><br>"
-		if(!destination_found)
-			dat += "<B>Shuttle Locked</B><br>"
-			if(admin_controlled)
-				dat += "Authorized personnel only<br>"
-				dat += "<A href='?src=\ref[src];request=1]'>Request Authorization</A><br>"
-	dat += "<a href='?src=\ref[user];mach_close=computer'>Close</a>"
-
-	var/datum/browser/popup = new(user, "computer", M ? M.name : "shuttle", 300, 200)
-	popup.set_content("<center>[dat]</center>")
-	popup.set_title_image(usr.browse_rsc_icon(src.icon, src.icon_state))
-	popup.open()
-
-/obj/machinery/computer/shuttle/Topic(href, href_list)
-	if(..())
-		return
-	usr.set_machine(src)
-	src.add_fingerprint(usr)
-	if(!allowed(usr))
-		usr << "<span class='danger'>Access denied.</span>"
-		return
-
-	if(href_list["move"])
-		usr << "<span class='notice'>Sending message to shuttle...</span>"
-		sleep(50)
-		switch(SSshuttle.moveShuttle(shuttleId, href_list["move"], 1))
-			if(0)	usr << "<span class='notice'>Shuttle received message and will be sent immediately.</span>"
-			if(1)	usr << "<span class='warning'>Invalid shuttle requested.</span>"
-			else	usr << "<span class='notice'>Unable to comply.</span>"
-
-/obj/machinery/computer/shuttle/emag_act(mob/user)
-	if(!emagged)
-		src.req_access = list()
-		emagged = 1
-		user << "<span class='notice'>You fried the consoles ID checking system.</span>"
-
-/obj/machinery/computer/shuttle/ferry
-	name = "transport ferry console"
-	circuit = /obj/item/weapon/circuitboard/ferry
-	shuttleId = "ferry"
-	possible_destinations = "ferry_home;ferry_away"
-
-
-/obj/machinery/computer/shuttle/ferry/request
-	name = "ferry console"
-	circuit = /obj/item/weapon/circuitboard/ferry/request
-	var/cooldown //prevents spamming admins
-	possible_destinations = "ferry_home"
-	admin_controlled = 1
-
-/obj/machinery/computer/shuttle/ferry/request/Topic(href, href_list)
-	..()
-	if(href_list["request"])
-		if(cooldown)
-			return
-		cooldown = 1
-		usr << "<span class='notice'>Your request has been recieved by Centcom.</span>"
-		admins << "<b>FERRY: <font color='blue'>[key_name_admin(usr)] (<A HREF='?_src_=holder;adminmoreinfo=\ref[usr]'>?</A>) (<A HREF='?_src_=holder;adminplayerobservefollow=\ref[usr]'>FLW</A>) (<A HREF='?_src_=holder;secretsadmin=moveferry'>Move Ferry</a>)</b> is requesting to move the transport ferry to Centcom.</font>"
-		spawn(600) //One minute cooldown
-			cooldown = 0
-
-
+		. += " towards [dst ? dst.name : "unknown location"] ([timeLeft(600)] minutes)"
 #undef DOCKING_PORT_HIGHLIGHT
 
 
@@ -626,7 +604,7 @@
 		if(underlays.len)	//we have underlays, which implies some sort of transparency, so we want to a snapshot of the previous turf as an underlay
 			O = new()
 			O.underlays.Add(T)
-		T = new type(T)
+		T.ChangeTurf(type)
 		if(underlays.len)
 			T.underlays = O.underlays
 	if(T.icon_state != icon_state)

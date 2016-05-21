@@ -1,7 +1,7 @@
 //backpack item
 
 //Add this to the revivecost to check if cyborg has enough power, just so it doesn't depower itself during defib process
-#define BORG_SAFETY_NET 500
+#define BORG_SAFETY_NET 500 
 
 /obj/item/weapon/defibrillator
 	name = "defibrillator"
@@ -121,7 +121,7 @@
 			bcell = W
 			user << "<span class='notice'>You install a cell in [src].</span>"
 
-	if(istype(W, /obj/item/weapon/tool/screwdriver))
+	if(istype(W, /obj/item/weapon/screwdriver))
 		if(bcell)
 			bcell.updateicon()
 			bcell.loc = get_turf(src.loc)
@@ -342,7 +342,7 @@
 			return
 	else //If we are cyborgs, check cell
 		var/mob/living/silicon/robot/R = user
-		if(R.cell && (R.cell.charge < revivecost + BORG_SAFETY_NET))
+		if(R.cell && (R.cell.charge < revivecost + BORG_SAFETY_NET)) 
 			user.visible_message("<span class='notice'>[src] beeps: Low power detected, safety protocols engaged. Unit is unpowered.</span>")
 			playsound(get_turf(src), 'sound/machines/defib_failed.ogg', 50, 0)
 			return

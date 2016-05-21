@@ -14,6 +14,7 @@
 
 
 /mob/living/carbon/human/New()
+	create_reagents(1000)
 	verbs += /mob/living/proc/mob_sleep
 	verbs += /mob/living/proc/lay_down
 	//initialise organs
@@ -22,6 +23,7 @@
 	for(var/obj/item/organ/limb/O in organs)
 		O.owner = src
 	internal_organs += new /obj/item/organ/internal/appendix
+	internal_organs += new /obj/item/organ/internal/lungs
 	internal_organs += new /obj/item/organ/internal/heart
 	internal_organs += new /obj/item/organ/internal/brain
 

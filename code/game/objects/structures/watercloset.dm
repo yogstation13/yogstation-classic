@@ -47,11 +47,10 @@
 
 
 /obj/structure/toilet/attackby(obj/item/I, mob/living/user, params)
-	if(istype(I, /obj/item/weapon/tool/crowbar))
+	if(istype(I, /obj/item/weapon/crowbar))
 		user << "<span class='notice'>You start to [cistern ? "replace the lid on the cistern" : "lift the lid off the cistern"]...</span>"
 		playsound(loc, 'sound/effects/stonedoor_openclose.ogg', 50, 1)
-		var/obj/item/weapon/tool/crowbar/cb = I
-		if(do_after(user, 30 * cb.speed_coefficient, target = src))
+		if(do_after(user, 30, target = src))
 			user.visible_message("[user] [cistern ? "replaces the lid on the cistern" : "lifts the lid off the cistern"]!", "<span class='notice'>You [cistern ? "replace the lid on the cistern" : "lift the lid off the cistern"]!</span>", "<span class='italics'>You hear grinding porcelain.</span>")
 			cistern = !cistern
 			update_icon()
@@ -176,10 +175,9 @@
 /obj/machinery/shower/attackby(obj/item/I, mob/user, params)
 	if(I.type == /obj/item/device/analyzer)
 		user << "<span class='notice'>The water temperature seems to be [watertemp].</span>"
-	if(istype(I, /obj/item/weapon/tool/wrench))
+	if(istype(I, /obj/item/weapon/wrench))
 		user << "<span class='notice'>You begin to adjust the temperature valve with \the [I]...</span>"
-		var/obj/item/weapon/tool/wrench/wrench = I
-		if(do_after(user, 50 * wrench.speed_coefficient, target = src))
+		if(do_after(user, 50, target = src))
 			switch(watertemp)
 				if("normal")
 					watertemp = "freezing"

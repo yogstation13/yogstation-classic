@@ -97,8 +97,6 @@ BLIND     // can't see anything
 	var/blockTracking = 0 //For AI tracking
 	var/can_toggle = null
 
-var/list/head_compatible_items = list(/obj/item/weapon/reagent_containers/glass/bucket)//list of items with a compatible interface for being on the head. Hackey but better than the alternative.
-
 //Mask
 /obj/item/clothing/mask
 	name = "mask"

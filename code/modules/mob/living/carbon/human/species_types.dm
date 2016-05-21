@@ -48,50 +48,6 @@
 		H.reagents.del_reagent(chem.type)
 		H.faction |= "slime"
 		return 1
-#define EATING_MESSAGE_COOLDOWN 1200//2 minutes, in deciseconds. I am here for the sake of androids and flies
-
-/datum/species/human/fly
-	// Humans turned into fly-like abominations in teleporter accidents.
-	name = "Manfly"
-	id = "manfly"
-	say_mod = "buzzes"
-	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/fly
-	use_skintones = 0
-	specflags = list()
-	roundstart = 0
-	var/last_eat_message = -EATING_MESSAGE_COOLDOWN //I am here because flies
-
-
-
-/datum/species/human/fly/handle_speech(message)
-	return replacetext(message, "z", stutter("zz"))
-
-/datum/species/human/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
-	if(..())
-		return
-	if (istype(chem, /datum/reagent/consumable)) //paranoia paranoia type casting is coming to get me
-		var/datum/reagent/consumable/food = chem
-		if (food.nutriment_factor)
-			food.nutriment_factor = food.nutriment_factor * 0.2
-			if (world.time - last_eat_message > EATING_MESSAGE_COOLDOWN)
-				H << "<span class='info'>This is disgusting, you need a real meal!</span>"
-				last_eat_message = world.time
-		return 0
-	if(chem.id == "????")
-		H.adjustBruteLoss(-1)
-		H.adjustFireLoss(-1)
-		H.adjustToxLoss(-1)
-		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
-		H.nutrition += 3 * REAGENTS_METABOLISM
-		return 1
-
-	if(chem.id == "pestkiller")
-		H.adjustToxLoss(3)
-		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
-		return 1
-
-
-
 
 //Curiosity killed the cat's wagging tail.
 datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
@@ -147,49 +103,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	if(copytext(message, 1, 2) != "*")
 		message = replacetextEx(message, "s", "sss")
 		message = replacetextEx(message, "S", "SSS")
-
 	return message
-
-/datum/species/lizard/fly
-	// lizards turned into fly-like abominations in teleporter accidents.
-	name = "Unafly"
-	id = "unafly"
-	say_mod = "buzzes"
-	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/fly
-	roundstart = 0
-	var/last_eat_message = -EATING_MESSAGE_COOLDOWN //I am here because flies
-	specflags = list()
-	default_color = "FFFFFF"
-
-
-
-
-/datum/species/lizard/fly/handle_speech(message)
-	return replacetext(..(), "z", stutter("zz"))
-
-/datum/species/lizard/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
-	if (..())
-		return
-	if (istype(chem, /datum/reagent/consumable)) //paranoia paranoia type casting is coming to get me
-		var/datum/reagent/consumable/food = chem
-		if (food.nutriment_factor)
-			food.nutriment_factor = food.nutriment_factor * 0.2
-			if (world.time - last_eat_message > EATING_MESSAGE_COOLDOWN)
-				H << "<span class='info'>This is disgusting, you need a real meal!</span>"
-				last_eat_message = world.time
-		return 0
-	if(chem.id == "????")
-		H.adjustBruteLoss(-1)
-		H.adjustFireLoss(-1)
-		H.adjustToxLoss(-1)
-		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
-		H.nutrition += 15 * REAGENTS_METABOLISM
-		return 1
-
-	if(chem.id == "pestkiller")
-		H.adjustToxLoss(3)
-		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
-		return 1
 
 //I wag in death
 /datum/species/lizard/spec_death(gibbed, mob/living/carbon/human/H)
@@ -200,6 +114,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
  ANDROIDS
  */
 
+#define EATING_MESSAGE_COOLDOWN 1200//2 minutes, in deciseconds.
 
 /datum/species/android
 	//augmented half-silicon, half-human hybrids
@@ -250,43 +165,6 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 			H.see_in_dark = G.darkness_view
 			H.see_invisible = SEE_INVISIBLE_LIVING
 
-/datum/species/android/fly
-	// androids turned into fly-like abominations in teleporter accidents.
-	name = "Flyternis"
-	id = "flyternis"
-	say_mod = "buzzes"
-	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/fly
-	default_color = "FFFFFF"
-	specflags = list()
-	roundstart = 0
-
-/datum/species/android/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
-	if(..())
-		return
-	if (istype(chem, /datum/reagent/consumable)) //paranoia paranoia type casting is coming to get me
-		var/datum/reagent/consumable/food = chem
-		if (food.nutriment_factor)
-			food.nutriment_factor = food.nutriment_factor * 0.2
-			if (world.time - last_eat_message > EATING_MESSAGE_COOLDOWN)
-				H << "<span class='info'>This is disgusting, you need a real meal!</span>"
-				last_eat_message = world.time
-		return 0
-	if(chem.id == "????")
-		H.adjustBruteLoss(-1)
-		H.adjustFireLoss(-1)
-		H.adjustToxLoss(-1)
-		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
-		H.nutrition += 15 * REAGENTS_METABOLISM
-		return 1
-
-	if(chem.id == "pestkiller")
-		H.adjustToxLoss(3)
-		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
-		return 1
-
-/datum/species/android/fly/handle_speech(message)
-	return replacetext(message, "z", stutter("zz"))
-
 /datum/species/android/before_equip_job(datum/job/J, mob/living/carbon/human/H)
 	H << "<span class='info'><b>You are a Preternis.</b> Half-human, half-silicon, you lie in the nebulous between of the two lifeforms, neither one, nor the other.</span>"
 	H << "<span class='info'>Powerful ocular implants afford you greater vision in the darkness, but draw large amounts of power from your biological body. Should your stores run out, they will deactivate and leave you blind.</span>"
@@ -325,6 +203,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 /datum/species/android/get_spans()
 	return SPAN_ROBOT
 
+#undef EATING_MESSAGE_COOLDOWN
 /*
  PLANTPEOPLE
 */
@@ -453,46 +332,6 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 			if (prob(5))
 				H << "<span class='userdanger'>Your internal stores of light are depleted. Find a source to replenish your nourishment at once!</span>"
 			H.take_overall_damage(2,0)
-
-/datum/species/plant/fly
-	// Phytosian turned into fly-like abominations in teleporter accidents.
-	name = "Flytosian"
-	id = "flytosian"
-	say_mod = "buzzes"
-	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/fly
-	roundstart = 0
-	var/last_eat_message = -EATING_MESSAGE_COOLDOWN //I am here because flies
-	specflags = list()
-	default_color = "000000"
-
-/datum/species/plant/fly/handle_speech(message)
-	return replacetext(message, "z", stutter("zz"))
-
-/datum/species/plant/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
-	if (..())
-		return
-	if (istype(chem, /datum/reagent/consumable)) //paranoia paranoia type casting is coming to get me
-		var/datum/reagent/consumable/food = chem
-		if (food.nutriment_factor)
-			food.nutriment_factor = food.nutriment_factor * 0.2
-			if (world.time - last_eat_message > EATING_MESSAGE_COOLDOWN)
-				H << "<span class='info'>This is disgusting, you need a real meal!</span>"
-				last_eat_message = world.time
-		return 0
-	if(chem.id == "????")
-		H.adjustBruteLoss(-1)
-		H.adjustFireLoss(-1)
-		H.adjustToxLoss(-1)
-		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
-		H.nutrition += 15 * REAGENTS_METABOLISM
-		return 1
-
-	if(chem.id == "pestkiller")
-		H.adjustToxLoss(3)
-		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
-		return 1
-
-#undef EATING_MESSAGE_COOLDOWN
 /*
  PODPEOPLE
 */
@@ -764,9 +603,25 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	id = "adamantine"
 	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/golem/adamantine
 
-//FLY
-/* This has been moved to Human, Phytosian, Unathi and Preternis */
+/*
+ FLIES
+*/
 
+/datum/species/fly
+	// Humans turned into fly-like abominations in teleporter accidents.
+	name = "Human?"
+	id = "fly"
+	say_mod = "buzzes"
+	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/fly
+
+/datum/species/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
+	if(chem.id == "pestkiller")
+		H.adjustToxLoss(3)
+		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
+		return 1
+
+/datum/species/fly/handle_speech(message)
+	return replacetext(message, "z", stutter("zz"))
 
 /*
  SKELETONS

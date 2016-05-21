@@ -114,6 +114,7 @@
 	update_corgi_fluff()
 
 
+
 /mob/living/simple_animal/pet/dog/corgi/Topic(href, href_list)
 	if(usr.stat) return
 
@@ -279,7 +280,7 @@
 /mob/living/simple_animal/pet/dog/corgi/proc/update_corgi_fluff()
 	if(!inventory_head)
 		return
-	switch(inventory_head.type)
+	switch(src.inventory_head.type)
 		if(/obj/item/clothing/head/helmet)
 			name = "Sergeant [real_name]"
 			desc = "The ever-loyal, the ever-vigilant."

@@ -11,13 +11,10 @@
  * 		Crowbar
  */
 
-/obj/item/weapon/tool
-	var/speed_coefficient = 1
-
 /*
  * Wrench
  */
-/obj/item/weapon/tool/wrench
+/obj/item/weapon/wrench
 	name = "wrench"
 	desc = "A wrench with common uses. Can be found in your hand."
 	icon = 'icons/obj/items.dmi'
@@ -31,7 +28,7 @@
 	origin_tech = "materials=1;engineering=1"
 	attack_verb = list("bashed", "battered", "bludgeoned", "whacked")
 
-/obj/item/weapon/tool/wrench/suicide_act(mob/user)
+/obj/item/weapon/wrench/suicide_act(mob/user)
 	user.visible_message("<span class='suicide'>[user] is beating \himself to death with the [src.name]! It looks like \he's trying to commit suicide.</span>")
 	playsound(loc, 'sound/weapons/genhit.ogg', 50, 1, -1)
 	return (BRUTELOSS)
@@ -39,7 +36,7 @@
 /*
  * Screwdriver
  */
-/obj/item/weapon/tool/screwdriver
+/obj/item/weapon/screwdriver
 	name = "screwdriver"
 	desc = "You can be totally screwy with this."
 	icon = 'icons/obj/items.dmi'
@@ -55,12 +52,12 @@
 	attack_verb = list("stabbed")
 	hitsound = 'sound/weapons/bladeslice.ogg'
 
-/obj/item/weapon/tool/screwdriver/suicide_act(mob/user)
+/obj/item/weapon/screwdriver/suicide_act(mob/user)
 	user.visible_message(pick("<span class='suicide'>[user] is stabbing the [src.name] into \his temple! It looks like \he's trying to commit suicide.</span>", \
 						"<span class='suicide'>[user] is stabbing the [src.name] into \his heart! It looks like \he's trying to commit suicide.</span>"))
 	return(BRUTELOSS)
 
-/obj/item/weapon/tool/screwdriver/New(loc, var/param_color = null)
+/obj/item/weapon/screwdriver/New(loc, var/param_color = null)
 	if(!param_color)
 		param_color = pick("red","blue","purple","brown","green","cyan","yellow")
 
@@ -91,7 +88,7 @@
 		src.pixel_y = rand(0, 16)
 	return
 
-/obj/item/weapon/tool/screwdriver/attack(mob/living/carbon/M, mob/living/carbon/user)
+/obj/item/weapon/screwdriver/attack(mob/living/carbon/M, mob/living/carbon/user)
 	if(!istype(M))	return ..()
 	if(user.zone_sel.selecting != "eyes" && user.zone_sel.selecting != "head")
 		return ..()
@@ -102,7 +99,7 @@
 /*
  * Wirecutters
  */
-/obj/item/weapon/tool/wirecutters
+/obj/item/weapon/wirecutters
 	name = "wirecutters"
 	desc = "This cuts wires."
 	icon = 'icons/obj/items.dmi'
@@ -118,13 +115,13 @@
 	attack_verb = list("pinched", "nipped")
 	hitsound = 'sound/items/Wirecutter.ogg'
 
-/obj/item/weapon/tool/wirecutters/New(loc, var/param_color = null)
+/obj/item/weapon/wirecutters/New(loc, var/param_color = null)
 	..()
 	if((!param_color && prob(50)) || param_color == "yellow")
 		icon_state = "cutters-y"
 		item_state = "cutters_yellow"
 
-/obj/item/weapon/tool/wirecutters/attack(mob/living/carbon/C, mob/user)
+/obj/item/weapon/wirecutters/attack(mob/living/carbon/C, mob/user)
 	if(istype(C) && C.handcuffed && istype(C.handcuffed, /obj/item/weapon/restraints/handcuffs/cable))
 		user.visible_message("<span class='notice'>[user] cuts [C]'s restraints with [src]!</span>")
 		qdel(C.handcuffed)
@@ -136,7 +133,7 @@
 	else
 		..()
 
-/obj/item/weapon/tool/wirecutters/suicide_act(mob/user)
+/obj/item/weapon/wirecutters/suicide_act(mob/user)
 	user.visible_message("<span class='suicide'>[user] is cutting at \his arteries with the [src.name]! It looks like \he's trying to commit suicide.</span>")
 	playsound(loc, 'sound/items/Wirecutter.ogg', 50, 1, -1)
 	return (BRUTELOSS)
@@ -144,7 +141,7 @@
 /*
  * Welding Tool
  */
-/obj/item/weapon/tool/weldingtool
+/obj/item/weapon/weldingtool
 	name = "welding tool"
 	desc = "A standard edition welder provided by NanoTrasen."
 	icon = 'icons/obj/items.dmi'
@@ -169,14 +166,14 @@
 	var/light_intensity = 2 //how powerful the emitted light is when used.
 	var/stop_bleeding = 600
 
-/obj/item/weapon/tool/weldingtool/New()
+/obj/item/weapon/weldingtool/New()
 	..()
 	create_reagents(max_fuel)
 	reagents.add_reagent("welding_fuel", max_fuel)
 	update_icon()
 	return
 
-/obj/item/weapon/tool/weldingtool/proc/update_torch()
+/obj/item/weapon/weldingtool/proc/update_torch()
 	overlays.Cut()
 	if(welding)
 		overlays += "[initial(icon_state)]-on"
@@ -184,7 +181,7 @@
 	else
 		item_state = "[initial(item_state)]"
 
-/obj/item/weapon/tool/weldingtool/update_icon()
+/obj/item/weapon/weldingtool/update_icon()
 	if(change_icons)
 		var/ratio = get_fuel() / max_fuel
 		ratio = Ceiling(ratio*4) * 25
@@ -195,20 +192,20 @@
 	update_torch()
 	return
 
-/obj/item/weapon/tool/weldingtool/examine(mob/user)
+/obj/item/weapon/weldingtool/examine(mob/user)
 	..()
 	user << "It contains [get_fuel()] unit\s of fuel out of [max_fuel]."
 
 
-/obj/item/weapon/tool/weldingtool/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/weapon/tool/screwdriver))
+/obj/item/weapon/weldingtool/attackby(obj/item/I, mob/user, params)
+	if(istype(I, /obj/item/weapon/screwdriver))
 		flamethrower_screwdriver(I, user)
 	if(istype(I, /obj/item/stack/rods))
 		flamethrower_rods(I, user)
 	..()
 
 
-/obj/item/weapon/tool/weldingtool/attack(mob/living/carbon/human/H, mob/user)
+/obj/item/weapon/weldingtool/attack(mob/living/carbon/human/H, mob/user)
 	if(!istype(H))
 		return ..()
 
@@ -244,7 +241,7 @@
 	else
 		return ..()
 
-/obj/item/weapon/tool/weldingtool/process()
+/obj/item/weapon/weldingtool/process()
 	switch(welding)
 		if(0)
 			force = 3
@@ -271,7 +268,7 @@
 		location.hotspot_expose(700, 5)
 
 
-/obj/item/weapon/tool/weldingtool/afterattack(atom/O, mob/user, proximity)
+/obj/item/weapon/weldingtool/afterattack(atom/O, mob/user, proximity)
 	if(!proximity) return
 	if(istype(O, /obj/structure/reagent_dispensers/fueltank) && in_range(src, O))
 		if(!welding)
@@ -296,17 +293,17 @@
 			var/mob/living/L = O
 			L.IgniteMob()
 
-/obj/item/weapon/tool/weldingtool/attack_self(mob/user)
+/obj/item/weapon/weldingtool/attack_self(mob/user)
 	toggle(user)
 	update_icon()
 
 //Returns the amount of fuel in the welder
-/obj/item/weapon/tool/weldingtool/proc/get_fuel()
+/obj/item/weapon/weldingtool/proc/get_fuel()
 	return reagents.get_reagent_amount("welding_fuel")
 
 
 //Removes fuel from the welding tool. If a mob is passed, it will try to flash the mob's eyes. This should probably be renamed to use()
-/obj/item/weapon/tool/weldingtool/proc/remove_fuel(amount = 1, mob/living/M = null)
+/obj/item/weapon/weldingtool/proc/remove_fuel(amount = 1, mob/living/M = null)
 	if(!welding || !check_fuel())
 		return 0
 	if(get_fuel() >= amount)
@@ -322,12 +319,12 @@
 
 
 //Returns whether or not the welding tool is currently on.
-/obj/item/weapon/tool/weldingtool/proc/isOn()
+/obj/item/weapon/weldingtool/proc/isOn()
 	return welding
 
 
 //Turns off the welder if there is no more fuel (does this really need to be its own proc?)
-/obj/item/weapon/tool/weldingtool/proc/check_fuel(mob/user)
+/obj/item/weapon/weldingtool/proc/check_fuel(mob/user)
 	if(get_fuel() <= 0 && welding)
 		toggle(user, 1)
 		update_icon()
@@ -342,7 +339,7 @@
 
 
 //Toggles the welder off and on
-/obj/item/weapon/tool/weldingtool/proc/toggle(mob/user, message = 0)
+/obj/item/weapon/weldingtool/proc/toggle(mob/user, message = 0)
 	if(!status)
 		user << "<span class='warning'>[src] can't be turned on while unsecured!</span>"
 		return
@@ -368,7 +365,7 @@
 		hitsound = "swing_hit"
 		update_icon()
 
-/obj/item/weapon/tool/weldingtool/proc/flamethrower_screwdriver(obj/item/I, mob/user)
+/obj/item/weapon/weldingtool/proc/flamethrower_screwdriver(obj/item/I, mob/user)
 	if(welding)
 		user << "<span class='warning'>Turn it off first!</span>"
 		return
@@ -379,7 +376,7 @@
 		user << "<span class='notice'>[src] can now be attached and modified.</span>"
 	add_fingerprint(user)
 
-/obj/item/weapon/tool/weldingtool/proc/flamethrower_rods(obj/item/I, mob/user)
+/obj/item/weapon/weldingtool/proc/flamethrower_rods(obj/item/I, mob/user)
 	if(!status)
 		var/obj/item/stack/rods/R = I
 		if (R.use(1))
@@ -395,7 +392,7 @@
 			user << "<span class='warning'>You need one rod to start building a flamethrower!</span>"
 			return
 
-/obj/item/weapon/tool/weldingtool/largetank
+/obj/item/weapon/weldingtool/largetank
 	name = "industrial welding tool"
 	desc = "A slightly larger welder with a larger tank."
 	icon_state = "indwelder"
@@ -403,12 +400,12 @@
 	materials = list(MAT_GLASS=60)
 	origin_tech = "engineering=2"
 
-/obj/item/weapon/tool/weldingtool/largetank/cyborg
+/obj/item/weapon/weldingtool/largetank/cyborg
 
-/obj/item/weapon/tool/weldingtool/largetank/flamethrower_screwdriver()
+/obj/item/weapon/weldingtool/largetank/flamethrower_screwdriver()
 	return
 
-/obj/item/weapon/tool/weldingtool/mini
+/obj/item/weapon/weldingtool/mini
 	name = "emergency welding tool"
 	desc = "A miniature welder used during emergencies."
 	icon_state = "miniwelder"
@@ -417,11 +414,11 @@
 	materials = list(MAT_METAL=30, MAT_GLASS=10)
 	change_icons = 0
 
-/obj/item/weapon/tool/weldingtool/mini/flamethrower_screwdriver()
+/obj/item/weapon/weldingtool/mini/flamethrower_screwdriver()
 	return
 
 
-/obj/item/weapon/tool/weldingtool/hugetank
+/obj/item/weapon/weldingtool/hugetank
 	name = "upgraded industrial welding tool"
 	desc = "An upgraded welder based of the industrial welder."
 	icon_state = "upindwelder"
@@ -430,7 +427,7 @@
 	materials = list(MAT_METAL=70, MAT_GLASS=120)
 	origin_tech = "engineering=3"
 
-/obj/item/weapon/tool/weldingtool/experimental
+/obj/item/weapon/weldingtool/experimental
 	name = "experimental welding tool"
 	desc = "An experimental welder capable of self-fuel generation and less harmful to the eyes."
 	icon_state = "exwelder"
@@ -446,14 +443,14 @@
 
 //Proc to make the experimental welder generate fuel, optimized as fuck -Sieve
 //i don't think this is actually used, yaaaaay -Pete
-/obj/item/weapon/tool/weldingtool/experimental/proc/fuel_gen()
+/obj/item/weapon/weldingtool/experimental/proc/fuel_gen()
 	if(!welding && !last_gen)
 		last_gen = 1
 		reagents.add_reagent("welding_fuel",1)
 		spawn(10)
 			last_gen = 0
 
-/obj/item/weapon/tool/weldingtool/experimental/process()
+/obj/item/weapon/weldingtool/experimental/process()
 	..()
 	if(reagents.total_volume < max_fuel)
 		fuel_gen()
@@ -464,7 +461,7 @@
  * Crowbar
  */
 
-/obj/item/weapon/tool/crowbar
+/obj/item/weapon/crowbar
 	name = "pocket crowbar"
 	desc = "A small crowbar. This handy tool is useful for lots of things, such as prying floor tiles or opening unpowered doors."
 	icon = 'icons/obj/items.dmi'
@@ -479,17 +476,17 @@
 	origin_tech = "engineering=1"
 	attack_verb = list("attacked", "bashed", "battered", "bludgeoned", "whacked")
 
-/obj/item/weapon/tool/crowbar/suicide_act(mob/user)
+/obj/item/weapon/crowbar/suicide_act(mob/user)
 	user.visible_message("<span class='suicide'>[user] is beating \himself to death with the [src.name]! It looks like \he's trying to commit suicide.</span>")
 	playsound(loc, 'sound/weapons/genhit.ogg', 50, 1, -1)
 	return (BRUTELOSS)
 
-/obj/item/weapon/tool/crowbar/red
+/obj/item/weapon/crowbar/red
 	icon_state = "red_crowbar"
 	item_state = "crowbar_red"
 	force = 8
 
-/obj/item/weapon/tool/crowbar/large
+/obj/item/weapon/crowbar/large
 	name = "crowbar"
 	desc = "It's a big crowbar. It doesn't fit in your pockets, because it's big."
 	force = 12

@@ -79,7 +79,7 @@
 
 /obj/item/clothing/suit/armor/abductor/vest/hit_reaction()
 	DeactivateStealth()
-	return 0
+	return 1
 
 /obj/item/clothing/suit/armor/abductor/vest/IsReflect()
 	DeactivateStealth()

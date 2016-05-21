@@ -192,7 +192,7 @@
 
 		if(druggy)
 			overlay_fullscreen("high", /obj/screen/fullscreen/high)
-			throw_alert("high")
+			throw_alert("high", /obj/screen/alert/high)
 		else
 			clear_fullscreen("high")
 			clear_alert("high")

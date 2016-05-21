@@ -311,7 +311,7 @@
 	src.updateSelfDialog()
 
 /obj/item/device/camera_bug/attackby(obj/item/W,mob/living/user, params)
-	if(istype(W,/obj/item/weapon/tool/screwdriver) && expansion)
+	if(istype(W,/obj/item/weapon/screwdriver) && expansion)
 		expansion.loc = get_turf(loc)
 		user << "<span class='notice'>You unscrew [expansion].</span>"
 		user.put_in_inactive_hand(expansion)

@@ -102,7 +102,7 @@ Thus, the two variables affect pump operation are set in New():
 
 	return 1
 
-/obj/machinery/atmospherics/components/binary/pump/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null)
+/obj/machinery/atmospherics/components/binary/pump/nanoui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null)
 	if(stat & (BROKEN|NOPOWER))
 		return
 
@@ -161,7 +161,7 @@ Thus, the two variables affect pump operation are set in New():
 		user << "<span class='danger'>Access denied.</span>"
 		return
 	usr.set_machine(src)
-	ui_interact(user)
+	nanoui_interact(user)
 	return
 
 /obj/machinery/atmospherics/components/binary/pump/Topic(href,href_list)
@@ -190,7 +190,7 @@ Thus, the two variables affect pump operation are set in New():
 	update_icon()
 
 /obj/machinery/atmospherics/components/binary/pump/attackby(obj/item/weapon/W, mob/user, params)
-	if (!istype(W, /obj/item/weapon/tool/wrench))
+	if (!istype(W, /obj/item/weapon/wrench))
 		return ..()
 	if (!(stat & NOPOWER) && on)
 		user << "<span class='warning'>You cannot unwrench this [src], turn it off first!</span>"

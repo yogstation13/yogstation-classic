@@ -168,7 +168,7 @@
 			usr << "<span class='alert'>You do not have required levels to operate on the cooler.</span>"
 
 
-	if(istype(I, /obj/item/weapon/tool/screwdriver))
+	if(istype(I, /obj/item/weapon/screwdriver))
 		if(ccell)
 			ccell.loc = get_turf(src.loc)
 			ccell = null
@@ -216,7 +216,7 @@
 /obj/item/device/cubiclecooler/attackby(/obj/item/I, mob/user, params)
 	..()
 
-	if(istype(W, /obj/item/weapon/tool/wrench))
+	if(istype(W, /obj/item/weapon/wrench))
 		if(!portable)
 			return
 		flags = NODROP

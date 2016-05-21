@@ -8,8 +8,8 @@
 	var/refined_type = null //What this ore defaults to being refined into
 
 /obj/item/weapon/ore/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/weapon/tool/weldingtool))
-		var/obj/item/weapon/tool/weldingtool/W = I
+	if(istype(I, /obj/item/weapon/weldingtool))
+		var/obj/item/weapon/weldingtool/W = I
 		if(W.remove_fuel(15))
 			new refined_type(get_turf(src.loc))
 			qdel(src)
@@ -65,8 +65,8 @@
 	refined_type = /obj/item/stack/sheet/mineral/plasma
 
 /obj/item/weapon/ore/plasma/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/weapon/tool/weldingtool))
-		var/obj/item/weapon/tool/weldingtool/W = I
+	if(istype(I, /obj/item/weapon/weldingtool))
+		var/obj/item/weapon/weldingtool/W = I
 		if(W.welding)
 			user << "<span class='warning'>You can't hit a high enough temperature to smelt [src] properly!</span>"
 	else
@@ -131,7 +131,7 @@
 		return
 
 	if(wires && !primed)
-		if(istype(I, /obj/item/weapon/tool/wirecutters) || istype(I, /obj/item/device/multitool) || istype(I, /obj/item/device/assembly/signaler))
+		if(istype(I, /obj/item/weapon/wirecutters) || istype(I, /obj/item/device/multitool) || istype(I, /obj/item/device/assembly/signaler))
 			wires.Interact(user)
 			return
 
@@ -218,7 +218,7 @@
 	var/list/sideslist = list("heads","tails")
 	var/cmineral = null
 	var/cooldown = 0
-	var/value = 10
+	var/value = 1
 
 /obj/item/weapon/coin/New()
 	pixel_x = rand(0,16)-8
@@ -228,57 +228,70 @@
 	if(cmineral)
 		name = "[cmineral] coin"
 
+/obj/item/weapon/coin/examine(mob/user)
+	..()
+	if(value)
+		user << "<span class='info'>It's worth [value] credit\s.</span>"
+
 /obj/item/weapon/coin/gold
 	cmineral = "gold"
 	icon_state = "coin_gold_heads"
-	value = 160
+	value = 50
+	materials = list(MAT_GOLD = MINERAL_MATERIAL_AMOUNT*0.2)
 
 /obj/item/weapon/coin/silver
 	cmineral = "silver"
 	icon_state = "coin_silver_heads"
-	value = 40
+	value = 20
+	materials = list(MAT_SILVER = MINERAL_MATERIAL_AMOUNT*0.2)
 
 /obj/item/weapon/coin/diamond
 	cmineral = "diamond"
 	icon_state = "coin_diamond_heads"
-	value = 120
+	value = 500
+	materials = list(MAT_DIAMOND = MINERAL_MATERIAL_AMOUNT*0.2)
 
 /obj/item/weapon/coin/iron
 	cmineral = "iron"
 	icon_state = "coin_iron_heads"
-	value = 20
+	value = 1
+	materials = list(MAT_METAL = MINERAL_MATERIAL_AMOUNT*0.2)
 
 /obj/item/weapon/coin/plasma
 	cmineral = "plasma"
 	icon_state = "coin_plasma_heads"
-	value = 80
+	value = 100
+	materials = list(MAT_PLASMA = MINERAL_MATERIAL_AMOUNT*0.2)
 
 /obj/item/weapon/coin/uranium
 	cmineral = "uranium"
 	icon_state = "coin_uranium_heads"
-	value = 160
+	value = 80
+	materials = list(MAT_URANIUM = MINERAL_MATERIAL_AMOUNT*0.2)
 
 /obj/item/weapon/coin/clown
 	cmineral = "bananium"
 	icon_state = "coin_bananium_heads"
-	value = 600 //makes the clown cri
+	value = 1000 //makes the clown cry
+	materials = list(MAT_BANANIUM = MINERAL_MATERIAL_AMOUNT*0.2)
 
 /obj/item/weapon/coin/adamantine
 	cmineral = "adamantine"
 	icon_state = "coin_adamantine_heads"
-	value = 400
+	value = 1500
 
 /obj/item/weapon/coin/mythril
 	cmineral = "mythril"
 	icon_state = "coin_mythril_heads"
-	value = 400
+	value = 3000
 
 /obj/item/weapon/coin/twoheaded
 	cmineral = "iron"
 	icon_state = "coin_iron_heads"
 	desc = "Hey, this coin's the same on both sides!"
 	sideslist = list("heads")
-	value = 20
+	materials = list(MAT_METAL = MINERAL_MATERIAL_AMOUNT*0.2)
+	value = 1
 
 /obj/item/weapon/coin/antagtoken
 	name = "antag token"
@@ -286,7 +299,7 @@
 	cmineral = "valid"
 	desc = "A novelty coin that helps the heart know what hard evidence cannot prove."
 	sideslist = list("valid", "salad")
-	value = 20
+	value = 0
 
 /obj/item/weapon/coin/antagtoken/New()
 	return
@@ -306,7 +319,7 @@
 			user << "<span class='warning'>You need one length of cable to attach a string to the coin!</span>"
 			return
 
-	else if(istype(W,/obj/item/weapon/tool/wirecutters))
+	else if(istype(W,/obj/item/weapon/wirecutters))
 		if(!string_attached)
 			..()
 			return
