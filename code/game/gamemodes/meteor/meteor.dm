@@ -4,7 +4,7 @@
 	var/const/meteordelay = 2000
 	var/nometeors = 1
 	required_players = 0
-
+	yogstat_name = "meteor"
 
 /datum/game_mode/meteor/announce()
 	world << "<B>The current game mode is - Meteor!</B>"

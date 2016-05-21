@@ -16,6 +16,7 @@
 	var/list/datum/objective/team_objectives = list()
 	var/list/team_names = list()
 	var/finished = 0
+	yogstat_name = "tabductor"
 
 /datum/game_mode/traitor/abduction/announce()
 	world << "<B>The current game mode is - Traitor+Abductor!</B>"
@@ -260,13 +261,16 @@
 	world << text
 
 /datum/game_mode/traitor/abduction/declare_completion()
+	log_yogstat_data("gamemode.php?gamemode=tabductor&value=rounds&action=add&changed=1")
 	for(var/team_number=1,team_number<=abductor_teams,team_number++)
 		var/obj/machinery/abductor/console/console = get_team_console(team_number)
 		var/datum/objective/objective = team_objectives[team_number]
 		var/team_name = team_names[team_number]
 		if(console.experiment.points >= objective.target_amount)
 			world << "<span class='greentext'><b>[team_name] team fullfilled its mission!</b></span>"
+			log_yogstat_data("gamemode.php?gamemode=tabductor&value=antagwin&action=add&changed=1")
 		else
 			world << "<span class='greentext'><b>[team_name] team failed its mission.</b></span>"
+			log_yogstat_data("gamemode.php?gamemode=tabductor&value=crewwin&action=add&changed=1")
 	..()
 	return 1
