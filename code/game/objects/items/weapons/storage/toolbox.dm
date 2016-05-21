@@ -77,11 +77,11 @@
 
 /obj/item/weapon/storage/toolbox/syndicate/New()
 	..()
-	new /obj/item/weapon/tool/screwdriver(src, "red")
-	new /obj/item/weapon/tool/wrench(src)
-	new /obj/item/weapon/tool/weldingtool/largetank(src)
-	new /obj/item/weapon/tool/crowbar/red(src)
-	new /obj/item/weapon/tool/wirecutters(src, "red")
+	new /obj/item/weapon/tool/screwdriver/syndicate(src)
+	new /obj/item/weapon/tool/wrench/syndicate(src)
+	new /obj/item/weapon/tool/weldingtool/largetank/syndicate(src)
+	new /obj/item/weapon/tool/crowbar/red/syndicate(src)
+	new /obj/item/weapon/tool/wirecutters/syndicate(src)
 	new /obj/item/device/multitool(src)
 	new /obj/item/clothing/gloves/combat(src)
 
