@@ -535,7 +535,7 @@ var/list/uplink_items = list()
 
 /datum/uplink_item/device_tools/toolbox
 	name = "Full Syndicate Toolbox"
-	desc = "The syndicate toolbox is a suspicious black and red. Aside from tools, it comes with cable and a multitool. Insulated gloves are not included."
+	desc = "The syndicate toolbox is a suspicious black and red. It comes with a full set of tools that work 30% faster than the standard variety, as well as a regular multitool and insulated combat gloves."
 	item = /obj/item/weapon/storage/toolbox/syndicate
 	cost = 1
 
