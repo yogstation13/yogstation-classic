@@ -224,9 +224,6 @@ a.updated {
 		user << "<span class='danger'>Could not complete transaction. Check your account balance.</span>"
 
 /obj/machinery/computer/stockexchange/Topic(href, href_list)
-	if (..())
-		return 1
-
 	if (usr in range(1, src))
 		usr.machine = src
 
