@@ -1,0 +1,7 @@
+author: Super3222
+delete-after: True
+changes: 
+  - rscadd: "The Syndicate has developed a newer, more elite version of their blood-red hardsuit which is ultimately designed to not only bring fear to Nanotrasen but to crush them in every will to stop the operative behind the armor."
+  - rscadd: "The elite syndicate hardsuit has been ported from /tg/, credits to TheNightingale."
+  - rscadd: "The Elite Syndicate hardsuit is also available to nuclear operatives for 8 TC."
+  - rscdel: "You can no longer buy more blood-red hardsuits with your uplink during nuclear operatives mode."
