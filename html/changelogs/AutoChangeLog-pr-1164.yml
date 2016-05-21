@@ -1,7 +1,0 @@
-author: Super3222
-delete-after: True
-changes: 
-  - rscadd: "NT's security now starts with a variety of slugs for their shotguns!"
-  - rscadd: "Rubbershot shells (in their own bandolier) start inside of the guncase at the beginning of the shift."
-  - rscadd: "Buckshot shells (in their own bandolier) will start inside of the guncase at the beginning of the shift."
-  - rscadd: "Shotgun slugs (in their own bandolier) will start inside of the guncase at the beginning of the shift."
