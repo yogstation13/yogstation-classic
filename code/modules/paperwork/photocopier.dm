@@ -243,6 +243,54 @@
 			greytoggle = "Greyscale"
 		updateUsrDialog()
 
+		else if(check_ass())
+			ass << "<span class='notice'>You feel a slight pressure on your ass.</span>"
+	else if(href_list["min"])
+		if(copies > 1)
+			copies--
+			updateUsrDialog()
+	else if(href_list["add"])
+		if(copies < maxcopies)
+			copies++
+			updateUsrDialog()
+	else if(href_list["aipic"])
+		if(!istype(usr,/mob/living/silicon/ai)) return
+		if(toner >= 5 && !busy)
+			var/list/nametemp = list()
+			var/find
+			var/datum/picture/selection
+			var/mob/living/silicon/ai/tempAI = usr
+			if(tempAI.aicamera.aipictures.len == 0)
+				usr << "<span class='boldannounce'>No images saved</span>"
+				return
+			for(var/datum/picture/t in tempAI.aicamera.aipictures)
+				nametemp += t.fields["name"]
+			find = input("Select image (numbered in order taken)") in nametemp
+			var/obj/item/weapon/photo/p = new /obj/item/weapon/photo (loc)
+			for(var/datum/picture/q in tempAI.aicamera.aipictures)
+				if(q.fields["name"] == find)
+					selection = q
+					break
+			var/icon/I = selection.fields["icon"]
+			var/icon/img = selection.fields["img"]
+			p.icon = I
+			p.img = img
+			p.desc = selection.fields["desc"]
+			p.blueprints = selection.fields["blueprints"]
+			p.pixel_x = rand(-10, 10)
+			p.pixel_y = rand(-10, 10)
+			toner -= 5	 //AI prints color pictures only, thus they can do it more efficiently
+			busy = 1
+			sleep(15)
+			busy = 0
+		updateUsrDialog()
+	else if(href_list["colortoggle"])
+		if(greytoggle == "Greyscale")
+			greytoggle = "Color"
+		else
+			greytoggle = "Greyscale"
+		updateUsrDialog()
+
 /obj/machinery/photocopier/proc/do_insertion(obj/item/O, mob/user)
 		O.loc = src
 		user << "<span class='notice'>You insert [O] into [src].</span>"
@@ -288,13 +336,14 @@
 		else
 			user << "<span class='warning'>This cartridge is not yet ready for replacement! Use up the rest of the toner.</span>"
 
-	else if(istype(O, /obj/item/weapon/wrench))
+	else if(istype(O, /obj/item/weapon/tool/wrench))
 		if(isinspace())
 			user << "<span class='warning'>There's nothing to fasten [src] to!</span>"
 			return
 		playsound(loc, 'sound/items/Ratchet.ogg', 50, 1)
 		user << "<span class='warning'>You start [anchored ? "unwrenching" : "wrenching"] [src]...</span>"
-		if(do_after(user, 20, target = src))
+		var/obj/item/weapon/tool/wrench/wrench = O
+		if(do_after(user, 20 * wrench.speed_coefficient, target = src))
 			if(qdeleted(src))
 				return
 			user << "<span class='notice'>You [anchored ? "unwrench" : "wrench"] [src].</span>"
