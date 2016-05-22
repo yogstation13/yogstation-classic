@@ -278,20 +278,19 @@
 
 	update_icon()
 	if(on)
-		if(!light || light.radius != brightness)
-			switchcount++
-			if(rigged)
-				if(status == LIGHT_OK && trigger)
-					explode()
-			else if( prob( min(60, switchcount*switchcount*0.01) ) )
-				if(status == LIGHT_OK && trigger)
-					status = LIGHT_BURNED
-					icon_state = "[base_state]-burned"
-					on = 0
-					SetLuminosity(0)
-			else
-				use_power = 2
-				SetLuminosity(brightness)
+		switchcount++
+		if(rigged)
+			if(status == LIGHT_OK && trigger)
+				explode()
+		else if( prob( min(60, switchcount*switchcount*0.01) ) )
+			if(status == LIGHT_OK && trigger)
+				status = LIGHT_BURNED
+				icon_state = "[base_state]-burned"
+				on = 0
+				SetLuminosity(0)
+		else
+			use_power = 2
+			SetLuminosity(brightness)
 	else
 		use_power = 1
 		SetLuminosity(0)
