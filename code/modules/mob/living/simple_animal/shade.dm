@@ -48,3 +48,10 @@
 	. = ..()
 	if((iscultist(user) || iswizard(user)) && (!src.key || !src.client))
 		user << "<span class='danger'>You can also tell that they've lost all conscious awareness and have become as engaging as a blank wall.</span>"
+
+/mob/living/simple_animal/shade/attack_animal(mob/living/simple_animal/M)
+	if(istype(M, /mob/living/simple_animal/construct/builder))
+		adjustBruteLoss(-5)
+		M.emote("me", 1, "mends some of \the <EM>[src]'s</EM> wounds.")
+	else if(src != M)
+		..()
