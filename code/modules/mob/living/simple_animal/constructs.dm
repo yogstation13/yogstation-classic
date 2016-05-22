@@ -37,7 +37,7 @@
 	return
 
 /mob/living/simple_animal/construct/examine(mob/user)
-	var/msg = "<span cass='info'>*---------*\nThis is \icon[src] \a <EM>[src]</EM>!\n"
+	var/msg = "<span cass='info'>*---------*\nThis is \icon[src] \a <EM>[src]</EM>!\n[desc]\n"
 	if (src.health < src.maxHealth)
 		msg += "<span class='warning'>"
 		if (src.health >= src.maxHealth/2)
@@ -91,13 +91,15 @@
 	attacktext = "smashes their armored gauntlet into"
 	speed = 3
 	environment_smash = 2
+	see_in_dark = 8
+	see_invisible = SEE_INVISIBLE_MINIMUM
 	attack_sound = 'sound/weapons/punch3.ogg'
 	status_flags = 0
 	mob_size = MOB_SIZE_LARGE
 	force_threshold = 11
 	construct_spells = list(/obj/effect/proc_holder/spell/aoe_turf/conjure/lesserforcewall)
 	playstyle_string = "<B>You are a Juggernaut. Though slow, your shell can withstand extreme punishment, \
-						create shield walls and even deflect energy weapons, and rip apart enemies and walls alike.</B>"
+						create shield walls and even deflect energy weapons, and rip apart enemies and walls alike. You cannot phase through walls created by the Artificer, however.</B>"
 
 /mob/living/simple_animal/construct/armored/bullet_act(obj/item/projectile/P)
 	if(istype(P, /obj/item/projectile/energy) || istype(P, /obj/item/projectile/beam))
@@ -135,7 +137,7 @@
 /mob/living/simple_animal/construct/wraith
 	name = "Wraith"
 	real_name = "Wraith"
-	desc = "A wicked bladed shell contraption piloted by a bound spirit"
+	desc = "A wicked bladed shell contraption piloted by a bound spirit."
 	icon_state = "floating"
 	icon_living = "floating"
 	maxHealth = 75
@@ -144,10 +146,11 @@
 	melee_damage_upper = 25
 	attacktext = "slashes"
 	speed = 0
-	see_in_dark = 7
+	see_in_dark = 8
+	see_invisible = SEE_INVISIBLE_MINIMUM
 	attack_sound = 'sound/weapons/bladeslice.ogg'
 	construct_spells = list(/obj/effect/proc_holder/spell/targeted/ethereal_jaunt/shift)
-	playstyle_string = "<B>You are a Wraith. Though relatively fragile, you are fast, deadly, and even able to phase through walls.</B>"
+	playstyle_string = "<B>You are a Wraith. Though relatively fragile, you are fast, deadly, and even able to phase through walls, including ones made by the Artificer.</B>"
 
 
 
@@ -156,17 +159,19 @@
 /mob/living/simple_animal/construct/builder
 	name = "Artificer"
 	real_name = "Artificer"
-	desc = "A bulbous construct dedicated to building and maintaining The Cult of Nar-Sie's armies"
+	desc = "A bulbous construct dedicated to building and maintaining The Cult of Nar-Sie's armies."
 	icon_state = "artificer"
 	icon_living = "artificer"
-	maxHealth = 50
-	health = 50
+	maxHealth = 55
+	health = 55
 	response_harm = "viciously beats"
 	harm_intent_damage = 5
 	melee_damage_lower = 5
 	melee_damage_upper = 5
 	attacktext = "rams"
 	speed = 0
+	see_in_dark = 8
+	see_invisible = SEE_INVISIBLE_MINIMUM
 	environment_smash = 2
 	attack_sound = 'sound/weapons/punch2.ogg'
 	construct_spells = list(/obj/effect/proc_holder/spell/aoe_turf/conjure/construct/lesser,
@@ -175,6 +180,7 @@
 							/obj/effect/proc_holder/spell/aoe_turf/conjure/soulstone,
 							/obj/effect/proc_holder/spell/targeted/projectile/magic_missile/lesser)
 	playstyle_string = "<B>You are an Artificer. You are incredibly weak and fragile, but you are able to construct fortifications, \
+						corrupt areas (click on floors and walls to corrupt them and allow you to phase through them), \
 						use magic missile, repair allied constructs (by clicking on them), \
 						</B><I>and most important of all create new constructs</I><B> \
 						(Use your Artificer spell to summon a new construct shell and Summon Soulstone to create a new soulstone).</B>"
@@ -194,7 +200,8 @@
 	attacktext = "prods"
 	speed = 0
 	environment_smash = 1
-	see_in_dark = 7
+	see_in_dark = 8
+	see_invisible = SEE_INVISIBLE_MINIMUM
 	attack_sound = 'sound/weapons/tap.ogg'
 	construct_spells = list(/obj/effect/proc_holder/spell/targeted/smoke/disable)
 	playstyle_string = "<B>You are a Harvester. You are not strong, but your powers of domination will assist you in your role: \

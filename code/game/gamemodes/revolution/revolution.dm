@@ -25,6 +25,8 @@
 	var/max_headrevs = 3
 	var/list/datum/mind/heads_to_kill = list()
 
+	yogstat_name = "revolution"
+
 ///////////////////////////
 //Announces the game type//
 ///////////////////////////
@@ -325,12 +327,15 @@
 //Announces the end of the game with all relavent information stated//
 //////////////////////////////////////////////////////////////////////
 /datum/game_mode/revolution/declare_completion()
+	log_yogstat_data("gamemode.php?gamemode=revolution&value=rounds&action=add&changed=1")
 	if(finished == 1)
 		feedback_set_details("round_end_result","win - heads killed")
 		world << "<span class='danger'><FONT size = 3>The heads of staff were killed or exiled! The revolutionaries win!</FONT></span>"
+		log_yogstat_data("gamemode.php?gamemode=revolution&value=antagwin&action=add&changed=1")
 	else if(finished == 2)
 		feedback_set_details("round_end_result","loss - rev heads killed")
 		world << "<span class='danger'><FONT size = 3>The heads of staff managed to stop the revolution!</FONT></span>"
+		log_yogstat_data("gamemode.php?gamemode=revolution&value=crewwin&action=add&changed=1")
 	..()
 	return 1
 

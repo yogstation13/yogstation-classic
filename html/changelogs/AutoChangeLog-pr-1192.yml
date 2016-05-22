@@ -1,0 +1,4 @@
+author: oisin100
+delete-after: True
+changes: 
+  - rscadd: "Adds basic statistics gathering for gamemodes, Temporary site can be found at http://yogstats.oisin100.net"
