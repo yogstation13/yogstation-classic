@@ -169,6 +169,10 @@
 
 	var/autoconvert_notes = 0 //if all connecting player's notes should attempt to be converted to the database
 
+	var/yogstats_key = null
+	var/use_yogstats = 0
+	var/yogstats_url = null
+
 /datum/configuration/New()
 	var/list/L = typesof(/datum/game_mode) - /datum/game_mode
 	for(var/T in L)
@@ -357,6 +361,12 @@
 						world.log = newlog
 				if("autoconvert_notes")
 					config.autoconvert_notes = 1
+				if("yogstats_key")
+					config.yogstats_key = value
+				if("use_yogstats")
+					config.use_yogstats = 1
+				if("yogstats_url")
+					config.yogstats_url = value
 				else
 					diary << "Unknown setting in configuration: '[name]'"
 
