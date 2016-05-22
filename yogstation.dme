@@ -1132,6 +1132,7 @@
 #include "code\modules\html_interface\cards\cards.dm"
 #include "code\modules\html_interface\nanotrasen\nanotrasen.dm"
 #include "code\modules\https\https.dm"
+#include "code\modules\https\yogstats.dm"
 #include "code\modules\hydroponics\biogenerator.dm"
 #include "code\modules\hydroponics\biogenerator_recipes.dm"
 #include "code\modules\hydroponics\grown.dm"

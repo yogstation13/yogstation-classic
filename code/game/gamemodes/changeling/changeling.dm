@@ -22,6 +22,7 @@ var/list/slot2type = list("head" = /obj/item/clothing/head/changeling, "wear_mas
 	required_enemies = 1
 	recommended_enemies = 4
 	reroll_friendly = 1
+	yogstat_name = "changeling"
 
 
 	var/const/prob_int_murder_target = 50 // intercept names the assassination target half the time
@@ -238,6 +239,7 @@ var/list/slot2type = list("head" = /obj/item/clothing/head/changeling, "wear_mas
 
 /datum/game_mode/proc/auto_declare_completion_changeling()
 	if(changelings.len)
+		log_yogstat_data("gamemode.php?gamemode=changeling&value=rounds&action=add&changed=1")
 		var/text = "<br><font size=3><b>The changelings were:</b></font>"
 		for(var/datum/mind/changeling in changelings)
 			var/changelingwin = 1
@@ -265,9 +267,11 @@ var/list/slot2type = list("head" = /obj/item/clothing/head/changeling, "wear_mas
 			if(changelingwin)
 				text += "<br><font color='green'><b>The changeling was successful!</b></font>"
 				feedback_add_details("changeling_success","SUCCESS")
+				log_yogstat_data("gamemode.php?gamemode=changeling&value=antagwin&action=add&changed=1")
 			else
 				text += "<br><span class='boldannounce'>The changeling has failed.</span>"
 				feedback_add_details("changeling_success","FAIL")
+				log_yogstat_data("gamemode.php?gamemode=changeling&value=crewwin&action=add&changed=1")
 			text += "<br>"
 
 		world << text
