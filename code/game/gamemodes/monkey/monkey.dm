@@ -19,6 +19,7 @@
 	var/escaped_monkeys = 0
 
 	var/players_per_carrier = 30
+	yogstat_name = "monkey"
 
 
 /datum/game_mode/monkey/pre_setup()
@@ -106,11 +107,14 @@
 
 
 /datum/game_mode/monkey/declare_completion()
+	log_yogstat_data("gamemode.php?gamemode=monkey&value=rounds&action=add&changed=1")
 	if(check_monkey_victory())
 		feedback_set_details("round_end_result","win - monkey win")
 		feedback_set("round_end_result",escaped_monkeys)
 		world << "<span class='userdanger'>The monkeys have overthrown their captors! Eeek eeeek!!</span>"
+		log_yogstat_data("gamemode.php?gamemode=monkey&value=antagwin&action=add&changed=1")
 	else
 		feedback_set_details("round_end_result","loss - staff stopped the monkeys")
 		feedback_set("round_end_result",escaped_monkeys)
 		world << "<span class='userdanger'>The staff managed to contain the monkey infestation!</span>"
+		log_yogstat_data("gamemode.php?gamemode=monkey&value=crewwin&action=add&changed=1")

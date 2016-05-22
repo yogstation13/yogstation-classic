@@ -9,8 +9,9 @@
 	opacity = 0
 	var/case_type = null
 	var/gun_category = /obj/item/weapon/gun
+	var/extra_storage = null
 	var/open = 1
-	var/capacity = 4
+	var/capacity = 5
 
 /obj/structure/guncase/New()
 	..()
@@ -20,6 +21,8 @@
 	..()
 	for(var/obj/item/I in loc.contents)
 		if(istype(I, gun_category))
+			I.loc = src
+		if(istype(I, extra_storage))
 			I.loc = src
 		if(contents.len >= capacity)
 			break
@@ -37,7 +40,7 @@
 /obj/structure/guncase/attackby(obj/item/I, mob/user, params)
 	if(isrobot(user) || isalien(user))
 		return
-	if(istype(I, gun_category))
+	if(istype(I, gun_category) || (istype(I, extra_storage)))
 		if(contents.len < capacity && open)
 			if(!user.drop_item())
 				return
@@ -60,7 +63,7 @@
 
 /obj/structure/guncase/proc/ShowWindow(mob/user)
 	var/dat = {"<div class='block'>
-				<h3>Stored Guns</h3>
+				<h3>Stored Equiptment</h3>
 				<table align='center'>"}
 	for(var/i = contents.len, i >= 1, i--)
 		var/obj/item/I = contents[i]
@@ -85,9 +88,10 @@
 
 /obj/structure/guncase/shotgun
 	name = "shotgun locker"
-	desc = "A locker that holds shotguns."
+	desc = "A locker that holds shotguns and bandoliers."
 	case_type = "shotgun"
 	gun_category = /obj/item/weapon/gun/projectile/shotgun
+	extra_storage = /obj/item/weapon/storage/belt/bandolier/security
 
 /obj/structure/guncase/ecase
 	name = "energy gun locker"

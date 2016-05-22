@@ -242,7 +242,7 @@
 "eH" = (/obj/machinery/door/airlock/external{name = "Ferry Airlock"; req_access_txt = "0"},/turf/simulated/floor/plasteel{icon_state = "engine"},/area/centcom/supply)
 "eI" = (/turf/simulated/floor/plasteel{icon_state = "engine"},/area/centcom/supply)
 "eJ" = (/obj/structure/table,/obj/item/weapon/clipboard,/obj/item/weapon/stamp{pixel_x = 3; pixel_y = -3},/obj/item/weapon/stamp/denied{pixel_x = -3; pixel_y = 3},/turf/simulated/floor/plasteel{dir = 8; heat_capacity = 1; icon_state = "warning"},/area/centcom/supply)
-"eK" = (/obj/item/weapon/circuitboard/cargo,/turf/simulated/floor/plasteel,/area/centcom/supply)
+"eK" = (/obj/machinery/computer/cargo,/turf/simulated/floor/plasteel,/area/centcom/supply)
 "eL" = (/obj/structure/filingcabinet/filingcabinet,/turf/simulated/floor/plasteel,/area/centcom/supply)
 "eM" = (/obj/machinery/vending/dinnerware,/turf/simulated/floor/plasteel{icon_state = "cafeteria"},/area/centcom/control)
 "eN" = (/turf/simulated/floor/plasteel{tag = "icon-plating"; icon_state = "plating"},/area/generic{name = "AB-USE Control Facility"})
