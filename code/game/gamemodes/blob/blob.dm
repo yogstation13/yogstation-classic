@@ -29,6 +29,7 @@ var/list/blob_overmind_list = list()         //blob overmind list so we can keep
 	var/blobwincount = 700
 
 	var/list/infected_crew = list()
+	yogstat_name = "blob"
 
 /datum/game_mode/blob/pre_setup()
 	cores_to_spawn = max(round(num_players()/players_per_core, 1), 1)

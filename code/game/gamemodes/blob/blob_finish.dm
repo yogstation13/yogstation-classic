@@ -17,6 +17,7 @@
 
 
 /datum/game_mode/blob/declare_completion()
+	log_yogstat_data("gamemode.php?gamemode=blob&value=rounds&action=add&changed=1")
 	if(round_converted) //So badmin blobs later don't step on the dead natural blobs metaphorical toes
 		..()
 	if(blobwincount <= blobs.len)
@@ -24,6 +25,7 @@
 		world << "<FONT size = 3><B>The blob has taken over the station!</B></FONT>"
 		world << "<B>The entire station was eaten by the Blob</B>"
 		log_game("Blob mode completed with a blob victory.")
+		log_yogstat_data("gamemode.php?gamemode=blob&value=antagwin&action=add&changed=1")
 
 	else if(station_was_nuked)
 		feedback_set_details("round_end_result","halfwin - nuke")
@@ -37,6 +39,7 @@
 		world << "<B>The alien organism has been eradicated from the station</B>"
 		log_game("Blob mode completed with a crew victory.")
 		world << "<span class='notice'>Rebooting in 30s</span>"
+		log_yogstat_data("gamemode.php?gamemode=blob&value=crewwin&action=add&changed=1")
 	..()
 	return 1
 

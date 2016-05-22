@@ -20,6 +20,7 @@
 		"bookhorses", "bookcharge", "booksummons", "scrapbook", "creeper", "tome", "kingyellow", "ithaqua", "necronomicon",
 		"honk1", "honk2", "culttome")
 	var/cult_tomeicon = "culttome"
+	yogstat_name = "cult"
 
 /datum/game_mode/proc/pre_generate_cult_objectives()
 	if(prob(50))
@@ -323,14 +324,18 @@
 
 /datum/game_mode/cult/declare_completion()
 
+	log_yogstat_data("gamemode.php?gamemode=cult&value=rounds&action=add&changed=1")
+
 	if(!check_cult_victory())
 		feedback_set_details("round_end_result","win - cult win")
 		feedback_set("round_end_result",cult_acolytes_survived)
 		world << "<span class='danger'><FONT size = 3>The cult wins! It has succeeded in serving its dark masters!</FONT></span>"
+		log_yogstat_data("gamemode.php?gamemode=cult&value=antagwin&action=add&changed=1")
 	else
 		feedback_set_details("round_end_result","loss - staff stopped the cult")
 		feedback_set("round_end_result",cult_acolytes_survived)
 		world << "<span class='danger'><FONT size = 3>The staff managed to stop the cult!</FONT></span>"
+		log_yogstat_data("gamemode.php?gamemode=cult&value=crewwin&action=add&changed=1")
 
 	var/text = ""
 
