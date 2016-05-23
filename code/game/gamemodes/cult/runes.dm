@@ -360,11 +360,13 @@ var/list/sacrificed = list()
 		usr.visible_message("<span class='danger'>[usr]'s eyes glow blue as \he freezes in place, absolutely motionless.</span>", \
 		"<span class='danger'>The shadow that is your spirit separates itself from your body. You are now in the realm beyond. While this is a great sight, being here strains your mind and body. Hurry...</span>", \
 		"<span class='italics'>You hear only complete silence for a moment.</span>")
+		var/obj/structure/barricade/cult/B = new(src.loc)
 		usr.ghostize(1)
 		L.ajourn = 1
 		while(L)
 			if(L.key)
 				L.ajourn=0
+				qdel(B)
 				return
 			else
 				L.take_organ_damage(10, 0)
@@ -390,7 +392,8 @@ var/list/sacrificed = list()
 		return this_rune.fizzle()
 
 	usr.say("Gal'h'rfikk harfrandid mud[pick("'","`")]gib!")
-	var/mob/living/carbon/human/dummy/D = new(this_rune.loc)
+	var/mob/living/carbon/human/D = new(this_rune.loc)
+	var/obj/structure/barricade/cult/B = new(this_rune.loc)
 	usr.visible_message("<span class='danger'>A shape forms in the center of the rune. A shape of... a man.</span>", \
 	"<span class='danger'>A shape forms in the center of the rune. A shape of... a man.</span>", \
 	"<span class='italics'>You hear liquid flowing.</span>")
@@ -415,8 +418,10 @@ var/list/sacrificed = list()
 	if(D)
 		D.visible_message("<span class='danger'>[D] slowly dissipates into dust and bones.</span>", \
 		"<span class='danger'>You feel pain, as bonds formed between your soul and this homunculus break.</span>", \
-		"<span class='italics'>You hear faint rustle.</span>")
+		"<span class='italics'>You hear a faint rustle.</span>")
 		D.dust()
+	if(B)
+		qdel(B)
 	return
 
 
