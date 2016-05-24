@@ -1,7 +1,8 @@
 
-/datum/action/innate/cultcomm
+/datum/action/cultcomm
 	name = "Communion"
 	check_flags = AB_CHECK_RESTRAINED|AB_CHECK_STUNNED|AB_CHECK_CONSCIOUS
+	action_type = AB_INNATE
 
 /datum/action/innate/cultcomm/IsAvailable()
 	if(!iscultist(owner))
