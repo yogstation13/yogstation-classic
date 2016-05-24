@@ -916,10 +916,6 @@
 					var/reason = input(usr,"Reason?","Please State Reason","") as text|null
 					if(!reason)
 						return
-					var/rules_broken = input(usr,"Which rule did they break? (Rule broken number.)",,"0.0") as text|null
-					if(!rules_broken)
-						return
-					reason += " ([rules_broken])"
 
 					var/msg
 					for(var/job in notbannedlist)
@@ -942,11 +938,7 @@
 					return 1
 				if("No")
 					var/reason = input(usr,"Reason?","Please State Reason","") as text|null
-					if(!reason)
-						return
-					var/rules_broken = input(usr,"Which rule did they break? (Rule broken number.)",,"0.0") as text|null
-					if(rules_broken)
-						reason += " ([rules_broken])"
+					if(reason)
 						var/msg
 						for(var/job in notbannedlist)
 							ban_unban_log_save("[key_name(usr)] perma-jobbanned [key_name(M)] from [job]. reason: [reason]")
@@ -961,7 +953,6 @@
 						message_admins("<span class='adminnotice'>[key_name_admin(usr)] banned [key_name_admin(M)] from [msg]</span>")
 						M << "<span class='boldannounce'><BIG>You have been jobbanned by [usr.client.ckey] from: [msg].</BIG></span>"
 						M << "<span class='boldannounce'>The reason is: [reason]</span>"
-						M << "<span class='danger'>The broken rules were '[rules_broken]'. You should keep this information for eventual ban appeals.</span>"
 						M << "<span class='danger'>Jobban can be lifted only upon request.</span>"
 						href_list["jobban2"] = 1 // lets it fall through and refresh
 						return 1
@@ -1109,16 +1100,10 @@
 				var/reason = input(usr,"Reason?","reason","Griefer") as text|null
 				if(!reason)
 					return
-				var/rules_broken = input(usr,"Which rule did they break? (Rule broken number.)",,"0.0") as text|null
-				if(!rules_broken)
-					return
-				reason += " ([rules_broken])"
 				AddBan(M.ckey, M.computer_id, reason, usr.ckey, 1, mins)
 				ban_unban_log_save("[usr.client.ckey] has banned [M.ckey]. - Reason: [reason] - This will be removed in [mins] minutes.")
 				M << "<span class='boldannounce'><BIG>You have been banned by [usr.client.ckey].\nReason: [reason]</BIG></span>"
-				M << "<span class='danger'>The broken rules were '[rules_broken]'. You should keep this information for eventual ban appeals.</span>"
 				M << "<span class='danger'>This is a temporary ban, it will be removed in [mins] minutes.</span>"
-				M << "<span class='danger'>If you need to make a account on our forums please use the codeword: assistantgreytide</span>"
 				feedback_inc("ban_tmp",1)
 				DB_ban_record(BANTYPE_TEMP, M, mins, reason)
 				feedback_inc("ban_tmp_mins",mins)
@@ -1135,10 +1120,6 @@
 				var/reason = input(usr,"Reason?","reason","Griefer") as text|null
 				if(!reason)
 					return
-				var/rules_broken = input(usr,"Which rule did they break? (Rule broken number.)",,"0.0") as text|null
-				if(!rules_broken)
-					return
-				reason += " ([rules_broken])" //add them to the ban reasons.
 				switch(alert(usr,"IP ban?",,"Yes","No","Cancel"))
 					if("Cancel")	return
 					if("Yes")
@@ -1146,9 +1127,7 @@
 					if("No")
 						AddBan(M.ckey, M.computer_id, reason, usr.ckey, 0, 0)
 				M << "<span class='boldannounce'><BIG>You have been banned by [usr.client.ckey].\nReason: [reason]</BIG></span>"
-				M << "<span class='danger'>The broken rules were '[rules_broken]'. You should keep this information for eventual ban appeals.</span>"
 				M << "<span class='danger'>This is a permanent ban.</span>"
-				M << "<span class='danger'>If you need to make a account on our forums please use the codeword: assistantgreytide</span>"
 				if(config.banappeals)
 					M << "<span class='danger'>To try to resolve this matter head to [config.banappeals]</span>"
 				else

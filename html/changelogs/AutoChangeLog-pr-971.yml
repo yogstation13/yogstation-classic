@@ -1,0 +1,7 @@
+author: fizzle7
+delete-after: True
+changes: 
+  - bugfix: "Fixes diseases not being curable."
+  - tweak: "Transformation diseases can no longer be cured after stage 5, they stay on the mob until it's deleted."
+  - tweak: "Zombie and jungle fever cure chance increased."
+  - tweak: "You can no longer instantly heal by ingesting cure, it now properly takes into account the cure chance of the disease."

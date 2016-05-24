@@ -1,0 +1,4 @@
+author: timkoster1
+delete-after: True
+changes: 
+  - rscadd: "Adds fly versions for all round-start races. Also some extra fly stuff. Thanks to Cruix and Oisin for helping me make this."

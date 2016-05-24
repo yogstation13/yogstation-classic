@@ -7,7 +7,6 @@
 	required_enemies = 2	// how many of each type are required
 	recommended_enemies = 3 //Only affects traitor spawning
 	reroll_friendly = 1
-	yogstat_name = "tlabductor"
 
 	var/list/possible_changelings = list()
 	var/const/changeling_amount = 1 //hard limit on changelings if scaling is turned off

@@ -26,10 +26,9 @@ var/list/blob_overmind_list = list()         //blob overmind list so we can keep
 	var/players_per_core = 30
 	var/blob_point_rate = 3
 
-	var/blobwincount = 700
+	var/blobwincount = 350
 
 	var/list/infected_crew = list()
-	yogstat_name = "blob"
 
 /datum/game_mode/blob/pre_setup()
 	cores_to_spawn = max(round(num_players()/players_per_core, 1), 1)
@@ -70,7 +69,7 @@ var/list/blob_overmind_list = list()         //blob overmind list so we can keep
 	log_game("[blob.key] (ckey) has been selected as a Blob")
 	greet_blob(blobmind)
 	blob << "<span class='userdanger'>You feel very tired and bloated!  You don't have long before you burst!</span>"
-	spawn(6000)
+	spawn(600)
 		burst_blob(blobmind)
 	return 1
 

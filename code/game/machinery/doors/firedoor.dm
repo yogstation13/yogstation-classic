@@ -42,20 +42,19 @@
 	add_fingerprint(user)
 	if(operating)	return//Already doing something.
 
-	if(istype(C, /obj/item/weapon/tool/weldingtool))
-		var/obj/item/weapon/tool/weldingtool/W = C
+	if(istype(C, /obj/item/weapon/weldingtool))
+		var/obj/item/weapon/weldingtool/W = C
 		if(W.remove_fuel(0, user))
 			blocked = !blocked
 			user << text("<span class='danger'>You [blocked?"welded":"unwelded"] \the [src]</span>")
 			update_icon()
 			return
 
-	if(istype(C, /obj/item/weapon/tool/wrench) && panel_open)
+	if(istype(C, /obj/item/weapon/wrench) && panel_open)
 		playsound(get_turf(src), 'sound/items/Ratchet.ogg', 50, 1)
 		user.visible_message("<span class='notice'>[user] starts undoing [src]'s bolts...</span>", \
 							 "<span class='notice'>You start unfastening [src]'s floor bolts...</span>")
-		var/obj/item/weapon/tool/wrench/wrench = C
-		if(!do_after(user, 50 * wrench.speed_coefficient, target = src)) return
+		if(!do_after(user, 50, target = src)) return
 		playsound(get_turf(src), 'sound/items/Deconstruct.ogg', 50, 1)
 		user.visible_message("<span class='notice'>[user] unfastens [src]'s bolts.</span>", \
 							 "<span class='notice'>You undo [src]'s floor bolts.</span>")
@@ -67,7 +66,7 @@
 		qdel(src)
 		return
 
-	if(istype(C, /obj/item/weapon/tool/crowbar) || (istype(C,/obj/item/weapon/twohanded/fireaxe) && C:wielded == 1))
+	if(istype(C, /obj/item/weapon/crowbar) || (istype(C,/obj/item/weapon/twohanded/fireaxe) && C:wielded == 1))
 		if(blocked || operating)	return
 		if(density)
 			open()
@@ -76,7 +75,7 @@
 			close()
 			return
 
-	if(istype(C, /obj/item/weapon/tool/screwdriver))
+	if(istype(C, /obj/item/weapon/screwdriver))
 		default_deconstruction_screwdriver(user, icon_state, icon_state, C)
 		return
 
@@ -208,12 +207,11 @@
 /obj/structure/firelock_frame/attackby(obj/item/weapon/C, mob/user)
 	switch(constructionStep)
 		if(CONSTRUCTION_PANEL_OPEN)
-			if(istype(C, /obj/item/weapon/tool/crowbar))
+			if(istype(C, /obj/item/weapon/crowbar))
 				playsound(get_turf(src), 'sound/items/Crowbar.ogg', 50, 1)
 				user.visible_message("<span class='notice'>[user] starts prying something out from [src]...</span>", \
 									 "<span class='notice'>You begin prying out the wire cover...</span>")
-				var/obj/item/weapon/tool/crowbar/cb = C
-				if(!do_after(user, 50 * cb.speed_coefficient, target = src)) return
+				if(!do_after(user, 50, target = src)) return
 				if(constructionStep != CONSTRUCTION_PANEL_OPEN) return
 				playsound(get_turf(src), 'sound/items/Deconstruct.ogg', 50, 1)
 				user.visible_message("<span class='notice'>[user] pries out a metal plate from [src], exposing the wires.</span>", \
@@ -221,12 +219,11 @@
 				constructionStep = CONSTRUCTION_WIRES_EXPOSED
 				update_icon()
 				return
-			if(istype(C, /obj/item/weapon/tool/wrench))
+			if(istype(C, /obj/item/weapon/wrench))
 				playsound(get_turf(src), 'sound/items/Ratchet.ogg', 50, 1)
 				user.visible_message("<span class='notice'>[user] starts bolting down [src]...</span>", \
 									 "<span class='notice'>You begin bolting [src]...</span>")
-				var/obj/item/weapon/tool/wrench/wrench = C
-				if(!do_after(user, 30 * wrench.speed_coefficient, target = src)) return
+				if(!do_after(user, 30, target = src)) return
 				user.visible_message("<span class='notice'>[user] finishes the firelock.</span>", \
 									 "<span class='notice'>You finish the firelock.</span>")
 				playsound(get_turf(src), 'sound/items/Deconstruct.ogg', 50, 1)
@@ -237,12 +234,11 @@
 				qdel(src)
 				return
 		if(CONSTRUCTION_WIRES_EXPOSED)
-			if(istype(C, /obj/item/weapon/tool/wirecutters))
+			if(istype(C, /obj/item/weapon/wirecutters))
 				playsound(get_turf(src), 'sound/items/Wirecutter.ogg', 50, 1)
 				user.visible_message("<span class='notice'>[user] starts cutting the wires from [src]...</span>", \
 									 "<span class='notice'>You begin removing [src]'s wires...</span>")
-				var/obj/item/weapon/tool/wirecutters/wc = C
-				if(!do_after(user, 60 * wc.speed_coefficient, target = src)) return
+				if(!do_after(user, 60, target = src)) return
 				if(constructionStep != CONSTRUCTION_WIRES_EXPOSED) return
 				user.visible_message("<span class='notice'>[user] removes the wires from [src].</span>", \
 									 "<span class='notice'>You remove the wiring from [src], exposing the circuit board.</span>")
@@ -251,13 +247,13 @@
 				constructionStep = CONSTRUCTION_GUTTED
 				update_icon()
 				return
-			if(istype(C, /obj/item/weapon/tool/weldingtool))
-				var/obj/item/weapon/tool/weldingtool/W = C
+			if(istype(C, /obj/item/weapon/weldingtool))
+				var/obj/item/weapon/weldingtool/W = C
 				if(W.remove_fuel(1, user))
 					playsound(get_turf(src), 'sound/items/Welder.ogg', 50, 1)
 					user.visible_message("<span class='notice'>[user] starts welding a metal plate into [src]...</span>", \
 										 "<span class='notice'>You begin welding the cover plate back onto [src]...</span>")
-					if(!do_after(user, 80 * W.speed_coefficient, target = src)) return
+					if(!do_after(user, 80, target = src)) return
 					if(constructionStep != CONSTRUCTION_WIRES_EXPOSED) return
 					playsound(get_turf(src), 'sound/items/Welder2.ogg', 50, 1)
 					user.visible_message("<span class='notice'>[user] welds the metal plate into [src].</span>", \
@@ -266,12 +262,11 @@
 				update_icon()
 				return
 		if(CONSTRUCTION_GUTTED)
-			if(istype(C, /obj/item/weapon/tool/crowbar))
+			if(istype(C, /obj/item/weapon/crowbar))
 				user.visible_message("<span class='notice'>[user] begins removing the circuit board from [src]...</span>", \
 									 "<span class='notice'>You begin prying out the circuit board from [src]...</span>")
 				playsound(get_turf(src), 'sound/items/Crowbar.ogg', 50, 1)
-				var/obj/item/weapon/tool/crowbar/cb = C
-				if(!do_after(user, 50 * cb.speed_coefficient, target = src)) return
+				if(!do_after(user, 50, target = src)) return
 				if(constructionStep != CONSTRUCTION_GUTTED) return
 				user.visible_message("<span class='notice'>[user] removes [src]'s circuit board.</span>", \
 									 "<span class='notice'>You remove the circuit board from [src].</span>")
@@ -298,13 +293,13 @@
 				update_icon()
 				return
 		if(CONSTRUCTION_NOCIRCUIT)
-			if(istype(C, /obj/item/weapon/tool/weldingtool))
-				var/obj/item/weapon/tool/weldingtool/W = C
+			if(istype(C, /obj/item/weapon/weldingtool))
+				var/obj/item/weapon/weldingtool/W = C
 				if(W.remove_fuel(1,user))
 					playsound(get_turf(src), 'sound/items/Welder.ogg', 50, 1)
 					user.visible_message("<span class='notice'>[user] begins cutting apart [src]'s frame...</span>", \
 										 "<span class='notice'>You begin slicing [src] apart...</span>")
-					if(!do_after(user, 80 * W.speed_coefficient, target = src)) return
+					if(!do_after(user, 80, target = src)) return
 					if(constructionStep != CONSTRUCTION_NOCIRCUIT) return
 					user.visible_message("<span class='notice'>[user] cuts apart [src]!</span>", \
 										 "<span class='notice'>You cut [src] into metal.</span>")

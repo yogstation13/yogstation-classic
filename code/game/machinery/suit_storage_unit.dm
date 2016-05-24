@@ -50,7 +50,6 @@
 /obj/machinery/suit_storage_unit/engine
 	SUIT_TYPE = /obj/item/clothing/suit/space/hardsuit/engine
 	MASK_TYPE = /obj/item/clothing/mask/breath
-	STORAGE_TYPE = /obj/item/clothing/shoes/magboots
 
 /obj/machinery/suit_storage_unit/ce
 	SUIT_TYPE = /obj/item/clothing/suit/space/hardsuit/engine/elite
@@ -64,7 +63,6 @@
 /obj/machinery/suit_storage_unit/hos
 	SUIT_TYPE = /obj/item/clothing/suit/space/hardsuit/security/hos
 	MASK_TYPE = /obj/item/clothing/mask/gas/sechailer
-	STORAGE_TYPE = /obj/item/clothing/shoes/magboots/security
 
 /obj/machinery/suit_storage_unit/atmos
 	SUIT_TYPE = /obj/item/clothing/suit/space/hardsuit/engine/atmos
@@ -91,12 +89,12 @@
 /obj/machinery/suit_storage_unit/ertCom
 	SUIT_TYPE = /obj/item/clothing/suit/space/hardsuit/ert
 	MASK_TYPE = /obj/item/clothing/mask/breath
-	STORAGE_TYPE = /obj/item/clothing/shoes/magboots/security
+	STORAGE_TYPE = /obj/item/weapon/tank/internals/emergency_oxygen/double
 
 /obj/machinery/suit_storage_unit/ertSec
 	SUIT_TYPE = /obj/item/clothing/suit/space/hardsuit/ert/sec
 	MASK_TYPE = /obj/item/clothing/mask/breath
-	STORAGE_TYPE = /obj/item/clothing/shoes/magboots/security
+	STORAGE_TYPE = /obj/item/weapon/tank/internals/emergency_oxygen/double
 
 /obj/machinery/suit_storage_unit/ertEngi
 	SUIT_TYPE = /obj/item/clothing/suit/space/hardsuit/ert/engi
@@ -484,13 +482,13 @@
 
 /obj/machinery/suit_storage_unit/attackby(obj/item/I, mob/user, params)
 	if(!src.ispowered)
-		if(istype(I, /obj/item/weapon/tool/crowbar) && !isopen)
+		if(istype(I, /obj/item/weapon/crowbar) && !isopen)
 			if(toggle_open(user))
 				dump_everything()
 				user << text("<span class='notice'>You pry \the [src] open.</span>")
 				update_icon()
 		return
-	if(istype(I, /obj/item/weapon/tool/screwdriver))
+	if(istype(I, /obj/item/weapon/screwdriver))
 		src.panelopen = !src.panelopen
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 100, 1)
 		user << text("<span class='notice'>You [] the unit's maintenance panel.</span>",(src.panelopen ? "open up" : "close") )

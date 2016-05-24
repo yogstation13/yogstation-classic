@@ -121,9 +121,8 @@
 		var/turf/T = get_step(src, dirn)
 		var/obj/effect/blob/B = (locate(/obj/effect/blob) in T)
 		if(!B)
-			if(prob(75))
-				expand(T, src.overmind)//No blob here so try and expand
-				return
+			expand(T, src.overmind)//No blob here so try and expand
+			return
 		B.adjustcolors(a_color)
 
 		B.Pulse((pulse+1),get_dir(src.loc,T), a_color)

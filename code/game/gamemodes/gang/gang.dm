@@ -18,7 +18,6 @@ var/list/gang_colors_pool = list("red","orange","yellow","green","blue","purple"
 	required_enemies = 2
 	recommended_enemies = 2
 	enemy_minimum_age = 14
-	yogstat_name = "gang"
 
 ///////////////////////////
 //Announces the game type//
@@ -175,7 +174,6 @@ var/list/gang_colors_pool = list("red","orange","yellow","green","blue","purple"
 	gangster_mind.current.attack_log += "\[[time_stamp()]\] <font color='red'>Has been converted to the [G.name] Gang!</font>"
 	log_attack("[gangster_mind.current]([gangster_mind.key]) has been recruited into the [G.name] Gang!")
 	gangster_mind.special_role = "[G.name] Gangster"
-	gangster_mind.store_memory("You are a member of the [G.name] Gang!")
 	G.add_gang_hud(gangster_mind)
 	return 2
 ////////////////////////////////////////////////////////////////////
@@ -216,7 +214,7 @@ var/list/gang_colors_pool = list("red","orange","yellow","green","blue","purple"
 				gangster_mind.current.Paralyse(5)
 				gangster_mind.current.visible_message("<FONT size=3><B>[gangster_mind.current] looks like they've given up the life of crime!<B></font>")
 			gangster_mind.current << "<FONT size=3 color=red><B>You have been reformed! You are no longer a gangster!</B><BR>You try as hard as you can, but you can't seem to recall any of the identities of your former gangsters...</FONT>"
-			gangster_mind.memory = ""
+
 	gang.remove_gang_hud(gangster_mind)
 	return 1
 
@@ -251,13 +249,10 @@ var/list/gang_colors_pool = list("red","orange","yellow","green","blue","purple"
 
 /datum/game_mode/proc/auto_declare_completion_gang(datum/gang/winner)
 	if(gangs.len)
-		log_yogstat_data("gamemode.php?gamemode=gang&value=rounds&action=add&changed=1")
 		if(!winner)
-			world << "<FONT size=3 color=red><B>The station was [station_was_nuked ? "destroyed!" : "evacuated before a gang could claim it! The loyalists win!"]</B></FONT><br>"
-			log_yogstat_data("gamemode.php?gamemode=gang&value=crewwin&action=add&changed=1")
+			world << "<FONT size=3 color=red><B>The station was [station_was_nuked ? "destroyed!" : "evacuated before a gang could claim it! The station wins!"]</B></FONT><br>"
 		else
 			world << "<FONT size=3 color=red><B>The [winner.name] Gang successfully performed a hostile takeover of the station!</B></FONT><br>"
-			log_yogstat_data("gamemode.php?gamemode=gang&value=antagwin&action=add&changed=1")
 
 	for(var/datum/gang/G in gangs)
 		world << "<br><b>The [G.name] Gang was [winner==G ? "<font color=green>victorious</font>" : "<font color=red>defeated</font>"] with [round((G.territory.len/start_state.num_territories)*100, 1)]% control of the station!</b>"

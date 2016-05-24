@@ -494,9 +494,9 @@
 	if (istype(W, /obj/item/weapon/restraints/handcuffs)) // fuck i don't even know why isrobot() in handcuff code isn't working so this will have to do
 		return
 
-	if (istype(W, /obj/item/weapon/tool/weldingtool) && user.a_intent != "harm")
+	if (istype(W, /obj/item/weapon/weldingtool) && user.a_intent != "harm")
 		user.changeNext_move(CLICK_CD_MELEE)
-		var/obj/item/weapon/tool/weldingtool/WT = W
+		var/obj/item/weapon/weldingtool/WT = W
 		if (src == user)
 			user << "<span class='warning'>You lack the reach to be able to repair yourself!</span>"
 			return
@@ -525,7 +525,7 @@
 		else
 			user << "The wires seem fine, there's no need to fix them."
 
-	else if (istype(W, /obj/item/weapon/tool/crowbar))	// crowbar means open or close the cover
+	else if (istype(W, /obj/item/weapon/crowbar))	// crowbar means open or close the cover
 		if(opened)
 			user << "<span class='notice'>You close the cover.</span>"
 			opened = 0
@@ -551,25 +551,25 @@
 			user << "<span class='notice'>You insert the power cell.</span>"
 		update_icons()
 
-	else if (istype(W, /obj/item/weapon/tool/wirecutters) || istype(W, /obj/item/device/multitool) || istype(W, /obj/item/device/assembly/signaler))
+	else if (istype(W, /obj/item/weapon/wirecutters) || istype(W, /obj/item/device/multitool) || istype(W, /obj/item/device/assembly/signaler))
 		if (wiresexposed)
 			wires.Interact(user)
 		else
 			user << "<span class='warning'>You can't reach the wiring!</span>"
 
-	else if(istype(W, /obj/item/weapon/tool/screwdriver) && opened && !cell)	// haxing
+	else if(istype(W, /obj/item/weapon/screwdriver) && opened && !cell)	// haxing
 		wiresexposed = !wiresexposed
 		user << "The wires have been [wiresexposed ? "exposed" : "unexposed"]"
 		update_icons()
 
-	else if(istype(W, /obj/item/weapon/tool/screwdriver) && opened && cell)	// radio
+	else if(istype(W, /obj/item/weapon/screwdriver) && opened && cell)	// radio
 		if(radio)
 			radio.attackby(W,user)//Push it to the radio to let it handle everything
 		else
 			user << "<span class='warning'>Unable to locate a radio!</span>"
 		update_icons()
 
-	else if(istype(W, /obj/item/weapon/tool/wrench) && opened && !cell) //Deconstruction. The flashes break from the fall, to prevent this from being a ghetto reset module.
+	else if(istype(W, /obj/item/weapon/wrench) && opened && !cell) //Deconstruction. The flashes break from the fall, to prevent this from being a ghetto reset module.
 		if(!lockcharge)
 			user << "<span class='boldannounce'>[src]'s bolts spark! Maybe you should lock them down first!</span>"
 			spark_system.start()

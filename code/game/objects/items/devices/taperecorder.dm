@@ -285,10 +285,9 @@
 
 
 /obj/item/device/tape/attackby(obj/item/I, mob/user, params)
-	if(ruined && istype(I, /obj/item/weapon/tool/screwdriver))
+	if(ruined && istype(I, /obj/item/weapon/screwdriver))
 		user << "<span class='notice'>You start winding the tape back in...</span>"
-		var/obj/item/weapon/tool/screwdriver/sd = I
-		if(do_after(user, 120 * sd.speed_coefficient, target = src))
+		if(do_after(user, 120, target = src))
 			user << "<span class='notice'>You wound the tape back in.</span>"
 			fix()
 

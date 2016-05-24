@@ -236,7 +236,7 @@
 		pinpointerslot = 1
 		qdel(W)
 
-	if(istype(W, /obj/item/weapon/tool/screwdriver))
+	if(istype(W, /obj/item/weapon/screwdriver))
 		var/obj/item/weapon/pinpointer/P
 		if(pinpointerslot)
 			src.equip_to_slot_or_del(P, "drone_storage_slot")

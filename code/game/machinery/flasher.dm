@@ -38,12 +38,11 @@
 
 //Don't want to render prison breaks impossible
 /obj/machinery/flasher/attackby(obj/item/weapon/W, mob/user, params)
-	if (istype(W, /obj/item/weapon/tool/wirecutters))
+	if (istype(W, /obj/item/weapon/wirecutters))
 		if (bulb)
 			user.visible_message("[user] begins to disconnect [src]'s flashbulb.", "<span class='notice'>You begin to disconnect [src]'s flashbulb...</span>")
 			playsound(src.loc, 'sound/items/Wirecutter.ogg', 100, 1)
-			var/obj/item/weapon/tool/wirecutters/wc = W
-			if(do_after(user, 30 * wc.speed_coefficient, target = src) && bulb)
+			if(do_after(user, 30, target = src) && bulb)
 				user.visible_message("[user] has disconnected [src]'s flashbulb!", "<span class='notice'>You disconnect [src]'s flashbulb.</span>")
 				bulb.loc = src.loc
 				bulb = null
@@ -118,7 +117,7 @@
 			flash()
 
 /obj/machinery/flasher/portable/attackby(obj/item/weapon/W, mob/user, params)
-	if (istype(W, /obj/item/weapon/tool/wrench))
+	if (istype(W, /obj/item/weapon/wrench))
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 100, 1)
 
 		if (!anchored && !isinspace())

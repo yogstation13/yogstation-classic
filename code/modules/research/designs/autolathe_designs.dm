@@ -15,7 +15,7 @@
 	id = "crowbar"
 	build_type = AUTOLATHE
 	materials = list(MAT_METAL = 50)
-	build_path = /obj/item/weapon/tool/crowbar
+	build_path = /obj/item/weapon/crowbar
 	category = list("initial","Tools")
 
 /datum/design/flashlight
@@ -63,7 +63,7 @@
 	id = "welding_tool"
 	build_type = AUTOLATHE
 	materials = list(MAT_METAL = 70, MAT_GLASS = 20)
-	build_path = /obj/item/weapon/tool/weldingtool
+	build_path = /obj/item/weapon/weldingtool
 	category = list("initial","Tools")
 
 /datum/design/screwdriver
@@ -71,7 +71,7 @@
 	id = "screwdriver"
 	build_type = AUTOLATHE
 	materials = list(MAT_METAL = 75)
-	build_path = /obj/item/weapon/tool/screwdriver
+	build_path = /obj/item/weapon/screwdriver
 	category = list("initial","Tools")
 
 /datum/design/wirecutters
@@ -79,7 +79,7 @@
 	id = "wirecutters"
 	build_type = AUTOLATHE
 	materials = list(MAT_METAL = 80)
-	build_path = /obj/item/weapon/tool/wirecutters
+	build_path = /obj/item/weapon/wirecutters
 	category = list("initial","Tools")
 
 /datum/design/wrench
@@ -87,7 +87,7 @@
 	id = "wrench"
 	build_type = AUTOLATHE
 	materials = list(MAT_METAL = 150)
-	build_path = /obj/item/weapon/tool/wrench
+	build_path = /obj/item/weapon/wrench
 	category = list("initial","Tools")
 
 /datum/design/welding_helmet
@@ -456,7 +456,7 @@
 	id = "large_welding_tool"
 	build_type = AUTOLATHE
 	materials = list(MAT_METAL = 70, MAT_GLASS = 60)
-	build_path = /obj/item/weapon/tool/weldingtool/largetank
+	build_path = /obj/item/weapon/weldingtool/largetank
 	category = list("hacked", "Tools")
 
 /datum/design/handcuffs

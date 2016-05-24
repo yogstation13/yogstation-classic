@@ -376,15 +376,14 @@
 
 	if (istype(user, /mob/living/silicon) && get_dist(src,user)>1)
 		return src.attack_hand(user)
-	if (istype(W, /obj/item/weapon/tool/crowbar) && opened)
+	if (istype(W, /obj/item/weapon/crowbar) && opened)
 		if (has_electronics==1)
 			if (terminal)
 				user << "<span class='warning'>Disconnect the wires first!</span>"
 				return
 			playsound(src.loc, 'sound/items/Crowbar.ogg', 50, 1)
 			user << "<span class='notice'>You are trying to remove the power control board...</span>" //lpeters - fixed grammar issues
-			var/obj/item/weapon/tool/crowbar/cb = W
-			if(do_after(user, 50 * cb.speed_coefficient, target = src))
+			if(do_after(user, 50, target = src))
 				if (has_electronics==1)
 					has_electronics = 0
 					if ((stat & BROKEN) || malfhack)
@@ -401,7 +400,7 @@
 		else if (opened!=2) //cover isn't removed
 			opened = 0
 			update_icon()
-	else if (istype(W, /obj/item/weapon/tool/crowbar) && !((stat & BROKEN) || malfhack) )
+	else if (istype(W, /obj/item/weapon/crowbar) && !((stat & BROKEN) || malfhack) )
 		if(coverlocked && !(stat & MAINT))
 			user << "<span class='warning'>The cover is locked and cannot be opened!</span>"
 			return
@@ -425,7 +424,7 @@
 				"<span class='notice'>You insert the power cell.</span>")
 			chargecount = 0
 			update_icon()
-	else if	(istype(W, /obj/item/weapon/tool/screwdriver))	// haxing
+	else if	(istype(W, /obj/item/weapon/screwdriver))	// haxing
 		if(opened)
 			if (cell)
 				user << "<span class='warning'>Close the APC first!</span>" //Less hints more mystery!
@@ -492,7 +491,7 @@
 				user << "<span class='notice'>You add cables to the APC frame.</span>"
 				make_terminal()
 				terminal.connect_to_network()
-	else if (istype(W, /obj/item/weapon/tool/wirecutters) && terminal && opened && has_electronics!=2)
+	else if (istype(W, /obj/item/weapon/wirecutters) && terminal && opened && has_electronics!=2)
 		terminal.dismantle(user)
 
 	else if (istype(W, /obj/item/weapon/module/power_control) && opened && has_electronics==0 && !((stat & BROKEN) || malfhack))
@@ -507,8 +506,8 @@
 	else if (istype(W, /obj/item/weapon/module/power_control) && opened && has_electronics==0 && ((stat & BROKEN) || malfhack))
 		user << "<span class='warning'>You cannot put the board inside, the frame is damaged!</span>"
 		return
-	else if (istype(W, /obj/item/weapon/tool/weldingtool) && opened && has_electronics==0 && !terminal)
-		var/obj/item/weapon/tool/weldingtool/WT = W
+	else if (istype(W, /obj/item/weapon/weldingtool) && opened && has_electronics==0 && !terminal)
+		var/obj/item/weapon/weldingtool/WT = W
 		if (WT.get_fuel() < 3)
 			user << "<span class='warning'>You need more welding fuel to complete this task!</span>"
 			return
@@ -516,7 +515,7 @@
 							"<span class='notice'>You start welding the APC frame...</span>", \
 							"<span class='italics'>You hear welding.</span>")
 		playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
-		if(do_after(user, 50 * WT.speed_coefficient, target = src))
+		if(do_after(user, 50, target = src))
 			if(!src || !WT.remove_fuel(3, user)) return
 			if (emagged || malfhack || (stat & BROKEN) || opened==2)
 				new /obj/item/stack/sheet/metal(loc)
@@ -570,7 +569,7 @@
 				return src.attack_hand(user)
 			if (!opened && wiresexposed && \
 				(istype(W, /obj/item/device/multitool) || \
-				istype(W, /obj/item/weapon/tool/wirecutters) || istype(W, /obj/item/device/assembly/signaler)))
+				istype(W, /obj/item/weapon/wirecutters) || istype(W, /obj/item/device/assembly/signaler)))
 				return src.attack_hand(user)
 			..()
 

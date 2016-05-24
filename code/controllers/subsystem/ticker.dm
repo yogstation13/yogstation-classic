@@ -48,8 +48,6 @@ var/datum/subsystem/ticker/ticker
 	var/next_alert_time = 0
 	var/next_check_admin = 1
 
-	var/total_deaths = 0
-
 
 /datum/subsystem/ticker/New()
 	NEW_SS_GLOBAL(ticker)
@@ -446,7 +444,6 @@ var/datum/subsystem/ticker/ticker
 			if(robo) //How the hell do we lose robo between here and the world messages directly above this?
 				robo.laws.show_laws(world)
 
-	log_yogstat_data("gamemode.php?gamemode=[mode.yogstat_name]&value=deaths&action=add&changed=[total_deaths]")
 	mode.declare_completion()//To declare normal completion.
 
 	//calls auto_declare_completion_* for all modes

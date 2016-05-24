@@ -107,7 +107,7 @@
 		updateUsrDialog()
 		return
 	if(panel_open)
-		if(istype(W, /obj/item/weapon/tool/crowbar))
+		if(istype(W, /obj/item/weapon/crowbar))
 			empty_content()
 			default_deconstruction_crowbar(W)
 		return 1
@@ -135,9 +135,9 @@
 
 	if(istype(inserted_id))
 		dat += text("You have [inserted_id.mining_points] mining points collected. <A href='?src=\ref[src];choice=eject'>Eject ID.</A><br>")
-		dat += text("<A href='?src=\ref[src];choice=claim'>Claim points</A><br>")
+		dat += text("<A href='?src=\ref[src];choice=claim'>Claim points.</A><br>")
 	else
-		dat += text("No ID inserted.  <A href='?src=\ref[src];choice=insert'>Insert ID</A><br>")
+		dat += text("No ID inserted.  <A href='?src=\ref[src];choice=insert'>Insert ID.</A><br>")
 
 	if(stack_list.len)
 		dat += text("<A href='?src=\ref[src];release=all'>Release All</A><br>")
@@ -384,7 +384,7 @@
 		updateUsrDialog()
 		return
 	if(panel_open)
-		if(istype(I, /obj/item/weapon/tool/crowbar))
+		if(istype(I, /obj/item/weapon/crowbar))
 			default_deconstruction_crowbar(I)
 		return 1
 	..()
@@ -400,7 +400,7 @@
 			new /obj/item/weapon/resonator(src.loc)
 		if("Mining Drone")
 			new /mob/living/simple_animal/hostile/mining_drone(src.loc)
-			new /obj/item/weapon/tool/weldingtool/hugetank(src.loc)
+			new /obj/item/weapon/weldingtool/hugetank(src.loc)
 		if("Advanced Scanner")
 			new /obj/item/device/t_scanner/adv_mining_scanner(src.loc)
 	qdel(voucher)
@@ -634,7 +634,7 @@
 	speak_emote = list("states")
 	wanted_objects = list(/obj/item/weapon/ore/diamond, /obj/item/weapon/ore/gold, /obj/item/weapon/ore/silver,
 						  /obj/item/weapon/ore/plasma,  /obj/item/weapon/ore/uranium,    /obj/item/weapon/ore/iron,
-						  /obj/item/weapon/ore/bananium, /obj/item/weapon/ore/glass)
+						  /obj/item/weapon/ore/bananium)
 
 
 /mob/living/simple_animal/hostile/mining_drone/CanAttack(var/atom/the_target)
@@ -658,8 +658,8 @@
 	return
 
 /mob/living/simple_animal/hostile/mining_drone/attackby(obj/item/I as obj, mob/user as mob, params)
-	if(istype(I, /obj/item/weapon/tool/weldingtool))
-		var/obj/item/weapon/tool/weldingtool/W = I
+	if(istype(I, /obj/item/weapon/weldingtool))
+		var/obj/item/weapon/weldingtool/W = I
 		if(W.welding && !stat)
 			if(AIStatus == AI_ON)
 				user << "<span class='info'>[src] is moving around too much to repair!</span>"
@@ -667,7 +667,7 @@
 			if(maxHealth == health)
 				user << "<span class='info'>[src] is at full integrity.</span>"
 			else
-				adjustBruteLoss(-10)
+				health += 10
 				user << "<span class='info'>You repair some of the armor on [src].</span>"
 			return
 	if(istype(I, /obj/item/device/mining_scanner) || istype(I, /obj/item/device/t_scanner/adv_mining_scanner))

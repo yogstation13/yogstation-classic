@@ -317,7 +317,7 @@
 		qdel(W)
 		return
 
-	if (istype(W, /obj/item/weapon/tool/wrench))
+	if (istype(W, /obj/item/weapon/wrench))
 		user << "It's a holotable!  There are no bolts!"
 		return
 

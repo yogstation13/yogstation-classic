@@ -58,8 +58,8 @@
 			playsound(src, 'sound/weapons/Genhit.ogg', 50, 1)
 		else
 			user << "<span class='warning'>This section is too damaged to support a tile! Use a welder to fix the damage.</span>"
-	else if(istype(C, /obj/item/weapon/tool/weldingtool))
-		var/obj/item/weapon/tool/weldingtool/welder = C
+	else if(istype(C, /obj/item/weapon/weldingtool))
+		var/obj/item/weapon/weldingtool/welder = C
 		if( welder.isOn() && (broken || burnt) )
 			if(welder.remove_fuel(0,user))
 				user << "<span class='danger'>You fix some dents on the broken plating.</span>"
@@ -95,11 +95,10 @@
 /turf/simulated/floor/engine/attackby(obj/item/weapon/C, mob/user, params)
 	if(!C || !user)
 		return
-	if(istype(C, /obj/item/weapon/tool/wrench))
+	if(istype(C, /obj/item/weapon/wrench))
 		user << "<span class='notice'>You begin removing rods...</span>"
 		playsound(src, 'sound/items/Ratchet.ogg', 80, 1)
-		var/obj/item/weapon/tool/wrench/wrench = C
-		if(do_after(user, 30 * wrench.speed_coefficient, target = src))
+		if(do_after(user, 30, target = src))
 			if(!istype(src, /turf/simulated/floor/engine))
 				return
 			new /obj/item/stack/rods(src, 2)

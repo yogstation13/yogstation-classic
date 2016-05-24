@@ -1,0 +1,6 @@
+author: ToGWtF
+delete-after: True
+changes: 
+  - rscadd: "\"Adds new Health, Melee Damage, and ranged attack Cooldown upgrades for minebots\""
+  - rscadd: "\"Adds a new Idle mode to minebots to stop them from running off\""
+  - rscadd: "\"Credits to KorPhaeron for code\""

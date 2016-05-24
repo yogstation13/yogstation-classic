@@ -5,7 +5,6 @@
 	desc = "You aren't sure what this thing does, but you're almost certain that it can't be good."
 	icon_state = "memorizer"
 	item_state = "nullrod"
-	origin_tech = "syndicate=1;combat=2"
 
 	var/cooldown = 0
 

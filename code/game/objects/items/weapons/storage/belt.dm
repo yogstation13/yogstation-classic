@@ -19,11 +19,11 @@
 	icon_state = "utilitybelt"
 	item_state = "utility"
 	can_hold = list(
-		/obj/item/weapon/tool/crowbar,
-		/obj/item/weapon/tool/screwdriver,
-		/obj/item/weapon/tool/weldingtool,
-		/obj/item/weapon/tool/wirecutters,
-		/obj/item/weapon/tool/wrench,
+		/obj/item/weapon/crowbar,
+		/obj/item/weapon/screwdriver,
+		/obj/item/weapon/weldingtool,
+		/obj/item/weapon/wirecutters,
+		/obj/item/weapon/wrench,
 		/obj/item/device/multitool,
 		/obj/item/device/flashlight,
 		/obj/item/stack/cable_coil,
@@ -34,22 +34,22 @@
 
 /obj/item/weapon/storage/belt/utility/full/New()
 	..()
-	new /obj/item/weapon/tool/screwdriver(src)
-	new /obj/item/weapon/tool/wrench(src)
-	new /obj/item/weapon/tool/weldingtool(src)
-	new /obj/item/weapon/tool/crowbar(src)
-	new /obj/item/weapon/tool/wirecutters(src)
+	new /obj/item/weapon/screwdriver(src)
+	new /obj/item/weapon/wrench(src)
+	new /obj/item/weapon/weldingtool(src)
+	new /obj/item/weapon/crowbar(src)
+	new /obj/item/weapon/wirecutters(src)
 	new /obj/item/device/multitool(src)
 	new /obj/item/stack/cable_coil(src,30,pick("red","yellow","orange"))
 
 
 /obj/item/weapon/storage/belt/utility/atmostech/New()
 	..()
-	new /obj/item/weapon/tool/screwdriver(src)
-	new /obj/item/weapon/tool/wrench(src)
-	new /obj/item/weapon/tool/weldingtool(src)
-	new /obj/item/weapon/tool/crowbar(src)
-	new /obj/item/weapon/tool/wirecutters(src)
+	new /obj/item/weapon/screwdriver(src)
+	new /obj/item/weapon/wrench(src)
+	new /obj/item/weapon/weldingtool(src)
+	new /obj/item/weapon/crowbar(src)
+	new /obj/item/weapon/wirecutters(src)
 	new /obj/item/device/t_scanner(src)
 	new /obj/item/weapon/extinguisher/mini(src)
 
@@ -274,69 +274,6 @@
 	can_hold = list(
 		/obj/item/ammo_casing/shotgun
 		)
-
-/obj/item/weapon/storage/belt/bandolier/security
-	name = "security bandolier"
-	desc = "A light-weight bandolier authorized towards security for"
-	icon_state = "sec_bandolier"
-	item_state = "sec_bandolier"
-	storage_slots = 13
-
-/obj/item/weapon/storage/belt/bandolier/security/rubber/New()
-	..()
-	name = "standard edition [name]"
-	desc = "[desc] non-lethal takedowns. Contains slugs filled with densly-packed rubber balls"
-	new /obj/item/ammo_casing/shotgun/rubbershot(src)
-	new /obj/item/ammo_casing/shotgun/rubbershot(src)
-	new /obj/item/ammo_casing/shotgun/rubbershot(src)
-	new /obj/item/ammo_casing/shotgun/rubbershot(src)
-	new /obj/item/ammo_casing/shotgun/rubbershot(src)
-	new /obj/item/ammo_casing/shotgun/rubbershot(src)
-	new /obj/item/ammo_casing/shotgun/rubbershot(src)
-	new /obj/item/ammo_casing/shotgun/rubbershot(src)
-	new /obj/item/ammo_casing/shotgun/rubbershot(src)
-	new /obj/item/ammo_casing/shotgun/rubbershot(src)
-	new /obj/item/ammo_casing/shotgun/rubbershot(src)
-	new /obj/item/ammo_casing/shotgun/rubbershot(src)
-	new /obj/item/ammo_casing/shotgun/rubbershot(src)
-
-
-
-/obj/item/weapon/storage/belt/bandolier/security/buckshot/New()
-	..()
-	name = "crowd-control edition [name]"
-	desc = "[desc] crowd-control. Contains slugs that contain pellets that will spread upon fire"
-	new /obj/item/ammo_casing/shotgun/buckshot(src)
-	new /obj/item/ammo_casing/shotgun/buckshot(src)
-	new /obj/item/ammo_casing/shotgun/buckshot(src)
-	new /obj/item/ammo_casing/shotgun/buckshot(src)
-	new /obj/item/ammo_casing/shotgun/buckshot(src)
-	new /obj/item/ammo_casing/shotgun/buckshot(src)
-	new /obj/item/ammo_casing/shotgun/buckshot(src)
-	new /obj/item/ammo_casing/shotgun/buckshot(src)
-	new /obj/item/ammo_casing/shotgun/buckshot(src)
-	new /obj/item/ammo_casing/shotgun/buckshot(src)
-	new /obj/item/ammo_casing/shotgun/buckshot(src)
-	new /obj/item/ammo_casing/shotgun/buckshot(src)
-	new /obj/item/ammo_casing/shotgun/buckshot(src)
-
-/obj/item/weapon/storage/belt/bandolier/security/slug/New()
-	..()
-	name = "lethal edition [name]"
-	desc = "[desc] lethal situations. Contains slugs that deal a great amount of brute damage."
-	new /obj/item/ammo_casing/shotgun(src)
-	new /obj/item/ammo_casing/shotgun(src)
-	new /obj/item/ammo_casing/shotgun(src)
-	new /obj/item/ammo_casing/shotgun(src)
-	new /obj/item/ammo_casing/shotgun(src)
-	new /obj/item/ammo_casing/shotgun(src)
-	new /obj/item/ammo_casing/shotgun(src)
-	new /obj/item/ammo_casing/shotgun(src)
-	new /obj/item/ammo_casing/shotgun(src)
-	new /obj/item/ammo_casing/shotgun(src)
-	new /obj/item/ammo_casing/shotgun(src)
-	new /obj/item/ammo_casing/shotgun(src)
-	new /obj/item/ammo_casing/shotgun(src)
 
 /obj/item/weapon/storage/belt/holster
 	name = "shoulder holster"

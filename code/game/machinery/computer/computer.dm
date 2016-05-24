@@ -103,11 +103,10 @@
 	return
 
 /obj/machinery/computer/attackby(obj/I, mob/user, params)
-	if(istype(I, /obj/item/weapon/tool/screwdriver) && circuit)
+	if(istype(I, /obj/item/weapon/screwdriver) && circuit)
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		user << "<span class='notice'> You start to disconnect the monitor...</span>"
-		var/obj/item/weapon/tool/screwdriver/sd = I
-		if(do_after(user, 20 * sd.speed_coefficient, target = src))
+		if(do_after(user, 20, target = src))
 			var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
 			A.circuit = circuit
 			A.anchored = 1
