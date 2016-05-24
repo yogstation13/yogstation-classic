@@ -290,7 +290,7 @@ var/global/list/pipeID2State = list(
 /obj/item/pipe/attackby(obj/item/weapon/W, mob/user, params)
 
 	//*
-	if (!istype(W, /obj/item/weapon/wrench))
+	if (!istype(W, /obj/item/weapon/tool/wrench))
 		return ..()
 	if (!isturf(src.loc))
 		return 1
@@ -415,7 +415,7 @@ var/global/list/pipeID2State = list(
 /obj/item/pipe_meter/attackby(obj/item/weapon/W, mob/user, params)
 	..()
 
-	if (!istype(W, /obj/item/weapon/wrench))
+	if (!istype(W, /obj/item/weapon/tool/wrench))
 		return ..()
 	if(!locate(/obj/machinery/atmospherics/pipe, src.loc))
 		user << "<span class='warning'>You need to fasten it to a pipe!</span>"

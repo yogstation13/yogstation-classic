@@ -36,15 +36,17 @@
 /obj/structure/bookcase/attackby(obj/item/I, mob/user, params)
 	switch(state)
 		if(0)
-			if(istype(I, /obj/item/weapon/wrench))
+			if(istype(I, /obj/item/weapon/tool/wrench))
 				playsound(loc, 'sound/items/Ratchet.ogg', 100, 1)
-				if(do_after(user, 20, target = src))
+				var/obj/item/weapon/tool/wrench/wrench = I
+				if(do_after(user, 20 * wrench.speed_coefficient, target = src))
 					user << "<span class='notice'>You wrench the frame into place.</span>"
 					anchored = 1
 					state = 1
-			if(istype(I, /obj/item/weapon/crowbar))
+			if(istype(I, /obj/item/weapon/tool/crowbar))
 				playsound(loc, 'sound/items/Crowbar.ogg', 100, 1)
-				if(do_after(user, 20, target = src))
+				var/obj/item/weapon/tool/crowbar/cb = I
+				if(do_after(user, 20 * cb.speed_coefficient, target = src))
 					user << "<span class='notice'>You pry the frame apart.</span>"
 					new /obj/item/stack/sheet/mineral/wood(loc, 4)
 					qdel(src)
@@ -57,7 +59,7 @@
 					user << "<span class='notice'>You add a shelf.</span>"
 					state = 2
 					icon_state = "book-0"
-			if(istype(I, /obj/item/weapon/wrench))
+			if(istype(I, /obj/item/weapon/tool/wrench))
 				playsound(loc, 'sound/items/Ratchet.ogg', 100, 1)
 				user << "<span class='notice'>You unwrench the frame.</span>"
 				anchored = 0
@@ -82,7 +84,7 @@
 					return
 				else
 					name = ("bookcase ([sanitize(newname)])")
-			else if(istype(I, /obj/item/weapon/crowbar))
+			else if(istype(I, /obj/item/weapon/tool/crowbar))
 				if(contents.len)
 					user << "<span class='warning'>You need to remove the books first!</span>"
 				else
@@ -254,7 +256,7 @@
 					scanner.computer.inventory.Add(src)
 					user << "[I]'s screen flashes: 'Book stored in buffer. Title added to general inventory.'"
 
-	else if(istype(I, /obj/item/weapon/kitchen/knife) || istype(I, /obj/item/weapon/wirecutters))
+	else if(istype(I, /obj/item/weapon/kitchen/knife) || istype(I, /obj/item/weapon/tool/wirecutters))
 		user << "<span class='notice'>You begin to carve out [title]...</span>"
 		if(do_after(user, 30, target = src))
 			user << "<span class='notice'>You carve out the pages from [title]! You didn't want to read it anyway.</span>"

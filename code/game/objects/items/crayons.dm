@@ -193,7 +193,7 @@
 	overlays += I
 
 /obj/item/toy/crayon/spraycan/gang
-	desc = "A modified container containing suspicious paint."
+	desc = "A modified container holding suspicious paint used by gangsters to mark their territory."
 	gang = 1
 	uses = 20
 	instant = -1

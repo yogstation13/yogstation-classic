@@ -78,7 +78,7 @@
 		if(default_deconstruction_screwdriver(user, "sleeper-o", "sleeper", I))
 			return
 
-	if(istype(I, /obj/item/weapon/wirecutters) && src.broke == 1 && !state_open && !occupant && icon_state == "sleeper-o")
+	if(istype(I, /obj/item/weapon/tool/wirecutters) && src.broke == 1 && !state_open && !occupant && icon_state == "sleeper-o")
 		src.broke = 0
 		src.emagged = 0
 		user << "<span class='notice'>You mend some of the wires together and cut off the burnt out ones, allowing the sleeper to function properly.</span>"

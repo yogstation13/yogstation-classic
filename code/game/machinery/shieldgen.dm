@@ -231,7 +231,7 @@
 	return
 
 /obj/machinery/shieldgen/attackby(obj/item/weapon/W, mob/user, params)
-	if(istype(W, /obj/item/weapon/screwdriver))
+	if(istype(W, /obj/item/weapon/tool/screwdriver))
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 100, 1)
 		if(is_open)
 			user << "<span class='notice'>You close the panel.</span>"
@@ -255,7 +255,7 @@
 			user << "<span class='notice'>You repair \the [src].</span>"
 			update_icon()
 
-	else if(istype(W, /obj/item/weapon/wrench))
+	else if(istype(W, /obj/item/weapon/tool/wrench))
 		if(locked)
 			user << "<span class='warning'>The bolts are covered! Unlocking this would retract the covers.</span>"
 			return
@@ -449,7 +449,7 @@
 
 
 /obj/machinery/shieldwallgen/attackby(obj/item/W, mob/user, params)
-	if(istype(W, /obj/item/weapon/wrench))
+	if(istype(W, /obj/item/weapon/tool/wrench))
 		if(active)
 			user << "<span class='warning'>Turn off the field generator first!</span>"
 			return

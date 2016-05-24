@@ -55,7 +55,7 @@
 			user << "<span class='notice'>[src] already has a diode installed.</span>"
 		return
 
-	else if(istype(W, /obj/item/weapon/screwdriver))
+	else if(istype(W, /obj/item/weapon/tool/screwdriver))
 		if(diode)
 			user << "<span class='notice'>You remove the [diode.name] from \the [src].</span>"
 			diode.loc = get_turf(src.loc)

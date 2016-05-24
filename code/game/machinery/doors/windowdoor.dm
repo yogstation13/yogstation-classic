@@ -267,7 +267,7 @@
 
 	add_fingerprint(user)
 
-	if(istype(I, /obj/item/weapon/screwdriver))
+	if(istype(I, /obj/item/weapon/tool/screwdriver))
 		if(src.density || src.operating)
 			user << "<span class='warning'>You need to open the door to access the maintenance panel!</span>"
 			return
@@ -276,12 +276,13 @@
 		user << "<span class='notice'>You [p_open ? "open":"close"] the maintenance panel of the [src.name].</span>"
 		return
 
-	if(istype(I, /obj/item/weapon/crowbar))
+	if(istype(I, /obj/item/weapon/tool/crowbar))
 		if(p_open && !src.density && !src.operating)
 			playsound(src.loc, 'sound/items/Crowbar.ogg', 100, 1)
 			user.visible_message("[user] removes the electronics from the [src.name].", \
 								 "<span class='notice'>You start to remove electronics from the [src.name]...</span>")
-			if(do_after(user,40, target = src))
+			var/obj/item/weapon/tool/crowbar/cb = I
+			if(do_after(user, 40 * cb.speed_coefficient, target = src))
 				if(src.p_open && !src.density && !src.operating && src.loc)
 					var/obj/structure/windoor_assembly/WA = new /obj/structure/windoor_assembly(src.loc)
 					switch(base_state)
@@ -327,7 +328,7 @@
 
 
 	//If windoor is unpowered, crowbar, fireaxe and armblade can force it.
-	if(istype(I, /obj/item/weapon/crowbar) || istype(I, /obj/item/weapon/twohanded/fireaxe) || istype(I, /obj/item/weapon/melee/arm_blade) )
+	if(istype(I, /obj/item/weapon/tool/crowbar) || istype(I, /obj/item/weapon/twohanded/fireaxe) || istype(I, /obj/item/weapon/melee/arm_blade) )
 		if(!hasPower())
 			if(src.density)
 				open(2)

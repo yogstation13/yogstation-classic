@@ -8,7 +8,7 @@
 //reshape_genitals
 /datum/surgery_step/reshape_genitals
 	name = "reshape genitals"
-	implements = list(/obj/item/weapon/scalpel = 100, /obj/item/weapon/hatchet = 50, /obj/item/weapon/wirecutters = 35)
+	implements = list(/obj/item/weapon/scalpel = 100, /obj/item/weapon/hatchet = 50, /obj/item/weapon/tool/wirecutters = 35)
 	time = 64
 
 /datum/surgery_step/reshape_genitals/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)

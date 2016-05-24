@@ -48,7 +48,7 @@
 
 
 /obj/item/weapon/grenade/chem_grenade/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/weapon/screwdriver))
+	if(istype(I, /obj/item/weapon/tool/screwdriver))
 		if(stage == WIRED)
 			if(beakers.len)
 				stage_change(READY)
@@ -101,11 +101,11 @@
 			user << "<span class='warning'>You need one length of coil to wire the assembly!</span>"
 			return
 
-	else if(stage == READY && istype(I, /obj/item/weapon/wirecutters))
+	else if(stage == READY && istype(I, /obj/item/weapon/tool/wirecutters))
 		stage_change(WIRED)
 		user << "<span class='notice'>You unlock the [initial(name)] assembly.</span>"
 
-	else if(stage == WIRED && istype(I, /obj/item/weapon/wrench))
+	else if(stage == WIRED && istype(I, /obj/item/weapon/tool/wrench))
 		if(beakers.len)
 			for(var/obj/O in beakers)
 				O.loc = get_turf(src)

@@ -78,7 +78,7 @@
 			user << "<span class='notice'>You install a cell in [src].</span>"
 			update_icon()
 
-	else if(istype(W, /obj/item/weapon/screwdriver))
+	else if(istype(W, /obj/item/weapon/tool/screwdriver))
 		if(bcell)
 			bcell.updateicon()
 			bcell.loc = get_turf(src.loc)

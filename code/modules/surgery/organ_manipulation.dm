@@ -24,8 +24,8 @@
 	time = 64
 	name = "manipulate organs"
 	implements = list(/obj/item/organ/internal = 100)
-	var/implements_extract = list(/obj/item/weapon/hemostat = 100, /obj/item/weapon/crowbar = 55)
-	var/implements_mend = list(/obj/item/weapon/cautery = 100, /obj/item/weapon/weldingtool = 70, /obj/item/weapon/lighter = 45, /obj/item/weapon/match = 20)
+	var/implements_extract = list(/obj/item/weapon/hemostat = 100, /obj/item/weapon/tool/crowbar = 55)
+	var/implements_mend = list(/obj/item/weapon/cautery = 100, /obj/item/weapon/tool/weldingtool = 70, /obj/item/weapon/lighter = 45, /obj/item/weapon/match = 20)
 	var/current_type
 	var/obj/item/organ/internal/I = null
 	var/mob/living/simple_animal/borer/borer = null //WARNING!! HACKY CODE ALERT NEEE NOOOH NEEEE NOOOH
@@ -35,8 +35,8 @@
 	implements = implements + implements_extract + implements_mend
 
 /datum/surgery_step/manipulate_organs/tool_check(mob/user, obj/item/tool)
-	if(istype(tool, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/WT = tool
+	if(istype(tool, /obj/item/weapon/tool/weldingtool))
+		var/obj/item/weapon/tool/weldingtool/WT = tool
 		if(!WT.isOn())	return 0
 
 	else if(istype(tool, /obj/item/weapon/lighter))

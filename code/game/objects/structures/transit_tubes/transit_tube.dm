@@ -39,14 +39,15 @@ obj/structure/transit_tube/ex_act(severity, target)
 		init_dirs()
 
 /obj/structure/transit_tube/attackby(obj/item/W, mob/user, params)
-	if(istype(W, /obj/item/weapon/wrench))
+	if(istype(W, /obj/item/weapon/tool/wrench))
 		if(copytext(icon_state, 1, 3) != "D-") //decorative diagonals cannot be unwrenched directly
 			for(var/obj/structure/transit_tube_pod/pod in src.loc)
 				user << "<span class='warning'>Remove the pod first!</span>"
 				return
 			user.visible_message("[user] starts to deattach \the [src].", "<span class='notice'>You start to deattach the [name]...</span>")
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
-			if(do_after(user, 35, target = src))
+			var/obj/item/weapon/tool/wrench/wrench = W
+			if(do_after(user, 35 * wrench.speed_coefficient, target = src))
 				user << "<span class='notice'>You deattach the [name].</span>"
 				var/obj/structure/R = new tube_construction(src.loc)
 				R.icon_state = src.icon_state
@@ -54,7 +55,7 @@ obj/structure/transit_tube/ex_act(severity, target)
 				R.add_fingerprint(user)
 				src.destroy_diagonals()
 				qdel(src)
-	if(istype(W, /obj/item/weapon/crowbar))
+	if(istype(W, /obj/item/weapon/tool/crowbar))
 		for(var/obj/structure/transit_tube_pod/pod in src.loc)
 			pod.attackby(W, user)
 

@@ -1,0 +1,9 @@
+author: ShadowDeath6
+delete-after: True
+changes: 
+  - rscadd: "Cultist constructs known as Artificers and Harvesters can now corrupt floors and walls by attacking them, allowing them to phase through them. Wraiths can also phase through these cult walls, but Juggernauts cannot."
+  - tweak: "Artificers have 55 health now, up from 40. They can now survive an additional laser blast."
+  - bugfix: "Nar'Sie and Artificers now correctly make cult floors."
+  - bugfix: "Fixed constructs not showing an examine description."
+  - tweak: "All constructs now have full nightvision."
+  - tweak: "Shades can now be healed by Artificers."

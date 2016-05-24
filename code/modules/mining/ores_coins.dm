@@ -8,8 +8,8 @@
 	var/refined_type = null //What this ore defaults to being refined into
 
 /obj/item/weapon/ore/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/W = I
+	if(istype(I, /obj/item/weapon/tool/weldingtool))
+		var/obj/item/weapon/tool/weldingtool/W = I
 		if(W.remove_fuel(15))
 			new refined_type(get_turf(src.loc))
 			qdel(src)
@@ -65,8 +65,8 @@
 	refined_type = /obj/item/stack/sheet/mineral/plasma
 
 /obj/item/weapon/ore/plasma/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/W = I
+	if(istype(I, /obj/item/weapon/tool/weldingtool))
+		var/obj/item/weapon/tool/weldingtool/W = I
 		if(W.welding)
 			user << "<span class='warning'>You can't hit a high enough temperature to smelt [src] properly!</span>"
 	else
@@ -131,7 +131,7 @@
 		return
 
 	if(wires && !primed)
-		if(istype(I, /obj/item/weapon/wirecutters) || istype(I, /obj/item/device/multitool) || istype(I, /obj/item/device/assembly/signaler))
+		if(istype(I, /obj/item/weapon/tool/wirecutters) || istype(I, /obj/item/device/multitool) || istype(I, /obj/item/device/assembly/signaler))
 			wires.Interact(user)
 			return
 
@@ -306,7 +306,7 @@
 			user << "<span class='warning'>You need one length of cable to attach a string to the coin!</span>"
 			return
 
-	else if(istype(W,/obj/item/weapon/wirecutters))
+	else if(istype(W,/obj/item/weapon/tool/wirecutters))
 		if(!string_attached)
 			..()
 			return

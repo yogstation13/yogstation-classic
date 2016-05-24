@@ -39,6 +39,8 @@
 	var/const/waittime_l = 600
 	var/const/waittime_h = 1800 // started at 1800
 
+	var/yogstat_name = null
+
 
 /datum/game_mode/proc/announce() //to be calles when round starts
 	world << "<B>Notice</B>: [src] did not define announce()"
@@ -75,6 +77,10 @@
 /datum/game_mode/proc/post_setup(report=1)
 	spawn (ROUNDSTART_LOGOUT_REPORT_TIME)
 		display_roundstart_logout_report()
+	for(var/mob/antag in mob_list)
+		if(antag.mind)
+			if(antag.mind.special_role)
+				antag.mind.show_memory(antag)
 
 	feedback_set_details("round_start","[time2text(world.realtime)]")
 	if(ticker && ticker.mode)

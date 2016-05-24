@@ -178,7 +178,7 @@ for reference:
 				visible_message("<span class='danger'>BZZzZZzZZzZT</span>")
 				return
 		return
-	else if (istype(W, /obj/item/weapon/wrench))
+	else if (istype(W, /obj/item/weapon/tool/wrench))
 		if (src.health < src.maxhealth)
 			src.health = src.maxhealth
 			src.emagged = 0
@@ -192,7 +192,7 @@ for reference:
 			return
 		return
 
-	else if (istype(W, /obj/item/weapon/screwdriver))
+	else if (istype(W, /obj/item/weapon/tool/screwdriver))
 
 		if (src.locked == 1.0)
 			user << "<span class='danger'>You can't eject anything from the barrier while it's locked!</span>"

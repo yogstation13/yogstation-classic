@@ -204,9 +204,9 @@ Auto Patrol: []"},
 				user << "<span class='danger'>Access denied.</span>"
 	else
 		..()
-		if(istype(W, /obj/item/weapon/weldingtool) && user.a_intent != "harm") // Any intent but harm will heal, so we shouldn't get angry.
+		if(istype(W, /obj/item/weapon/tool/weldingtool) && user.a_intent != "harm") // Any intent but harm will heal, so we shouldn't get angry.
 			return
-		if(!istype(W, /obj/item/weapon/screwdriver) && (W.force) && (!target) && (W.damtype != STAMINA) ) // Added check for welding tool to fix #2432. Welding tool behavior is handled in superclass.
+		if(!istype(W, /obj/item/weapon/tool/screwdriver) && (W.force) && (!target) && (W.damtype != STAMINA) ) // Added check for welding tool to fix #2432. Welding tool behavior is handled in superclass.
 			threatlevel = user.assess_threat(src)
 			threatlevel += 6
 			if(threatlevel >= 4)
@@ -472,15 +472,15 @@ Auto Patrol: []"},
 
 /obj/item/weapon/secbot_assembly/attackby(obj/item/I, mob/user, params)
 	..()
-	if(istype(I, /obj/item/weapon/weldingtool))
+	if(istype(I, /obj/item/weapon/tool/weldingtool))
 		if(!build_step)
-			var/obj/item/weapon/weldingtool/WT = I
+			var/obj/item/weapon/tool/weldingtool/WT = I
 			if(WT.remove_fuel(0, user))
 				build_step++
 				overlays += "hs_hole"
 				user << "<span class='notice'>You weld a hole in [src]!</span>"
 		else if(build_step == 1)
-			var/obj/item/weapon/weldingtool/WT = I
+			var/obj/item/weapon/tool/weldingtool/WT = I
 			if(WT.remove_fuel(0, user))
 				build_step--
 				overlays -= "hs_hole"
@@ -523,7 +523,7 @@ Auto Patrol: []"},
 			return
 		created_name = t
 
-	else if(istype(I, /obj/item/weapon/screwdriver))
+	else if(istype(I, /obj/item/weapon/tool/screwdriver))
 		if(!build_step)
 			new /obj/item/device/assembly/signaler(get_turf(src))
 			new /obj/item/clothing/head/helmet/sec(get_turf(src))

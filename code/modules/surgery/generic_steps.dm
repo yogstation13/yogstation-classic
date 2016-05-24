@@ -13,7 +13,7 @@
 //clamp bleeders
 /datum/surgery_step/clamp_bleeders
 	name = "clamp bleeders"
-	implements = list(/obj/item/weapon/hemostat = 100, /obj/item/weapon/wirecutters = 60, /obj/item/stack/cable_coil = 15)
+	implements = list(/obj/item/weapon/hemostat = 100, /obj/item/weapon/tool/wirecutters = 60, /obj/item/stack/cable_coil = 15)
 	time = 24
 
 /datum/surgery_step/clamp_bleeders/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
@@ -28,7 +28,7 @@
 //retract skin
 /datum/surgery_step/retract_skin
 	name = "retract skin"
-	implements = list(/obj/item/weapon/retractor = 100, /obj/item/weapon/screwdriver = 45, /obj/item/weapon/wirecutters = 35)
+	implements = list(/obj/item/weapon/retractor = 100, /obj/item/weapon/tool/screwdriver = 45, /obj/item/weapon/tool/wirecutters = 35)
 	time = 24
 
 /datum/surgery_step/retract_skin/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
@@ -39,7 +39,7 @@
 //close incision
 /datum/surgery_step/close
 	name = "mend incision"
-	implements = list(/obj/item/weapon/cautery = 100, /obj/item/weapon/weldingtool = 70, /obj/item/weapon/lighter = 45, /obj/item/weapon/match = 20)
+	implements = list(/obj/item/weapon/cautery = 100, /obj/item/weapon/tool/weldingtool = 70, /obj/item/weapon/lighter = 45, /obj/item/weapon/match = 20)
 	time = 24
 
 /datum/surgery_step/close/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
@@ -50,8 +50,8 @@
 	if(istype(tool, /obj/item/weapon/cautery))
 		return 1
 
-	if(istype(tool, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/WT = tool
+	if(istype(tool, /obj/item/weapon/tool/weldingtool))
+		var/obj/item/weapon/tool/weldingtool/WT = tool
 		if(WT.isOn())	return 1
 
 	else if(istype(tool, /obj/item/weapon/lighter))

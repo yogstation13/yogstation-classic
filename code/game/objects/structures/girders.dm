@@ -15,12 +15,13 @@
 
 /obj/structure/girder/attackby(obj/item/W, mob/user, params)
 	add_fingerprint(user)
-	if(istype(W, /obj/item/weapon/screwdriver))
+	if(istype(W, /obj/item/weapon/tool/screwdriver))
+		var/obj/item/weapon/tool/screwdriver/sd = W
 		if(state == GIRDER_DISPLACED)
 			playsound(src.loc, 'sound/items/Screwdriver.ogg', 100, 1)
 			user.visible_message("<span class='warning'>[user] disassembles the girder.</span>", \
 								"<span class='notice'>You start to disassemble the girder...</span>", "You hear clanking and banging noises.")
-			if(do_after(user, 40, target = src))
+			if(do_after(user, 40 * sd.speed_coefficient, target = src))
 				if(state != GIRDER_DISPLACED)
 					return
 				state = GIRDER_DISASSEMBLED
@@ -32,21 +33,22 @@
 		else if(state == GIRDER_REINF)
 			playsound(src.loc, 'sound/items/Screwdriver.ogg', 100, 1)
 			user << "<span class='notice'>You start unsecuring support struts...</span>"
-			if(do_after(user, 40, target = src))
+			if(do_after(user, 40 * sd.speed_coefficient, target = src))
 				if(state != GIRDER_REINF)
 					return
 				adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): support struts unsecured")
 				user << "<span class='notice'>You unsecure the support struts.</span>"
 				state = GIRDER_REINF_STRUTS
 
-	else if(istype(W, /obj/item/weapon/wrench))
+	else if(istype(W, /obj/item/weapon/tool/wrench))
+		var/obj/item/weapon/tool/wrench/wrench = W
 		if(state == GIRDER_DISPLACED)
 			if(!istype(loc, /turf/simulated/floor))
 				user << "<span class='warning'>A floor must be present to secure the girder!</span>"
 				return
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 100, 1)
 			user << "<span class='notice'>You start securing the girder...</span>"
-			if(do_after(user, 40, target = src))
+			if(do_after(user, 40 * wrench.speed_coefficient, target = src))
 				adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): secured")
 				user << "<span class='notice'>You secure the girder.</span>"
 				var/obj/structure/girder/G = new (loc)
@@ -55,7 +57,7 @@
 		else if(state == GIRDER_NORMAL)
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 100, 1)
 			user << "<span class='notice'>You start unsecuring the girder...</span>"
-			if(do_after(user, 40, target = src))
+			if(do_after(user, 40 * wrench.speed_coefficient, target = src))
 				adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): unsecured")
 				user << "<span class='notice'>You unsecure the girder.</span>"
 				var/obj/structure/girder/displaced/D = new (loc)
@@ -79,10 +81,11 @@
 		D.playDigSound()
 		qdel(src)
 
-	else if(istype(W, /obj/item/weapon/wirecutters) && state == GIRDER_REINF_STRUTS)
+	else if(istype(W, /obj/item/weapon/tool/wirecutters) && state == GIRDER_REINF_STRUTS)
 		playsound(src.loc, 'sound/items/Wirecutter.ogg', 100, 1)
 		user << "<span class='notice'>You start removing support struts...</span>"
-		if(do_after(user, 40, target = src))
+		var/obj/item/weapon/tool/wirecutters/wc = W
+		if(do_after(user, 40 * wc.speed_coefficient, target = src))
 			adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): support struts removed")
 			user << "<span class='notice'>You remove the support struts.</span>"
 			new /obj/item/stack/sheet/plasteel(get_turf(src))
@@ -305,12 +308,12 @@
 
 /obj/structure/cultgirder/attackby(obj/item/W, mob/user, params)
 	add_fingerprint(user)
-	if(istype(W, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/WT = W
+	if(istype(W, /obj/item/weapon/tool/weldingtool))
+		var/obj/item/weapon/tool/weldingtool/WT = W
 		if(WT.remove_fuel(0,user))
 			playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
 			user << "<span class='notice'>You start slicing apart the girder...</span>"
-			if(do_after(user, 40, target = src))
+			if(do_after(user, 40 * WT.speed_coefficient, target = src))
 				if( !WT.isOn() )
 					return
 				adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): sliced apart")

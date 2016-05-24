@@ -94,7 +94,7 @@ obj/machinery/bot/mulebot/bot_reset()
 		C.loc = src
 		cell = C
 		updateDialog()
-	else if(istype(I,/obj/item/weapon/screwdriver))
+	else if(istype(I,/obj/item/weapon/tool/screwdriver))
 		if(locked)
 			user << "<span class='warning'>The maintenance hatch cannot be opened or closed while the controls are locked!</span>"
 			return
@@ -109,7 +109,7 @@ obj/machinery/bot/mulebot/bot_reset()
 			icon_state = "mulebot0"
 
 		updateDialog()
-	else if (istype(I, /obj/item/weapon/wrench))
+	else if (istype(I, /obj/item/weapon/tool/wrench))
 		if (health < maxhealth)
 			health = min(maxhealth, health+25)
 			user.visible_message(
@@ -118,7 +118,7 @@ obj/machinery/bot/mulebot/bot_reset()
 			)
 		else
 			user << "<span class='warning'>[src] does not need a repair!</span>"
-	else if(istype(I, /obj/item/device/multitool) || istype(I, /obj/item/weapon/wirecutters))
+	else if(istype(I, /obj/item/device/multitool) || istype(I, /obj/item/weapon/tool/wirecutters))
 		if(open)
 			attack_hand(usr)
 	else if(load && ismob(load))  // chance to knock off rider
