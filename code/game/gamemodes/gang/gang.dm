@@ -18,6 +18,7 @@ var/list/gang_colors_pool = list("red","orange","yellow","green","blue","purple"
 	required_enemies = 2
 	recommended_enemies = 2
 	enemy_minimum_age = 14
+	yogstat_name = "gang"
 
 ///////////////////////////
 //Announces the game type//
@@ -250,10 +251,13 @@ var/list/gang_colors_pool = list("red","orange","yellow","green","blue","purple"
 
 /datum/game_mode/proc/auto_declare_completion_gang(datum/gang/winner)
 	if(gangs.len)
+		log_yogstat_data("gamemode.php?gamemode=gang&value=rounds&action=add&changed=1")
 		if(!winner)
 			world << "<FONT size=3 color=red><B>The station was [station_was_nuked ? "destroyed!" : "evacuated before a gang could claim it! The loyalists win!"]</B></FONT><br>"
+			log_yogstat_data("gamemode.php?gamemode=gang&value=crewwin&action=add&changed=1")
 		else
 			world << "<FONT size=3 color=red><B>The [winner.name] Gang successfully performed a hostile takeover of the station!</B></FONT><br>"
+			log_yogstat_data("gamemode.php?gamemode=gang&value=antagwin&action=add&changed=1")
 
 	for(var/datum/gang/G in gangs)
 		world << "<br><b>The [G.name] Gang was [winner==G ? "<font color=green>victorious</font>" : "<font color=red>defeated</font>"] with [round((G.territory.len/start_state.num_territories)*100, 1)]% control of the station!</b>"

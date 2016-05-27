@@ -1,0 +1,4 @@
+author: X-TheDark
+delete-after: True
+changes: 
+  - bugfix: "Light bulb fixtures now properly update the surrounding tile brightness when their state is changed (put in lightbulb/turn fixture on)."

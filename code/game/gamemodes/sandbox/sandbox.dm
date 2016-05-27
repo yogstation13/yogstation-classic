@@ -2,6 +2,7 @@
 	name = "sandbox"
 	config_tag = "sandbox"
 	required_players = 0
+	yogstat_name = "sandbox"
 
 /datum/game_mode/sandbox/announce()
 	world << "<B>The current game mode is - Sandbox!</B>"
