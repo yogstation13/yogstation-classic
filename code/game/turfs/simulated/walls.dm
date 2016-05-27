@@ -101,7 +101,7 @@
 
 
 /turf/simulated/wall/attack_animal(mob/living/simple_animal/M)
-	if(istype(M,/mob/living/simple_animal/construct/builder)||istype(M,/mob/living/simple_animal/construct/harvester))
+	if(istype(M,/mob/living/simple_animal/hostile/construct/builder)||istype(M,/mob/living/simple_animal/hostile/construct/harvester))
 		if(istype(src, /turf/simulated/wall/cult))
 			return
 		src.ChangeTurf(/turf/simulated/wall/cult)
@@ -119,7 +119,7 @@
 
 /turf/simulated/wall/cult/Bumped(atom/movable/C as mob)
 	var/phasable=0
-	if(istype(C,/mob/living/simple_animal/construct/builder)||istype(C,/mob/living/simple_animal/construct/wraith)||istype(C,/mob/living/simple_animal/construct/harvester))
+	if(istype(C,/mob/living/simple_animal/hostile/construct/builder)||istype(C,/mob/living/simple_animal/hostile/construct/wraith)||istype(C,/mob/living/simple_animal/hostile/construct/harvester))
 		phasable = 2
 		while(phasable>0)
 			src.density = 0
