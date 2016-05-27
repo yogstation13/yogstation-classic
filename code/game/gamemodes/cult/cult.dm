@@ -174,7 +174,7 @@
 		cult += cult_mind
 		cult_mind.current.faction |= "cult"
 		cult_mind.current.verbs += /mob/living/proc/cult_help
-		var/datum/action/innate/cultcomm/C = new()
+		var/datum/action/cultcomm/C = new()
 		C.Grant(cult_mind.current)
 		update_cult_icons_added(cult_mind)
 		cult_mind.current.attack_log += "\[[time_stamp()]\] <span class='danger'>Has been converted to the cult!</span>"
@@ -192,7 +192,7 @@
 		cult -= cult_mind
 		cult_mind.current.faction -= "cult"
 		cult_mind.current.verbs -= /mob/living/proc/cult_help
-		for(var/datum/action/innate/cultcomm/C in cult_mind.current.actions)
+		for(var/datum/action/cultcomm/C in cult_mind.current.actions)
 			qdel(C)
 		if(stun)
 			cult_mind.current.Paralyse(5)

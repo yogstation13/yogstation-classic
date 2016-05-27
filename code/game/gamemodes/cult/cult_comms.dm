@@ -4,12 +4,12 @@
 	check_flags = AB_CHECK_RESTRAINED|AB_CHECK_STUNNED|AB_CHECK_CONSCIOUS
 	action_type = AB_INNATE
 
-/datum/action/innate/cultcomm/IsAvailable()
+/datum/action/cultcomm/IsAvailable()
 	if(!iscultist(owner))
 		return 0
 	return ..()
 
-/datum/action/innate/cultcomm/Activate()
+/datum/action/cultcomm/Activate()
 	var/input = stripped_input(usr, "Please choose a message to tell to the other acolytes.", "Voice of Blood", "")
 	if(!input || !IsAvailable())
 		return
