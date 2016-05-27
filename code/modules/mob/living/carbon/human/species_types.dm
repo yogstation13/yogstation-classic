@@ -823,7 +823,7 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	say_mod = "gibbers"
 	sexes = 0
 	invis_sight = SEE_INVISIBLE_LEVEL_ONE
-	specflags = list(NOBLOOD,NOBREATH,VIRUSIMMUNE)
+	specflags = list(NOBLOOD,NOBREATH,VIRUSIMMUNE,NOGUNS)  //Their hands don't have fingers, so no pulling triggers.
 	var/scientist = 0 // vars to not pollute spieces list with castes
 	var/agent = 0
 	var/team = 1
