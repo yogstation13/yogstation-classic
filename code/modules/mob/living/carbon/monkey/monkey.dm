@@ -20,6 +20,9 @@
 
 	internal_organs += new /obj/item/organ/internal/appendix
 	internal_organs += new /obj/item/organ/internal/heart
+	internal_organs += new /obj/item/organ/internal/eye
+	internal_organs += new /obj/item/organ/internal/lung
+	internal_organs += new /obj/item/organ/internal/liver
 	internal_organs += new /obj/item/organ/internal/brain
 
 	for(var/obj/item/organ/internal/I in internal_organs)

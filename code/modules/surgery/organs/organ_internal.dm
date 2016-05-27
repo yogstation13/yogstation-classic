@@ -198,7 +198,15 @@
 	icon_state="liver"
 	zone="chest"
 	slot="liver"
-	var/toxic = 0
+	var/dysfunct = 0
+
+/obj/item/organ/internal/appendix/update_icon()
+	if(inflamed)
+		icon_state = "livershitter
+		name = "dysfunctional liver"
+	else
+		icon_state = "liver"
+		name = "liver"
 
 /obj/item/organ/internal/eye
 	name="eye balls"
@@ -211,7 +219,7 @@
 	icon_state="lung"
 	zone="chest"
 	slot="lung"
-	var/diaphragmed = 1
+	var/collapsed = 0
 
 /obj/item/organ/internal/thrall_tumor
 	zone = "head"
