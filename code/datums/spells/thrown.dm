@@ -9,7 +9,7 @@
 	var/held_icon_state = "2"
 	var/speed = 2
 
-/obj/effect/proc_holder/spell/thrown/proc/post_summon_holder(var/obj/item/cast_holder/CH)
+/obj/effect/proc_holder/spell/thrown/proc/post_summon_holder(obj/item/cast_holder/CH)
 	return
 
 /obj/effect/proc_holder/spell/thrown/choose_targets()
@@ -39,9 +39,9 @@
 	var/obj/effect/proc_holder/spell/thrown/spell = null
 	var/cast = 0
 
-/obj/item/cast_holder/dropped()
+/obj/item/cast_holder/dropped(mob/usermob)
 	if(!cast)
-		spell.perform(list(get_turf(src))) // You tried to drop the spell, it detonates on you. Bitch.
+		spell.perform(list(get_turf(src)), user = usermob) // You tried to drop the spell, it detonates on you. Bitch.
 		cast = 1
 	qdel(src)
 	return
@@ -77,13 +77,13 @@
 	held_icon = 'icons/effects/fire.dmi'
 	held_icon_state = "fire"
 
-/obj/effect/proc_holder/spell/thrown/fireball/cast(list/targets)
+/obj/effect/proc_holder/spell/thrown/fireball/cast(list/targets, mob/user)
 	for(var/atom/target in targets)
 		var/turf/T = get_turf(target)
-		var/obj/effect/fire_ball/F = new(get_turf(usr))
+		var/obj/effect/fire_ball/F = new(get_turf(user))
 		F.cast_at(T)
 
-/obj/effect/proc_holder/spell/thrown/fireball/post_summon_holder(var/obj/item/cast_holder/CH)
+/obj/effect/proc_holder/spell/thrown/fireball/post_summon_holder(obj/item/cast_holder/CH)
 	CH.force = 15
 	CH.damtype = "fire"
 
