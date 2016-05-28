@@ -245,13 +245,17 @@
 
 /datum/game_mode/cult/declare_completion()
 
+	log_yogstat_data("gamemode.php?gamemode=cult&value=rounds&action=add&changed=1")
+
 	if(!check_cult_victory())
 		feedback_set_details("round_end_result","win - cult win")
 		feedback_set("round_end_result",acolytes_survived)
+		log_yogstat_data("gamemode.php?gamemode=cult&value=crewwin&action=add&changed=1")
 		world << "<span class='greentext'>The cult has succeeded! Nar-sie has snuffed out another torch in the void!</span>"
 	else
 		feedback_set_details("round_end_result","loss - staff stopped the cult")
 		feedback_set("round_end_result",acolytes_survived)
+		log_yogstat_data("gamemode.php?gamemode=cult&value=antagwin&action=add&changed=1")
 		world << "<span class='redtext'>The staff managed to stop the cult! Dark words and heresy are no match for Nanotrasen's finest!</span>"
 
 	var/text = ""
