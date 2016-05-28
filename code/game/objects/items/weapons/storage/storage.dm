@@ -191,6 +191,12 @@
 				cy--
 	closer.screen_loc = "[4+cols+1]:16,2:16"
 
+/obj/item/weapon/storage/burn()
+	for(var/obj/item/Item in contents)
+		remove_from_storage(Item, get_turf(src))
+		Item.fire_act() //Set them on fire, too
+	..()
+
 
 /datum/numbered_display
 	var/obj/item/sample_object
