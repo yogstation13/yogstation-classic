@@ -126,6 +126,13 @@
 		return
 	interact(user)
 
+/obj/machinery/mineral/ore_redemption/power_change()
+	..()
+	if((stat & NOPOWER) && inserted_id)
+		loc.visible_message("<span class='notice'>\The [src] ejects \The [inserted_id] due to power failure.</span>")
+		inserted_id.forceMove(loc)
+		inserted_id = null
+
 /obj/machinery/mineral/ore_redemption/interact(mob/user)
 	var/obj/item/stack/sheet/s
 	var/dat
@@ -261,6 +268,7 @@
 
 	if(mode == "deconstruct" && inserted_id)
 		inserted_id.forceMove(unloadloc)
+		inserted_id = null
 
 /**********************Mining Equipment Vendor**************************/
 
