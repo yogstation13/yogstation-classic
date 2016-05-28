@@ -108,7 +108,7 @@
 		return
 	if(panel_open)
 		if(istype(W, /obj/item/weapon/tool/crowbar))
-			empty_content()
+			empty_content("deconstruct")
 			default_deconstruction_crowbar(W)
 		return 1
 	..()
@@ -258,6 +258,9 @@
 			new s.type(unloadloc, num_to_unload)
 			s.use(num_to_unload)
 		stack_list -= s.type
+
+	if(mode == "deconstruct" && inserted_id)
+		inserted_id.forceMove(unloadloc)
 
 /**********************Mining Equipment Vendor**************************/
 
