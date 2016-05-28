@@ -709,6 +709,8 @@
 /mob/living/simple_animal/hostile/mining_drone/proc/SetCollectBehavior()
 	if(emagged == 2)
 		return
+	LoseTarget()
+	AIStatus = AI_ON
 	mode = 1
 	idle_vision_range = 9
 	search_objects = 2
@@ -721,6 +723,8 @@
 /mob/living/simple_animal/hostile/mining_drone/proc/SetOffenseBehavior()
 	if(emagged == 2)
 		return
+	LoseTarget()
+	AIStatus = AI_ON
 	mode = 2
 	idle_vision_range = 7
 	search_objects = 0
@@ -734,6 +738,8 @@
 	if(emagged == 2)
 		return
 	mode = 3
+	LoseTarget()
+	AIStatus = AI_OFF
 	idle_vision_range = 3
 	search_objects = 0
 	wander = 0
@@ -744,6 +750,7 @@
 
 
 /mob/living/simple_animal/hostile/mining_drone/proc/SetEmagBehavior()
+	AIStatus = AI_ON
 	idle_vision_range = 9
 	search_objects = 0
 	wander = 1
@@ -780,8 +787,8 @@
 		O.loc = src.loc
 	return
 
-/mob/living/simple_animal/hostile/mining_drone/adjustBruteLoss()
-	if(mode)
+/mob/living/simple_animal/hostile/mining_drone/adjustBruteLoss(amount)
+	if(mode && amount > 0)
 		SetOffenseBehavior()
 	..()
 
