@@ -103,7 +103,7 @@
 		if(prob(85))
 			src.expand()
 		for(var/obj/effect/blob/B in orange(expand_range, src))
-			if(prob(max(13 - get_dist(get_turf(src), get_turf(B)) * 4, 1))) //expand falls off with range but is faster near the blob causing the expansion
+			if(prob(max(10 - get_dist(get_turf(src), get_turf(B)) * 4, 1))) //expand falls off with range but is faster near the blob causing the expansion
 				B.expand()
 	return
 
