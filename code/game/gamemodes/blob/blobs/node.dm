@@ -3,8 +3,8 @@
 	icon = 'icons/mob/blob.dmi'
 	icon_state = "blank_blob"
 	desc = "A large, pulsating yellow mass."
-	health = 150
-	maxhealth = 150
+	health = 125
+	maxhealth = 125
 	health_regen = 3
 	fire_resist = 0.5
 

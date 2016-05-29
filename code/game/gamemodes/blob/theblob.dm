@@ -13,7 +13,7 @@
 	var/pulse_timestamp = 0
 	var/health_timestamp = 0
 	var/brute_resist = 0.5
-	var/fire_resist = 1
+	var/fire_resist = 1.15 // lower fire_resist = less damage
 	var/atmos_block = 0
 	var/mob/camera/blob/overmind
 
