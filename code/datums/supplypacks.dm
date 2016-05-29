@@ -542,7 +542,7 @@
 /datum/supply_packs/engineering/engine/supermatter_shard
 	name = "Supermatter Shard Crate"
 	contains = list(/obj/machinery/power/supermatter_shard)
-	cost = 100 //So cargo thinks twice before killing themselves with it
+	cost = 20000
 	containertype = /obj/structure/closet/crate/secure
 	crate_name = "supermatter shard crate"
 	access = access_ce
@@ -692,6 +692,28 @@
 	containertype = /obj/structure/closet/crate/secure
 	crate_name = "iv drip crate"
 	access = access_cmo
+
+/datum/supply_packs/medical/surgery
+	name = "Surgery Supply Crate"
+	contains = list(/obj/item/weapon/scalpel,
+					/obj/item/weapon/hemostat,
+					/obj/item/weapon/cautery,
+					/obj/item/weapon/retractor,
+					/obj/item/weapon/circular_saw,
+					/obj/item/weapon/surgicaldrill,
+					/obj/item/weapon/surgical_drapes,
+					/obj/item/weapon/tank/internals/anesthetic,
+					/obj/item/clothing/mask/breath/medical)
+	cost = 1500
+	containertype = /obj/structure/closet/crate/medical
+	crate_name = "surgery crate"
+
+/datum/supply_packs/medical/surgery_table
+	name = "Surgery Table Crate"
+	contains = list(/obj/item/weapon/circuitboard/operating)
+	cost = 2000
+	containertype = /obj/structure/closet/crate/surgery_table
+	crate_name = "surgery table crate"
 
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////// Science /////////////////////////////////////////
@@ -1055,7 +1077,7 @@
 /datum/supply_packs/misc/watertank
 	name = "Water Tank Crate"
 	contains = list(/obj/structure/reagent_dispensers/watertank)
-	cost = 600
+	cost = 800
 	containertype = /obj/structure/largecrate
 	crate_name = "water tank crate"
 
