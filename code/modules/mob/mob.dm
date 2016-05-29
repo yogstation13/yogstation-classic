@@ -699,7 +699,7 @@ var/list/slot_equipment_priority = list( \
 		stat(null, "Server Time: [time2text(world.realtime, "YYYY-MM-DD hh:mm")]")
 		stat(null, "Round: [yog_round_number]")
 
-		if(client && client.holder)
+		if(client && (client.holder || ticket_counter_visible_to_everyone))
 			var/tickets_unclaimed = 0
 			var/tickets_unresolved = 0
 			var/tickets_resolved = 0
