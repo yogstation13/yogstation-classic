@@ -76,6 +76,13 @@
 		return attack_hand(user)
 	..()
 
+/obj/machinery/computer/prisoner/power_change()
+	..()
+	if((stat & NOPOWER) && inserted_id)
+		loc.visible_message("<span class='notice'>\The [src] ejects \The [inserted_id] due to power failure.</span>")
+		inserted_id.forceMove(loc)
+		inserted_id = null
+
 /obj/machinery/computer/prisoner/process()
 	if(!..())
 		src.updateDialog()

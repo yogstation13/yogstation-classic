@@ -52,6 +52,7 @@
 		handle_embedded_objects()
 	//Update our name based on whether our face is obscured/disfigured
 	name = get_visible_name()
+	sec_hud_set_security_status()
 
 	if(dna)
 		dna.species.spec_life(src) // for mutantraces

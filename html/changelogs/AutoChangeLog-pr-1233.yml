@@ -1,0 +1,5 @@
+author: Cruix
+delete-after: True
+changes: 
+  - bugfix: "Changing someone's wanted status will now update the sechud icon even if their face is covered at the time."
+  - bugfix: "Covering your face and hiding your ID while wanted will now properly hide the sechud wanted icon."

@@ -68,6 +68,12 @@
 		emagged = 1
 		user << "<span class='warning'>PZZTTPFFFT</span>"
 
+/obj/machinery/mineral/labor_claim_console/power_change()
+	..()
+	if((stat & NOPOWER) && inserted_id)
+		loc.visible_message("<span class='notice'>\The [src] ejects \The [inserted_id] due to power failure.</span>")
+		inserted_id.forceMove(loc)
+		inserted_id = null
 
 
 /obj/machinery/mineral/labor_claim_console/Topic(href, href_list)

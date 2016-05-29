@@ -227,6 +227,9 @@
 /datum/action/item_action/hands_free
 	check_flags = AB_CHECK_ALIVE|AB_CHECK_INSIDE
 
+/datum/action/item_action/unrestricted
+	check_flags = AB_CHECK_INSIDE
+
 /datum/action/organ_action
 	check_flags = AB_CHECK_ALIVE
 

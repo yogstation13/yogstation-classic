@@ -1776,3 +1776,23 @@ B --><-- A
 				closest_distance = distance
 				closest_atom = A
 	return closest_atom
+
+//ultra range (no limitations on distance, faster than range for distances > 8); including areas drastically decreases performance
+// stole- *cough* ported from /tg/
+/proc/urange(dist=0, atom/center=usr, orange=0, areas=0)
+	if(!dist)
+		if(!orange)
+			return list(center)
+		else
+			return list()
+
+	var/list/turfs = RANGE_TURFS(dist, center)
+	if(orange)
+		turfs -= get_turf(center)
+	. = list()
+	for(var/V in turfs)
+		var/turf/T = V
+		. += T
+		. += T.contents
+		if(areas)
+			. |= T.loc

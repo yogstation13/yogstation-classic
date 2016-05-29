@@ -1,0 +1,4 @@
+author: Cruix
+delete-after: True
+changes: 
+  - rscadd: "Abductor agents now start with an agent card than can scan access from the cards of abductees. It starts with no access."
