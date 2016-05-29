@@ -176,8 +176,10 @@
 		return 1
 
 /obj/proc/burn()
-	for(var/obj/item/Item in contents) //Empty out the contents
+	for(var/obj/item/Item in contents)
 		Item.loc = src.loc
+		Item.layer = initial(Item.layer)
+		Item.mouse_opacity = initial(Item.mouse_opacity)
 		Item.fire_act() //Set them on fire, too
 	var/obj/effect/decal/cleanable/ash/A = new(src.loc)
 	A.desc = "Looks like this used to be a [name] some time ago."
