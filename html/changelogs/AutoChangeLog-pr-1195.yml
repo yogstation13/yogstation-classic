@@ -1,0 +1,4 @@
+author: Groxic
+delete-after: True
+changes: 
+  - rscadd: "Blob automatic expansion chance decreases as the blob gets farther away from its core."
