@@ -68,8 +68,8 @@ var/list/blob_overmind_list = list()         //blob overmind list so we can keep
 	blobmind.special_role = "Blob"
 	log_game("[blob.key] (ckey) has been selected as a Blob")
 	greet_blob(blobmind)
-	blob << "<span class='userdanger'>You feel very tired and bloated!  You only have a few minutes before you burst!</span>"
-	spawn(1800)//three minutes till burst
+	blob << "<span class='userdanger'>You feel very tired and bloated!  You have a few minutes before you burst!</span>"
+	spawn(3600)//six minutes till burst
 		burst_blob(blobmind)
 	return 1
 
