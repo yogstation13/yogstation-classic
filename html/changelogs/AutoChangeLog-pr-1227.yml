@@ -1,4 +1,0 @@
-author: X-TheDark
-delete-after: True
-changes: 
-  - bugfix: "Fireball now correctly triggers when the holder drops it due to crit-damage."

@@ -1,4 +1,0 @@
-author: MacHac
-delete-after: True
-changes: 
-  - tweak: "Admin function Atom ProcCall is now logged better.."

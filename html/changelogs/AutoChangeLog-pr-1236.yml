@@ -1,4 +1,0 @@
-author: Cruix
-delete-after: True
-changes: 
-  - rscadd: "Players can now see the number of tickets remaining when the round ends."
