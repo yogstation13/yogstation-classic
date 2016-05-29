@@ -1000,5 +1000,8 @@ datum/admins/proc/cyberman_varedit(list/href_list)
 	log_admin(message)
 
 /datum/admins/proc/toggle_ticket_counter_visibility()
+	set category = "Admin"
+	set desc="Toggle dis bitch"
+	set name="Toggle Ticket Counter Visibility"
 	ticket_counter_visible_to_everyone = !ticket_counter_visible_to_everyone
 	message_admins("[key_name_admin(usr)] has made the ticket counter [ticket_counter_visible_to_everyone ? "visible" : "invisible"] to normal players.")
