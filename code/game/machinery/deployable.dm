@@ -389,7 +389,7 @@ for reference:
 		return
 
 	if (src.health <= 60 && src.health >= 31)
-		desc = "[initialdesc] <span class='danger'>The barrier seems to have taken a multiude of strong blows.</span>"
+		desc = "[initialdesc] <span class='danger'>The barrier seems to have taken a multitude of strong blows.</span>"
 		return
 
 	if (src.health <= 30 && src.health > 1)
