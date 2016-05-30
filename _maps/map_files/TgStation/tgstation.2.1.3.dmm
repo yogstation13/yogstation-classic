@@ -3790,7 +3790,7 @@
 "buT" = (/obj/machinery/conveyor_switch/oneway{convdir = -1; id = "QMLoad"},/turf/simulated/floor/plasteel,/area/quartermaster/storage)
 "buU" = (/obj/machinery/atmospherics/components/unary/vent_pump{dir = 1; external_pressure_bound = 101.325; on = 1; pressure_checks = 1},/turf/simulated/floor/plasteel,/area/quartermaster/storage)
 "buV" = (/obj/machinery/navbeacon{codes_txt = "delivery;dir=8"; freq = 1400; location = "QM #3"},/turf/simulated/floor/plasteel{icon_state = "bot"},/area/quartermaster/storage)
-"buW" = (/obj/structure/table,/obj/machinery/alarm{dir = 4; icon_state = "alarm0"; pixel_x = -22},/turf/simulated/floor/plasteel,/area/quartermaster/office)
+"buW" = (/obj/structure/table,/obj/machinery/alarm{dir = 4; icon_state = "alarm0"; pixel_x = -22},/obj/machinery/computer/stockexchange,/turf/simulated/floor/plasteel,/area/quartermaster/office)
 "buX" = (/obj/machinery/atmospherics/components/unary/vent_scrubber{dir = 4; on = 1; scrub_N2O = 0; scrub_Toxins = 0},/turf/simulated/floor/plasteel,/area/quartermaster/office)
 "buY" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/structure/disposalpipe/segment,/obj/machinery/atmospherics/pipe/simple/scrubbers/hidden{dir = 4},/obj/machinery/atmospherics/pipe/simple/supply/hidden,/turf/simulated/floor/plasteel,/area/quartermaster/office)
 "buZ" = (/obj/machinery/atmospherics/pipe/manifold/scrubbers/hidden{tag = "icon-manifold-r-f (EAST)"; dir = 4},/turf/simulated/floor/plasteel,/area/quartermaster/office)
