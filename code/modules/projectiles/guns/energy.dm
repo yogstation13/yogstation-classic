@@ -72,10 +72,8 @@
 	fire_sound = shot.fire_sound
 	fire_delay = shot.delay
 	if(chambered)
-		var/obj/item/ammo_casing/energy/chambered_energy = chambered
-		if(istype(chambered_energy))
-			power_supply.give(chambered_energy.e_cost)//refund!
-	process_chamber()
+		chambered = null
+		newshot()
 	if (shot.select_name)
 		user << "<span class='notice'>[src] is now set to [shot.select_name].</span>"
 	update_icon()

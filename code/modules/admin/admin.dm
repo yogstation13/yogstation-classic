@@ -998,3 +998,10 @@ datum/admins/proc/cyberman_varedit(list/href_list)
 	var/message = "[key_name_admin(usr)] has toggled high risk item notifications [high_risk_item_notifications ? "on" : "off"]."
 	message_admins(message)
 	log_admin(message)
+
+/datum/admins/proc/toggle_ticket_counter_visibility()
+	set category = "Admin"
+	set desc="Toggle dis bitch"
+	set name="Toggle Ticket Counter Visibility"
+	ticket_counter_visible_to_everyone = !ticket_counter_visible_to_everyone
+	message_admins("[key_name_admin(usr)] has made the ticket counter [ticket_counter_visible_to_everyone ? "visible" : "invisible"] to normal players.")
