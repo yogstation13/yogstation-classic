@@ -26,7 +26,7 @@ var/list/blob_overmind_list = list()         //blob overmind list so we can keep
 	var/players_per_core = 30
 	var/blob_point_rate = 3
 
-	var/blobwincount = 450
+	var/blobwincount = 600
 
 	var/list/infected_crew = list()
 
