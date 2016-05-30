@@ -1,0 +1,4 @@
+author: Cruix
+delete-after: True
+changes: 
+  - rscadd: "You can now use the microbomb/macrobomb implant button while in crit. This still takes three seconds, so using *deathgasp or another form of succumbing is still faster."

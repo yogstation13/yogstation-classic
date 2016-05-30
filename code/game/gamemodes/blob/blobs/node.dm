@@ -31,7 +31,7 @@
 	..()
 
 /obj/effect/blob/node/Life()
-	pulseLoop(5)
+	Pulse_Area(overmind, 10, 3, 2)
 	health = min(initial(health), health + 1)
 	color = null
 

@@ -287,7 +287,7 @@
 				icon_state = "welding-g"
 				item_state = "welding-g"
 			if("Gar")
-				desc = "Just who the hell do you think I am?!"
-				name = "gar glasses"
-				icon_state = "gar"
-				item_state = "gar"
+				desc = "Go beyond impossible and kick reason to the curb!"
+				name = "black gar glasses"
+				icon_state = "garb"
+				item_state = "garb"

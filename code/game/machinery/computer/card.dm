@@ -50,6 +50,9 @@ var/time_last_changed_position = 0
 	if(scan)
 		scan.loc = loc
 		scan = null
+	if(modify)
+		modify.loc = loc
+		modify = null
 	..()
 
 /obj/machinery/computer/card/attackby(obj/O, mob/user, params)//TODO:SANITY
@@ -482,6 +485,17 @@ var/time_last_changed_position = 0
 		modify.update_label()
 	updateUsrDialog()
 	return
+
+/obj/machinery/computer/card/power_change()
+	..()
+	if((stat & NOPOWER) && (scan || modify))
+		loc.visible_message("<span class='notice'>\The [src] ejects [scan ? (modify ? "[scan] and [modify]" : "[scan]") : "[modify]"] due to power failure.</span>")
+		if(scan)
+			scan.forceMove(loc)
+			scan = null
+		if(modify)
+			modify.forceMove(loc)
+			modify = null
 
 /obj/machinery/computer/card/proc/get_subordinates(rank)
 	for(var/datum/job/job in SSjob.occupations)
