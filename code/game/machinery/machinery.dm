@@ -228,10 +228,61 @@ Class Procs:
 		return FALSE
 	return TRUE
 
-////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////// CAN USE TOPIC /////////////////////////////////////////////////////////////
 
 /mob/proc/canUseTopic() //TODO: once finished, place these procs on the respective mob files
 	return 0
+/mob/dead/observer/canUseTopic()
+	if(check_rights(R_ADMIN, 0))
+		return 0
+
+/mob/living/canUseTopic(atom/movable/M, be_close = 0, no_dextery = 0)
+	if(no_dextery)
+		if(be_close && in_range(M, src))
+			return 1
+	else
+		src << "<span class='warning'>You don't have the dexterity to do this!</span>"
+	return
+
+/mob/living/carbon/human/canUseTopic(atom/movable/M, be_close = 0)
+	if(incapacitated() || lying )
+		return 0
+	if(!Adjacent(M))
+		if((be_close == 0) && (dna.check_mutation(TK)))
+			if(tkMaxRangeCheck(src, M))
+				return 1
+		return 0
+	if(!isturf(M.loc) && M.loc != src)
+		return
+	return 1
+
+/mob/living/silicon/ai/canUseTopic(atom/movable/M, be_close = 0)
+	if(stat)
+		return 0
+	if(be_close && !in_range(M, src))
+		return 0
+	//stop AIs from leaving windows open and using then after they lose vision
+	//apc_override is needed here because AIs use their own APC when powerless
+	//get_turf_pixel() is because APCs in maint aren't actually in view of the inner camera
+	if(cameranet && !cameranet.checkTurfVis(get_turf_pixel(M)) && !apc_override)
+		return 0
+	return 1
+
+/mob/living/silicon/pai/canUseTopic(atom/movable/M, be_close = 0)
+	if(stat)
+		return 0
+	if(be_close && !in_range(M, src) && !(paired == M))
+		return 0
+	return 1
+
+/mob/living/silicon/robot/canUseTopic(atom/movable/M, be_close = 0)
+	if(stat || lockcharge || stunned || weakened)
+		return 0
+	if(be_close && !in_range(M, src))
+		return 0
+	return 1
+
+////////////////////////////////////////////////////////////////////////////
 
 /obj/machinery/interact(mob/user)
 	add_fingerprint(user)
@@ -271,29 +322,20 @@ Class Procs:
 
 //set_machine must be 0 if clicking the machinery doesn't bring up a dialog
 /obj/machinery/attack_hand(mob/user, check_power = 1, set_machine = 1)
-	if(user.lying || user.stat)
+	if(..())// unbuckling etc
+		return 1
+	if((user.lying || user.stat))
 		return 1
 	if(!user.IsAdvancedToolUser())
 		usr << "<span class='warning'>You don't have the dexterity to do this!</span>"
 		return 1
-	if (ishuman(user))
+	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
-		if(H.getBrainLoss() >= 60)
-			visible_message("<span class='danger'>[H] stares cluelessly at [src] and drools.</span>")
-			return 1
-		else if(prob(H.getBrainLoss()))
+		if(prob(H.getBrainLoss()))
 			user << "<span class='warning'>You momentarily forget how to use [src]!</span>"
 			return 1
-	if(panel_open)
-		src.add_fingerprint(user)
-		return 0
-	if(check_power && stat & NOPOWER)
-		user << "<span class='danger'>\The [src] seems unpowered.</span>"
+	if(!is_interactable())
 		return 1
-	if(!interact_offline && stat & (BROKEN|MAINT))
-		user << "<span class='danger'>\The [src] seems broken.</span>"
-		return 1
-	src.add_fingerprint(user)
 	if(set_machine)
 		user.set_machine(src)
 	interact(user)
