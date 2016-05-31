@@ -1,0 +1,9 @@
+author: Super3222
+delete-after: True
+changes: 
+  - rscadd: "Security can now use HOTKEYS to operate criminal records! Requires you to be wearing a sec hud or have a cybernetic security implant installed."
+  - tweak: "ALT + SHIFT = Setting peoples criminal status"
+  - tweak: "CTRL + SHIFT = Adding minor/major crimes or comments to peoples criminal record."
+  - rscadd: "Nanotrasen's Security has been granted more combat magboots! Check the Warden's suit storage for them."
+  - rscadd: "Deployable Barriers not only can be locked, but renamed, and give an option to toggle their functionality report."
+  - rscadd: "The Detective's armor now supports the storage of police batons."

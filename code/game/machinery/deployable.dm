@@ -143,9 +143,17 @@ for reference:
 	var/locked = 0.0
 	var/obj/item/device/radio/attachedradio = null
 	var/obj/item/device/encryptionkey/installedkey = null
-	var/obj/item/device/assembly/signaler/attachedsignaler = null
 	var/radio_freq
 	var/initialdesc
+	var/healthreport
+	var/round_start_intialize = 0 // 0 for didn't happen, one for did.
+
+	// Security Barrier Modifications
+	var/obj/item/device/assembly/signaler/SIGNALLER = null
+	var/obj/item/device/assembly/prox_sensor/PROXY = null
+	var/obj/item/weapon/card/id/ID_CARD = null
+	var/obj/item/device/assembly/infra/INFRA = null
+	var/obj/item/assembly/shock_kit/SHOCKING = null
 
 //	req_access = list(access_maint_tunnels)
 
@@ -155,22 +163,56 @@ for reference:
 	src.icon_state = "barrier[src.locked]"
 	attachedradio = new /obj/item/device/radio(src)
 	attachedradio.listening = 0
-	attachedradio.frequency = 0 // since it generally defaults to commmons.
 	initialdesc = desc
+	installedkey = new /obj/item/device/encryptionkey/headset_sec
+
+/obj/machinery/deployable/barrier/process()
+	if(ticker && ticker.current_state == GAME_STATE_PREGAME)
+		return
+	if(!round_start_intialize)
+		setup_round_start_intialize()
+	return
+
+/obj/machinery/deployable/barrier/proc/setup_round_start_intialize()
+	if(ticker && ticker.current_state > GAME_STATE_PREGAME)
+		attachedradio.set_frequency(SEC_FREQ)
+		radio_freq = SEC_FREQ
+		round_start_intialize = 1
 
 /obj/machinery/deployable/barrier/attackby(obj/item/weapon/W, mob/user, params)
 	if (W.GetID())
 		if (src.allowed(user))
 			if	(src.emagged < 2.0)
-				src.locked = !src.locked
-				src.anchored = !src.anchored
-				src.icon_state = "barrier[src.locked]"
-				if ((src.locked == 1.0) && (src.emagged < 2.0))
-					user << "Barrier lock toggled on."
-					return
-				else if ((src.locked == 0.0) && (src.emagged < 2.0))
-					user << "Barrier lock toggled off."
-					return
+				switch(alert("Selection Prompt","Barrier Uplink", "Lock","Rename", "Toggle Functionality Report","Cancel"))
+					if("Lock")
+						src.locked = !src.locked
+						src.anchored = !src.anchored
+						src.icon_state = "barrier[src.locked]"
+						if ((src.locked == 1.0) && (src.emagged < 2.0))
+							user << "Barrier lock toggled on."
+							return
+						else if ((src.locked == 0.0) && (src.emagged < 2.0))
+							user << "Barrier lock toggled off."
+							return
+					if("Rename")
+						var/new_name = reject_bad_name(input(usr, "Enter the barriers new designated name", "Barrier Uplink", src.name),1)
+						if(!in_range(src, usr) && src.loc != usr)
+							return
+						if(new_name)
+							message_admins("[user] is changing [name] to [new_name]. ([loc.x],[loc.y],[loc.z]) <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[loc.x];Y=[loc.y];Z=[loc.z]'>(JMP)")
+							log_game("[user] has changed [name] to [new_name].")
+							var/randomdigit = "([rand(50,1000)])"
+							name = new_name
+							name += " - Barrier [randomdigit]"
+						else
+							return
+					if("Toggle Functionality Report")
+						if(healthreport)
+							healthreport = !healthreport
+							user << "<span class='notice'>You toggle off the barrier's functionality report. It will no longer report how much health it is has remaining.</span>"
+						else
+							healthreport = 1
+							user << "<span class='notice'>You toggle on the barrier's functionality report. It will now report how much health it is has remaining.</span>"
 			else
 				var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 				s.set_up(2, 1, src)
@@ -198,9 +240,9 @@ for reference:
 			user << "<span class='danger'>You can't eject anything from the barrier while it's locked!</span>"
 			return
 
-		if (attachedsignaler)
+		if (SIGNALLER)
 			new /obj/item/device/assembly/signaler(src.loc)
-			attachedsignaler = null
+			SIGNALLER = null
 			desc = "A deployable barrier. Swipe your ID card to lock/unlock it."
 			initialdesc = desc
 			desc_report() //puts the cherry ontop of our... codey sundae
@@ -219,7 +261,7 @@ for reference:
 			return
 
 
-		if (!installedkey && !attachedsignaler)
+		if (!installedkey && !SIGNALLER)
 			user << "<span class='danger'>[src] doesn't have anything to eject.</span>"
 			return
 
@@ -245,7 +287,7 @@ for reference:
 			W.loc = src
 			return
 
-/*		Is this even needed? Only the future can tell.
+/*		This isn't needed.
 		else if(installedkey.channels.Find("Syndicate"))
 			if(src.emagged < 1)
 				visible_message("[src] rejects the encryption key and vibrates aggressively!")
@@ -268,20 +310,20 @@ for reference:
 
 	else if(issignaler(W))
 
-		if(attachedsignaler)
+		if(SIGNALLER)
 			user << "<span class='notice'>There's a signaler attatched to the barrier!</span>"
 			return
 
-		attachedsignaler = W
+		SIGNALLER = W
 
-		if(attachedsignaler.secured)
+		if(SIGNALLER.secured)
 			user <<"<span class='danger'>The device is secured.</span>"
-			attachedsignaler = null
+			SIGNALLER = null
 			return
 
 		if(!radio_freq)
 			user << "<span class='danger'>There isn't an encryption key associated with the barrier to attach the signaler to!</span>"
-			attachedsignaler = null
+			SIGNALLER = null
 			return
 
 		else
@@ -314,35 +356,31 @@ for reference:
 
 		// This will send a message to the security channel if the barrier's radio is connected to it's frequency
 
-		if (attachedradio.frequency == SEC_FREQ && !src.emagged) // security currently. emagging will disable this.
+		if (((attachedradio.frequency == SEC_FREQ || attachedradio.frequency == 1359)) && !src.emagged) // security currently. emagging will disable this.
 			if(!W.force)
 				return
 
 			var/thebarrier = "A deployable barrier"
 
-			if(attachedsignaler)
+			if(SIGNALLER)
 				var/detectedarea = get_area(src)
 				thebarrier = thebarrier + " located in [detectedarea]"
 
 			var/damagereport
 			if(W.force <= 5 && W.force != 0) // less or equal to 5
-				damagereport = "a small amount of damage."
+				damagereport = "a small amount of damage"
 			if(W.force > 5 && W.force <= 15) // in the 5-15 range, but greater than 5
-				damagereport = "a moderate amount of damage."
+				damagereport = "a moderate amount of damage"
 			if(W.force > 15) //greater than 15
-				damagereport = "a large amount of damage."
+				damagereport = "a large amount of damage"
 			else if (!damagereport)
 				return
 
-			if(src.health <= 95 && src.health > 50)
-				attachedradio.talk_into(src, "Alert! [thebarrier] is suffering [damagereport] The barriers rate of functionality is at [health]%!!",radio_freq)
-
-			if(src.health <= 50 && src.health > 25)
-				attachedradio.talk_into(src, "Alert! [thebarrier] is suffering [damagereport] The barriers rate of functionality is at [health]%!!",radio_freq)
-
-			if(src.health <= 25 && src.health > 0)
-				attachedradio.talk_into(src, "Alert! [thebarrier] is suffering [damagereport] The barriers rate of functionality is at [health]%!!",radio_freq)
-
+			if(src.health <= 95 && src.health > 50 || src.health <= 50 && src.health > 25 || src.health <= 25 && src.health > 0)
+				var/attack_report = "Alert! This barrier's systems are suffering [damagereport]"
+				if(healthreport)
+					attack_report += ". The barriers rate of functionality is at [health]%"
+				attachedradio.talk_into(src, "[attack_report]!!",radio_freq)
 
 /obj/machinery/deployable/barrier/proc/desc_report() // something to update the description of the barrier.
 
@@ -351,7 +389,7 @@ for reference:
 		return
 
 	if (src.health <= 60 && src.health >= 31)
-		desc = "[initialdesc] <span class='danger'>The barrier seems to have taken a moderate amount of damage.</span>"
+		desc = "[initialdesc] <span class='danger'>The barrier seems to have taken a multitude of strong blows.</span>"
 		return
 
 	if (src.health <= 30 && src.health > 1)
@@ -424,6 +462,6 @@ for reference:
 	s.start()
 
 	explosion(src.loc,-1,-1,0)
-	playsound(src.loc, 'sound/effects/Explosion1.ogg',75,1)
+	playsound(src.loc, 'sound/effects/Explosion1.ogg',100,1)
 	if(src)
 		qdel(src)

@@ -5,6 +5,7 @@
 	var/name				//name of the subsystem
 	var/priority = 0		//priority affects order of initialization. Higher priorities are initialized first, lower priorities later. Can be decimal and negative values.
 	var/wait = 20			//time to wait (in deciseconds) between each call to fire(). Must be a positive integer.
+	var/display = 100		//display affects order the subsystem is displayed in the MC tab
 
 	//Dynamic Wait - A system for scaling a subsystem's fire rate based on lag
 	//The algorithm is: (cost-dwait_buffer+AvgCostOfAllOtherSSPerSecond)*dwait_delta

@@ -3393,7 +3393,7 @@
 /turf/simulated/floor/plating/snow,
 /area/syndicate_mothership)
 "jc" = (
-/obj/machinery/computer/supplycomp,
+/obj/machinery/computer/cargo,
 /turf/simulated/floor/plasteel/warning{
 	dir = 8
 	},

@@ -313,16 +313,16 @@
 
 /obj/machinery/power/smes/attack_ai(mob/user)
 	if(stat & BROKEN) return
-	ui_interact(user)
+	nanoui_interact(user)
 
 
 /obj/machinery/power/smes/attack_hand(mob/user)
 	add_fingerprint(user)
 	if(stat & BROKEN) return
-	ui_interact(user)
+	nanoui_interact(user)
 
 
-/obj/machinery/power/smes/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null)
+/obj/machinery/power/smes/nanoui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null)
 	if(!user)
 		return
 

@@ -1796,3 +1796,10 @@ B --><-- A
 		. += T.contents
 		if(areas)
 			. |= T.loc
+
+/atom/proc/contains(var/atom/A)
+	if(!A)
+		return 0
+	for(var/atom/location = A.loc, location, location = location.loc)
+		if(location == src)
+			return 1

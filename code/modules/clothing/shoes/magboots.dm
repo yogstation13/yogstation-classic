@@ -56,7 +56,7 @@
 
 /obj/item/clothing/shoes/magboots/security
 	name = "combat magboots"
-	desc = "Specialized combat-issued magboots crafted for tactical NT security missions while in the depth of space or when facing a vacuum. Though they are nothing compared to the advanced verson, they will make you more mobile than the standard edition. Has bright blue and white embroidered letters enscribed 'NT'  on the back of them."
+	desc = "Combat-edition magboots issued by Nanotrasen Security for extravehicular missions. Unlike the Syndicates own, these do not carry such a heavy burden on the wearer, however are still nothing to compare to the advanced version."
 	icon_state = "cmagboots0"
 	magboot_state = "cmagboots"
 	slowdown_active = 1

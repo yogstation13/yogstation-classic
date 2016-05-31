@@ -127,9 +127,9 @@
 		user << "<span class='danger'>Access denied.</span>"
 		return
 
-	ui_interact(user)
+	nanoui_interact(user)
 
-/obj/machinery/atmospherics/components/trinary/mixer/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null)
+/obj/machinery/atmospherics/components/trinary/mixer/nanoui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null)
 	if(stat & (BROKEN|NOPOWER))
 		return
 
