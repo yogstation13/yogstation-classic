@@ -373,9 +373,9 @@
 
 /obj/machinery/power/solar_control/attack_hand(mob/user)
 	if(!..())
-		ui_interact(user)
+		nanoui_interact(user)
 
-/obj/machinery/power/solar_control/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null)
+/obj/machinery/power/solar_control/nanoui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null)
 	ui = SSnano.push_open_or_new_ui(user, src, ui_key, ui, "solar_control.tmpl", name, 490, 420, 1)
 
 /obj/machinery/power/solar_control/get_ui_data()

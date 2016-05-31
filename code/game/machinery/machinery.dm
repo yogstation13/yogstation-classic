@@ -223,12 +223,15 @@ Class Procs:
 /obj/machinery/proc/is_operational()
 	return !(stat & (NOPOWER|BROKEN|MAINT))
 
+/obj/machinery/proc/is_interactable()
+	if((stat & (NOPOWER|BROKEN)) && !interact_offline)
+		return FALSE
+	return TRUE
 
-////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////// CAN USE TOPIC /////////////////////////////////////////////////////////////
 
 /mob/proc/canUseTopic() //TODO: once finished, place these procs on the respective mob files
 	return 0
-
 /mob/dead/observer/canUseTopic()
 	if(check_rights(R_ADMIN, 0))
 		return 0
@@ -279,45 +282,64 @@ Class Procs:
 		return 0
 	return 1
 
+////////////////////////////////////////////////////////////////////////////
+
+/obj/machinery/interact(mob/user)
+	add_fingerprint(user)
+	ui_interact(user)
+
+/obj/machinery/ui_status(mob/user)
+	if(is_interactable())
+		return ..()
+	return UI_CLOSE
+
+/obj/machinery/ui_act(action, params)
+	add_fingerprint(usr)
+	return ..()
+
+/obj/machinery/Topic(href, href_list)
+	..()
+	if(!is_interactable())
+		return 1
+	if(!usr.canUseTopic(src))
+		return 1
+	add_fingerprint(usr)
+	return 0
+
+
+////////////////////////////////////////////////////////////////////////////////////////////
 /obj/machinery/attack_ai(mob/user)
 	if(isrobot(user))
 		// For some reason attack_robot doesn't work
 		// This is to stop robots from using cameras to remotely control machines.
 		if(user.client && user.client.eye == user)
-			return src.attack_hand(user)
+			return attack_hand(user)
 	else
-		return src.attack_hand(user)
+		return attack_hand(user)
 
 /obj/machinery/attack_paw(mob/user)
-	return src.attack_hand(user)
+	return attack_hand(user)
 
 //set_machine must be 0 if clicking the machinery doesn't bring up a dialog
 /obj/machinery/attack_hand(mob/user, check_power = 1, set_machine = 1)
-	if(user.lying || user.stat)
+	if(..())// unbuckling etc
+		return 1
+	if((user.lying || user.stat))
 		return 1
 	if(!user.IsAdvancedToolUser())
 		usr << "<span class='warning'>You don't have the dexterity to do this!</span>"
 		return 1
-	if (ishuman(user))
+	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
-		if(H.getBrainLoss() >= 60)
-			visible_message("<span class='danger'>[H] stares cluelessly at [src] and drools.</span>")
-			return 1
-		else if(prob(H.getBrainLoss()))
+		if(prob(H.getBrainLoss()))
 			user << "<span class='warning'>You momentarily forget how to use [src]!</span>"
 			return 1
-	if(panel_open)
-		src.add_fingerprint(user)
-		return 0
-	if(check_power && stat & NOPOWER)
-		user << "<span class='danger'>\The [src] seems unpowered.</span>"
+	if(!is_interactable())
 		return 1
-	if(!interact_offline && stat & (BROKEN|MAINT))
-		user << "<span class='danger'>\The [src] seems broken.</span>"
-		return 1
-	src.add_fingerprint(user)
 	if(set_machine)
 		user.set_machine(src)
+	interact(user)
+	add_fingerprint(user)
 	return 0
 
 /obj/machinery/CheckParts()
