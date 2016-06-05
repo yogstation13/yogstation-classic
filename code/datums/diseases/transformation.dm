@@ -122,7 +122,7 @@
 /datum/disease/transformation/rage_virus
 	name = "Rage Virus"
 	cure_text = "Whiskey"
-	cures = list("whiskey", "gargleblaster")
+	cures = list("whiskey")
 	spread_text = "Zombie Bites"
 	spread_flags = SPECIAL | BLOOD
 	viable_mobtypes = list(/mob/living/carbon/human)

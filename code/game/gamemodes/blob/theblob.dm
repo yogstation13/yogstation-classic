@@ -13,7 +13,7 @@
 	var/pulse_timestamp = 0
 	var/health_timestamp = 0
 	var/brute_resist = 0.5
-	var/fire_resist = 1
+	var/fire_resist = 1.15 // lower fire_resist = less damage
 	var/atmos_block = 0
 	var/mob/camera/blob/overmind
 
@@ -103,7 +103,7 @@
 		if(prob(85))
 			src.expand()
 		for(var/obj/effect/blob/B in orange(expand_range, src))
-			if(prob(max(13 - get_dist(get_turf(src), get_turf(B)) * 4, 1))) //expand falls off with range but is faster near the blob causing the expansion
+			if(prob(max(10 - get_dist(get_turf(src), get_turf(B)) * 4, 1))) //expand falls off with range but is faster near the blob causing the expansion
 				B.expand()
 	return
 

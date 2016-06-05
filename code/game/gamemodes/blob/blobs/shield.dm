@@ -3,10 +3,10 @@
 	icon = 'icons/mob/blob.dmi'
 	icon_state = "blob_idle"
 	desc = "A huge wall of writhing tendrils. It looks like it could take a lot of hits."
-	health = 150
-	maxhealth = 150
+	health = 120
+	maxhealth = 120
 	health_regen = 2
-	fire_resist = 0.5
+	fire_resist = 0.75
 	atmos_block = 1
 	explosion_block = 3
 
