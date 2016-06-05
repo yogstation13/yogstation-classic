@@ -1,9 +1,0 @@
-author: Super3222
-delete-after: True
-changes: 
-  - rscadd: "NT is funding the production of a new magboots called \"Combat Magboots\". They will enable the wearer greater speed than the normal kind, but are still nothing like the CE's advanced magboots. Special thanks to UtahClock for spriting the combat magboots!"
-  - rscdel: "NT's security ert and commander suit storages will no longer start with oxygen tanks."
-  - rscadd: "NT's commander and security ERT will be granted combat magboots inside of their suit storage."
-  - rscdel: "NT's engineer ERT locker will no longer start with normal magboots."
-  - rscadd: "NT's engineer ERT locker will start with combat magboots."
-  - rscadd: "Nanotrasen was willing to throw in a few stacks of space cash to allow engineers to begin the shift with classic magboots in their suit storages."

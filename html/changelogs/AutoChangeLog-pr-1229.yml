@@ -1,5 +1,0 @@
-author: X-TheDark
-delete-after: True
-changes: 
-  - rscadd: "Ore Redemption Machine no longer eats your inserted ID permanently if it is deconstructed."
-  - rscadd: "Machines that accept your ID will now eject them if they become unpowered. If you still encounter any machines that do not do this, please point fingers at me and laugh (and make a GitHub issue)."

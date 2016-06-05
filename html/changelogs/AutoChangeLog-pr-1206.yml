@@ -1,6 +1,0 @@
-author: FluffySurvivor
-delete-after: True
-changes: 
-  - rscadd: "Added an additional hardsuit to engineering."
-  - tweak: "The solar components crate has been moved to secure storage."
-  - rscadd: "Added a medkit to engineering."
