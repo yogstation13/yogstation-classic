@@ -1,6 +1,0 @@
-author: Groxic
-delete-after: True
-changes: 
-  - tweak: "Blob health and fire resistance for all types nerfed so the blob can be combated better."
-  - tweak: "Time before blob burst is now 6 minutes to allow for proper sabotage and such things."
-  - tweak: "Blob win requirements lowered to prevent excessively long rounds."
