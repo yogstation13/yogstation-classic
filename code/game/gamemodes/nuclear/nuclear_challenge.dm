@@ -13,20 +13,18 @@
 	var/used = 0
 
 /obj/item/device/nuclear_challenge/attack_self(mob/living/user)
-	if(doChecks(user))
+	if(!doChecks(user))
+		return
+
+	var/are_you_sure = alert(user, "Are you sure you want to alert the enemy crew? You will receive [round(CHALLENGE_TC_PER_PLAYER*player_list.len)] bonus Telecrystals for declaring War.", "Declare war?", "Yes", "No")
+
+	if(are_you_sure == "Yes")
+		if(!doChecks(user))
+			return
 		declare_nuclear_war(user)
 		used = 1
-
-/obj/item/device/nuclear_challenge/vote
-	name = "Declaration of War (Challenge Mode) Voter"
-	icon_state = "gangtool-yellow"
-	item_state = "walkietalkie"
-	desc = "Use to cast your vote for sending a declaration of hostilities to the target, delaying your shuttle departure for 20 minutes while they prepare for your assault.  \
-			Such a brazen move will attract the attention of powerful benefactors within the Syndicate, who will supply your team with a massive amount of bonus telecrystals.  \
-			Must be used within five minutes, or your benefactors will lose interest."
-	var/global/yesVotes = 0
-	var/global/noVotes = 0
-	var/global/votesNeeded = 3
+	else
+		user << "On second thought, the element of surprise isn't so bad after all."
 
 /obj/item/device/nuclear_challenge/proc/doChecks(mob/living/user)
 	if(loc != user)
@@ -48,6 +46,17 @@
 	return 1
 
 //The voting version
+
+/obj/item/device/nuclear_challenge/vote
+	name = "Declaration of War (Challenge Mode) Voter"
+	icon_state = "gangtool-yellow"
+	item_state = "walkietalkie"
+	desc = "Use to cast your vote for sending a declaration of hostilities to the target, delaying your shuttle departure for 20 minutes while they prepare for your assault.  \
+			Such a brazen move will attract the attention of powerful benefactors within the Syndicate, who will supply your team with a massive amount of bonus telecrystals.  \
+			Must be used within five minutes, or your benefactors will lose interest."
+	var/global/yesVotes = 0
+	var/global/noVotes = 0
+	var/global/votesNeeded = 3
 
 /obj/item/device/nuclear_challenge/vote/attack_self(mob/living/user)
 	if(!doChecks(user))
