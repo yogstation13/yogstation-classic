@@ -10,9 +10,12 @@
 	desc = "Use to send a declaration of hostilities to the target, delaying your shuttle departure for 20 minutes while they prepare for your assault.  \
 			Such a brazen move will attract the attention of powerful benefactors within the Syndicate, who will supply your team with a massive amount of bonus telecrystals.  \
 			Must be used within five minutes, or your benefactors will lose interest."
+	var/used = 0
 
 /obj/item/device/nuclear_challenge/attack_self(mob/living/user)
-	declare_nuclear_war(user)
+	if(doChecks(user))
+		declare_nuclear_war(user)
+		used = 1
 
 /obj/item/device/nuclear_challenge/vote
 	name = "Declaration of War (Challenge Mode) Voter"
@@ -21,63 +24,71 @@
 	desc = "Use to cast your vote for sending a declaration of hostilities to the target, delaying your shuttle departure for 20 minutes while they prepare for your assault.  \
 			Such a brazen move will attract the attention of powerful benefactors within the Syndicate, who will supply your team with a massive amount of bonus telecrystals.  \
 			Must be used within five minutes, or your benefactors will lose interest."
-	var/used = 0
 	var/global/yesVotes = 0
 	var/global/noVotes = 0
 	var/global/votesNeeded = 3
 
-/obj/item/device/nuclear_challenge/vote/attack_self(mob/living/user)
+/obj/item/device/nuclear_challenge/proc/doChecks(mob/living/user)
+	if(loc != user)
+		return 0
 	if(used)
 		user << "You have already voted."
-		return
-	used = 1
+		return 0
 	if(player_list.len < CHALLENGE_MIN_PLAYERS)
 		user << "The enemy crew is too small to be worth declaring war on."
-		return
+		return 0
 	if(user.z != ZLEVEL_CENTCOM)
 		user << "You have to be at your base to use this."
-		return
+		return 0
 
 	if(world.time > CHALLENGE_TIME_LIMIT)
 		user << "It's too late to declare hostilities. Your benefactors are already busy with other schemes. You'll have to make  do with what you have on hand."
+		return 0
+
+	return 1
+
+//The voting version
+
+/obj/item/device/nuclear_challenge/vote/attack_self(mob/living/user)
+	if(!doChecks(user))
 		return
 
-	if(yesVotes >= votesNeeded)
-		user << "Your vote no longer matters, your comrades have decided for you."
-		return
 	var/are_you_sure = alert(user, "Are you sure you want to vote to alert the enemy crew? You will receive [round(CHALLENGE_TC_PER_PLAYER*player_list.len)] bonus Telecrystals for declaring War. You cannot change your vote if you select Yes or No.", "Declare war?", "Yes", "No", "Cancel Vote")
+
+	if(!doChecks(user))
+		return
+
 	if(are_you_sure == "Yes")
+		used = 1
 		yesVotes++
 		announce("[usr.real_name] has voted YES for war. There are [yesVotes] for war and [noVotes] against war.")
 		if(yesVotes >= votesNeeded)
 			declare_nuclear_war(user)
-	else if(are_you_sure == "Yes")
+	else if(are_you_sure == "No")
+		used = 1
 		noVotes++
 		announce("[usr.real_name] has voted NO for war. There are [yesVotes] for war and [noVotes] against war.")
 	else
 		user << "You decide to think it over more."
 
+/obj/item/device/nuclear_challenge/vote/doChecks(mob/living/user)
+	if(!..())
+		return 0
+
+	if(yesVotes >= votesNeeded)
+		user << "Your vote no longer matters, your comrades have decided for you."
+		return 0
+
+	return 1
+
 /obj/item/device/nuclear_challenge/vote/proc/announce(var/annoucement)
 	for(var/obj/item/device/nuclear_challenge/vote/V in world)
-		V.audible_message("\icon[V] [annoucement]", null, 0)
+		var/mob/living/mob = get(V.loc,/mob/living)
+		if(mob)
+			mob.show_message("\icon[V] [annoucement]", 2)
+
 
 /proc/declare_nuclear_war(mob/living/user)
-	if(player_list.len < CHALLENGE_MIN_PLAYERS)
-		user << "The enemy crew is too small to be worth declaring war on."
-		return
-	if(user.z != ZLEVEL_CENTCOM)
-		user << "You have to be at your base to use this."
-		return
-
-	if(world.time > CHALLENGE_TIME_LIMIT)
-		user << "It's too late to declare hostilities. Your benefactors are already busy with other schemes. You'll have to make  do with what you have on hand."
-		return
-
-	var/are_you_sure = alert(user, "Consult your team carefully before you declare war on [station_name()]]. Are you sure you want to alert the enemy crew? You will receive [round(CHALLENGE_TC_PER_PLAYER*player_list.len)] bonus Telecrystals for declaring War.", "Declare war?", "Yes", "No")
-	if(are_you_sure == "No")
-		user << "On second thought, the element of surprise isn't so bad after all."
-		return
-
 	var/war_declaration = "[user.real_name] has declared his intent to utterly destroy [station_name()] with a nuclear device, and dares the crew to try and stop them."
 	priority_announce(war_declaration, title = "Declaration of War", sound = 'sound/machines/Alarm.ogg')
 	user << "You've attracted the attention of powerful forces within the syndicate. A bonus bundle of telecrystals has been granted to your team. Great things await you if you complete the mission."
