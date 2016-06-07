@@ -253,9 +253,9 @@
 		src << "<span class='warning'>This host lacks enough brain function to control.</span>"
 		return
 
-/*	if(world.time - used_control < control_cooldown)
+	if(world.time - used_control < control_cooldown)
 		src << "<span class='warning'>Its too soon to use that again!</span>"
-		return*/
+		return
 
 /*	if(influence < 50)
 		src << "<span class='warning'>You need atleast 50% influence to do this!</span>"
