@@ -60,3 +60,8 @@
 	chemname = "ethanol"
 	chem_desc = "The most potent alcoholic 'beverage', with the fastest toxicity."
 	chemuse = 50
+
+/datum/borer_chem/nutriment
+	chemname = "nutriment"
+	chem_desc = "Tasty chemically synthesized food for your host."
+	chemuse = 50
