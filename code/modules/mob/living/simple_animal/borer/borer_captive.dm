@@ -42,10 +42,10 @@
 		var/mob/living/simple_animal/borer/B = src.loc
 		var/mob/living/captive_brain/H = src
 
-		H << "<span class='danger'>You begin doggedly resisting the parasite's control (this will take approximately [B.influence-50] seconds).</span>"
+		H << "<span class='danger'>You begin doggedly resisting the parasite's control (this will take approximately 10 seconds).</span>"
 		B.victim << "<span class='danger'>You feel the captive mind of [src] begin to resist your control.</span>"
 
-		spawn(max(10, (B.influence-50)*10))
+		spawn(100)
 			if(!B || !B.controlling) return
 
 			B.victim.adjustBrainLoss(rand(5,10))

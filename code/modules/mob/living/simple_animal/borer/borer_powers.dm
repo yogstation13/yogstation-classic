@@ -41,9 +41,9 @@
 		src << "<span class='warning'>I must be conscious to do this...</span>"
 		return 0
 
-	if(H.stat == DEAD)
+/*	if(H.stat == DEAD)
 		src << "<span class='warning'>This subject does not have a strong enough life energy...</span>"
-		return 0
+		return 0*/
 	return 1
 
 /mob/living/simple_animal/borer/verb/secrete_chemicals()
@@ -64,13 +64,13 @@
 
 	var content = ""
 	content += "<p>Chemicals: <span id='chemicals'>[chemicals]</span></p>"
-	content += "<p>Influence: <span id='influence'>[influence]</span>%</p>"
+	/*content += "<p>Influence: <span id='influence'>[influence]</span>%</p>"*/
 
 	content += "<table>"
 
 	for(var/datum in typesof(/datum/borer_chem))
 		var/datum/borer_chem/C = new datum()
-		if(C.chemname && C.needed_influence < influence)
+		if(C.chemname)//&& C.needed_influence < influence)
 			content += "<tr><td><a class='chem-select' href='?_src_=\ref[src];src=\ref[src];borer_use_chem=[C.chemname]'>[C.chemname] ([C.chemuse])</a><p>[C.chem_desc]</p></td></tr>"
 
 	content += "</table>"
@@ -204,33 +204,33 @@
 		return
 
 	if(chemicals < 250)
-		src << "<span class='warning'>You need 250 chems to use this!</span>"
+		src << "<span class='warning'>You need 250 chemicals to use this!</span>"
 		return
-
-	chemicals -= 250
 
 	if(victim.stat == DEAD)
 		dead_mob_list -= victim
 		living_mob_list += victim
-	victim.tod = null
-	victim.setToxLoss(0)
-	victim.setOxyLoss(0)
-	victim.setCloneLoss(0)
-	victim.SetParalysis(0)
-	victim.SetStunned(0)
-	victim.SetWeakened(0)
-	victim.radiation = 0
-	victim.heal_overall_damage(victim.getBruteLoss(), victim.getFireLoss())
-	victim.reagents.clear_reagents()
-	if(istype(victim,/mob/living/carbon/human))
-		var/mob/living/carbon/human/H = victim
-		H.restore_blood()
-		H.remove_all_embedded_objects()
-	victim.update_canmove()
-	victim.med_hud_set_status()
-	victim.med_hud_set_health()
-	victim.stat = CONSCIOUS
-	log_game("[src]/([src.ckey]) has revived [victim]/([victim.ckey]")
+		victim.tod = null
+		victim.setToxLoss(0)
+		victim.setOxyLoss(0)
+		victim.setCloneLoss(0)
+		victim.SetParalysis(0)
+		victim.SetStunned(0)
+		victim.SetWeakened(0)
+		victim.radiation = 0
+		victim.heal_overall_damage(victim.getBruteLoss(), victim.getFireLoss())
+		victim.reagents.clear_reagents()
+		if(istype(victim,/mob/living/carbon/human))
+			var/mob/living/carbon/human/H = victim
+			H.restore_blood()
+			H.remove_all_embedded_objects()
+		victim.update_canmove()
+		victim.med_hud_set_status()
+		victim.med_hud_set_health()
+		victim.stat = CONSCIOUS
+		log_game("[src]/([src.ckey]) has revived [victim]/([victim.ckey]")
+		chemicals -= 250
+		src << "<span class='notice'>You send a jolt of energy to your host, reviving them!</span>"
 
 /mob/living/simple_animal/borer/verb/bond_brain()
 	set category = "Borer"
@@ -249,19 +249,23 @@
 		src << "<span class='warning'>You are feeling far too docile to do that.</span>"
 		return
 
+	if(victim.stat == DEAD)
+		src << "<span class='warning'>This host lacks enough brain function to control.</span>"
+		return
+
 	if(world.time - used_control < control_cooldown)
 		src << "<span class='warning'>Its too soon to use that again!</span>"
 		return
 
-	if(influence < 50)
+/*	if(influence < 50)
 		src << "<span class='warning'>You need atleast 50% influence to do this!</span>"
-		return
+		return*/
 
 	src << "<span class='danger'>You begin delicately adjusting your connection to the host brain...</span>"
 
 	spawn(100+(victim.brainloss*5))
 
-		if(!victim || !src || controlling)
+		if(!victim || !src || controlling || victim.stat == DEAD)
 			return
 		else
 
@@ -358,9 +362,9 @@
 
 	chemicals -= 75
 
-	influence -= 15
+	/*influence -= 15
 	if(influence < 0)
-		influence = 0
+		influence = 0*/
 
 mob/living/carbon/proc/release_control()
 
