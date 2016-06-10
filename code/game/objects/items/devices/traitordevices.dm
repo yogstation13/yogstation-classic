@@ -51,7 +51,7 @@ effective or pretty fucking useless.
 	for(var/mob/living/carbon/human/M in orange(5, user))
 		spawn()
 			if(prob(50))
-				M.Weaken(rand(5,15)
+				M.Weaken(rand(5,15))
 				M << "<span class='userdanger'>You feel a tremendous, paralyzing wave flood your mind.</span>"
 
 			else
