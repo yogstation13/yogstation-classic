@@ -76,7 +76,6 @@ var/list/admin_verbs_admin = list(
 	/client/proc/admin_credits_spend,
 	/client/proc/admin_credits_earn,
 	/client/proc/admin_credits_set,
-	/client/proc/check_words,			/*displays cult-words*/
 	/client/proc/reset_all_tcs,		/*resets all telecomms scripts*/
 	/datum/admins/proc/cybermen_panel,  //lots of cybermen options
 	/client/proc/toggle_restart_vote,	//moderator tool for toggling restart vote
@@ -198,7 +197,6 @@ var/list/admin_verbs_hideable = list(
 	/client/proc/cmd_admin_direct_narrate,
 	/client/proc/cmd_admin_world_narrate,
 	/client/proc/cmd_admin_local_narrate,
-	/client/proc/check_words,
 	/client/proc/play_local_sound,
 	/client/proc/play_sound,
 	/client/proc/set_round_end_sound,

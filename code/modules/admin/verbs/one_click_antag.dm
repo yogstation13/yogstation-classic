@@ -205,9 +205,11 @@
 			H = pick(candidates)
 			H.mind.make_Cultist()
 			candidates.Remove(H)
-
-		ticker.mode.pre_generate_cult_objectives()
-		ticker.mode.post_generate_cult_objectives()
+		temp.cult_objectives += "sacrifice"
+		temp.cult_objectives += "eldergod"
+		temp.get_sac_target()
+		for(var/datum/mind/cm in temp.cult)
+			temp.memorize_cult_objectives(cm)
 
 		return 1
 

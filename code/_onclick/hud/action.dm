@@ -8,6 +8,7 @@
 #define AB_CHECK_LYING 4
 #define AB_CHECK_ALIVE 8
 #define AB_CHECK_INSIDE 16
+#define AB_CHECK_CONSCIOUS 32
 
 
 /datum/action
@@ -105,6 +106,9 @@
 			return 0
 	if(check_flags & AB_CHECK_INSIDE)
 		if(!(target in owner) && !(target.action_button_internal))
+			return 0
+	if(check_flags & AB_CHECK_CONSCIOUS)
+		if(owner.stat != 0)
 			return 0
 	return 1
 

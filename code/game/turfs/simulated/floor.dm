@@ -168,7 +168,7 @@ var/list/icons_to_ignore_at_floor_init = list("damaged1","damaged2","damaged3","
 		ChangeTurf(/turf/simulated/floor/engine/cult)
 
 /turf/simulated/floor/attack_animal(mob/living/simple_animal/M)
-	if(istype(M,/mob/living/simple_animal/construct/builder)||istype(M,/mob/living/simple_animal/construct/harvester))
+	if(istype(M,/mob/living/simple_animal/hostile/construct/builder)||istype(M,/mob/living/simple_animal/hostile/construct/harvester))
 		if(istype(src, /turf/simulated/floor/engine/cult))
 			return
 		src.ChangeTurf(/turf/simulated/floor/engine/cult)
