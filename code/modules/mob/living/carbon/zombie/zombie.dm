@@ -28,6 +28,7 @@
 
 	internal_organs += new /obj/item/organ/internal/appendix
 	internal_organs += new /obj/item/organ/internal/heart
+	internal_organs += new /obj/item/organ/internal/eye
 	internal_organs += new /obj/item/organ/internal/brain
 
 	if(name == "zombie")
