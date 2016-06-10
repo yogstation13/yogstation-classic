@@ -1,0 +1,12 @@
+author: ShadowDeath6
+delete-after: True
+changes: 
+  - rscdel: "Borers no longer use influence."
+  - rscadd: "Borers can attack(click) a mob to scan its health and chemical contents."
+  - tweak: "Borers can now infest braindeads, but not catatonics."
+  - bugfix: "Borers can no longer use Jumpstart Host when their host is alive."
+  - bugfix: "Borers can no longer assume control of a dead host."
+  - tweak: "Borers generate chemicals twice as fast."
+  - rscadd: "Borers have evolved the ability to create epinephrine, which will allow them to stabilize critical hosts."
+  - rscadd: "Borers can now infest dead bodies."
+  - tweak: "Borers now generate chemicals while their host is unconscious or dead."
