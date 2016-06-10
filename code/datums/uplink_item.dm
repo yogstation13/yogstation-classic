@@ -243,6 +243,7 @@ var/list/uplink_items = list()
 	gamemodes = list(/datum/game_mode/nuclear)
 	surplus = 0
 
+
 /*
 /datum/uplink_item/dangerous/tactical_dolphin
 	name = "Tactical Dolphin"
@@ -683,6 +684,13 @@ var/list/uplink_items = list()
 	cost = 16
 	gamemodes = list(/datum/game_mode/nuclear,/datum/game_mode/gang)
 	surplus = 20
+
+/datum/uplink_item/device_tools/batterer
+	name = "Mind Batterer"
+	desc = "A powerful mental wave generator, which stuns all humanoids around the user. It has one use, but can be used in-hand to recharge it."
+	item = /obj/item/device/batterer
+	cost = 7
+	excludefrom = list(/datum/game_mode/nuclear,/datum/game_mode/gang)
 
 // IMPLANTS
 

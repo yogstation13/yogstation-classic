@@ -17,7 +17,7 @@ effective or pretty fucking useless.
 
 /obj/item/device/batterer
 	name = "mind batterer"
-	desc = "A strange device with twin antennas."
+	desc = "A strange device with twin antennas. It has a small switch on the side."
 	icon_state = "batterer"
 	throwforce = 5
 	w_class = 1.0
@@ -28,13 +28,22 @@ effective or pretty fucking useless.
 	origin_tech = "magnets=3;combat=3;syndicate=3"
 
 	var/times_used = 0 //Number of times it's been used.
-	var/max_uses = 2
+	var/max_uses = 1
+	var/charging = 0
 
 
 /obj/item/device/batterer/attack_self(mob/living/carbon/user, flag = 0, emp = 0)
+	if(charging == 1)
+		user <<"<span class='warning'>The mind batterer is charging!</span>"
+		return
 	if(!user) 	return
 	if(times_used >= max_uses)
-		user << "<span class='danger'>The mind batterer has been burnt out!</span>"
+		user << "<span class='danger'>The mind batterer is out of charges. You engage the charge mechanism.</span>"
+		charging = 1
+		spawn(100)
+			times_used--
+			charging = 0
+			icon_state = "batterer" // just in case the icon doesn't update correctly on the charge change
 		return
 
 	add_logs(user, null, "knocked down people in the area", src)
