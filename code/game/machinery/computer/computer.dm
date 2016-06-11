@@ -112,8 +112,13 @@
 			A.circuit = circuit
 			A.anchored = 1
 			circuit = null
+			erase_data()
 			for (var/obj/C in src)
 				C.loc = src.loc
+				if(C.hologram)
+					qdel(C)
+				if(istype(C, /obj/item/weapon/implant))
+					qdel(C)
 			if (src.stat & BROKEN)
 				user << "<span class='notice'>The broken glass falls out.</span>"
 				new /obj/item/weapon/shard( src.loc )
@@ -166,3 +171,6 @@
 	user.visible_message("<span class='danger'>[user.name] smashes against the [src.name] with its claws.</span>",\
 	"<span class='danger'>You smash against the [src.name] with your claws.</span>",\
 	"<span class='italics'>You hear a clicking sound.</span>")
+
+/obj/machinery/computer/proc/erase_data()
+	return 0

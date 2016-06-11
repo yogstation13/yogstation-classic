@@ -29,6 +29,9 @@
 	organs += new /obj/item/organ/internal/brain/alien(src)
 	organs += new /obj/item/organ/internal/body_egg/alien_embryo(src)
 
+	for(var/obj/O in (organs || implants))
+		O.hologram = 1
+
 /obj/machinery/computer/operating/initialize()
 	find_table()
 
@@ -38,6 +41,14 @@
 		if(table)
 			table.computer = src
 			break
+
+
+/obj/machinery/computer/operating/erase_data()
+	implants = null
+	organs = null
+	for(var/obj/O in src)
+		if(O in (implants || organs))
+			qdel(O)
 
 
 /obj/machinery/computer/operating/attack_hand(mob/user)
