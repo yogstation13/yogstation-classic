@@ -288,7 +288,8 @@
 	var/list/names = list()
 	for (var/V in D.vars)
 		names += V
-
+	sleep(1)
+	
 	names = sortList(names)
 
 	for (var/V in names)
