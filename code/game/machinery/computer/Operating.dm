@@ -11,9 +11,7 @@
 		/obj/item/weapon/implant/loyalty,
 		/obj/item/weapon/implant/tracking,
 		/obj/item/weapon/implant/chem,
-
 		)
-
 
 	var/list/organs = list(
 		/obj/item/organ/internal/heart,
@@ -61,7 +59,7 @@
 
 /obj/machinery/computer/operating/proc/bootup_implants()
 	audible_message("[src] reboots their implant database and reverts back the intiial set.")
-	implants += /obj/item/weapon/implant/mindshield
+	implants += /obj/item/weapon/implant/loyalty
 	implants += /obj/item/weapon/implant/tracking
 	implants += /obj/item/weapon/implant/chem
 
