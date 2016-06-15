@@ -115,10 +115,6 @@
 			erase_data()
 			for (var/obj/C in src)
 				C.loc = src.loc
-				if(C.hologram)
-					qdel(C)
-				if(istype(C, /obj/item/weapon/implant))
-					qdel(C)
 			if (src.stat & BROKEN)
 				user << "<span class='notice'>The broken glass falls out.</span>"
 				new /obj/item/weapon/shard( src.loc )
