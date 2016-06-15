@@ -31,6 +31,7 @@
 
 /datum/mind
 	var/key
+	var/ckey
 	var/name				//replaces mob/var/original_name
 	var/mob/living/current
 	var/list/slime_bodies = list() //Keep a list of all our bodies
@@ -61,6 +62,7 @@
 
 /datum/mind/New(var/key)
 	src.key = key
+	ckey = ckey(key)
 
 
 /datum/mind/proc/transfer_to(mob/living/new_character)

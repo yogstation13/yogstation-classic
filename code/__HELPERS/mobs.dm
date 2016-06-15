@@ -207,7 +207,7 @@ Proc for attack log creation, because really why not
 		return temp.ckey
 	else if(istype(user, /datum/mind))
 		var/datum/mind/temp = user
-		return lowertext(replacetext(temp.key, " ", ""))
+		return temp.ckey
 
 	return "* Unknown *"
 
@@ -226,7 +226,9 @@ Proc for attack log creation, because really why not
 	else if(istype(user, /client))
 		var/client/temp = user
 		return temp.key
-
+	else if(istype(user, /datum/mind))
+		var/datum/mind/temp = user
+		return temp.key
 	return "* Unknown *"
 
 /proc/has_pref(var/user, var/pref)
