@@ -8,7 +8,7 @@
 	var/obj/structure/optable/table = null
 	var/menu = 1 // one is the standard surgery set up two is scanning cubicles, implant cases, and possibly diskettes, three is database.
 	var/list/implants = list(
-		/obj/item/weapon/implant/mindshield,
+		/obj/item/weapon/implant/loyalty,
 		/obj/item/weapon/implant/tracking,
 		/obj/item/weapon/implant/chem,
 
@@ -16,11 +16,11 @@
 
 
 	var/list/organs = list(
-		/obj/item/organ/heart,
-		/obj/item/organ/appendix,
-		/obj/item/organ/brain,
-		/obj/item/organ/brain/alien,
-		/obj/item/organ/body_egg/alien_embryo,
+		/obj/item/organ/internal/heart,
+		/obj/item/organ/internal/appendix,
+		/obj/item/organ/internal/brain,
+		/obj/item/organ/internal/brain/alien,
+		/obj/item/organ/internal/body_egg/alien_embryo,
 		)
 	var/scanmsg
 
