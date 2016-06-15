@@ -173,12 +173,12 @@
 	origin_tech = "programming=2;powerstorage=3"
 /obj/item/weapon/circuitboard/cargo
 	name = "circuit board (Supply Ordering Console)"
-	build_path = /obj/item/weapon/circuitboard/cargo
+	build_path = /obj/machinery/computer/cargo
 	var/contraband = 0
 	var/emagged = 0
 /obj/item/weapon/circuitboard/cargo/request
 	name = "circuit board (Supply shuttle console)"
-	build_path = /obj/item/weapon/circuitboard/cargo/request
+	build_path = /obj/machinery/computer/cargo/request
 	origin_tech = "programming=3"
 /obj/item/weapon/circuitboard/operating
 	name = "circuit board (Operating Computer)"
