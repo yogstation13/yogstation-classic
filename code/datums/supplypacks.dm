@@ -9,7 +9,6 @@
 	var/name = null
 	var/list/contains = list()
 	var/manifest = ""
-	var/amount = null
 	var/cost = null
 	var/containertype = /obj/structure/closet/crate
 	var/crate_name = null
@@ -1006,43 +1005,37 @@
 
 /datum/supply_packs/materials/metal50
 	name = "50 Metal Sheets"
-	contains = list(/obj/item/stack/sheet/metal)
-	amount = 50
+	contains = list(/obj/item/stack/sheet/metal/fifty)
 	cost = 1000
 	crate_name = "metal sheets crate"
 
 /datum/supply_packs/materials/plasteel20
 	name = "20 Plasteel Sheets"
-	contains = list(/obj/item/stack/sheet/plasteel)
-	amount = 20
+	contains = list(/obj/item/stack/sheet/plasteel/twenty)
 	cost = 3000
 	crate_name = "plasteel sheets crate"
 
 /datum/supply_packs/materials/plasteel50
 	name = "50 Plasteel Sheets"
-	contains = list(/obj/item/stack/sheet/plasteel)
-	amount = 50
+	contains = list(/obj/item/stack/sheet/plasteel/fifty)
 	cost = 5000
 	crate_name = "plasteel sheets crate"
 
 /datum/supply_packs/materials/glass50
 	name = "50 Glass Sheets"
-	contains = list(/obj/item/stack/sheet/glass)
-	amount = 50
+	contains = list(/obj/item/stack/sheet/glass/fifty)
 	cost = 1000
 	crate_name = "glass sheets crate"
 
 /datum/supply_packs/materials/cardboard50
 	name = "50 Cardboard Sheets"
-	contains = list(/obj/item/stack/sheet/cardboard)
-	amount = 50
+	contains = list(/obj/item/stack/sheet/cardboard/fifty)
 	cost = 1000
 	crate_name = "cardboard sheets crate"
 
 /datum/supply_packs/materials/sandstone30
 	name = "30 Sandstone Blocks"
-	contains = list(/obj/item/stack/sheet/mineral/sandstone)
-	amount = 30
+	contains = list(/obj/item/stack/sheet/mineral/sandstone/fifty)
 	cost = 1000
 	crate_name = "sandstone blocks crate"
 
@@ -1201,8 +1194,7 @@
 
 /datum/supply_packs/misc/noslipfloor
 	name = "High-traction Floor Tiles"
-	contains = list(/obj/item/stack/tile/noslip)
-	amount = 20
+	contains = list(/obj/item/stack/tile/noslip/fifty)
 	cost = 2000
 	crate_name = "high-traction floor tiles"
 

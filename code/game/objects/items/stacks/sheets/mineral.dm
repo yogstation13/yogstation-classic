@@ -39,6 +39,9 @@ var/global/list/datum/stack_recipe/sandstone_recipes = list ( \
 		new/datum/stack_recipe("sandstone floor", ???),\ */
 	)
 
+/obj/item/stack/sheet/mineral/sandstone/fifty
+	amount = 50
+
 /obj/item/stack/sheet/mineral/sandstone/New(var/loc, var/amount=null)
 	recipes = sandstone_recipes
 	pixel_x = rand(0,4)-4
