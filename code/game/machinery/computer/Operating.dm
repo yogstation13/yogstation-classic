@@ -50,11 +50,11 @@
 
 /obj/machinery/computer/operating/proc/bootup_organs()
 	audible_message("[src] reboots their organ database and reverts back the intiial set.")
-	organs += /obj/item/organ/heart
-	organs += /obj/item/organ/appendix
-	organs += /obj/item/organ/brain
-	organs += /obj/item/organ/brain/alien
-	organs += /obj/item/organ/body_egg/alien_embryo
+	organs += /obj/item/organ/internal/heart
+	organs += /obj/item/organ/internal/appendix
+	organs += /obj/item/organ/internal/brain
+	organs += /obj/item/organ/internal/brain/alien
+	organs += /obj/item/organ/internal/body_egg/alien_embryo
 
 
 /obj/machinery/computer/operating/proc/bootup_implants()
