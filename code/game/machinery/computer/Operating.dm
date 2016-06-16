@@ -49,7 +49,7 @@
 		bootup_implants()
 
 /obj/machinery/computer/operating/proc/bootup_organs()
-	audible_message("[src] reboots their organ database and reverts back the intiial set.")
+	audible_message("[src] reboots their organ database and reverts back the intial set.")
 	organs += /obj/item/organ/internal/heart
 	organs += /obj/item/organ/internal/appendix
 	organs += /obj/item/organ/internal/brain
@@ -58,7 +58,7 @@
 
 
 /obj/machinery/computer/operating/proc/bootup_implants()
-	audible_message("[src] reboots their implant database and reverts back the intiial set.")
+	audible_message("[src] reboots their implant database and reverts back the intial set.")
 	implants += /obj/item/weapon/implant/loyalty
 	implants += /obj/item/weapon/implant/tracking
 	implants += /obj/item/weapon/implant/chem
