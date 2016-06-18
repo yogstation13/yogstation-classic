@@ -14,6 +14,7 @@
 	var/efficiency = 0
 	var/productivity = 0
 	var/max_items = 40
+	var/list/datum/design/biogenerator/recipes_known = list()
 
 /obj/machinery/biogenerator/New()
 		..()
@@ -25,6 +26,7 @@
 		component_parts += new /obj/item/weapon/stock_parts/console_screen(null)
 		component_parts += new /obj/item/stack/cable_coil(null, 1)
 		RefreshParts()
+		recipes_known = get_initial_recipes()
 
 /obj/machinery/biogenerator/RefreshParts()
 	var/E = 0
@@ -75,7 +77,7 @@
 			for(var/obj/item/weapon/reagent_containers/food/snacks/grown/G in O.contents)
 				if(i >= max_items)
 					break
-				G.loc = src
+				G.remove_item_from_storage(src)
 				i++
 			if(i<max_items)
 				user << "<span class='info'>You empty the plant bag into the biogenerator.</span>"
@@ -135,44 +137,28 @@
 				dat += "<div class='statusDisplay'>Not enough space left in container. Unable to create product.</div>"
 				menustat = "menu"
 		if(beaker)
+			var/list/sorted_recipes = list("Food" = list(), "Botany Chemicals" = list(), "Leather and Cloth" = list())
+			for(var/V in recipes_known)
+				var/datum/design/biogenerator/R = V
+				for(var/category in R.category)
+					var/pointer = sorted_recipes[category]
+					if(pointer)
+						pointer += R
+					else
+						sorted_recipes += R.category
+						sorted_recipes[R.category] = list(R)
 			dat += "<div class='statusDisplay'>Biomass: [points] units.</div><BR>"
 			dat += "<A href='?src=\ref[src];activate=1'>Activate</A><A href='?src=\ref[src];detach=1'>Detach Container</A>"
-			dat += "<h3>Food:</h3>"
-			dat += "<div class='statusDisplay'>"
-			dat += "10 milk: <A href='?src=\ref[src];create=milk;amount=1'>Make</A><A href='?src=\ref[src];create=milk;amount=5'>x5</A> ([20/efficiency])<BR>"
-			dat += "10 cream: <A href='?src=\ref[src];create=cream;amount=1'>Make</A><A href='?src=\ref[src];create=cream;amount=5'>x5</A> ([30/efficiency])<BR>"
-			dat += "Milk Carton: <A href='?src=\ref[src];create=cmilk;amount=1'>Make</A><A href='?src=\ref[src];create=cmilk;amount=5'>x5</A> ([100/efficiency])<BR>"
-			dat += "Cream Carton: <A href='?src=\ref[src];create=ccream;amount=1'>Make</A><A href='?src=\ref[src];create=ccream;amount=5'>x5</A> ([300/efficiency])<BR>"
-			dat += "Monkey cube: <A href='?src=\ref[src];create=meat;amount=1'>Make</A><A href='?src=\ref[src];create=meat;amount=5'>x5</A> ([250/efficiency])"
-			dat += "</div>"
-			dat += "<h3>Botany Chemicals:</h3>"
-			dat += "<div class='statusDisplay'>"
-			dat += "E-Z-Nutrient: <A href='?src=\ref[src];create=ez;amount=1'>Make</A><A href='?src=\ref[src];create=ez;amount=5'>x5</A> ([10/efficiency])<BR>"
-			dat += "Left 4 Zed: <A href='?src=\ref[src];create=l4z;amount=1'>Make</A><A href='?src=\ref[src];create=l4z;amount=5'>x5</A> ([20/efficiency])<BR>"
-			dat += "Robust Harvest: <A href='?src=\ref[src];create=rh;amount=1'>Make</A><A href='?src=\ref[src];create=rh;amount=5'>x5</A> ([25/efficiency])<BR>"
-			dat += "Weed Killer: <A href='?src=\ref[src];create=wk;amount=1'>Make</A><A href='?src=\ref[src];create=wk;amount=5'>x5</A> ([50/efficiency])<BR>"
-			dat += "Pest Killer: <A href='?src=\ref[src];create=pk;amount=1'>Make</A><A href='?src=\ref[src];create=pk;amount=5'>x5</A> ([50/efficiency])<BR>"
-			dat += "</div>"
-			dat += "<h3>Leather and Cloth:</h3>"
-			dat += "<div class='statusDisplay'>"
-			dat += "Wallet: <A href='?src=\ref[src];create=wallet;amount=1'>Make</A> ([100/efficiency])<BR>"
-			dat += "Book bag: <A href='?src=\ref[src];create=bkbag;amount=1'>Make</A> ([200/efficiency])<BR>"
-			dat += "Plant bag: <A href='?src=\ref[src];create=ptbag;amount=1'>Make</A> ([200/efficiency])<BR>"
-			dat += "Rag: <A href='?src=\ref[src];create=rag;amount=1'>Make</A> ([200/efficiency])<BR>"
-			dat += "Mining satchel: <A href='?src=\ref[src];create=mnbag;amount=1'>Make</A> ([200/efficiency])<BR>"
-			dat += "Chemistry bag: <A href='?src=\ref[src];create=chbag;amount=1'>Make</A> ([200/efficiency])<BR>"
-			dat += "Botanical gloves: <A href='?src=\ref[src];create=gloves;amount=1'>Make</A> ([250/efficiency])<BR>"
-			dat += "Utility belt: <A href='?src=\ref[src];create=tbelt;amount=1'>Make</A> ([300/efficiency])<BR>"
-			dat += "Security belt: <A href='?src=\ref[src];create=sbelt;amount=1'>Make</A> ([300/efficiency])<BR>"
-			dat += "Medical belt: <A href='?src=\ref[src];create=mbelt;amount=1'>Make</A> ([300/efficiency])<BR>"
-			dat += "Janitorial belt: <A href='?src=\ref[src];create=jbelt;amount=1'>Make</A> ([300/efficiency])<BR>"
-			dat += "Bandolier belt: <A href='?src=\ref[src];create=bbelt;amount=1'>Make</A> ([300/efficiency])<BR>"
-			dat += "Shoulder holster: <A href='?src=\ref[src];create=sholster;amount=1'>Make</A> ([400/efficiency])<BR>"
-			dat += "Leather Satchel: <A href='?src=\ref[src];create=satchel;amount=1'>Make</A> ([400/efficiency])<BR>"
-			dat += "Leather Jacket: <A href='?src=\ref[src];create=jacket;amount=1'>Make</A> ([500/efficiency])<BR>"
-			dat += "Leather Overcoat: <A href='?src=\ref[src];create=overcoat;amount=1'>Make</A> ([1000/efficiency])<BR>"
-			dat += "Rice Hat: <A href='?src=\ref[src];create=rice_hat;amount=1'>Make</A> ([300/efficiency])<BR>"
-			dat += "</div>"
+
+			for(var/category in sorted_recipes)
+				dat += "<h3>[category]:</h3><div class='statusDisplay'>"
+				for(var/V in sorted_recipes[category])
+					var/datum/design/biogenerator/R = V
+					dat += "[R.name]: "
+					for(var/amt in R.possible_amounts)
+						dat += "<A href='?src=\ref[src];create=[R.name];amount=[amt]'>[amt == 1 ? "Make" : "x[amt]"]</A> "
+					dat += "([R.materials[MAT_BIOMASS]/efficiency])<br>"
+				dat += "</div>"
 		else
 			dat += "<div class='statusDisplay'>No container inside, please insert container.</div>"
 
@@ -224,105 +210,28 @@
 		return 0
 
 /obj/machinery/biogenerator/proc/check_container_volume(reagent_amount)
-	if(beaker.reagents.total_volume + reagent_amount > beaker.reagents.maximum_volume)
+	if(!beaker || beaker.reagents.total_volume + reagent_amount > beaker.reagents.maximum_volume)
 		menustat = "nobeakerspace"
 		return 1
 
-/obj/machinery/biogenerator/proc/create_product(create)
-	switch(create)
-		if("milk")
-			if(check_container_volume(10)) return 0
-			else if (check_cost(20/efficiency)) return 0
-			else beaker.reagents.add_reagent("milk",10)
-		if("cream")
-			if(check_container_volume(10)) return 0
-			else if (check_cost(30/efficiency)) return 0
-			else beaker.reagents.add_reagent("cream",10)
-		if("cmilk")
-			if (check_cost(100/efficiency)) return 0
-			else new/obj/item/weapon/reagent_containers/food/condiment/milk(src.loc)
-		if("ccream")
-			if (check_cost(300/efficiency)) return 0
-			else new/obj/item/weapon/reagent_containers/food/drinks/bottle/cream(src.loc)
-		if("meat")
-			if (check_cost(250/efficiency)) return 0
-			else new/obj/item/weapon/reagent_containers/food/snacks/monkeycube(src.loc)
-		if("ez")
-			if (check_cost(10/efficiency)) return 0
-			else new/obj/item/weapon/reagent_containers/glass/bottle/nutrient/ez(src.loc)
-		if("l4z")
-			if (check_cost(20/efficiency)) return 0
-			else new/obj/item/weapon/reagent_containers/glass/bottle/nutrient/l4z(src.loc)
-		if("rh")
-			if (check_cost(25/efficiency)) return 0
-			else new/obj/item/weapon/reagent_containers/glass/bottle/nutrient/rh(src.loc)
-		if("wk")
-			if (check_cost(50/efficiency)) return 0
-			else new/obj/item/weapon/reagent_containers/glass/bottle/weedkiller(src.loc)
-		if("pk")
-			if (check_cost(50/efficiency)) return 0
-			else new/obj/item/weapon/reagent_containers/glass/bottle/pestkiller(src.loc)
-		if("wallet")
-			if (check_cost(100/efficiency)) return 0
-			else new/obj/item/weapon/storage/wallet(src.loc)
-		if("bkbag")
-			if (check_cost(200/efficiency)) return 0
-			else new/obj/item/weapon/storage/bag/books(src.loc)
-		if("ptbag")
-			if (check_cost(200/efficiency)) return 0
-			else new/obj/item/weapon/storage/bag/plants(src.loc)
-		if("mnbag")
-			if (check_cost(200/efficiency)) return 0
-			else new/obj/item/weapon/storage/bag/ore(src.loc)
-		if("chbag")
-			if (check_cost(200/efficiency)) return 0
-			else new/obj/item/weapon/storage/bag/chemistry(src.loc)
-		if("rag")
-			if (check_cost(200/efficiency)) return 0
-			else new/obj/item/weapon/reagent_containers/glass/rag(src.loc)
-		if("gloves")
-			if (check_cost(250/efficiency)) return 0
-			else new/obj/item/clothing/gloves/botanic_leather(src.loc)
-		if("tbelt")
-			if (check_cost(300/efficiency)) return 0
-			else new/obj/item/weapon/storage/belt/utility(src.loc)
-		if("sbelt")
-			if (check_cost(300/efficiency)) return 0
-			else new/obj/item/weapon/storage/belt/security(src.loc)
-		if("mbelt")
-			if (check_cost(300/efficiency)) return 0
-			else new/obj/item/weapon/storage/belt/medical(src.loc)
-		if("jbelt")
-			if (check_cost(300/efficiency)) return 0
-			else new/obj/item/weapon/storage/belt/janitor(src.loc)
-		if("bbelt")
-			if (check_cost(300/efficiency)) return 0
-			else new/obj/item/weapon/storage/belt/bandolier(src.loc)
-		if("sholster")
-			if (check_cost(400/efficiency)) return 0
-			else new/obj/item/weapon/storage/belt/holster(src.loc)
-		if("satchel")
-			if (check_cost(400/efficiency)) return 0
-			else new/obj/item/weapon/storage/backpack/satchel(src.loc)
-		if("jacket")
-			if (check_cost(500/efficiency)) return 0
-			else new/obj/item/clothing/suit/jacket/leather(src.loc)
-		if("overcoat")
-			if (check_cost(1000/efficiency)) return 0
-			else new/obj/item/clothing/suit/jacket/leather/overcoat(src.loc)
-		if("rice_hat")
-			if (check_cost(300/efficiency)) return 0
-			else new/obj/item/clothing/head/rice_hat(src.loc)
-	processing = 0
-	menustat = "complete"
-	update_icon()
-	return 1
+/obj/machinery/biogenerator/proc/create_product(datum/design/biogenerator/recipe)
+	if(recipe.create_item(src))
+		processing = 0
+		menustat = "complete"
+		update_icon()
+		return 1
 
 /obj/machinery/biogenerator/proc/detach()
 	if(beaker)
 		beaker.loc = src.loc
 		beaker = null
 		update_icon()
+
+/obj/machinery/biogenerator/proc/get_initial_recipes()
+	var/list/L = list()
+	for(var/T in subtypesof(/datum/design/biogenerator) - abstract_designs)
+		L += new T()
+	return L
 
 /obj/machinery/biogenerator/Topic(href, href_list)
 	if(..() || panel_open)
@@ -340,13 +249,13 @@
 
 	else if(href_list["create"])
 		var/amount = (text2num(href_list["amount"]))
-		var/i = amount
 		var/C = href_list["create"]
-		if(i <= 0)
-			return
-		while(i >= 1)
-			create_product(C)
-			i--
+		for(var/V in recipes_known)
+			var/datum/design/biogenerator/R = V
+			if(R.name == C)
+				for(var/i=0, i<amount, i++)
+					create_product(R)
+				break
 		updateUsrDialog()
 
 	else if(href_list["menu"])

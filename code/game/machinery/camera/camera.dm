@@ -72,17 +72,17 @@
 			emped = emped+1  //Increase the number of consecutive EMP's
 			var/thisemp = emped //Take note of which EMP this proc is for
 			spawn(900)
-				if(loc) //qdel limbo
+				if(!qdeleted(src)) //check if src exists or if in qdel queue
 					triggerCameraAlarm() //camera alarm triggers even if multiple EMPs are in effect.
 					if(emped == thisemp) //Only fix it if the camera hasn't been EMP'd again
 						network = previous_network
-						icon_state = initial(icon_state)
+						icon_state = (status ? initial(icon_state) : "[initial(icon_state)]1")
 						stat &= ~EMPED
 						if(can_use())
 							cameranet.addCamera(src)
 						emped = 0 //Resets the consecutive EMP count
 						spawn(100)
-							if(!qdeleted(src))
+							if(!qdeleted(src)) //check if src exists or if in qdel queue
 								cancelCameraAlarm()
 			for(var/mob/O in mob_list)
 				if (O.client && O.client.eye == src)
@@ -128,14 +128,14 @@
 	var/msg2 = "<span class='notice'>[src] already has that upgrade!</span>"
 
 	// DECONSTRUCTION
-	if(istype(W, /obj/item/weapon/screwdriver))
+	if(istype(W, /obj/item/weapon/tool/screwdriver))
 		panel_open = !panel_open
 		user << "<span class='notice'>You screw the camera's panel [panel_open ? "open" : "closed"].</span>"
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		return
 
 	if(panel_open)
-		if(istype(W, /obj/item/weapon/wirecutters)) //enable/disable the camera
+		if(istype(W, /obj/item/weapon/tool/wirecutters)) //enable/disable the camera
 			deactivate(user, 1)
 			health = initial(health) //this is a pretty simplistic way to heal the camera, but there's no reason for this to be complex.
 
@@ -143,7 +143,7 @@
 			setViewRange((view_range == initial(view_range)) ? short_range : initial(view_range))
 			user << "<span class='notice'>You [(view_range == initial(view_range)) ? "restore" : "mess up"] the camera's focus.</span>"
 
-		else if(istype(W, /obj/item/weapon/weldingtool))
+		else if(istype(W, /obj/item/weapon/tool/weldingtool))
 			if(weld(W, user))
 				visible_message("<span class='warning'>[user] unwelds [src], leaving it as just a frame screwed to the wall.</span>", "<span class='warning'>You unweld [src], leaving it as just a frame screwed to the wall</span>")
 				if(!assembly)
@@ -240,11 +240,14 @@
 /obj/machinery/camera/proc/deactivate(mob/user, displaymessage = 1) //this should be called toggle() but doing a find and replace for this would be ass
 	status = !status
 	cameranet.updateChunk(x, y, z)
-	var/change_msg = "deactivates"
+	var/change_msg
 	if(!status)
-		icon_state = "[initial(icon_state)]1"
+		change_msg = "deactivates"
+		if(!emped)
+			icon_state = "[initial(icon_state)]1"
 	else
-		icon_state = initial(icon_state)
+		if(!emped)
+			icon_state = initial(icon_state)
 		change_msg = "reactivates"
 		triggerCameraAlarm()
 		spawn(100)
@@ -329,7 +332,7 @@
 
 	return null
 
-/obj/machinery/camera/proc/weld(obj/item/weapon/weldingtool/WT, mob/living/user)
+/obj/machinery/camera/proc/weld(obj/item/weapon/tool/weldingtool/WT, mob/living/user)
 	if(busy)
 		return 0
 	if(!WT.remove_fuel(0, user))
@@ -338,7 +341,7 @@
 	user << "<span class='notice'>You start to weld [src]...</span>"
 	playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
 	busy = 1
-	if(do_after(user, 100, target = src))
+	if(do_after(user, 100 * WT.speed_coefficient, target = src))
 		busy = 0
 		if(!WT.isOn())
 			return 0

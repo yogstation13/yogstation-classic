@@ -208,6 +208,7 @@
 			else
 				if(!do_mob(user, affecting)||!do_after(user, 100, target = affecting)) return
 			user.visible_message("<span class='danger'>[user] devours [affecting]!</span>")
+			add_logs(user, affecting, "has devoured")
 			affecting.loc = user
 			attacker.stomach_contents.Add(affecting)
 			qdel(src)

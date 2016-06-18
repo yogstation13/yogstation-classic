@@ -192,14 +192,14 @@
 			return
 
 	if(!shorted)
-		ui_interact(user)
+		nanoui_interact(user)
 
 	if(panel_open && (!istype(user, /mob/living/silicon/ai)))
 		wires.Interact(user)
 
 	return
 
-/obj/machinery/alarm/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null)
+/obj/machinery/alarm/nanoui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null)
 	if(stat & (BROKEN|NOPOWER))
 		return
 
@@ -716,7 +716,7 @@
 /obj/machinery/alarm/attackby(obj/item/W, mob/user, params)
 	switch(buildstage)
 		if(2)
-			if(istype(W, /obj/item/weapon/wirecutters) && panel_open && (wires.wires_status == 27 || wires.wires_status == 31))   //this checks for all wires to be cut, except the syphon wire which is optional.
+			if(istype(W, /obj/item/weapon/tool/wirecutters) && panel_open && (wires.wires_status == 27 || wires.wires_status == 31))   //this checks for all wires to be cut, except the syphon wire which is optional.
 				playsound(src.loc, 'sound/items/Wirecutter.ogg', 50, 1)
 				user << "<span class='notice'>You cut the final wires.</span>"
 				var/obj/item/stack/cable_coil/cable = new /obj/item/stack/cable_coil( src.loc )
@@ -725,14 +725,14 @@
 				update_icon()
 				return
 
-			if(istype(W, /obj/item/weapon/screwdriver))  // Opening that Air Alarm up.
+			if(istype(W, /obj/item/weapon/tool/screwdriver))  // Opening that Air Alarm up.
 				playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 				panel_open = !panel_open
 				user << "<span class='notice'>The wires have been [panel_open ? "exposed" : "unexposed"].</span>"
 				update_icon()
 				return
 
-			if (panel_open && ((istype(W, /obj/item/device/multitool) || istype(W, /obj/item/weapon/wirecutters))))
+			if (panel_open && ((istype(W, /obj/item/device/multitool) || istype(W, /obj/item/weapon/tool/wirecutters))))
 				return src.attack_hand(user)
 			else if (istype(W, /obj/item/weapon/card/id) || istype(W, /obj/item/device/pda))// trying to unlock the interface with an ID card
 				if(stat & (NOPOWER|BROKEN))
@@ -746,11 +746,12 @@
 						user << "<span class='danger'>Access denied.</span>"
 				return
 		if(1)
-			if(istype(W, /obj/item/weapon/crowbar))
+			if(istype(W, /obj/item/weapon/tool/crowbar))
 				user.visible_message("[user.name] removes the electronics from [src.name].",\
 									"<span class='notice'>You start prying out the circuit...</span>")
 				playsound(src.loc, 'sound/items/Crowbar.ogg', 50, 1)
-				if (do_after(user, 20, target = src))
+				var/obj/item/weapon/tool/crowbar/cb = W
+				if (do_after(user, 20 * cb.speed_coefficient, target = src))
 					if (buildstage == 1)
 						user <<"<span class='notice'>You remove the air alarm electronics.</span>"
 						new /obj/item/weapon/airalarm_electronics( src.loc )
@@ -788,7 +789,7 @@
 					qdel(W)
 				return
 
-			if(istype(W, /obj/item/weapon/wrench))
+			if(istype(W, /obj/item/weapon/tool/wrench))
 				user << "<span class='notice'>You detach \the [src] from the wall.</span>"
 				playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 				new /obj/item/alarm_frame( user.loc )
@@ -842,7 +843,7 @@ Code shamelessly copied from apc_frame
 	flags = CONDUCT
 
 /obj/item/alarm_frame/attackby(obj/item/weapon/W, mob/user, params)
-	if (istype(W, /obj/item/weapon/wrench))
+	if (istype(W, /obj/item/weapon/tool/wrench))
 		new /obj/item/stack/sheet/metal( get_turf(src.loc), 2 )
 		qdel(src)
 		return
@@ -968,7 +969,7 @@ FIRE ALARM
 /obj/machinery/firealarm/attackby(obj/item/W, mob/user, params)
 	src.add_fingerprint(user)
 
-	if (istype(W, /obj/item/weapon/screwdriver) && buildstage == 2)
+	if (istype(W, /obj/item/weapon/tool/screwdriver) && buildstage == 2)
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		panel_open = !panel_open
 		user << "<span class='notice'>The wires have been [panel_open ? "exposed" : "unexposed"].</span>"
@@ -985,7 +986,7 @@ FIRE ALARM
 					else
 						user.visible_message("[user] has disconnected [src]'s detecting unit!", "<span class='notice'>You disconnect [src]'s detecting unit.</span>")
 
-				else if (istype(W, /obj/item/weapon/wirecutters))
+				else if (istype(W, /obj/item/weapon/tool/wirecutters))
 					buildstage = 1
 					playsound(src.loc, 'sound/items/Wirecutter.ogg', 50, 1)
 					var/obj/item/stack/cable_coil/coil = new /obj/item/stack/cable_coil()
@@ -1006,11 +1007,12 @@ FIRE ALARM
 					user << "<span class='notice'>You wire \the [src].</span>"
 					update_icon()
 
-				else if(istype(W, /obj/item/weapon/crowbar))
+				else if(istype(W, /obj/item/weapon/tool/crowbar))
 					playsound(src.loc, 'sound/items/Crowbar.ogg', 50, 1)
 					user.visible_message("[user.name] removes the electronics from [src.name].", \
 										"<span class='notice'>You start prying out the circuit...</span>")
-					if(do_after(user, 20, target = src))
+					var/obj/item/weapon/tool/crowbar/cb = W
+					if(do_after(user, 20 * cb.speed_coefficient, target = src))
 						if(buildstage == 1)
 							if(stat & BROKEN)
 								user << "<span class='notice'>You remove the destroyed circuit.</span>"
@@ -1026,7 +1028,7 @@ FIRE ALARM
 					buildstage = 1
 					update_icon()
 
-				else if(istype(W, /obj/item/weapon/wrench))
+				else if(istype(W, /obj/item/weapon/tool/wrench))
 					user.visible_message("[user] removes the fire alarm assembly from the wall.", \
 										 "<span class='notice'>You remove the fire alarm assembly from the wall.</span>")
 					var/obj/item/firealarm_frame/frame = new /obj/item/firealarm_frame()
@@ -1203,7 +1205,7 @@ Code shamelessly copied from apc_frame
 
 
 /obj/item/firealarm_frame/attackby(obj/item/weapon/W, mob/user, params)
-	if (istype(W, /obj/item/weapon/wrench))
+	if (istype(W, /obj/item/weapon/tool/wrench))
 		new /obj/item/stack/sheet/metal( get_turf(src.loc), 2 )
 		qdel(src)
 		return

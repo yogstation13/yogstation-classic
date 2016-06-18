@@ -16,7 +16,7 @@
 	var/throw_amount = 100
 	var/lit = 0	//on or off
 	var/operating = 0//cooldown
-	var/obj/item/weapon/weldingtool/weldtool = null
+	var/obj/item/weapon/tool/weldingtool/weldtool = null
 	var/obj/item/device/assembly/igniter/igniter = null
 	var/obj/item/weapon/tank/internals/plasma/ptank = null
 
@@ -71,7 +71,7 @@
 
 /obj/item/weapon/flamethrower/attackby(obj/item/W, mob/user, params)
 	if(user.stat || user.restrained() || user.lying)	return
-	if(istype(W, /obj/item/weapon/wrench) && !status)//Taking this apart
+	if(istype(W, /obj/item/weapon/tool/wrench) && !status)//Taking this apart
 		var/turf/T = get_turf(src)
 		if(weldtool)
 			weldtool.loc = T
@@ -86,7 +86,7 @@
 		qdel(src)
 		return
 
-	if(istype(W, /obj/item/weapon/screwdriver) && igniter && !lit)
+	if(istype(W, /obj/item/weapon/tool/screwdriver) && igniter && !lit)
 		status = !status
 		user << "<span class='notice'>[igniter] is now [status ? "secured" : "unsecured"]!</span>"
 		update_icon()
@@ -162,7 +162,7 @@
 	return
 
 /obj/item/weapon/flamethrower/CheckParts()
-	weldtool = locate(/obj/item/weapon/weldingtool) in contents
+	weldtool = locate(/obj/item/weapon/tool/weldingtool) in contents
 	igniter = locate(/obj/item/device/assembly/igniter) in contents
 	weldtool.status = 0
 	igniter.secured = 0
@@ -207,7 +207,7 @@
 /obj/item/weapon/flamethrower/full/New(var/loc)
 	..()
 	if(!weldtool)
-		weldtool = new /obj/item/weapon/weldingtool(src)
+		weldtool = new /obj/item/weapon/tool/weldingtool(src)
 	weldtool.status = 0
 	if(!igniter)
 		igniter = new /obj/item/device/assembly/igniter(src)

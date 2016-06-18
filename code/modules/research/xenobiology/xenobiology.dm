@@ -201,7 +201,8 @@
 		var/client/C = null
 		C = pick(consenting_candidates)
 		M.key = C.key
-		M.languages |= HUMAN
+		M.languages_understood |= HUMAN
+		M.languages_spoken |= HUMAN
 		M.faction -= "neutral"
 		M << "<span class='warning'>All at once it makes sense, you know what you are and who you are! Self awareness is yours!</span>"
 		M << "<span class='userdanger'>You are grateful to be self aware and owe [user] a great debt. Serve [user], and assist them in completing their goals at any cost.</span>"
@@ -416,7 +417,7 @@
 	G.dna.species.auto_equip(G)
 	G.loc = src.loc
 	G.key = ghost.key
-	G << "You are an adamantine golem. You move slowly, but are highly resistant to heat and cold as well as blunt trauma. You are unable to wear clothes, but can still use most tools. Serve [user], and assist them in completing their goals at any cost."
+	G << "You are an adamantine golem. You move slowly, but are highly resistant to heat and cold as well as blunt trauma. You are unable to wear clothes, but can still use most tools. Serve [user.real_name], and assist them in completing their goals at any cost."
 	G.mind.store_memory("<b>Serve [user.real_name], your creator.</b>")
 	if(user.mind.special_role)
 		message_admins("[G.real_name] has been summoned by [user.real_name], an antagonist.")

@@ -96,12 +96,12 @@
 	if (!(src.air_contents))
 		return
 
-	ui_interact(user)
+	nanoui_interact(user)
 
 /obj/item/weapon/tank/interact(mob/user, ui_key = "main")
 	SSnano.try_update_ui(user, src, ui_key, null, src.get_ui_data())
 
-/obj/item/weapon/tank/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null)
+/obj/item/weapon/tank/nanoui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null)
 	ui = SSnano.push_open_or_new_ui(user, src, ui_key, ui, "tanks.tmpl", "Tank", 500, 300, 0)
 
 /obj/item/weapon/tank/get_ui_data()

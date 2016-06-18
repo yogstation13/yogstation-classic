@@ -56,6 +56,7 @@
 		dat += "<a href='?src=\ref[src];dispense=helmet'>Agent Helmet</A><br>"
 		dat += "<a href='?src=\ref[src];dispense=silencer'>Radio Silencer</A><br>"
 		dat += "<a href='?src=\ref[src];dispense=tool'>Science Tool</A><br>"
+		dat += "<a href='?src=\ref[src];dispense=card'>Agent Card</A><br>"
 	else
 		dat += "<span class='bad'>NO EXPERIMENT MACHINE DETECTED</span> <br>"
 
@@ -116,6 +117,8 @@
 				Dispense(/obj/item/device/abductor/silencer)
 			if("tool")
 				Dispense(/obj/item/device/abductor/gizmo)
+			if("card")
+				Dispense(/obj/item/weapon/card/id/syndicate/abductor)
 	src.updateUsrDialog()
 
 /obj/machinery/abductor/console/proc/TeleporterSet()

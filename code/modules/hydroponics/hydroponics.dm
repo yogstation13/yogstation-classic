@@ -66,7 +66,7 @@
 	if(default_unfasten_wrench(user, I))
 		return
 
-	if(istype(I, /obj/item/weapon/crowbar))
+	if(istype(I, /obj/item/weapon/tool/crowbar))
 		if(anchored==2)
 			user << "Unscrew the hoses first!"
 			return
@@ -752,7 +752,7 @@
 				return
 			S.handle_item_insertion(G, 1)
 
-	else if(istype(O, /obj/item/weapon/wrench) && unwrenchable)
+	else if(istype(O, /obj/item/weapon/tool/wrench) && unwrenchable)
 		if(anchored == 2)
 			user << "<span class='warning'>Unscrew the hoses first!</span>"
 			return
@@ -761,7 +761,8 @@
 			user.visible_message("[user] begins to wrench [src] into place.", \
 								"<span class='notice'>You begin to wrench [src] in place...</span>")
 			playsound(loc, 'sound/items/Ratchet.ogg', 50, 1)
-			if (do_after(user, 20, target = src))
+			var/obj/item/weapon/tool/wrench/wrench = O
+			if (do_after(user, 20 * wrench.speed_coefficient, target = src))
 				if(anchored)
 					return
 				anchored = 1
@@ -778,7 +779,7 @@
 				user.visible_message("[user] unwrenches [src].", \
 									"<span class='notice'>You unwrench [src].</span>")
 
-	else if(istype(O, /obj/item/weapon/wirecutters) && unwrenchable) //THIS NEED TO BE DONE DIFFERENTLY, SOMEONE REFACTOR THE TRAY CODE ALREADY
+	else if(istype(O, /obj/item/weapon/tool/wirecutters) && unwrenchable) //THIS NEED TO BE DONE DIFFERENTLY, SOMEONE REFACTOR THE TRAY CODE ALREADY
 		if(anchored)
 			if(anchored == 2)
 				playsound(src.loc, 'sound/items/Wirecutter.ogg', 50, 1)

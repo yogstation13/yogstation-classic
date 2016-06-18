@@ -713,21 +713,50 @@ Sorry Giacom. Please don't be mad :(
 
 // The src mob is trying to strip an item from someone
 // Override if a certain type of mob should be behave differently when stripping items (can't, for example)
-/mob/living/stripPanelUnequip(obj/item/what, mob/who, where)
+/mob/living/stripPanelUnequip(obj/item/what, mob/who, where, strip_coeff = 0, silent = 0, put_in_hand = 0)
 	if(what.flags & NODROP)
 		src << "<span class='warning'>You can't remove \the [what.name], it appears to be stuck!</span>"
 		return
-	who.visible_message("<span class='danger'>[src] tries to remove [who]'s [what.name].</span>", \
-					"<span class='userdanger'>[src] tries to remove [who]'s [what.name].</span>")
+	var/stealth_message = "You start to silently remove [who]'s [what]"
+	var/stealth_fail_message = "You feel someone's hands nimbly touching your [what]"
+	var/seen_message = "[src] tries to remove [who]'s [what]"
+	var/time_to_strip = what.strip_delay*min((1-strip_coeff), 1)
+	var/unequip_from_storage = FALSE
+	var/obj/item/weapon/storage/beltpack
+	if(where == slot_in_backpack || where == slot_in_belt)
+		beltpack = who.get_item_by_slot(where)
+		if(!beltpack || !(what in beltpack.contents))
+			return
+		time_to_strip = beltpack.strip_time
+		stealth_message += " from \the [beltpack]"
+		seen_message += " from \the [beltpack]"
+		stealth_fail_message += " in your [beltpack]"
+		unequip_from_storage = TRUE
+	if(silent)
+		src << "<span class='notice'>[stealth_message].</span>."
+	else
+		who.visible_message("<span class='danger'>[seen_message].</span>", \
+					"<span class='userdanger'>[seen_message].</span>")
 	what.add_fingerprint(src)
-	if(do_mob(src, who, what.strip_delay))
-		if(what && what == who.get_item_by_slot(where) && Adjacent(who))
-			who.unEquip(what)
+	if(do_mob(src, who, time_to_strip))
+		if(what && what == who.get_item_by_slot(where, what) && Adjacent(who))
+			if(unequip_from_storage)
+				beltpack.remove_from_storage(what)
+				what.loc = get_turf(who) //put it under the person we took it from
+			else
+				who.unEquip(what)
+			if(put_in_hand)
+				if(!src.put_in_active_hand(what))
+					what.loc = get_turf(src) //put it under us
+
 			add_logs(src, who, "stripped", addition="of [what]")
+	else
+		if(silent)
+			who << "<span class='userdanger'>[stealth_fail_message].</span>."
 
 // The src mob is trying to place an item on someone
 // Override if a certain mob should be behave differently when placing items (can't, for example)
-/mob/living/stripPanelEquip(obj/item/what, mob/who, where)
+/mob/living/stripPanelEquip(obj/item/what, mob/who, where, strip_coeff = 0, silent = 0)
 	what = src.get_active_hand()
 	if(what && (what.flags & NODROP))
 		src << "<span class='warning'>You can't put \the [what.name] on [who], it's stuck to your hand!</span>"
@@ -736,12 +765,33 @@ Sorry Giacom. Please don't be mad :(
 		if(!what.mob_can_equip(who, where, 1))
 			src << "<span class='warning'>\The [what.name] doesn't fit in that place!</span>"
 			return
-		visible_message("<span class='notice'>[src] tries to put [what] on [who].</span>")
-		if(do_mob(src, who, what.put_on_delay))
+		var/stealth_message = "You start to silently put [what] on [who]"
+		var/stealth_fail_message = "You feel someone's hands trying to put something"
+		var/seen_message = "[src] tries to put [what.name] on [who]"
+		var/time_to_plant = what.put_on_delay*(1-strip_coeff)
+		var/obj/item/weapon/storage/beltpack
+		if(where == slot_in_backpack || where == slot_in_belt)
+			beltpack = who.get_item_by_slot(where)
+			if(!beltpack || !(beltpack.can_be_inserted(what, 0, src)))
+				return
+			time_to_plant = beltpack.strip_time*(1-strip_coeff) //putting into containers is a bit faster
+			stealth_message += "'s [beltpack.name]"
+			stealth_fail_message += " on your [beltpack.name]"
+			seen_message += "'s [beltpack.name]"
+		else
+			stealth_fail_message += " on you"
+		if(silent)
+			src << "<span class='notice'>[stealth_message].</span>"
+		else
+			visible_message("<span class='notice'>[seen_message].</span>")
+		if(do_mob(src, who, time_to_plant))
 			if(what && Adjacent(who))
 				unEquip(what)
 				who.equip_to_slot_if_possible(what, where, 0, 1)
 				add_logs(src, who, "equipped", what)
+		else
+			who << "<span class='userdanger'>[stealth_fail_message].</span>."
+
 
 /mob/living/singularity_act()
 	var/gain = 20

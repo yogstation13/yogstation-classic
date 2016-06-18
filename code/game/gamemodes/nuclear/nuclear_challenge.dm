@@ -35,6 +35,8 @@
 	for(var/obj/machinery/computer/shuttle/syndicate/S in machines)
 		S.challenge = TRUE
 		S.challenge_time = world.time
+//	for(var/obj/machinery/gun_turret/syndicate/S in machines)  //// Un-comment this to make gun_turret/syndicate only activated during Nuclear_Challenge
+//		S.enabled = 1
 
 	var/obj/item/device/radio/uplink/U = new(get_turf(user))
 	U.hidden_uplink.uplink_owner = "[user.key]"

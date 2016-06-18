@@ -474,7 +474,7 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 	SetLuminosity(2)
 
 /obj/machinery/requests_console/attackby(obj/item/weapon/O, mob/user, params)
-	if (istype(O, /obj/item/weapon/crowbar))
+	if (istype(O, /obj/item/weapon/tool/crowbar))
 		if(open)
 			user << "<span class='notice'>You close the maintenance panel.</span>"
 			open = 0
@@ -486,7 +486,7 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 				icon_state="req_comp_open"
 			else if(hackState == 1)
 				icon_state="req_comp_rewired"
-	if (istype(O, /obj/item/weapon/screwdriver))
+	if (istype(O, /obj/item/weapon/tool/screwdriver))
 		if(open)
 			if(hackState == 0)
 				user << "<span class='notice'>You modify the wiring.</span>"

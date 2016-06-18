@@ -233,7 +233,7 @@ update_flag
 	return
 
 /obj/machinery/portable_atmospherics/canister/attackby(obj/item/weapon/W, mob/user, params)
-	if(!istype(W, /obj/item/weapon/wrench) && !istype(W, /obj/item/weapon/tank) && !istype(W, /obj/item/device/analyzer) && !istype(W, /obj/item/device/pda))
+	if(!istype(W, /obj/item/weapon/tool/wrench) && !istype(W, /obj/item/weapon/tank) && !istype(W, /obj/item/device/analyzer) && !istype(W, /obj/item/device/pda))
 		visible_message("<span class='danger'>[user] hits \the [src] with a [W]!</span>")
 		investigate_log("was smacked with \a [W] by [key_name(user)]", "atmos")
 		src.health -= W.force
@@ -265,7 +265,7 @@ update_flag
 	return src.attack_hand(user)
 
 /obj/machinery/portable_atmospherics/canister/attack_hand(mob/user)
-	return src.ui_interact(user)
+	return src.nanoui_interact(user)
 
 /obj/machinery/portable_atmospherics/canister/interact(mob/user, ui_key = "main")
 	if (src.destroyed || !user)
@@ -273,7 +273,7 @@ update_flag
 
 	SSnano.try_update_ui(user, src, ui_key, null, src.get_ui_data())
 
-/obj/machinery/portable_atmospherics/canister/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null)
+/obj/machinery/portable_atmospherics/canister/nanoui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null)
 	if (src.destroyed)
 		return
 

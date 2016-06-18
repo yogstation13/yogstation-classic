@@ -4,6 +4,7 @@
 /obj/item/clothing/head/helmet/space/hardsuit
 	name = "hardsuit helmet"
 	desc = "A special helmet designed for work in a hazardous, low-pressure environment. Has radiation shielding."
+	var/alt_desc = null
 	icon_state = "hardsuit0-engineering"
 	item_state = "eng_helm"
 	armor = list(melee = 10, bullet = 5, laser = 10, energy = 5, bomb = 10, bio = 100, rad = 75)
@@ -42,6 +43,7 @@
 /obj/item/clothing/suit/space/hardsuit
 	name = "hardsuit"
 	desc = "A special suit that protects against hazardous, low pressure environments. Has radiation shielding."
+	var/alt_desc = null
 	icon_state = "hardsuit-engineering"
 	item_state = "eng_hardsuit"
 	slowdown = 2
@@ -252,6 +254,32 @@
 /obj/item/clothing/suit/space/hardsuit/syndi/New()
 	jetpack = new /obj/item/weapon/tank/jetpack/suit(src)
 	..()
+
+//Elite Syndie suit
+/obj/item/clothing/head/helmet/space/hardsuit/syndi/elite
+	name = "elite syndicate hardsuit helmet"
+	desc = "An elite version of the syndicate helmet, with improved armour and fire shielding. It is in EVA mode. Property of Gorlex Marauders."
+	alt_desc = "An elite version of the syndicate helmet, with improved armour and fire shielding. It is in combat mode. Property of Gorlex Marauders."
+	icon_state = "hardsuit0-syndielite"
+	item_color = "syndielite"
+	armor = list(melee = 60, bullet = 60, laser = 50, energy = 25, bomb = 55, bio = 100, rad = 70)
+	heat_protection = HEAD
+	max_heat_protection_temperature = FIRE_IMMUNITY_SUIT_MAX_TEMP_PROTECT
+	visor_flags_inv = 0
+	visor_flags = 0
+	on = 0
+
+
+/obj/item/clothing/suit/space/hardsuit/syndi/elite
+	name = "elite syndicate hardsuit"
+	desc = "An elite version of the syndicate hardsuit, with improved armour and fire shielding. It is in travel mode."
+	alt_desc = "An elite version of the syndicate hardsuit, with improved armour and fire shielding. It is in combat mode."
+	icon_state = "hardsuit0-syndielite"
+	item_color = "syndielite"
+	helmettype = /obj/item/clothing/head/helmet/space/hardsuit/syndi/elite
+	armor = list(melee = 60, bullet = 60, laser = 50, energy = 25, bomb = 55, bio = 100, rad = 70)
+	heat_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
+	max_heat_protection_temperature = FIRE_IMMUNITY_SUIT_MAX_TEMP_PROTECT
 
 //The Owl Hardsuit
 /obj/item/clothing/head/helmet/space/hardsuit/syndi/owl

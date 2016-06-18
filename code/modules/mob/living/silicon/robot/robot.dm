@@ -156,9 +156,9 @@
 	updatename()
 	switch(designation)
 		if("Standard")
+			module = new /obj/item/weapon/robot_module/standard(src)
 			var/icontype = input("Select an icon!", "Robot", "Standard") in list("Standard")
 			if(!icontype) return
-			module = new /obj/item/weapon/robot_module/standard(src)
 			hands.icon_state = "standard"
 			switch(icontype)
 				if("Standard")
@@ -169,9 +169,9 @@
 			feedback_inc("cyborg_standard",1)
 
 		if("Service")
+			module = new /obj/item/weapon/robot_module/butler(src)
 			var/icontype = input("Select an icon!", "Robot", "Butler") in list("Waitress", "Bro", "Butler", /*"Kent",*/ "Rich")
 			if(!icontype) return
-			module = new /obj/item/weapon/robot_module/butler(src)
 			hands.icon_state = "service"
 			switch(icontype)
 				if("Waitress")
@@ -192,9 +192,9 @@
 			feedback_inc("cyborg_service",1)
 
 		if("Miner")
+			module = new /obj/item/weapon/robot_module/miner(src)
 			var/icontype = input("Select an icon!", "Robot", "Tread Miner") in list("Tread Miner")
 			if(!icontype) return
-			module = new /obj/item/weapon/robot_module/miner(src)
 			hands.icon_state = "miner"
 			switch(icontype)
 				if("Tread Miner")
@@ -207,9 +207,9 @@
 			feedback_inc("cyborg_miner",1)
 
 		if("Medical")
+			module = new /obj/item/weapon/robot_module/medical(src)
 			var/icontype = input("Select an icon!", "Robot", "Mediborg") in list("Mediborg" , "Medihover", "Smile Screen")
 			if(!icontype) return
-			module = new /obj/item/weapon/robot_module/medical(src)
 			hands.icon_state = "medical"
 			switch(icontype)
 				if("Mediborg")
@@ -228,9 +228,9 @@
 			feedback_inc("cyborg_medical",1)
 
 		if("Security")
+			module = new /obj/item/weapon/robot_module/security(src)
 			var/icontype = input("Select an icon!", "Robot", "Secborg") in list("Secborg", "Treaded Secborg", "Interceptor")
 			if(!icontype) return
-			module = new /obj/item/weapon/robot_module/security(src)
 			hands.icon_state = "security"
 			switch(icontype)
 				if("Secborg")
@@ -250,9 +250,9 @@
 			feedback_inc("cyborg_security",1)
 
 		if("Engineering")
+			module = new /obj/item/weapon/robot_module/engineering(src)
 			var/icontype = input("Select an icon!", "Robot", "Engiborg") in list("Engiborg", "Treaded Engiborg", "Hover Engiborg")
 			if(!icontype) return
-			module = new /obj/item/weapon/robot_module/engineering(src)
 			hands.icon_state = "engineer"
 			switch(icontype)
 				if("Engiborg")
@@ -274,9 +274,9 @@
 			feedback_inc("cyborg_engineering",1)
 
 		if("Janitor")
+			module = new /obj/item/weapon/robot_module/janitor(src)
 			var/icontype = input("Select an icon!", "Robot", "Janiborg") in list("Janiborg", "Disposal")
 			if(!icontype) return
-			module = new /obj/item/weapon/robot_module/janitor(src)
 			hands.icon_state = "janitor"
 			switch(icontype)
 				if("Janiborg")
@@ -292,9 +292,9 @@
 			feedback_inc("cyborg_janitor",1)
 
 		if("Clown")
+			module = new /obj/item/weapon/robot_module/clown(src)
 			var/icontype = input("Select an icon!", "Robot", "Clown") in list("Clown", "Wizard Bot", "Wizard Borg","Chicken")
 			if(!icontype) return
-			module = new /obj/item/weapon/robot_module/clown(src)
 			hands.icon_state = "standard"
 			switch(icontype)
 				if("Clown")
@@ -403,15 +403,6 @@
 	..()
 	if(statpanel("Status"))
 		stat("[worldtime2text()] [time2text(world.realtime, "MMM DD")] [year_integer+540]")
-		if(ticker.mode.name == "AI malfunction")
-			var/datum/game_mode/malfunction/malf = ticker.mode
-			for (var/datum/mind/malfai in malf.malf_ai)
-				if(connected_ai)
-					if((connected_ai.mind == malfai) && (malf.apcs > 0))
-						stat(null, "Time until station control secured: [max(malf.AI_win_timeleft/malf.apcs, 0)] seconds")
-				else if(malf.malf_mode_declared && (malf.apcs > 0))
-					stat(null, "Time left: [max(malf.AI_win_timeleft/malf.apcs, 0)]")
-
 		if(cell)
 			stat(null, text("Charge Left: [cell.charge]/[cell.maxcharge]"))
 		else
@@ -503,9 +494,9 @@
 	if (istype(W, /obj/item/weapon/restraints/handcuffs)) // fuck i don't even know why isrobot() in handcuff code isn't working so this will have to do
 		return
 
-	if (istype(W, /obj/item/weapon/weldingtool) && user.a_intent != "harm")
+	if (istype(W, /obj/item/weapon/tool/weldingtool) && user.a_intent != "harm")
 		user.changeNext_move(CLICK_CD_MELEE)
-		var/obj/item/weapon/weldingtool/WT = W
+		var/obj/item/weapon/tool/weldingtool/WT = W
 		if (src == user)
 			user << "<span class='warning'>You lack the reach to be able to repair yourself!</span>"
 			return
@@ -534,7 +525,7 @@
 		else
 			user << "The wires seem fine, there's no need to fix them."
 
-	else if (istype(W, /obj/item/weapon/crowbar))	// crowbar means open or close the cover
+	else if (istype(W, /obj/item/weapon/tool/crowbar))	// crowbar means open or close the cover
 		if(opened)
 			user << "<span class='notice'>You close the cover.</span>"
 			opened = 0
@@ -560,25 +551,25 @@
 			user << "<span class='notice'>You insert the power cell.</span>"
 		update_icons()
 
-	else if (istype(W, /obj/item/weapon/wirecutters) || istype(W, /obj/item/device/multitool) || istype(W, /obj/item/device/assembly/signaler))
+	else if (istype(W, /obj/item/weapon/tool/wirecutters) || istype(W, /obj/item/device/multitool) || istype(W, /obj/item/device/assembly/signaler))
 		if (wiresexposed)
 			wires.Interact(user)
 		else
 			user << "<span class='warning'>You can't reach the wiring!</span>"
 
-	else if(istype(W, /obj/item/weapon/screwdriver) && opened && !cell)	// haxing
+	else if(istype(W, /obj/item/weapon/tool/screwdriver) && opened && !cell)	// haxing
 		wiresexposed = !wiresexposed
 		user << "The wires have been [wiresexposed ? "exposed" : "unexposed"]"
 		update_icons()
 
-	else if(istype(W, /obj/item/weapon/screwdriver) && opened && cell)	// radio
+	else if(istype(W, /obj/item/weapon/tool/screwdriver) && opened && cell)	// radio
 		if(radio)
 			radio.attackby(W,user)//Push it to the radio to let it handle everything
 		else
 			user << "<span class='warning'>Unable to locate a radio!</span>"
 		update_icons()
 
-	else if(istype(W, /obj/item/weapon/wrench) && opened && !cell) //Deconstruction. The flashes break from the fall, to prevent this from being a ghetto reset module.
+	else if(istype(W, /obj/item/weapon/tool/wrench) && opened && !cell) //Deconstruction. The flashes break from the fall, to prevent this from being a ghetto reset module.
 		if(!lockcharge)
 			user << "<span class='boldannounce'>[src]'s bolts spark! Maybe you should lock them down first!</span>"
 			spark_system.start()
@@ -856,6 +847,8 @@
 				overlays += "eyes-disposalbot"
 			if("minerborg")
 				overlays += "eyes-minerborg"
+			if("mediborg+smile")
+				overlays += "eyes-mediborg"
 			if("syndie_bloodhound")
 				overlays += "eyes-syndie_bloodhound"
 			else
@@ -875,6 +868,10 @@
 	if(jetpackoverlay)
 		overlays += "minerjetpack"
 	update_fire()
+	if(stat == DEAD && icon_state == "mediborg+smile")
+		overlays += "dead-[icon_state]"
+	else if (stat != DEAD && icon_state == "mediborg+smile")
+		overlays -= "dead-[icon_state]"
 
 /mob/living/silicon/robot/proc/installed_modules()
 	if(!module)

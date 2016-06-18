@@ -1,6 +1,8 @@
+#define AUTOLATHE_SYNCING         0 //only used for partlathe
 #define AUTOLATHE_MAIN_MENU       1
 #define AUTOLATHE_CATEGORY_MENU   2
 #define AUTOLATHE_SEARCH_MENU     3
+#define AUTOLATHE_SETTINGS_MENU   4 //only used for partlathe
 
 /obj/machinery/autolathe
 	name = "autolathe"
@@ -29,7 +31,9 @@
 	var/datum/research/files
 	var/list/datum/design/matching_designs
 	var/selected_category
-	var/screen = 1
+	var/screen = AUTOLATHE_MAIN_MENU
+	var/display_name = "Autolathe"
+	var/build_type_flag = AUTOLATHE
 
 	var/datum/material_container/materials
 
@@ -73,12 +77,18 @@
 
 	else
 		switch(screen)
+			if(AUTOLATHE_SYNCING)//syncing to network
+				dat = syncing_win(user)
 			if(AUTOLATHE_MAIN_MENU)
 				dat = main_win(user)
 			if(AUTOLATHE_CATEGORY_MENU)
 				dat = category_win(user,selected_category)
 			if(AUTOLATHE_SEARCH_MENU)
 				dat = search_win(user)
+			if(AUTOLATHE_SETTINGS_MENU)
+				dat = settings_win(user)
+			else
+				dat = error_win(user)
 
 	var/datum/browser/popup = new(user, "autolathe", name, 400, 500)
 	popup.set_content(dat)
@@ -88,10 +98,10 @@
 
 /obj/machinery/autolathe/attackby(obj/item/O, mob/user, params)
 	if (busy)
-		user << "<span class=\"alert\">The autolathe is busy. Please wait for completion of previous operation.</span>"
+		user << "<span class=\"alert\">The [src] is busy. Please wait for completion of previous operation.</span>"
 		return 1
 
-	if(default_deconstruction_screwdriver(user, "autolathe_t", "autolathe", O))
+	if(default_deconstruction_screwdriver(user, "[initial(icon_state)]_t", initial(icon_state), O))
 		updateUsrDialog()
 		return
 
@@ -99,7 +109,7 @@
 		return
 
 	if (panel_open)
-		if(istype(O, /obj/item/weapon/crowbar))
+		if(istype(O, /obj/item/weapon/tool/crowbar))
 			materials.retrieve_all()
 			default_deconstruction_crowbar(O)
 			return 1
@@ -111,13 +121,13 @@
 
 	var/material_amount = materials.can_insert(O)
 	if(!material_amount)
-		user << "<span class='warning'>This object does not contain sufficient amounts of metal or glass to be accepted by the autolathe.</span>"
+		user << "<span class='warning'>This object does not contain sufficient amounts of metal or glass to be accepted by the [src].</span>"
 		return 1
 	if(!materials.has_space(material_amount))
-		user << "<span class='warning'>The autolathe is full. Please remove metal or glass from the autolathe in order to insert more.</span>"
+		user << "<span class='warning'>The [src] is full. Please remove metal or glass from the [src] in order to insert more.</span>"
 		return 1
 	if(!user.unEquip(O))
-		user << "<span class='warning'>\The [O] is stuck to you and cannot be placed into the autolathe.</span>"
+		user << "<span class='warning'>\The [O] is stuck to you and cannot be placed into the [src].</span>"
 		return 1
 
 	busy = 1
@@ -125,13 +135,13 @@
 	if(inserted)
 		if(istype(O,/obj/item/stack))
 			if (O.materials[MAT_METAL])
-				flick("autolathe_o",src)//plays metal insertion animation
+				flick("[initial(icon_state)]_o",src)//plays metal insertion animation
 			if (O.materials[MAT_GLASS])
-				flick("autolathe_r",src)//plays glass insertion animation
-			user << "<span class='notice'>You insert [inserted] sheet[inserted>1 ? "s" : ""] to the autolathe.</span>"
+				flick("[initial(icon_state)]_r",src)//plays glass insertion animation
+			user << "<span class='notice'>You insert [inserted] sheet[inserted>1 ? "s" : ""] to the [src].</span>"
 			use_power(inserted*100)
 		else
-			user << "<span class='notice'>You insert a material total of [inserted] to the autolathe.</span>"
+			user << "<span class='notice'>You insert a material total of [inserted] to the [src].</span>"
 			use_power(max(500,inserted/10))
 			qdel(O)
 	busy = 0
@@ -185,8 +195,8 @@
 			if((materials.amount(MAT_METAL) >= metal_cost*multiplier/coeff) && (materials.amount(MAT_GLASS) >= glass_cost*multiplier/coeff))
 				busy = 1
 				use_power(power)
-				icon_state = "autolathe"
-				flick("autolathe_n",src)
+				icon_state = initial(icon_state)
+				flick("[initial(icon_state)]_n",src)
 				spawn(32/coeff)
 					use_power(power)
 					if(is_stack)
@@ -229,7 +239,8 @@
 				if(findtext(D.name,href_list["to_search"]))
 					matching_designs.Add(D)
 	else
-		usr << "<span class=\"alert\">The autolathe is busy. Please wait for completion of previous operation.</span>"
+		usr << "<span class=\"alert\">The [src] is busy. Please wait for completion of previous operation.</span>"
+		return 1
 
 	src.updateUsrDialog()
 
@@ -246,7 +257,7 @@
 		prod_coeff += M.rating - 1
 
 /obj/machinery/autolathe/proc/main_win(mob/user)
-	var/dat = "<div class='statusDisplay'><h3>Autolathe Menu:</h3><br>"
+	var/dat = "<div class='statusDisplay'><h3>[display_name] Menu:</h3><br>"
 	dat += "<b>Total amount:</b> [materials.total_amount] / [materials.max_amount] cm<sup>3</sup><br>"
 	dat += "<b>Metal amount:</b> [materials.amount(MAT_METAL)] cm<sup>3</sup><br>"
 	dat += "<b>Glass amount:</b> [materials.amount(MAT_GLASS)] cm<sup>3</sup><br>"
@@ -269,8 +280,18 @@
 
 		dat += "<td><A href='?src=\ref[src];category=[C];menu=[AUTOLATHE_CATEGORY_MENU]'>[C]</A></td>"
 		line_length++
-
+	var/additional_menu_items = get_additional_menu_items()
+	if(additional_menu_items)
+		dat += additional_menu_items
 	dat += "</tr></table></div>"
+	return dat
+
+/obj/machinery/autolathe/proc/syncing_win(mob/user)
+	return error_win(user)
+
+/obj/machinery/autolathe/proc/error_win(mob/user)
+	var/dat = "<A href='?src=\ref[src];menu=[AUTOLATHE_MAIN_MENU]'>Return to main menu</A>"
+	dat += "<div class='statusDisplay'>An unknown error has occurred.</div>"
 	return dat
 
 /obj/machinery/autolathe/proc/category_win(mob/user,selected_category)
@@ -330,6 +351,10 @@
 	dat += "</div>"
 	return dat
 
+/obj/machinery/autolathe/proc/settings_win(mob/user)
+	var/dat = "<A href='?src=\ref[src];menu=[AUTOLATHE_MAIN_MENU]'>Return to main menu</A>"
+	return dat
+
 /obj/machinery/autolathe/proc/can_build(datum/design/D)
 	var/coeff = (ispath(D.build_path,/obj/item/stack) ? 1 : 2 ** prod_coeff)
 
@@ -366,9 +391,12 @@
 
 	if(hack)
 		for(var/datum/design/D in files.possible_designs)
-			if((D.build_type & 4) && ("hacked" in D.category))
+			if((D.build_type & build_type_flag) && ("hacked" in D.category))
 				files.known_designs += D
 	else
 		for(var/datum/design/D in files.known_designs)
 			if("hacked" in D.category)
 				files.known_designs -= D
+
+/obj/machinery/autolathe/proc/get_additional_menu_items()
+	return

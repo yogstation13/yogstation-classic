@@ -251,7 +251,7 @@
 
 /obj/machinery/porta_turret/attackby(obj/item/I, mob/user, params)
 	if(stat & BROKEN)
-		if(istype(I, /obj/item/weapon/crowbar))
+		if(istype(I, /obj/item/weapon/tool/crowbar))
 			//If the turret is destroyed, you can remove it with a crowbar to
 			//try and salvage its components
 			user << "<span class='notice'>You begin prying the metal coverings off...</span>"
@@ -271,7 +271,7 @@
 				user << "<span class='notice'>You remove the turret but did not manage to salvage anything.</span>"
 			qdel(src)
 
-	else if((istype(I, /obj/item/weapon/wrench)) && (!on))
+	else if((istype(I, /obj/item/weapon/tool/wrench)) && (!on))
 		if(raised) return
 		//This code handles moving the turret around. After all, it's a portable turret!
 		if(!anchored && !isinspace())
@@ -443,46 +443,55 @@
 		popDown()
 		return
 
-	var/list/targets = list()			//list of primary targets
-	var/turretview = view(7, src)
-
-	if(check_anomalies)	//if it's set to check for xenos/simpleanimals
-		for(var/mob/living/simple_animal/SA in turretview)
-			if(!SA.stat && (!SA.has_unlimited_silicon_privilege || !(faction in SA.faction)) ) //don't target dead animals or NT maint drones.
-				targets += SA
-
-	for(var/mob/living/carbon/C in turretview)	//loops through all carbon-based lifeforms in view(7)
-		if(emagged && C.stat != DEAD)	//if emagged, every living carbon is a target.
-			targets += C
-			continue
-
-		if(C.stat || C.handcuffed || C.lying)	//if the perp is handcuffed or lying or dead/dying, no need to bother really
-			continue
-
-		if(ai)	//If it's set to attack all nonsilicons, target them!
-			targets += C
-			continue
-
-		if(istype(C, /mob/living/carbon/human))	//if the target is a human, analyze threat level
-			if(assess_perp(C) >= 4)
-				targets += C
-
-		else if(check_anomalies)
-			if(!(faction in C.faction))
-				for(var/F in C.faction) //We target carbons without the portaturret's faction and who also have alien or slime faction.
-					if(F == "alien" || F == "slime")
-						targets += C
-						break
-
-	for(var/obj/mecha/M in turretview)
-		if(M.occupant)
-			if(ai || emagged) // we target all occupied mechs if we're emagged or set to attack all non silicons.
-				targets += M
+	var/list/targets = calculate_targets()
 
 	if(!tryToShootAt(targets))
 		spawn()
 			popDown() // no valid targets, close the cover
 
+/obj/machinery/porta_turret/proc/calculate_targets()
+	var/list/targets = list()
+	var/turretview = view(7, src)
+
+	for(var/T in turretview)
+		if(check_anomalies)	//if it's set to check for xenos/simpleanimals
+			if(istype(T, /mob/living/simple_animal/revenant)) //Hey, look, it's our invisible friend
+				var/mob/living/simple_animal/revenant/R = T
+				if(R.revealed) //Only target revealed revenants
+					targets += R
+				continue
+
+			if(istype(T, /mob/living/simple_animal))
+				var/mob/living/simple_animal/SA = T
+				if(!SA.stat && (!SA.has_unlimited_silicon_privilege || !(faction in SA.faction)) ) //don't target dead animals or NT maint drones.
+					targets += SA
+				continue
+
+		if(istype(T, /mob/living/carbon))
+			var/mob/living/carbon/C = T
+			if((emagged || ai) && C.stat != DEAD)	//if emagged or set to attack anyone, every non-dead carbon is a target.
+				targets += C
+				continue
+
+			if(C.stat || C.handcuffed || C.lying)	//if the perp is handcuffed or lying or dead/dying, no need to bother really
+				continue
+
+			if(istype(C, /mob/living/carbon/human))	//if the target is a human, analyze threat level
+				if(assess_perp(C) >= 4)
+					targets += C
+			continue
+
+		if(istype(T, /obj/mecha))
+			var/obj/mecha/M = T
+			if(M.occupant)
+				if(!ai && !emagged) //assess the occupant of a mech before shooting if not emagged or set to kill-all mode
+					if(assess_perp(M.occupant) >= 4)
+						targets += M
+				else
+					targets += M
+			continue
+
+	return targets
 
 /obj/machinery/porta_turret/proc/tryToShootAt(list/atom/movable/targets)
 	while(targets.len > 0)
@@ -659,14 +668,14 @@
 	//this is a bit unwieldy but self-explanatory
 	switch(build_step)
 		if(0)	//first step
-			if(istype(I, /obj/item/weapon/wrench) && !anchored)
+			if(istype(I, /obj/item/weapon/tool/wrench) && !anchored)
 				playsound(loc, 'sound/items/Ratchet.ogg', 100, 1)
 				user << "<span class='notice'>You secure the external bolts.</span>"
 				anchored = 1
 				build_step = 1
 				return
 
-			else if(istype(I, /obj/item/weapon/crowbar) && !anchored)
+			else if(istype(I, /obj/item/weapon/tool/crowbar) && !anchored)
 				playsound(loc, 'sound/items/Crowbar.ogg', 75, 1)
 				user << "<span class='notice'>You dismantle the turret construction.</span>"
 				new /obj/item/stack/sheet/metal( loc, 5)
@@ -684,7 +693,7 @@
 					user << "<span class='warning'>You need two sheets of metal to continue construction!</span>"
 				return
 
-			else if(istype(I, /obj/item/weapon/wrench))
+			else if(istype(I, /obj/item/weapon/tool/wrench))
 				playsound(loc, 'sound/items/Ratchet.ogg', 75, 1)
 				user << "<span class='notice'>You unfasten the external bolts.</span>"
 				anchored = 0
@@ -693,14 +702,14 @@
 
 
 		if(2)
-			if(istype(I, /obj/item/weapon/wrench))
+			if(istype(I, /obj/item/weapon/tool/wrench))
 				playsound(loc, 'sound/items/Ratchet.ogg', 100, 1)
 				user << "<span class='notice'>You bolt the metal armor into place.</span>"
 				build_step = 3
 				return
 
-			else if(istype(I, /obj/item/weapon/weldingtool))
-				var/obj/item/weapon/weldingtool/WT = I
+			else if(istype(I, /obj/item/weapon/tool/weldingtool))
+				var/obj/item/weapon/tool/weldingtool/WT = I
 				if(!WT.isOn())
 					return
 				if(WT.get_fuel() < 5) //uses up 5 fuel.
@@ -709,7 +718,7 @@
 
 				playsound(loc, pick('sound/items/Welder.ogg', 'sound/items/Welder2.ogg'), 50, 1)
 				user << "<span class='notice'>You start to remove the turret's interior metal armor...</span>"
-				if(do_after(user, 20, target = src))
+				if(do_after(user, 20 * WT.speed_coefficient, target = src))
 					if(!src || !WT.remove_fuel(5, user)) return
 					build_step = 1
 					user << "<span class='notice'>You remove the turret's interior metal armor.</span>"
@@ -733,7 +742,7 @@
 				qdel(I) //delete the gun :(
 				return
 
-			else if(istype(I, /obj/item/weapon/wrench))
+			else if(istype(I, /obj/item/weapon/tool/wrench))
 				playsound(loc, 'sound/items/Ratchet.ogg', 100, 1)
 				user << "<span class='notice'>You remove the turret's metal armor bolts.</span>"
 				build_step = 2
@@ -752,7 +761,7 @@
 			//attack_hand() removes the gun
 
 		if(5)
-			if(istype(I, /obj/item/weapon/screwdriver))
+			if(istype(I, /obj/item/weapon/tool/screwdriver))
 				playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
 				build_step = 6
 				user << "<span class='notice'>You close the internal access hatch.</span>"
@@ -770,22 +779,22 @@
 					user << "<span class='warning'>You need two sheets of metal to continue construction!</span>"
 				return
 
-			else if(istype(I, /obj/item/weapon/screwdriver))
+			else if(istype(I, /obj/item/weapon/tool/screwdriver))
 				playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
 				build_step = 5
 				user << "<span class='notice'>You open the internal access hatch.</span>"
 				return
 
 		if(7)
-			if(istype(I, /obj/item/weapon/weldingtool))
-				var/obj/item/weapon/weldingtool/WT = I
+			if(istype(I, /obj/item/weapon/tool/weldingtool))
+				var/obj/item/weapon/tool/weldingtool/WT = I
 				if(!WT.isOn()) return
 				if(WT.get_fuel() < 5)
 					user << "<span class='warning'>You need more fuel to complete this task!</span>"
 
 				playsound(loc, pick('sound/items/Welder.ogg', 'sound/items/Welder2.ogg'), 50, 1)
 				user << "<span class='notice'>You begin to weld the turret's armor down...</span>"
-				if(do_after(user, 30, target = src))
+				if(do_after(user, 30 * WT.speed_coefficient, target = src))
 					if(!src || !WT.remove_fuel(5, user))
 						return
 					build_step = 8
@@ -803,7 +812,7 @@
 //					Turret.cover.name = finish_name
 					qdel(src)
 
-			else if(istype(I, /obj/item/weapon/crowbar))
+			else if(istype(I, /obj/item/weapon/tool/crowbar))
 				playsound(loc, 'sound/items/Crowbar.ogg', 75, 1)
 				user << "<span class='notice'>You pry off the turret's exterior armor.</span>"
 				new /obj/item/stack/sheet/metal(loc, 2)
@@ -977,7 +986,7 @@ Status: []<BR>"},
 
 
 /obj/machinery/porta_turret_cover/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/weapon/wrench) && !Parent_Turret.on)
+	if(istype(I, /obj/item/weapon/tool/wrench) && !Parent_Turret.on)
 		if(Parent_Turret.raised) return
 
 		if(!Parent_Turret.anchored)

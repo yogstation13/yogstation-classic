@@ -101,6 +101,13 @@
 
 
 /turf/simulated/wall/attack_animal(mob/living/simple_animal/M)
+	if(istype(M,/mob/living/simple_animal/construct/builder)||istype(M,/mob/living/simple_animal/construct/harvester))
+		if(istype(src, /turf/simulated/wall/cult))
+			return
+		src.ChangeTurf(/turf/simulated/wall/cult)
+		M <<"<span class='notice'>You transfer some of your corrupt energy into the wall, causing it to transform.</span>"
+		playsound(src, 'sound/items/Welder.ogg', 100, 1)
+		return
 	M.changeNext_move(CLICK_CD_MELEE)
 	M.do_attack_animation(src)
 	if(M.environment_smash >= 2)
@@ -108,6 +115,20 @@
 		M << "<span class='notice'>You smash through the wall.</span>"
 		dismantle_wall(1)
 		return
+
+
+/turf/simulated/wall/cult/Bumped(atom/movable/C as mob)
+	var/phasable=0
+	if(istype(C,/mob/living/simple_animal/construct/builder)||istype(C,/mob/living/simple_animal/construct/wraith)||istype(C,/mob/living/simple_animal/construct/harvester))
+		phasable = 2
+		while(phasable>0)
+			src.density = 0
+			sleep(10)
+			phasable--
+		src.density = 1
+	return
+
+
 
 /turf/simulated/wall/attack_hulk(mob/user)
 	..(user, 1)
@@ -188,12 +209,12 @@
 
 
 /turf/simulated/wall/proc/try_decon(obj/item/weapon/W, mob/user, turf/T)
-	if( istype(W, /obj/item/weapon/weldingtool) )
-		var/obj/item/weapon/weldingtool/WT = W
+	if( istype(W, /obj/item/weapon/tool/weldingtool) )
+		var/obj/item/weapon/tool/weldingtool/WT = W
 		if( WT.remove_fuel(0,user) )
 			user << "<span class='notice'>You begin slicing through the outer plating...</span>"
 			playsound(src, 'sound/items/Welder.ogg', 100, 1)
-			if(do_after(user, slicing_duration, target = src))
+			if(do_after(user, slicing_duration * WT.speed_coefficient, target = src))
 				if( !istype(src, /turf/simulated/wall) || !user || !WT || !WT.isOn() || !T )
 					return 1
 				if( user.loc == T && user.get_active_hand() == WT )

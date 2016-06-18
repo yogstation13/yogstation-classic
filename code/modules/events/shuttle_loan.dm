@@ -90,7 +90,8 @@
 		var/list/shuttle_spawns = list()
 		switch(dispatch_type)
 			if(HIJACK_SYNDIE)
-				add_crates(list(/datum/supply_packs/emergency/specialops), empty_shuttle_turfs)
+				var/datum/supply_packs/pack = SSshuttle.supply_packs[/datum/supply_packs/emergency/specialops]
+				pack.generate(pick_n_take(empty_shuttle_turfs))
 				shuttle_spawns.Add(/mob/living/simple_animal/hostile/syndicate)
 				shuttle_spawns.Add(/mob/living/simple_animal/hostile/syndicate)
 				if(prob(75))
@@ -99,7 +100,8 @@
 					shuttle_spawns.Add(/mob/living/simple_animal/hostile/syndicate)
 
 			if(RUSKY_PARTY)
-				add_crates(list(/datum/supply_packs/organic/party), empty_shuttle_turfs)
+				var/datum/supply_packs/pack = SSshuttle.supply_packs[/datum/supply_packs/organic/party]
+				pack.generate(pick_n_take(empty_shuttle_turfs))
 				shuttle_spawns.Add(/mob/living/simple_animal/hostile/russian)
 				shuttle_spawns.Add(/mob/living/simple_animal/hostile/russian/ranged)	//drops a mateba
 				shuttle_spawns.Add(/mob/living/simple_animal/hostile/bear)
@@ -109,7 +111,8 @@
 					shuttle_spawns.Add(/mob/living/simple_animal/hostile/bear)
 
 			if(SPIDER_GIFT)
-				add_crates(list(/datum/supply_packs/emergency/specialops), empty_shuttle_turfs)
+				var/datum/supply_packs/pack = SSshuttle.supply_packs[/datum/supply_packs/emergency/specialops]
+				pack.generate(pick_n_take(empty_shuttle_turfs))
 				shuttle_spawns.Add(/mob/living/simple_animal/hostile/poison/giant_spider)
 				shuttle_spawns.Add(/mob/living/simple_animal/hostile/poison/giant_spider)
 				shuttle_spawns.Add(/mob/living/simple_animal/hostile/poison/giant_spider/nurse)
@@ -167,7 +170,9 @@
 					/datum/supply_packs/science/plasma,
 					/datum/supply_packs/medical/supplies
 					)
-				add_crates(crate_types, empty_shuttle_turfs)
+				for(var/crate in crate_types)
+					var/datum/supply_packs/pack = SSshuttle.supply_packs[crate]
+					pack.generate(pick_n_take(empty_shuttle_turfs))
 
 				for(var/i=0,i<5,i++)
 					var/turf/T = pick(empty_shuttle_turfs)
@@ -183,17 +188,6 @@
 
 			var/spawn_type = pick_n_take(shuttle_spawns)
 			new spawn_type(T)
-
-/datum/round_event/shuttle_loan/proc/add_crates(list/crate_types, list/turfs)
-	for(var/crate_type in crate_types)
-		var/turf/T = pick_n_take(turfs)
-		var/datum/supply_packs/sp_obj = new crate_type()
-		var/atom/Crate = new sp_obj.containertype(T)
-		Crate.name = sp_obj.containername
-		for(var/type_path in sp_obj.contains)
-			var/atom/A = new type_path(Crate)
-			if(sp_obj.amount && A.vars.Find("amount") && A:amount)
-				A:amount = sp_obj.amount
 
 #undef HIJACK_SYNDIE
 #undef RUSKY_PARTY

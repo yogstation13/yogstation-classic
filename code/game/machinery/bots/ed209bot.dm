@@ -174,9 +174,9 @@ Auto Patrol[]"},
 				user << "<span class='notice'>Access denied.</span>"
 	else
 		..()
-		if(istype(W, /obj/item/weapon/weldingtool) && user.a_intent != "harm") // Any intent but harm will heal, so we shouldn't get angry.
+		if(istype(W, /obj/item/weapon/tool/weldingtool) && user.a_intent != "harm") // Any intent but harm will heal, so we shouldn't get angry.
 			return
-		if (!istype(W, /obj/item/weapon/screwdriver) && (!target)) // Added check for welding tool to fix #2432. Welding tool behavior is handled in superclass.
+		if (!istype(W, /obj/item/weapon/tool/screwdriver) && (!target)) // Added check for welding tool to fix #2432. Welding tool behavior is handled in superclass.
 			if(W.force && W.damtype != STAMINA)//If force is non-zero and damage type isn't stamina.
 				threatlevel = user.assess_threat(src)
 				threatlevel += 6
@@ -250,7 +250,7 @@ Auto Patrol[]"},
 				back_to_idle()
 
 			if(target)		// make sure target exists
-				if(Adjacent(target) && isturf(target.loc)) // if right next to perp
+				if(!lasercolor && Adjacent(target) && isturf(target.loc)) // if right next to perp
 					playsound(loc, 'sound/weapons/Egloves.ogg', 50, 1, -1)
 					icon_state = "[lasercolor]ed209-c"
 					spawn(2)
@@ -578,8 +578,8 @@ Auto Patrol[]"},
 				icon_state = "[lasercolor]ed209_shell"
 
 		if(3)
-			if(istype(W, /obj/item/weapon/weldingtool))
-				var/obj/item/weapon/weldingtool/WT = W
+			if(istype(W, /obj/item/weapon/tool/weldingtool))
+				var/obj/item/weapon/tool/weldingtool/WT = W
 				if(WT.remove_fuel(0,user))
 					build_step++
 					name = "shielded frame assembly"
@@ -659,7 +659,7 @@ Auto Patrol[]"},
 			qdel(W)
 
 		if(8)
-			if(istype(W, /obj/item/weapon/screwdriver))
+			if(istype(W, /obj/item/weapon/tool/screwdriver))
 				playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
 				var/turf/T = get_turf(user)
 				user << "<span class='notice'>You start attaching the gun to the frame...</span>"

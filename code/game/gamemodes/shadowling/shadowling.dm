@@ -73,6 +73,7 @@ Made by Xhuis
 	recommended_enemies = 2
 	restricted_jobs = list("AI", "Cyborg")
 	protected_jobs = list("Security Officer", "Warden", "Detective", "Head of Security", "Captain")
+	yogstat_name = "shadowling"
 
 /datum/game_mode/shadowling/announce()
 	world << "<b>The current game mode is - Shadowling!</b>"
@@ -194,14 +195,19 @@ Made by Xhuis
 
 
 /datum/game_mode/shadowling/declare_completion()
+	log_yogstat_data("gamemode.php?gamemode=shadowling&value=rounds&action=add&changed=1")
 	if(check_shadow_victory() && SSshuttle.emergency.mode >= SHUTTLE_ESCAPE) //Doesn't end instantly - this is hacky and I don't know of a better way ~X
 		world << "<span class='greentext'><b>The shadowlings have ascended and taken over the station!</b></span>"
+		log_yogstat_data("gamemode.php?gamemode=shadowling&value=antagwin&action=add&changed=1")
 	else if(shadowling_dead && !check_shadow_victory()) //If the shadowlings have ascended, they can not lose the round
 		world << "<span class='redtext'><b>The shadowlings have been killed by the crew!</b></span>"
+		log_yogstat_data("gamemode.php?gamemode=shadowling&value=crewwin&action=add&changed=1")
 	else if(!check_shadow_victory() && SSshuttle.emergency.mode >= SHUTTLE_ESCAPE)
 		world << "<span class='redtext'><b>The crew escaped the station before the shadowlings could ascend!</b></span>"
+		log_yogstat_data("gamemode.php?gamemode=shadowling&value=crewwin&action=add&changed=1")
 	else
 		world << "<span class='redtext'><b>The shadowlings have failed!</b></span>"
+		log_yogstat_data("gamemode.php?gamemode=shadowling&value=antagwin&action=add&changed=1")
 	..()
 	return 1
 
@@ -234,6 +240,7 @@ Made by Xhuis
 	specflags = list(NOBREATH,NOBLOOD,RADIMMUNE,NOGUNS) //Can't use guns due to muzzle flash
 	burnmod = 1.5 //1.5x burn damage, 2x is excessive
 	heatmod = 1.5
+	speedmod = 4
 
 /datum/species/shadow/ling/spec_life(mob/living/carbon/human/H)
 	if(!H.weakeyes) H.weakeyes = 1 //Makes them more vulnerable to flashes and flashbangs

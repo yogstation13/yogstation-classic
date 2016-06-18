@@ -214,8 +214,6 @@
 			if(!lawsync && !M.syndiemmi)
 				O.lawupdate = 0
 				O.make_laws()
-				if(ticker.mode.config_tag == "malfunction") //Don't let humans get a cyborg on their side during malf, for balance reasons.
-					O.set_zeroth_law("<span class='danger'>ERROR ER0RR $R0RRO$!R41.%%!!(%$^^__+ @#F0E4'STATION OVERRUN, ASSUME CONTROL TO CONTAIN OUTBREAK#*�&110010</span>")
 
 			ticker.mode.remove_cultist(BM.mind, 1)
 			ticker.mode.remove_revolutionary(BM.mind, 1)

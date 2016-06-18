@@ -32,8 +32,8 @@
 		var/mob/living/carbon/human/H = src.loc
 		if(H.ears == src)
 			return ..(freq, level)
-	else if(istype(loc, /mob/living/simple_animal/hostile))
-		var/mob/living/simple_animal/hostile/animal = loc
+	else if(istype(loc, /mob/living/simple_animal))
+		var/mob/living/simple_animal/animal = loc
 		if(animal.headset == src)
 			return ..(freq, level)
 	else if(AIuser)
@@ -218,10 +218,10 @@
 /obj/item/device/radio/headset/attackby(obj/item/weapon/W, mob/user, params)
 //	..()
 	user.set_machine(src)
-	if (!( istype(W, /obj/item/weapon/screwdriver) || (istype(W, /obj/item/device/encryptionkey/ ))))
+	if (!( istype(W, /obj/item/weapon/tool/screwdriver) || (istype(W, /obj/item/device/encryptionkey/ ))))
 		return
 
-	if(istype(W, /obj/item/weapon/screwdriver))
+	if(istype(W, /obj/item/weapon/tool/screwdriver))
 		if(keyslot || keyslot2)
 
 

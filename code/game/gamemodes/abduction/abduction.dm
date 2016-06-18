@@ -16,6 +16,7 @@
 	var/list/datum/objective/team_objectives = list()
 	var/list/team_names = list()
 	var/finished = 0
+	yogstat_name = "abductor"
 
 /datum/game_mode/abduction/announce()
 	world << "<B>The current game mode is - Abduction!</B>"
@@ -242,6 +243,7 @@
 	agent.equip_to_slot_or_del(new /obj/item/weapon/gun/energy/alien(agent), slot_belt)
 	agent.equip_to_slot_or_del(new /obj/item/device/abductor/silencer(agent), slot_in_backpack)
 	agent.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/abductor(agent), slot_head)
+	agent.equip_to_slot_or_del(new /obj/item/weapon/card/id/syndicate/abductor(agent), slot_wear_id)
 
 
 /datum/game_mode/abduction/proc/equip_scientist(var/mob/living/carbon/human/scientist,var/team_number)
@@ -272,14 +274,17 @@
 	return ..()
 
 /datum/game_mode/abduction/declare_completion()
+	log_yogstat_data("gamemode.php?gamemode=abductor&value=rounds&action=add&changed=1")
 	for(var/team_number=1,team_number<=abductor_teams,team_number++)
 		var/obj/machinery/abductor/console/console = get_team_console(team_number)
 		var/datum/objective/objective = team_objectives[team_number]
 		var/team_name = team_names[team_number]
 		if(console.experiment.points >= objective.target_amount)
 			world << "<span class='greentext'><b>[team_name] team fullfilled its mission!</b></span>"
+			log_yogstat_data("gamemode.php?gamemode=abductor&value=antagwin&action=add&changed=1")
 		else
 			world << "<span class='greentext'><b>[team_name] team failed its mission.</b></span>"
+			log_yogstat_data("gamemode.php?gamemode=abductor&value=crewwin&action=add&changed=1")
 	..()
 	return 1
 

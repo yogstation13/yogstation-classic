@@ -105,6 +105,8 @@ mob/verb/test()
 	// The initial height of the browser control, used when the window is first shown to a client.
 	var/height
 
+	var/static/list/asset_list = list()
+
 /datum/html_interface/New(atom/ref, title, width = 700, height = 480, head = "")
 	html_interfaces.Add(src)
 
@@ -354,3 +356,17 @@ mob/verb/test()
 				if ("onclose")
 					src.hide(hclient)
 		else if (src.ref && hclient.active) src.ref.Topic(href, href_list, hclient)
+
+/datum/html_interface/proc/registerResources(var/list/resources = list())
+	resources["jquery.min.js"] = 'js/jquery.min.js'
+	resources["bootstrap.min.js"] = 'js/bootstrap.min.js'
+	resources["bootstrap.min.css"] = 'css/bootstrap.min.css'
+	resources["html_interface.css"] = 'css/html_interface.css'
+	resources["html_interface.js"] = 'js/html_interface.js'
+	var/assetlist = list()
+	for (var/R in resources)
+		register_asset(R,resources[R])
+		assetlist += R
+	if (!asset_list)
+		asset_list = list()
+	asset_list[type] = assetlist

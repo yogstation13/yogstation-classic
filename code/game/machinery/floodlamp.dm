@@ -8,6 +8,7 @@
 	icon_state = "flood000"
 
 	density = 1
+	can_be_unanchored = 1
 
 	var/list/flashlights = list();
 	var/opened = 0
@@ -36,6 +37,9 @@ obj/machinery/flood_lamp/proc/update_brightness()
 		SetLuminosity(0)
 
 obj/machinery/flood_lamp/attack_hand(mob/living/carbon/user)
+	if(!anchored)
+		user << "<span class='warning'>You need to wrench this in place before you can turn it on!</span>"
+		return
 	if(opened && cell && istype(user))
 		cell.loc = get_turf(src)
 		user.put_in_active_hand(cell)
@@ -65,15 +69,25 @@ obj/machinery/flood_lamp/attackby(obj/item/weapon/W, mob/user, params)
 			return 0
 		cell = W
 		W.loc = src
-	if(istype(W,/obj/item/weapon/crowbar))
+	if(istype(W,/obj/item/weapon/tool/crowbar))
 		opened = !opened
-	if(istype(W,/obj/item/weapon/wirecutters))
+	if(istype(W,/obj/item/weapon/tool/wirecutters))
 		for(var/obj/item/device/flashlight/F in flashlights) // Other ways to just grab a random one and dump it?
 			F.loc = loc
 			flashlights -= F
 			playsound(loc, 'sound/items/Wirecutter.ogg', 50, 1, -1)
 			update_all()
 			return;
+	if(istype(W, /obj/item/weapon/tool/wrench))
+		if(!istype(loc, /turf/simulated/floor))
+			user << "<span class='warning'>A floor must be present to secure the floodlamp!</span>"
+			return
+		if(anchored && on)
+			user << "<span class='warning'>You can't do this while the light is on!</span>"
+			return
+		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
+		user << "<span class='notice'>You [anchored ? "un" : ""]secure the floodlamp.</span>"
+		anchored = !anchored
 	update_appearance()
 
 obj/machinery/flood_lamp/proc/toggle_light()
@@ -93,7 +107,6 @@ obj/machinery/flood_lamp/assembled
 		flashlights += new/obj/item/device/flashlight(src)
 		flashlights += new/obj/item/device/flashlight(src)
 		..()
-
 
 /obj/item/weapon/paper/flood_lamp
 	name = "paper- 'Floodlamp Operation for Dummies'"

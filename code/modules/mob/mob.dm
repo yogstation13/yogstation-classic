@@ -184,7 +184,7 @@ var/next_mob_id = 0
 /mob/proc/Life()
 	return
 
-/mob/proc/get_item_by_slot(slot_id)
+/mob/proc/get_item_by_slot(slot_id, obj/item/what = null)
 	switch(slot_id)
 		if(slot_l_hand)
 			return l_hand
@@ -624,7 +624,7 @@ var/list/slot_equipment_priority = list( \
 	reset_view(null)
 	unset_machine()
 
-/mob/Topic(href, href_list)
+/mob/Topic(href, href_list, strip_coeff = 0, silent_strip = 0, put_in_hand = 0)
 	if(href_list["mach_close"])
 		var/t1 = text("window=[href_list["mach_close"]]")
 		unset_machine()
@@ -636,13 +636,18 @@ var/list/slot_equipment_priority = list( \
 
 	if(usr.canUseTopic(src, BE_CLOSE, NO_DEXTERY))
 		if(href_list["item"])
+			var/obj/item/what
 			var/slot = text2num(href_list["item"])
-			var/obj/item/what = get_item_by_slot(slot)
+			if(href_list["item_ref"])
+				if(href_list["item_ref"] != "0" && !usr.get_active_hand())
+					what = locate(href_list["item_ref"])
+			else
+				what = get_item_by_slot(slot)
 
 			if(what)
-				usr.stripPanelUnequip(what,src,slot)
+				usr.stripPanelUnequip(what, src, slot, strip_coeff, silent_strip, put_in_hand)
 			else
-				usr.stripPanelEquip(what,src,slot)
+				usr.stripPanelEquip(what, src, slot, strip_coeff, silent_strip)
 
 	if(usr.machine == src)
 		if(Adjacent(usr))
@@ -694,7 +699,7 @@ var/list/slot_equipment_priority = list( \
 		stat(null, "Server Time: [time2text(world.realtime, "YYYY-MM-DD hh:mm")]")
 		stat(null, "Round: [yog_round_number]")
 
-		if(client && client.holder)
+		if(client && (client.holder || ticket_counter_visible_to_everyone))
 			var/tickets_unclaimed = 0
 			var/tickets_unresolved = 0
 			var/tickets_resolved = 0

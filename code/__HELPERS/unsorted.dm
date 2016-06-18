@@ -1294,12 +1294,12 @@ Turf and target are seperate in case you want to teleport some distance from a t
 //Quick type checks for some tools
 var/global/list/common_tools = list(
 /obj/item/stack/cable_coil,
-/obj/item/weapon/wrench,
-/obj/item/weapon/weldingtool,
-/obj/item/weapon/screwdriver,
-/obj/item/weapon/wirecutters,
+/obj/item/weapon/tool/wrench,
+/obj/item/weapon/tool/weldingtool,
+/obj/item/weapon/tool/screwdriver,
+/obj/item/weapon/tool/wirecutters,
 /obj/item/device/multitool,
-/obj/item/weapon/crowbar)
+/obj/item/weapon/tool/crowbar)
 
 /proc/istool(O)
 	if(O && is_type_in_list(O, common_tools))
@@ -1307,8 +1307,8 @@ var/global/list/common_tools = list(
 	return 0
 
 /proc/is_hot(obj/item/W)
-	if(istype(W, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/O = W
+	if(istype(W, /obj/item/weapon/tool/weldingtool))
+		var/obj/item/weapon/tool/weldingtool/O = W
 		if(O.isOn())
 			return 3800
 		else
@@ -1393,7 +1393,7 @@ var/global/list/common_tools = list(
 /proc/is_pointed(obj/item/W)
 	if(istype(W, /obj/item/weapon/pen))
 		return 1
-	if(istype(W, /obj/item/weapon/screwdriver))
+	if(istype(W, /obj/item/weapon/tool/screwdriver))
 		return 1
 	if(istype(W, /obj/item/weapon/reagent_containers/syringe))
 		return 1
@@ -1776,3 +1776,30 @@ B --><-- A
 				closest_distance = distance
 				closest_atom = A
 	return closest_atom
+
+//ultra range (no limitations on distance, faster than range for distances > 8); including areas drastically decreases performance
+// stole- *cough* ported from /tg/
+/proc/urange(dist=0, atom/center=usr, orange=0, areas=0)
+	if(!dist)
+		if(!orange)
+			return list(center)
+		else
+			return list()
+
+	var/list/turfs = RANGE_TURFS(dist, center)
+	if(orange)
+		turfs -= get_turf(center)
+	. = list()
+	for(var/V in turfs)
+		var/turf/T = V
+		. += T
+		. += T.contents
+		if(areas)
+			. |= T.loc
+
+/atom/proc/contains(var/atom/A)
+	if(!A)
+		return 0
+	for(var/atom/location = A.loc, location, location = location.loc)
+		if(location == src)
+			return 1

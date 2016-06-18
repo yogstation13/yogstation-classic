@@ -62,16 +62,16 @@
 		qdel(src)
 
  /**
-  * The ui_interact proc is used to open and update Nano UIs
-  * If ui_interact is not used then the UI will not update correctly
-  * ui_interact is currently defined for /atom/movable
+  * The nanoui_interact proc is used to open and update Nano UIs
+  * If nanoui_interact is not used then the UI will not update correctly
+  * nanoui_interact is currently defined for /atom/movable
   *
   * @param user /mob The mob who is interacting with this ui
   * @param ui_key string A string key to use for this ui. Allows for multiple unique uis on one obj/mob (defaut value "main")
   *
   * @return nothing
   */
-/obj/machinery/chem_dispenser/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null)
+/obj/machinery/chem_dispenser/nanoui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null)
 	if(stat & (BROKEN)) return
 	if(user.stat || user.restrained()) return
 
@@ -181,7 +181,7 @@
 	if(stat & BROKEN)
 		return
 
-	ui_interact(user)
+	nanoui_interact(user)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -237,7 +237,7 @@
 		return
 
 	if(panel_open)
-		if(istype(I, /obj/item/weapon/crowbar))
+		if(istype(I, /obj/item/weapon/tool/crowbar))
 			if(beaker)
 				var/obj/item/weapon/reagent_containers/glass/B = beaker
 				B.loc = loc
@@ -616,7 +616,7 @@
 		return
 
 	if(panel_open)
-		if(istype(B, /obj/item/weapon/crowbar))
+		if(istype(B, /obj/item/weapon/tool/crowbar))
 			default_deconstruction_crowbar(B)
 			return 1
 		else
@@ -940,7 +940,7 @@
 		src.updateUsrDialog()
 		icon_state = "mixer1"
 
-	else if(istype(I, /obj/item/weapon/screwdriver))
+	else if(istype(I, /obj/item/weapon/tool/screwdriver))
 		if(src.beaker)
 			beaker.loc = get_turf(src)
 		..()
@@ -1089,20 +1089,21 @@
 		if(istype(O, /obj/item/weapon/storage/bag))
 				var/obj/item/weapon/storage/bag/B = O
 
-				for (var/obj/item/weapon/reagent_containers/food/snacks/grown/G in B.contents)
-						B.remove_from_storage(G, src)
-						holdingitems += G
-						if(holdingitems && holdingitems.len >= limit) //Sanity checking so the blender doesn't overfill
-								user << "<span class='notice'>You fill the All-In-One grinder to the brim.</span>"
-								break
+				for (var/V in B.contents)
+						if(will_it_blend(V))
+								B.remove_from_storage(V, src)
+								holdingitems += V
+								if(holdingitems && holdingitems.len >= limit) //Sanity checking so the blender doesn't overfill
+										user << "<span class='notice'>You fill the All-In-One grinder to the brim.</span>"
+										break
 
 				if(!O.contents.len)
-						user << "<span class='notice'>You empty the plant bag into the All-In-One grinder.</span>"
+						user << "<span class='notice'>You empty the bag into the All-In-One grinder.</span>"
 
 				src.updateUsrDialog()
 				return 0
 
-		if (!is_type_in_list(O, blend_items) && !is_type_in_list(O, juice_items))
+		if (!will_it_blend(O))
 				user << "<span class='warning'>Cannot refine into a reagent!</span>"
 				return 1
 
@@ -1211,12 +1212,6 @@
 		holdingitems = list()
 		updateUsrDialog()
 
-/obj/machinery/reagentgrinder/proc/is_allowed(obj/item/weapon/reagent_containers/O)
-		for (var/i in blend_items)
-				if(istype(O, i))
-						return 1
-		return 0
-
 /obj/machinery/reagentgrinder/proc/get_allowed_by_id(obj/item/O)
 		for (var/i in blend_items)
 				if (istype(O, i))
@@ -1288,6 +1283,10 @@
 								break
 
 				remove_object(O)
+
+
+/obj/machinery/reagentgrinder/proc/will_it_blend(obj/O)
+	return is_type_in_list(O, blend_items) || is_type_in_list(O, juice_items)
 
 /obj/machinery/reagentgrinder/proc/grind()
 
@@ -1480,13 +1479,13 @@
 		return
 
 	if(panel_open)
-		if(istype(I, /obj/item/weapon/crowbar))
+		if(istype(I, /obj/item/weapon/tool/crowbar))
 			eject_beaker()
 			default_deconstruction_crowbar(I)
 			return 1
 
 /obj/machinery/chem_heater/attack_hand(mob/user)
-	ui_interact(user)
+	nanoui_interact(user)
 
 /obj/machinery/chem_heater/Topic(href, href_list)
 	if(..())
@@ -1510,7 +1509,7 @@
 		eject_beaker()
 		. = 0 //updated in eject_beaker() already
 
-/obj/machinery/chem_heater/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null)
+/obj/machinery/chem_heater/nanoui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null)
 	if(user.stat || user.restrained()) return
 
 	ui = SSnano.push_open_or_new_ui(user, src, ui_key, ui, "chem_heater.tmpl", "ChemHeater", 350, 270, 0)

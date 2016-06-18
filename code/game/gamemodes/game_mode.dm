@@ -39,6 +39,8 @@
 	var/const/waittime_l = 600
 	var/const/waittime_h = 1800 // started at 1800
 
+	var/yogstat_name = null
+
 
 /datum/game_mode/proc/announce() //to be calles when round starts
 	world << "<B>Notice</B>: [src] did not define announce()"
@@ -75,6 +77,10 @@
 /datum/game_mode/proc/post_setup(report=1)
 	spawn (ROUNDSTART_LOGOUT_REPORT_TIME)
 		display_roundstart_logout_report()
+	for(var/mob/antag in mob_list)
+		if(antag.mind)
+			if(antag.mind.special_role)
+				antag.mind.show_memory(antag)
 
 	feedback_set_details("round_start","[time2text(world.realtime)]")
 	if(ticker && ticker.mode)
@@ -300,7 +306,7 @@
 
 		// Add all our antag candidates to a list()
 		for (var/datum/mind/player in antag_candidates)
-			ckey_listed += get_ckey(player)
+			ckey_listed += sanitizeSQL(get_ckey(player))
 
 		// Turn the list into a string that we will use to filter the player table
 		ckey_for_sql = list2string(ckey_listed, "', '")
@@ -349,6 +355,10 @@
 				weight = min(400, weight * 1.5)
 				var/DBQuery/query = dbcon.NewQuery("UPDATE [format_table_name("player")] SET `antag_weight` = [weight] WHERE `ckey` = '[ckey]'")
 				query.Execute()
+
+		for(var/client/C in clients)
+			C.last_cached_weight = output[C.ckey]
+			C.last_cached_total_weight = total
 
 		// If after all this we still don't have a candidate, then use the legacy system
 		if(!final_candidate)

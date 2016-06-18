@@ -31,7 +31,8 @@
 	status_flags = (CANPUSH | CANSTUN | CANWEAKEN)
 	gender = NEUTER
 	voice_name = "synthesized chirp"
-	languages = DRONE
+	languages_understood = DRONE | HUMAN
+	languages_spoken = DRONE
 	mob_size = MOB_SIZE_SMALL
 	has_unlimited_silicon_privilege = 1
 	staticOverlays = list()

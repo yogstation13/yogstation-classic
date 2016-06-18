@@ -119,9 +119,12 @@
 //some arbitrary defines to be used by self-pruning global lists. (see master_controller)
 #define PROCESS_KILL 26	//Used to trigger removal from a processing list
 
-#define MANIFEST_ERROR_NAME		1
-#define MANIFEST_ERROR_COUNT	2
-#define MANIFEST_ERROR_ITEM		4
+// Cargo-related stuff.
+#define MANIFEST_ERROR_CHANCE		5
+#define MANIFEST_ERROR_NAME			1
+#define MANIFEST_ERROR_CONTENTS		2
+#define MANIFEST_ERROR_ITEM			4
+
 
 #define TRANSITIONEDGE			7 //Distance from edge to move to another z-level
 
@@ -237,6 +240,8 @@
 #define MAT_PLASMA		"$plasma"
 #define MAT_BANANIUM	"$bananium"
 
+#define MAT_BIOMASS		"$biomass"
+
 
 //check_target_facings() return defines
 #define FACING_FAILED											0
@@ -263,3 +268,8 @@
 #define GHOST_ORBIT_HEXAGON		"hexagon"
 #define GHOST_ORBIT_SQUARE		"square"
 #define GHOST_ORBIT_PENTAGON	"pentagon"
+
+//Turf wet states
+#define TURF_DRY		0
+#define TURF_WET_WATER	1
+#define TURF_WET_LUBE	2

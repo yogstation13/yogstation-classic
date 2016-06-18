@@ -29,6 +29,8 @@ other types of metals and chemistry for reagents).
 - Add the AUTOLATHE tag to
 */
 
+var/list/datum/design/abstract_designs = list(/datum/design, /datum/design/biogenerator, /datum/design/biogenerator/reagent)
+
 /datum/design						//Datum for object designs, used in construction
 	var/name = "Name"					//Name of the created object.
 	var/desc = "Desc"					//Description of the created object.
@@ -356,7 +358,7 @@ other types of metals and chemistry for reagents).
 	req_tech = list("materials" = 2, "engineering" = 2)
 	build_type = PROTOLATHE
 	materials = list(MAT_METAL = 4000, MAT_BANANIUM = 1000)
-	build_path = /obj/item/weapon/bikehorn/airhorn
+	build_path = /obj/item/device/assembly/bikehorn/airhorn
 	category = list("Equipment")
 
 /datum/design/mesons
@@ -454,5 +456,5 @@ other types of metals and chemistry for reagents).
 	req_tech = list("materials" = 4, "engineering" = 4, "bluespace" = 3, "plasmatech" = 3)
 	build_type = PROTOLATHE
 	materials = list(MAT_METAL = 1000, MAT_GLASS = 500, MAT_PLASMA = 1500, MAT_URANIUM = 200)
-	build_path = /obj/item/weapon/weldingtool/experimental
+	build_path = /obj/item/weapon/tool/weldingtool/experimental
 	category = list("Equipment")

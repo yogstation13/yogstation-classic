@@ -22,7 +22,7 @@
 	var/sheets_refunded = 2
 
 /obj/item/light_fixture_frame/attackby(obj/item/weapon/W, mob/user, params)
-	if (istype(W, /obj/item/weapon/wrench))
+	if (istype(W, /obj/item/weapon/tool/wrench))
 		new /obj/item/stack/sheet/metal( get_turf(src.loc), sheets_refunded )
 		qdel(src)
 		return
@@ -96,11 +96,12 @@
 
 /obj/machinery/light_construct/attackby(obj/item/weapon/W, mob/user, params)
 	src.add_fingerprint(user)
-	if (istype(W, /obj/item/weapon/wrench))
+	if (istype(W, /obj/item/weapon/tool/wrench))
 		if (src.stage == 1)
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
 			usr << "<span class='notice'>You begin deconstructing [src]...</span>"
-			if (!do_after(usr, 30, target = src))
+			var/obj/item/weapon/tool/wrench/wrench = W
+			if (!do_after(usr, 30 * wrench.speed_coefficient, target = src))
 				return
 			new /obj/item/stack/sheet/metal( get_turf(src.loc), sheets_refunded )
 			user.visible_message("[user.name] deconstructs [src].", \
@@ -115,7 +116,7 @@
 			usr << "<span class='warning'>You have to unscrew the case first!</span>"
 			return
 
-	if(istype(W, /obj/item/weapon/wirecutters))
+	if(istype(W, /obj/item/weapon/tool/wirecutters))
 		if (src.stage != 2) return
 		src.stage = 1
 		switch(fixture_type)
@@ -145,7 +146,7 @@
 			user << "<span class='warning'>You need one length of cable to wire [src]!</span>"
 		return
 
-	if(istype(W, /obj/item/weapon/screwdriver))
+	if(istype(W, /obj/item/weapon/tool/screwdriver))
 		if (src.stage == 2)
 			switch(fixture_type)
 				if ("tube")
@@ -277,20 +278,19 @@
 
 	update_icon()
 	if(on)
-		if(!light || light.radius != brightness)
-			switchcount++
-			if(rigged)
-				if(status == LIGHT_OK && trigger)
-					explode()
-			else if( prob( min(60, switchcount*switchcount*0.01) ) )
-				if(status == LIGHT_OK && trigger)
-					status = LIGHT_BURNED
-					icon_state = "[base_state]-burned"
-					on = 0
-					SetLuminosity(0)
-			else
-				use_power = 2
-				SetLuminosity(brightness)
+		switchcount++
+		if(rigged)
+			if(status == LIGHT_OK && trigger)
+				explode()
+		else if( prob( min(60, switchcount*switchcount*0.01) ) )
+			if(status == LIGHT_OK && trigger)
+				status = LIGHT_BURNED
+				icon_state = "[base_state]-burned"
+				on = 0
+				SetLuminosity(0)
+		else
+			use_power = 2
+			SetLuminosity(brightness)
 	else
 		use_power = 1
 		SetLuminosity(0)
@@ -389,7 +389,7 @@
 
 	// attempt to stick weapon into light socket
 	else if(status == LIGHT_EMPTY)
-		if(istype(W, /obj/item/weapon/screwdriver)) //If it's a screwdriver open it.
+		if(istype(W, /obj/item/weapon/tool/screwdriver)) //If it's a screwdriver open it.
 			playsound(src.loc, 'sound/items/Screwdriver.ogg', 75, 1)
 			user.visible_message("[user.name] opens [src]'s casing.", \
 				"<span class='notice'>You open [src]'s casing.</span>", "<span class='italics'>You hear a noise.</span>")

@@ -19,7 +19,7 @@
 	item_state = "ygloves"
 	siemens_coefficient = 1			//Set to a default of 1, gets overridden in New()
 	permeability_coefficient = 0.05
-	item_color="yellow"
+	item_color = "yellow"
 	burn_state = -1 //Won't burn in fires
 
 /obj/item/clothing/gloves/color/fyellow/New()
@@ -30,7 +30,7 @@
 	name = "black gloves"
 	icon_state = "black"
 	item_state = "bgloves"
-	item_color="brown"
+	item_color = "brown"
 	cold_protection = HANDS
 	min_cold_protection_temperature = GLOVES_MIN_TEMP_PROTECT
 	heat_protection = HANDS
@@ -44,7 +44,7 @@
 	item_color = "chief"			//Exists for washing machines. Is not different from black gloves in any way.
 
 /obj/item/clothing/gloves/color/black/attackby(obj/item/weapon/W as obj, mob/user as mob, params)
-	if(istype(W, /obj/item/weapon/wirecutters))
+	if(istype(W, /obj/item/weapon/tool/wirecutters))
 		if(icon_state == initial(icon_state)) //only if not dyed
 			user << "<span class='notice'>You snip the fingertips off of [src].</span>"
 			playsound(user.loc,'sound/items/Wirecutter.ogg', rand(10,50), 1)
@@ -57,7 +57,7 @@
 	desc = "A pair of gloves, they don't look special in any way."
 	icon_state = "orange"
 	item_state = "orangegloves"
-	item_color="orange"
+	item_color = "orange"
 
 /obj/item/clothing/gloves/color/red
 	name = "red gloves"
@@ -88,28 +88,28 @@
 	desc = "A pair of gloves, they don't look special in any way."
 	icon_state = "blue"
 	item_state = "bluegloves"
-	item_color="blue"
+	item_color = "blue"
 
 /obj/item/clothing/gloves/color/purple
 	name = "purple gloves"
 	desc = "A pair of gloves, they don't look special in any way."
 	icon_state = "purple"
 	item_state = "purplegloves"
-	item_color="purple"
+	item_color = "purple"
 
 /obj/item/clothing/gloves/color/green
 	name = "green gloves"
 	desc = "A pair of gloves, they don't look special in any way."
 	icon_state = "green"
 	item_state = "greengloves"
-	item_color="green"
+	item_color = "green"
 
 /obj/item/clothing/gloves/color/grey
 	name = "grey gloves"
 	desc = "A pair of gloves, they don't look special in any way."
 	icon_state = "gray"
 	item_state = "graygloves"
-	item_color="grey"
+	item_color = "grey"
 
 /obj/item/clothing/gloves/color/grey/rd
 	item_color = "director"			//Exists for washing machines. Is not different from gray gloves in any way.
@@ -122,14 +122,14 @@
 	desc = "A pair of gloves, they don't look special in any way."
 	icon_state = "lightbrown"
 	item_state = "lightbrowngloves"
-	item_color="light brown"
+	item_color = "light brown"
 
 /obj/item/clothing/gloves/color/brown
 	name = "brown gloves"
 	desc = "A pair of gloves, they don't look special in any way."
 	icon_state = "brown"
 	item_state = "browngloves"
-	item_color="brown"
+	item_color = "brown"
 
 /obj/item/clothing/gloves/color/brown/cargo
 	item_color = "cargo"					//Exists for washing machines. Is not different from brown gloves in any way.
@@ -155,7 +155,7 @@
 	item_state = "lgloves"
 	siemens_coefficient = 0.30
 	permeability_coefficient = 0.01
-	item_color="white"
+	item_color = "white"
 	transfer_prints = TRUE
 	burn_state = -1 //Won't burn in fires
 
@@ -172,7 +172,7 @@
 	desc = "These look pretty fancy."
 	icon_state = "white"
 	item_state = "wgloves"
-	item_color="mime"
+	item_color = "mime"
 
 /obj/item/clothing/gloves/color/white/redcoat
 	item_color = "redcoat"		//Exists for washing machines. Is not different from white gloves in any way.

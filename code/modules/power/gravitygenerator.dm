@@ -179,13 +179,13 @@ var/const/GRAV_NEEDS_WRENCH = 3
 	var/old_broken_state = broken_state
 	switch(broken_state)
 		if(GRAV_NEEDS_SCREWDRIVER)
-			if(istype(I, /obj/item/weapon/screwdriver))
+			if(istype(I, /obj/item/weapon/tool/screwdriver))
 				user << "<span class='notice'>You secure the screws of the framework.</span>"
 				playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 				broken_state++
 		if(GRAV_NEEDS_WELDING)
-			if(istype(I, /obj/item/weapon/weldingtool))
-				var/obj/item/weapon/weldingtool/WT = I
+			if(istype(I, /obj/item/weapon/tool/weldingtool))
+				var/obj/item/weapon/tool/weldingtool/WT = I
 				if(WT.remove_fuel(1, user))
 					user << "<span class='notice'>You mend the damaged framework.</span>"
 					playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
@@ -203,7 +203,7 @@ var/const/GRAV_NEEDS_WRENCH = 3
 				else
 					user << "<span class='warning'>You need 10 sheets of plasteel!</span>"
 		if(GRAV_NEEDS_WRENCH)
-			if(istype(I, /obj/item/weapon/wrench))
+			if(istype(I, /obj/item/weapon/tool/wrench))
 				user << "<span class='notice'>You secure the plating to the framework.</span>"
 				playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
 				set_fix()

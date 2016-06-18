@@ -46,6 +46,10 @@ var/global/floorIsLava = 0
 	var/client/C = get_client(M)
 	if(C)
 		body += "<b>Antag Tokens</b> = [C.antag_tokens] \[ <a href='?_src_=holder;antag_token_decrease=\ref[M]'>- Less -</a> | <a href='?_src_=holder;antag_token_increase=\ref[M]'>+ More +</a> \]<br>"
+
+		if(check_rights(R_PERMISSIONS))
+			body += "<b>Whitelisted</b> = [C.is_whitelisted ? "Yes" : "No"] \[ <a href='?_src_=holder;toggle_whitelisted=\ref[M]'>Toggle</a> \]<br>"
+
 		body += "<b>Credits</b> = [C.credits]<br><br>"
 
 	body += "<A href='?_src_=holder;boot2=\ref[M]'>Kick</A> | "
@@ -994,3 +998,10 @@ datum/admins/proc/cyberman_varedit(list/href_list)
 	var/message = "[key_name_admin(usr)] has toggled high risk item notifications [high_risk_item_notifications ? "on" : "off"]."
 	message_admins(message)
 	log_admin(message)
+
+/datum/admins/proc/toggle_ticket_counter_visibility()
+	set category = "Admin"
+	set desc="Toggle dis bitch"
+	set name="Toggle Ticket Counter Visibility"
+	ticket_counter_visible_to_everyone = !ticket_counter_visible_to_everyone
+	message_admins("[key_name_admin(usr)] has made the ticket counter [ticket_counter_visible_to_everyone ? "visible" : "invisible"] to normal players.")

@@ -17,7 +17,7 @@
 	new /obj/item/clothing/suit/hazardvest(src)
 	new /obj/item/weapon/storage/box/permits(src)
 	new /obj/item/areaeditor/blueprints(src)
-	new /obj/item/weapon/airlock_painter(src)
+	new /obj/item/weapon/rapid_engineering_device/loaded(src)
 	new /obj/item/tapeproj/engineering(src)
 	new /obj/item/clothing/mask/gas(src)
 	new /obj/item/device/multitool(src)
@@ -55,9 +55,9 @@
 	new /obj/item/clothing/head/welding(src)
 	new /obj/item/clothing/head/welding(src)
 	new /obj/item/clothing/head/welding(src)
-	new /obj/item/weapon/weldingtool/largetank(src)
-	new /obj/item/weapon/weldingtool/largetank(src)
-	new /obj/item/weapon/weldingtool/largetank(src)
+	new /obj/item/weapon/tool/weldingtool/largetank(src)
+	new /obj/item/weapon/tool/weldingtool/largetank(src)
+	new /obj/item/weapon/tool/weldingtool/largetank(src)
 
 /obj/structure/closet/secure_closet/engineering_personal
 	name = "engineer's locker"

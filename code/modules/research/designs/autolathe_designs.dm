@@ -15,7 +15,7 @@
 	id = "crowbar"
 	build_type = AUTOLATHE
 	materials = list(MAT_METAL = 50)
-	build_path = /obj/item/weapon/crowbar
+	build_path = /obj/item/weapon/tool/crowbar
 	category = list("initial","Tools")
 
 /datum/design/flashlight
@@ -63,7 +63,7 @@
 	id = "welding_tool"
 	build_type = AUTOLATHE
 	materials = list(MAT_METAL = 70, MAT_GLASS = 20)
-	build_path = /obj/item/weapon/weldingtool
+	build_path = /obj/item/weapon/tool/weldingtool
 	category = list("initial","Tools")
 
 /datum/design/screwdriver
@@ -71,7 +71,7 @@
 	id = "screwdriver"
 	build_type = AUTOLATHE
 	materials = list(MAT_METAL = 75)
-	build_path = /obj/item/weapon/screwdriver
+	build_path = /obj/item/weapon/tool/screwdriver
 	category = list("initial","Tools")
 
 /datum/design/wirecutters
@@ -79,7 +79,7 @@
 	id = "wirecutters"
 	build_type = AUTOLATHE
 	materials = list(MAT_METAL = 80)
-	build_path = /obj/item/weapon/wirecutters
+	build_path = /obj/item/weapon/tool/wirecutters
 	category = list("initial","Tools")
 
 /datum/design/wrench
@@ -87,7 +87,7 @@
 	id = "wrench"
 	build_type = AUTOLATHE
 	materials = list(MAT_METAL = 150)
-	build_path = /obj/item/weapon/wrench
+	build_path = /obj/item/weapon/tool/wrench
 	category = list("initial","Tools")
 
 /datum/design/welding_helmet
@@ -157,18 +157,18 @@
 /datum/design/metal
 	name = "Metal"
 	id = "metal"
-	build_type = AUTOLATHE
+	build_type = AUTOLATHE | PARTLATHE
 	materials = list(MAT_METAL = MINERAL_MATERIAL_AMOUNT)
 	build_path = /obj/item/stack/sheet/metal
-	category = list("initial","Construction")
+	category = list("initial","Construction", "Eject Materials")
 
 /datum/design/glass
 	name = "Glass"
 	id = "glass"
-	build_type = AUTOLATHE
+	build_type = AUTOLATHE | PARTLATHE
 	materials = list(MAT_GLASS = MINERAL_MATERIAL_AMOUNT)
 	build_path = /obj/item/stack/sheet/glass
-	category = list("initial","Construction")
+	category = list("initial","Construction", "Eject Materials")
 
 /datum/design/rglass
 	name = "Reinforced glass"
@@ -456,7 +456,7 @@
 	id = "large_welding_tool"
 	build_type = AUTOLATHE
 	materials = list(MAT_METAL = 70, MAT_GLASS = 60)
-	build_path = /obj/item/weapon/weldingtool/largetank
+	build_path = /obj/item/weapon/tool/weldingtool/largetank
 	category = list("hacked", "Tools")
 
 /datum/design/handcuffs

@@ -35,6 +35,7 @@ var/datum/cyberman_network/cyberman_network
 	recommended_enemies = 3
 	restricted_jobs = list("AI", "Cyborg")
 	protected_jobs = list("Security Officer", "Warden", "Detective", "Head of Security", "Captain")
+	yogstat_name = "cybermen"
 
 /datum/game_mode/cybermen/announce()
 	world << "The gamemode is Cybermen."
@@ -169,14 +170,20 @@ var/datum/cyberman_network/cyberman_network
 	world << "Station was Nuked: [station_was_nuked]"
 	#endif
 
+	log_yogstat_data("gamemode.php?gamemode=cybermen&value=rounds&action=add&changed=1")
+
 	if(!cybermen_won && SSshuttle.emergency.mode >= SHUTTLE_ESCAPE)
 		world << "<span class='redtext'>The Cybermen failed to take control of the station!</span>"
+		log_yogstat_data("gamemode.php?gamemode=cybermen&value=crewwin&action=add&changed=1")
 	else if(cybermen_won && station_was_nuked)
 		world << "<span class='greentext'>The Cybermen win! They acivated the station's self-destruct device!</span>"
+		log_yogstat_data("gamemode.php?gamemode=cybermen&value=antagwin&action=add&changed=1")
 	else if(cybermen_won)
 		world << "<span class='greentext'>The Cybermen win! They have exterminated or stranded all of the non-cybermen!</span>"
+		log_yogstat_data("gamemode.php?gamemode=cybermen&value=antagwin&action=add&changed=1")
 	else
 		world << "<span class='redtext'>The Cybermen have failed!</span>"
+		log_yogstat_data("gamemode.php?gamemode=cybermen&value=crewwin&action=add&changed=1")
 
 	world << "<br><span class='big'><b>The Cybermens' Objectives were:</b></span>"
 	var/datum/objective/cybermen/O
@@ -475,8 +482,8 @@ datum/game_mode/proc/update_cybermen_icons_remove(datum/mind/cyberman)
 	return
 
 /datum/cyberman_datum/proc/emp_act(var/mob/living/carbon/human/mob = src, var/severity)
-	mob.Stun(5)
-	mob.Weaken(5)
+	mob.Stun(5*rand(4,10)*severity)
+	mob.Weaken(5*rand(6,10)*severity)
 	mob.silent = max(60, mob.silent)
 	mob.adjustBrainLoss(40)
 	mob.visible_message("<span class='danger'>[mob] clutches their head, writhing in pain!</span>")

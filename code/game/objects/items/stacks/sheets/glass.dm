@@ -21,6 +21,9 @@
 	is_cyborg = 1
 	cost = 500
 
+/obj/item/stack/sheet/glass/fifty
+	amount = 50
+
 /obj/item/stack/sheet/glass/attack_self(mob/user)
 	construct_window(user)
 
@@ -310,8 +313,8 @@
 
 
 /obj/item/weapon/shard/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/WT = I
+	if(istype(I, /obj/item/weapon/tool/weldingtool))
+		var/obj/item/weapon/tool/weldingtool/WT = I
 		if(WT.remove_fuel(0, user))
 			var/obj/item/stack/sheet/glass/NG = new (user.loc)
 			for(var/obj/item/stack/sheet/glass/G in user.loc)

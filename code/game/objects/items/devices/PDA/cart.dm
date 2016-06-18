@@ -313,8 +313,11 @@
 			playsound(pda.loc, 'sound/machines/twobeep.ogg', 50, 1)
 			pda.audible_message("\icon[pda] [msg]", null, 3)
 
-/obj/item/weapon/cartridge/proc/cancelAlarm(class, area/A, obj/origin)
+/obj/item/weapon/cartridge/proc/cancelAlarm(class, area/A, obj/alarmsource)
 	var/msg
+	var/turf/myTurf = get_turf(src)
+	if(!alarmsource || !myTurf || (alarmsource.z != myTurf.z))
+		return
 	switch(class)
 		if("Atmosphere")
 			if(!(alert_flags & PDA_ATMOS_ALERT))
@@ -592,14 +595,15 @@ Code:
 			menu += "<BR>Current approved orders: <BR><ol>"
 			for(var/S in SSshuttle.shoppinglist)
 				var/datum/supply_order/SO = S
-				menu += "<li>#[SO.ordernum] - [SO.object.name] approved by [SO.orderedby] [SO.comment ? "([SO.comment])":""]</li>"
+				menu += "<li>#[SO.id] - [SO.pack.name] approved by [SO.orderer] [SO.reason ? "([SO.reason])":""]</li>"
 			menu += "</ol>"
 
 			menu += "Current requests: <BR><ol>"
 			for(var/S in SSshuttle.requestlist)
 				var/datum/supply_order/SO = S
-				menu += "<li>#[SO.ordernum] - [SO.object.name] requested by [SO.orderedby]</li>"
+				menu += "<li>#[SO.id] - [SO.pack.name] requested by [SO.orderer]</li>"
 			menu += "</ol><font size=\"-3\">Upgrade NOW to Space Parts & Space Vendors PLUS for full remote order control and inventory management."
+
 		if (48) //Slavermaster 2000 //Whoever came up with the idea of making menu choices numerical is a idiot.
 			menu = "<h4><img src=pda_signaller.png> Slave Controller</h4>"
 
@@ -717,6 +721,13 @@ Code:
 						menu = "<FONT class='bad'>[atmosmonitor.sensors[id_tag]] can not be found!</FONT><BR>"
 
 		if(51)//alerts monitoring
+			var/turf/myTurf = get_turf(src)
+			for(var/alert in atmos_alerts|fire_alerts|power_alerts)
+				var/area/a = alert
+				if(a.z != myTurf.z)
+					atmos_alerts -= a
+					fire_alerts -= a
+					power_alerts -= a
 			menu = "<h4><img src=pda_signaler.png> Active Alerts</h4><BR>"
 			if(alert_flags & PDA_ATMOS_ALERT)
 				menu += "<b>Atmosphere Alerts:</b><ul>"

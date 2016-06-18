@@ -25,7 +25,7 @@
 //remove fat
 /datum/surgery_step/remove_fat
 	name = "remove loose fat"
-	implements = list(/obj/item/weapon/retractor = 100, /obj/item/weapon/screwdriver = 45, /obj/item/weapon/wirecutters = 35)
+	implements = list(/obj/item/weapon/retractor = 100, /obj/item/weapon/tool/screwdriver = 45, /obj/item/weapon/tool/wirecutters = 35)
 	time = 32
 
 /datum/surgery_step/remove_fat/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)

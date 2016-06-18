@@ -128,7 +128,7 @@ var/list/icons_to_ignore_at_floor_init = list("damaged1","damaged2","damaged3","
 		return 1
 	if(..())
 		return 1
-	if(intact && istype(C, /obj/item/weapon/crowbar))
+	if(intact && istype(C, /obj/item/weapon/tool/crowbar))
 		if(broken || burnt)
 			broken = 0
 			burnt = 0
@@ -165,7 +165,18 @@ var/list/icons_to_ignore_at_floor_init = list("damaged1","damaged2","damaged3","
 
 /turf/simulated/floor/narsie_act()
 	if(prob(20))
-		ChangeTurf(/turf/simulated/floor/plasteel/cult)
+		ChangeTurf(/turf/simulated/floor/engine/cult)
+
+/turf/simulated/floor/attack_animal(mob/living/simple_animal/M)
+	if(istype(M,/mob/living/simple_animal/construct/builder)||istype(M,/mob/living/simple_animal/construct/harvester))
+		if(istype(src, /turf/simulated/floor/engine/cult))
+			return
+		src.ChangeTurf(/turf/simulated/floor/engine/cult)
+		M <<"<span class='notice'>You transfer some of your corrupt energy into the floor, causing it to transform.</span>"
+		playsound(src, 'sound/items/Welder.ogg', 100, 1)
+		return
+	return
+
 
 /turf/simulated/floor/Entered(atom/A, atom/OL)
 	..()

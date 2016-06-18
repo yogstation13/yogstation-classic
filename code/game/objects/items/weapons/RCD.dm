@@ -69,11 +69,17 @@ RCD
 	set category = "Object"
 	set src in usr
 
-	if (!ishuman(usr) && !isrobot(usr))
-		return ..(usr)
+	show_menu(usr)
 
-	var/mob/living/carbon/human/H = usr
+/obj/item/weapon/rcd/proc/show_menu(mob/user, topic_ref = src)
+	if(!user || !topic_ref)
+		return
+	if (!ishuman(user) && !isrobot(user))
+		return
+
+	var/mob/living/carbon/human/H = user
 	if(H.getBrainLoss() >= 60)
+		user << "<span class='warning'>You stare cluelessly at \the [src].</span>"
 		return
 
 	var/t1 = text("")
@@ -83,16 +89,16 @@ RCD
 		t1 += "Operator: [last_configurator]<br>"
 
 	if (locked)
-		t1 += "<a href='?src=\ref[src];login=1'>Swipe ID</a><hr>"
+		t1 += "<a href='?src=\ref[topic_ref];device_type=RCD;login=1'>Swipe ID</a><hr>"
 	else
-		t1 += "<a href='?src=\ref[src];logout=1'>Lock Interface</a><hr>"
+		t1 += "<a href='?src=\ref[topic_ref];device_type=RCD;logout=1'>Lock Interface</a><hr>"
 
 		if(use_one_access)
-			t1 += "Restriction Type: <a href='?src=\ref[src];access=one'>At least one access required</a><br>"
+			t1 += "Restriction Type: <a href='?src=\ref[topic_ref];device_type=RCD;access=one'>At least one access required</a><br>"
 		else
-			t1 += "Restriction Type: <a href='?src=\ref[src];access=one'>All accesses required</a><br>"
+			t1 += "Restriction Type: <a href='?src=\ref[topic_ref];device_type=RCD;access=one'>All accesses required</a><br>"
 
-		t1 += "<a href='?src=\ref[src];access=all'>Remove All</a><br>"
+		t1 += "<a href='?src=\ref[topic_ref];device_type=RCD;access=all'>Remove All</a><br>"
 
 		var/accesses = ""
 		accesses += "<div align='center'><b>Access</b></div>"
@@ -105,28 +111,34 @@ RCD
 			accesses += "<td style='width:14%' valign='top'>"
 			for(var/A in get_region_accesses(i))
 				if(A in conf_access)
-					accesses += "<a href='?src=\ref[src];access=[A]'><font color=\"red\">[replacetext(get_access_desc(A), " ", "&nbsp")]</font></a> "
+					accesses += "<a href='?src=\ref[topic_ref];device_type=RCD;access=[A]'><font color=\"red\">[replacetext(get_access_desc(A), " ", "&nbsp")]</font></a> "
 				else
-					accesses += "<a href='?src=\ref[src];access=[A]'>[replacetext(get_access_desc(A), " ", "&nbsp")]</a> "
+					accesses += "<a href='?src=\ref[topic_ref];device_type=RCD;access=[A]'>[replacetext(get_access_desc(A), " ", "&nbsp")]</a> "
 				accesses += "<br>"
 			accesses += "</td>"
 		accesses += "</tr></table>"
 		t1 += "<tt>[accesses]</tt>"
 
-	t1 += text("<p><a href='?src=\ref[];close=1'>Close</a></p>\n", src)
+	t1 += text("<p><a href='?src=\ref[topic_ref];device_type=RCD;close=1'>Close</a></p>\n")
 
-	var/datum/browser/popup = new(usr, "airlock_electronics", "Access Control", 900, 500)
+	var/datum/browser/popup = new(user, "airlock_electronics", "Access Control", 900, 500)
 	popup.set_content(t1)
-	popup.set_title_image(usr.browse_rsc_icon(src.icon, src.icon_state))
+	popup.set_title_image(user.browse_rsc_icon(src.icon, src.icon_state))
 	popup.open()
-	onclose(usr, "airlock")
+	onclose(user, "airlock")
+
+/obj/item/weapon/rcd/proc/handle_failed_topic(mob/user)
+	user << browse(null, "window=airlock_electronics")
 
 /obj/item/weapon/rcd/Topic(href, href_list)
-	..()
-	if (usr.stat || usr.restrained() || (!ishuman(usr) && !isrobot(usr)))
+	if(!usr.canUseTopic(src))
+		handle_failed_topic(usr)
 		return
+	handle_topic(href, href_list)
+
+/obj/item/weapon/rcd/proc/handle_topic(href, href_list, topic_ref = src)
 	if (href_list["close"])
-		usr << browse(null, "window=airlock")
+		handle_failed_topic(usr)
 		return
 
 	if (href_list["login"])
@@ -143,7 +155,7 @@ RCD
 	if (href_list["access"])
 		toggle_access(href_list["access"])
 
-	change_airlock_access()
+	show_menu(usr, topic_ref)
 
 /obj/item/weapon/rcd/proc/toggle_access(acc)
 	if (acc == "all")
@@ -230,37 +242,42 @@ RCD
 	src.spark_system = new /datum/effect/effect/system/spark_spread
 	spark_system.set_up(5, 0, src)
 	spark_system.attach(src)
+	rcd_list += src
 	return
 
 
 /obj/item/weapon/rcd/Destroy()
 	qdel(spark_system)
 	spark_system = null
+	rcd_list -= src
 	return ..()
 
 /obj/item/weapon/rcd/attackby(obj/item/weapon/W, mob/user, params)
 	..()
 	if(isrobot(user))	//Make sure cyborgs can't load their RCDs
 		return
+	handle_load_matter(W, user)
+
+/obj/item/weapon/rcd/proc/handle_load_matter(obj/item/weapon/W, mob/user)
 	var/loaded = 0
 	if(istype(W, /obj/item/weapon/rcd_ammo))
 		var/obj/item/weapon/rcd_ammo/R = W
 		if((matter + R.ammoamt) > max_matter)
-			user << "<span class='warning'>The RCD can't hold any more matter-units!</span>"
+			user << "<span class='warning'>\The [src] can't hold any more matter-units!</span>"
 			return
 		if(!user.unEquip(W))
 			return
 		qdel(W)
 		matter += R.ammoamt
-		playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
+		playsound(get_turf(src), 'sound/machines/click.ogg', 50, 1)
 		loaded = 1
 	else if(istype(W, /obj/item/stack/sheet/metal) || istype(W, /obj/item/stack/sheet/glass))
 		loaded = loadwithsheets(W, sheetmultiplier, user)
 	else if(istype(W, /obj/item/stack/sheet/plasteel))
 		loaded = loadwithsheets(W, plasteelmultiplier*sheetmultiplier, user) //Plasteel is worth 3 times more than glass or metal
 	if(loaded)
-		user << "<span class='notice'>The RCD now holds [matter]/[max_matter] matter-units.</span>"
-		desc = "A RCD. It currently holds [matter]/[max_matter] matter-units."
+		user << "<span class='notice'>\The [src] now holds [matter]/[max_matter] matter-units.</span>"
+		desc = "A [src]. It currently holds [matter]/[max_matter] matter-units."
 	return
 
 /obj/item/weapon/rcd/proc/loadwithsheets(obj/item/stack/sheet/S, value, mob/user)
@@ -270,46 +287,47 @@ RCD
             //S.amount -= maxsheets
             S.use(maxsheets)
             matter += value*maxsheets
-            playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
-            user << "<span class='notice'>You insert [maxsheets] [S.name] sheets into the RCD. </span>"
+            playsound(get_turf(src), 'sound/machines/click.ogg', 50, 1)
+            user << "<span class='notice'>You insert [maxsheets] [S.name] sheets into \the [src]. </span>"
         else
             matter += value*(S.amount)
             user.unEquip()
             S.use(S.amount)
-            playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
-            user << "<span class='notice'>You insert [S.amount] [S.name] sheets into the RCD. </span>"
+            playsound(get_turf(src), 'sound/machines/click.ogg', 50, 1)
+            user << "<span class='notice'>You insert [S.amount] [S.name] sheets into \the [src]. </span>"
 
         return 1
-    user << "<span class='warning'>You can't insert any more [S.name] sheets into the RCD!"
+    user << "<span class='warning'>You can't insert any more [S.name] sheets into \the [src]!"
     return 0
 
 /obj/item/weapon/rcd/attack_self(mob/user)
 	//Change the mode
-	playsound(src.loc, 'sound/effects/pop.ogg', 50, 0)
+	playsound(get_turf(src), 'sound/effects/pop.ogg', 50, 0)
 	switch(mode)
 		if(1)
 			mode = 2
-			user << "<span class='notice'>You change RCD's mode to 'Airlock'.</span>"
+			user << "<span class='notice'>You change \the [src]'s mode to 'Airlock'.</span>"
 		if(2)
 			mode = 3
-			user << "<span class='notice'>You change RCD's mode to 'Deconstruct'.</span>"
+			user << "<span class='notice'>You change \the [src]'s mode to 'Deconstruct'.</span>"
 		if(3)
 			mode = 4
-			user << "<span class='notice'>You change RCD's mode to 'Grilles & Windows'.</span>"
+			user << "<span class='notice'>You change \the [src]'s mode to 'Grilles & Windows'.</span>"
 		if(4)
 			mode = 1
-			user << "<span class='notice'>You change RCD's mode to 'Floor & Walls'.</span>"
+			user << "<span class='notice'>You change \the [src]'s mode to 'Floor & Walls'.</span>"
 
 	if(prob(20))
 		src.spark_system.start()
 	return
 
 /obj/item/weapon/rcd/proc/activate()
-	playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
+	playsound(get_turf(src), 'sound/items/Deconstruct.ogg', 50, 1)
 
 
 /obj/item/weapon/rcd/afterattack(atom/A, mob/user, proximity)
-	if(!proximity) return 0
+	if(!proximity)
+		return 0
 	if(disabled && !isrobot(user))
 		return 0
 	if(istype(A,/area/shuttle)||istype(A,/turf/space/transit))
@@ -332,7 +350,7 @@ RCD
 				var/turf/simulated/floor/F = A
 				if(checkResource(wallcost, user))
 					user << "<span class='notice'>You start building wall...</span>"
-					playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
+					playsound(get_turf(src), 'sound/machines/click.ogg', 50, 1)
 					if(do_after(user, walldelay, target = A))
 						if(!useResource(wallcost, user)) return 0
 						activate()
@@ -351,7 +369,7 @@ RCD
 
 					if(door_check)
 						user << "<span class='notice'>You start building airlock...</span>"
-						playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
+						playsound(get_turf(src), 'sound/machines/click.ogg', 50, 1)
 						if(do_after(user, airlockdelay, target = A))
 							if(!useResource(airlockcost, user)) return 0
 							activate()
@@ -390,7 +408,7 @@ RCD
 					return 0
 				if(checkResource(deconwallcost, user))
 					user << "<span class='notice'>You start deconstructing wall...</span>"
-					playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
+					playsound(get_turf(src), 'sound/machines/click.ogg', 50, 1)
 					if(do_after(user, deconwalldelay, target = A))
 						if(!useResource(deconwallcost, user)) return 0
 						activate()
@@ -407,7 +425,7 @@ RCD
 					return 0
 				else if(checkResource(deconfloorcost, user))
 					user << "<span class='notice'>You start deconstructing floor...</span>"
-					playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
+					playsound(get_turf(src), 'sound/machines/click.ogg', 50, 1)
 					if(do_after(user, deconfloordelay, target = A))
 						if(!useResource(deconfloorcost, user)) return 0
 						activate()
@@ -418,7 +436,7 @@ RCD
 			if(istype(A, /obj/machinery/door/airlock))
 				if(checkResource(deconairlockcost, user))
 					user << "<span class='notice'>You start deconstructing airlock...</span>"
-					playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
+					playsound(get_turf(src), 'sound/machines/click.ogg', 50, 1)
 					if(do_after(user, deconairlockdelay, target = A))
 						if(!useResource(deconairlockcost, user)) return 0
 						activate()
@@ -429,7 +447,7 @@ RCD
 			if(istype(A, /obj/structure/window))
 				if(checkResource(deconwindowcost, user))
 					user << "<span class='notice'>You start deconstructing the window...</span>"
-					playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
+					playsound(get_turf(src), 'sound/machines/click.ogg', 50, 1)
 					if(do_after(user, deconwindowdelay, target = A))
 						if(!useResource(deconwindowcost, user)) return 0
 						activate()
@@ -443,7 +461,7 @@ RCD
 					if(useResource(decongrillecost, user))
 						user << "<span class='notice'>You start deconstructing the grille...</span>"
 						activate()
-						playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
+						playsound(get_turf(src), 'sound/machines/click.ogg', 50, 1)
 						qdel(A)
 						return 1
 					return 0
@@ -455,7 +473,7 @@ RCD
 						user << "<span class='warning'>There is already a grille there!</span>"
 						return 0
 					user << "<span class='notice'>You start building a grille...</span>"
-					playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
+					playsound(get_turf(src), 'sound/machines/click.ogg', 50, 1)
 					if(do_after(user, grilledelay, target = A))
 						if(!useResource(grillecost, user)) return 0
 						activate()
@@ -467,7 +485,7 @@ RCD
 			if(istype(A, /obj/structure/grille))
 				if(checkResource(windowcost, user))
 					user << "<span class='notice'>You start building a window...</span>"
-					playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
+					playsound(get_turf(src), 'sound/machines/click.ogg', 50, 1)
 					if(do_after(user, windowdelay, target = A))
 						if(locate(/obj/structure/window) in A.loc) return 0
 						if(!useResource(windowcost, user)) return 0
@@ -517,7 +535,7 @@ RCD
 
 /obj/item/weapon/rcd_ammo
 	name = "compressed matter cartridge"
-	desc = "Highly compressed matter for the RCD."
+	desc = "Highly compressed matter for an RCD."
 	icon = 'icons/obj/ammo.dmi'
 	icon_state = "rcd"
 	item_state = "rcdammo"

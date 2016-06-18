@@ -26,9 +26,9 @@
 				src.mob.unset_machine()
 
  /**
-  * The ui_interact proc is used to open and update Nano UIs
-  * If ui_interact is not used then the UI will not update correctly
-  * ui_interact is currently defined for /atom/movable
+  * The nanoui_interact proc is used to open and update Nano UIs
+  * If nanoui_interact is not used then the UI will not update correctly
+  * nanoui_interact is currently defined for /atom/movable
   *
   * @param user /mob The mob who is interacting with this ui
   * @param ui_key string A string key to use for this ui. Allows for multiple unique uis on one obj/mob (defaut value "main")
@@ -36,11 +36,8 @@
   *
   * @return nothing
   */
-/atom/movable/proc/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null)
+/atom/movable/proc/nanoui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null)
 	return
 
 /atom/movable/proc/get_ui_data(mob/user)
 	return list()
-
-// Used by the Nano UI SubSystem (/datum/subsystem/nano) to track UIs opened by this mob
-/mob/var/list/open_uis = list()

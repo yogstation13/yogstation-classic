@@ -143,9 +143,7 @@
 	apcs_list -= src
 
 	if(malfai && operating)
-		if (ticker.mode.config_tag == "malfunction")
-			if (src.z == ZLEVEL_STATION) //if (is_type_in_list(get_area(src), the_station_areas))
-				ticker.mode:apcs--
+		malfai.malf_picker.processing_time = Clamp(malfai.malf_picker.processing_time - 10,0,1000)
 	area.power_light = 0
 	area.power_equip = 0
 	area.power_environ = 0
@@ -378,14 +376,15 @@
 
 	if (istype(user, /mob/living/silicon) && get_dist(src,user)>1)
 		return src.attack_hand(user)
-	if (istype(W, /obj/item/weapon/crowbar) && opened)
+	if (istype(W, /obj/item/weapon/tool/crowbar) && opened)
 		if (has_electronics==1)
 			if (terminal)
 				user << "<span class='warning'>Disconnect the wires first!</span>"
 				return
 			playsound(src.loc, 'sound/items/Crowbar.ogg', 50, 1)
 			user << "<span class='notice'>You are trying to remove the power control board...</span>" //lpeters - fixed grammar issues
-			if(do_after(user, 50, target = src))
+			var/obj/item/weapon/tool/crowbar/cb = W
+			if(do_after(user, 50 * cb.speed_coefficient, target = src))
 				if (has_electronics==1)
 					has_electronics = 0
 					if ((stat & BROKEN) || malfhack)
@@ -402,7 +401,7 @@
 		else if (opened!=2) //cover isn't removed
 			opened = 0
 			update_icon()
-	else if (istype(W, /obj/item/weapon/crowbar) && !((stat & BROKEN) || malfhack) )
+	else if (istype(W, /obj/item/weapon/tool/crowbar) && !((stat & BROKEN) || malfhack) )
 		if(coverlocked && !(stat & MAINT))
 			user << "<span class='warning'>The cover is locked and cannot be opened!</span>"
 			return
@@ -426,7 +425,7 @@
 				"<span class='notice'>You insert the power cell.</span>")
 			chargecount = 0
 			update_icon()
-	else if	(istype(W, /obj/item/weapon/screwdriver))	// haxing
+	else if	(istype(W, /obj/item/weapon/tool/screwdriver))	// haxing
 		if(opened)
 			if (cell)
 				user << "<span class='warning'>Close the APC first!</span>" //Less hints more mystery!
@@ -493,7 +492,7 @@
 				user << "<span class='notice'>You add cables to the APC frame.</span>"
 				make_terminal()
 				terminal.connect_to_network()
-	else if (istype(W, /obj/item/weapon/wirecutters) && terminal && opened && has_electronics!=2)
+	else if (istype(W, /obj/item/weapon/tool/wirecutters) && terminal && opened && has_electronics!=2)
 		terminal.dismantle(user)
 
 	else if (istype(W, /obj/item/weapon/module/power_control) && opened && has_electronics==0 && !((stat & BROKEN) || malfhack))
@@ -508,8 +507,8 @@
 	else if (istype(W, /obj/item/weapon/module/power_control) && opened && has_electronics==0 && ((stat & BROKEN) || malfhack))
 		user << "<span class='warning'>You cannot put the board inside, the frame is damaged!</span>"
 		return
-	else if (istype(W, /obj/item/weapon/weldingtool) && opened && has_electronics==0 && !terminal)
-		var/obj/item/weapon/weldingtool/WT = W
+	else if (istype(W, /obj/item/weapon/tool/weldingtool) && opened && has_electronics==0 && !terminal)
+		var/obj/item/weapon/tool/weldingtool/WT = W
 		if (WT.get_fuel() < 3)
 			user << "<span class='warning'>You need more welding fuel to complete this task!</span>"
 			return
@@ -517,7 +516,7 @@
 							"<span class='notice'>You start welding the APC frame...</span>", \
 							"<span class='italics'>You hear welding.</span>")
 		playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
-		if(do_after(user, 50, target = src))
+		if(do_after(user, 50 * WT.speed_coefficient, target = src))
 			if(!src || !WT.remove_fuel(3, user)) return
 			if (emagged || malfhack || (stat & BROKEN) || opened==2)
 				new /obj/item/stack/sheet/metal(loc)
@@ -571,7 +570,7 @@
 				return src.attack_hand(user)
 			if (!opened && wiresexposed && \
 				(istype(W, /obj/item/device/multitool) || \
-				istype(W, /obj/item/weapon/wirecutters) || istype(W, /obj/item/device/assembly/signaler)))
+				istype(W, /obj/item/weapon/tool/wirecutters) || istype(W, /obj/item/device/assembly/signaler)))
 				return src.attack_hand(user)
 			..()
 
@@ -589,6 +588,21 @@
 			locked = 0
 			user << "<span class='notice'>You emag the APC interface.</span>"
 			update_icon()
+
+/obj/machinery/power/apc/proc/break_apc()
+	if(!emagged && !malfhack)
+		if(opened)
+			return
+		if(wiresexposed)
+			return
+		if(stat & (BROKEN|MAINT))
+			return
+		flick("apc-spark", src)
+		for(var/mob/O in viewers(src))
+			O << "<span class='warning'>The [src] makes crackling noises and puffs of smoke rise from it.</span>"
+		emagged = 1
+		locked = 0
+		update_icon()
 
 // attack with hand - remove cell (if cover open) or interact with the APC
 
@@ -647,11 +661,11 @@
 		wires.Interact(user)
 		return
 
-	return ui_interact(user)
+	return nanoui_interact(user)
 
 
 /obj/machinery/power/apc/proc/get_malf_status(mob/user)
-	if (ticker && ticker.mode && (user.mind in ticker.mode.malf_ai) && istype(user, /mob/living/silicon/ai))
+	if (is_special_character(user) && istype(user, /mob/living/silicon/ai))
 		if (src.malfai == (user:parent ? user:parent : user))
 			if (src.occupier == user)
 				return 3 // 3 = User is shunted in this APC
@@ -665,7 +679,7 @@
 		return 0 // 0 = User is not a Malf AI
 
 
-/obj/machinery/power/apc/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null)
+/obj/machinery/power/apc/nanoui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null)
 	if(!user)
 		return
 
@@ -841,9 +855,7 @@
 					malfai.malfhack = null
 					malfai.malfhacking = 0
 					locked = 1
-					if (ticker.mode.config_tag == "malfunction")
-						if (src.z == ZLEVEL_STATION) //if (is_type_in_list(get_area(src), the_station_areas))
-							ticker.mode:apcs++
+					malfai.malf_picker.processing_time += 10
 					if(usr:parent)
 						src.malfai = usr:parent
 					else
@@ -900,12 +912,17 @@
 	if(malf.parent)
 		qdel(malf)
 	src.occupier.verbs += /mob/living/silicon/ai/proc/corereturn
-	src.occupier.verbs += /datum/game_mode/malfunction/proc/takeover
 	src.occupier.cancel_camera()
 	if (seclevel2num(get_security_level()) == SEC_LEVEL_DELTA)
 		for(var/obj/item/weapon/pinpointer/point in world)
 			point.the_disk = src //the pinpointer will detect the shunted AI
-
+	/*
+	if(malf.nuking == TRUE)
+		for(var/obj/machinery/doomsday_device/D in world)
+			if(D.timer > 0) //well we don't want to do this if the timeleft is 0 duh.
+				D.timer += 30 //add 30 seconds to nuke timer.
+				//I was going to add 60 seconds to that thing above. but I realized I was dealing with BYOND seconds which are twice as long.
+	*/
 
 /obj/machinery/power/apc/proc/malfvacate(forced)
 	if(!src.occupier)
@@ -917,8 +934,7 @@
 		qdel(src.occupier)
 		if (seclevel2num(get_security_level()) == SEC_LEVEL_DELTA)
 			for(var/obj/item/weapon/pinpointer/point in world)
-				for(var/datum/mind/AI_mind in ticker.mode.malf_ai)
-					var/mob/living/silicon/ai/A = AI_mind.current // the current mob the mind owns
+				for(var/mob/living/silicon/ai/A in living_mob_list)
 					if(A.stat != DEAD)
 						point.the_disk = A //The pinpointer tracks the AI back into its core.
 
@@ -1186,9 +1202,7 @@
 
 /obj/machinery/power/apc/proc/set_broken()
 	if(malfai && operating)
-		if (ticker.mode.config_tag == "malfunction")
-			if (src.z == ZLEVEL_STATION) //if (is_type_in_list(get_area(src), the_station_areas))
-				ticker.mode:apcs--
+		malfai.malf_picker.processing_time = Clamp(malfai.malf_picker.processing_time - 10,0,1000)
 	stat |= BROKEN
 	operating = 0
 	if(occupier)

@@ -2281,8 +2281,8 @@
 	pixel_x = -6;
 	 pixel_y = -2
 	},
-/obj/item/weapon/crowbar,
-/obj/item/weapon/wrench,
+/obj/item/weapon/tool/crowbar,
+/obj/item/weapon/tool/wrench,
 /obj/item/device/radio,
 /turf/simulated/floor/plating{
 	icon_state = "bot"
@@ -2535,10 +2535,10 @@
 /area/shuttle/escape)
 "gT" = (
 /obj/structure/rack,
-/obj/item/weapon/crowbar,
-/obj/item/weapon/wrench,
-/obj/item/weapon/weldingtool,
-/obj/item/weapon/wirecutters,
+/obj/item/weapon/tool/crowbar,
+/obj/item/weapon/tool/wrench,
+/obj/item/weapon/tool/weldingtool,
+/obj/item/weapon/tool/wirecutters,
 /obj/item/stack/cable_coil,
 /turf/simulated/floor/plating{
 	dir = 1;
@@ -2764,7 +2764,7 @@
 	pixel_y = 3
 	},
 /obj/item/weapon/gun/energy/laser/scatter,
-/obj/item/weapon/bikehorn/airhorn,
+/obj/item/device/assembly/bikehorn/airhorn,
 /obj/structure/window/reinforced{
 	dir = 8
 	},
@@ -3393,7 +3393,7 @@
 /turf/simulated/floor/plating/snow,
 /area/syndicate_mothership)
 "jc" = (
-/obj/machinery/computer/supplycomp,
+/obj/machinery/computer/cargo,
 /turf/simulated/floor/plasteel/warning{
 	dir = 8
 	},
@@ -4019,7 +4019,7 @@
 "kJ" = (
 /obj/structure/table,
 /obj/item/stack/cable_coil,
-/obj/item/weapon/crowbar/red,
+/obj/item/weapon/tool/crowbar/red,
 /turf/simulated/floor/plasteel/shuttle{
 	icon_state = "shuttlefloor4"
 	},
@@ -5088,7 +5088,7 @@
 /area/shuttle/syndicate)
 "nC" = (
 /obj/structure/table,
-/obj/item/weapon/screwdriver{
+/obj/item/weapon/tool/screwdriver{
 	pixel_y = 9
 	},
 /obj/item/device/assembly/voice{
@@ -5127,7 +5127,7 @@
 /area/shuttle/syndicate)
 "nF" = (
 /obj/structure/table,
-/obj/item/weapon/wrench,
+/obj/item/weapon/tool/wrench,
 /obj/item/device/assembly/infra,
 /turf/simulated/floor/plasteel/shuttle{
 	icon_state = "shuttlefloor4"
@@ -5135,7 +5135,7 @@
 /area/shuttle/syndicate)
 "nG" = (
 /obj/structure/table,
-/obj/item/weapon/weldingtool/largetank{
+/obj/item/weapon/tool/weldingtool/largetank{
 	pixel_y = 3
 	},
 /obj/item/device/multitool,
@@ -5242,7 +5242,7 @@
 "nW" = (
 /obj/structure/table,
 /obj/item/weapon/storage/toolbox/syndicate,
-/obj/item/weapon/crowbar/red,
+/obj/item/weapon/tool/crowbar/red,
 /turf/simulated/floor/plasteel/shuttle{
 	icon_state = "shuttlefloor4"
 	},

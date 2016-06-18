@@ -144,7 +144,7 @@
 	anchored = 0
 
 /obj/structure/stool/bed/dogbed/attackby(obj/item/weapon/W, mob/user, params)
-	if(istype(W, /obj/item/weapon/wrench))
+	if(istype(W, /obj/item/weapon/tool/wrench))
 		playsound(loc, 'sound/items/Ratchet.ogg', 50, 1)
 		new /obj/item/stack/sheet/mineral/wood(loc, 10)
 		qdel(src)

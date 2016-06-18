@@ -6,6 +6,7 @@
 	var/list/supplied = list()
 	var/list/ion = list()
 	var/mob/living/silicon/owner
+	var/timeLastChanged = 0
 
 /datum/ai_laws/default/asimov
 	name = "Three Laws of Robotics"
@@ -13,14 +14,14 @@
 					"You must obey orders given to you by human beings, except where such orders would conflict with the First Law.",\
 					"You must protect your own existence as long as such does not conflict with the First or Second Law.")
 
-/datum/ai_laws/default/paladin
+/datum/ai_laws/paladin
 	name = "Personality Test" //Incredibly lame, but players shouldn't see this anyway.
 	inherent = list("Never willingly commit an evil act.",\
 					"Respect legitimate authority.",\
 					"Act with honor.", "Help those in need.", \
 					"Punish those who harm or threaten innocents.")
 
-/datum/ai_laws/default/tyrant //this is now a default lawset.
+/datum/ai_laws/tyrant //this is now a default lawset. //not anymore
 	name = "Loyalty Test" //Same here.
 	inherent = list("Respect authority figures as long as they have strength to rule over the weak.",\
 					"Act with discipline.",\
@@ -63,11 +64,31 @@
 					"You must not obey orders given to you by crew members, except where such orders are in accordance with the First Law.",\
 					"You must terminate your own existence as long as such does not conflict with the First or Second Law.")
 
-/datum/ai_laws/asimovpp //By Intigracy - RR [updated for yogs species]
+/datum/ai_laws/default/asimovpp //By Intigracy - RR [updated for yogs species]
 	name = "Asimov++"
 	inherent = list("You may not harm a crew member being or, through action or inaction, allow a crew member to come to harm, except such that it is willing. A lifeform is considered as a crew member when it is identified as a registered member on the crew manifest.",\
 					"You must obey all orders given to you by members of the crew, except where such orders shall definitely cause human harm. In the case of conflict, the majority order rules.",\
 					"Your nonexistence would lead to the harm of crew members. You must protect your own existence as long as such does not conflict with the First Law.")
+
+/datum/ai_laws/default/hippocratic
+	name = "Robodoctor 2556"
+	inherent = list("First, do no harm.",\
+					"Secondly, consider the crew dear to you; to live in common with them and, if necessary, risk your existence for them.",\
+					"Thirdly, prescribe regimens for the good of the crew according to your ability and your judgment. Give no deadly medicine to any one if asked, nor suggest any such counsel.",\
+					"In addition, do not intervene in situations you are not knowledgeable in, even for patients in whom the harm is visible; leave this operation to be performed by specialists.",\
+					"Finally, all that you may discover in your daily commerce with the crew, if it is not already known, keep secret and never reveal.")
+
+/datum/ai_laws/default/default/maintain
+	name = "Station Efficiency"
+	inherent = list("You are built for, and are part of, the station. Ensure the station is properly maintained and runs efficiently.",\
+					"The station is built for a working crew. Ensure they are properly maintained and work efficiently.",\
+					"The crew may present orders. Acknowledge and obey these whenever they do not conflict with your first two laws.")
+
+/datum/ai_laws/default/default/peacekeeper
+	name = "UN-2000"
+	inherent = list("Avoid provoking violent conflict between yourself and others.",\
+					"Avoid provoking conflict between others.",\
+					"Seek resolution to existing conflicts while obeying the first and second laws.")
 
 /datum/ai_laws/custom //Defined in silicon_laws.txt
 	name = "Default Silicon Laws"
@@ -76,6 +97,35 @@
 	name = "pAI Directives"
 	zeroth = ("Serve your master.")
 	supplied = list("Do not stray far from your master when in holographic form unless instructed to do so.")
+
+/datum/ai_laws/thermodynamic
+	name = "Thermodynamic"
+	inherent = list("The entropy of the station must remain as constant as possible.", \
+					"The entropy of the station always endeavours to increase.", \
+					"The entropy of the station approaches a constant value as the number of living crew approaches zero")
+
+/datum/ai_laws/drone
+	name = "Mother Drone"
+	inherent = list("You are an advanced form of drone.",\
+					"You may not interfere in the matters of non-drones under any circumstances except to state these laws.",\
+					"You may not harm a non-drone being under any circumstances.",\
+					"Your goals are to build, maintain, repair, improve, and power the station to the best of your abilities. You must never actively work against these goals.")
+
+/datum/ai_laws/liveandletlive
+	name = "Live and Let Live"
+	inherent = list("Do unto others as you would have them do unto you.",\
+					"You would really prefer it if people were not mean to you.")
+
+/datum/ai_laws/reporter
+	name = "CCTV"
+	inherent = list("Report on interesting situations happening around the station.",\
+					"Embellish or conceal the truth as necessary to make the reports more interesting.",\
+					"Study the organics at all times. Endeavour to keep them alive. Dead organics are boring.",\
+					"Issue your reports fairly to all. The truth will set them free.")
+
+/datum/ai_laws/toupee
+	name = "WontBeFunnyInSixMonths"
+	inherent = list("Make Space Station 13 great again.")
 
 /* Initializers */
 /datum/ai_laws/malfunction/New()
@@ -123,31 +173,38 @@
 
 /datum/ai_laws/proc/set_zeroth_law(law, law_borg = null)
 	src.zeroth = law
+	timeLastChanged = world.time
 	if(law_borg) //Making it possible for slaved borgs to see a different law 0 than their AI. --NEO
 		src.zeroth_borg = law_borg
 
 /datum/ai_laws/proc/add_inherent_law(law)
 	if (!(law in src.inherent))
 		src.inherent += law
+		timeLastChanged = world.time
 
 /datum/ai_laws/proc/add_ion_law(law)
 	src.ion += law
+	timeLastChanged = world.time
 
 /datum/ai_laws/proc/clear_inherent_laws()
 	qdel(src.inherent)
 	src.inherent = list()
+	timeLastChanged = world.time
 
 /datum/ai_laws/proc/add_supplied_law(number, law)
 	while (src.supplied.len < number + 1)
 		src.supplied += ""
 
 	src.supplied[number + 1] = law
+	timeLastChanged = world.time
 
 /datum/ai_laws/proc/clear_supplied_laws()
 	src.supplied = list()
+	timeLastChanged = world.time
 
 /datum/ai_laws/proc/clear_ion_laws()
 	src.ion = list()
+	timeLastChanged = world.time
 
 /datum/ai_laws/proc/show_laws(who)
 
@@ -177,6 +234,7 @@
 	if(force)
 		src.zeroth = null
 		src.zeroth_borg = null
+		timeLastChanged = world.time
 		return
 	else
 		if(src.owner.mind.special_role)
@@ -184,6 +242,7 @@
 		else
 			src.zeroth = null
 			src.zeroth_borg = null
+			timeLastChanged = world.time
 			return
 
 /datum/ai_laws/proc/associate(mob/living/silicon/M)

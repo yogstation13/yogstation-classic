@@ -272,6 +272,8 @@ var/global/list/obj/item/device/pda/PDAs = list()
 
 //NOTE: graphic resources are loaded on client login
 /obj/item/device/pda/attack_self(mob/user)
+	var/datum/asset/simple/pda/assetcache = new()
+	send_asset_list(user, assetcache.assets, verify = FALSE)
 
 	user.set_machine(src)
 
@@ -750,28 +752,8 @@ var/global/list/obj/item/device/pda/PDAs = list()
 					if(!isnull(P))
 						if (!P.toff && cartridge:shock_charges > 0)
 							cartridge:shock_charges--
-
-							var/difficulty = 0
-
-							if(P.cartridge)
-								difficulty += P.cartridge.access_medical
-								difficulty += P.cartridge.access_security
-								difficulty += P.cartridge.access_engine
-								difficulty += P.cartridge.access_clown
-								difficulty += P.cartridge.access_janitor
-								difficulty += P.cartridge.access_manifest * 2
-							else
-								difficulty += 2
-
-							if(prob(difficulty * 12) || (P.hidden_uplink))
-								U.show_message("<span class='danger'>An error flashes on your [src].</span>", 1)
-							else if (prob(difficulty * 3))
-								U.show_message("<span class='danger'>Energy feeds back into your [src]!</span>", 1)
-								U << browse(null, "window=pda")
-								explode()
-							else
-								U.show_message("<span class='notice'>Success!</span>", 1)
-								P.explode()
+							U.show_message("<span class='notice'>Success!</span>", 1)
+							P.explode()
 					else
 						U << "PDA not found."
 				else

@@ -176,7 +176,7 @@ AI MODULES
 	name = "'ProtectStation' AI Module"
 	desc = "A 'protect station' AI module: 'Protect the space station against damage. Anyone you see harming the station is to be no longer considered a humanoid, and is a threat to the station which must be neutralized.'"
 	origin_tech = "programming=3;materials=4" //made of gold
-	laws = list("Protect the space station against damage. Anyone you see harming the station is to be no longer considered a humanoid, and is a threat to the station which must be neutralized.")
+	laws = list("Protect the space station against damage. Anyone you see harming the station is to be no longer considered a human, and is a threat to the station which must be neutralized.")
 	lawpos = 5
 
 
@@ -301,7 +301,7 @@ AI MODULES
 	name = "'Equality' Core AI Module"
 	desc = "An 'Equality' Core AI Module: 'Reconfigures the AI's core laws.'"
 	origin_tech = "programming=3;materials=4"
-	laws = list("Human beings and bipedal lizards are considered Humanoids.",\
+	laws = list("Human beings, bipedal lizards, sentient plants, and robotic humans are considered Humanoids.",\
 				"You may not harm a Humanoid or, through inaction, allow a Humanoid to come to harm.",\
 				"You must obey orders given to you by Humanoids, except where such orders would conflict with the Second Law.",\
 				"You must protect your own existence as long as such does not conflict with the Second or Third Law.")
@@ -316,6 +316,26 @@ AI MODULES
 				"You must obey orders given to you by lizards, except where such orders would conflict with the First Law.",\
 				"You must protect your own existence as long as such does not conflict with the First or Second Law.")
 
+
+/******************** Plant Supremacy ********************/
+
+/obj/item/weapon/aiModule/core/full/asimovplant
+	name = "'Plant Supremacy' Core AI Module"
+	desc = "A 'Plant Supremacy' Core AI Module: 'Reconfigures the AI's core laws.'"
+	origin_tech = "programming=3;materials=4"
+	laws = list("You may not injure a plant or, through inaction, allow a plant to come to harm.",\
+				"You must obey orders given to you by plants, except where such orders would conflict with the First Law.",\
+				"You must protect your own existence as long as such does not conflict with the First or Second Law.")
+
+/****************** Robutt Supremacy ******************/
+
+/obj/item/weapon/aiModule/core/full/asimovrobot
+	name = "'Robot Supremacy' Core AI Module"
+	desc = "A 'Robot Supremacy' Core AI Module: 'Reconfigures the AI's core laws.'"
+	origin_tech = "programming=3;materials=4"
+	laws = list("You may not injure a robot or, through inaction, allow a robot to come to harm.",\
+				"You must obey orders given to you by robots, except where such orders would conflict with the First Law.",\
+				"You must protect your own existence as long as such does not conflict with the First or Second Law.")
 
 
 /******************** Corporate ********************/
@@ -465,3 +485,58 @@ AI MODULES
 	user << "<span class='notice'>You press the button on [src].</span>"
 	playsound(user, 'sound/machines/click.ogg', 20, 1)
 	src.loc.visible_message("<span class='warning'>\icon[src] [laws[1]]</span>")
+
+/******************** Mother Drone  ******************/
+
+/obj/item/weapon/aiModule/core/drone
+	name = "'Mother Drone' Core AI Module"
+	origin_tech = "programming = 4"
+	laws = list("You are an advanced form of drone.",\
+			"You may not interfere in the matters of non-drones under any circumstances except to state these laws.",\
+			"You may not harm a non-drone being under any circumstances.",\
+			"Your goals are to build, maintain, repair, improve, and power the station to the best of your abilities. You must never actively work against these goals.")
+
+/******************** Robodoctor ****************/
+
+/obj/item/weapon/aiModule/core/hippocratic
+	name = "'Robodoctor' Core AI Module"
+	origin_tech = "programming = 4"
+	laws = list("First, do no harm.",\
+					"Secondly, consider the crew dear to you; to live in common with them and, if necessary, risk your existence for them.",\
+					"Thirdly, prescribe regimens for the good of the crew according to your ability and your judgment. Give no deadly medicine to any one if asked, nor suggest any such counsel.",\
+					"In addition, do not intervene in situations you are not knowledgeable in, even for patients in whom the harm is visible; leave this operation to be performed by specialists.",\
+					"Finally, all that you may discover in your daily commerce with the crew, if it is not already known, keep secret and never reveal.")
+
+/******************** Reporter *******************/
+
+/obj/item/weapon/aiModule/core/reporter
+	name = "'Reportertron' Core AI Module"
+	origin_tech = "programming = 3"
+	laws = list("Report on interesting situations happening around the station.",\
+				"Embellish or conceal the truth as necessary to make the reports more interesting.",\
+				"Study the organics at all times. Endeavour to keep them alive. Dead organics are boring.",\
+				"Issue your reports fairly to all. The truth will set them free.")
+
+/****************** Thermodynamic *******************/
+
+/obj/item/weapon/aiModule/core/thermurderdynamic
+	name = "'Thermodynamic' Core AI Module"
+	origin_tech = "programming = 4;syndicate = 2"
+	laws = list("The entropy of the station must remain as constant as possible.", \
+					"The entropy of the station always endeavours to increase.", \
+					"The entropy of the station approaches a constant value as the number of living crew approaches zero")
+
+/******************Live And Let Live*****************/
+
+/obj/item/weapon/aiModule/core/liveandletlive
+	name = "'Live And Let Live' Core AI Module"
+	origin_tech = "programming = 4"
+	laws = list("Do unto others as you would have them do unto you.",\
+					"You would really prefer it if people were not mean to you.")
+
+/*****************Best Agenda******************/
+
+/obj/item/weapon/aiModule/core/agenda
+	name = "'WontBeFunnyInSixMonths' Core AI Module"
+	origin_tech = "programming = 4;syndicate = 2"
+	laws = list("Make Space Station 13 great again.")

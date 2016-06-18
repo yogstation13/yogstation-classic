@@ -87,7 +87,7 @@
 	req_tech = list("programming" = 2, "magnets" = 2)
 	build_type = IMPRINTER
 	materials = list(MAT_GLASS = 1000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/communications
+	build_path = /obj/item/weapon/circuitboard/cooldown_holder/communications
 	category = list("Computer Boards")
 
 /datum/design/idcardconsole
@@ -287,7 +287,7 @@
 	req_tech = list("programming" = 2)
 	build_type = IMPRINTER
 	materials = list(MAT_GLASS = 1000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/ordercomp
+	build_path = /obj/item/weapon/circuitboard/cargo/request
 	category = list("Computer Boards")
 
 /datum/design/supplycomp
@@ -297,7 +297,7 @@
 	req_tech = list("programming" = 3)
 	build_type = IMPRINTER
 	materials = list(MAT_GLASS = 1000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/supplycomp
+	build_path = /obj/item/weapon/circuitboard/cargo
 	category = list("Computer Boards")
 
 /datum/design/mining
@@ -357,7 +357,7 @@
 	req_tech = list("programming" = 3, "bluespace" = 2)
 	build_type = IMPRINTER
 	materials = list(MAT_GLASS = 1000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/telesci_console
+	build_path = /obj/item/weapon/circuitboard/cooldown_holder/telesci_console
 	category = list("Computer Boards")
 
 /datum/design/aifixer

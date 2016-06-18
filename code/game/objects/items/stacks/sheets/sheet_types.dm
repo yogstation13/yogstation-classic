@@ -63,6 +63,10 @@ var/global/list/datum/stack_recipe/metal_recipes = list ( \
 	return ..()
 
 
+/obj/item/stack/sheet/metal/fifty
+	amount = 50
+
+
 /*
  * Plasteel
  */
@@ -84,6 +88,12 @@ var/global/list/datum/stack_recipe/plasteel_recipes = list ( \
 /obj/item/stack/sheet/plasteel/New(var/loc, var/amount=null)
 		recipes = plasteel_recipes
 		return ..()
+
+/obj/item/stack/sheet/plasteel/twenty
+	amount = 20
+
+/obj/item/stack/sheet/plasteel/fifty
+	amount = 50
 
 /*
  * Wood
@@ -152,3 +162,6 @@ var/global/list/datum/stack_recipe/cardboard_recipes = list ( \
 /obj/item/stack/sheet/cardboard/New(var/loc, var/amount=null)
 		recipes = cardboard_recipes
 		return ..()
+
+/obj/item/stack/sheet/cardboard/fifty
+	amount = 50

@@ -131,7 +131,7 @@
 	if(exchange_parts(user, O))
 		return
 	if (panel_open)
-		if(istype(O, /obj/item/weapon/crowbar))
+		if(istype(O, /obj/item/weapon/tool/crowbar))
 			griefProtection()
 			default_deconstruction_crowbar(O)
 			return 1
@@ -330,8 +330,8 @@
 
 /obj/machinery/r_n_d/server/robotics
 	name = "Robotics R&D Server"
-	id_with_upload_string = "1;2"
-	id_with_download_string = "1;2"
+	id_with_upload_string = "1;2;4"
+	id_with_download_string = "1;2;4"
 	server_id = 2
 
 

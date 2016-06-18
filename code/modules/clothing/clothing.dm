@@ -8,7 +8,7 @@
 	var/visor_flags_inv = 0		// same as visor_flags, but for flags_inv
 	lefthand_file = 'icons/mob/inhands/clothing_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/clothing_righthand.dmi'
-	var/alt_desc = null
+	var/fiber_text = null
 	var/toggle_message = null
 	var/alt_toggle_message = null
 	var/active_sound = null
@@ -20,6 +20,11 @@
 	var/canbetorn //can this particular item be torn down to be used for cloth?
 	var/tearhealth = 100
 	var/scan_reagents = 0 //this variable decides if the wearer can see reagents
+
+/obj/item/clothing/New()
+	if(!fiber_text) //used in add_fibers() to set fibers to the name (so we can have different name/set of fibers left)
+		fiber_text = name
+	..()
 
 //Ears: currently only used for headsets and earmuffs
 /obj/item/clothing/ears
@@ -92,6 +97,8 @@ BLIND     // can't see anything
 	var/blockTracking = 0 //For AI tracking
 	var/can_toggle = null
 
+var/list/head_compatible_items = list(/obj/item/weapon/reagent_containers/glass/bucket)//list of items with a compatible interface for being on the head. Hackey but better than the alternative.
+
 //Mask
 /obj/item/clothing/mask
 	name = "mask"
@@ -109,29 +116,30 @@ BLIND     // can't see anything
 	return message
 
 //Proc that moves gas/breath masks out of the way, disabling them and allowing pill/food consumption
-/obj/item/clothing/mask/proc/adjustmask(mob/user)
+/obj/item/clothing/mask/proc/adjustmask(mob/user, silent = 0)
 	if(!ignore_maskadjust)
 		if(user.incapacitated())
 			return
-		if(src.mask_adjusted == 1)
+		mask_adjusted = !mask_adjusted
+		if(!mask_adjusted)
 			src.icon_state = initial(icon_state)
 			gas_transfer_coefficient = initial(gas_transfer_coefficient)
 			permeability_coefficient = initial(permeability_coefficient)
 			flags |= visor_flags
 			flags_inv |= visor_flags_inv
 			flags_cover = initial(flags_cover)
-			user << "<span class='notice'>You push \the [src] back into place.</span>"
-			src.mask_adjusted = 0
+			if(!silent)
+				user << "<span class='notice'>You push \the [src] back into place.</span>"
 			slot_flags = initial(slot_flags)
 		else
 			src.icon_state += "_up"
-			user << "<span class='notice'>You push \the [src] out of the way.</span>"
+			if(!silent)
+				user << "<span class='notice'>You push \the [src] out of the way.</span>"
 			gas_transfer_coefficient = null
 			permeability_coefficient = null
 			flags &= ~visor_flags
 			flags_inv &= ~visor_flags_inv
 			flags_cover &= 0
-			src.mask_adjusted = 1
 			if(adjusted_flags)
 				slot_flags = adjusted_flags
 		usr.update_inv_wear_mask()

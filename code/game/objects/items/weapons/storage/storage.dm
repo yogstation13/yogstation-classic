@@ -24,6 +24,7 @@
 	var/allow_quick_gather	//Set this variable to allow the object to have the 'toggle mode' verb, which quickly collects all items from a tile.
 	var/collection_mode = 1;  //0 = pick one at a time, 1 = pick all on tile, 2 = pick all of a type
 	var/preposition = "in" // You put things 'in' a bag, but trays need 'on'.
+	var/strip_time = 30 //Time it takes to directly strip/put-things-into the container from from the strip menu
 
 
 /obj/item/weapon/storage/MouseDrop(atom/over_object)
@@ -98,12 +99,13 @@
 				return
 	if(user.s_active)
 		user.s_active.hide_from(user)
-	user.client.screen -= boxes
-	user.client.screen -= closer
-	user.client.screen -= contents
-	user.client.screen += boxes
-	user.client.screen += closer
-	user.client.screen += contents
+	if(user.client)
+		user.client.screen -= boxes
+		user.client.screen -= closer
+		user.client.screen -= contents
+		user.client.screen += boxes
+		user.client.screen += closer
+		user.client.screen += contents
 	user.s_active = src
 	is_seeing |= user
 
@@ -231,14 +233,14 @@
 
 //This proc return 1 if the item can be picked up and 0 if it can't.
 //Set the stop_messages to stop it from printing messages
-/obj/item/weapon/storage/proc/can_be_inserted(obj/item/W, stop_messages = 0, mob/user)
+/obj/item/weapon/storage/proc/can_be_inserted(obj/item/W, stop_messages = 0, mob/user = usr)
 	if(!istype(W) || (W.flags & ABSTRACT)) return //Not an item
 
 	if(loc == W)
 		return 0 //Means the item is already in the storage item
 	if(contents.len >= storage_slots)
 		if(!stop_messages)
-			usr << "<span class='warning'>[src] is full, make some space!</span>"
+			user << "<span class='warning'>[src] is full!</span>"
 		return 0 //Storage item is full
 
 	if(src in W.contents)
@@ -252,13 +254,13 @@
 				break
 		if(!ok)
 			if(!stop_messages)
-				usr << "<span class='warning'>[src] cannot hold [W]!</span>"
+				user << "<span class='warning'>[src] cannot hold [W]!</span>"
 			return 0
 
 	for(var/A in cant_hold) //Check for specific items which this container can't hold.
 		if(istype(W, A))
 			if(!stop_messages)
-				usr << "<span class='warning'>[src] cannot hold [W]!</span>"
+				user << "<span class='warning'>[src] cannot hold [W]!</span>"
 			return 0
 
 	// Check for forbidden items inside the object, if it is a container itself
@@ -268,12 +270,12 @@
 			for(var/A in cant_hold) //Check for specific items which this container can't hold.
 				if(istype(O, A))
 					if(!stop_messages)
-						usr << "<span class='warning'>[src] cannot hold [O] (even inside [W])!</span>"
+						user << "<span class='warning'>[src] cannot hold [O] (even inside [W])!</span>"
 					return 0
 
 	if(W.w_class > max_w_class)
 		if(!stop_messages)
-			usr << "<span class='warning'>[W] is too big for [src]!</span>"
+			user << "<span class='warning'>[W] is too big for [src]!</span>"
 		return 0
 
 	var/sum_w_class = W.w_class
@@ -282,17 +284,17 @@
 
 	if(sum_w_class > max_combined_w_class)
 		if(!stop_messages)
-			usr << "<span class='warning'>[W] won't fit in [src], make some space!</span>"
+			user << "<span class='warning'>[W] won't fit in [src]!</span>"
 		return 0
 
 	if(W.w_class >= w_class && (istype(W, /obj/item/weapon/storage)))
 		if(!istype(src, /obj/item/weapon/storage/backpack/holding) && !istype(src, /obj/item/weapon/storage/belt/fannypack/holding))	//bohs should be able to hold backpacks again. The override for putting a boh in a boh is in backpack.dm.
 			if(!stop_messages)
-				usr << "<span class='warning'>[src] cannot hold [W] as it's a storage item of the same size!</span>"
+				user << "<span class='warning'>[src] cannot hold [W] as it's a storage item of the same size!</span>"
 			return 0 //To prevent the stacking of same sized storage items.
 
 	if(W.flags & NODROP) //SHOULD be handled in unEquip, but better safe than sorry.
-		usr << "<span class='warning'>\the [W] is stuck to your hand, you can't put it in \the [src]!</span>"
+		user << "<span class='warning'>\the [W] is stuck to your hand, you can't put it in \the [src]!</span>"
 		return 0
 
 	return 1
@@ -360,7 +362,6 @@
 	update_icon()
 	W.mouse_opacity = initial(W.mouse_opacity)
 	return 1
-
 
 //This proc is called when you want to place an item into the storage item.
 /obj/item/weapon/storage/attackby(obj/item/W, mob/user, params)

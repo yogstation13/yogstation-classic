@@ -44,6 +44,17 @@
 	icon_crate = "medicalcrate"
 	icon_state = "medicalcrate"
 
+/obj/structure/closet/crate/surgery_table
+	desc = "Surgery table supply crate"
+	name = "surgery table crate"
+	icon_crate = "medicalcrate"
+	icon_state = "medicalcrate"
+
+/obj/structure/closet/crate/surgery_table/New()
+	.. ()
+	var/obj/structure/optable/O = new /obj/structure/optable(src)
+	O.anchored = 0
+
 /obj/structure/closet/crate/rcd
 	desc = "A crate for the storage of an RCD."
 	name = "\improper RCD crate"
@@ -124,7 +135,7 @@
 	var/sparks = "securecratesparks"
 	var/emag = "securecrateemag"
 	locked = 1
-	health = 1000
+	health = 300
 
 /obj/structure/closet/crate/secure/weapon
 	desc = "A secure weapons crate."
@@ -292,7 +303,7 @@
 			user  << "<span class='notice'>You attach [W] to [src].</span>"
 			W.loc = src
 			return
-	else if(istype(W, /obj/item/weapon/wirecutters))
+	else if(istype(W, /obj/item/weapon/tool/wirecutters))
 		if(rigged)
 			user  << "<span class='notice'>You cut away the wiring.</span>"
 			playsound(loc, 'sound/items/Wirecutter.ogg', 100, 1)

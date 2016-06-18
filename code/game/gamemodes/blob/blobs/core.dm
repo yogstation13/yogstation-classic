@@ -3,10 +3,10 @@
 	icon = 'icons/mob/blob.dmi'
 	icon_state = "blank_blob"
 	desc = "A huge, pulsating yellow mass."
-	health = 300
-	maxhealth = 300
+	health = 280
+	maxhealth = 280
 	health_regen = 0 //regen in Life(), instead of in RegenHealth()
-	fire_resist = 0.5
+	fire_resist = 0.75
 	atmos_block = 1
 	var/overmind_get_delay = 0 // we don't want to constantly try to find an overmind, do it every 30 seconds
 	var/resource_delay = 0
@@ -87,7 +87,7 @@
 	health = min(initial(health), health + 1)
 	if(overmind)
 		overmind.update_health()
-	pulseLoop(0)
+	Pulse_Area(overmind, 12, 4, 3)
 	for(var/b_dir in alldirs)
 		if(!prob(5))
 			continue

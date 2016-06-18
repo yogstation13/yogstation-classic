@@ -1,10 +1,14 @@
 /datum/borer_chem
 	var/chemname
 	var/chem_desc = "This is a chemical"
-	var/needed_influence = 0
-	var/influence_change = 5
+//	var/needed_influence = 0
+//	var/influence_change = 5
 	var/chemuse = 35
 	var/quantity = 10
+
+/datum/borer_chem/epinephrine
+	chemname = "epinephrine"
+	chem_desc = "Stabilizes critical condition and slowly restores oxygen damage. If overdosed, it will deal toxin and oxyloss damage."
 
 /datum/borer_chem/mannitol
 	chemname = "mannitol"
@@ -24,7 +28,7 @@
 
 /datum/borer_chem/ephedrine
 	chemname = "ephedrine"
-	chem_desc = "Reduces stun times, increases run speed, and stabilizes crit. If overdosed it will deal toxin and oxyloss damage."
+	chem_desc = "Reduces stun times, and increases run speed. If overdosed it will deal toxin and oxyloss damage."
 
 /datum/borer_chem/leporazine
 	chemname = "leporazine"
@@ -34,15 +38,15 @@
 /datum/borer_chem/perfluorodecalin
 	chemname = "perfluorodecalin"
 	chem_desc = "Heals suffocation damage so quickly that you could have a spacewalk, but it mutes your voice. Has a 33% chance of healing brute and burn damage per cycle as well."
-	needed_influence = 40
-	influence_change = -5
+	//needed_influence = 40
+	//influence_change = -5
 	chemuse = 75
 
 /datum/borer_chem/spacedrugs
 	chemname = "space_drugs"
 	chem_desc = "Get your host high as a kite."
-	needed_influence = 50
-	influence_change = -5
+	//needed_influence = 50
+	//influence_change = -5
 	chemuse = 75
 
 /datum/borer_chem/mutadone
@@ -50,11 +54,11 @@
 	chem_desc = "Heals your genetic mutations."
 	chemuse = 100
 
-/datum/borer_chem/creagent
+/*/datum/borer_chem/creagent
 	chemname = "colorful_reagent"
 	chem_desc = "Change the colour of your host."
 	needed_influence = 100
-	chemuse = 25
+	chemuse = 25*/
 
 /datum/borer_chem/ethanol
 	chemname = "ethanol"

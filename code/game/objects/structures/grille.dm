@@ -137,12 +137,12 @@
 /obj/structure/grille/attackby(obj/item/weapon/W, mob/user, params)
 	user.changeNext_move(CLICK_CD_MELEE)
 	add_fingerprint(user)
-	if(istype(W, /obj/item/weapon/wirecutters))
+	if(istype(W, /obj/item/weapon/tool/wirecutters))
 		if(!shock(user, 100))
 			adm_action_log.enqueue("[gameTimestamp()] ([user] - [W] - [src]): deconstructs")
 			playsound(loc, 'sound/items/Wirecutter.ogg', 100, 1)
 			Deconstruct()
-	else if((istype(W, /obj/item/weapon/screwdriver)) && (istype(loc, /turf/simulated) || anchored))
+	else if((istype(W, /obj/item/weapon/tool/screwdriver)) && (istype(loc, /turf/simulated) || anchored))
 		if(!shock(user, 90))
 			playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
 			anchored = !anchored
@@ -162,7 +162,7 @@
 			icon_state = "grille"
 			R.use(1)
 			return
-	else if(istype(W, /obj/item/weapon/rcd) && istype(loc, /turf/simulated)) //Do not attack the grille if the user is holding an RCD
+	else if(is_rcd(W) && istype(loc, /turf/simulated)) //Do not attack the grille if the user is holding an RCD
 		return
 
 //window placing begin

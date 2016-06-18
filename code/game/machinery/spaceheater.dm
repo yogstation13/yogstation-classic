@@ -64,7 +64,7 @@
 		else
 			user << "<span class='warning'>The hatch must be open to insert a power cell!</span>"
 			return
-	else if(istype(I, /obj/item/weapon/screwdriver))
+	else if(istype(I, /obj/item/weapon/tool/screwdriver))
 		open = !open
 		user.visible_message("[user] [open ? "opens" : "closes"] the hatch on \the [src].", "<span class='notice'>You [open ? "open" : "close"] the hatch on \the [src].</span>")
 		update_icon()

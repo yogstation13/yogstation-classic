@@ -10,9 +10,10 @@
 	var/health = 30
 	var/maxhealth = 30
 	var/health_regen = 2
+	var/pulse_timestamp = 0
 	var/health_timestamp = 0
 	var/brute_resist = 0.5
-	var/fire_resist = 1
+	var/fire_resist = 1.15 // lower fire_resist = less damage
 	var/atmos_block = 0
 	var/mob/camera/blob/overmind
 
@@ -88,8 +89,34 @@
 		update_icon()
 		health_timestamp = world.time + 10 // 1 seconds
 
+/obj/effect/blob/proc/Pulse_Area(pulsing_overmind = overmind, claim_range = 10, pulse_range = 3, expand_range = 2)
+	src.Be_Pulsed()
+	if(claim_range)
+		for(var/obj/effect/blob/B in urange(claim_range, src, 1))
+			if(!B.overmind && !istype(B, /obj/effect/blob/core) && prob(30))
+				B.overmind = pulsing_overmind //reclaim unclaimed, non-core blobs.
+				B.update_icon()
+	if(pulse_range)
+		for(var/obj/effect/blob/B in orange(pulse_range, src))
+			B.Be_Pulsed()
+	if(expand_range)
+		if(prob(85))
+			src.expand()
+		for(var/obj/effect/blob/B in orange(expand_range, src))
+			if(prob(max(10 - get_dist(get_turf(src), get_turf(B)) * 4, 1))) //expand falls off with range but is faster near the blob causing the expansion
+				B.expand()
+	return
 
-/obj/effect/blob/proc/pulseLoop(num)
+/obj/effect/blob/proc/Be_Pulsed()
+	if(pulse_timestamp <= world.time)
+		ConsumeTile()
+		health = min(maxhealth, health+health_regen)
+		update_icon()
+		pulse_timestamp = world.time + 10
+		return 1 //we did it, we were pulsed!
+	return 0 //oh no we failed
+
+/*/obj/effect/blob/proc/pulseLoop(num)
 	var/a_color
 	if(overmind)
 		a_color = overmind.blob_reagent_datum.color
@@ -121,14 +148,15 @@
 		var/turf/T = get_step(src, dirn)
 		var/obj/effect/blob/B = (locate(/obj/effect/blob) in T)
 		if(!B)
-			expand(T, src.overmind)//No blob here so try and expand
-			return
+			if(prob(75))
+				expand(T, src.overmind)//No blob here so try and expand
+				return
 		B.adjustcolors(a_color)
 
 		B.Pulse((pulse+1),get_dir(src.loc,T), a_color)
 		return
 	return
-
+*/
 
 /obj/effect/blob/proc/run_action()
 	return 0

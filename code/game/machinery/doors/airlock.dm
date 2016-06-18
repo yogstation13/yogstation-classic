@@ -516,7 +516,7 @@ About the new airlock wires panel:
 		user << "<span class='warning'>Unable to interface. Airlock control panel damaged.</span>"
 		return
 
-	ui_interact(user)
+	nanoui_interact(user)
 
 /obj/machinery/door/airlock/proc/set_perms(mob/user as mob)
 	//inorix: code to allow silicons to set airlock permissions for newly placed airlocks
@@ -563,7 +563,7 @@ About the new airlock wires panel:
 		popup.open()
 		onclose(user, "airlock")
 
-/obj/machinery/door/airlock/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null)
+/obj/machinery/door/airlock/nanoui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null)
 	if(!user)
 		return
 
@@ -955,15 +955,15 @@ About the new airlock wires panel:
 		return
 
 	src.add_fingerprint(user)
-	if((istype(C, /obj/item/weapon/weldingtool) && !( src.operating ) && src.density))
-		var/obj/item/weapon/weldingtool/W = C
+	if((istype(C, /obj/item/weapon/tool/weldingtool) && !( src.operating ) && src.density))
+		var/obj/item/weapon/tool/weldingtool/W = C
 		if(W.remove_fuel(0,user))
 			if(boltsCut)
 				user.visible_message("<span class='warning'>[user] is repairing the airlock's bolts with their [C].</span>", \
 								"You begin repairing the airlocks bolts with your [C]...", \
 								"You hear welding.")
 				playsound(loc, 'sound/items/Welder.ogg', 40, 1)
-				if(do_after(user,80,5,1))
+				if(do_after(user, 80 * W.speed_coefficient, 5, 1))
 					if(density && !operating)//Door must be closed to weld.
 						if( !istype(src, /obj/machinery/door/airlock) || !user || !W || !W.isOn() || !user.loc )
 							return
@@ -977,7 +977,7 @@ About the new airlock wires panel:
 									"<span class='notice'>You begin [welded ? "unwelding":"welding"] the airlock...</span>", \
 									"<span class='italics'>You hear welding.</span>")
 				playsound(loc, 'sound/items/Welder.ogg', 40, 1)
-				if(do_after(user,40,5,1))
+				if(do_after(user, 40 * W.speed_coefficient, 5, 1))
 					if(density && !operating)//Door must be closed to weld.
 						if( !istype(src, /obj/machinery/door/airlock) || !user || !W || !W.isOn() || !user.loc )
 							return
@@ -1017,14 +1017,14 @@ About the new airlock wires panel:
 			update_icon()
 		else
 			user << "<span class='notice'>The bolts of this airlock are already cut.</span>"
-	else if(istype(C, /obj/item/weapon/screwdriver))
+	else if(istype(C, /obj/item/weapon/tool/screwdriver))
 		if(p_open && detonated)
 			user << "<span class='warning'>[src] has no maintenance panel!</span>"
 			return
 		src.p_open = !( src.p_open )
 		user << "<span class='notice'>You [p_open ? "open":"close"] the maintenance panel of the airlock.</span>"
 		src.update_icon()
-	else if(istype(C, /obj/item/weapon/wirecutters))
+	else if(istype(C, /obj/item/weapon/tool/wirecutters))
 		return src.attack_hand(user)
 	else if(istype(C, /obj/item/device/multitool))
 		return src.attack_hand(user)
@@ -1033,9 +1033,9 @@ About the new airlock wires panel:
 	else if(istype(C, /obj/item/weapon/pai_cable))
 		var/obj/item/weapon/pai_cable/cable = C
 		cable.plugin(src, user)
-	else if(istype(C, /obj/item/weapon/crowbar) || istype(C, /obj/item/weapon/twohanded/fireaxe) )
+	else if(istype(C, /obj/item/weapon/tool/crowbar) || istype(C, /obj/item/weapon/twohanded/fireaxe) )
 		var/beingcrowbarred = null
-		if(istype(C, /obj/item/weapon/crowbar) )
+		if(istype(C, /obj/item/weapon/tool/crowbar) )
 			beingcrowbarred = 1 //derp, Agouri
 		else
 			beingcrowbarred = 0
@@ -1113,7 +1113,7 @@ About the new airlock wires panel:
 				else
 					spawn(0)	close(2)
 
-	else if(istype(C, /obj/item/weapon/airlock_painter))
+	else if(get_airlock_painter(C))
 		change_paintjob(C, user)
 	else if(istype(C, /obj/item/device/doorCharge) && p_open)
 		if(emagged)
@@ -1132,7 +1132,7 @@ About the new airlock wires panel:
 		newCharge.loc = src
 		charge = newCharge
 		return
-	else if(istype(C, /obj/item/weapon/rcd)&& istype(loc, /turf/simulated)) //Do not attack the airlock if the user is holding an RCD
+	else if(is_rcd(C) && istype(loc, /turf/simulated))
 		return
 	else
 		..()
@@ -1268,8 +1268,8 @@ About the new airlock wires panel:
 
 /obj/machinery/door/airlock/proc/change_paintjob(obj/item/C, mob/user)
 	var/obj/item/weapon/airlock_painter/W
-	if(istype(C, /obj/item/weapon/airlock_painter))
-		W = C
+	if(get_airlock_painter(C))
+		W = get_airlock_painter(C)
 	else
 		user << "If you see this, it means airlock/change_paintjob() was called with something other than an airlock painter. Check your code!"
 		return
@@ -1356,3 +1356,24 @@ About the new airlock wires panel:
 	for (var/obj/A in contents)
 		A.HasProximity(AM)
 	return
+
+/obj/machinery/door/airlock/attack_alien(mob/living/carbon/alien/humanoid/user)
+	add_fingerprint(user)
+	if(isElectrified())
+		shock(user, 100) //Mmm, fried xeno!
+		return
+	if(!density) //already open
+		return
+	if(locked || welded)
+		user << "<span class='warning'>[src] refuses to budge!</span>"
+		return
+	user.visible_message("<span class='warning'>[user] begins prying open [src].</span>",\
+						"<span class='noticealien'>You begin digging your claws into [src] with all your might!</span>",\
+						"<span class='warning'>You hear groaning metal...</span>")
+	var/time_to_open = 30
+	if(hasPower())
+		time_to_open = 120 //Powered airlocks take longer to open
+		playsound(src.loc, 'sound/machines/airlockforced.ogg', 30, 1)
+	if(do_after(user, time_to_open, target = src))
+		if(density && !open(2)) //The airlock is still closed, but something prevented it from opening (Another player noticed and bolted/welded the airlock in time!)
+			user << "<span class='warning'>Dispite your efforts, [src] managed to resist your attempts to open it!</span>"

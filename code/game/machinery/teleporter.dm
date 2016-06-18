@@ -315,9 +315,25 @@
 					var/mob/living/carbon/human/human = M
 					if(human.dna && human.dna.species.id == "human")
 						M  << "<span class='italics'>You hear a buzzing in your ears.</span>"
-						hardset_dna(human, null, null, null, null, /datum/species/fly)
+						hardset_dna(human, null, null, null, null, /datum/species/human/fly)
 						human.regenerate_icons()
 					human.apply_effect((rand(120 - accurate * 40, 180 - accurate * 60)), IRRADIATE, 0)
+					if(human.dna && human.dna.species.id == "lizard")
+						M  << "<span class='italics'>You hear a buzzing in your ears.</span>"
+						hardset_dna(human, null, null, null, null, /datum/species/lizard/fly)
+						human.regenerate_icons()
+					human.apply_effect((rand(120 - accurate * 40, 180 - accurate * 60)), IRRADIATE, 0)
+					if(human.dna && human.dna.species.id == "android")
+						M  << "<span class='italics'>You hear a buzzing in your ears.</span>"
+						hardset_dna(human, null, null, null, null, /datum/species/android/fly)
+						human.regenerate_icons()
+					human.apply_effect((rand(120 - accurate * 40, 180 - accurate * 60)), IRRADIATE, 0)
+					if(human.dna && human.dna.species.id == "plant")
+						M  << "<span class='italics'>You hear a buzzing in your ears.</span>"
+						hardset_dna(human, null, null, null, null, /datum/species/plant/fly)
+						human.regenerate_icons()
+					human.apply_effect((rand(120 - accurate * 40, 180 - accurate * 60)), IRRADIATE, 0)
+
 			calibrated = 0
 	return
 
@@ -418,7 +434,7 @@
 			M.buffer = src
 			user << "<span class='caution'>You download the data to the [W.name]'s buffer.</span>"
 			return
-		if(istype(W, /obj/item/weapon/wirecutters))
+		if(istype(W, /obj/item/weapon/tool/wirecutters))
 			link_console_and_hub()
 			user << "<span class='caution'>You reconnect the station to nearby machinery.</span>"
 			return
