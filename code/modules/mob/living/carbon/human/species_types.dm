@@ -823,10 +823,18 @@ datum/species/human/spec_death(gibbed, mob/living/carbon/human/H)
 	say_mod = "gibbers"
 	sexes = 0
 	invis_sight = SEE_INVISIBLE_LEVEL_ONE
-	specflags = list(NOBLOOD,NOBREATH,VIRUSIMMUNE)
+	specflags = list(NOBLOOD,NOBREATH,VIRUSIMMUNE,NOGUNS)
 	var/scientist = 0 // vars to not pollute spieces list with castes
 	var/agent = 0
 	var/team = 1
+
+/datum/species/abductor/handle_vision(mob/living/carbon/human/H)
+	//custom override because darksight APPARENTLY DOESN"T WORK LIKE THIS BY DEFAULT??
+	..()
+	H.sight |= SEE_MOBS
+	H.permanent_sight_flags |= SEE_MOBS
+	H.see_in_dark = 8
+	invis_sight = SEE_INVISIBLE_MINIMUM
 
 /datum/species/abductor/handle_speech(message)
 	//Hacks
