@@ -7,8 +7,19 @@
 	var/mob/living/carbon/human/patient = null
 	var/obj/structure/optable/table = null
 	var/menu = 1 // one is the standard surgery set up two is scanning cubicles, implant cases, and possibly diskettes, three is database.
-	var/implants = list()
-	var/organs = list()
+	var/list/implants = list(
+		/obj/item/weapon/implant/loyalty,
+		/obj/item/weapon/implant/tracking,
+		/obj/item/weapon/implant/chem,
+		)
+
+	var/list/organs = list(
+		/obj/item/organ/internal/heart,
+		/obj/item/organ/internal/appendix,
+		/obj/item/organ/internal/brain,
+		/obj/item/organ/internal/brain/alien,
+		/obj/item/organ/internal/body_egg/alien_embryo,
+		)
 	var/scanmsg
 
 	var/obj/item/weapon/storage/handcooler/cubicle/cube = null
@@ -20,14 +31,38 @@
 	..()
 	if(ticker)
 		find_table()
-	implants += new /obj/item/weapon/implant/loyalty(src)
-	implants += new /obj/item/weapon/implant/tracking(src)
-	implants += new /obj/item/weapon/implant/chem(src)
-	organs += new /obj/item/organ/internal/heart(src)
-	organs += new /obj/item/organ/internal/appendix(src)
-	organs += new /obj/item/organ/internal/brain(src)
-	organs += new /obj/item/organ/internal/brain/alien(src)
-	organs += new /obj/item/organ/internal/body_egg/alien_embryo(src)
+
+/obj/machinery/computer/operating/erase_data()
+	implants = null
+	organs = null
+	for(var/obj/O in src)
+		if(O in (implants || organs))
+			qdel(O)
+
+/obj/machinery/computer/operating/process()
+	..()
+
+	if(!organs)
+		bootup_organs()
+
+	if(!implants)
+		bootup_implants()
+
+/obj/machinery/computer/operating/proc/bootup_organs()
+	audible_message("[src] reboots their organ database and reverts back the intial set.")
+	organs += /obj/item/organ/internal/heart
+	organs += /obj/item/organ/internal/appendix
+	organs += /obj/item/organ/internal/brain
+	organs += /obj/item/organ/internal/brain/alien
+	organs += /obj/item/organ/internal/body_egg/alien_embryo
+
+
+/obj/machinery/computer/operating/proc/bootup_implants()
+	audible_message("[src] reboots their implant database and reverts back the intial set.")
+	implants += /obj/item/weapon/implant/loyalty
+	implants += /obj/item/weapon/implant/tracking
+	implants += /obj/item/weapon/implant/chem
+
 
 /obj/machinery/computer/operating/initialize()
 	find_table()
@@ -38,6 +73,14 @@
 		if(table)
 			table.computer = src
 			break
+
+
+/obj/machinery/computer/operating/erase_data()
+	implants = null
+	organs = null
+	for(var/obj/O in src)
+		if(O in (implants || organs))
+			qdel(O)
 
 
 /obj/machinery/computer/operating/attack_hand(mob/user)
@@ -295,16 +338,17 @@
 
 /obj/machinery/computer/operating/proc/get_database_info()
 	var/dat = ""
-	var/obj/item/weapon/implant/I
-	for(I in implants)
-		if(I.name == lastscan)
-			dat += "<BR>[I.name] - Latest update to the database."
+	for(var/A in implants)
+		var/obj/A2 = new A
+		if(A2.name == lastscan)
+			dat += "<BR>[A2.name] - Latest update to the database."
 		else
-			dat += "<BR>[I.name]"
-	var/obj/item/organ/internal/O
-	for(O in organs)
-		if(O.name == lastscan)
-			dat += "<BR>[O.name] - Latest update to the database."
+			dat += "<BR>[A2.name]"
+
+	for(var/A in organs)
+		var/obj/A3 = new A
+		if(A3.name == lastscan)
+			dat += "<BR>[A3.name] - Latest update to the database."
 		else
-			dat += "<BR>[O.name]"
+			dat += "<BR>[A3.name]"
 	return dat
