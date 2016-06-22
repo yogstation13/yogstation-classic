@@ -80,7 +80,7 @@
 	amount_per_transfer_from_this = 10
 	volume = 10
 	ignore_flags = 1 //so you can medipen through hardsuits
-	flags = null
+	flags = 0
 	list_reagents = list("epinephrine" = 10)
 
 /obj/item/weapon/reagent_containers/hypospray/medipen/New()
@@ -121,14 +121,14 @@
 
 /obj/item/weapon/reagent_containers/hypospray/mini
 	name = "minihypospray"
-	desc = "A modified, more portable air-needle autoinjector, used by mining personnel and space explorers to quickly heal injuries in hostile environments."
+	desc = "A modified, more portable air-needle autoinjector, used by mining personnel and space explorers to quickly heal injuries in hostile environments. It has been designed so that you have to send it back to the manufacturer to refill it."
 	icon = 'icons/obj/syringe.dmi'
 	item_state = "minihypo"
 	icon_state = "minihypo"
 	amount_per_transfer_from_this = 5
 	volume = 20
 	possible_transfer_amounts = null
-	flags = OPENCONTAINER
+	flags = 0
 	slot_flags = SLOT_BELT
 	ignore_flags = 1
 	list_reagents = list("omnizine" = 20)
