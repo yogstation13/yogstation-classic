@@ -469,11 +469,11 @@
 
 		if(istype(T, /mob/living/carbon))
 			var/mob/living/carbon/C = T
-			if((emagged || ai) && C.stat != DEAD)	//if emagged or set to attack anyone, every non-dead carbon is a target.
-				targets += C
+
+			if(emagged && C.stat == DEAD)	//if emagged, target all non-dead targets
 				continue
 
-			if(C.stat || C.handcuffed || C.lying)	//if the perp is handcuffed or lying or dead/dying, no need to bother really
+			if(!emagged && (C.stat || C.handcuffed || C.lying))	//don't shoot downed targets unless emagged
 				continue
 
 			if(istype(C, /mob/living/carbon/human))	//if the target is a human, analyze threat level
@@ -484,7 +484,7 @@
 		if(istype(T, /obj/mecha))
 			var/obj/mecha/M = T
 			if(M.occupant)
-				if(!ai && !emagged) //assess the occupant of a mech before shooting if not emagged or set to kill-all mode
+				if(!emagged) //assess the occupant of a mech before shooting if not emagged or set to kill-all mode
 					if(assess_perp(M.occupant) >= 4)
 						targets += M
 				else
