@@ -119,8 +119,8 @@
 	synd_mind.current << "<B>If you feel you are not up to this task, give your ID to another operative.</B>"
 	synd_mind.current << "<B>In your hand you will find a special item capable of triggering a greater challenge for your team. Examine it carefully and consult with your fellow operatives before activating it.</B>"
 
-	var/obj/item/device/nuclear_challenge/challenge = new /obj/item/device/nuclear_challenge
-	synd_mind.current.equip_to_slot_or_del(challenge, slot_r_hand)
+	var/obj/item/device/nuclear_challenge/vote/voter = new /obj/item/device/nuclear_challenge/vote()
+	synd_mind.current.equip_to_slot_or_del(voter, slot_l_hand)
 
 	var/list/foundIDs = synd_mind.current.search_contents_for(/obj/item/weapon/card/id)
 	if(foundIDs.len)
@@ -179,6 +179,8 @@
 	if(synd_mob.backbag == 2) synd_mob.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/satchel_norm(synd_mob), slot_back)
 	synd_mob.equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/automatic/pistol(synd_mob), slot_belt)
 	synd_mob.equip_to_slot_or_del(new /obj/item/weapon/storage/box/engineer(synd_mob.back), slot_in_backpack)
+	var/obj/item/device/nuclear_challenge/vote/voter = new /obj/item/device/nuclear_challenge/vote()
+	synd_mob.equip_to_slot_or_del(voter, slot_l_hand)
 
 	var/obj/item/device/radio/uplink/U = new /obj/item/device/radio/uplink(synd_mob)
 	U.hidden_uplink.uplink_owner="[synd_mob.key]"
