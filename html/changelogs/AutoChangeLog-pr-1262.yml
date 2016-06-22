@@ -1,0 +1,4 @@
+author: Cruix
+delete-after: True
+changes: 
+  - tweak: "All nuke ops start with an item that allows them to vote for war. War will be declared if 3 out of five nukeops vote yes."
