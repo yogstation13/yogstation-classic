@@ -23,6 +23,7 @@ Quartermaster
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/brown(H), slot_shoes)
 	H.equip_to_slot_or_del(new /obj/item/clothing/glasses/sunglasses(H), slot_glasses)
 	H.equip_to_slot_or_del(new /obj/item/weapon/clipboard(H), slot_l_hand)
+	H.equip_to_slot_or_del(new /obj/item/device/export_scanner(H), slot_r_hand)
 
 /*
 Cargo Technician
@@ -47,6 +48,7 @@ Cargo Technician
 /datum/job/cargo_tech/equip_items(mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/cargotech(H), slot_w_uniform)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/black(H), slot_shoes)
+	H.equip_to_slot_or_del(new /obj/item/device/export_scanner(H), slot_l_hand)
 
 /*
 Shaft Miner
