@@ -51,7 +51,7 @@
 	throw_range = 5
 	flags = NOSHIELD
 	origin_tech = "magnets=3;syndicate=4"
-	block_chance = 50
+	block_chance = 0
 	var/hacked = 0
 
 /obj/item/weapon/melee/energy/sword/New()
@@ -60,7 +60,7 @@
 
 /obj/item/weapon/melee/energy/sword/hit_reaction(mob/living/carbon/human/owner, attack_text, final_block_chance)
 	if(active)
-		return ..()
+		return ..(owner, attack_text, final_block_chance)
 	return 0
 
 /obj/item/weapon/melee/energy/sword/attack(mob/vict, mob/usr)
