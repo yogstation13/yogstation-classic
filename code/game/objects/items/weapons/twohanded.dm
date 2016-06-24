@@ -203,7 +203,7 @@
 	origin_tech = "magnets=3;syndicate=4"
 	item_color = "green"
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
-	block_chance = 10
+	block_chance = 0
 	var/hacked = 0
 
 /obj/item/weapon/twohanded/dualsaber/New()
@@ -238,7 +238,7 @@
 /obj/item/weapon/twohanded/dualsaber/hit_reaction(mob/living/carbon/human/owner, attack_text, final_block_chance, damage, attack_type)
 	if(wielded)
 		if(attack_type == UNARMED_ATTACK)
-			return 1
+			final_block_chance += 70
 		return ..(owner, attack_text, final_block_chance)
 	return 0
 
