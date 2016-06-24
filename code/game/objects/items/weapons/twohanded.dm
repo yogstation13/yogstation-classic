@@ -235,8 +235,10 @@
 	else
 		user.adjustStaminaLoss(25)
 
-/obj/item/weapon/twohanded/dualsaber/hit_reaction(mob/living/carbon/human/owner, attack_text, final_block_chance)
+/obj/item/weapon/twohanded/dualsaber/hit_reaction(mob/living/carbon/human/owner, attack_text, final_block_chance, damage, attack_type)
 	if(wielded)
+		if(attack_type == UNARMED_ATTACK)
+			return 1
 		return ..(owner, attack_text, final_block_chance)
 	return 0
 
