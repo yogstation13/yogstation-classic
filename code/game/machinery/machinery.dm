@@ -118,18 +118,25 @@ Class Procs:
 	var/interact_offline = 0 // Can the machine be interacted with while de-powered.
 	var/mob/living/silicon/pai/paired
 	var/paiallowed = 0
+	var/fast_process = 0
 
 /obj/machinery/New()
 	..()
 	machines += src
-	SSmachine.processing += src
+	if(fast_process)
+		SSmachine.processing += src
+	else
+		SSfastprocess.processing += src
 	power_change()
 
 /obj/machinery/Destroy()
 	if(paired)
 		paired.unpair(0)
 	machines.Remove(src)
-	SSmachine.processing -= src
+	if(fast_process)
+		SSfastprocess.processing = src
+	else
+		SSmachine.processing -= src
 	if(occupant)
 		dropContents()
 	..()
