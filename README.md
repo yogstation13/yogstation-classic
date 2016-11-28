@@ -1,4 +1,4 @@
-##Yogstation
+##Botstation13
 
 [![Build Status](https://travis-ci.org/yogstation13/yogstation.svg?branch=master)](https://travis-ci.org/yogstation13/yogstation)
 Copyright (C) Yogstation 2013-2015
