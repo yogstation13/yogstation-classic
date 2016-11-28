@@ -149,6 +149,8 @@
 	new /obj/item/clothing/glasses/hud/security/sunglasses(src)
 	new /obj/item/clothing/head/helmet/sec(src)
 	new /obj/item/device/radio/security(src)
+	new /obj/item/weapon/melee/baton/loaded(src)
+	new /obj/item/weapon/restraints/handcuffs(src)
 
 /obj/structure/closet/secure_closet/security/sec
 
