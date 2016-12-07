@@ -182,6 +182,14 @@ var/next_external_rsc = 0
 	if(byond_version < MIN_CLIENT_VERSION)		//Out of date client.
 		return null
 
+	//Admin Authorisation
+	holder = admin_datums[ckey]
+	if(holder)
+		admins += src
+		holder.owner = src
+
+	initializeChatUI()
+
 	spawn(30)
 		antag_token_reload_from_db(src)
 		credits_reload_from_db(src)
@@ -204,12 +212,6 @@ var/next_external_rsc = 0
 
 	clients += src
 	directory[ckey] = src
-
-	//Admin Authorisation
-	holder = admin_datums[ckey]
-	if(holder)
-		admins += src
-		holder.owner = src
 
 	//Need to load before we load preferences for correctly removing Ultra if user no longer whitelisted
 	is_whitelisted = is_job_whitelisted(src)

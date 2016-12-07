@@ -4,6 +4,14 @@ macro "borghotkeymode"
 		command = ".winset \"mainwindow.macro=borgmacro hotkey_toggle.is-checked=false input.focus=true input.background-color=#D3B5B5\""
 		is-disabled = false
 	elem 
+		name = "CTRL+TAB"
+		command = "cycle-tabs-right"
+		is-disabled = false
+	elem 
+		name = "CTRL+SHIFT+TAB"
+		command = "cycle-tabs-left"
+		is-disabled = false
+	elem 
 		name = "CENTER+REP"
 		command = ".center"
 		is-disabled = false
@@ -108,6 +116,10 @@ macro "borghotkeymode"
 		command = "resist"
 		is-disabled = false
 	elem 
+		name = "ALT+D"
+		command = "delete-line"
+		is-disabled = false
+	elem 
 		name = "D+REP"
 		command = ".east"
 		is-disabled = false
@@ -133,11 +145,11 @@ macro "borghotkeymode"
 		is-disabled = false
 	elem 
 		name = "O"
-		command = "ooc"
+		command = "send-ooc"
 		is-disabled = false
 	elem 
 		name = "CTRL+O"
-		command = "ooc"
+		command = "send-ooc"
 		is-disabled = false
 	elem 
 		name = "Q"
@@ -238,6 +250,14 @@ macro "macro"
 		command = ".winset \"mainwindow.macro=hotkeymode hotkey_toggle.is-checked=true mapwindow.map.focus=true input.background-color=#F0F0F0\""
 		is-disabled = false
 	elem 
+		name = "CTRL+TAB"
+		command = "cycle-tabs-right"
+		is-disabled = false
+	elem 
+		name = "CTRL+SHIFT+TAB"
+		command = "cycle-tabs-left"
+		is-disabled = false
+	elem 
 		name = "CENTER+REP"
 		command = ".center"
 		is-disabled = false
@@ -322,6 +342,10 @@ macro "macro"
 		command = "resist"
 		is-disabled = false
 	elem 
+		name = "ALT+D"
+		command = "delete-line"
+		is-disabled = false
+	elem 
 		name = "CTRL+D+REP"
 		command = ".east"
 		is-disabled = false
@@ -339,7 +363,7 @@ macro "macro"
 		is-disabled = false
 	elem 
 		name = "CTRL+O"
-		command = "ooc"
+		command = "send-ooc"
 		is-disabled = false
 	elem 
 		name = "CTRL+Q"
@@ -414,6 +438,14 @@ macro "hotkeymode"
 	elem 
 		name = "TAB"
 		command = ".winset \"mainwindow.macro=macro hotkey_toggle.is-checked=false input.focus=true input.background-color=#D3B5B5\""
+		is-disabled = false
+	elem 
+		name = "CTRL+TAB"
+		command = "cycle-tabs-right"
+		is-disabled = false
+	elem 
+		name = "CTRL+SHIFT+TAB"
+		command = "cycle-tabs-left"
 		is-disabled = false
 	elem 
 		name = "CENTER+REP"
@@ -524,6 +556,10 @@ macro "hotkeymode"
 		command = "resist"
 		is-disabled = false
 	elem 
+		name = "ALT+D"
+		command = "delete-line"
+		is-disabled = false
+	elem 
 		name = "D+REP"
 		command = ".east"
 		is-disabled = false
@@ -561,11 +597,11 @@ macro "hotkeymode"
 		is-disabled = false
 	elem 
 		name = "O"
-		command = "ooc"
+		command = "send-ooc"
 		is-disabled = false
 	elem 
 		name = "CTRL+O"
-		command = "ooc"
+		command = "send-ooc"
 		is-disabled = false
 	elem 
 		name = "Q"
@@ -674,6 +710,14 @@ macro "borgmacro"
 		command = ".winset \"mainwindow.macro=borghotkeymode hotkey_toggle.is-checked=true mapwindow.map.focus=true input.background-color=#F0F0F0\""
 		is-disabled = false
 	elem 
+		name = "CTRL+TAB"
+		command = "cycle-tabs-right"
+		is-disabled = false
+	elem 
+		name = "CTRL+SHIFT+TAB"
+		command = "cycle-tabs-left"
+		is-disabled = false
+	elem 
 		name = "CENTER+REP"
 		command = ".center"
 		is-disabled = false
@@ -754,6 +798,10 @@ macro "borgmacro"
 		command = "resist"
 		is-disabled = false
 	elem 
+		name = "ALT+D"
+		command = "delete-line"
+		is-disabled = false
+	elem 
 		name = "CTRL+D+REP"
 		command = ".east"
 		is-disabled = false
@@ -767,7 +815,7 @@ macro "borgmacro"
 		is-disabled = false
 	elem 
 		name = "CTRL+O"
-		command = "ooc"
+		command = "send-ooc"
 		is-disabled = false
 	elem 
 		name = "CTRL+Q"
@@ -1204,6 +1252,73 @@ window "Telecomms IDE"
 		is-password = false
 		no-command = true
 
+window "adminlogpane"
+	elem "adminlogpane"
+		type = MAIN
+		pos = 281,0
+		size = 640x480
+		anchor1 = none
+		anchor2 = none
+		font-family = ""
+		font-size = 0
+		font-style = ""
+		text-color = #000000
+		background-color = none
+		is-visible = true
+		is-disabled = false
+		is-transparent = false
+		is-default = false
+		border = none
+		drop-zone = false
+		right-click = false
+		saved-params = "pos;size;is-minimized;is-maximized"
+		on-size = ""
+		title = "Admin Log"
+		titlebar = false
+		statusbar = false
+		can-close = false
+		can-minimize = false
+		can-resize = false
+		is-pane = true
+		is-minimized = false
+		is-maximized = false
+		can-scroll = none
+		icon = ""
+		image = ""
+		image-mode = stretch
+		keep-aspect = false
+		transparent-color = none
+		alpha = 255
+		macro = ""
+		menu = ""
+		on-close = ""
+	elem "adminlogoutput"
+		type = OUTPUT
+		pos = 0,0
+		size = 640x480
+		anchor1 = 0,0
+		anchor2 = 100,100
+		font-family = ""
+		font-size = 0
+		font-style = ""
+		text-color = #000000
+		background-color = #ffffff
+		is-visible = true
+		is-disabled = false
+		is-transparent = false
+		is-default = false
+		border = none
+		drop-zone = false
+		right-click = false
+		saved-params = "max-lines"
+		on-size = ""
+		link-color = #0000ff
+		visited-color = #ff00ff
+		style = ""
+		enable-http-images = false
+		max-lines = 1000
+		image = ""
+
 window "chemdispenser"
 	elem "chemdispenser"
 		type = MAIN
@@ -1564,6 +1679,73 @@ window "chemdispenser_reagents"
 		allow-html = false
 		letterbox = true
 
+window "icpane"
+	elem "icpane"
+		type = MAIN
+		pos = 281,0
+		size = 640x480
+		anchor1 = none
+		anchor2 = none
+		font-family = ""
+		font-size = 0
+		font-style = ""
+		text-color = #000000
+		background-color = none
+		is-visible = true
+		is-disabled = false
+		is-transparent = false
+		is-default = false
+		border = none
+		drop-zone = false
+		right-click = false
+		saved-params = "pos;size;is-minimized;is-maximized"
+		on-size = ""
+		title = "IC"
+		titlebar = false
+		statusbar = false
+		can-close = false
+		can-minimize = false
+		can-resize = false
+		is-pane = true
+		is-minimized = false
+		is-maximized = false
+		can-scroll = none
+		icon = ""
+		image = ""
+		image-mode = stretch
+		keep-aspect = false
+		transparent-color = none
+		alpha = 255
+		macro = ""
+		menu = ""
+		on-close = ""
+	elem "icoutput"
+		type = OUTPUT
+		pos = 0,0
+		size = 640x480
+		anchor1 = 0,0
+		anchor2 = 100,100
+		font-family = ""
+		font-size = 0
+		font-style = ""
+		text-color = #000000
+		background-color = #ffffff
+		is-visible = true
+		is-disabled = false
+		is-transparent = false
+		is-default = true
+		border = none
+		drop-zone = false
+		right-click = false
+		saved-params = "max-lines"
+		on-size = ""
+		link-color = #0000ff
+		visited-color = #ff00ff
+		style = ".system {color:#ff0000;}"
+		enable-http-images = false
+		max-lines = 1000
+		image = ""
+
 window "mainwindow"
 	elem "mainwindow"
 		type = MAIN
@@ -1704,7 +1886,7 @@ window "mainwindow"
 		on-size = ""
 		text = "Chat"
 		image = ""
-		command = ".winset \"saybutton.is-checked=true?input.command=\"!say \\\"\" macrobutton.is-checked=false:input.command=\""
+		command = "handleSayButton"
 		is-flat = false
 		stretch = false
 		is-checked = false
@@ -1805,8 +1987,8 @@ window "mapwindow"
 		on-hide = ".winset\"mainwindow.mainvsplit.left=\""
 		style = ""
 
-window "outputwindow"
-	elem "outputwindow"
+window "oocpane"
+	elem "oocpane"
 		type = MAIN
 		pos = 281,0
 		size = 640x480
@@ -1826,7 +2008,7 @@ window "outputwindow"
 		right-click = false
 		saved-params = "pos;size;is-minimized;is-maximized"
 		on-size = ""
-		title = ""
+		title = "OOC"
 		titlebar = false
 		statusbar = false
 		can-close = false
@@ -1845,7 +2027,7 @@ window "outputwindow"
 		macro = ""
 		menu = ""
 		on-close = ""
-	elem "output"
+	elem "oocoutput"
 		type = OUTPUT
 		pos = 0,0
 		size = 640x480
@@ -1859,7 +2041,7 @@ window "outputwindow"
 		is-visible = true
 		is-disabled = false
 		is-transparent = false
-		is-default = true
+		is-default = false
 		border = none
 		drop-zone = false
 		right-click = false
@@ -1961,7 +2143,7 @@ window "rpane"
 		saved-params = "splitter"
 		on-size = ""
 		left = ""
-		right = "outputwindow"
+		right = "tabchatpane"
 		is-vert = false
 		splitter = 50
 		show-splitter = true
@@ -2303,4 +2485,69 @@ window "infowindow"
 		on-tab = ""
 		prefix-color = none
 		suffix-color = none
+
+window "tabchatpane"
+	elem "tabchatpane"
+		type = MAIN
+		pos = 281,0
+		size = 640x480
+		anchor1 = none
+		anchor2 = none
+		font-family = ""
+		font-size = 0
+		font-style = ""
+		text-color = #000000
+		background-color = none
+		is-visible = true
+		is-disabled = false
+		is-transparent = false
+		is-default = false
+		border = none
+		drop-zone = false
+		right-click = false
+		saved-params = "pos;size;is-minimized;is-maximized"
+		on-size = ""
+		title = ""
+		titlebar = false
+		statusbar = false
+		can-close = false
+		can-minimize = false
+		can-resize = false
+		is-pane = true
+		is-minimized = false
+		is-maximized = false
+		can-scroll = none
+		icon = ""
+		image = ""
+		image-mode = stretch
+		keep-aspect = false
+		transparent-color = none
+		alpha = 255
+		macro = ""
+		menu = ""
+		on-close = ""
+	elem "tabchat"
+		type = TAB
+		pos = 0,0
+		size = 640x480
+		anchor1 = 0,0
+		anchor2 = 100,100
+		font-family = ""
+		font-size = 0
+		font-style = ""
+		text-color = #000000
+		background-color = none
+		is-visible = true
+		is-disabled = false
+		is-transparent = false
+		is-default = false
+		border = none
+		drop-zone = false
+		right-click = false
+		saved-params = ""
+		on-size = ""
+		tabs = "icpane, oocpane"
+		current-tab = "icpane"
+		multi-line = true
+		on-tab = "tab-changed [[*]]"
 

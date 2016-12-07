@@ -6,7 +6,7 @@ var/global/floorIsLava = 0
 ////////////////////////////////
 /proc/message_admins(msg)
 	msg = "<span class=\"admin\"><span class=\"prefix\">ADMIN LOG:</span> <span class=\"message\">[msg]</span></span>"
-	admins << msg
+	admins << output(msg, "adminlogoutput")
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////Panels
