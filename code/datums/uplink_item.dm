@@ -521,6 +521,13 @@ var/list/uplink_items = list()
 	cost = 5
 	surplus = 90
 
+/datum/uplink_item/stealthy_tools/smugglers_body_bag
+	name = "Smuggler's body bag"
+	desc = "A body bag made to store a corpse and hide them with the body bag under floor tiles. Make sure they are dead, as they might escape."
+	item = /obj/item/bodybag/smugglers
+	cost = 3
+	surplus = 30
+
 // DEVICE AND TOOLS
 
 /datum/uplink_item/device_tools

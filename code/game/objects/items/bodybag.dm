@@ -107,3 +107,37 @@
 	density = 0
 	mob_storage_capacity = 15
 	max_mob_size = MOB_SIZE_LARGE
+
+/obj/item/bodybag/smugglers
+	name = "smugglers body bag"
+	desc = "A very slim body bag that can easily fit into tight spaces."
+	icon = 'icons/obj/bodybag.dmi'
+	icon_state = "smugglers_folded"
+	unfoldedbag_path = /obj/structure/closet/body_bag/smugglers
+	w_class = 2
+	color = "#0B3B0B"
+
+/obj/structure/closet/body_bag/smugglers
+	name = "smugglers body bag"
+	desc = "A very slim body bag that can easily fit into tight spaces."
+	icon = 'icons/obj/bodybag.dmi'
+	icon_state = "smugglers"
+	foldedbag_path = /obj/item/bodybag/smugglers
+	color = "#0B3B0B"
+	tagged = 0
+	density = 0
+	mob_storage_capacity = 1
+	level = 1
+
+/obj/structure/closet/body_bag/smugglers/hide(var/intact)
+	if(intact)
+		invisibility = 101
+		anchored = 1
+		icon_state = "[initial(icon_state)]2"
+		density = 1
+	else
+		invisibility = initial(invisibility)
+		anchored = 0
+		icon_state = initial(icon_state)
+		density = 0
+
