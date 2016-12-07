@@ -5,6 +5,7 @@
 	chemical_cost = 35
 	dna_cost = 2
 	req_stat = UNCONSCIOUS
+	max_genetic_damage = 10
 
 //Starts healing you every second for 10 seconds. Can be used whilst unconscious.
 /obj/effect/proc_holder/changeling/fleshmend/sting_action(mob/living/user)
