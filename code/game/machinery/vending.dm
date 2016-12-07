@@ -831,7 +831,7 @@ IF YOU MODIFY THE PRODUCTS LIST OF A MACHINE, MAKE SURE TO UPDATE ITS RESUPPLY C
 						/obj/item/seeds/tea_aspera_seed = 3,/obj/item/seeds/tobacco_seed = 3,/obj/item/seeds/tomatoseed = 3,
 						/obj/item/seeds/towermycelium = 3,/obj/item/seeds/watermelonseed = 3,/obj/item/seeds/wheatseed = 3,/obj/item/seeds/whitebeetseed = 3)
 	contraband = list(/obj/item/seeds/amanitamycelium = 2,/obj/item/seeds/glowshroom = 2,/obj/item/seeds/libertymycelium = 2,/obj/item/seeds/nettleseed = 2,
-						/obj/item/seeds/plumpmycelium = 2,/obj/item/seeds/reishimycelium = 2)
+						/obj/item/seeds/plumpmycelium = 2,/obj/item/seeds/reishimycelium = 2,/obj/item/seeds/cannabis_seed = 2)
 	premium = list(/obj/item/weapon/reagent_containers/spray/waterflower = 1)
 
 

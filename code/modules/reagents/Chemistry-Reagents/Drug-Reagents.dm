@@ -370,3 +370,41 @@
 		M.adjustOxyLoss(1)
 	..()
 	return
+
+/datum/reagent/drug/thc
+	name = "THC"
+	id = "THC"
+	description = "The best known of the cannabinoids, this drug causes mild intoxication, relaxedness, and hunger."
+	reagent_state = LIQUID
+	color = "#60A584"
+	overdose_threshold = 15
+
+/datum/reagent/drug/thc/on_mob_life(mob/living/M)
+	var/high_message
+	if(prob(5))
+		high_message = pick("You notice that your fingers look kind of like ping pong balls.",
+		"You feel very relaxed.",
+		"You feel like having a snack.",
+		"You let your mind wander for a bit.",
+		"You think that you could use a snack.",
+		"You wonder why you were born.",
+		"You wonder where the ceiling went.",
+		"You wonder if the chef has any snacks.",
+		"You wonder how the sky can be real if your eyes aren't real.")
+		M << "<span class='notice'>[high_message]</span>"
+	if(prob(5))
+		M.emote(pick("laugh","giggle","smile"))
+	if(prob(10))
+		M.nutrition -= 4
+
+/datum/reagent/drug/thc/overdose_process(mob/living/M)
+	if(M.canmove && !istype(M.loc, /atom/movable) && prob(40))
+		step(M, pick(cardinal))
+	if(prob(0.5))
+		M << "<span class='userdanger'>Yo. fe!l y0^r >ind t8rn 011010010110111001110111a5ds.</span>"
+		M.hallucination += 50
+	if(prob(30))
+		M.nutrition -= 8
+
+/datum/reagent/drug/thc/overdose_start(mob/living/M)
+	M << "<span class='userdanger'>Woah, bro!  You're tripping balls!</span>"
