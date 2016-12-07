@@ -570,6 +570,21 @@
 	var/obj/item/weapon/slimesteroid2/P = new /obj/item/weapon/slimesteroid2
 	P.loc = get_turf(holder.my_atom)
 
+
+/datum/chemical_reaction/slime_territory
+	name = "Slime Territory"
+	id = "s_territory"
+	result = null
+	required_reagents = list("blood" = 1)
+	result_amount = 1
+	required_container = /obj/item/slime_extract/cerulean
+	required_other = 1
+
+/datum/chemical_reaction/slime_territory/on_reaction(datum/reagents/holder)
+	feedback_add_details("slime_cores_used","[type]")
+	var/obj/item/areaeditor/blueprints/slime/P = new /obj/item/areaeditor/blueprints/slime
+	P.loc = get_turf(holder.my_atom)
+
 //Sepia
 /datum/chemical_reaction/slimestop
 	name = "Slime Stop"

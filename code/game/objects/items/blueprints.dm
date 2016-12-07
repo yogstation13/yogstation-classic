@@ -190,7 +190,7 @@
 	log_game("[key_name(usr)] renamed the '[prevname]' to '[str]'.")
 
 	interact()
-	return
+	return 1
 
 
 /obj/item/areaeditor/proc/set_area_machinery_title(area/A,title,oldtitle)

@@ -1572,6 +1572,7 @@
 #include "code\modules\research\designs\stock_parts_designs.dm"
 #include "code\modules\research\designs\telecomms_designs.dm"
 #include "code\modules\research\designs\weapon_designs.dm"
+#include "code\modules\research\xenobiology\xenobio_camera.dm"
 #include "code\modules\research\xenobiology\xenobiology.dm"
 #include "code\modules\scripting\Errors.dm"
 #include "code\modules\scripting\IDE.dm"
