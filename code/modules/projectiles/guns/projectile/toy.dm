@@ -66,6 +66,30 @@
 	slot_flags = SLOT_BELT
 	w_class = 2
 
+/obj/item/weapon/gun/projectile/shotgun/toy/awp
+	name = "AWP"
+	desc = "MLG approved for 360 degree noscopes. This one appears to be a toy"
+	icon = 'icons/obj/guns/awp.dmi'
+	icon_state = "awpdefault"
+	item_state = "awpdefault"
+	fire_sound = "sound/weapons/AWP.ogg"
+	slot_flags = 0
+	w_class = 4
+	lefthand_file = 'icons/mob/inhands/guns_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/guns_righthand.dmi'
+	l_item_state = "moistnugget"
+	r_item_state = "moistnugget"
+
+/obj/item/weapon/gun/projectile/shotgun/toy/awp/asiimov
+	name = "AWP Asiimov"
+	icon_state = "awpasiimov"
+	item_state = "awpasiimov"
+
+/obj/item/weapon/gun/projectile/shotgun/toy/awp/dragonlore
+	name = "AWP Dragonlore"
+	icon_state = "awpdragonlore"
+	item_state = "awpdragonlore"
+
 /obj/item/weapon/gun/projectile/automatic/c20r/toy
 	name = "donksoft SMG"
 	desc = "A bullpup two-round burst toy SMG, designated 'C-20r'. Ages 8 and up."
