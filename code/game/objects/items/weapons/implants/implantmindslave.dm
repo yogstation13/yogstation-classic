@@ -2,6 +2,7 @@
 	name = "mindslave implant"
 	desc = "Turn a crewmate into your eternal slave"
 	activated = 0
+	origin_tech = "syndicate=4;biotech=4"//i am retarded
 
 /obj/item/weapon/implant/mindslave/get_data()
 	var/dat = {"
