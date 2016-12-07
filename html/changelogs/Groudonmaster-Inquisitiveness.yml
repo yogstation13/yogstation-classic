@@ -1,0 +1,6 @@
+author: Groudonmaster
+
+delete-after: True
+
+changes: 
+  - tweak: "Inquisitiveness defaults to off as a ghost. Can still be reenabled in ghost tab."
