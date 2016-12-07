@@ -13,7 +13,7 @@
 	icon_state = "deck"
 	w_class = 2
 
-	var/list/cards = list()
+	var/list/cards = list())
 
 /obj/item/weapon/deck/New()
 	. = ..()
