@@ -6,6 +6,11 @@
 	ammo_type = list(/obj/item/ammo_casing/energy/electrode)
 	ammo_x_offset = 3
 
+/obj/item/weapon/gun/energy/taser/afterattack(atom/target as mob|obj|turf, mob/living/user as mob|obj, params)
+	if(chambered || chambered.BB)
+		chambered.BB.icon_state = icon_state
+	..()
+
 /obj/item/weapon/gun/energy/stunrevolver
 	name = "stun revolver"
 	desc = "A high-tech revolver that fires internal, reusable taser cartridges in a revolving cylinder. The cartridges can be recharged using conventional rechargers."

@@ -8,8 +8,7 @@
 
 /obj/item/projectile/energy/electrode
 	name = "electrode"
-	icon_state = "spark"
-	color = "#FFFF00"
+	icon_state = "egg-rainbow"
 	nodamage = 1
 	stun = 5
 	weaken = 5
@@ -37,6 +36,10 @@
 	sparks.set_up(1, 1, src)
 	sparks.start()
 	..()
+
+/obj/item/projectile/energy/electrode/New()
+    ..()
+    icon_state = pick("egg-rainbow","egg-blue","egg-red","egg-purple","egg-green")
 
 /obj/item/projectile/energy/net
 	name = "energy netting"
