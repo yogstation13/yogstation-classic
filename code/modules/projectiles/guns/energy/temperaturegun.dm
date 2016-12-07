@@ -169,6 +169,8 @@
 /obj/item/weapon/gun/energy/temperature/ultra
 	name = "ultra temperature gun"
 	desc = "A gun that changes the body temperature of its targets to any temperature. ANY. TEMPERATURE.."
+	pin = /obj/item/device/firing_pin
+	emagged = 1
 
 /obj/item/weapon/gun/energy/temperature/ultra/Topic(href, href_list)
 	if (..())
