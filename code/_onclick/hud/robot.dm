@@ -61,8 +61,8 @@
 	var/mob/living/silicon/robot/R = usr
 	R.control_headlamp()
 
-
 /datum/hud/proc/robot_hud(ui_style = 'icons/mob/screen_cyborg.dmi')
+	var/ui_style_ai = 'icons/mob/screen_ai.dmi' //need for AI-based HUD elements (Sec/MedHUD, Photography)
 	adding = list()
 	other = list()
 
@@ -103,18 +103,18 @@
 
 	using = new /obj/screen/ai/image_take()
 	using.screen_loc = ui_borg_camera
-	using.icon = ui_style
+	using.icon = ui_style_ai
 	adding += using
 
 	using = new /obj/screen/ai/image_view()
 	using.screen_loc = ui_borg_album
-	using.icon = ui_style
+	using.icon = ui_style_ai
 	adding += using
 
 //Sec/Med HUDs
 	using = new /obj/screen/ai/sensors()
 	using.screen_loc = ui_borg_sensor
-	using.icon = ui_style
+	using.icon = ui_style_ai
 	adding += using
 
 //Headlamp control
