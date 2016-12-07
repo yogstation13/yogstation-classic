@@ -33,3 +33,20 @@
 	density = 1
 	unacidable = 1
 	anchored = 1.0
+
+/obj/structure/barricade/cult
+	name = "ethereal field"
+	desc = "Strange energies float around this, although it looks easy enough to break."
+	icon = 'icons/obj/cult.dmi'
+	icon_state = "cultgirder"
+	anchored = 1.0
+	density = 1.0
+	var/health = 1.0
+	var/maxhealth = 1.0
+	alpha = 100
+
+/obj/structure/barricade/cult/attackby(obj/item/W, mob/user, params)
+	src.health -= W.force
+	if (src.health <= 0)
+		visible_message("<span class='warning'>[src] vanishes in a puff of smoke.</span>")
+		qdel(src)
