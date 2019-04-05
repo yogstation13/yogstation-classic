@@ -108,7 +108,7 @@
 ////////////////////////////Proc for moving soul in and out off stone//////////////////////////////////////
 
 
-/obj/item/device/soulstone/proc/transfer_soul(choice as text, target, mob/U).
+/obj/item/device/soulstone/proc/transfer_soul(choice as text, target, mob/U)
 	switch(choice)
 		if("FORCE")
 			if(!iscarbon(target))		//TO-DO: Add sacrifice stoning for non-organics, just because you have no body doesnt mean you dont have a soul
