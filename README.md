@@ -34,7 +34,7 @@ hassle if you want to make any changes at all, so it's not recommended.)
 
 ##INSTALLATION
 
-**Byond 510 is required for the code to compile correctly!**
+**Byond 512 is required for the code to compile correctly!**
 
 First-time installation should be fairly straightforward.  First, you'll need
 BYOND installed.  You can get it from http://www.byond.com/.  Once you've done 
